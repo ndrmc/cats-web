@@ -22,15 +22,15 @@ class Requisition < ApplicationRecord
   has_many :requisition_items
 
   def region
-    Location.find_by(id: self.region_id)
+    Location.find_by id: self.region_id
   end
 
   def zone
-    Location.find_by(id: self.zone_id)
+    Location.find_by id: self.zone_id
   end
 
   def ration
-    Ration.find_by(id: self.ration_id)
+    Ration.find_by id: self.ration_id
   end
 
   def commodity
