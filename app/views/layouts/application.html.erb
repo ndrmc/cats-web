@@ -1,52 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cats</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Cats</title>
 
-    <!-- Include style per-controller - vendor plugins -->
-    <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.css") %>
+  <!-- Include style per-controller - vendor plugins -->
+  <%= stylesheet_link_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.css") %>
 
-    <!-- Main css styles -->
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <!-- Main css styles -->
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 
-    <!-- Main javascript files -->
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-    <%= csrf_meta_tags %>
+  <!-- Main javascript files -->
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
 
 
 
 </head>
-<body class="top-navigation">
+<body>
 
-    <!-- Wrapper-->
-    <div id="wrapper" class="<%= params[:controller] %>.<%= params[:action] %>">
+<!-- Skin configuration box -->
+<!-- <%= render 'layouts/skinconfig' %> -->
 
-        <!-- Page wraper -->
-        <div id="page-wrapper" class="gray-bg <%= @extra_class %>">
+<!-- Wrapper-->
+<div id="wrapper" class="<%= params[:controller] %>.<%= params[:action] %>">
 
-            <!-- Page wrapper -->
-            <%= render 'layouts/topnavbar_2' %>
+  <!-- Navigation -->
+  <%= render 'layouts/navigation' %>
 
-            <!-- Main view  -->
-            <%= yield %>
+  <!-- Page wraper -->
+  <div id="page-wrapper" class="gray-bg <%= @extra_class %>">
 
-            <!-- Footer -->
-            <%= render 'layouts/footer' %>
+    <!-- Page wrapper -->
+    <%= render 'layouts/topnavbar' %>
 
-        </div>
-        <!-- End page wrapper-->
+    <!-- Main view  -->
+    <%= yield %>
 
-    </div>
-    <!-- End wrapper-->
+    <!-- Footer -->
+    <%= render 'layouts/footer' %>
 
-    <!-- Include javascript per-controller - vendor plugins -->
-    <%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
+  </div>
+  <!-- End page wrapper-->
 
-    <!-- Include javascript per-view -->
-    <!-- For demo purpose we include javascript in view but you can easily start SeedProject and organize it with Rails asset pipeline as you want -->
-    <%= yield :javascript %>
+
+
+</div>
+<!-- End wrapper-->
+
+<!-- Include javascript per-controller - vendor plugins -->
+<%= javascript_include_tag params[:controller] if ::Rails.application.assets.find_asset("#{params[:controller]}.js") %>
+
+<!-- Include javascript per-view -->
+<!-- For demo purpose we include javascript in view but you can easily start SeedProject and organize it with Rails asset pipeline as you want -->
+<%= yield :javascript %>
 
 </body>
 </html>
