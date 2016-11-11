@@ -59,3 +59,11 @@ gem 'ancestry'
 
 # Mongodb gem
 gem 'mongoid', git: 'https://github.com/mongodb/mongoid.git'
+
+
+# Devise for authentication
+gem 'devise', '~> 4.2.0'
+
+gem 'rolify'
+
+gem 'pundit'
