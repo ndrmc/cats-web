@@ -58,7 +58,7 @@ gem 'annotate'
 gem 'ancestry'
 
 # Mongodb gem
-gem 'mongoid', git: 'https://github.com/mongodb/mongoid.git'
+#gem 'mongoid', git: 'https://github.com/mongodb/mongoid.git'
 
 
 # Devise for authentication
