@@ -42,7 +42,7 @@
     </ul>
   </li>
 
-  <li class="<%= 'active' if current_page?('/home/minor') %>">
+  <li class="<%= 'active' if current_page?(location_types_url) %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-globe"></i>
     <span class="nav-label">Geography</span>
@@ -52,8 +52,8 @@
       <li>
         <a href="#">Locations</a>
       </li>
-      <li>
-        <a href="#">Location types</a>
+      <li class="<%= 'active' if current_page?(location_types_url)%>">
+        <%= link_to 'Location types', location_types_path %>
       </li>
       <li>
         <a href="#">FDP</a>
