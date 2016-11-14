@@ -1,0 +1,206 @@
+<div class="row  border-bottom white-bg dashboard-header">
+  <div class="col-sm-4">
+    <h2>Welcome
+      <%= current_user.name %></h2>
+    <small>You have 42 messages and 6 notifications.</small>
+    <ul class="list-group clear-list m-t">
+      <li class="list-group-item fist-item">
+        <span class="pull-right">
+          09:00 pm
+        </span>
+        <span class="label label-success">1</span>
+        Please contact me
+      </li>
+      <li class="list-group-item">
+        <span class="pull-right">
+          10:16 am
+        </span>
+        <span class="label label-info">2</span>
+        Sign a contract
+      </li>
+      <li class="list-group-item">
+        <span class="pull-right">
+          08:22 pm
+        </span>
+        <span class="label label-primary">3</span>
+        Open new shop
+      </li>
+      <li class="list-group-item">
+        <span class="pull-right">
+          11:06 pm
+        </span>
+        <span class="label label-default">4</span>
+        Call back to Sylvia
+      </li>
+      <li class="list-group-item">
+        <span class="pull-right">
+          12:00 am
+        </span>
+        <span class="label label-primary">5</span>
+        Write a letter to Sandra
+      </li>
+    </ul>
+  </div>
+  <div class="col-sm-5">
+    <div class="flot-chart dashboard-chart">
+      <div class="flot-chart-content" id="flot-dashboard-chart"></div>
+    </div>
+    <div class="row text-left">
+      <div class="col-xs-4">
+        <div class=" m-l-md">
+          <span class="h4 font-bold m-t block">$ 406,100</span>
+          <small class="text-muted m-b block">Sales marketing report</small>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <span class="h4 font-bold m-t block">$ 150,401</span>
+        <small class="text-muted m-b block">Annual sales revenue</small>
+      </div>
+      <div class="col-xs-4">
+        <span class="h4 font-bold m-t block">$ 16,822</span>
+        <small class="text-muted m-b block">Half-year revenue margin</small>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="statistic-box">
+      <h4>
+        Project Beta progress
+      </h4>
+      <p>
+        You have two project with not compleated task.
+      </p>
+      <div class="row text-center">
+        <div class="col-lg-6">
+          <canvas id="polarChart" width="80" height="80"></canvas>
+          <h5 >Kolter</h5>
+        </div>
+        <div class="col-lg-6">
+          <canvas id="doughnutChart" width="78" height="78"></canvas>
+          <h5 >Maxtor</h5>
+        </div>
+      </div>
+      <div class="m-t">
+        <small>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <span class="label label-success pull-right">2016 Belg</span>
+          <h5>Beneficiaries</h5>
+        </div>
+        <div class="ibox-content">
+          <h1 class="no-margins">9,886,200</h1>
+          <div class="stat-percent font-bold text-success">98%
+            <i class="fa fa-bolt"></i>
+          </div>
+          <small>Total number of beneficiaries</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <span class="label label-info pull-right">Monthly</span>
+          <h5>Operation</h5>
+        </div>
+        <div class="ibox-content">
+          <h1 class="no-margins">2016 Round 6</h1>
+          <div class="stat-percent font-bold text-info">20%
+            <i class="fa fa-level-up"></i>
+          </div>
+          <small>Overall progress</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <span class="label label-primary pull-right">Today</span>
+          <h5>Stock</h5>
+        </div>
+        <div class="ibox-content">
+          <h1 class="no-margins">106,120</h1>
+          <div class="stat-percent font-bold text-navy">44%
+            <i class="fa fa-level-up"></i>
+          </div>
+          <small>New visits</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <span class="label label-danger pull-right">Low value</span>
+          <h5>User activity</h5>
+        </div>
+        <div class="ibox-content">
+          <h1 class="no-margins">80,600</h1>
+          <div class="stat-percent font-bold text-danger">38%
+            <i class="fa fa-level-down"></i>
+          </div>
+          <small>In first month</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Resource Stock</h5>
+        </div>
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-lg-12">
+              <ul class="stat-list">
+                <li>
+                  <h2 class="no-margins">2,346 mt.</h2>
+                  <small>Total received in period</small>
+                  <div class="stat-percent">
+                    <span class="label label-success pull-right">Detail</span>
+                  </div>
+                  <div class="progress progress-mini">
+                    <div style="width: 48%;" class="progress-bar"></div>
+                  </div>
+                </li>
+                <li>
+                  <h2 class="no-margins ">4,422 mt.</h2>
+                  <small>Total dispatched in operation period</small>
+                  <div class="stat-percent">60%
+                    <i class="fa fa-level-down text-navy"></i>
+                  </div>
+                  <div class="progress progress-mini">
+                    <div style="width: 60%;" class="progress-bar"></div>
+                  </div>
+                </li>
+                <li>
+                  <h2 class="no-margins ">9,180 mt.</h2>
+                  <small>Closing balance for operation period</small>
+                  <div class="stat-percent">22%
+                    <i class="fa fa-bolt text-navy"></i>
+                  </div>
+                  <div class="progress progress-mini">
+                    <div style="width: 22%;" class="progress-bar"></div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
