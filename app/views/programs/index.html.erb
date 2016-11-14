@@ -1,18 +1,18 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Currencies</h2>
+    <h2>Programs</h2>
     <ol class="breadcrumb">
       <li>
         <a href="#">Lookups</a>
       </li>
       <li class="active">
-        <strong>Currencies</strong>
+        <strong>Programs</strong>
       </li>
     </ol>
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'New Currency', new_currency_path, :class => "btn btn-primary"%>
+      <%= link_to 'New Program', new_program_path, :class => "btn btn-primary"%>
     </div>
   </div>
 </div>
@@ -20,26 +20,27 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
+
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Symbol</th>
             <th>Name</th>
+            <th>Code</th>
             <th>Description</th>
             <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
-          <% @currencies.each do |currency| %>
+          <% @programs.each do |program| %>
           <tr>
-            <td><%= currency.symbol %></td>
-            <td><%= currency.name %></td>
-            <td><%= currency.description %></td>
+            <td><%= program.name %></td>
+            <td><%= program.code %></td>
+            <td><%= program.description %></td>
             <td>
-              <%= link_to 'Edit', edit_currency_path(currency) %>
+              <%= link_to 'Edit', edit_program_path(program) %>
               &middot;
-              <%= link_to 'Delete', currency, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%= link_to 'Delete', program, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
           </tr>
           <% end %>

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :currencies
   resources :donors
   resources :location_types
+  resources :programs
 
   root to: 'dashboard#index'
 

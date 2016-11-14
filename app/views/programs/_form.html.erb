@@ -1,17 +1,17 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
-      <%= form_for(location_type) do |f| %>
-      <% if location_type.errors.any? %>
+      <%= form_for(program) do |f| %>
+      <% if program.errors.any? %>
       <div class="panel panel-danger">
         <div class="panel-heading">
-          <%= pluralize(location_type.errors.count, "error") %>
-          prohibited this location_type from being saved.
+          <%= pluralize(program.errors.count, "error") %>
+          prohibited this program from being saved.
         </div>
 
         <div class="panel-body">
           <ul>
-            <% location_type.errors.full_messages.each do |message| %>
+            <% program.errors.full_messages.each do |message| %>
             <li><%= message %></li>
             <% end %>
           </ul>
@@ -22,6 +22,11 @@
       <div class="form-group">
         <%= f.label :name %>
         <%= f.text_field :name, :class => 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :code %>
+        <%= f.text_field :code, :class => 'form-control' %>
       </div>
 
       <div class="form-group">
