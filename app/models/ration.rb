@@ -11,6 +11,8 @@
 #
 
 class Ration < ApplicationRecord
+  validates :reference_no , presence: true
+
   has_many :ration_items
 
   def total_amount(beneficiaries)

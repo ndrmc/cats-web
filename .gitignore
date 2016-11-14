@@ -47,13 +47,13 @@ bower.json
 # Ignore Byebug command history file.
 .byebug_history
 
-<<<<<<< HEAD
-# Rake autocomplete files
-.rake_tasks~
-=======
 
 # Intellij Files 
 
 .idea/
 *.iml
->>>>>>> 433a6d965b1b734ca9e67fc67fa419dc56a41cc4
+
+
+# Temporary files 
+
+*~

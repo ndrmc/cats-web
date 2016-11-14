@@ -26,4 +26,6 @@ class CommodityTest < ActiveSupport::TestCase
     commodity = Commodity.new
     assert_not commodity.save, "Saved commodity without a name"
   end
+
+
 end

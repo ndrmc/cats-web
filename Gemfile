@@ -3,6 +3,10 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
+
+gem 'bootstrap-sass', '~> 3.3.7'
+gem 'font-awesome-rails', '4.7.0.0'
+
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -54,4 +58,12 @@ gem 'annotate'
 gem 'ancestry'
 
 # Mongodb gem
-gem 'mongoid', git: 'https://github.com/mongodb/mongoid.git'
+#gem 'mongoid', git: 'https://github.com/mongodb/mongoid.git'
+
+
+# Devise for authentication
+gem 'devise', '~> 4.2.0'
+
+gem 'rolify'
+
+gem 'pundit'

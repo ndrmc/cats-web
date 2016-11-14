@@ -1,0 +1,190 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+  <div class="sidebar-collapse">
+    <ul class="nav metismenu" id="side-menu">
+      <li class="nav-header">
+        <div class="dropdown profile-element">
+          <%=link_to "/" do %>
+          <span class="clear">
+            <span class="block m-t-xs">
+              <strong class="font-bold">CATS</strong>
+            </span>
+            <% end %>
+          </div>
+          <div class="logo-element">
+            CATS
+          </div>
+        </li>
+
+        <li class="<%= 'active' if current_page?('/home/minor') %>">
+          <%=link_to "plan#index" do %>
+          <i class="fa fa-calendar"></i>
+          <span class="nav-label">Plan</span>
+          <span class="fa arrow"></span><% end %>
+          <ul class="nav nav-second-level collapse" style="height: 0px;">
+            <li>
+              <a href="#">HRD</a>
+            </li>
+            <li>
+              <a href="#">PSNP Annual Plan</a>
+            </li>
+            <li>
+              <a href="#">Receipt Plan</a>
+            </li>
+            <li>
+              <a href="#">Bid Plans</a>
+            </li>
+            <li>
+              <a href="#">Rations</a>
+            </li>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-hdd-o"></i>
+    <span class="nav-label">Resource</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Gift Certificate</a>
+      </li>
+      <li>
+        <a href="#">Donors</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/" do %>
+    <i class="fa fa-book"></i>
+    <span class="nav-label">Operation</span>
+    <% end %>
+
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-hdd-o"></i>
+    <span class="nav-label">Allocation</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Regional Request</a>
+      </li>
+      <li>
+        <a href="#">Request Allocation</a>
+      </li>
+      <li>
+        <a href="#">Dispatch Allocation</a>
+      </li>
+      <li>
+        <a href="#">Transport Requisition</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-cube"></i>
+    <span class="nav-label">Stock</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Receiving</a>
+      </li>
+      <li>
+        <a href="#">Dispatch</a>
+      </li>
+      <li>
+        <a href="#">Transfer</a>
+      </li>
+      <li>
+        <a href="#">Adjustment</a>
+      </li>
+      <li>
+        <a href="#">Stock Take</a>
+      </li>
+      <li>
+        <a href="#">Internal Movement</a>
+      </li>
+      <li>
+        <a href="#">Store Ledger</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-truck"></i>
+    <span class="nav-label">Transport</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Bids</a>
+      </li>
+      <li>
+        <a href="#">RFQ</a>
+      </li>
+      <li>
+        <a href="#">Bid Evaluation</a>
+      </li>
+      <li>
+        <a href="#">Transporters</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-money"></i>
+    <span class="nav-label">Contract</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Transport Orders</a>
+      </li>
+      <li>
+        <a href="#">Contract Administration</a>
+      </li>
+      <li>
+        <a href="#">Payment Request</a>
+      </li>
+      <li>
+        <a href="#">Payment Tracking</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-map-o"></i>
+    <span class="nav-label">Region</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Request</a>
+      </li>
+      <li>
+        <a href="#">FDP Receipts</a>
+      </li>
+      <li>
+        <a href="#">CMPM Reports</a>
+      </li>
+      <li>
+        <a href="#">Needs Assessment</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+</div>
+</nav>
