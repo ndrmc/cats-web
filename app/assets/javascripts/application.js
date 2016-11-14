@@ -17,4 +17,9 @@
 //= require metisMenu/jquery.metisMenu.js
 //= require pace/pace.min.js
 //= require slimscroll/jquery.slimscroll.min.js
+
+//= require toastr
+
 //= require_tree .
+
+

@@ -1,0 +1,50 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2><%= plural_table_name.titleize %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong><%= plural_table_name.titleize %></strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%%= link_to 'New <%= singular_table_name.titleize %>', new_<%= singular_table_name %>_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <% attributes.reject(&:password_digest?).each do |attribute| -%>
+            <th><%= attribute.human_name %></th>
+        <% end -%>
+        <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
+      <tr>
+        <% attributes.reject(&:password_digest?).each do |attribute| -%>
+            <td><%%= <%= singular_table_name %>.<%= attribute.name %> %></td>
+        <% end -%>
+        <td>
+          <%%= link_to 'Edit', edit_<%= singular_table_name %>_path(<%= singular_table_name %>) %> &middot;
+          <%%= link_to 'Delete', <%= singular_table_name %>, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+      <%% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
