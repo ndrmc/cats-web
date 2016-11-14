@@ -1,0 +1,2 @@
+module Setting::CommodityTypeHelper
+end

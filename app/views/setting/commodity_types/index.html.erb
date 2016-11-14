@@ -1,0 +1,76 @@
+<div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>New Commodity Type</h5>
+            </div>
+            <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="form-inline">
+                  <%= form_for :commodity_type,url: setting_commodity_types_path do |f| %>
+                    <div class="row">
+                    <%= f.text_field :name,class: "form-control", placeholder: "Enter name" %>
+
+                    <%= f.text_field :code,class: "form-control", placeholder: "Code" %>
+
+                    <%= f.text_field :code_am,class: "form-control", placeholder: "Code(Am)" %>
+
+                    <%= f.text_field :description,class: "form-control", placeholder: "Description" %>
+
+                    <%= f.submit "Save" , class: "btn btn-primary"%>
+                  </div>
+                  <% end %>
+              </div>
+            </div>
+        </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" placeholder="Search" class="input-sm form-control">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-sm btn-primary"> Go!</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+
+                            <th></th>
+                            <th>Name </th>
+                            <th>Code </th>
+                            <th>Code(Amharic)</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          <% @commodity_types.each do |type | %>
+                          <tr>
+                              <td><div class="icheckbox_square-green checked" style="position: relative;"><input type="checkbox" checked="" class="i-checks" name="input[]" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                              <td><%= type.name %></td>
+                              <td><%=type.code %></td>
+                              <td><%=type.code_am %></td>
+                              <td><%=type.description %></td>
+                              <td>
+                              <!--  <a href="#"></a>-->
+                                <%= link_to  edit_setting_commodity_type_path(type) do %>
+                                  <i class="fa fa-edit text-navy"></i>
+                                <%end%>
+                                |
+                                <%= link_to  setting_commodity_type_path(type), :method=>:delete, data:{confirm: "Are you sure?"} do %>
+                                    <i class="fa fa-eraser text-navy"></i>
+                                <%end%>
+                              </td>
+                          </tr>
+                          <% end %>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,25 @@
+<div class="ibox-content">
+    <div class="form-inline">
+      <%= form_for @commodity_type, url: setting_commodity_type_path, method: :patch do |f| %>
+      <div class ="row">
+         <%= f.label :name %><br>
+        <%= f.text_field :name,class: "form-control"  %>
+      </div>
+      <div class ="row">
+         <%= f.label :code %><br>
+      <%= f.text_field :code,class: "form-control" %>
+      </div>
+      <div class ="row">
+         <%= f.label :code_am %><br>
+        <%= f.text_field :code_am,class: "form-control" %>
+      </div>
+      <div class ="row">
+         <%= f.label :description %><br>
+      <%= f.text_field :description,class: "form-control" %>
+      </div>
+      <br>
+      <div class ="row">
+        <%= f.submit "Edit" , class: "btn btn-primary"%>
+      </div
+      <% end %>
+  </div>

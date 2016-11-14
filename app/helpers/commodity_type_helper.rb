@@ -1,0 +1,2 @@
+module CommodityTypeHelper
+end
