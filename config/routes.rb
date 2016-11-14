@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get "home/other"
 
   resources :currencies
+  resources :donors
 
   root to: 'home#index'
 
