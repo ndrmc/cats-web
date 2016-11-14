@@ -1,5 +1,6 @@
 class SettingController < ApplicationController
+  layout 'admin'
   def index
-    render :layout => 'admin'
+    
   end
 end
