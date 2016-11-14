@@ -1,0 +1,40 @@
+
+
+<div class="ibox float-e-margins">
+
+  <div class="ibox-content">
+
+    <%= form_for(currency, :role => 'form') do |f| %>
+      <% if currency.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(currency.errors.count, "error") %> prohibited this currency from being saved:</h2>
+
+          <ul>
+          <% currency.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :symbol %>
+        <%= f.text_field :symbol, :class => 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, :class => 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_area :description, :class => 'form-control' %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

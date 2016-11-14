@@ -67,3 +67,5 @@ gem 'devise', '~> 4.2.0'
 gem 'rolify'
 
 gem 'pundit'
+
+gem 'toastr-rails', '~> 1.0', '>= 1.0.3'
