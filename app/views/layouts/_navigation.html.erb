@@ -63,7 +63,6 @@
     <i class="fa fa-book"></i>
     <span class="nav-label">Operation</span>
     <% end %>
-
   </li>
 
   <li class="<%= 'active' if current_page?('/home/minor') %>">
@@ -184,6 +183,14 @@
       </li>
     </ul>
   </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to setting_index_url do %>
+    <i class="fa fa-cog"></i>
+    <span class="nav-label">Settings</span>
+    <% end %>
+  </li>
+
 </ul>
 
 </div>
