@@ -1,0 +1,46 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%%= form_for(<%= singular_table_name %>) do |f| %>
+        <%% if <%= singular_table_name %>.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%%= pluralize(<%= singular_table_name %>.errors.count, "error") %> prohibited this <%= singular_table_name %> from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <%% <%= singular_table_name %>.errors.full_messages.each do |message| %>
+                <li><%%= message %></li>
+                <%% end %>
+              </ul>
+            </div>
+          </div>
+        <%% end %>
+
+      <% attributes.each do |attribute| -%>
+          <div class="form-group">
+            <% if attribute.password_digest? -%>
+                <%%= f.label :password %>
+                <%%= f.password_field :password, :class => 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                  <%%= f.label :password_confirmation %>
+                  <%%= f.password_field :password_confirmation, :class => 'form-control' %>
+            <% else -%>
+                <%%= f.label :<%= attribute.column_name %> %>
+                <%%= f.<%= attribute.field_type %> :<%= attribute.column_name %>, :class => 'form-control' %>
+            <% end -%>
+            </div>
+
+      <% end -%>
+
+      <div class="actions">
+        <%%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <%% end %>
+
+    </div>
+  </div>
+</div>
