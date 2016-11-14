@@ -58,23 +58,22 @@
     </ul>
   </li>
 
-  <li class="<%= 'active' if current_page?('/home/minor') %>">
+  <li class="<%= 'active' if current_page?(" /home/allocation") %>">
     <%= link_to "/" do %>
     <i class="fa fa-book"></i>
     <span class="nav-label">Operation</span>
     <% end %>
-
   </li>
 
-  <li class="<%= 'active' if current_page?('/home/minor') %>">
+  <li class="<%= 'active' if current_page?(root_url) %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-hdd-o"></i>
     <span class="nav-label">Allocation</span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li>
-        <a href="#">Regional Request</a>
+      <li class="<%= 'active' if current_page?(home_other_url) %>">
+        <%= link_to 'Regional Request', home_other_url %>
       </li>
       <li>
         <a href="#">Request Allocation</a>
@@ -184,6 +183,14 @@
       </li>
     </ul>
   </li>
+
+  <li class="<%= 'active' if current_page?(setting_index_url) %>">
+    <%= link_to setting_index_url do %>
+    <i class="fa fa-cog"></i>
+    <span class="nav-label">Settings</span>
+    <% end %>
+  </li>
+
 </ul>
 
 </div>

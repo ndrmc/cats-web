@@ -1,0 +1,140 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+  <div class="sidebar-collapse">
+    <ul class="nav metismenu" id="side-menu">
+      <li class="nav-header">
+        <div class="dropdown profile-element">
+          <%=link_to "/" do %>
+          <span class="clear">
+            <span class="block m-t-xs">
+              <strong class="font-bold">CATS</strong>
+            </span>
+            <% end %>
+          </div>
+          <div class="logo-element">
+            CATS
+          </div>
+        </li>
+
+        <li class="<%= 'active' if current_page?('/home/minor') %>">
+          <%=link_to "plan#index" do %>
+          <i class="fa fa-bookmark-o"></i>
+          <span class="nav-label">General</span>
+          <span class="fa arrow"></span><% end %>
+          <ul class="nav nav-second-level collapse" style="height: 0px;">
+            <li>
+              <a href="#">Global Settings</a>
+            </li>
+            <li>
+              <a href="#">Currency</a>
+            </li>
+            <li>
+              <a href="#">Dashboards</a>
+            </li>
+            <li>
+              <a href="#">Languages</a>
+            </li>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-globe"></i>
+    <span class="nav-label">Geography</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Locations</a>
+      </li>
+      <li>
+        <a href="#">FDP</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-bank"></i>
+    <span class="nav-label">Warehouses & Stores</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Hubs</a>
+      </li>
+      <li>
+        <a href="#">Warehouses</a>
+      </li>
+      <li>
+        <a href="#">Store Locaitons</a>
+      </li>
+      <li>
+        <a href="#">Hub Owners</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-cube"></i>
+    <span class="nav-label">Commodity</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Commodity</a>
+      </li>
+      <li>
+        <a href="#">Commodity Types</a>
+      </li>
+      <li>
+        <a href="#">Commodity sources</a>
+      </li>
+      <li>
+        <a href="#">Measurement units</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-users"></i>
+    <span class="nav-label">Users & accounts</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">User accoutns</a>
+      </li>
+      <li>
+        <a href="#">Roles & groups</a>
+      </li>
+      <li>
+        <a href="#">Permissions</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-power-off"></i>
+    <span class="nav-label">System</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li>
+        <a href="#">Error logs</a>
+      </li>
+      <li>
+        <a href="#">User activity</a>
+      </li>
+    </ul>
+  </li>
+
+</ul>
+
+</div>
+</nav>

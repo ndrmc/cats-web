@@ -6,4 +6,8 @@ class HomeController < ApplicationController
 
   def minor
   end
+
+  def other
+    #code
+  end
 end
