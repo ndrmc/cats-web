@@ -17,7 +17,7 @@
 
         <li class="<%= 'active' if current_page?('/home/minor') %>">
           <%=link_to "plan#index" do %>
-          <i class="fa fa-calendar"></i>
+          <i class="fa fa-bookmark-o"></i>
           <span class="nav-label">General</span>
           <span class="fa arrow"></span><% end %>
           <ul class="nav nav-second-level collapse" style="height: 0px;">
@@ -41,7 +41,7 @@
 
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
-    <i class="fa fa-hdd-o"></i>
+    <i class="fa fa-globe"></i>
     <span class="nav-label">Geography</span>
     <span class="fa arrow"></span>
     <% end %>
@@ -57,7 +57,7 @@
 
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
-    <i class="fa fa-hdd-o"></i>
+    <i class="fa fa-bank"></i>
     <span class="nav-label">Warehouses & Stores</span>
     <span class="fa arrow"></span>
     <% end %>
@@ -101,8 +101,8 @@
 
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
-    <i class="fa fa-truck"></i>
-    <span class="nav-label">Users and accounts</span>
+    <i class="fa fa-users"></i>
+    <span class="nav-label">Users & accounts</span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
@@ -120,7 +120,7 @@
 
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
-    <i class="fa fa-money"></i>
+    <i class="fa fa-power-off"></i>
     <span class="nav-label">System</span>
     <span class="fa arrow"></span>
     <% end %>
@@ -130,9 +130,6 @@
       </li>
       <li>
         <a href="#">User activity</a>
-      </li>
-      <li>
-        <a href="#">Payment Request</a>
       </li>
     </ul>
   </li>
