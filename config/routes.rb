@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   resources :donors
   resources :location_types
   resources :programs
-  resources :commodity_categories
+  resources :commodity_categories 
+  resources :commodities
 
   root to: 'dashboard#index'
 
