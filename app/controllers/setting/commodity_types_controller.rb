@@ -1,5 +1,6 @@
 class Setting::CommodityTypesController < ApplicationController
   def index
+    @commodity_type=CommodityCategory.new
     @commodity_types=CommodityCategory.all
   end
   def create

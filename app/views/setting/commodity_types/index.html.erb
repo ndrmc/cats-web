@@ -6,7 +6,17 @@
             <div class="ibox float-e-margins">
             <div class="ibox-content">
                 <div class="form-inline">
-                  <%= form_for :commodity_type,url: setting_commodity_types_path do |f| %>
+                  <%= form_for @commodity_type,url: setting_commodity_types_path do |f| %>
+                  <% if @commodity_type.errors.any? %>
+                    <div id="error_explanation">
+                      <ul>
+                        <% @commodity_type.errors.full_messages.each do |msg| %>
+                          <li><%= msg %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  <% end %>
+
                     <div class="row">
                     <%= f.text_field :name,class: "form-control", placeholder: "Enter name" %>
 
@@ -41,7 +51,7 @@
                             <th></th>
                             <th>Name </th>
                             <th>Code </th>
-                            <th>Code(Amharic)</th>
+                            <th>Code(Am)</th>
                             <th>Description</th>
                             <th>Action</th>
                         </tr>
@@ -50,7 +60,7 @@
                           <% @commodity_types.each do |type | %>
                           <tr>
                               <td><div class="icheckbox_square-green checked" style="position: relative;"><input type="checkbox" checked="" class="i-checks" name="input[]" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                              <td><%= type.name %></td>
+                              <td><%=type.name %></td>
                               <td><%=type.code %></td>
                               <td><%=type.code_am %></td>
                               <td><%=type.description %></td>
