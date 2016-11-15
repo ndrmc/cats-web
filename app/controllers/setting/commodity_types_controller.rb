@@ -1,8 +1,19 @@
 class Setting::CommodityTypesController < ApplicationController
   def index
-    @commodity_type=CommodityCategory.new
     @commodity_types=CommodityCategory.all
   end
+  def show
+
+  end
+
+  def new
+    @commodity_types=CommodityCategory.new
+  end
+
+  def edit
+    @commodity_type=CommodityCategory.find (params[:id])
+  end
+
   def create
     @commodity_type=CommodityCategory.new(params.require(:commodity_type).permit(:name,:code,:code_am,:description))
     if @commodity_type.save
@@ -11,9 +22,7 @@ class Setting::CommodityTypesController < ApplicationController
       redirect_to :back
     end
   end
-  def edit
-    @commodity_type=CommodityCategory.find (params[:id])
-  end
+
   def update
     @commodity_type=CommodityCategory.find (params[:id])
     if(@commodity_type.update(commodity_type_params))

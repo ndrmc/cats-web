@@ -6,16 +6,7 @@
             <div class="ibox float-e-margins">
             <div class="ibox-content">
                 <div class="form-inline">
-                  <%= form_for @commodity_type,url: setting_commodity_types_path do |f| %>
-                  <% if @commodity_type.errors.any? %>
-                    <div id="error_explanation">
-                      <ul>
-                        <% @commodity_type.errors.full_messages.each do |msg| %>
-                          <li><%= msg %></li>
-                        <% end %>
-                      </ul>
-                    </div>
-                  <% end %>
+                  <%= form_for :commodity_type,url: setting_commodity_types_path do |f| %>              
 
                     <div class="row">
                     <%= f.text_field :name,class: "form-control", placeholder: "Enter name" %>
