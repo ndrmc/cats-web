@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
   get 'setting/index'
-  namespace :setting do
-  resources :commodity_types, path: '/commodity_types'
-  end
   devise_for :users
 
   get "home/index"
@@ -13,6 +10,7 @@ Rails.application.routes.draw do
   resources :donors
   resources :location_types
   resources :programs
+  resources :commodity_categories
 
   root to: 'dashboard#index'
 

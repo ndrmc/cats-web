@@ -83,7 +83,7 @@
     </ul>
   </li>
 
-  <li class="<%= 'active' if current_page?('/home/minor') %>">
+  <li class="<%= 'active' if current_page?(commodity_categories_url) %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-cube"></i>
     <span class="nav-label">Commodity</span>
@@ -94,7 +94,7 @@
         <a href="#">Commodity</a>
       </li>
       <li>
-        <%= link_to 'Commodity Types', setting_commodity_types_path %>
+        <%= link_to 'Commodity Types', commodity_categories_path %>
       </li>
       <li>
         <a href="#">Commodity sources</a>
