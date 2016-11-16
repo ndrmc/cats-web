@@ -71,4 +71,9 @@ class UnitOfMeasure < ApplicationRecord
     result_unit_value.to_f
   end
 
+  validates :name, presence: true
+  validates :code, presence: true
+  validates :uom_type, presence: true
+  validates :ratio, presence: true
+  validates :uom_category_id, presence: true
 end

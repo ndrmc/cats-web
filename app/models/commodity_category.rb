@@ -15,4 +15,6 @@
 class CommodityCategory < ApplicationRecord
   has_ancestry
   has_many :commodities
+  validates :name, presence: true
+  validates :code, presence: true
 end
