@@ -58,20 +58,16 @@
     </ul>
   </li>
 
-  <li class="<%= 'active' if current_page?(" /home/allocation") %>">
-    <%= link_to "/" do %>
-    <i class="fa fa-book"></i>
-    <span class="nav-label">Operation</span>
-    <% end %>
-  </li>
-
   <li class="<%= 'active' if current_page?(" /allocation/home") %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-hdd-o"></i>
-    <span class="nav-label">Allocation</span>
+    <span class="nav-label">Operation</span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
+      <li>
+        <%= link_to "Operations", operations_url %>
+      </li>
       <li class="<%= 'active' if current_page?(home_other_url) %>">
         <%= link_to 'Regional Request', home_other_url %>
       </li>

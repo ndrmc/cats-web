@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :donors
   resources :location_types
   resources :programs
+  resources :operations
 
   root to: 'dashboard#index'
 
