@@ -18,114 +18,113 @@
 </div>
 
 <div class="row">
-  <div class="col-lg-12">
-    <div class="wrapper wrapper-content">
 
-      <div class="ibox">
+  <div class="wrapper wrapper-content">
 
-        <div class="ibox-content">
-          <div class="row m-b-sm m-t-sm">
-            <div class="col-md-1">
-              <button type="button" id="loading-example-btn" class="btn btn-white btn-sm">
-                <i class="fa fa-refresh"></i>
-                Refresh</button>
-            </div>
-            <div class="col-md-2">
-              <div class="input-group">
-                <select class="input-sm form-control">
-                  <option value="notstarted">Not started yet</option>
-                  <option value="ongoing" selected="true">On going</option>
-                  <option value="complted">Complted</option>
-                  <option value="archive">Archived</option>
-                </select>
-              </div>
-            </div>
+    <div class="ibox">
 
-            <div class="col-md-9">
-              <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control">
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-sm btn-primary">
-                    Go!</button>
-                </span>
-              </div>
+      <div class="ibox-content">
+        <div class="row m-b-sm m-t-sm">
+          <div class="col-md-1">
+            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm">
+              <i class="fa fa-refresh"></i>
+              Refresh</button>
+          </div>
+          <div class="col-md-2">
+            <div class="input-group">
+              <select class="input-sm form-control">
+                <option value="notstarted">Not started yet</option>
+                <option value="ongoing" selected="true">On going</option>
+                <option value="complted">Complted</option>
+                <option value="archive">Archived</option>
+              </select>
             </div>
           </div>
 
-          <div class="project-list">
-
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Operation name</th>
-                  <th>Year</th>
-                  <th>Progress</th>
-                  <th>Program</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @operations.each do |operation| %>
-                <tr>
-                  <td class="project-status">
-                    <span class="label label-primary">In progress</span>
-                  </td>
-                  <td class="project-title">
-                    <%= link_to operation.name, edit_operation_path(operation) %>
-                    <br/>
-                    <small>Created 14/08/2014</small>
-                  </td>
-                  <td class="project-status">
-                    <span><%= operation.year %></span>
-                  </td>
-                  <td class="project-completion">
-                    <small>48% completed</small>
-                    <div class="progress progress-mini">
-                      <div style="width: 48%;" class="progress-bar"></div>
-                    </div>
-                  </td>
-                  <td class="project-status">
-                    <span>Relief</span>
-                  </td>
-                  <td class="project-actions">
-                    <a href="#" class="btn btn-white btn-sm">
-                      <i class="fa fa-folder"></i>
-                      View
-                    </a>
-                    <a href="#" class="btn btn-white btn-sm">
-                      <i class="fa fa-pencil"></i>
-                      Edit
-                    </a>
-                    <div class="btn-group">
-                      <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu pull-right">
-                        <li>
-                          <a href="#">Allocations</a>
-                        </li>
-                        <li>
-                          <a href="#">Dispatches</a>
-                        </li>
-                        <li>
-                          <a href="#">Delivery</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                          <a href="#">Close</a>
-                        </li>
-                        <li>
-                          <a href="#">Archive</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-                <% end %>
-
-              </tbody>
-            </table>
+          <div class="col-md-9">
+            <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-sm btn-primary">
+                  Go!</button>
+              </span>
+            </div>
           </div>
+        </div>
+
+        <div class="project-list">
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Operation name</th>
+                <th>Year</th>
+                <th>Progress</th>
+                <th>Program</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @operations.each do |operation| %>
+              <tr>
+                <td class="project-status">
+                  <span class="label label-primary">In progress</span>
+                </td>
+                <td class="project-title">
+                  <%= link_to operation.name, operation_path(operation) %>
+                  <br/>
+                  <small>Created 14/08/2014</small>
+                </td>
+                <td class="project-status">
+                  <span><%= operation.year %></span>
+                </td>
+                <td class="project-completion">
+                  <small>48% completed</small>
+                  <div class="progress progress-mini">
+                    <div style="width: 48%;" class="progress-bar"></div>
+                  </div>
+                </td>
+                <td class="project-status">
+                  <span>Relief</span>
+                </td>
+                <td class="project-actions">
+                  <a href="#" class="btn btn-white btn-sm">
+                    <i class="fa fa-folder"></i>
+                    View
+                  </a>
+                  <a href="#" class="btn btn-white btn-sm">
+                    <i class="fa fa-pencil"></i>
+                    Edit
+                  </a>
+                  <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li>
+                        <a href="#">Allocations</a>
+                      </li>
+                      <li>
+                        <a href="#">Dispatches</a>
+                      </li>
+                      <li>
+                        <a href="#">Delivery</a>
+                      </li>
+                      <li class="divider"></li>
+                      <li>
+                        <a href="#">Close</a>
+                      </li>
+                      <li>
+                        <a href="#">Archive</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <% end %>
+
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
