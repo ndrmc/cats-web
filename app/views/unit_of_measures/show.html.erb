@@ -1,0 +1,32 @@
+    <p>
+      <strong>Name:</strong>
+      <%= @unit_of_measure.name %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @unit_of_measure.description %>
+    </p>
+
+    <p>
+      <strong>Code:</strong>
+      <%= @unit_of_measure.code %>
+    </p>
+
+    <p>
+      <strong>Uom type:</strong>
+      <%= @unit_of_measure.uom_type %>
+    </p>
+
+    <p>
+      <strong>Ratio:</strong>
+      <%= @unit_of_measure.ratio %>
+    </p>
+
+    <p>
+      <strong>Uom category:</strong>
+      <%= @unit_of_measure.uom_category_id %>
+    </p>
+
+<%= link_to 'Edit', edit_unit_of_measure_path(@unit_of_measure) %> |
+<%= link_to 'Back', unit_of_measures_path %>

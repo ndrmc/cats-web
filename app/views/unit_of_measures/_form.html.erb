@@ -1,0 +1,59 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(unit_of_measure) do |f| %>
+        <% if unit_of_measure.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(unit_of_measure.errors.count, "error") %> prohibited this unit_of_measure from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% unit_of_measure.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :name %>
+                <%= f.text_field :name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :description %>
+                <%= f.text_field :description, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :code %>
+                <%= f.text_field :code, :class => 'form-control' %>
+              </div>
+              <br>
+              <div class = "row">
+                  <div class="col-xs-6">
+                      <%= f.label :uom_category_id %>
+                      <%= f.collection_select :uom_category_id,UomCategory.order(:name),:id,:name,include_blank: true, :class => 'form-control' %>
+                  </div>
+                  <div class="col-xs-6">
+                    <%= f.label :uom_type %>
+                    <%= f.select :uom_type, options_for_select(UnitOfMeasure.uom_types.map{ |k,v| [k,k]},@unit_of_measure.uom_type), :class => 'form-control' %>
+                  </div>
+              </div>
+              <br>
+              <div class="form-group">
+                <%= f.label :ratio %>
+                <%= f.text_field :ratio, :class => 'form-control' %>
+              </div>
+
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>
