@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20161113182319) do
     t.boolean  "hazardous"
     t.boolean  "cold_storage"
     t.float    "min_temperature"
-    t.float    "mix_temperature"
+    t.float    "max_temperature"
     t.integer  "commodity_category_id"
     t.integer  "unit_of_measure_id"
     t.datetime "created_at",            null: false

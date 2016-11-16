@@ -1,42 +1,30 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
   <div class="sidebar-collapse">
     <ul class="nav metismenu" id="side-menu">
-      <li class="nav-header">
-        <div class="dropdown profile-element">
-          <%=link_to "/" do %>
-          <span class="clear">
-            <span class="block m-t-xs">
-              <strong class="font-bold">CATS</strong>
-            </span>
-            <% end %>
-          </div>
-          <div class="logo-element">
-            CATS
-          </div>
-        </li>
 
-        <li class="<%= 'active' if current_page?('/home/minor') %>">
-          <%=link_to "plan#index" do %>
-          <i class="fa fa-calendar"></i>
-          <span class="nav-label">Plan</span>
-          <span class="fa arrow"></span><% end %>
-          <ul class="nav nav-second-level collapse" style="height: 0px;">
-            <li>
-              <a href="#">HRD</a>
-            </li>
-            <li>
-              <a href="#">PSNP Annual Plan</a>
-            </li>
-            <li>
-              <a href="#">Receipt Plan</a>
-            </li>
-            <li>
-              <a href="#">Bid Plans</a>
-            </li>
-            <li>
-              <a href="#">Rations</a>
-            </li>
-          </span>
+      <%= render 'layouts/logoheader' %>
+
+      <li class="<%= 'active' if current_page?('/home/minor') %>">
+        <%=link_to "plan#index" do %>
+        <i class="fa fa-calendar"></i>
+        <span class="nav-label">Plan</span>
+        <span class="fa arrow"></span><% end %>
+        <ul class="nav nav-second-level collapse" style="height: 0px;">
+          <li>
+            <a href="#">HRD</a>
+          </li>
+          <li>
+            <a href="#">PSNP Annual Plan</a>
+          </li>
+          <li>
+            <a href="#">Receipt Plan</a>
+          </li>
+          <li>
+            <a href="#">Bid Plans</a>
+          </li>
+          <li>
+            <a href="#">Rations</a>
+          </li>
         </a>
       </li>
     </ul>
