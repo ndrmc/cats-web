@@ -1,0 +1,22 @@
+    <p>
+      <strong>Name:</strong>
+      <%= @commodity_category.name %>
+    </p>
+
+    <p>
+      <strong>Code:</strong>
+      <%= @commodity_category.code %>
+    </p>
+
+    <p>
+      <strong>Code am:</strong>
+      <%= @commodity_category.code_am %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @commodity_category.description %>
+    </p>
+
+<%= link_to 'Edit', edit_commodity_category_path(@commodity_category) %> |
+<%= link_to 'Back', commodity_categories_path %>

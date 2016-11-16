@@ -1,0 +1,1 @@
+json.partial! "commodity_categories/commodity_category", commodity_category: @commodity_category

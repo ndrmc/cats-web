@@ -1,0 +1,62 @@
+    <p>
+      <strong>Name:</strong>
+      <%= @commodity.name %>
+    </p>
+
+    <p>
+      <strong>Name am:</strong>
+      <%= @commodity.name_am %>
+    </p>
+
+    <p>
+      <strong>Long name:</strong>
+      <%= @commodity.long_name %>
+    </p>
+
+    <p>
+      <strong>Code:</strong>
+      <%= @commodity.code %>
+    </p>
+
+    <p>
+      <strong>Code am:</strong>
+      <%= @commodity.code_am %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @commodity.description %>
+    </p>
+
+    <p>
+      <strong>Hazardous:</strong>
+      <%= @commodity.hazardous %>
+    </p>
+
+    <p>
+      <strong>Cold storage:</strong>
+      <%= @commodity.cold_storage %>
+    </p>
+
+    <p>
+      <strong>Min temperature:</strong>
+      <%= @commodity.min_temperature %>
+    </p>
+
+    <p>
+      <strong>Max temperature:</strong>
+      <%= @commodity.max_temperature %>
+    </p>
+
+    <p>
+      <strong>Commodity category:</strong>
+      <%= @commodity.commodity_category.name %>
+    </p>
+
+    <p>
+      <strong>Unit of measure:</strong>
+      <%= @commodity.unit_of_measure.name %>
+    </p>
+
+<%= link_to 'Edit', edit_commodity_path(@commodity) %> |
+<%= link_to 'Back', commodities_path %>

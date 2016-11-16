@@ -10,7 +10,7 @@ class CreateCommodities < ActiveRecord::Migration[5.0]
       t.boolean :hazardous
       t.boolean :cold_storage
       t.float :min_temperature
-      t.float :mix_temperature
+      t.float :max_temperature
       t.integer :commodity_category_id
       t.integer :unit_of_measure_id
 
