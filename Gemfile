@@ -71,5 +71,3 @@ gem 'rolify'
 gem 'pundit'
 
 gem 'toastr-rails', '~> 1.0', '>= 1.0.3'
-
-gem 'jquery-datatables-rails', '~> 3.4.0'

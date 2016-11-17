@@ -17,46 +17,44 @@
   </div>
 </div>
 
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
+<div class="row">
 
-      <table id="accounts-table" class="table table-striped table-responsive">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
 
-        <tbody>
-          <% @accounts.each do |account| %>
-          <tr>
-            <td>
-              <%= link_to account.name, edit_account_path(account) %>
-            </td>
-            <td><%= account.type
+        <table id="accounts-table" class="table table-striped table-hover cats-datatable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @accounts.each do |account| %>
+            <tr>
+              <td>
+                <%= link_to account.name, edit_account_path(account) %>
+              </td>
+              <td><%= account.type
               %></td>
-            <td><%= account.description
+              <td><%= account.description
               %></td>
-            <td>
-              <%= link_to 'Edit', edit_account_path(account) %>
-              &middot;
-              <%= link_to 'Delete', account, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+              <td>
+                <%= link_to 'Edit', edit_account_path(account) %>
+                &middot;
+                <%= link_to 'Delete', account, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
 
+      </div>
     </div>
   </div>
-</div>
 
-<script type="text/javascript">
-  $(document).ready(function () {
-    $('#accounts-table').DataTable();
-  });
-</script>
+</div>

@@ -23,7 +23,7 @@
     <div class="ibox float-e-margins">
       <div class="ibox-content">
 
-        <table class="table table-striped">
+        <table class="table table-striped table-hover cats-datatable">
           <thead>
             <tr>
               <th>Name</th>
@@ -41,7 +41,7 @@
           <tbody>
             <% @commodities.each do |commodity| %>
             <tr>
-              <td><%= commodity.name%></td>
+              <td><%= link_to commodity.name, edit_commodity_path(commodity) %></td>
               <td><%= commodity.code%></td>
               <td><%= commodity.description%></td>
 
