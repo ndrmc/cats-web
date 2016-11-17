@@ -13,15 +13,20 @@
 
     </div>
     <ul class="nav navbar-top-links navbar-right">
+      <li>
+        <a href="#" title="Help">
+          <i class="fa fa-lg fa-question-circle"></i>
+        </a>
+      </li>
       <% if user_signed_in? %>
       <li>
-        <a href="<%= setting_index_url %>">
+        <a href="<%= setting_index_url %>" title="Settings & Configurations">
           <i class="fa fa-lg fa-cog"></i>
         </a>
       </li>
 
       <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="User Profile">
           <i class="fa fa-lg fa-user"></i>
           <%= current_user.name %>
         </a>

@@ -17,36 +17,39 @@
   </div>
 </div>
 
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
+<div class="row">
 
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Code</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
 
-        <tbody>
-          <% @programs.each do |program| %>
-          <tr>
-            <td><%= program.name %></td>
-            <td><%= program.code %></td>
-            <td><%= program.description %></td>
-            <td>
-              <%= link_to 'Edit', edit_program_path(program) %>
-              &middot;
-              <%= link_to 'Delete', program, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Code</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
+          <tbody>
+            <% @programs.each do |program| %>
+            <tr>
+              <td><%= program.name %></td>
+              <td><%= program.code %></td>
+              <td><%= program.description %></td>
+              <td>
+                <%= link_to 'Edit', edit_program_path(program) %>
+                &middot;
+                <%= link_to 'Delete', program, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+      </div>
     </div>
   </div>
 </div>
