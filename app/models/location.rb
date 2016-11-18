@@ -11,7 +11,7 @@
 #  ancestry         :string
 #
 
-class Location < ApplicationRecord
+class Location < BaseDomain
 
   validates :name, presence: true
 

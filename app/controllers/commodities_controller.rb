@@ -25,7 +25,7 @@ class CommoditiesController < ApplicationController
   # POST /commodities
   # POST /commodities.json
   def create
-    @commodity = Commodity.new(commodity_params)
+    @commodity = Commodity.new(commodity_params)    
 
     respond_to do |format|
       if @commodity.save

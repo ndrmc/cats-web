@@ -271,6 +271,8 @@ ActiveRecord::Schema.define(version: 20161117095946) do
   create_table "locations", force: :cascade do |t|
     t.string   "name",                          null: false
     t.string   "code"
+    t.integer  "created_by"
+    t.integer  "modified_by"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.string   "ancestry"
