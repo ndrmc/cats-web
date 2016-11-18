@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+        <%= form_for(commodity) do |f| %>
+        <% if commodity.errors.any? %>
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <%= pluralize(commodity.errors.count, "error") %>
+            prohibited this commodity from being saved.
+          </div>
+
+          <div class="panel-body">
+            <ul>
+              <% commodity.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= f.label :name %>
+          <%= f.text_field :name, :class => 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :name_am %>
+          <%= f.text_field :name_am, :class => 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :long_name %>
+          <%= f.text_field :long_name, :class => 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :code %>
+          <%= f.text_field :code, :class => 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :code_am %>
+          <%= f.text_field :code_am, :class => 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :description %>
+          <%= f.text_area :description, :class => 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :hazardous %>
+          <%= f.check_box :hazardous, :class => 'form-inline' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :cold_storage %>
+          <%= f.check_box :cold_storage, :class => 'form-inline' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :min_temperature %>
+          <%= f.text_field :min_temperature, :class => 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :max_temperature %>
+          <%= f.text_field :max_temperature, :class => 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :commodity_category %>
+          <%= f.collection_select :commodity_category_id,
+                    CommodityCategory.order(:name),:id,:name, include_blank: true, :class => 'form-control' %>
+
+        </div>
+        <div class="form-group">
+          <%= f.label :unit_of_measure %>
+          <%= f.collection_select :unit_of_measure_id,
+                     UnitOfMeasure.order(:name),:id,:name, include_blank: true, :class => 'form-control' %>
+
+        </div>
+
+        <div class="actions">
+          <%= f.submit :class => 'btn btn-primary' %>
+        </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,6 +15,15 @@ ActiveRecord::Schema.define(version: 20161116135528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "accounts", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.string   "type"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["name", "type"], name: "index_accounts_on_name_and_type", using: :btree
+  end
+
   create_table "bid_plan_items", force: :cascade do |t|
     t.integer  "bid_plan_id"
     t.integer  "woreda_id"
@@ -78,7 +87,7 @@ ActiveRecord::Schema.define(version: 20161116135528) do
     t.boolean  "hazardous"
     t.boolean  "cold_storage"
     t.float    "min_temperature"
-    t.float    "mix_temperature"
+    t.float    "max_temperature"
     t.integer  "commodity_category_id"
     t.integer  "unit_of_measure_id"
     t.datetime "created_at",            null: false

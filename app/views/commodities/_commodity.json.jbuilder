@@ -1,0 +1,2 @@
+json.extract! commodity, :id, :name, :name_am, :long_name, :code, :code_am, :description, :hazardous, :cold_storage, :min_temperature, :max_temperature, :, :commodity_category, :unit_of_measure, :created_at, :updated_at
+json.url commodity_url(commodity, format: :json)

@@ -1,19 +1,134 @@
-<div class="wrapper wrapper-content">
-  <div class="row">
-    <div class="col-lg-9">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <span class="label label-success pull-right">Monthly</span>
-          <h5>Income</h5>
-        </div>
-        <div class="ibox-content">
-          <h1 class="no-margins">40,886,200</h1>
-          <div class="stat-percent font-bold text-success">98%
-            <i class="fa fa-bolt"></i>
-          </div>
-          <small>Total income</small>
-        </div>
-      </div>
-    </div>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Administration & Configuration</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Home</a>
+      </li>
+      <li class="active">
+        <strong>Settings</strong>
+      </li>
+    </ol>
   </div>
 </div>
+<div class="row">
+  <div class="wrapper wrapper-content">
+
+    <div class="row">
+
+      <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>General</h5>
+          </div>
+          <div class="ibox-content">
+            <p>General CATS configuration</p>
+            <ul>
+              <li><%= link_to "Global Settings", '#' %></li>
+              <li><%= link_to "Dashboards", '#' %></li>
+              <li><%= link_to "Programs", '#' %></li>
+              <li><%= link_to "Currency", '#' %></li>
+              <li><%= link_to "Language", '#' %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>Geography</h5>
+          </div>
+          <div class="ibox-content">
+            <p>
+              Administrative hierarchies and FDP configuration and management
+            </p>
+            <ul>
+              <li><%= link_to "Administrative Locations (Region, Zone, Woreda & Kebele)", location_types_path %></li>
+              <li><%= link_to "Location Types", location_types_path %></li>
+              <li><%= link_to "FDPs", '#' %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>Warehouse & Stores</h5>
+          </div>
+          <div class="ibox-content">
+            <p>Hubs, warehouses and stores NDRMC and its partners use to store resources to be used in an operation.</p>
+            <ul>
+              <li><%= link_to "Hubs", '#' %></li>
+              <li><%= link_to "Hub Owners", '#' %></li>
+              <li><%= link_to "Warehouses", '#' %></li>
+              <li><%= link_to "Stores", '#' %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>Commodities</h5>
+          </div>
+          <div class="ibox-content">
+            <p>Commodities (food and non-food) which are received, stored and dispatched within NDRMC supply chain are managed here.</p>
+            <ul>
+              <li><%= link_to "Commodity Types", '#' %></li>
+              <li><%= link_to "Commodities", '#' %></li>
+              <li><%= link_to "Commodity Sources", '#' %></li>
+              <li><%= link_to "Measurement Units", '#' %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>User Management</h5>
+          </div>
+          <div class="ibox-content">
+            <p>
+              User accounts, roles and permissions.
+            </p>
+            <ul>
+              <li><%= link_to "User Accounts", '#' %></li>
+              <li><%= link_to "Group & Roles", '#' %></li>
+              <li><%= link_to "Permissions", '#' %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>System & Event Logs</h5>
+          </div>
+          <div class="ibox-content">
+            <p>
+              System events including user activity and error logs.
+            </p>
+            <ul>
+              <li><%= link_to "Error logs", '#' %></li>
+              <li><%= link_to "User Activity", '#' %></li>
+              <li><%= link_to "System Health", '#' %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

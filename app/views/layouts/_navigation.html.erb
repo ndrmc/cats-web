@@ -1,42 +1,30 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
   <div class="sidebar-collapse">
     <ul class="nav metismenu" id="side-menu">
-      <li class="nav-header">
-        <div class="dropdown profile-element">
-          <%=link_to "/" do %>
-          <span class="clear">
-            <span class="block m-t-xs">
-              <strong class="font-bold">CATS</strong>
-            </span>
-            <% end %>
-          </div>
-          <div class="logo-element">
-            CATS
-          </div>
-        </li>
 
-        <li class="<%= 'active' if current_page?('/home/minor') %>">
-          <%=link_to "plan#index" do %>
-          <i class="fa fa-calendar"></i>
-          <span class="nav-label">Plan</span>
-          <span class="fa arrow"></span><% end %>
-          <ul class="nav nav-second-level collapse" style="height: 0px;">
-            <li>
-              <a href="#">HRD</a>
-            </li>
-            <li>
-              <a href="#">PSNP Annual Plan</a>
-            </li>
-            <li>
-              <a href="#">Receipt Plan</a>
-            </li>
-            <li>
-              <a href="#">Bid Plans</a>
-            </li>
-            <li>
-              <a href="#">Rations</a>
-            </li>
-          </span>
+      <%= render 'layouts/logoheader' %>
+
+      <li class="<%= 'active' if current_page?('/home/minor') %>">
+        <%=link_to "plan#index" do %>
+        <i class="fa fa-calendar"></i>
+        <span class="nav-label">Plan</span>
+        <span class="fa arrow"></span><% end %>
+        <ul class="nav nav-second-level collapse" style="height: 0px;">
+          <li>
+            <a href="#">HRD</a>
+          </li>
+          <li>
+            <a href="#">PSNP Annual Plan</a>
+          </li>
+          <li>
+            <a href="#">Receipt Plan</a>
+          </li>
+          <li>
+            <a href="#">Bid Plans</a>
+          </li>
+          <li>
+            <a href="#">Rations</a>
+          </li>
         </a>
       </li>
     </ul>
@@ -58,20 +46,16 @@
     </ul>
   </li>
 
-  <li class="<%= 'active' if current_page?(" /home/allocation") %>">
-    <%= link_to "/" do %>
-    <i class="fa fa-book"></i>
-    <span class="nav-label">Operation</span>
-    <% end %>
-  </li>
-
   <li class="<%= 'active' if current_page?(" /allocation/home") %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-hdd-o"></i>
-    <span class="nav-label">Allocation</span>
+    <span class="nav-label">Operation</span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
+      <li>
+        <%= link_to "Operations", operations_url %>
+      </li>
       <li class="<%= 'active' if current_page?(home_other_url) %>">
         <%= link_to 'Regional Request', home_other_url %>
       </li>
