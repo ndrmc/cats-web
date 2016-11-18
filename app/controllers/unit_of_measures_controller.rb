@@ -1,4 +1,5 @@
 class UnitOfMeasuresController < ApplicationController
+  layout 'admin'
   before_action :set_unit_of_measure, only: [:show, :edit, :update, :destroy]
 
   # GET /unit_of_measures

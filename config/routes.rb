@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     end
   end  
 
+  resources :operations
+  resources :accounts
 
   root to: 'dashboard#index'
 

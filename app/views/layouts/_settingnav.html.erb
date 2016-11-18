@@ -1,65 +1,76 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
   <div class="sidebar-collapse">
     <ul class="nav metismenu" id="side-menu">
-      <li class="nav-header">
-        <div class="dropdown profile-element">
-          <%=link_to "/" do %>
-          <span class="clear">
-            <span class="block m-t-xs">
-              <strong class="font-bold">CATS</strong>
-            </span>
-            <% end %>
-          </div>
-          <div class="logo-element">
-            CATS
-          </div>
-        </li>
 
-        <li class="<%= 'active' if current_page?('/home/minor') %>">
-          <%=link_to "plan#index" do %>
-          <i class="fa fa-bookmark-o"></i>
-          <span class="nav-label">General</span>
-          <span class="fa arrow"></span><% end %>
-          <ul class="nav nav-second-level collapse" style="height: 0px;">
-            <li>
-              <a href="#">Global settings</a>
-            </li>
-            <li>
-              <a href="#">Dashboards</a>
-            </li>
-            <li>
-              <%= link_to 'Programs', programs_path %>
-            </li>
-            <li>
-              <%= link_to 'Currency', currencies_path %>
-            </li>
-            <li>
-              <a href="#">Languages</a>
-            </li>
-          </span>
-        </a>
-      </li>
-    </ul>
-  </li>
+      <%= render 'layouts/logoheader' %>
 
-  <li class="<%= 'active' if current_page?(location_types_url) %>">
-    <%= link_to "/home/minor" do %>
-    <i class="fa fa-globe"></i>
-    <span class="nav-label">Geography</span>
-    <span class="fa arrow"></span>
-    <% end %>
-    <ul class="nav nav-second-level collapse">
-      <li>
-        <a href="#">Locations</a>
-      </li>
-      <li class="<%= 'active' if current_page?(location_types_url)%>">
-        <%= link_to 'Location types', location_types_path %>
-      </li>
-      <li>
-        <a href="#">FDP</a>
-      </li>
-    </ul>
-  </li>
+      <li class="<%= 'active' if current_page?('/home/minor') %>">
+        <%=link_to "plan#index" do %>
+        <i class="fa fa-bookmark-o"></i>
+        <span class="nav-label">General</span>
+        <span class="fa arrow"></span><% end %>
+        <ul class="nav nav-second-level collapse" style="height: 0px;">
+          <li>
+            <a href="#">Global settings</a>
+          </li>
+          <li>
+            <a href="#">Dashboards</a>
+          </li>
+          <li>
+            <%= link_to 'Programs', programs_path %>
+          </li>
+          <li>
+            <%= link_to 'Currency', currencies_path %>
+          </li>
+          <li>
+            <a href="#">Languages</a>
+          </li>
+        </span>
+      </a>
+    </li>
+  </ul>
+</li>
+
+<li class="<%= 'active' if current_page?(location_types_url) %>">
+  <%= link_to "/home/minor" do %>
+  <i class="fa fa-globe"></i>
+  <span class="nav-label">Geography</span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-second-level collapse">
+    <li>
+      <a href="#">Locations</a>
+    </li>
+    <li class="<%= 'active' if current_page?(location_types_url)%>">
+      <%= link_to 'Location types', location_types_path %>
+    </li>
+    <li>
+      <a href="#">FDP</a>
+    </li>
+  </ul>
+</li>
+
+<li class="<%= 'active' if current_page?('/home/minor') %>">
+  <%= link_to "/home/minor" do %>
+  <i class="fa fa-bank"></i>
+  <span class="nav-label">Warehouses & Stores</span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-second-level collapse">
+    <li>
+      <a href="#">Hubs</a>
+    </li>
+    <li>
+      <a href="#">Warehouses</a>
+    </li>
+    <li>
+      <a href="#">Store locaitons</a>
+    </li>
+    <li>
+      <a href="#">Hub owners</a>
+    </li>
+  </ul>
+</li>
 
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
@@ -105,40 +116,40 @@
     </ul>
   </li>
 
-  <li class="<%= 'active' if current_page?('/home/minor') %>">
-    <%= link_to "/home/minor" do %>
-    <i class="fa fa-users"></i>
-    <span class="nav-label">Users & accounts</span>
-    <span class="fa arrow"></span>
-    <% end %>
-    <ul class="nav nav-second-level collapse">
-      <li>
-        <a href="#">User accounts</a>
-      </li>
-      <li>
-        <a href="#">Roles & groups</a>
-      </li>
-      <li>
-        <a href="#">Permissions</a>
-      </li>
-    </ul>
-  </li>
+<li class="<%= 'active' if current_page?('/home/minor') %>">
+  <%= link_to "/home/minor" do %>
+  <i class="fa fa-users"></i>
+  <span class="nav-label">Users & accounts</span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-second-level collapse">
+    <li>
+      <a href="#">User accounts</a>
+    </li>
+    <li>
+      <a href="#">Roles & groups</a>
+    </li>
+    <li>
+      <a href="#">Permissions</a>
+    </li>
+  </ul>
+</li>
 
-  <li class="<%= 'active' if current_page?('/home/minor') %>">
-    <%= link_to "/home/minor" do %>
-    <i class="fa fa-power-off"></i>
-    <span class="nav-label">System</span>
-    <span class="fa arrow"></span>
-    <% end %>
-    <ul class="nav nav-second-level collapse">
-      <li>
-        <a href="#">Error logs</a>
-      </li>
-      <li>
-        <a href="#">User activity</a>
-      </li>
-    </ul>
-  </li>
+<li class="<%= 'active' if current_page?('/home/minor') %>">
+  <%= link_to "/home/minor" do %>
+  <i class="fa fa-power-off"></i>
+  <span class="nav-label">System</span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-second-level collapse">
+    <li>
+      <a href="#">Error logs</a>
+    </li>
+    <li>
+      <a href="#">User activity</a>
+    </li>
+  </ul>
+</li>
 
 </ul>
 

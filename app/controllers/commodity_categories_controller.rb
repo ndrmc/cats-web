@@ -1,4 +1,5 @@
 class CommodityCategoriesController < ApplicationController
+  layout 'admin'
   before_action :set_commodity_category, only: [:show, :edit, :update, :destroy]
 
   # GET /commodity_categories

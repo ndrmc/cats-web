@@ -1,0 +1,21 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Operation -
+      <%= @operation.name %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Operation</a>
+      </li>
+      <li class="active">
+        <strong>Edit</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', operation_path(@operation),  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<%= render 'form', operation: @operation %>

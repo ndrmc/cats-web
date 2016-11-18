@@ -1,0 +1,382 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Operation -
+      <%= @operation.name %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to "Home", root_path %>
+      </li>
+      <li>
+        <%= link_to "Operation", operations_path %>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', operations_path,  :class => "btn btn-default"%>
+      <%= link_to 'Edit', edit_operation_path(@operation), :class => "btn btn-default" %>
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+          <li>
+            <a href="#">Add region</a>
+          </li>
+          <li>
+            <a href="#">Delete</a>
+          </li>
+          <li>
+            <a href="#">Close</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="#">Export</a>
+          </li>
+          <li>
+            <a href="#">Print</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox">
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-lg-12">
+            <dl class="dl-horizontal">
+              <dt>Status:</dt>
+              <dd>
+                <span class="label label-primary">Active</span>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-5">
+            <dl class="dl-horizontal">
+
+              <dt>Program:</dt>
+              <dd><%= @operation.program_id %></dd>
+              <dt>Year:</dt>
+              <dd><%=@operation.year%></dd>
+              <dt>Month/Round:</dt>
+              <dd>
+                <%= @operation.month %>
+              </dd>
+            </dl>
+          </div>
+          <div class="col-lg-7" id="cluster_info">
+            <dl class="dl-horizontal">
+
+              <dt>Number of regions:</dt>
+              <dd>7</dd>
+              <dt>Total commodities:</dt>
+              <dd>
+                34,5590 mt
+              </dd>
+              <dt>Total beneficiaries:</dt>
+              <dd>3,998,700</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <dl class="dl-horizontal">
+              <dt>Progress:</dt>
+              <dd>
+                <div class="progress progress  m-b-sm">
+                  <div style="width: 60%;" class="progress-bar"></div>
+                </div>
+                <small>Operation progress is at
+                  <strong>60%</strong>.</small>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row m-t-sm">
+          <div class="col-lg-12">
+            <div class="panel blank-panel">
+              <div class="panel-heading">
+                <div class="panel-options">
+                  <ul class="nav nav-tabs">
+                    <li class="active">
+                      <a href="#tab-1" data-toggle="tab">Request</a>
+                    </li>
+                    <li class="">
+                      <a href="#tab-2" data-toggle="tab">Allocation</a>
+                    </li>
+                    <li class="">
+                      <a href="#tab-3" data-toggle="tab">Dispatch</a>
+                    </li>
+                    <li class="">
+                      <a href="#tab-4" data-toggle="tab">Delivery</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="panel-body">
+
+                <div class="tab-content">
+                  <div class="tab-pane active" id="tab-1">
+
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Status</th>
+                          <th>Title</th>
+                          <th>Start Time</th>
+                          <th>End Time</th>
+                          <th>Comments</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <span class="label label-primary">
+                              <i class="fa fa-check"></i>
+                              Completed</span>
+                          </td>
+                          <td>
+                            Create project in webapp
+                          </td>
+                          <td>
+                            12.07.2014 10:10:1
+                          </td>
+                          <td>
+                            14.07.2014 10:16:36
+                          </td>
+                          <td>
+                            <p class="small">
+                              Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable.
+                            </p>
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="label label-primary">
+                              <i class="fa fa-check"></i>
+                              Accepted</span>
+                          </td>
+                          <td>
+                            Various versions
+                          </td>
+                          <td>
+                            12.07.2014 10:10:1
+                          </td>
+                          <td>
+                            14.07.2014 10:16:36
+                          </td>
+                          <td>
+                            <p class="small">
+                              Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                            </p>
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="label label-primary">
+                              <i class="fa fa-check"></i>
+                              Sent</span>
+                          </td>
+                          <td>
+                            There are many variations
+                          </td>
+                          <td>
+                            12.07.2014 10:10:1
+                          </td>
+                          <td>
+                            14.07.2014 10:16:36
+                          </td>
+                          <td>
+                            <p class="small">
+                              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which
+                            </p>
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="label label-primary">
+                              <i class="fa fa-check"></i>
+                              Reported</span>
+                          </td>
+                          <td>
+                            Latin words
+                          </td>
+                          <td>
+                            12.07.2014 10:10:1
+                          </td>
+                          <td>
+                            14.07.2014 10:16:36
+                          </td>
+                          <td>
+                            <p class="small">
+                              Latin words, combined with a handful of model sentence structures
+                            </p>
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="label label-primary">
+                              <i class="fa fa-check"></i>
+                              Accepted</span>
+                          </td>
+                          <td>
+                            The generated Lorem
+                          </td>
+                          <td>
+                            12.07.2014 10:10:1
+                          </td>
+                          <td>
+                            14.07.2014 10:16:36
+                          </td>
+                          <td>
+                            <p class="small">
+                              The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+                            </p>
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="label label-primary">
+                              <i class="fa fa-check"></i>
+                              Sent</span>
+                          </td>
+                          <td>
+                            The first line
+                          </td>
+                          <td>
+                            12.07.2014 10:10:1
+                          </td>
+                          <td>
+                            14.07.2014 10:16:36
+                          </td>
+                          <td>
+                            <p class="small">
+                              The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                            </p>
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="label label-primary">
+                              <i class="fa fa-check"></i>
+                              Reported</span>
+                          </td>
+                          <td>
+                            The standard chunk
+                          </td>
+                          <td>
+                            12.07.2014 10:10:1
+                          </td>
+                          <td>
+                            14.07.2014 10:16:36
+                          </td>
+                          <td>
+                            <p class="small">
+                              The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.
+                            </p>
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="label label-primary">
+                              <i class="fa fa-check"></i>
+                              Completed</span>
+                          </td>
+                          <td>
+                            Lorem Ipsum is that
+                          </td>
+                          <td>
+                            12.07.2014 10:10:1
+                          </td>
+                          <td>
+                            14.07.2014 10:16:36
+                          </td>
+                          <td>
+                            <p class="small">
+                              Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable.
+                            </p>
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="label label-primary">
+                              <i class="fa fa-check"></i>
+                              Sent</span>
+                          </td>
+                          <td>
+                            Contrary to popular
+                          </td>
+                          <td>
+                            12.07.2014 10:10:1
+                          </td>
+                          <td>
+                            14.07.2014 10:16:36
+                          </td>
+                          <td>
+                            <p class="small">
+                              Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
+                            </p>
+                          </td>
+
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+                  </div>
+                  <div class="tab-pane" id="tab-2">
+                    <div>
+                      <h2>
+                        No Allocations are made for this operation<br>
+                      </h2>
+                    </div>
+
+                  </div>
+
+                  <div class="tab-pane" id="tab-3">
+                    <div>
+                      <h2>
+                        No Dispatchs are made for this operation<br>
+                      </h2>
+                    </div>
+
+                  </div>
+
+                  <div class="tab-pane" id="tab-4">
+                    <div>
+                      <h2>
+                        No Deliveries are made for this operation<br>
+                      </h2>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
