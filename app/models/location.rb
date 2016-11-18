@@ -13,6 +13,8 @@
 
 class Location < ApplicationRecord
 
+  validates :name, presence: true
+
   enum location_type: {
     region: 1,
     zone: 2,
@@ -21,7 +23,7 @@ class Location < ApplicationRecord
   }
 
   has_ancestry
-  belongs_to :location_type
+
   has_many :fdps
   
 end
