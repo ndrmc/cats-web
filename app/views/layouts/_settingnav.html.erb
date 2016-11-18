@@ -31,24 +31,22 @@
   </ul>
 </li>
 
-<li class="<%= 'active' if current_page?(location_types_url) %>">
-  <%= link_to "/home/minor" do %>
-  <i class="fa fa-globe"></i>
-  <span class="nav-label">Geography</span>
-  <span class="fa arrow"></span>
-  <% end %>
-  <ul class="nav nav-second-level collapse">
-    <li>
-      <a href="#">Locations</a>
-    </li>
-    <li class="<%= 'active' if current_page?(location_types_url)%>">
-      <%= link_to 'Location types', location_types_path %>
-    </li>
-    <li>
-      <a href="#">FDP</a>
-    </li>
-  </ul>
-</li>
+  <li class="<%= 'active' if current_page?(root_url) %>">
+    <%= link_to "/home/minor" do %>
+    <i class="fa fa-globe"></i>
+    <span class="nav-label">Geography</span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-second-level collapse">
+      <li class="<%= 'active' if is_active_controller('locations') %>">
+        <%= link_to 'Locations', locations_path %>
+      </li>
+
+      <li>
+        <a href="#">FDP</a>
+      </li>
+    </ul>
+  </li>
 
 <li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "/home/minor" do %>

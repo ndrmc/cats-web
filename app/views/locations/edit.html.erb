@@ -1,0 +1,39 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Edit <%= @location.location_type.to_s.capitalize %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#"><%= @location.name %></a>
+      </li>
+      <li class="active">
+        <strong>Edit</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', locations_path(@location.parent_id),  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_tag  location_path, id: @location.id,  method: :patch  do  %>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input name='name' type="text" class="form-control" value="<%= @location.name %>" autofocus>
+
+            <input type="hidden" name="parent_id" value="<%= params[:id] %>">
+          </div>
+
+
+          <div class="actions">
+            <%= submit_tag 'Save', :class => 'btn btn-primary' %>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
