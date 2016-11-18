@@ -20,6 +20,8 @@
 
 //= require toastr
 
+//= require sweetalert2
+
 //= require_tree .
 
 

@@ -6,9 +6,14 @@ Rails.application.routes.draw do
   get "home/minor"
   get "home/other"
 
+  #get 'locations(/:parent_id)', to: 'locations#index', as: :locations
+  #post 'locations', to: 'locations#create', as: :locations
+
+  resources :locations
+
+
   resources :currencies
   resources :donors
-  resources :location_types
   resources :programs
   resources :commodity_categories
   resources :commodities
@@ -24,5 +29,4 @@ Rails.application.routes.draw do
 
   root to: 'dashboard#index'
 
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
