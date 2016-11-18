@@ -12,10 +12,7 @@
         <ul class="nav nav-second-level collapse" style="height: 0px;">
           <li>
             <a href="#">Global settings</a>
-          </li>
-          <li>
-            <a href="#">Dashboards</a>
-          </li>
+          </li>          
           <li>
             <%= link_to 'Programs', programs_path %>
           </li>
@@ -60,13 +57,7 @@
     </li>
     <li>
       <a href="#">Warehouses</a>
-    </li>
-    <li>
-      <a href="#">Store locaitons</a>
-    </li>
-    <li>
-      <a href="#">Hub owners</a>
-    </li>
+    </li>      
   </ul>
 </li>
 
@@ -89,10 +80,19 @@
     <li>
       <%= link_to 'Measurement Units', unit_of_measures_path %>
     </li>
+  </ul>
+</li>
+
+<li class="<%= 'active' if current_page?(commodity_categories_url) %>">
+  <%= link_to "/home/minor" do %>
+  <i class="fa fa-cube"></i>
+  <span class="nav-label">Accounting</span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-second-level collapse">    
     <li>
       <%= link_to 'Accounts', accounts_path %>
     </li>
-
   </ul>
 </li>
 
