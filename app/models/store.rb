@@ -15,5 +15,6 @@
 class Store < ApplicationRecord
 
   belongs_to :store_owner
+  belongs_to :store_location
 
 end

@@ -41,4 +41,53 @@
 
     </div>
   </div>
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+  <div class="panel-body">
+    <h5> Stores </h5>
+    <div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Name</th>
+                        <th>Temporary</th>
+                        <th>Hub</th>
+                        <th>Store owner</th>
+                        <th>Store location</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @store_location.stores.each do |store| %>
+          <tr>
+                        <td><%= store.name
+              %></td>
+                        <td><%= store.temporary
+              %></td>
+                        <td><%= store.hub_id
+              %></td>
+                        <td><%= store.store_owner_id
+              %></td>
+                        <td><%= store.store_location_id
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_store_path(store) %> &middot;
+              <%= link_to 'Delete', store_path, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-8">
+      <div class="title-action">
+        <%= link_to 'New Store', new_store_location_store_path(@store_location), :class => "btn btn-primary"%>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
 </div>

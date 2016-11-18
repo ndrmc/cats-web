@@ -1,0 +1,56 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(store) do |f| %>
+        <% if store.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(store.errors.count, "error") %> prohibited this store from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% store.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :name %>
+                <%= f.text_field :name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                  <%= f.label :temporary %> &nbsp;
+                  <%= f.check_box :temporary, :class => 'form-inline' %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :store_owner_id %>
+                  <%= f.text_field :store_owner_id, :class => 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.fields_for @store.store_location do |s| %>
+                    <%= s.label :store_location_id %>
+                    <%= s.text_field :name, :class => 'form-control', :disabled=>true%>
+                  <%end%>
+                </div>
+                <div class="form-group">
+                  <%= f.fields_for @store.store_location.hub do |h| %>
+                    <%= h.label :hub_id %>
+                    <%= h.text_field :name, :class => 'form-control', :disabled=>true%>
+                  <%end%>
+                </div>
+
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

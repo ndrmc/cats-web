@@ -87,11 +87,11 @@ ActiveRecord::Schema.define(version: 20161117095946) do
     t.boolean  "hazardous"
     t.boolean  "cold_storage"
     t.float    "min_temperature"
-    t.float    "max_temperature"
     t.integer  "commodity_category_id"
     t.integer  "unit_of_measure_id"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.float    "max_temperature"
     t.index ["code"], name: "index_commodities_on_code", unique: true, using: :btree
   end
 

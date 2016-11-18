@@ -1,0 +1,27 @@
+    <p>
+      <strong>Name:</strong>
+      <%= @store.name %>
+    </p>
+
+    <p>
+      <strong>Temporary:</strong>
+      <%= @store.temporary %>
+    </p>
+
+    <p>
+      <strong>Hub:</strong>
+      <%= @store.hub_id %>
+    </p>
+
+    <p>
+      <strong>Store owner:</strong>
+      <%= @store.store_owner_id %>
+    </p>
+
+    <p>
+      <strong>Store location:</strong>
+      <%= @store.store_location_id %>
+    </p>
+
+<%= link_to 'Edit', edit_store_path(@store) %> |
+<%= link_to 'Back', store_location_stores_path(@store.store_location_id,@store) %>
