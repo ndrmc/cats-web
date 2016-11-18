@@ -12,4 +12,6 @@
 #
 
 class StoreLocation < ApplicationRecord
+    belongs_to :hub
+    has_many :stores
 end

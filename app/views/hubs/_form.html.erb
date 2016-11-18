@@ -1,0 +1,95 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(@hub) do |f| %>
+        <% if @hub.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(@hub.errors.count, "error") %> prohibited this hub from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% @hub.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :name %>
+                <%= f.text_field :name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :description %>
+                <%= f.text_field :description, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                  <%= f.label :location_id %>
+                  <%= f.number_field :location_id, :class => 'form-control' %>
+                </div>
+                <div class="actions">
+                  <%= f.submit :class => 'btn btn-primary' %>
+                </div>
+                <div class="form-group">
+                    <div class="tabs-container">
+                      <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> Store Locations</a></li>
+                        <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">Stores</a></li>
+                      </ul>
+                      <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active">
+                          <div class="panel-body">
+                            <div>
+
+                                  <table class="table table-striped">
+                                    <thead>
+                                      <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Location</th>
+                                        <th>Actions</th>
+                                      </tr>
+                                    </thead>
+
+                                    <tbody>
+                                      <% @hub.store_locations.each do |hub_store_location| %>
+                                      <tr>
+                                        <td><%= hub_store_location.name %></td>
+                                        <td><%= hub_store_location.description %></td>
+                                        <td><%= hub_store_location.location_id%></td>
+                                        <td>
+                                          <%= link_to 'Edit', edit_store_location_path(hub_store_location) %> &middot;
+                                          <%= link_to 'Delete', store_location_path(hub_store_location), method: :delete, data: { confirm: 'Are you sure?' } %>
+                                        </td>
+                                      </tr>
+                                      <% end %>
+                                    </tbody>
+                                  </table>
+                            </div>
+                            <div class="col-sm-8">
+                              <div class="title-action">
+                                <%= link_to 'New Store Location', new_hub_store_location_path(@hub), :class => "btn btn-primary"%>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane">
+                          <div class="panel-body">
+                            <p>Stores</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+  <% end %>
+
+    </div>
+  </div>
+</div>
+</div>

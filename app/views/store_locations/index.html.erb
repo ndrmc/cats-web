@@ -1,0 +1,55 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Store Locations</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Store Locations</strong>
+      </li>
+    </ol>
+  </div>
+ <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Store Location', hubs_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @store_locations.each do |store_location| %>
+          <tr>
+                        <td><%= store_location.name
+              %></td>
+                        <td><%= store_location.description
+              %></td>
+                        <td><%= store_location.location_id
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_store_location_path(store_location) %> &middot;
+              <%= link_to 'Delete', store_location, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+<%= link_to 'Back', hub_path(params[:hub_id]) %>

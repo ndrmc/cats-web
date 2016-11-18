@@ -25,11 +25,8 @@
         <thead>
           <tr>
             <th>Name</th>
-
             <th>Code</th>
-
             <th>Description</th>
-        
             <th>Commodity category</th>
             <th>Unit of measure</th>
             <th>Actions</th>
@@ -42,9 +39,15 @@
             <td><%= commodity.name%></td>
             <td><%= commodity.code%></td>
             <td><%= commodity.description%></td>
-
-            <td><%= commodity.commodity_category.name%></td>
-            <td><%= commodity.unit_of_measure.name%></td>
+            <td>
+              <% if commodity.commodity_category_id %>
+                <%= commodity.commodity_category.name%>
+              <% end %>
+            </td>
+            <td>
+              <% if commodity.unit_of_measure_id %>
+              <%= commodity.unit_of_measure.name%></td>
+              <% end %>
             <td>
               <%= link_to 'Edit', edit_commodity_path(commodity) %> &middot;
               <%= link_to 'Delete', commodity, method: :delete, data: { confirm: 'Are you sure?' } %>

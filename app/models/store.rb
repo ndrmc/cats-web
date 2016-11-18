@@ -13,7 +13,7 @@
 #
 
 class Store < ApplicationRecord
-  belongs_to :hub
-  belongs_to :store_onwer
-  
+
+  belongs_to :store_owner
+
 end

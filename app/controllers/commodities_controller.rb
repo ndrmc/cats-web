@@ -42,7 +42,7 @@ class CommoditiesController < ApplicationController
   def update
     respond_to do |format|
       if @commodity.update(commodity_params)
-        format.html { redirect_to @commodity, notice: 'Commodity was successfully updated.' }
+        format.html { redirect_to commodities_url, notice: 'Commodity was successfully updated.' }
         format.json { render :show, status: :ok, location: @commodity }
       else
         format.html { render :edit }

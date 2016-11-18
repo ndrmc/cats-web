@@ -13,6 +13,12 @@ Rails.application.routes.draw do
   resources :commodity_categories
   resources :commodities
   resources :unit_of_measures
+  resources :hubs, shallow: true do
+    resources :store_locations, shallow: true do
+      resources :stores
+    end
+  end  
+
 
   root to: 'dashboard#index'
 
