@@ -15,19 +15,6 @@ if Season.count == 0
   puts "Created seed data for Season records"
 end
 
-#LocationType seed values
-if LocationType.count == 0
-  LocationType.create([
-    {name: "ROOT"},
-    {name: "Region"},
-    {name: "Zone"},
-    {name: "Woreda"},
-    {name: "Kebele"}
-    ])
-  puts "Created seed data for LocationType records"
-end
-
-
 # Unit of measure categories
 if UomCategory.count == 0
   UomCategory.create(name: "weight") # represents weight measured commodities (cereal, csb, oil ...)
