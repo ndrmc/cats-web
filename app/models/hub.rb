@@ -6,6 +6,8 @@
 #  name        :string           not null
 #  description :string
 #  location_id :integer
+#  lat         :float
+#  long        :float
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #

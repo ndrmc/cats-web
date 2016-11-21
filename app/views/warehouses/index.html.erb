@@ -24,26 +24,29 @@
       <table class="table table-striped">
         <thead>
           <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Location</th>
-                        <th>Actions</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Owner</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
           <% @warehouses.each do |warehouse| %>
           <tr>
-                        <td><%= warehouse.name
-              %></td>
-                        <td><%= warehouse.description
-              %></td>
-                        <td><%= warehouse.location_id
-              %></td>
-                        <td>
-              <%= link_to 'Edit', edit_warehouse_path(warehouse) %> &middot;
-              <%= link_to 'Delete', warehouse, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
+              <td><%= warehouse.name %></td>
+              <td><%= warehouse.description%></td>
+              <td><%= warehouse.location_id%></td>
+              <td>
+                <% if warehouse.organization_id%>
+                  <%=warehouse.organization.name%>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to 'Edit', edit_warehouse_path(warehouse) %> &middot;
+                <%= link_to 'Delete', warehouse, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
           </tr>
           <% end %>
         </tbody>
@@ -52,4 +55,4 @@
     </div>
   </div>
 </div>
-<%= link_to 'Back', hub_path(params[:hub_id]) %>
+<%= link_to 'Back', :back %>

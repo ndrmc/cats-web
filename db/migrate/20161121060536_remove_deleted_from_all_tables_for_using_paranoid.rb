@@ -26,6 +26,7 @@ class RemoveDeletedFromAllTablesForUsingParanoid < ActiveRecord::Migration[5.0]
 				:locations,
 				:mode_of_transports,
 				:operations,
+        :organizations,
 				:programs,
 				:quotations,
 				:ration_items,
@@ -33,8 +34,7 @@ class RemoveDeletedFromAllTablesForUsingParanoid < ActiveRecord::Migration[5.0]
 				:requisition_items,
 				:requisitions,
 				:seasons,
-				:store_locations,
-				:store_owners,
+				:warehouses,
 				:stores,
 				:transporter_addresses,
 				:transporters,
@@ -46,7 +46,7 @@ class RemoveDeletedFromAllTablesForUsingParanoid < ActiveRecord::Migration[5.0]
 				:uom_categories,
 				:users
 				].each do |table|
-				
+
 				remove_column table, :deleted
 		end
   end

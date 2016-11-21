@@ -28,8 +28,7 @@ class StoresController < ApplicationController
 
     @store = Store.new(store_params)
     @store.warehouse_id=params[:warehouse_id]
-    @warehouse= StoreLocation.find(params[:warehouse_id])
-    @store.hub_id=@warehouse.hub_id
+    @warehouse= Warehouse.find(params[:warehouse_id])
     respond_to do |format|
       if @store.save
         format.html { redirect_to @store, notice: 'Store was successfully created.' }
@@ -58,7 +57,7 @@ class StoresController < ApplicationController
   # DELETE /stores/1
   # DELETE /stores/1.json
   def destroy
-    @warehouse= StoreLocation.find(params[:warehouse_id])
+    @warehouse= Warehouse.find(params[:warehouse_id])
     @store.destroy
     respond_to do |format|
       format.html { redirect_to warehouse_path(@warehouse), notice: 'Store was successfully destroyed.' }

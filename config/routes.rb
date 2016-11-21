@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :controllers
   get 'setting/index'
   devise_for :users
 
@@ -24,8 +25,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :warehouses
   resources :operations
   resources :accounts
+  resources :organizations
 
   root to: 'dashboard#index'
 

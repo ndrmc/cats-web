@@ -1,18 +1,18 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Hubs</h2>
+    <h2>Organizations</h2>
     <ol class="breadcrumb">
       <li>
         <a href="#">Lookups</a>
       </li>
       <li class="active">
-        <strong>Hubs</strong>
+        <strong>Organizations</strong>
       </li>
     </ol>
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'New Hub', new_hub_path, :class => "btn btn-primary"%>
+      <%= link_to 'New Organization', new_organization_path, :class => "btn btn-primary"%>
     </div>
   </div>
 </div>
@@ -25,25 +25,24 @@
         <thead>
           <tr>
                         <th>Name</th>
+                        <th>Long name</th>
                         <th>Description</th>
-                        <th>Location</th>
-                        <th>Lat</th>
-                        <th>Long</th>
                         <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
-          <% @hubs.each do |hub| %>
+          <% @organizations.each do |organization| %>
           <tr>
-            <td><%= hub.name%></td>
-            <td><%= hub.description%></td>
-            <td><%= hub.location_id%></td>
-            <td><%= hub.lat %> </td>
-            <td><%= hub.lon %> </td>
-            <td>
-              <%= link_to 'Edit', edit_hub_path(hub) %> &middot;
-              <%= link_to 'Delete', hub, method: :delete, data: { confirm: 'Are you sure?' } %>
+                        <td><%= organization.name
+              %></td>
+                        <td><%= organization.long_name
+              %></td>
+                        <td><%= organization.description
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_organization_path(organization) %> &middot;
+              <%= link_to 'Delete', organization, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
           </tr>
           <% end %>

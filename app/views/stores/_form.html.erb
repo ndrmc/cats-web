@@ -26,12 +26,7 @@
                 <div class="form-group">
                   <%= f.label :temporary %> &nbsp;
                   <%= f.check_box :temporary, :class => 'form-inline' %>
-                </div>
-
-                <div class="form-group">
-                  <%= f.label :store_owner_id %>
-                  <%= f.text_field :store_owner_id, :class => 'form-control' %>
-                </div>
+                </div>           
 
                 <div class="form-group">
                   <%= f.fields_for @store.warehouse do |s| %>

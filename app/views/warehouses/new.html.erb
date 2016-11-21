@@ -51,8 +51,19 @@
                             <%= f.label :location_id %>
                 <%= f.number_field :location_id, :class => 'form-control' %>
                         </div>
-
-
+                <div class="form-group">
+                  <%= f.label :organization_id %>
+                  <%= f.collection_select :organization_id,
+                        Organization.order(:name),:id,:name, include_blank: true, :class => 'form-control' %>
+                </div>
+                <div class="form-group">
+                  <%= f.label :lat %>
+                  <%= f.text_field :lat, :class => 'form-control' %>
+                </div>
+                <div class="form-group">
+                  <%= f.label :lon %>
+                  <%= f.text_field :lon, :class => 'form-control' %>
+                </div>
       <div class="actions">
         <%= f.submit :class => 'btn btn-primary' %>
       </div>

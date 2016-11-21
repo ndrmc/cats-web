@@ -69,6 +69,6 @@ class HubsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def hub_params
-      params.require(:hub).permit(:name, :description, :location_id)
+      params.require(:hub).permit(:name, :description, :location_id, :lat, :lon)
     end
 end

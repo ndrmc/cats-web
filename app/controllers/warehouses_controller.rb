@@ -4,7 +4,7 @@ class WarehousesController < ApplicationController
   # GET /warehouses
   # GET /warehouses.json
   def index
-    @warehouses = StoreLocation.all
+    @warehouses = Warehouse.all
   end
 
   # GET /warehouses/1
@@ -14,7 +14,7 @@ class WarehousesController < ApplicationController
 
   # GET /warehouses/new
   def new
-    @warehouse = StoreLocation.new
+    @warehouse = Warehouse.new
     @warehouse.hub_id=params[:hub_id]
   end
 
@@ -26,7 +26,7 @@ class WarehousesController < ApplicationController
   # POST /warehouses.json
   def create
     @hub=params[:hub_id]
-    @warehouse = StoreLocation.new(warehouse_params)
+    @warehouse = Warehouse.new(warehouse_params)
     @warehouse.hub_id=params[:hub_id]
     respond_to do |format|
       if @warehouse.save
@@ -68,11 +68,11 @@ class WarehousesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_warehouse
-      @warehouse = StoreLocation.find(params[:id])
+      @warehouse = Warehouse.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_params
-      params.require(:warehouse).permit(:name, :description, :location_id)
+      params.require(:warehouse).permit(:name, :description, :location_id, :organization_id, :lat, :lon)
     end
 end

@@ -51,7 +51,14 @@
                   <%= f.label :location_id %>
                   <%= f.number_field :location_id, :class => 'form-control' %>
                 </div>
-
+                <div class="form-group">
+                  <%= f.label :lat %>
+                  <%= f.text_field :lat, :class => 'form-control' %>
+                </div>
+                <div class="form-group">
+                  <%= f.label :lon %>
+                  <%= f.text_field :lon, :class => 'form-control' %>
+                </div>
 
       <div class="actions">
         <%= f.submit :class => 'btn btn-primary' %>
