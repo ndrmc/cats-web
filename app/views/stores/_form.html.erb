@@ -34,13 +34,13 @@
                 </div>
 
                 <div class="form-group">
-                  <%= f.fields_for @store.store_location do |s| %>
-                    <%= s.label :store_location_id %>
+                  <%= f.fields_for @store.warehouse do |s| %>
+                    <%= s.label :warehouse_id %>
                     <%= s.text_field :name, :class => 'form-control', :disabled=>true%>
                   <%end%>
                 </div>
                 <div class="form-group">
-                  <%= f.fields_for @store.store_location.hub do |h| %>
+                  <%= f.fields_for @store.warehouse.hub do |h| %>
                     <%= h.label :hub_id %>
                     <%= h.text_field :name, :class => 'form-control', :disabled=>true%>
                   <%end%>

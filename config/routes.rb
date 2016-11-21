@@ -19,10 +19,10 @@ Rails.application.routes.draw do
   resources :commodities
   resources :unit_of_measures
   resources :hubs, shallow: true do
-    resources :store_locations, shallow: true do
+    resources :warehouses, shallow: true do
       resources :stores
     end
-  end  
+  end
 
   resources :operations
   resources :accounts

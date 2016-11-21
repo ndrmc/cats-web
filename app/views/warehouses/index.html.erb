@@ -1,18 +1,18 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Store Locations</h2>
+    <h2>Warehouses</h2>
     <ol class="breadcrumb">
       <li>
         <a href="#">Lookups</a>
       </li>
       <li class="active">
-        <strong>Store Locations</strong>
+        <strong>Warehouses</strong>
       </li>
     </ol>
   </div>
  <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'New Store Location', hubs_path, :class => "btn btn-primary"%>
+      <%= link_to 'New Warehouse', hubs_path, :class => "btn btn-primary"%>
     </div>
   </div>
 </div>
@@ -32,17 +32,17 @@
         </thead>
 
         <tbody>
-          <% @store_locations.each do |store_location| %>
+          <% @warehouses.each do |warehouse| %>
           <tr>
-                        <td><%= store_location.name
+                        <td><%= warehouse.name
               %></td>
-                        <td><%= store_location.description
+                        <td><%= warehouse.description
               %></td>
-                        <td><%= store_location.location_id
+                        <td><%= warehouse.location_id
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_store_location_path(store_location) %> &middot;
-              <%= link_to 'Delete', store_location, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%= link_to 'Edit', edit_warehouse_path(warehouse) %> &middot;
+              <%= link_to 'Delete', warehouse, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
           </tr>
           <% end %>

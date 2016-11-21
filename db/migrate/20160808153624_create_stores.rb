@@ -5,7 +5,7 @@ class CreateStores < ActiveRecord::Migration[5.0]
       t.boolean :temporary
       t.integer :hub_id
       t.integer :store_owner_id
-      t.integer :store_location_id
+      t.integer :warehouse_id
 
       t.timestamps
     end

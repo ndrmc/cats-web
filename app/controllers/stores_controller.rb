@@ -15,7 +15,7 @@ class StoresController < ApplicationController
   # GET /stores/new
   def new
     @store = Store.new
-    @store.store_location_id=params[:store_location_id]
+    @store.warehouse_id=params[:warehouse_id]
   end
 
   # GET /stores/1/edit
@@ -27,9 +27,9 @@ class StoresController < ApplicationController
   def create
 
     @store = Store.new(store_params)
-    @store.store_location_id=params[:store_location_id]
-    @store_location= StoreLocation.find(params[:store_location_id])
-    @store.hub_id=@store_location.hub_id
+    @store.warehouse_id=params[:warehouse_id]
+    @warehouse= StoreLocation.find(params[:warehouse_id])
+    @store.hub_id=@warehouse.hub_id
     respond_to do |format|
       if @store.save
         format.html { redirect_to @store, notice: 'Store was successfully created.' }
@@ -58,10 +58,10 @@ class StoresController < ApplicationController
   # DELETE /stores/1
   # DELETE /stores/1.json
   def destroy
-    @store_location= StoreLocation.find(params[:store_location_id])
+    @warehouse= StoreLocation.find(params[:warehouse_id])
     @store.destroy
     respond_to do |format|
-      format.html { redirect_to store_location_path(@store_location), notice: 'Store was successfully destroyed.' }
+      format.html { redirect_to warehouse_path(@warehouse), notice: 'Store was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -74,6 +74,6 @@ class StoresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
-      params.require(:store).permit(:name, :temporary, :hub_id, :store_owner_id, :store_location_id)
+      params.require(:store).permit(:name, :temporary, :hub_id, :store_owner_id, :warehouse_id)
     end
 end

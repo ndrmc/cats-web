@@ -469,18 +469,6 @@ ActiveRecord::Schema.define(version: 20161118143002) do
     t.index ["name"], name: "index_seasons_on_name", unique: true, using: :btree
   end
 
-  create_table "store_locations", force: :cascade do |t|
-    t.string   "name",                        null: false
-    t.string   "description"
-    t.integer  "hub_id"
-    t.integer  "location_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
-  end
-
   create_table "store_owners", force: :cascade do |t|
     t.string   "name",                        null: false
     t.string   "long_name"
@@ -657,6 +645,18 @@ ActiveRecord::Schema.define(version: 20161118143002) do
     t.boolean  "deleted",                default: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "warehouses", force: :cascade do |t|
+    t.string   "name",                        null: false
+    t.string   "description"
+    t.integer  "hub_id"
+    t.integer  "location_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
   end
 
 end

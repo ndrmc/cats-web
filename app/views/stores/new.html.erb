@@ -12,7 +12,7 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'Cancel', store_location_stores_path,  :class => "btn btn-default"%>
+      <%= link_to 'Cancel', warehouse_stores_path,  :class => "btn btn-default"%>
     </div>
   </div>
 </div>
@@ -20,7 +20,7 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
-      <%= form_for @store , url: store_location_stores_path do |f| %>
+      <%= form_for @store , url: warehouse_stores_path do |f| %>
         <% if @store.errors.any? %>
           <div class="panel panel-danger">
             <div class="panel-heading">

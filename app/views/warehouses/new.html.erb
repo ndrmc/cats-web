@@ -1,9 +1,9 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>New Store Location</h2>
+    <h2>New Warehouse</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Store Location</a>
+        <a href="#">Warehouse</a>
       </li>
       <li class="active">
         <strong>New</strong>
@@ -20,16 +20,16 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
-      <%= form_for @store_location, url:hub_store_locations_path do |f| %>
-        <% if @store_location.errors.any? %>
+      <%= form_for @warehouse, url:hub_warehouses_path do |f| %>
+        <% if @warehouse.errors.any? %>
           <div class="panel panel-danger">
             <div class="panel-heading">
-              <%= pluralize(@store_location.errors.count, "error") %> prohibited this store_location from being saved.
+              <%= pluralize(@warehouse.errors.count, "error") %> prohibited this warehouse from being saved.
             </div>
 
             <div class="panel-body">
               <ul>
-                <% @store_location.errors.full_messages.each do |message| %>
+                <% @warehouse.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
                 <% end %>
               </ul>

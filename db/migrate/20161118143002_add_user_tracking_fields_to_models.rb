@@ -33,7 +33,7 @@ class AddUserTrackingFieldsToModels < ActiveRecord::Migration[5.0]
 				:requisition_items,
 				:requisitions,
 				:seasons,
-				:store_locations,
+				:warehouses,
 				:store_owners,
 				:stores,
 				:transporter_addresses,

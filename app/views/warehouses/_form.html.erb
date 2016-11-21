@@ -1,16 +1,16 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
-      <%= form_for @store_location do |f| %>
-        <% if store_location.errors.any? %>
+      <%= form_for @warehouse do |f| %>
+        <% if warehouse.errors.any? %>
           <div class="panel panel-danger">
             <div class="panel-heading">
-              <%= pluralize(store_location.errors.count, "error") %> prohibited this store_location from being saved.
+              <%= pluralize(warehouse.errors.count, "error") %> prohibited this warehouse from being saved.
             </div>
 
             <div class="panel-body">
               <ul>
-                <% store_location.errors.full_messages.each do |message| %>
+                <% warehouse.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
                 <% end %>
               </ul>
@@ -60,7 +60,7 @@
         </thead>
 
         <tbody>
-          <% @store_location.stores.each do |store| %>
+          <% @warehouse.stores.each do |store| %>
           <tr>
                         <td><%= store.name
               %></td>
@@ -70,7 +70,7 @@
               %></td>
                         <td><%= store.store_owner_id
               %></td>
-                        <td><%= store.store_location_id
+                        <td><%= store.warehouse_id
               %></td>
                         <td>
               <%= link_to 'Edit', edit_store_path(store) %> &middot;
@@ -83,7 +83,7 @@
     </div>
     <div class="col-sm-8">
       <div class="title-action">
-        <%= link_to 'New Store', new_store_location_store_path(@store_location), :class => "btn btn-primary"%>
+        <%= link_to 'New Store', new_warehouse_store_path(@warehouse), :class => "btn btn-primary"%>
       </div>
     </div>
   </div>

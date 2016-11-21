@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: store_locations
+# Table name: warehouses
 #
 #  id          :integer          not null, primary key
 #  name        :string           not null
@@ -11,7 +11,7 @@
 #  updated_at  :datetime         not null
 #
 
-class StoreLocation < ApplicationRecord
+class Warehouse < ApplicationRecord
     belongs_to :hub
     has_many :stores
 end

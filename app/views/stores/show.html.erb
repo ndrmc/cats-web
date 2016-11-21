@@ -20,8 +20,8 @@
 
     <p>
       <strong>Store location:</strong>
-      <%= @store.store_location_id %>
+      <%= @store.warehouse_id %>
     </p>
 
 <%= link_to 'Edit', edit_store_path(@store) %> |
-<%= link_to 'Back', store_location_stores_path(@store.store_location_id,@store) %>
+<%= link_to 'Back', warehouse_stores_path(@store.warehouse_id,@store) %>
