@@ -12,7 +12,7 @@
 #
 
 class Location < ApplicationRecord
-
+  acts_as_paranoid
   validates :name, presence: true
 
   enum location_type: {

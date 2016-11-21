@@ -11,12 +11,12 @@ class LocationsController < ApplicationController
   # GET /locations/:id
   def show
     if params[:id] == '0'
-      @locations = Location.where( location_type: :region, deleted: false)
+      @locations = Location.where( location_type: :region)
 
       @listed_locs_type = 'region'
     else
       @parent = Location.find params[:id]
-      @locations = @parent.children.select { |c| !c.deleted }
+      @locations = @parent.children#.select { |c| !c.deleted }
 
       @listed_locs_type = child_location_type(@parent.location_type)
     end
@@ -72,7 +72,7 @@ class LocationsController < ApplicationController
 
   # DELETE /locations/1
   def destroy
-    deleted = @location.update( deleted: true )
+    deleted = @location.destroy
 
     respond_to do |format|
       format.html {
