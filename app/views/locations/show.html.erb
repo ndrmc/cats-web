@@ -2,17 +2,14 @@
   <div class="col-sm-4">
     <h2><%= @listed_locs_type.pluralize.titleize %></h2>
     <ol class="breadcrumb">
-
       <li>
         <%= link_to 'Regions', locations_path %>
       </li>
-
       <% @parent && @parent.ancestors.each do |ancestor| %>
-          <li>
-            <%= link_to ancestor.name, location_path(ancestor.id) %>
-          </li>
+        <li>
+          <%= link_to ancestor.name, location_path(ancestor.id) %>
+        </li>
       <% end %>
-
       <li class="active">
         <strong><%= @parent && @parent.name ? @parent.name.capitalize : 'All' %></strong>
       </li>
@@ -24,40 +21,33 @@
     </div>
   </div>
 </div>
-
-<div class="ibox float-e-margins">
-  <div class="ibox-content">
-
-    <table class="table table-striped">
-      <thead>
-      <tr>
-          <th>Name</th>
-
-          <th>Actions</th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <% @locations.each do |location| %>
-        <tr id="location-row-<%= location.id %>">
-          <td><%= location.location_type != 'kebele'  ? link_to( location.name, location_path(location.id)) : location.name %></td>
-
-          <td>
-            <%= link_to 'Edit', edit_location_path(location.id), class: 'btn btn-xs btn-primary' %>
-
-
-            <a href="#" class="btn btn-xs btn-danger delete-location" data-location-id="<%= location.id %>">Delete</a>
-
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @locations.each do |location| %>
+              <tr id="location-row-<%= location.id %>">
+                <td><%= location.location_type != 'kebele'  ? link_to( location.name, location_path(location.id)) : location.name %></td>
+                <td>
+                  <%= link_to 'Edit', edit_location_path(location.id), class: 'btn btn-xs btn-primary' %>
+                  <a href="#" class="btn btn-xs btn-danger delete-location" data-location-id="<%= location.id %>">Delete</a>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
-
-
 <div class="modal inmodal" id="edit-location" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -67,14 +57,12 @@
       </div>
       <div class="modal-body">
         <%= form_tag  '/locations',  :id => 'new_location_form'  do  %>
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input name='name' type="text" class="form-control" autofocus>
-
-              <input type="hidden" name="id" value="<%= params[:id] %>">
-            </div>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input name='name' type="text" class="form-control" autofocus>
+            <input type="hidden" name="id" value="<%= params[:id] %>">
+          </div>
         <% end %>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
@@ -83,8 +71,6 @@
     </div>
   </div>
 </div>
-
-
 <div class="modal inmodal" id="create-location" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -97,11 +83,9 @@
           <div class="form-group">
             <label for="name">Name</label>
             <input name='name' type="text" class="form-control" autofocus>
-
             <input type="hidden" name="parent_id" value="<%= params[:id] %>">
           </div>
         <% end %>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
@@ -110,39 +94,37 @@
     </div>
   </div>
 </div>
-
 <script type="text/javascript" charset="utf-8">
   $(function() {
-    $('#create-location-btn').click( function() {
-      $('#new_location_form').submit();
-    });
-
-
-    $('.delete-location').click( function() {
-      var locationId = $(this).data('location-id');
-
-      swal({
-        title: "Are you sure?",
-        text: "You will not be able to undo this!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes, delete it!"
-      }).then( function () {
-        $.ajax({
-          url: "<%= url_for controller: 'locations', action: 'index' %>/" + locationId,
-          method: 'DELETE',
-          dataType: 'json'
-        }).done(function() {
-          $("#location-row-" + locationId).fadeOut();
-
-          toastr.success("Deleted!");
-        });
-
+      $('#create-location-btn').click( function() {
+        $('#new_location_form').submit();
       });
-
+  
+  
+      $('.delete-location').click( function() {
+        var locationId = $(this).data('location-id');
+  
+        swal({
+          title: "Are you sure?",
+          text: "You will not be able to undo this!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete it!"
+        }).then( function () {
+          $.ajax({
+            url: "<%= url_for controller: 'locations', action: 'index' %>/" + locationId,
+            method: 'DELETE',
+            dataType: 'json'
+          }).done(function() {
+            $("#location-row-" + locationId).fadeOut();
+  
+            toastr.success("Deleted!");
+          });
+  
+        });
+  
+      });
+  
     });
-
-  });
 </script>
-
