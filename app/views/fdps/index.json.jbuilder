@@ -1,0 +1,1 @@
+json.array! @fdps, partial: 'fdps/fdp', as: :fdp

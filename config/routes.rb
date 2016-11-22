@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   resources :locations
 
+  get 'locations/:parentId/children', to: 'locations#children'
+
 
   resources :currencies
   resources :donors
@@ -20,6 +22,7 @@ Rails.application.routes.draw do
   resources :unit_of_measures
   resources :operations
   resources :accounts
+  resources :fdps
 
   root to: 'dashboard#index'
 
