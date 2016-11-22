@@ -25,6 +25,9 @@
 //= require_tree .
 
 
+/**
+ * Activates parent menu items if children are acive
+ */
 $(document).ready(function() {
     var activeLi = $('li.active');
     activeLi.parentsUntil( 'nav', 'li').addClass('active');
