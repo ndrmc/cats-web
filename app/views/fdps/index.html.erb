@@ -25,11 +25,9 @@
         <thead>
         <tr>
           <th>Name</th>
-          <th>Description</th>
+          <th>Region</th>
           <th>Zone</th>
           <th>Woreda</th>
-          <th>Lat</th>
-          <th>Lon</th>
           <th>Active</th>
           <th>Actions</th>
         </tr>
@@ -39,11 +37,10 @@
         <% @fdps.each do |fdp| %>
             <tr>
               <td><%= fdp.name %></td>
-              <td><%= fdp.description  %></td>
+              <td><%= fdp.region.try(:[], :name)  %></td>
               <td><%= fdp.zone.try(:[], :name)  %></td>
               <td><%= fdp.woreda.try(:[], :name) %></td>
-              <td><%= fdp.lat %></td>
-              <td><%= fdp.lon  %></td>
+
               <td><%= fdp.active %></td>
               <td>
                 <%= link_to 'Edit', edit_fdp_path(fdp) %> &middot;

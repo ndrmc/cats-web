@@ -20,7 +20,7 @@ class Fdp < ApplicationRecord
   has_many :fdp_contacts
 
 
-  attr_reader :zone, :woreda
+  attr_reader :zone, :woreda, :region
 
   after_find do |fdp|
     location = location_id ? Location.find(location_id) : nil
@@ -34,6 +34,8 @@ class Fdp < ApplicationRecord
 
       ancestors = location.ancestors
 
+
+      @region = @region ? @region : ancestors.find { |a| a.location_type == 'region' }
       @zone = @zone ? @zone : ancestors.find { |a| a.location_type == 'zone' }
       @woreda = @woreda ? @woreda : ancestors.find { |a| a.location_type == 'woreda' }
     end
