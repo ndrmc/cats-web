@@ -28,10 +28,10 @@ class StoresController < ApplicationController
 
     @store = Store.new(store_params)
     @store.warehouse_id=params[:warehouse_id]
-    @warehouse= Warehouse.find(params[:warehouse_id])
+    @warehouse= Warehouse.find(@store.warehouse_id)
     respond_to do |format|
       if @store.save
-        format.html { redirect_to @store, notice: 'Store was successfully created.' }
+        format.html { redirect_to warehouse_path(@warehouse), notice: 'Store was successfully created.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
@@ -43,9 +43,10 @@ class StoresController < ApplicationController
   # PATCH/PUT /stores/1
   # PATCH/PUT /stores/1.json
   def update
+    @warehouse= Warehouse.find(@store.warehouse_id)
     respond_to do |format|
       if @store.update(store_params)
-        format.html { redirect_to @store, notice: 'Store was successfully updated.' }
+        format.html { redirect_to warehouse_path(@warehouse), notice: 'Store was successfully updated.' }
         format.json { render :show, status: :ok, location: @store }
       else
         format.html { render :edit }
@@ -57,7 +58,7 @@ class StoresController < ApplicationController
   # DELETE /stores/1
   # DELETE /stores/1.json
   def destroy
-    @warehouse= Warehouse.find(params[:warehouse_id])
+    @warehouse= Warehouse.find(@store.warehouse_id)
     @store.destroy
     respond_to do |format|
       format.html { redirect_to warehouse_path(@warehouse), notice: 'Store was successfully destroyed.' }

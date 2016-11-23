@@ -716,7 +716,16 @@ ActiveRecord::Schema.define(version: 20161121113340) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
-<<<<<<< HEAD
+  create_table "users_roles", id: false, force: :cascade do |t|
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.integer  "user_id"
+    t.integer  "role_id"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_users_roles_on_deleted_at", using: :btree
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+  end
+
   create_table "warehouses", force: :cascade do |t|
     t.string   "name",            null: false
     t.string   "description"
@@ -731,16 +740,6 @@ ActiveRecord::Schema.define(version: 20161121113340) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_warehouses_on_deleted_at", using: :btree
-=======
-  create_table "users_roles", id: false, force: :cascade do |t|
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.integer  "user_id"
-    t.integer  "role_id"
-    t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_users_roles_on_deleted_at", using: :btree
-    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
->>>>>>> fd8aea21d0d14c4cdc1b48865452d16d21fc3e59
   end
 
 end

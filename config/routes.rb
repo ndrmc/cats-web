@@ -12,7 +12,6 @@ Rails.application.routes.draw do
 
   resources :locations
 
-
   resources :currencies
   resources :donors
   resources :programs
@@ -26,6 +25,7 @@ Rails.application.routes.draw do
   end
 
   resources :warehouses
+  resources :stores
   resources :operations
   resources :accounts
   resources :organizations
