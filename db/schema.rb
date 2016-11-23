@@ -355,8 +355,8 @@ ActiveRecord::Schema.define(version: 20161121113340) do
   create_table "hubs", force: :cascade do |t|
     t.string   "name",        null: false
     t.string   "description"
-    t.float    "lat"
-    t.float    "lon"
+    t.decimal  "lat"
+    t.decimal  "lon"
     t.integer  "location_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -732,8 +732,8 @@ ActiveRecord::Schema.define(version: 20161121113340) do
     t.integer  "hub_id"
     t.integer  "location_id"
     t.integer  "organization_id"
-    t.float    "lat"
-    t.float    "lon"
+    t.decimal  "lat"
+    t.decimal  "lon"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "created_by"

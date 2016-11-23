@@ -3,8 +3,8 @@ class CreateHubs < ActiveRecord::Migration[5.0]
     create_table :hubs do |t|
       t.string :name, null: false
       t.string :description
-      t.float :lat
-      t.float :lon
+      t.decimal :lat
+      t.decimal :lon
       t.integer :location_id
 
       t.timestamps

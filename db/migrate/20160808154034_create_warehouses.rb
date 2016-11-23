@@ -6,8 +6,8 @@ class CreateWarehouses < ActiveRecord::Migration[5.0]
       t.integer :hub_id
       t.integer :location_id
       t.integer :organization_id
-      t.float :lat
-      t.float :lon
+      t.decimal :lat
+      t.decimal :lon
       t.timestamps
     end
   end
