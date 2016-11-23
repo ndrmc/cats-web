@@ -151,15 +151,6 @@ ActiveRecord::Schema.define(version: 20161121113340) do
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
   end
 
-  create_table "controllers", force: :cascade do |t|
-    t.string   "Organization"
-    t.string   "name"
-    t.string   "long_name"
-    t.string   "description"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
   create_table "currencies", force: :cascade do |t|
     t.string   "name",        null: false
     t.string   "symbol"
@@ -202,14 +193,14 @@ ActiveRecord::Schema.define(version: 20161121113340) do
   end
 
   create_table "fdps", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                                  null: false
     t.string   "description"
-    t.float    "lat"
-    t.float    "lon"
+    t.decimal  "lat",         precision: 15, scale: 13
+    t.decimal  "lon",         precision: 15, scale: 13
     t.boolean  "active"
     t.integer  "location_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
@@ -540,6 +531,7 @@ ActiveRecord::Schema.define(version: 20161121113340) do
     t.index ["deleted_at"], name: "index_seasons_on_deleted_at", using: :btree
     t.index ["name"], name: "index_seasons_on_name", unique: true, using: :btree
   end
+
 
   create_table "stores", force: :cascade do |t|
     t.string   "name",         null: false

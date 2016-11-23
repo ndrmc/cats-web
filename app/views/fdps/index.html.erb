@@ -1,0 +1,56 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Fdps</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Fdps</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Fdp', new_fdp_path, :class => "btn btn-primary" %>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Region</th>
+          <th>Zone</th>
+          <th>Woreda</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <% @fdps.each do |fdp| %>
+            <tr>
+              <td><%= fdp.name %></td>
+              <td><%= fdp.region.try(:[], :name)  %></td>
+              <td><%= fdp.zone.try(:[], :name)  %></td>
+              <td><%= fdp.woreda.try(:[], :name) %></td>
+
+              <td><%= fdp.active %></td>
+              <td>
+                <%= link_to 'Edit', edit_fdp_path(fdp) %> &middot;
+                <%= link_to 'Delete', fdp, method: :delete, data: {confirm: 'Are you sure?'} %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :controllers
   get 'setting/index'
   devise_for :users
 
@@ -11,6 +10,8 @@ Rails.application.routes.draw do
   #post 'locations', to: 'locations#create', as: :locations
 
   resources :locations
+
+  get 'locations/:parentId/children', to: 'locations#children'
 
 
   resources :currencies
@@ -28,6 +29,7 @@ Rails.application.routes.draw do
   resources :warehouses
   resources :operations
   resources :accounts
+  resources :fdps
   resources :organizations
 
   root to: 'dashboard#index'

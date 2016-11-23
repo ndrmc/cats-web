@@ -42,8 +42,8 @@
         <%= link_to 'Locations', locations_path %>
       </li>
 
-      <li>
-        <a href="#">FDP</a>
+      <li class="<%= 'active' if is_active_controller('fdps') %>">
+        <%= link_to 'FDPs', fdps_path %>
       </li>
     </ul>
   </li>
