@@ -12,7 +12,7 @@
         <ul class="nav nav-second-level collapse" style="height: 0px;">
           <li>
             <a href="#">Global settings</a>
-          </li>          
+          </li>
           <li>
             <%= link_to 'Programs', programs_path %>
           </li>
@@ -21,6 +21,9 @@
           </li>
           <li>
             <a href="#">Languages</a>
+          </li>
+          <li>
+              <%= link_to 'Organizations', organizations_path %>
           </li>
         </span>
       </a>
@@ -53,15 +56,15 @@
   <% end %>
   <ul class="nav nav-second-level collapse">
     <li>
-      <a href="#">Hubs</a>
+        <%= link_to 'Hubs', hubs_path %>
     </li>
     <li>
-      <a href="#">Warehouses</a>
-    </li>      
+      <%= link_to 'Warehouses', warehouses_path %>
+    </li>
   </ul>
 </li>
 
-<li class="<%= 'active' if current_page?(commodity_categories_url) %>">
+ <li class="<%= 'active' if current_page?(commodity_categories_url) %>">
   <%= link_to "/home/minor" do %>
   <i class="fa fa-cube"></i>
   <span class="nav-label">Commodity</span>
@@ -89,7 +92,7 @@
   <span class="nav-label">Accounting</span>
   <span class="fa arrow"></span>
   <% end %>
-  <ul class="nav nav-second-level collapse">    
+  <ul class="nav nav-second-level collapse">
     <li>
       <%= link_to 'Accounts', accounts_path %>
     </li>

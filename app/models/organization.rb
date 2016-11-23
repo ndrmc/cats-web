@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: store_owners
+# Table name: organizations
 #
 #  id          :integer          not null, primary key
 #  name        :string           not null
@@ -10,5 +10,5 @@
 #  updated_at  :datetime         not null
 #
 
-class StoreOwner < ApplicationRecord
+class Organization < ApplicationRecord
 end

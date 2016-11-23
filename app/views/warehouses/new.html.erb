@@ -1,0 +1,74 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>New Warehouse</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Warehouse</a>
+      </li>
+      <li class="active">
+        <strong>New</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', :back,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for @warehouse, url:hub_warehouses_path do |f| %>
+        <% if @warehouse.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(@warehouse.errors.count, "error") %> prohibited this warehouse from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% @warehouse.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :name %>
+                <%= f.text_field :name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :description %>
+                <%= f.text_field :description, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :location_id %>
+                <%= f.number_field :location_id, :class => 'form-control' %>
+                        </div>
+                <div class="form-group">
+                  <%= f.label :organization_id %>
+                  <%= f.collection_select :organization_id,
+                        Organization.order(:name),:id,:name, include_blank: true, :class => 'form-control' %>
+                </div>
+                <div class="form-group">
+                  <%= f.label :lat %>
+                  <%= f.text_field :lat, :class => 'form-control' %>
+                </div>
+                <div class="form-group">
+                  <%= f.label :lon %>
+                  <%= f.text_field :lon, :class => 'form-control' %>
+                </div>
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>
