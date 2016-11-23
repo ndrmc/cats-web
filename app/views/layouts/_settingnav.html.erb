@@ -9,14 +9,14 @@
         <i class="fa fa-bookmark-o"></i>
         <span class="nav-label">General</span>
         <span class="fa arrow"></span><% end %>
-        <ul class="nav nav-second-level collapse" style="height: 0px;">
+        <ul class="nav nav-second-level collapse">
           <li>
             <a href="#">Global settings</a>
-          </li>
-          <li>
+          </li>          
+          <li class="<%= 'active' if is_active_controller('programs') %>">
             <%= link_to 'Programs', programs_path %>
           </li>
-          <li>
+          <li class="<%= 'active' if is_active_controller('currencies') %>">
             <%= link_to 'Currency', currencies_path %>
           </li>
           <li>
@@ -42,8 +42,8 @@
         <%= link_to 'Locations', locations_path %>
       </li>
 
-      <li>
-        <a href="#">FDP</a>
+      <li class="<%= 'active' if is_active_controller('fdps') %>">
+        <%= link_to 'FDPs', fdps_path %>
       </li>
     </ul>
   </li>

@@ -1,0 +1,27 @@
+    <p>
+      <strong>Name:</strong>
+      <%= @fdp.name %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @fdp.description %>
+    </p>
+
+    <p>
+      <strong>Lat:</strong>
+      <%= @fdp.lat %>
+    </p>
+
+    <p>
+      <strong>Lon:</strong>
+      <%= @fdp.lon %>
+    </p>
+
+    <p>
+      <strong>Active:</strong>
+      <%= @fdp.active %>
+    </p>
+
+<%= link_to 'Edit', edit_fdp_path(@fdp) %> |
+<%= link_to 'Back', fdps_path %>

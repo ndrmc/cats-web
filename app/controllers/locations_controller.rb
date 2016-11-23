@@ -8,7 +8,7 @@ class LocationsController < ApplicationController
     redirect_to action: :show, id: 0
   end
 
-  # GET /locations/:id
+  # GET /locations/1
   def show
     if params[:id] == '0'
       @locations = Location.where( location_type: :region)
@@ -88,6 +88,19 @@ class LocationsController < ApplicationController
       format.json { render json:  [ deleted: deleted ].to_json  }
     end
 
+  end
+
+  # GET /locations/1/children
+  def children
+
+    if params[:parentId] == '0'
+      @children = Location.where location_type: :region
+    else
+      @children = Location.find(params[:parentId]).children
+    end
+    respond_to do |format|
+      format.json { render json:  @children.collect { |c| {id: c.id, name: c.name}}.to_json  }
+    end
   end
 
   private
