@@ -1,0 +1,58 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(fdp) do |f| %>
+        <% if fdp.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(fdp.errors.count, "error") %> prohibited this fdp from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% fdp.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :name %>
+                <%= f.text_field :name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                    <%= f.label :description %>
+                    <%= f.text_field :description, :class => 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :lat %>
+                    <%= f.number_field :lat, :step => 'any', :class => 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :lon %>
+                    <%= f.number_field :lon, :step => 'any', :class => 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.check_box :active %>
+                  <%= f.label :active %>
+
+                </div>
+
+
+          <%= render 'shared/location_selector', name: 'fdp[location_id]', requiredLevels:['region', 'zone'], locationId: fdp.location_id %>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

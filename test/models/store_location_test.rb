@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: store_locations
+# Table name: warehouses
 #
 #  id          :integer          not null, primary key
 #  name        :string           not null
