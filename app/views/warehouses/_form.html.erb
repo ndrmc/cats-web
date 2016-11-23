@@ -28,12 +28,10 @@
                 <%= f.text_field :description, :class => 'form-control' %>
                         </div>
 
+                <%= render 'shared/location_selector', name: 'warehouse[location_id]', requiredLevels:['region', 'zone'], locationId: warehouse.location_id %>
+
                 <div class="form-group">
-                            <%= f.label :location_id %>
-                <%= f.number_field :location_id, :class => 'form-control' %>
-                        </div>
-                <div class="form-group">
-                  <%= f.label :organization_id %>
+                  <%= f.label 'Owner' %>
                   <%= f.collection_select :organization_id,
                       Organization.order(:name),:id,:name, include_blank: true, :class => 'form-control' %>
                   </div>

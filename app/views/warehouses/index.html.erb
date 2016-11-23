@@ -26,7 +26,6 @@
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Location</th>
             <th>Owner</th>
             <th>Actions</th>
           </tr>
@@ -36,8 +35,7 @@
           <% @warehouses.each do |warehouse| %>
           <tr>
               <td><%= warehouse.name %></td>
-              <td><%= warehouse.description%></td>
-              <td><%= warehouse.location_id%></td>
+              <td><%= warehouse.description%></td>        
               <td>
                 <% if warehouse.organization_id%>
                   <%=warehouse.organization.name%>

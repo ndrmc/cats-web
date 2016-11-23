@@ -47,10 +47,8 @@
                 <%= f.text_field :description, :class => 'form-control' %>
                         </div>
 
-                <div class="form-group">
-                  <%= f.label :location_id %>
-                  <%= f.number_field :location_id, :class => 'form-control' %>
-                </div>
+                <%= render 'shared/location_selector', name: 'hub[location_id]', requiredLevels:['region', 'zone'], locationId: @hub.location_id %>
+
                 <div class="form-group">
                   <%= f.label :lat %>
                   <%= f.text_field :lat, :class => 'form-control' %>
@@ -66,11 +64,5 @@
   <% end %>
 
     </div>
-  </div>
-</div>
-
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-
   </div>
 </div>
