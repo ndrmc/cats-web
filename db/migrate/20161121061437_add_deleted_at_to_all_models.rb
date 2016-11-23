@@ -27,6 +27,7 @@ class AddDeletedAtToAllModels < ActiveRecord::Migration[5.0]
 				:locations,
 				:mode_of_transports,
 				:operations,
+        :organizations,
 				:programs,
 				:quotations,
 				:ration_items,
@@ -34,8 +35,7 @@ class AddDeletedAtToAllModels < ActiveRecord::Migration[5.0]
 				:requisition_items,
 				:requisitions,
 				:seasons,
-				:store_locations,
-				:store_owners,
+				:warehouses,
 				:stores,
 				:transporter_addresses,
 				:transporters,
@@ -47,7 +47,7 @@ class AddDeletedAtToAllModels < ActiveRecord::Migration[5.0]
 				:uom_categories,
 				:users
 				].each do |table|
-								
+
 		    add_column table, :deleted_at, :datetime
 		    add_index table, :deleted_at
 		end

@@ -185,3 +185,16 @@ if Account.count == 0
   Account.create(name: 'Statistics', type: '', description: 'This account contains entries made when commodities are taken into (Beginning Inventory, Donation, Purchase and Loan) and released (Utilization) from the system. Similar to "cash book" account.')
   puts "Created seed data for Account records"
 end
+
+if User.count == 0
+  User.create(name: 'Administrator', email: 'admin@cats.org', password: 'password')
+  puts "Created default user account 'admin@cats.org' with password 'password'"
+end
+
+if Role.count == 0
+  [:admin, :guest, :clerk, :manager].each do |role|
+    Role.create(name: role)      
+  end
+  puts "Created default roles"
+end
+
