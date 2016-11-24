@@ -1,4 +1,5 @@
 class OrganizationsController < ApplicationController
+  layout 'admin'
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
 
   # GET /organizations

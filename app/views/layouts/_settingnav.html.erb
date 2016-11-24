@@ -12,7 +12,7 @@
         <ul class="nav nav-second-level collapse">
           <li>
             <a href="#">Global settings</a>
-          </li>          
+          </li>
           <li class="<%= 'active' if is_active_controller('programs') %>">
             <%= link_to 'Programs', programs_path %>
           </li>
@@ -22,7 +22,7 @@
           <li>
             <a href="#">Languages</a>
           </li>
-          <li>
+          <li class="<%= 'active' if is_active_controller('organizations') %>">
               <%= link_to 'Organizations', organizations_path %>
           </li>
         </span>
@@ -55,38 +55,38 @@
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
-    <li>
+    <li class="<%= 'active' if is_active_controller('hubs') %>">
         <%= link_to 'Hubs', hubs_path %>
     </li>
-    <li>
+    <li class="<%= 'active' if is_active_controller('warehouses') %>">
       <%= link_to 'Warehouses', warehouses_path %>
     </li>
   </ul>
 </li>
 
- <li class="<%= 'active' if current_page?(commodity_categories_url) %>">
+ <li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "/home/minor" do %>
   <i class="fa fa-cube"></i>
   <span class="nav-label">Commodity</span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
-    <li>
+    <li class="<%= 'active' if is_active_controller('commodities') %>">
       <%= link_to 'Commodity', commodities_path %>
     </li>
-    <li>
+    <li class="<%= 'active' if is_active_controller('commodity_categories') %>">
       <%= link_to 'Commodity Types', commodity_categories_path %>
     </li>
     <li>
       <a href="#">Commodity sources</a>
     </li>
-    <li>
+    <li class="<%= 'active' if is_active_controller('unit_of_measures') %>">
       <%= link_to 'Measurement Units', unit_of_measures_path %>
     </li>
   </ul>
 </li>
 
-<li class="<%= 'active' if current_page?(commodity_categories_url) %>">
+<li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "/home/minor" do %>
   <i class="fa fa-cube"></i>
   <span class="nav-label">Accounting</span>

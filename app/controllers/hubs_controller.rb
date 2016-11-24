@@ -1,6 +1,6 @@
 class HubsController < ApplicationController
   before_action :set_hub, only: [:show, :edit, :update, :destroy]
-
+  layout 'admin'
   # GET /hubs
   # GET /hubs.json
   def index
