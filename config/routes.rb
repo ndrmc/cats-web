@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   end
 
   resources :warehouses
+  resources :stores
   resources :operations
   resources :accounts
   resources :fdps

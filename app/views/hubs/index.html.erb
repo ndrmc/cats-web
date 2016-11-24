@@ -26,7 +26,6 @@
           <tr>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>Location</th>
                         <th>Lat</th>
                         <th>Long</th>
                         <th>Actions</th>
@@ -37,8 +36,7 @@
           <% @hubs.each do |hub| %>
           <tr>
             <td><%= hub.name%></td>
-            <td><%= hub.description%></td>
-            <td><%= hub.location_id%></td>
+            <td><%= hub.description%></td>          
             <td><%= hub.lat %> </td>
             <td><%= hub.lon %> </td>
             <td>

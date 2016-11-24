@@ -26,9 +26,8 @@
           <tr>
                         <th>Name</th>
                         <th>Temporary</th>
+                        <th>Warehouse</th>
                         <th>Hub</th>
-                        <th>Store owner</th>
-                        <th>Store location</th>
                         <th>Actions</th>
           </tr>
         </thead>
@@ -36,15 +35,11 @@
         <tbody>
           <% @stores.each do |store| %>
           <tr>
-                        <td><%= store.name
-              %></td>
-                        <td><%= store.temporary
-              %></td>
-                        <td><%= store.warehouse.hub.name
-              %></td>
-                        <td><%= store.warehouse.name
-              %></td>
-                        <td>
+            <td><%= store.name%></td>
+            <td><%= store.temporary%></td>
+            <td><%= store.warehouse.name%></td>    
+            <td><%= store.warehouse.hub.name%></td>
+            <td>
               <%= link_to 'Edit', edit_store_path(store) %> &middot;
               <%= link_to 'Delete', store, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
