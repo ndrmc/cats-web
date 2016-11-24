@@ -353,13 +353,13 @@ ActiveRecord::Schema.define(version: 20161121113340) do
   end
 
   create_table "hubs", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                                  null: false
     t.string   "description"
-    t.decimal  "lat"
-    t.decimal  "lon"
+    t.decimal  "lat",         precision: 15, scale: 13
+    t.decimal  "lon",         precision: 15, scale: 13
     t.integer  "location_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
@@ -727,15 +727,15 @@ ActiveRecord::Schema.define(version: 20161121113340) do
   end
 
   create_table "warehouses", force: :cascade do |t|
-    t.string   "name",            null: false
+    t.string   "name",                                      null: false
     t.string   "description"
     t.integer  "hub_id"
     t.integer  "location_id"
     t.integer  "organization_id"
-    t.decimal  "lat"
-    t.decimal  "lon"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.decimal  "lat",             precision: 15, scale: 13
+    t.decimal  "lon",             precision: 15, scale: 13
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
