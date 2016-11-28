@@ -18,7 +18,8 @@
 </div>
 
 <div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
+  <div class="row">
+    <div class="ibox float-e-margins">
     <div class="ibox-content">
       <%= form_for(@hub) do |f| %>
         <% if @hub.errors.any? %>
@@ -61,8 +62,9 @@
       <div class="actions">
         <%= f.submit :class => 'btn btn-primary' %>
       </div>
-  <% end %>
+      <% end %>
 
+      </div>
     </div>
   </div>
 </div>
