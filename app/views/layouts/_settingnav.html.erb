@@ -19,10 +19,7 @@
           <li class="<%= 'active' if is_active_controller('currencies') %>">
             <%= link_to 'Currency', currencies_path %>
           </li>
-          <li>
-            <a href="#">Languages</a>
-          </li>
-          <li class="<%= 'active' if is_active_controller('organizations') %>">
+           <li class="<%= 'active' if is_active_controller('organizations') %>">
               <%= link_to 'Organizations', organizations_path %>
           </li>
         </span>
@@ -31,8 +28,8 @@
   </ul>
 </li>
 
-  <li class="<%= 'active' if current_page?(root_url) %>">
-    <%= link_to "/home/minor" do %>
+  <li>
+    <%= link_to "#" do %>
     <i class="fa fa-globe"></i>
     <span class="nav-label">Geography</span>
     <span class="fa arrow"></span>
@@ -48,8 +45,8 @@
     </ul>
   </li>
 
-<li class="<%= 'active' if current_page?('/home/minor') %>">
-  <%= link_to "/home/minor" do %>
+<li>
+  <%= link_to "#" do %>
   <i class="fa fa-bank"></i>
   <span class="nav-label">Warehouses & Stores</span>
   <span class="fa arrow"></span>
@@ -64,36 +61,36 @@
   </ul>
 </li>
 
- <li class="<%= 'active' if current_page?('/home/minor') %>">
-  <%= link_to "/home/minor" do %>
+ <li>
+  <%= link_to "#" do %>
   <i class="fa fa-cube"></i>
   <span class="nav-label">Commodity</span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
-    <li class="<%= 'active' if is_active_controller('commodities') %>">
+    <li class="<%= 'active' if is_active_controller('commodities') %>" >
       <%= link_to 'Commodity', commodities_path %>
     </li>
-    <li class="<%= 'active' if is_active_controller('commodity_categories') %>">
+    <li class="<%= 'active' if is_active_controller('commodity_categories') %>" >
       <%= link_to 'Commodity Types', commodity_categories_path %>
     </li>
     <li>
       <a href="#">Commodity sources</a>
     </li>
-    <li class="<%= 'active' if is_active_controller('unit_of_measures') %>">
+    <li class="<%= 'active' if is_active_controller('unit_of_measures') %>" >
       <%= link_to 'Measurement Units', unit_of_measures_path %>
     </li>
   </ul>
 </li>
 
 <li class="<%= 'active' if current_page?('/home/minor') %>">
-  <%= link_to "/home/minor" do %>
+  <%= link_to "#" do %>
   <i class="fa fa-cube"></i>
   <span class="nav-label">Accounting</span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
-    <li>
+    <li class="<%= 'active' if is_active_controller('accounts') %>" >
       <%= link_to 'Accounts', accounts_path %>
     </li>
   </ul>
