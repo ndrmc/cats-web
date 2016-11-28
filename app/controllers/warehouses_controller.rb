@@ -15,7 +15,9 @@ class WarehousesController < ApplicationController
   # GET /warehouses/new
   def new
     @warehouse = Warehouse.new
-    @warehouse.hub_id=params[:hub_id]
+    if(params[:hub_id])
+      @warehouse.hub_id=params[:hub_id]
+    end
   end
 
   # GET /warehouses/1/edit
@@ -25,12 +27,13 @@ class WarehousesController < ApplicationController
   # POST /warehouses
   # POST /warehouses.json
   def create
-    @hub=params[:hub_id]
     @warehouse = Warehouse.new(warehouse_params)
-    @warehouse.hub_id=params[:hub_id]
+    if(!@warehouse.hub_id)
+      @warehouse.hub_id=params[:hub_id]
+    end
     respond_to do |format|
       if @warehouse.save
-        format.html { redirect_to hub_path(@hub), notice: 'Store location was successfully created.' }
+        format.html { redirect_to warehouses_path, notice: 'Store location was successfully created.' }
         format.json { render :show, status: :created, location: @warehouse }
       else
         format.html { render :new }
@@ -42,10 +45,9 @@ class WarehousesController < ApplicationController
   # PATCH/PUT /warehouses/1
   # PATCH/PUT /warehouses/1.json
   def update
-    @hub=Hub.find(@warehouse.hub_id)
     respond_to do |format|
       if @warehouse.update(warehouse_params)
-        format.html { redirect_to hub_path(@hub), notice: 'Store location was successfully updated.' }
+        format.html { redirect_to warehouse_path(@warehouse), notice: 'Store location was successfully updated.' }
         format.json { render :show, status: :ok, location: @warehouse }
       else
         format.html { render :edit }
@@ -73,6 +75,6 @@ class WarehousesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_params
-      params.require(:warehouse).permit(:name, :description, :location_id, :organization_id, :lat, :lon)
+      params.require(:warehouse).permit(:name, :description, :hub_id, :location_id, :organization_id, :lat, :lon)
     end
 end

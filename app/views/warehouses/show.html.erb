@@ -1,3 +1,124 @@
-<%= render 'form', warehouse: @warehouse %>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>View warehouse</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Warehouse</a>
+      </li>
+      <li class="active">
+        <strong>Show</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', warehouses_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Back', hub_warehouses_path(@warehouse.hub,@warehouse) %>
+<div class="wrapper wrapper-content">
+<div class="row">
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+    <%= fields_for @warehouse do |f| %>
+      <% if @warehouse.errors.any? %>
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <%= pluralize(@warehouse.errors.count, "error") %> prohibited this warehouse from being saved.
+          </div>
+
+          <div class="panel-body">
+            <ul>
+              <% @warehouse.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+      <dl class="small m-t-md">
+        <dt> <%= f.label :name %></dt>
+        <dd><%= @warehouse.name %></dd>
+        <br>
+        <dt><%= f.label :description %></dt>
+        <dd><%= @warehouse.description%></dd>
+        <br>
+        <dt><%= f.label :location_id %></dt>
+        <dd><% if @warehouse.location_id %>
+          <% Location.find(@warehouse.location_id).ancestors.each do |a|%>
+            <%= a.name %>/
+          <% end %>
+          <%= Location.find(@warehouse.location_id).name%>
+        <% end %>
+        </dd>
+        <br>
+        <dt><%= f.label :owner_id %></dt>
+        <dd>
+          <% if @warehouse.organization_id %>
+            <%= @warehouse.organization.name %>
+          <% end %>
+        <dd>
+        <br>
+        <dt><%= f.label :lat %></dt>
+        <dd><%= @warehouse.lat%></dd>
+        <br>
+        <dt><%= f.label :lon %></dt>
+        <dd><%= @warehouse.lon%></dd>
+      </dl>
+      <div class="row">
+        <div class='col-xs-8'></div>
+        <div class='col-xs-4'>
+          <div class="title-action">
+            <%= link_to 'Edit', edit_warehouse_path(@warehouse), :class=>'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+<% end %>
+  </div>
+</div>
+</div>
+<div class="row">
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+<div class="panel-body">
+  <h5> Stores </h5>
+  <div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Temporary</th>
+          <th>Warehouse</th>
+          <th>Hub</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @warehouse.stores.each do |store| %>
+        <tr>
+          <td><%= store.name %></td>
+          <td><%= store.temporary%></td>
+          <td><%= store.warehouse.name %></td>
+          <td><%= store.warehouse.hub.name %></td>
+          <td>
+            <%= link_to 'Edit', edit_store_path(store) %> &middot;
+            <%= link_to 'Delete', store_path, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Store', new_warehouse_store_path(@warehouse), :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+</div>

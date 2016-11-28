@@ -28,7 +28,7 @@ class HubsController < ApplicationController
 
     respond_to do |format|
       if @hub.save
-        format.html { redirect_to @hub, notice: 'Hub was successfully created.' }
+        format.html { redirect_to hubs_path, notice: 'Hub was successfully created.' }
         format.json { render :show, status: :created, location: @hub }
       else
         format.html { render :new }

@@ -21,7 +21,7 @@
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
-      <table class="table table-striped">
+      <table class="table table-striped cats-datatable">
         <thead>
           <tr>
                         <th>Name</th>
@@ -36,10 +36,11 @@
           <% @hubs.each do |hub| %>
           <tr>
             <td><%= hub.name%></td>
-            <td><%= hub.description%></td>          
+            <td><%= hub.description%></td>
             <td><%= hub.lat %> </td>
             <td><%= hub.lon %> </td>
             <td>
+              <%= link_to 'View', hub_path(hub) %> &middot;
               <%= link_to 'Edit', edit_hub_path(hub) %> &middot;
               <%= link_to 'Delete', hub, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
