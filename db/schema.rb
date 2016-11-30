@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121113340) do
+ActiveRecord::Schema.define(version: 20161128112900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -353,11 +353,13 @@ ActiveRecord::Schema.define(version: 20161121113340) do
   end
 
   create_table "hubs", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                                  null: false
     t.string   "description"
+    t.decimal  "lat",         precision: 15, scale: 13
+    t.decimal  "lon",         precision: 15, scale: 13
     t.integer  "location_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
@@ -411,6 +413,18 @@ ActiveRecord::Schema.define(version: 20161121113340) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_operations_on_deleted_at", using: :btree
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.string   "long_name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_organizations_on_deleted_at", using: :btree
   end
 
   create_table "programs", force: :cascade do |t|
@@ -527,44 +541,18 @@ ActiveRecord::Schema.define(version: 20161121113340) do
     t.index ["name"], name: "index_seasons_on_name", unique: true, using: :btree
   end
 
-  create_table "store_locations", force: :cascade do |t|
-    t.string   "name",        null: false
-    t.string   "description"
-    t.integer  "hub_id"
-    t.integer  "location_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_store_locations_on_deleted_at", using: :btree
-  end
-
-  create_table "store_owners", force: :cascade do |t|
-    t.string   "name",        null: false
-    t.string   "long_name"
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_store_owners_on_deleted_at", using: :btree
-  end
-
   create_table "stores", force: :cascade do |t|
     t.string   "name",              null: false
     t.boolean  "temporary"
-    t.integer  "hub_id"
-    t.integer  "store_owner_id"
-    t.integer  "store_location_id"
+    t.integer  "warehouse_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.string   "store_keeper_name"
     t.index ["deleted_at"], name: "index_stores_on_deleted_at", using: :btree
-    t.index ["name", "hub_id"], name: "index_stores_on_name_and_hub_id", unique: true, using: :btree
+    t.index ["name", "warehouse_id"], name: "index_stores_on_name_and_warehouse_id", unique: true, using: :btree
   end
 
   create_table "transport_order_items", force: :cascade do |t|
@@ -737,6 +725,22 @@ ActiveRecord::Schema.define(version: 20161121113340) do
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_users_roles_on_deleted_at", using: :btree
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+  end
+
+  create_table "warehouses", force: :cascade do |t|
+    t.string   "name",                                      null: false
+    t.string   "description"
+    t.integer  "hub_id"
+    t.integer  "location_id"
+    t.integer  "organization_id"
+    t.decimal  "lat",             precision: 15, scale: 13
+    t.decimal  "lon",             precision: 15, scale: 13
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_warehouses_on_deleted_at", using: :btree
   end
 
 end

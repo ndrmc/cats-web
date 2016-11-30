@@ -12,14 +12,14 @@
         <ul class="nav nav-second-level collapse">
           <li>
             <a href="#">Global settings</a>
-          </li>          
+          </li>
           <li class="<%= 'active' if is_active_controller('programs') %>">
             <%= link_to 'Programs', programs_path %>
           </li>
           <li class="<%= 'active' if is_active_controller('currencies') %>">
             <%= link_to 'Currency', currencies_path %>
           </li>
-          <li>
+           <li class="<%= 'active' if is_active_controller('organizations') %>">
               <%= link_to 'Organizations', organizations_path %>
           </li>
         </span>
@@ -52,10 +52,10 @@
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
-    <li class="<%= 'active' if is_active_controller('hubs') %>" >
+    <li class="<%= 'active' if is_active_controller('hubs') %>">
         <%= link_to 'Hubs', hubs_path %>
     </li>
-    <li class="<%= 'active' if is_active_controller('warehouses')%>" >
+    <li class="<%= 'active' if is_active_controller('warehouses') %>">
       <%= link_to 'Warehouses', warehouses_path %>
     </li>
   </ul>
@@ -83,7 +83,7 @@
   </ul>
 </li>
 
-<li class="<%= 'active' if current_page?(commodity_categories_url) %>">
+<li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "#" do %>
   <i class="fa fa-cube"></i>
   <span class="nav-label">Accounting</span>

@@ -1,5 +1,6 @@
 <div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
+  <div class="row">
+    <div class="ibox float-e-margins">
     <div class="ibox-content">
       <%= form_for(unit_of_measure) do |f| %>
         <% if unit_of_measure.errors.any? %>
@@ -52,8 +53,9 @@
       <div class="actions">
         <%= f.submit :class => 'btn btn-primary' %>
       </div>
-  <% end %>
+      <% end %>
 
+      </div>
     </div>
   </div>
 </div>

@@ -1,2 +1,156 @@
-<%= render 'form', hub: @hub %>
-<%= link_to 'Back', hubs_path %>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>View Hub</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Hub</a>
+      </li>
+      <li class="active">
+        <strong>Show</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', hubs_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= fields_for(@hub) do |f| %>
+        <% if @hub.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(@hub.errors.count, "error") %> prohibited this hub from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% @hub.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+        <dl class="small m-t-md">
+          <dt> <%= f.label :name %></dt>
+          <dd><%= @hub.name %></dd>
+          <br>
+          <dt><%= f.label :description %></dt>
+          <dd><%= @hub.description%></dd>
+          <br>
+          <dt><%= f.label :location_id %></dt>
+          <dd><% if @hub.location_id %>
+            <% Location.find(@hub.location_id).ancestors.each do |a|%>
+              <%= a.name %>/
+            <% end %>
+            <%= Location.find(@hub.location_id).name%>
+          <% end %>
+          </dd>
+        </dl>
+        <div class="row">
+          <div class='col-xm-8'></div>
+          <div class='col-xm-4'>
+            <div class="title-action">
+              <%= link_to 'Edit', edit_hub_path(@hub), :class=>'btn btn-primary' %>
+            </div>
+          </div>
+        </div>
+     <% end %>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="form-group">
+    <div class="tabs-container">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> Warehouses </a></li>
+        <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">Stores</a></li>
+      </ul>
+      <div class="tab-content">
+        <div id="tab-1" class="tab-pane active">
+          <div class="panel-body">
+            <div>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Owner</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <% @hub.warehouses.each do |hub_warehouse| %>
+                      <tr>
+                        <td><%= hub_warehouse.name %></td>
+                        <td><%= hub_warehouse.description %></td>
+                        <td>
+                            <% if hub_warehouse.organization_id %>
+                              <%= hub_warehouse.organization.name %>
+                            <%end%>
+                        </td>
+                        <td>
+                          <%= link_to 'Edit', edit_warehouse_path(hub_warehouse) %> &middot;
+                          <%= link_to 'Delete', warehouse_path(hub_warehouse), method: :delete, data: { confirm: 'Are you sure?' } %>
+                        </td>
+                      </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+            </div>
+            <div class="col-sm-8">
+              <div class="title-action">
+                <%= link_to 'New Warehouse', new_hub_warehouse_path(@hub), :class => "btn btn-primary"%>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-2" class="tab-pane">
+          <div class="panel-body">
+            <div>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Temporary</th>
+                    <th>Warehouse</th>
+                    <th>Hub</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% @hub.stores.each do |store| %>
+                  <tr>
+                    <td><%= store.name %></td>
+                    <td><%= store.temporary%></td>
+                    <td><%= store.warehouse.name%></td>
+                    <td><%= store.warehouse.hub.name%></td>
+                    <td>
+                      <%= link_to 'Edit', edit_store_path(store) %> &middot;
+                      <%= link_to 'Delete', store, method: :delete, data: { confirm: 'Are you sure?' } %>
+                    </td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-sm-8">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  </div>
+</div>

@@ -18,6 +18,7 @@
 </div>
 
 <div class="wrapper wrapper-content">
+  <div class="row">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
       <%= form_for @warehouse, url:hub_warehouses_path do |f| %>
@@ -46,6 +47,11 @@
                             <%= f.label :description %>
                 <%= f.text_field :description, :class => 'form-control' %>
                         </div>
+                <div class="form-group">
+                  <%= f.label 'hub_id' %>
+                  <%= f.collection_select :hub_id,
+                        Hub.order(:name),:id,:name, include_blank: true, :class => 'form-control' %>
+                </div>
 
                 <%= render 'shared/location_selector', name: 'warehouse[location_id]', requiredLevels:['region', 'zone'], locationId: @warehouse.location_id %>
 
@@ -69,4 +75,5 @@
 
     </div>
   </div>
+  <div>
 </div>

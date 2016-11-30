@@ -12,20 +12,22 @@
   </div>
  <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'New Warehouse', hubs_path, :class => "btn btn-primary"%>
+      <%= link_to 'New Warehouse',  new_hub_warehouse_path(0), :class => "btn btn-primary"%>
     </div>
   </div>
 </div>
 
 <div class="wrapper wrapper-content">
+  <div class="row">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
-      <table class="table table-striped">
+      <table class="table table-striped cats-datatable">
         <thead>
           <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Hub</th>
             <th>Owner</th>
             <th>Actions</th>
           </tr>
@@ -35,13 +37,19 @@
           <% @warehouses.each do |warehouse| %>
           <tr>
               <td><%= warehouse.name %></td>
-              <td><%= warehouse.description%></td>        
+              <td><%= warehouse.description%></td>
+              <td>
+                <% if warehouse.hub_id%>
+                  <%=Hub.find(warehouse.hub_id).name%>
+                <% end %>
+              </td>
               <td>
                 <% if warehouse.organization_id%>
                   <%=warehouse.organization.name%>
                 <% end %>
               </td>
               <td>
+                <%= link_to 'View', warehouse_path(warehouse) %> &middot;
                 <%= link_to 'Edit', edit_warehouse_path(warehouse) %> &middot;
                 <%= link_to 'Delete', warehouse, method: :delete, data: { confirm: 'Are you sure?' } %>
               </td>
@@ -53,4 +61,4 @@
     </div>
   </div>
 </div>
-<%= link_to 'Back', :back %>
+</div>
