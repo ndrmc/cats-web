@@ -9,6 +9,9 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  commodity_id       :integer
+#  created_by         :integer
+#  modified_by        :integer
+#  deleted_at         :datetime
 #
 
 require 'test_helper'

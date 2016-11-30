@@ -6,10 +6,11 @@
 #  name        :string           not null
 #  description :string
 #  location_id :integer
-#  lat         :float
-#  long        :float
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  created_by  :integer
+#  modified_by :integer
+#  deleted_at  :datetime
 #
 
 class Hub < ApplicationRecord

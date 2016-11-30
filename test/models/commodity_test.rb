@@ -12,11 +12,14 @@
 #  hazardous             :boolean
 #  cold_storage          :boolean
 #  min_temperature       :float
-#  mix_temperature       :float
+#  max_temperature       :float
 #  commodity_category_id :integer
 #  unit_of_measure_id    :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  created_by            :integer
+#  modified_by           :integer
+#  deleted_at            :datetime
 #
 
 require 'test_helper'

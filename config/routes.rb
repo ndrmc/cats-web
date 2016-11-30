@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get 'setting/index'
+
   devise_for :users
+  resources :users
 
   get "home/index"
   get "home/minor"

@@ -2,13 +2,16 @@
 #
 # Table name: locations
 #
-#  id               :integer          not null, primary key
-#  name             :string           not null
-#  code             :string
-#  location_type_id :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  ancestry         :string
+#  id            :integer          not null, primary key
+#  name          :string           not null
+#  code          :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  ancestry      :string
+#  location_type :integer
+#  created_by    :integer
+#  modified_by   :integer
+#  deleted_at    :datetime
 #
 
 class Location < ApplicationRecord

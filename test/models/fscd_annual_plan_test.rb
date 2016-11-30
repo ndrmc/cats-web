@@ -2,16 +2,19 @@
 #
 # Table name: fscd_annual_plans
 #
-#  id         :integer          not null, primary key
-#  name       :string           not null
-#  code       :string
-#  year       :string
-#  duration   :integer
-#  status     :integer          default("draft"), not null
-#  archive    :boolean
-#  ration_id  :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  name        :string           not null
+#  code        :string
+#  year        :string
+#  duration    :integer
+#  status      :integer          default("draft"), not null
+#  archive     :boolean
+#  ration_id   :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  created_by  :integer
+#  modified_by :integer
+#  deleted_at  :datetime
 #
 
 require 'test_helper'
