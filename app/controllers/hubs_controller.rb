@@ -1,8 +1,6 @@
 class HubsController < ApplicationController
   before_action :set_hub, only: [:show, :edit, :update, :destroy]
-
   layout 'admin'
-
   # GET /hubs
   # GET /hubs.json
   def index
@@ -30,7 +28,7 @@ class HubsController < ApplicationController
 
     respond_to do |format|
       if @hub.save
-        format.html { redirect_to @hub, notice: 'Hub was successfully created.' }
+        format.html { redirect_to hubs_path, notice: 'Hub was successfully created.' }
         format.json { render :show, status: :created, location: @hub }
       else
         format.html { render :new }

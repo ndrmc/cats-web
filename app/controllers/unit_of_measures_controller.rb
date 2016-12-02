@@ -29,7 +29,7 @@ class UnitOfMeasuresController < ApplicationController
 
     respond_to do |format|
       if @unit_of_measure.save
-        format.html { redirect_to @unit_of_measure, notice: 'Unit of measure was successfully created.' }
+        format.html { redirect_to unit_of_measures_path, notice: 'Unit of measure was successfully created.' }
         format.json { render :show, status: :created, location: @unit_of_measure }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class UnitOfMeasuresController < ApplicationController
   def update
     respond_to do |format|
       if @unit_of_measure.update(unit_of_measure_params)
-        format.html { redirect_to @unit_of_measure, notice: 'Unit of measure was successfully updated.' }
+        format.html { redirect_to unit_of_measures_path, notice: 'Unit of measure was successfully updated.' }
         format.json { render :show, status: :ok, location: @unit_of_measure }
       else
         format.html { render :edit }

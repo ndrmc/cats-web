@@ -533,14 +533,15 @@ ActiveRecord::Schema.define(version: 20161201063253) do
   end
 
   create_table "stores", force: :cascade do |t|
-    t.string   "name",         null: false
+    t.string   "name",              null: false
     t.boolean  "temporary"
     t.integer  "warehouse_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.string   "store_keeper_name"
     t.index ["deleted_at"], name: "index_stores_on_deleted_at", using: :btree
     t.index ["name", "warehouse_id"], name: "index_stores_on_name_and_warehouse_id", unique: true, using: :btree
   end
@@ -703,7 +704,7 @@ ActiveRecord::Schema.define(version: 20161201063253) do
     t.datetime "deleted_at"
     t.boolean  "is_active",              default: true
     t.string   "first_name"
-    t.string   "last_nae"
+    t.string   "last_name"
     t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree

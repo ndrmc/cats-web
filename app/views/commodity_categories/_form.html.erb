@@ -1,5 +1,6 @@
 <div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
+  <div class="row">
+    <div class="ibox float-e-margins">
     <div class="ibox-content">
       <%= form_for(commodity_category) do |f| %>
         <% if commodity_category.errors.any? %>
@@ -38,12 +39,13 @@
                 <%= f.text_field :description, :class => 'form-control' %>
                         </div>
 
-      
+
       <div class="actions">
         <%= f.submit :class => 'btn btn-primary' %>
       </div>
-  <% end %>
+      <% end %>
 
+      </div>
     </div>
   </div>
 </div>

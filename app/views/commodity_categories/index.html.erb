@@ -18,39 +18,31 @@
 </div>
 
 <div class="wrapper wrapper-content">
+  <div class="row">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
-      <table class="table table-striped">
+      <table class="table table-striped cats-datatable">
         <thead>
           <tr>
-                        <th>Name</th>
-                        <th>Code</th>
-                        <th>Code am</th>
-                        <th>Description</th>
-                        <th>Actions</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Code am</th>
+            <th>Description</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
           <% @commodity_categories.each do |commodity_category| %>
           <tr>
-                        <td><%= commodity_category.name
-              %></td>
-                        <td><%= commodity_category.code
-              %></td>
-                        <td><%= commodity_category.code_am
-              %></td>
-                        <td><%= commodity_category.description
-              %></td>
-                        <td>
-              <%= link_to edit_commodity_category_path(commodity_category) do%>
-                <i class="fa fa-edit text-navy"></i>
-              <% end %>
-               &middot;
-              <%= link_to commodity_category, method: :delete, data: { confirm: 'Are you sure?' } do%>
-                  <i class="fa fa-eraser text-navy"></i>
-              <% end %>
+            <td><%= commodity_category.name %></td>
+            <td><%= commodity_category.code %></td>
+            <td><%= commodity_category.code_am %></td>
+            <td><%= commodity_category.description %></td>
+            <td>
+              <%= link_to 'Edit', edit_commodity_category_path(commodity_category) %> &middot;
+              <%= link_to 'Delete', commodity_category, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
           </tr>
           <% end %>
@@ -59,4 +51,5 @@
 
     </div>
   </div>
+</div>
 </div>

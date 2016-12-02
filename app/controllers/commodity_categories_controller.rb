@@ -29,7 +29,7 @@ class CommodityCategoriesController < ApplicationController
 
     respond_to do |format|
       if @commodity_category.save
-        format.html { redirect_to @commodity_category, notice: 'Commodity category was successfully created.' }
+        format.html { redirect_to commodity_categories_path, notice: 'Commodity category was successfully created.' }
         format.json { render :show, status: :created, location: @commodity_category }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class CommodityCategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @commodity_category.update(commodity_category_params)
-        format.html { redirect_to @commodity_category, notice: 'Commodity category was successfully updated.' }
+        format.html { redirect_to commodity_categories_path, notice: 'Commodity category was successfully updated.' }
         format.json { render :show, status: :ok, location: @commodity_category }
       else
         format.html { render :edit }
