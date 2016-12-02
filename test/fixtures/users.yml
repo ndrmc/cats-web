@@ -4,7 +4,6 @@
 #
 #  id                     :integer          not null, primary key
 #  email                  :string           default(""), not null
-#  name                   :string           not null
 #  language               :string
 #  keyboard               :string
 #  calendar               :string
@@ -27,6 +26,8 @@
 #  modified_by            :integer
 #  deleted_at             :datetime
 #  is_active              :boolean          default(TRUE)
+#  first_name             :string
+#  last_nae               :string
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

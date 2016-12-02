@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   get 'setting/index'
 
-  devise_for :users
-  resources :users
 
   get "home/index"
   get "home/minor"
@@ -15,6 +13,16 @@ Rails.application.routes.draw do
 
   get 'locations/:parentId/children', to: 'locations#children'
 
+
+
+  devise_for :users
+
+  resources :users
+  resources :roles
+
+  get 'users/:id/roles', to: 'users#roles'
+
+  put 'users/:id/updateRoles', to: 'users#updateRoles'
 
   resources :currencies
   resources :donors
