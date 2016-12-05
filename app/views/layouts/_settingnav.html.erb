@@ -96,21 +96,18 @@
   </ul>
 </li>
 
-<li class="<%= 'active' if current_page?('/home/minor') %>">
+<li>
   <%= link_to "/home/minor" do %>
   <i class="fa fa-users"></i>
   <span class="nav-label">Users & accounts</span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
-    <li>
-      <a href="#">User accounts</a>
+    <li class="<%= 'active' if is_active_controller('users') %>">
+      <a href="#"><%= link_to 'User accounts', users_path %></a>
     </li>
-    <li>
-      <a href="#">Roles & groups</a>
-    </li>
-    <li>
-      <a href="#">Permissions</a>
+    <li class="<%= 'active' if is_active_controller('roles') %>">
+      <a href="#"><%= link_to 'Roles', roles_path %></a>
     </li>
   </ul>
 </li>

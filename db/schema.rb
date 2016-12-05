@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161128112900) do
+ActiveRecord::Schema.define(version: 20161201063253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,15 +149,6 @@ ActiveRecord::Schema.define(version: 20161128112900) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
-  end
-
-  create_table "controllers", force: :cascade do |t|
-    t.string   "Organization"
-    t.string   "name"
-    t.string   "long_name"
-    t.string   "description"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
   end
 
   create_table "currencies", force: :cascade do |t|
@@ -689,8 +680,7 @@ ActiveRecord::Schema.define(version: 20161128112900) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "name",                                null: false
+    t.string   "email",                  default: "",   null: false
     t.string   "language"
     t.string   "keyboard"
     t.string   "calendar"
@@ -698,20 +688,23 @@ ActiveRecord::Schema.define(version: 20161128112900) do
     t.string   "region"
     t.string   "organization_unit"
     t.string   "hub"
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "encrypted_password",     default: "",   null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,    null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_active",              default: true
+    t.string   "first_name"
+    t.string   "last_name"
     t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree

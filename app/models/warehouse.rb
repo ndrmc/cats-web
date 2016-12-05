@@ -2,16 +2,19 @@
 #
 # Table name: warehouses
 #
-#  id          :integer          not null, primary key
-#  name        :string           not null
-#  description :string
-#  hub_id      :integer
-#  location_id :integer
-#  lat         :float
-#  long        :float
+#  id              :integer          not null, primary key
+#  name            :string           not null
+#  description     :string
+#  hub_id          :integer
+#  location_id     :integer
 #  organization_id :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  lat             :decimal(15, 13)
+#  lon             :decimal(15, 13)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  created_by      :integer
+#  modified_by     :integer
+#  deleted_at      :datetime
 #
 
 class Warehouse < ApplicationRecord
