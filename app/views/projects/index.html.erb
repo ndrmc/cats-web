@@ -44,7 +44,7 @@
               <td><%= Organization.find(project.organization_id).name%></td>
               <td><%= project.amount%></td>
               <td><%= UnitOfMeasure.find(project.unit_of_measure_id).name%></td>
-              <td><%= project.date.strftime('%d-%b-%Y')%></td>
+              <td><%= project.publish_date.strftime('%d-%b-%Y')%></td>
               <td>
                 <%= link_to 'Edit', edit_project_path(project) %> &middot;
                 <%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' } %>

@@ -7,6 +7,6 @@ class Project < ApplicationRecord
   validates :organization_id, presence: true
   validates :amount, presence: true
   validates :unit_of_measure_id, presence: true
-  validates :date, presence: true
+  validates :publish_date, presence: true
 
 end

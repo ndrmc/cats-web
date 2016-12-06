@@ -7,7 +7,7 @@ class CreateProjects < ActiveRecord::Migration
       t.integer :organization_id
       t.decimal :amount
       t.integer :unit_of_measure_id
-      t.date :date
+      t.date :publish_date
 
       t.integer :created_by
       t.integer :modified_by

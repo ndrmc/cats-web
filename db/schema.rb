@@ -151,15 +151,6 @@ ActiveRecord::Schema.define(version: 20161205141834) do
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
   end
 
-  create_table "controllers", force: :cascade do |t|
-    t.string   "Organization"
-    t.string   "name"
-    t.string   "long_name"
-    t.string   "description"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
   create_table "currencies", force: :cascade do |t|
     t.string   "name",        null: false
     t.string   "symbol"
@@ -447,7 +438,7 @@ ActiveRecord::Schema.define(version: 20161205141834) do
     t.integer  "organization_id"
     t.decimal  "amount"
     t.integer  "unit_of_measure_id"
-    t.datetime "date"
+    t.date     "publish_date"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
