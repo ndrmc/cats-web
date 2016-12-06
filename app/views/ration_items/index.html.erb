@@ -1,0 +1,54 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Ration (<%=  @ration.reference_no %>)</h2>
+    <blockquote>
+      <%= @ration.description %>
+    </blockquote>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#"><%=  @ration.reference_no %></a>
+      </li>
+      <li class="active">
+        <strong>Ration Items</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Ration Item', new_ration_ration_item_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Commodity</th>
+            <th>Unit of measure</th>
+            <th>Amount</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @ration_items.each do |ration_item| %>
+          <tr>
+            <td><%= ration_item.commodity.name%></td>
+            <td><%= ration_item.unit_of_measure.name%></td>
+            <td><%= ration_item.amount%></td>
+            <td>
+              <%= link_to 'Edit', edit_ration_ration_item_path(ration_item.ration,ration_item) %> &middot;
+              <%= link_to 'Delete', ration_ration_item_path(ration_item.ration,ration_item), method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
