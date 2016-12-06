@@ -24,23 +24,21 @@
       <table class="table table-striped">
         <thead>
           <tr>
-                        <th>Reference no</th>
-                        <th>Description</th>
-                        <th>Current</th>
-                        <th>Actions</th>
+            <th>Reference no</th>
+            <th>Description</th>
+            <th>Current</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
           <% @rations.each do |ration| %>
           <tr>
-                        <td><%= ration.reference_no
-              %></td>
-                        <td><%= ration.description
-              %></td>
-                        <td><%= ration.current
-              %></td>
-                        <td>
+            <td><%= ration.reference_no %></td>
+            <td><%= ration.description %></td>
+            <td><%= ration.current %></td>
+            <td>
+              <%= link_to 'Manage Items', ration_ration_items_path(ration) %> &middot;
               <%= link_to 'Edit', edit_ration_path(ration) %> &middot;
               <%= link_to 'Delete', ration, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>

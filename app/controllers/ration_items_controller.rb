@@ -5,7 +5,7 @@ class RationItemsController < ApplicationController
   # GET /ration_items.json
   def index
     @ration = Ration.find params[:ration_id]
-    @ration_items = RationItem.all
+    @ration_items = RationItem.where ration: @ration
   end
 
   # GET /ration_items/1
