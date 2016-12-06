@@ -6,9 +6,10 @@
 
       <li class="<%= 'active' if current_page?('/home/minor') %>">
         <%=link_to "plan#index" do %>
-        <i class="fa fa-calendar"></i>
-        <span class="nav-label">Plan</span>
-        <span class="fa arrow"></span><% end %>
+          <i class="fa fa-calendar"></i>
+          <span class="nav-label">Plan</span>
+          <span class="fa arrow"></span>
+        <% end %>
         <ul class="nav nav-second-level collapse" style="height: 0px;">
           <li>
             <a href="#">HRD</a>
@@ -16,8 +17,8 @@
           <li>
             <a href="#">PSNP Annual Plan</a>
           </li>
-          <li>
-            <a href="#">Receipt Plan</a>
+          <li >
+            <%= link_to 'Receipt Plan', projects_path %>
           </li>
           <li>
             <a href="#">Bid Plans</a>

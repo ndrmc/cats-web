@@ -73,13 +73,13 @@
         <div class="form-group">
           <%= f.label :commodity_category %>
           <%= f.collection_select :commodity_category_id,
-                    CommodityCategory.order(:name),:id,:name, include_blank: true, :class => 'form-control' %>
+                    CommodityCategory.order(:name),:id,:name,{include_blank: true}, {class:'form-control'}%>
 
         </div>
         <div class="form-group">
           <%= f.label :unit_of_measure %>
           <%= f.collection_select :unit_of_measure_id,
-                     UnitOfMeasure.order(:name),:id,:name, include_blank: true, :class => 'form-control' %>
+                     UnitOfMeasure.order(:name),:id,:name, {include_blank: true}, {class:'form-control'} %>
 
         </div>
 
