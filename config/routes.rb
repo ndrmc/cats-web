@@ -43,6 +43,8 @@ Rails.application.routes.draw do
   resources :fdps
   resources :organizations
 
+  resources :receipts 
+
   root to: 'dashboard#index'
 
 end

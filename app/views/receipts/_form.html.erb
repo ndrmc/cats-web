@@ -1,0 +1,47 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(receipt) do |f| %>
+      <% if receipt.errors.any? %>
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <%= pluralize(receipt.errors.count, "error") %>
+          prohibited this receipt from being saved.
+        </div>
+
+        <div class="panel-body">
+          <ul>
+            <% receipt.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :grn_no, "GRN Number" %>
+        <%= f.text_field :grn_no, :class => 'form-control', :autofocus => true %>
+      </div>
+
+
+
+
+
+
+
+
+
+      <div class="form-group">
+        <%= f.label :remark %>
+        <%= f.text_area :remark, :class => 'form-control' %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>

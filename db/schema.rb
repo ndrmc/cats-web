@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170203073504) do
+ActiveRecord::Schema.define(version: 20170203075328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -137,6 +137,16 @@ ActiveRecord::Schema.define(version: 20170203073504) do
     t.index ["ancestry"], name: "index_commodity_categories_on_ancestry", using: :btree
     t.index ["code"], name: "index_commodity_categories_on_code", unique: true, using: :btree
     t.index ["deleted_at"], name: "index_commodity_categories_on_deleted_at", using: :btree
+  end
+
+  create_table "commodity_sources", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -429,6 +439,16 @@ ActiveRecord::Schema.define(version: 20170203073504) do
     t.index ["deleted_at"], name: "index_programs_on_deleted_at", using: :btree
   end
 
+  create_table "projects", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "quotations", force: :cascade do |t|
     t.integer  "bid_submission_id"
     t.integer  "store_id"
@@ -599,6 +619,16 @@ ActiveRecord::Schema.define(version: 20170203073504) do
     t.string   "store_keeper_name"
     t.index ["deleted_at"], name: "index_stores_on_deleted_at", using: :btree
     t.index ["name", "warehouse_id"], name: "index_stores_on_name_and_warehouse_id", unique: true, using: :btree
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.string   "name",                        null: false
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "transport_order_items", force: :cascade do |t|
