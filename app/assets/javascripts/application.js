@@ -22,6 +22,8 @@
 
 //= require sweetalert2
 
+//= require datepicker/bootstrap-datepicker.js
+
 //= require_tree .
 
 

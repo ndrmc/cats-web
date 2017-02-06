@@ -25,13 +25,137 @@
       </div>
 
 
+      <div class="form-group">
+        <%= f.label :store_id %>
+        <%= f.collection_select :store_id,
+                  Store.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control' }%>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :received_date %>
+        <%= f.text_field :received_date, :class => 'form-control datepicker' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :storekeeper_name, "Received By" %>
+        <%= f.text_field :storekeeper_name, :class => 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :waybill_no, "Waybill(s)" %>
+        <%= f.text_field :waybill_no, :class => 'form-control' %>
+      </div>
 
 
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Commodities</a></li>
+          <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Transporter</a></li>
+        </ul>
+        
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab_1">
+            
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Commodity Category</th>
+                  <th>Commodity</th>
+                  <th>Quantity</th>
+                  <th>Project</th>
+                </tr>
+              </thead>
+
+              <tbody id="receiptLinesTableBody">
+                  <tr>
+                      <td>
+                         <%= select_tag 'commodityCategory',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , { :id => 'commodityCategory', :name => 'commodityCategory', :class => 'form-control'} %>
+                      </td>
+                      <td>
+                        <%= select_tag 'commodity',  options_from_collection_for_select( Commodity.all, 'id', 'name' ) , { :id => 'commodity', :name => 'commodity', :class => 'form-control'} %>
+                      </td>
+                      <td>
+                          <input type="number" class="form-control" id="commodity-amount" required/>
+                      </td>
+                      <td>
+                       <%= select_tag 'project',  options_from_collection_for_select( Project.all, 'id', 'name' ) , { :id => 'project', :name => 'project', :class => 'form-control'} %>
+                      </td>
+                      <td>
+                          <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
+                      </td>
+                  </tr>
+              </tbody>
+            
+            </table>
+
+          </div>
 
 
+          <!-- /.tab-pane -->
+          <div class="tab-pane" id="tab_2">
+            <div class="form-group col-md-6">
+                <label  for="weightBridgeTicket">Weight Bridge Ticket # <span class="required">*</span>
+                </label>
+                <div>
+                    <%= f.number_field :weight_bridge_ticket_no, :class => 'form-control' %>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label  for="transporter">Transporter <span class="required">*</span>
+                </label>
+                <div>
+                <%= f.collection_select :transporter_id,
+                  Transporter.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control' } %>
+                </div>
+            </div>
 
+            <div class="form-group col-md-6">
+                <label  for="weightBeforeUnloading">Weight Before Unloading
+                </label>
+                <div>
+                    <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label  for="plateNumber">Plate # <span class="required">*</span>
+                </label>
+                <div>
+                    <%= f.text_field :plate_no, :class => 'form-control' %>
+                </div>
+            </div>
 
+            <div class="form-group col-md-6">
+                <label  for="weightAfterUnloading">Weight Before Unloading
+                </label>
+                <div>
+                    <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label  for="trailerPlateNumber">Trailer Plate #
+                </label>
+                <div>
+                    <%= f.text_field :trailer_plate_no, :class => 'form-control' %>
+                </div>
+            </div>
 
+            <div class="form-group col-md-6">
+                
+            </div>
+            <div class="form-group col-md-6">
+                <label  for="driversName">Driver's Name
+                </label>
+                <div>
+                    <%= f.text_field :drivers_name, :class => 'form-control' %>
+                </div>
+            </div>
+
+          </div>
+
+       </div>
+        
+     </div>
+        
       <div class="form-group">
         <%= f.label :remark %>
         <%= f.text_area :remark, :class => 'form-control' %>
