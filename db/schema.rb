@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161201063253) do
+ActiveRecord::Schema.define(version: 20161205141834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -429,6 +429,22 @@ ActiveRecord::Schema.define(version: 20161201063253) do
     t.datetime "deleted_at"
     t.index ["code"], name: "index_programs_on_code", unique: true, using: :btree
     t.index ["deleted_at"], name: "index_programs_on_deleted_at", using: :btree
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string   "project_code"
+    t.integer  "commodity_id"
+    t.integer  "commodity_source"
+    t.integer  "organization_id"
+    t.decimal  "amount"
+    t.integer  "unit_of_measure_id"
+    t.date     "publish_date"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
   end
 
   create_table "quotations", force: :cascade do |t|
