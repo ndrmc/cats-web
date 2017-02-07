@@ -1,54 +1,78 @@
 <div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
-      <%= form_for(operation) do |f| %>
-        <% if operation.errors.any? %>
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <%= pluralize(operation.errors.count, "error") %> prohibited this operation from being saved.
-            </div>
+  <div>
+    <%= form_for(operation,:html=> {:class => 'form-horizontal'})  do |f| %>
+    <% if operation.errors.any? %>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <%= pluralize(operation.errors.count, "error") %>
+        prohibited this operation from being saved.
+      </div>
 
-            <div class="panel-body">
-              <ul>
-                <% operation.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-                <% end %>
-              </ul>
+      <div class="panel-body">
+        <ul>
+          <% operation.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    <% end %>
+
+    <div>
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Basic information</h5>
+        </div>
+
+        <div class="ibox-content">
+
+          <div class="form-group form-group-lg">
+            <%= f.label :name, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-10">
+              <%= f.text_field :name, :class => 'form-control' %>
             </div>
           </div>
-        <% end %>
 
-                <div class="form-group">
-                            <%= f.label :name %>
-                <%= f.text_field :name, :class => 'form-control' %>
-                        </div>
+          <div class="form-group">
+            <%= f.label :program_id, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-4">
+              <%= f.text_field :program_id, :class => 'form-control' %>
+            </div>
+          </div>
 
-                <div class="form-group">
-                            <%= f.label :program_id %>
-                <%= f.text_field :program_id, :class => 'form-control' %>
-                        </div>
+          <div class="form-group">
+            <%= f.label :year, :class=>'col-sm-2 control-label' %>
+            <div class="col-sm-4">
+              <%= f.text_field :year, :class => 'form-control' %>
+            </div>
+          </div>
 
-                <div class="form-group">
-                            <%= f.label :year %>
-                <%= f.text_field :year, :class => 'form-control' %>
-                        </div>
+          <div class="form-group">
+            <%= f.label :month, :class=> 'col-sm-2 control-label' %>
+            <div class="col-sm-4">
+              <%= f.text_field :month, :class => 'form-control' %>
+            </div>
+          </div>
 
-                <div class="form-group">
-                            <%= f.label :month %>
-                <%= f.text_field :month, :class => 'form-control' %>
-                        </div>
+          <div class="form-group">
+            <%= f.label :status, :class=> 'col-sm-2 control-label' %>
+            <div class="col-sm-4">
+              <%= f.text_field :status, :class => 'form-control' %>
+            </div>
+          </div>
 
-                <div class="form-group">
-                            <%= f.label :status %>
-                <%= f.text_field :status, :class => 'form-control' %>
-                        </div>
+        </div>
 
-      
+      </div>
+
       <div class="actions">
         <%= f.submit :class => 'btn btn-primary' %>
       </div>
-  <% end %>
 
     </div>
+
+    <% end %>
+
   </div>
+
 </div>

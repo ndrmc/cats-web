@@ -27,5 +27,4 @@ class Commodity < ApplicationRecord
   belongs_to :unit_of_measure
 
   validates :name , presence: true
-
 end
