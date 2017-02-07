@@ -24,6 +24,8 @@
       <thead>
       <tr>
             <th>GRN Number</th>
+            <th>Received Date</th>
+            <th>Remark</th>
             <th>Actions</th>
       </tr>
       </thead>
@@ -32,6 +34,8 @@
         <% @receipts.each do |receipt| %>
             <tr>
                 <td><%= receipt.grn_no %></td>
+                <td><%= receipt.received_date %></td>
+                <td><%= receipt.remark %></td>
                 <td>
                     <%= link_to 'Edit', edit_receipt_path(receipt) %> &middot;
                     <%= link_to 'Delete', receipt, method: :delete, data: { confirm: 'Are you sure?' } %>
