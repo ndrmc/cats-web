@@ -15,7 +15,13 @@
 #
 
 class RationItem < ApplicationRecord
+
+  validates :amount, presence: true , :numericality => true
+  validates :commodity, :unit_of_measure, :ration, presence: true
+
   belongs_to :ration
+  belongs_to :unit_of_measure
+  belongs_to :commodity
 
   def total_amount(beneficiaries)
     return self.amount * beneficiaries

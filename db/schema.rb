@@ -340,6 +340,8 @@ ActiveRecord::Schema.define(version: 20170203075328) do
     t.integer  "month_from"
     t.integer  "month_to"
     t.integer  "duration"
+    t.boolean  "archived"
+    t.boolean  "current"
     t.integer  "season_id"
     t.integer  "ration_id"
     t.datetime "created_at",              null: false
@@ -440,13 +442,19 @@ ActiveRecord::Schema.define(version: 20170203075328) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string   "name"
+    t.string   "project_code"
+    t.integer  "commodity_id"
+    t.integer  "commodity_source"
+    t.integer  "organization_id"
+    t.decimal  "amount"
+    t.integer  "unit_of_measure_id"
+    t.date     "publish_date"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
   end
 
   create_table "quotations", force: :cascade do |t|

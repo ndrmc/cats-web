@@ -1,0 +1,27 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>New Ration Item</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Ration Item</a>
+      </li>
+      <li class="active">
+        <strong>New</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', ration_ration_items_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<%= render 'form',
+           ration_item: @ration_item,
+           ration: @ration,
+           all_commodities: @all_commodities,
+           unit_of_measures: @unit_of_measures
+
+%>
+

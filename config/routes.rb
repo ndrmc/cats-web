@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'setting/index'
-
+  devise_for :users
 
   get "home/index"
   get "home/minor"
@@ -13,9 +13,6 @@ Rails.application.routes.draw do
 
   get 'locations/:parentId/children', to: 'locations#children'
 
-
-
-  devise_for :users
 
   resources :users
   resources :roles
@@ -42,6 +39,13 @@ Rails.application.routes.draw do
   resources :accounts
   resources :fdps
   resources :organizations
+  resources :projects
+
+  resources :rations do
+    resources :ration_items
+  end
+
+  get 'ration_items/unitOfMeasureSelectForCommodity'
 
   resources :receipts 
 

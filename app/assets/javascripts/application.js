@@ -22,6 +22,7 @@
 //= require toastr
 
 //= require sweetalert2
+//= require datapicker/bootstrap-datepicker.js
 
 //= require datepicker/bootstrap-datepicker.js
 
@@ -36,4 +37,3 @@ $(document).ready(function() {
     activeLi.parentsUntil( 'nav', 'li').addClass('active');
     activeLi.parentsUntil( 'nav', 'ul').removeClass('collapse');
 });
-

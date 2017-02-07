@@ -9,21 +9,21 @@
         <i class="fa fa-calendar"></i>
         <span class="nav-label">Plan</span>
         <span class="fa arrow"></span><% end %>
-        <ul class="nav nav-second-level collapse" style="height: 0px;">
+        <ul class="nav nav-second-level collapse">
           <li>
             <a href="#">HRD</a>
           </li>
           <li>
             <a href="#">PSNP Annual Plan</a>
           </li>
-          <li>
-            <a href="#">Receipt Plan</a>
+          <li >
+            <%= link_to 'Receipt Plan', projects_path %>
           </li>
           <li>
             <a href="#">Bid Plans</a>
           </li>
-          <li>
-            <a href="#">Rations</a>
+          <li class="<%= 'active' if is_active_controller('rations') || is_active_controller('ration_items')  %>">
+            <%= link_to 'Rations', rations_path %>
           </li>
         </a>
       </li>
