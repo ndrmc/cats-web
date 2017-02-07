@@ -1,0 +1,1 @@
+<%= select_tag 'ration_item[unit_of_measure_id]', options_for_select(@relevant_uoms.all.map { |u| [u.name, u.id]}), { :include_blank => true, :class => 'form-control', :id => 'ration_item_uom_select' } %>

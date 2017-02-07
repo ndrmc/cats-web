@@ -1,0 +1,17 @@
+    <p>
+      <strong>Reference no:</strong>
+      <%= @ration.reference_no %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @ration.description %>
+    </p>
+
+    <p>
+      <strong>Current:</strong>
+      <%= @ration.current %>
+    </p>
+
+<%= link_to 'Edit', edit_ration_path(@ration) %> |
+<%= link_to 'Back', rations_path %>

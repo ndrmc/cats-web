@@ -43,6 +43,12 @@ Rails.application.routes.draw do
   resources :fdps
   resources :organizations
 
+  resources :rations do
+    resources :ration_items
+  end
+
+  get 'ration_items/unitOfMeasureSelectForCommodity'
+
   root to: 'dashboard#index'
 
 end
