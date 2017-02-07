@@ -1,0 +1,3 @@
+class DeliveryItem < ApplicationRecord
+    
+end
