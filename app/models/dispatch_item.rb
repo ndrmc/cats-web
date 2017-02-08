@@ -18,4 +18,9 @@
 
 class DispatchItem < ApplicationRecord
     belongs_to :dispatch
+
+    belongs_to :commodity_category
+    belongs_to :commodity
+    belongs_to :receipt 
+    belongs_to :project 
 end

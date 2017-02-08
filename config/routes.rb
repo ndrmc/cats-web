@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   resources :operations
   resources :accounts
   resources :fdps
+  get 'fdps/location/:location_id', to: 'fdps#get_by_location'
+
   resources :organizations
   resources :projects
 
@@ -48,6 +50,7 @@ Rails.application.routes.draw do
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
   resources :receipts 
+  resources :dispatches 
 
   root to: 'dashboard#index'
 
