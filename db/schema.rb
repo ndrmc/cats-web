@@ -139,6 +139,16 @@ ActiveRecord::Schema.define(version: 20170207103030) do
     t.index ["deleted_at"], name: "index_commodity_categories_on_deleted_at", using: :btree
   end
 
+  create_table "commodity_sources", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "contracts", force: :cascade do |t|
     t.string   "contract_no",  null: false
     t.integer  "transport_id"
@@ -530,6 +540,63 @@ ActiveRecord::Schema.define(version: 20170207103030) do
     t.index ["reference_no"], name: "index_rations_on_reference_no", unique: true, using: :btree
   end
 
+  create_table "receipt_lines", force: :cascade do |t|
+    t.integer  "receipt_id"
+    t.integer  "commodity_category_id"
+    t.integer  "commodity_id"
+    t.decimal  "quantity"
+    t.integer  "project_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",               default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
+    t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
+    t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
+    t.index ["receipt_id"], name: "index_receipt_lines_on_receipt_id", using: :btree
+  end
+
+  create_table "receipts", force: :cascade do |t|
+    t.string   "grn_no",                                  null: false
+    t.datetime "received_date"
+    t.integer  "hub_id"
+    t.integer  "warehouse_id"
+    t.string   "delivered_by"
+    t.integer  "supplier_id"
+    t.integer  "transporter_id"
+    t.string   "plate_no"
+    t.string   "trailer_plate_no"
+    t.string   "weight_bridge_ticket_no"
+    t.decimal  "weight_before_unloading"
+    t.decimal  "weight_after_unloading"
+    t.string   "storekeeper_name"
+    t.string   "waybill_no"
+    t.string   "purchase_request_no"
+    t.string   "purchase_order_no"
+    t.string   "invoice_no"
+    t.integer  "commodity_source_id"
+    t.integer  "program_id"
+    t.integer  "store_id"
+    t.string   "drivers_name"
+    t.text     "remark"
+    t.boolean  "draft",                   default: false
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",                 default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.index ["commodity_source_id"], name: "index_receipts_on_commodity_source_id", using: :btree
+    t.index ["hub_id"], name: "index_receipts_on_hub_id", using: :btree
+    t.index ["program_id"], name: "index_receipts_on_program_id", using: :btree
+    t.index ["store_id"], name: "index_receipts_on_store_id", using: :btree
+    t.index ["supplier_id"], name: "index_receipts_on_supplier_id", using: :btree
+    t.index ["transporter_id"], name: "index_receipts_on_transporter_id", using: :btree
+    t.index ["warehouse_id"], name: "index_receipts_on_warehouse_id", using: :btree
+  end
+
   create_table "requisition_items", force: :cascade do |t|
     t.integer  "requisition_id"
     t.integer  "commodity_id"
@@ -603,6 +670,16 @@ ActiveRecord::Schema.define(version: 20170207103030) do
     t.string   "store_keeper_name"
     t.index ["deleted_at"], name: "index_stores_on_deleted_at", using: :btree
     t.index ["name", "warehouse_id"], name: "index_stores_on_name_and_warehouse_id", unique: true, using: :btree
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.string   "name",                        null: false
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "transport_order_items", force: :cascade do |t|

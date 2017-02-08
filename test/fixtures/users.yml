@@ -27,7 +27,7 @@
 #  deleted_at             :datetime
 #  is_active              :boolean          default(TRUE)
 #  first_name             :string
-#  last_nae               :string
+#  last_name              :string
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
