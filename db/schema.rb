@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161205141834) do
+ActiveRecord::Schema.define(version: 20170207103030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,49 @@ ActiveRecord::Schema.define(version: 20161205141834) do
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_currencies_on_deleted_at", using: :btree
     t.index ["name"], name: "index_currencies_on_name", unique: true, using: :btree
+  end
+
+  create_table "deliveries", force: :cascade do |t|
+    t.string   "receiving_number"
+    t.integer  "donor_id"
+    t.integer  "transporter_id"
+    t.string   "primary_plate_number"
+    t.string   "trailer_plate_number"
+    t.string   "driver_name"
+    t.integer  "fdp_id"
+    t.integer  "dispatch_id"
+    t.string   "waybill_number"
+    t.string   "requisition_number"
+    t.integer  "hub_id"
+    t.string   "invoice_number"
+    t.string   "delivery_by"
+    t.date     "delivery_date"
+    t.string   "received_by"
+    t.date     "received_date"
+    t.string   "document_received_by"
+    t.date     "document_received_date"
+    t.integer  "status"
+    t.integer  "action_type"
+    t.text     "action_type_remark"
+    t.integer  "posting_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "delivery_details", force: :cascade do |t|
+    t.integer  "commodity_id"
+    t.integer  "uom_id"
+    t.decimal  "sent_quantity"
+    t.decimal  "recieved_quantity"
+    t.integer  "delivery_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "donors", force: :cascade do |t|

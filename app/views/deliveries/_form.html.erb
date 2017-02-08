@@ -1,0 +1,139 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(delivery) do |f| %>
+        <% if delivery.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(delivery.errors.count, "error") %> prohibited this delivery from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% delivery.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :receiving_number %>
+                <%= f.text_field :receiving_number, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :donor_id %>
+                <%= f.number_field :donor_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :transporter_id %>
+                <%= f.number_field :transporter_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :primary_plate_number %>
+                <%= f.text_field :primary_plate_number, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :trailer_plate_number %>
+                <%= f.text_field :trailer_plate_number, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :driver_name %>
+                <%= f.text_field :driver_name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :fdp_id %>
+                <%= f.number_field :fdp_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :dispatch_id %>
+                <%= f.number_field :dispatch_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :waybill_number %>
+                <%= f.number_field :waybill_number, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :requisition_number %>
+                <%= f.text_field :requisition_number, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :hub_id %>
+                <%= f.number_field :hub_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :invoice_number %>
+                <%= f.text_field :invoice_number, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :delivery_by %>
+                <%= f.text_field :delivery_by, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :delivery_date %>
+                <%= f.date_select :delivery_date, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :received_by %>
+                <%= f.text_field :received_by, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :received_date %>
+                <%= f.date_select :received_date, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :document_received_by %>
+                <%= f.text_field :document_received_by, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :document_received_date %>
+                <%= f.text_field :document_received_date, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :status %>
+                <%= f.number_field :status, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :action_type %>
+                <%= f.number_field :action_type, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :action_type_remark %>
+                <%= f.text_area :action_type_remark, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :posting_id %>
+                <%= f.number_field :posting_id, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

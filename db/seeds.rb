@@ -187,7 +187,7 @@ if Account.count == 0
 end
 
 if User.count == 0
-  User.create(name: 'Administrator', email: 'admin@cats.org', password: 'password')
+  User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password')
   puts "Created default user account 'admin@cats.org' with password 'password'"
 end
 

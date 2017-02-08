@@ -2,7 +2,6 @@ class CreateDeliveries < ActiveRecord::Migration[5.0]
   def change
     create_table :deliveries do |t|
 
-      t.string :delivery_id
       t.string :receiving_number
       t.integer :donor_id
       t.integer :transporter_id
@@ -18,13 +17,19 @@ class CreateDeliveries < ActiveRecord::Migration[5.0]
       t.string :delivery_by
       t.date :delivery_date
       t.string :received_by
-      t.date :receive_date
-      t.string :document_received_date
+      t.date :received_date
+      t.string :document_received_by
       t.date :document_received_date
       t.integer :status
       t.integer :action_type
       t.text :action_type_remark
-      t.integer :pisting_id
+      t.integer :posting_id
+
+      t.integer :created_by
+      t.integer :modified_by
+      t.boolean :deleted, :default false
+      t.datetime :deleted_at
+
 
       t.timestamps
     end
