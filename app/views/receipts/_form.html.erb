@@ -67,18 +67,52 @@
               </thead>
 
               <tbody id="receiptLinesTableBody">
+
+                  <% @receipt.receipt_lines.each do |receipt_line| %>
+                  
+                  <tr class="receipt-line">
+                    <td>
+                      <input type="hidden" name="receipt[receipt_lines[][id]]" value="<%= receipt_line.id %>" />
+                      <select name="receipt[receipt_lines[][commodity_category_id]]" class="form-control" readonly>
+                        <option value="<%= receipt_line.commodity_category.id %>"><%= receipt_line.commodity_category.name %></option>
+                      </select>
+                    </td>
+                    <td>
+                      <select name="receipt[receipt_lines[][commodity_id]]" class="form-control" readonly>
+                        <option value="<%= receipt_line.commodity.id %>"><%= receipt_line.commodity.name %></option>
+                      </select>
+                    </td>
+                    <td>
+                          <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" value="<%= receipt_line.quantity %>" readonly/>
+                    </td>
+                    <td>
+                      <select name="receipt[receipt_lines[][project_id]]" class="form-control" readonly>
+                        <option value="<%= receipt_line.project.id %>"><%= receipt_line.project.project_code %></option>
+                      </select>
+                    </td>
+                    <td>
+                      <a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>
+                    </td>
+                  </tr>
+                    
+                  <% end %>
                   <tr>
                       <td>
-                         <%= select_tag 'receipt[receipt_lines[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control'} %>
+                         <%= select_tag 'receipt[receipt_lines[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
                       </td>
                       <td>
-                        <%= select_tag 'receipt[receipt_lines[][commodity_id]]',  options_from_collection_for_select( Commodity.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+                        <select name="receipt[receipt_lines[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
+                          <option value="">-- Choose --</option>
+                          <% Commodity.all.each do |commodity| %>
+                            <option value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden"><%= commodity.name %></option>
+                          <% end %>
+                        </select>
                       </td>
                       <td>
                           <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
                       </td>
                       <td>
-                       <%= select_tag 'receipt[receipt_lines[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+                       <%= select_tag 'receipt[receipt_lines[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
                       </td>
                       <td>
                           <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
@@ -223,6 +257,26 @@
                       }
 
                   });
+
+
+                  $('#commodity-category-select').change( function() { 
+                    var val = $(this).val();
+
+                    if( val === '' ) {
+                      return; 
+                    }
+
+
+                    $("#commodity-select > option").addClass('hidden'); 
+                    $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
+
+                    $("#commodity-select > option:first").removeClass('hidden'); 
+
+
+
+                  });
+
+
 
 
               });

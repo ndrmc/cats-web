@@ -340,8 +340,6 @@ ActiveRecord::Schema.define(version: 20170203075328) do
     t.integer  "month_from"
     t.integer  "month_to"
     t.integer  "duration"
-    t.boolean  "archived"
-    t.boolean  "current"
     t.integer  "season_id"
     t.integer  "ration_id"
     t.datetime "created_at",              null: false
