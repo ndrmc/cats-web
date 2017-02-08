@@ -98,10 +98,15 @@
                   <% end %>
                   <tr>
                       <td>
-                         <%= select_tag 'receipt[receipt_lines[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control'} %>
+                         <%= select_tag 'receipt[receipt_lines[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
                       </td>
                       <td>
-                        <%= select_tag 'receipt[receipt_lines[][commodity_id]]',  options_from_collection_for_select( Commodity.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+                        <select name="receipt[receipt_lines[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
+                          <option value="">-- Choose --</option>
+                          <% Commodity.all.each do |commodity| %>
+                            <option value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden"><%= commodity.name %></option>
+                          <% end %>
+                        </select>
                       </td>
                       <td>
                           <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
@@ -252,6 +257,26 @@
                       }
 
                   });
+
+
+                  $('#commodity-category-select').change( function() { 
+                    var val = $(this).val();
+
+                    if( val === '' ) {
+                      return; 
+                    }
+
+
+                    $("#commodity-select > option").addClass('hidden'); 
+                    $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
+
+                    $("#commodity-select > option:first").removeClass('hidden'); 
+
+
+
+                  });
+
+
 
 
               });
