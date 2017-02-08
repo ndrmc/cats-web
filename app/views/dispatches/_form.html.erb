@@ -38,7 +38,7 @@
         <%= f.text_field :dispatch_date, :class => 'form-control datepicker', :required => true  %>
       </div>
 
-      <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: @dispatch.fdp ?  @dispatch.fdp : nil  %>
+      <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: (@dispatch.fdp ?  @dispatch.fdp.id : nil)  %>
       
     </div>
   </div>
