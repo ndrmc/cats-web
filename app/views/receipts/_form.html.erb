@@ -1,4 +1,4 @@
-<%= form_for(receipt) do |f| %>
+<%= form_for(receipt, :html=> {:id => 'receipt-form'} ) do |f| %>
 
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
@@ -162,7 +162,7 @@
       </div>
 
       <div class="actions">
-            <%= f.submit :class => 'btn btn-primary' %>
+            <%= f.submit :class => 'btn btn-primary', :id => 'submit-receipt' %>
       </div>
     </div>
   </div>
@@ -198,7 +198,9 @@
 
                       $newRow.find('td').last().html(REMOVE_RECEIPTLINE_BTN); 
 
-                      $newRow.find(':input').removeAttr('id').prop('readonly', true); 
+                      $newRow.find(':input').attr('readonly', true).removeAttr('id'); 
+
+                      $newRow.addClass('receipt-line');
 
                       $newRow.insertBefore( $receiptLineForm); 
 
@@ -209,6 +211,17 @@
                       $(e.target).closest( 'tr').fadeOut('slow', function(){
                         $(this).remove();
                       });
+                  });
+
+                  $('#submit-receipt').click( function(e) { 
+
+                      if( $('.receipt-line').length === 0 ) { 
+                        toastr.error("You need to atleast add one commodity."); 
+
+                        e.preventDefault();
+                        return; 
+                      }
+
                   });
 
 
