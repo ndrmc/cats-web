@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170203075328) do
+ActiveRecord::Schema.define(version: 20170208123024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -172,6 +172,48 @@ ActiveRecord::Schema.define(version: 20170203075328) do
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_currencies_on_deleted_at", using: :btree
     t.index ["name"], name: "index_currencies_on_name", unique: true, using: :btree
+  end
+
+  create_table "dispatch_items", force: :cascade do |t|
+    t.integer  "dispatch_id"
+    t.integer  "commodity_category_id"
+    t.integer  "commodity_id"
+    t.decimal  "quantity"
+    t.integer  "project_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",               default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.index ["commodity_category_id"], name: "index_dispatch_items_on_commodity_category_id", using: :btree
+    t.index ["commodity_id"], name: "index_dispatch_items_on_commodity_id", using: :btree
+    t.index ["dispatch_id"], name: "index_dispatch_items_on_dispatch_id", using: :btree
+    t.index ["project_id"], name: "index_dispatch_items_on_project_id", using: :btree
+  end
+
+  create_table "dispatches", force: :cascade do |t|
+    t.string   "gin_no",                                      null: false
+    t.integer  "operation_id"
+    t.string   "requisition_number"
+    t.datetime "dispatch_date"
+    t.integer  "fdp_id"
+    t.string   "weight_bridge_ticket_number"
+    t.integer  "transporter_id"
+    t.string   "plate_number"
+    t.string   "trailer_plate_number"
+    t.string   "drivers_name"
+    t.text     "remark"
+    t.boolean  "draft",                       default: false
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",                     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
+    t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
+    t.index ["transporter_id"], name: "index_dispatches_on_transporter_id", using: :btree
   end
 
   create_table "donors", force: :cascade do |t|

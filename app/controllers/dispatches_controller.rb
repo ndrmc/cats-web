@@ -1,0 +1,2 @@
+class DispatchesController < ApplicationController
+end
