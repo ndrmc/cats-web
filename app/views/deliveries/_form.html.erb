@@ -23,10 +23,6 @@
                 <%= f.text_field :receiving_number, :class => 'form-control' %>
                         </div>
 
-                <div class="form-group">
-                            <%= f.label :donor_id %>
-                <%= f.number_field :donor_id, :class => 'form-control' %>
-                        </div>
 
                 <div class="form-group">
                             <%= f.label :transporter_id %>
@@ -54,8 +50,8 @@
                         </div>
 
                 <div class="form-group">
-                            <%= f.label :dispatch_id %>
-                <%= f.number_field :dispatch_id, :class => 'form-control' %>
+                            <%= f.label :gin_number %>
+                <%= f.number_field :gin_number, :class => 'form-control' %>
                         </div>
 
                 <div class="form-group">
@@ -68,26 +64,7 @@
                 <%= f.text_field :requisition_number, :class => 'form-control' %>
                         </div>
 
-                <div class="form-group">
-                            <%= f.label :hub_id %>
-                <%= f.number_field :hub_id, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :invoice_number %>
-                <%= f.text_field :invoice_number, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :delivery_by %>
-                <%= f.text_field :delivery_by, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :delivery_date %>
-                <%= f.date_select :delivery_date, :class => 'form-control' %>
-                        </div>
-
+               
                 <div class="form-group">
                             <%= f.label :received_by %>
                 <%= f.text_field :received_by, :class => 'form-control' %>
@@ -97,35 +74,16 @@
                             <%= f.label :received_date %>
                 <%= f.date_select :received_date, :class => 'form-control' %>
                         </div>
-
-                <div class="form-group">
-                            <%= f.label :document_received_by %>
-                <%= f.text_field :document_received_by, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :document_received_date %>
-                <%= f.text_field :document_received_date, :class => 'form-control' %>
-                        </div>
+               
 
                 <div class="form-group">
                             <%= f.label :status %>
                 <%= f.number_field :status, :class => 'form-control' %>
-                        </div>
+                        </div>               
 
                 <div class="form-group">
-                            <%= f.label :action_type %>
-                <%= f.number_field :action_type, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :action_type_remark %>
-                <%= f.text_area :action_type_remark, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :posting_id %>
-                <%= f.number_field :posting_id, :class => 'form-control' %>
+                            <%= f.label :operation_id %>
+                <%= f.number_field :operation_id, :class => 'form-control' %>
                         </div>
 
       

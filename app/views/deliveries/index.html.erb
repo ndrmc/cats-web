@@ -17,95 +17,59 @@
   </div>
 </div>
 
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+      <div class="row m-b-sm m-t-sm">
+      <div class="form-group">
+          
+         
+    <form method='GET' class = 'form-inline'>
+      <label>Operation</label> <input name="operation_id"></input>
+       <label>FDP</label> <input name="fdp_id" ></input>
+       <label>Gin</label> <input name="gin_number"></input>
+       <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
 
-      <table class="table table-striped">
-        <thead>
-          <tr>
-                        <th>Receiving number</th>
-                        <th>Donor</th>
-                        <th>Transporter</th>
-                        <th>Primary plate number</th>
-                        <th>Trailer plate number</th>
-                        <th>Driver name</th>
-                        <th>Fdp</th>
-                        <th>Dispatch</th>
-                        <th>Waybill number</th>
-                        <th>Requisition number</th>
-                        <th>Hub</th>
-                        <th>Invoice number</th>
-                        <th>Delivery by</th>
-                        <th>Delivery date</th>
-                        <th>Received by</th>
-                        <th>Received date</th>
-                        <th>Document received by</th>
-                        <th>Document received date</th>
-                        <th>Status</th>
-                        <th>Action type</th>
-                        <th>Action type remark</th>
-                        <th>Posting</th>
-                        <th>Actions</th>
-          </tr>
-        </thead>
+    </form>
+        </div>
 
-        <tbody>
-          <% @deliveries.each do |delivery| %>
-          <tr>
-                        <td><%= delivery.receiving_number
-              %></td>
-                        <td><%= delivery.donor_id
-              %></td>
-                        <td><%= delivery.transporter_id
-              %></td>
-                        <td><%= delivery.primary_plate_number
-              %></td>
-                        <td><%= delivery.trailer_plate_number
-              %></td>
-                        <td><%= delivery.driver_name
-              %></td>
-                        <td><%= delivery.fdp_id
-              %></td>
-                        <td><%= delivery.dispatch_id
-              %></td>
-                        <td><%= delivery.waybill_number
-              %></td>
-                        <td><%= delivery.requisition_number
-              %></td>
-                        <td><%= delivery.hub_id
-              %></td>
-                        <td><%= delivery.invoice_number
-              %></td>
-                        <td><%= delivery.delivery_by
-              %></td>
-                        <td><%= delivery.delivery_date
-              %></td>
-                        <td><%= delivery.received_by
-              %></td>
-                        <td><%= delivery.received_date
-              %></td>
-                        <td><%= delivery.document_received_by
-              %></td>
-                        <td><%= delivery.document_received_date
-              %></td>
-                        <td><%= delivery.status
-              %></td>
-                        <td><%= delivery.action_type
-              %></td>
-                        <td><%= delivery.action_type_remark
-              %></td>
-                        <td><%= delivery.posting_id
-              %></td>
-                        <td>
-              <%= link_to 'Edit', edit_delivery_path(delivery) %> &middot;
-              <%= link_to 'Delete', delivery, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+                          <th>Receiving number</th> 
+                          <th>FDP</th>
+                          <th>Gin</th>
+                          <th>Requisition number</th>
+                          <th>Received by</th>
+                          <th>Received date</th>
+                          <th>Status</th>
+                          <th>Operation</th>
+                          <th>Actions</th>
+            </tr>
+          </thead>
 
+          <tbody>
+            <% @deliveries.each do |delivery| %>
+            <tr>
+              <td><%= delivery.receiving_number%></td>                          
+              <td><%= delivery.fdp_id%></td>
+              <td><%= delivery.gin_number%></td>
+              <td><%= delivery.requisition_number%></td>
+              <td><%= delivery.received_by%></td>
+              <td><%= delivery.received_date%></td>
+              <td><%= delivery.status%></td>
+               <td><%= delivery.operation_id%></td>
+               <td>
+                <%= link_to 'Edit', edit_delivery_path(delivery) %> &middot;
+                <%= link_to 'Delete', delivery, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+      </div>
     </div>
   </div>
 </div>

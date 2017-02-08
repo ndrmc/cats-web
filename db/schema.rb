@@ -176,32 +176,24 @@ ActiveRecord::Schema.define(version: 20170207103030) do
 
   create_table "deliveries", force: :cascade do |t|
     t.string   "receiving_number"
-    t.integer  "donor_id"
     t.integer  "transporter_id"
     t.string   "primary_plate_number"
     t.string   "trailer_plate_number"
     t.string   "driver_name"
     t.integer  "fdp_id"
-    t.integer  "dispatch_id"
+    t.integer  "gin_number"
     t.string   "waybill_number"
     t.string   "requisition_number"
-    t.integer  "hub_id"
-    t.string   "invoice_number"
-    t.string   "delivery_by"
-    t.date     "delivery_date"
     t.string   "received_by"
     t.date     "received_date"
-    t.string   "document_received_by"
-    t.date     "document_received_date"
     t.integer  "status"
-    t.integer  "action_type"
-    t.text     "action_type_remark"
-    t.integer  "posting_id"
+    t.integer  "operation_id"
     t.integer  "created_by"
     t.integer  "modified_by"
+    t.boolean  "deleted",              default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "delivery_details", force: :cascade do |t|
@@ -212,9 +204,10 @@ ActiveRecord::Schema.define(version: 20170207103030) do
     t.integer  "delivery_id"
     t.integer  "created_by"
     t.integer  "modified_by"
+    t.boolean  "deleted",           default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "donors", force: :cascade do |t|

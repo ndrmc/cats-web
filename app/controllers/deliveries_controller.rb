@@ -4,8 +4,18 @@ class DeliveriesController < ApplicationController
   # GET /deliveries
   # GET /deliveries.json
   def index
-    @deliveries = Delivery.all
+    # @deliveries = Delivery.all
+
+    #  if params[:search]
+    #   @deliveries = Post.search(params[:search]).order("created_at DESC")
+    #  else
+    #   @deliveries = Post.all.order('created_at DESC')
+    #  end
+    
+      @deliveries = Delivery.filter(params.slice(:fdp_id, :operation_id, :gin_number))
+
   end
+
 
   # GET /deliveries/1
   # GET /deliveries/1.json
@@ -15,6 +25,7 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/new
   def new
     @delivery = Delivery.new
+   
   end
 
   # GET /deliveries/1/edit
@@ -69,6 +80,6 @@ class DeliveriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def delivery_params
-      params.require(:delivery).permit(:receiving_number, :donor_id, :transporter_id, :primary_plate_number, :trailer_plate_number, :driver_name, :fdp_id, :dispatch_id, :waybill_number, :requisition_number, :hub_id, :invoice_number, :delivery_by, :delivery_date, :received_by, :received_date, :document_received_by, :document_received_date, :status, :action_type, :action_type_remark, :posting_id)
+      params.require(:delivery).permit(:receiving_number, :transporter_id, :primary_plate_number, :trailer_plate_number, :driver_name, :fdp_id, :gin_number, :waybill_number, :requisition_number, :received_by, :received_date, :status, :operation_id)
     end
 end
