@@ -8,8 +8,6 @@
 #  month_from  :integer
 #  month_to    :integer
 #  duration    :integer
-#  archived    :boolean
-#  current     :boolean
 #  season_id   :integer
 #  ration_id   :integer
 #  created_at  :datetime         not null

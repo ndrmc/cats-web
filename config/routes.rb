@@ -47,6 +47,8 @@ Rails.application.routes.draw do
 
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
+  resources :receipts 
+
   root to: 'dashboard#index'
 
 end

@@ -1,7 +1,7 @@
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
+// Any JavaScript file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
 // or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
 //
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
@@ -12,7 +12,8 @@
 //
 //= require jquery/jquery-2.1.1.js
 //= require jquery_ujs
-
+//= require jquery.fix-clone
+//= require parsley.min
 //= require bootstrap-sprockets
 //= require metisMenu/jquery.metisMenu.js
 //= require pace/pace.min.js
@@ -22,6 +23,8 @@
 
 //= require sweetalert2
 //= require datapicker/bootstrap-datepicker.js
+
+//= require datepicker/bootstrap-datepicker.js
 
 //= require_tree .
 

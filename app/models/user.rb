@@ -27,7 +27,7 @@
 #  deleted_at             :datetime
 #  is_active              :boolean          default(TRUE)
 #  first_name             :string
-#  last_name               :string
+#  last_name              :string
 #
 
 class User < ApplicationRecord
