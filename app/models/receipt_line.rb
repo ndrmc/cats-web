@@ -17,7 +17,10 @@
 #
 
 class ReceiptLine < ApplicationRecord
+    acts_as_paranoid
 
-
+    belongs_to :commodity_category
+    belongs_to :commodity
     belongs_to :receipt 
+    belongs_to :project 
 end
