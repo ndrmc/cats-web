@@ -1,19 +1,19 @@
-<%= form_for(receipt, :html=> {:id => 'receipt-form'} ) do |f| %>
+<%= form_for(dispatch, :html=> {:id => 'dispatch-form'} ) do |f| %>
 
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
-      <% if receipt.errors.any? %>
+      <% if dispatch.errors.any? %>
       <div class="panel panel-danger">
         <div class="panel-heading">
-          <%= pluralize(receipt.errors.count, "error") %>
-          prohibited this receipt from being saved.
+          <%= pluralize(dispatch.errors.count, "error") %>
+          prohibited this dispatch from being saved.
         </div>
 
         <div class="panel-body">
           <ul>
-            <% receipt.errors.full_messages.each do |message| %>
+            <% dispatch.errors.full_messages.each do |message| %>
             <li><%= message %></li>
             <% end %>
           </ul>
@@ -22,32 +22,23 @@
       <% end %>
 
       <div class="form-group">
-        <%= f.label :grn_no, "GRN Number" %> <span class="required">*</span>
-        <%= f.text_field :grn_no, :class => 'form-control', :autofocus => true, :required => true %>
+        <%= f.label :gin_no, "GIN Number" %> <span class="required">*</span>
+        <%= f.text_field :gin_no, :class => 'form-control', :autofocus => true, :required => true %>
       </div>
 
 
       <div class="form-group">
-        <%= f.label :store_id %> <span class="required">*</span>
-        <%= f.collection_select :store_id,
-                  Store.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+        <%= f.label :operation_id %> <span class="required">*</span>
+        <%= f.collection_select :operation_id,
+                  Operation.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
       </div>
 
       <div class="form-group">
-        <%= f.label :received_date %> <span class="required">*</span>
-        <%= f.text_field :received_date, :class => 'form-control datepicker', :required => true  %>
+        <%= f.label :dispatch_date %> <span class="required">*</span>
+        <%= f.text_field :dispatch_date, :class => 'form-control datepicker', :required => true  %>
       </div>
 
-      <div class="form-group">
-        <%= f.label :storekeeper_name, "Received By" %> <span class="required">*</span>
-        <%= f.text_field :storekeeper_name, :class => 'form-control', :required => true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :waybill_no, "Waybill(s)" %> <span class="required">*</span>
-        <%= f.text_field :waybill_no, :class => 'form-control', :required => true %>
-      </div>
-
+      <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: (@dispatch.fdp ?  @dispatch.fdp.id : nil)  %>
       
     </div>
   </div>
@@ -66,42 +57,42 @@
                 </tr>
               </thead>
 
-              <tbody id="receiptLinesTableBody">
+              <tbody id="dispatchItemsTableBody">
 
-                  <% @receipt.receipt_lines.each do |receipt_line| %>
+                  <% @dispatch.dispatch_items.each do |dispatch_line| %>
                   
-                  <tr class="receipt-line">
+                  <tr class="dispatch-line">
                     <td>
-                      <input type="hidden" name="receipt[receipt_lines[][id]]" value="<%= receipt_line.id %>" />
-                      <select name="receipt[receipt_lines[][commodity_category_id]]" class="form-control" readonly>
-                        <option value="<%= receipt_line.commodity_category.id %>"><%= receipt_line.commodity_category.name %></option>
+                      <input type="hidden" name="dispatch[dispatch_items[][id]]" value="<%= dispatch_line.id %>" />
+                      <select name="dispatch[dispatch_items[][commodity_category_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line.commodity_category.id %>"><%= dispatch_line.commodity_category.name %></option>
                       </select>
                     </td>
                     <td>
-                      <select name="receipt[receipt_lines[][commodity_id]]" class="form-control" readonly>
-                        <option value="<%= receipt_line.commodity.id %>"><%= receipt_line.commodity.name %></option>
+                      <select name="dispatch[dispatch_items[][commodity_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line.commodity.id %>"><%= dispatch_line.commodity.name %></option>
                       </select>
                     </td>
                     <td>
-                          <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" value="<%= receipt_line.quantity %>" readonly/>
+                          <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" value="<%= dispatch_line.quantity %>" readonly/>
                     </td>
                     <td>
-                      <select name="receipt[receipt_lines[][project_id]]" class="form-control" readonly>
-                        <option value="<%= receipt_line.project.id %>"><%= receipt_line.project.project_code %></option>
+                      <select name="dispatch[dispatch_items[][project_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line.project.id %>"><%= dispatch_line.project.project_code %></option>
                       </select>
                     </td>
                     <td>
-                      <a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>
+                      <a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>
                     </td>
                   </tr>
                     
                   <% end %>
                   <tr>
                       <td>
-                         <%= select_tag 'receipt[receipt_lines[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
+                         <%= select_tag 'dispatch[dispatch_items[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
                       </td>
                       <td>
-                        <select name="receipt[receipt_lines[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
+                        <select name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
                           <option value="">-- Choose --</option>
                           <% Commodity.all.each do |commodity| %>
                             <option value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden"><%= commodity.name %></option>
@@ -109,13 +100,13 @@
                         </select>
                       </td>
                       <td>
-                          <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
+                          <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" data-parsley-required/>
                       </td>
                       <td>
-                       <%= select_tag 'receipt[receipt_lines[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+                       <%= select_tag 'dispatch[dispatch_items[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
                       </td>
                       <td>
-                          <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
+                          <a href="#" class="btn btn-primary" id="add-dispatch-line">Add</a>
                       </td>
                   </tr>
               </tbody>
@@ -131,7 +122,7 @@
                 <label  for="weightBridgeTicket">Weight Bridge Ticket # <span class="required">*</span>
                 </label>
                 <div>
-                    <%= f.number_field :weight_bridge_ticket_no, :class => 'form-control', :required => true  %>
+                    <%= f.number_field :weight_bridge_ticket_number, :class => 'form-control', :required => true  %>
                 </div>
             </div>
             <div class="form-group col-md-6">
@@ -143,33 +134,21 @@
                 </div>
             </div>
 
-            <div class="form-group col-md-6">
-                <label  for="weightBeforeUnloading">Weight Before Unloading
-                </label>
-                <div>
-                    <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
-                </div>
-            </div>
+           
             <div class="form-group col-md-6">
                 <label  for="plateNumber">Plate # <span class="required">*</span>
                 </label>
                 <div>
-                    <%= f.text_field :plate_no, :class => 'form-control', :required => true  %>
+                    <%= f.text_field :plate_number, :class => 'form-control', :required => true  %>
                 </div>
             </div>
 
-            <div class="form-group col-md-6">
-                <label  for="weightAfterUnloading">Weight Before Unloading
-                </label>
-                <div>
-                    <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
-                </div>
-            </div>
+
             <div class="form-group col-md-6">
                 <label  for="trailerPlateNumber">Trailer Plate #
                 </label>
                 <div>
-                    <%= f.text_field :trailer_plate_no, :class => 'form-control' %>
+                    <%= f.text_field :trailer_plate_number, :class => 'form-control' %>
                 </div>
             </div>
 
@@ -196,7 +175,7 @@
       </div>
 
       <div class="actions">
-            <%= f.submit :class => 'btn btn-primary', :id => 'submit-receipt' %>
+            <%= f.submit :class => 'btn btn-primary', :id => 'submit-dispatch' %>
       </div>
     </div>
   </div>
@@ -207,19 +186,19 @@
 
 <script type="text/javascript">
 
-              var REMOVE_RECEIPTLINE_BTN = '<a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>';
+              var REMOVE_dispatchLINE_BTN = '<a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>';
             
               $( function() { 
-                  $("#add-receipt-line").click( function(e) { 
+                  $("#add-dispatch-line").click( function(e) { 
                       e.preventDefault(); 
 
                       var $this = $(this); 
 
-                      var $receiptLineForm = $this.closest('tr'); 
+                      var $dispatchLineForm = $this.closest('tr'); 
                       
                       var valid = true; 
 
-                      $receiptLineForm.find(':input').each( function() { 
+                      $dispatchLineForm.find(':input').each( function() { 
                           $(this).parsley().validate(); 
                           valid = $(this).parsley().isValid() && valid; 
                       });
@@ -228,28 +207,28 @@
                         return; 
                       }
 
-                      var $newRow = $receiptLineForm.clone();
+                      var $newRow = $dispatchLineForm.clone();
 
-                      $newRow.find('td').last().html(REMOVE_RECEIPTLINE_BTN); 
+                      $newRow.find('td').last().html(REMOVE_dispatchLINE_BTN); 
 
                       $newRow.find(':input').attr('readonly', true).removeAttr('id'); 
 
-                      $newRow.addClass('receipt-line');
+                      $newRow.addClass('dispatch-line');
 
-                      $newRow.insertBefore( $receiptLineForm); 
+                      $newRow.insertBefore( $dispatchLineForm); 
 
-                      $receiptLineForm.find(':input').val('');
+                      $dispatchLineForm.find(':input').val('');
                   }); 
 
-                  $('#receiptLinesTableBody').on('click', '.remove-receipt-line', function(e) { 
+                  $('#dispatchItemsTableBody').on('click', '.remove-dispatch-line', function(e) { 
                       $(e.target).closest( 'tr').fadeOut('slow', function(){
                         $(this).remove();
                       });
                   });
 
-                  $('#submit-receipt').click( function(e) { 
+                  $('#submit-dispatch').click( function(e) { 
 
-                      if( $('.receipt-line').length === 0 ) { 
+                      if( $('.dispatch-line').length === 0 ) { 
                         toastr.error("You need to atleast add one commodity."); 
 
                         e.preventDefault();

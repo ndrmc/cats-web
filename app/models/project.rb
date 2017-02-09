@@ -2,14 +2,19 @@
 #
 # Table name: projects
 #
-#  id          :integer          not null, primary key
-#  name        :string
-#  created_by  :integer
-#  modified_by :integer
-#  deleted     :boolean          default(FALSE)
-#  deleted_at  :datetime
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                 :integer          not null, primary key
+#  project_code       :string
+#  commodity_id       :integer
+#  commodity_source   :integer
+#  organization_id    :integer
+#  amount             :decimal(, )
+#  unit_of_measure_id :integer
+#  publish_date       :date
+#  created_by         :integer
+#  modified_by        :integer
+#  deleted_at         :datetime
+#  created_at         :datetime
+#  updated_at         :datetime
 #
 
 class Project < ApplicationRecord

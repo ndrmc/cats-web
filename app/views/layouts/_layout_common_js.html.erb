@@ -1,11 +1,14 @@
 <script type="text/javascript">
   $(function() {
+
     <% flash.each do |key, value| %>
-    toastr.<%=  toastr_method_name(key) %>("<%= value %>");
+      toastr.<%=  toastr_method_name(key) %>("<%= value %>");
     <% end %>
 
     $('.cats-datatable').DataTable({"info": false});
 
-    $('.datepicker').datepicker(); 
+    $('.datepicker').datepicker({ 
+      format: 'dd/mm/yyyy'
+    }); 
   });
 </script>

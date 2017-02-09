@@ -1,0 +1,48 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Dispatches</h2>
+    <ol class="breadcrumb">
+      
+      <li class="active">
+        <strong>Dispatches</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Dispatch', new_dispatch_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+            <th>GIN Number</th>
+            <th>Dispatch Date</th>
+            <th>Remark</th>
+            <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+        <% @dispatches.each do |dispatch| %>
+            <tr>
+                <td><%= dispatch.gin_no %></td>
+                <td><%= dispatch.dispatch_date %></td>
+                <td><%= dispatch.remark %></td>
+                <td>
+                    <%= link_to 'Edit', edit_dispatch_path(dispatch) %> &middot;
+                    <%= link_to 'Delete', dispatch, method: :delete, data: { confirm: 'Are you sure?' } %>
+                </td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
