@@ -1,0 +1,265 @@
+<%= form_for(dispatch, :html=> {:id => 'dispatch-form'} ) do |f| %>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <% if dispatch.errors.any? %>
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <%= pluralize(dispatch.errors.count, "error") %>
+          prohibited this dispatch from being saved.
+        </div>
+
+        <div class="panel-body">
+          <ul>
+            <% dispatch.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :gin_no, "GIN Number" %> <span class="required">*</span>
+        <%= f.text_field :gin_no, :class => 'form-control', :autofocus => true, :required => true %>
+      </div>
+
+
+      <div class="form-group">
+        <%= f.label :operation_id %> <span class="required">*</span>
+        <%= f.collection_select :operation_id,
+                  Operation.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :dispatch_date %> <span class="required">*</span>
+        <%= f.text_field :dispatch_date, :class => 'form-control datepicker', :required => true  %>
+      </div>
+
+      <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: (@dispatch.fdp ?  @dispatch.fdp.id : nil)  %>
+      
+    </div>
+  </div>
+
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <table class="table">
+              <thead>
+                <tr>
+                  <th>Commodity Category</th>
+                  <th>Commodity</th>
+                  <th>Quantity</th>
+                  <th>Project</th>
+                  <th></th>
+                </tr>
+              </thead>
+
+              <tbody id="dispatchItemsTableBody">
+
+                  <% @dispatch.dispatch_items.each do |dispatch_line| %>
+                  
+                  <tr class="dispatch-line">
+                    <td>
+                      <input type="hidden" name="dispatch[dispatch_items[][id]]" value="<%= dispatch_line.id %>" />
+                      <select name="dispatch[dispatch_items[][commodity_category_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line.commodity_category.id %>"><%= dispatch_line.commodity_category.name %></option>
+                      </select>
+                    </td>
+                    <td>
+                      <select name="dispatch[dispatch_items[][commodity_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line.commodity.id %>"><%= dispatch_line.commodity.name %></option>
+                      </select>
+                    </td>
+                    <td>
+                          <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" value="<%= dispatch_line.quantity %>" readonly/>
+                    </td>
+                    <td>
+                      <select name="dispatch[dispatch_items[][project_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line.project.id %>"><%= dispatch_line.project.project_code %></option>
+                      </select>
+                    </td>
+                    <td>
+                      <a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>
+                    </td>
+                  </tr>
+                    
+                  <% end %>
+                  <tr>
+                      <td>
+                         <%= select_tag 'dispatch[dispatch_items[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
+                      </td>
+                      <td>
+                        <select name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
+                          <option value="">-- Choose --</option>
+                          <% Commodity.all.each do |commodity| %>
+                            <option value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden"><%= commodity.name %></option>
+                          <% end %>
+                        </select>
+                      </td>
+                      <td>
+                          <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" data-parsley-required/>
+                      </td>
+                      <td>
+                       <%= select_tag 'dispatch[dispatch_items[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+                      </td>
+                      <td>
+                          <a href="#" class="btn btn-primary" id="add-dispatch-line">Add</a>
+                      </td>
+                  </tr>
+              </tbody>
+            
+            </table>
+    </div>
+  </div>
+
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+                  <div class="form-group col-md-6">
+                <label  for="weightBridgeTicket">Weight Bridge Ticket # <span class="required">*</span>
+                </label>
+                <div>
+                    <%= f.number_field :weight_bridge_ticket_number, :class => 'form-control', :required => true  %>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label  for="transporter">Transporter <span class="required">*</span>
+                </label>
+                <div>
+                <%= f.collection_select :transporter_id,
+                  Transporter.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true } %>
+                </div>
+            </div>
+
+           
+            <div class="form-group col-md-6">
+                <label  for="plateNumber">Plate # <span class="required">*</span>
+                </label>
+                <div>
+                    <%= f.text_field :plate_number, :class => 'form-control', :required => true  %>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-6">
+                <label  for="trailerPlateNumber">Trailer Plate #
+                </label>
+                <div>
+                    <%= f.text_field :trailer_plate_number, :class => 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                
+            </div>
+            <div class="form-group col-md-6">
+                <label  for="driversName">Driver's Name
+                </label>
+                <div>
+                    <%= f.text_field :drivers_name, :class => 'form-control' %>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+    </div>
+  </div>
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <div class="form-group">
+            <%= f.label :remark %>
+            <%= f.text_area :remark, :class => 'form-control' %>
+      </div>
+
+      <div class="actions">
+            <%= f.submit :class => 'btn btn-primary', :id => 'submit-dispatch' %>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<% end %>
+
+<script type="text/javascript">
+
+              var REMOVE_dispatchLINE_BTN = '<a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>';
+            
+              $( function() { 
+                  $("#add-dispatch-line").click( function(e) { 
+                      e.preventDefault(); 
+
+                      var $this = $(this); 
+
+                      var $dispatchLineForm = $this.closest('tr'); 
+                      
+                      var valid = true; 
+
+                      $dispatchLineForm.find(':input').each( function() { 
+                          $(this).parsley().validate(); 
+                          valid = $(this).parsley().isValid() && valid; 
+                      });
+
+                      if( !valid ) {
+                        return; 
+                      }
+
+                      var $newRow = $dispatchLineForm.clone();
+
+                      $newRow.find('td').last().html(REMOVE_dispatchLINE_BTN); 
+
+                      $newRow.find(':input').attr('readonly', true).removeAttr('id'); 
+
+                      $newRow.addClass('dispatch-line');
+
+                      $newRow.insertBefore( $dispatchLineForm); 
+
+                      $dispatchLineForm.find(':input').val('');
+                  }); 
+
+                  $('#dispatchItemsTableBody').on('click', '.remove-dispatch-line', function(e) { 
+                      $(e.target).closest( 'tr').fadeOut('slow', function(){
+                        $(this).remove();
+                      });
+                  });
+
+                  $('#submit-dispatch').click( function(e) { 
+
+                      if( $('.dispatch-line').length === 0 ) { 
+                        toastr.error("You need to atleast add one commodity."); 
+
+                        e.preventDefault();
+                        return; 
+                      }
+
+                  });
+
+
+                  $('#commodity-category-select').change( function() { 
+                    var val = $(this).val();
+
+                    if( val === '' ) {
+                      return; 
+                    }
+
+
+                    $("#commodity-select > option").addClass('hidden'); 
+                    $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
+
+                    $("#commodity-select > option:first").removeClass('hidden'); 
+
+
+
+                  });
+
+
+
+
+              });
+            </script>
+
+
+

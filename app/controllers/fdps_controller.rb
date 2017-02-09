@@ -63,6 +63,13 @@ class FdpsController < ApplicationController
     end
   end
 
+  # GET /fdps/location/1
+  def get_by_location
+    respond_to do |format|
+      format.json { render json:  Fdp.where( :location_id => params[:location_id] )  }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_fdp
