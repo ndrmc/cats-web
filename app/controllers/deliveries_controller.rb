@@ -65,8 +65,7 @@ class DeliveriesController < ApplicationController
   # POST /deliveries
   # POST /deliveries.json
   def create
-    debugger;
-    
+
     @delivery = Delivery.new(delivery_params)
 
     respond_to do |format|
