@@ -4,7 +4,7 @@ class CreateDeliveryDetails < ActiveRecord::Migration[5.0]
       t.integer :commodity_id
       t.integer :uom_id
       t.decimal :sent_quantity
-      t.decimal :recieved_quantity
+      t.decimal :received_quantity
       t.integer :delivery_id
 
       t.integer :created_by

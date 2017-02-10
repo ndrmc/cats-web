@@ -1,97 +1,170 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
-      <%= form_for(delivery) do |f| %>
-        <% if delivery.errors.any? %>
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <%= pluralize(delivery.errors.count, "error") %> prohibited this delivery from being saved.
-            </div>
+    <div class="row m-b-sm m-t-sm">      
+        <div class="col-md-12 col-sm-12 col-xs-12 form-group">          
 
-            <div class="panel-body">
-              <ul>
-                <% delivery.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
+                <form method='GET' class = 'form-inline'>
+                        
+                        <label class = "control-label " >Gin</label> <input name="gin_number"></input>
+                        <button class = 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
+
+                </form>               
+                        
+        </div>  
+        <%= form_for(delivery , :html => {class: 'form-horizontal form-label-left input_mask'} ) do |f|  %> 
+                <% if delivery.errors.any? %>
+                <div class="panel panel-danger">
+                <div class="panel-heading">
+                <%= pluralize(delivery.errors.count, "error") %> prohibited this delivery from being saved.
+                </div>
+
+                <div class="panel-body">
+                <ul>
+                        <% delivery.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                        <% end %>
+                </ul>
+                </div>
+                </div>
                 <% end %>
-              </ul>
-            </div>
-          </div>
-        <% end %>
+        
+                
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                        <%= f.label :gin_number , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+                        <%= f.text_field :gin_number,:value => @delivery.gin_number  %>
+                </div> 
+                <br>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                        <%= f.label :transporter_id , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+                        <input class="form_control" value = "<%=(@delivery.transporter_id ? Transporter.find(@delivery.transporter_id).name : nil ) %>"/> 
+                        <%= f.text_field :transporter_id,:value => @delivery.transporter_id , :class => 'hidden' %>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                        <%= f.label :driver_name , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+                        <%= f.text_field :driver_name,:value => @delivery.driver_name  %>
+                </div>
 
-                <div class="form-group">
-                            <%= f.label :receiving_number %>
-                <%= f.text_field :receiving_number, :class => 'form-control' %>
-                        </div>
-
-
-                <div class="form-group">
-                            <%= f.label :transporter_id %>
-                <%= f.number_field :transporter_id, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :primary_plate_number %>
-                <%= f.text_field :primary_plate_number, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :trailer_plate_number %>
-                <%= f.text_field :trailer_plate_number, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :driver_name %>
-                <%= f.text_field :driver_name, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :fdp_id %>
-                <%= f.number_field :fdp_id, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :gin_number %>
-                <%= f.number_field :gin_number, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :waybill_number %>
-                <%= f.number_field :waybill_number, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :requisition_number %>
-                <%= f.text_field :requisition_number, :class => 'form-control' %>
-                        </div>
-
-               
-                <div class="form-group">
-                            <%= f.label :received_by %>
-                <%= f.text_field :received_by, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :received_date %>
-                <%= f.date_select :received_date, :class => 'form-control' %>
-                        </div>
-               
-
-                <div class="form-group">
-                            <%= f.label :status %>
-                <%= f.number_field :status, :class => 'form-control' %>
-                        </div>               
-
-                <div class="form-group">
-                            <%= f.label :operation_id %>
-                <%= f.number_field :operation_id, :class => 'form-control' %>
-                        </div>
-
-      
-      <div class="actions">
-        <%= f.submit :class => 'btn btn-primary' %>
-      </div>
-  <% end %>
-
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                        <%= f.label :primary_plate_number , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+                        <%= f.text_field :primary_plate_number,:value => @delivery.primary_plate_number  %>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                        <%= f.label :trailer_plate_number , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+                        <%= f.text_field :trailer_plate_number,:value => @delivery.trailer_plate_number  %>
+                </div>  
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                        <%= f.label :fdp_id , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+                         <input class="form_control" value = "<%= @delivery.fdp_id ? Location.find(@delivery.fdp_id).name : nil %>"/> 
+                        <%= f.text_field :fdp_id,:value => @delivery.fdp_id  , :class => "hidden"%>
+                </div>     
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                        <%= f.label :waybill_number , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+                        <%= f.text_field :waybill_number, :value => @delivery.waybill_number%>
+                </div> 
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                        <%= f.label :requisition_number , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+                        <%= f.text_field :requisition_number,:value => @delivery.requisition_number  %>
+                </div>   
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                        <%= f.label :operation_id , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+                         <input class="form_control" value = "<%= @delivery.operation_id ? Operation.find(@delivery.operation_id).name : nil %>"/> 
+                        <%= f.text_field :operation_id,:value => @delivery.operation_id , :class=> 'hidden' %>
+                </div>                
+        </div> 
     </div>
+<br>
+     <div class="ibox float-e-margins">
+       <div class="ibox-title"> Delivery Items</div>
+        <div class = "ibox-content">
+        <table class="table">
+              <thead>
+                <tr>
+                 
+                  <th>Commodity</th>
+                  <th>Unit of Measure</th>
+                  <th>Sent Quantity</th>
+                  <th>Received Quantity</th>
+                  
+                  <th></th>
+                </tr>
+              </thead>
+
+              <tbody >
+                 
+                 
+                  <% delivery.delivery_details.each do |delivery_detail| %>
+                   <%= f.fields_for :delivery_details, delivery_detail do |ff| %>
+                        <tr>
+                                <td>
+                                <input class="form_control" value = "<%=Commodity.find(delivery_detail.commodity_id).name %>"/>  
+                                <%= ff.text_field :commodity_id, :value => delivery_detail.commodity_id, class: 'hidden'%>
+
+                                </td>
+                                <td>
+                                <input class="form_control" value="<%=UnitOfMeasure.find(delivery_detail.uom_id).name %>" />
+                               
+                                <%= ff.text_field :uom_id, :value => delivery_detail.uom_id, class: 'hidden'%>
+                                </td>
+                                <td>
+                                <%= ff.text_field :sent_quantity, :value => delivery_detail.sent_quantity , class: 'form_control'%>
+                                </td>
+                                <td>
+                                <%= ff.text_field :recieved_quantity , class: 'form_control'%>
+                                </td>
+                        </tr>
+                  <% end %>
+                  <%end%>
+
+                 
+                 
+              
+                 
+              </tbody>
+            
+            </table>
+    
+
+        </div>
+     </div>
+
+     <br>
+     <div class="ibox float-e-margins">
+        <div class="ibox-title"> Delivery Info</div>
+        <div class="ibox-content">
+
+         <div class="form-group">
+                <%= f.label :receiving_number , :class=>"control-label col-md-3 col-sm-3 col-xs-12" %>                       
+                <div class="col-md-9 col-sm-9 col-xs-12">                         
+                        <%= f.text_field :receiving_number %>
+                </div>
+         </div>
+        <br/>
+        <div class="form-group">
+                <%= f.label :received_by , :class=>"control-label col-md-3 col-sm-3 col-xs-12" %>
+                       
+                <div class="col-md-9 col-sm-9 col-xs-12">                         
+                        <%= f.text_field :received_by %>
+                </div>
+        </div>
+         <br/>
+                  <div class="form-group">
+                 <%= f.label :received_date , :class=>"control-label col-md-3 col-sm-3 col-xs-12" %>
+                       
+                        <div class="col-md-9 col-sm-9 col-xs-12">                         
+                           <%= f.date_select :received_date %>
+                        </div>
+                 </div>
+                  
+             <br/>     
+                  <div class="actions">
+        <%= f.submit :class => 'btn btn-primary center' %>
+        </div>
+      
+  <% end %>
+     </div>
+     <div>
+     
+
   </div>
 </div>

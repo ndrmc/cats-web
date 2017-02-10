@@ -210,7 +210,7 @@ ActiveRecord::Schema.define(version: 20170208123024) do
     t.datetime "updated_at",                        null: false
   end
 
- create_table "dispatch_items", force: :cascade do |t|
+  create_table "dispatch_items", force: :cascade do |t|
     t.integer  "dispatch_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
@@ -251,7 +251,6 @@ ActiveRecord::Schema.define(version: 20170208123024) do
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
     t.index ["transporter_id"], name: "index_dispatches_on_transporter_id", using: :btree
   end
-
 
   create_table "donors", force: :cascade do |t|
     t.string   "name",        null: false

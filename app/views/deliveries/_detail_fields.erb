@@ -1,0 +1,15 @@
+<tr>
+  <td>
+    <%= f.text_field :commodity_id,:value =>  Commodity.find(delivery_item.commodity_id).name , class: 'form_control'%>
+
+  </td>
+  <td>
+    <%= f.text_field :uom_id, :value => UnitOfMeasure.find(1).name , class: 'form_control'%>
+  </td>
+  <td>
+    <%= f.text_field :sent_quantity,  class: 'form_control'%>
+  </td>
+  <td>
+    <%= f.text_field :received_quantity , class: 'form_control'%>
+  </td>
+</tr>

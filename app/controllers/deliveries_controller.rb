@@ -26,6 +26,36 @@ class DeliveriesController < ApplicationController
   def new
     @delivery = Delivery.new
    
+    if(params[:gin_number])
+      @gin = Dispatch.find_by({'gin_no': params[:gin_number]})
+      @delivery = Delivery.new({transporter_id: @gin.transporter_id,
+                    primary_plate_number: @gin.plate_number,
+                  trailer_plate_number: @gin.trailer_plate_number,
+                  gin_number: @gin.gin_no,
+                  waybill_number: '',
+                  requisition_number: @gin.requisition_number,
+                  driver_name: @gin.drivers_name,
+                  fdp_id: @gin.fdp_id,
+                  operation_id: @gin.operation_id,
+                  delivery_details: []
+                })
+
+      @delivery.delivery_details = []
+      @gin.dispatch_items.each do |item|
+        
+        @delivery_detail = DeliveryDetail.new({commodity_id: item.commodity_id,
+                                                uom_id: '1',
+                                                sent_quantity: item.quantity})
+                                            
+          @delivery.delivery_details.push(@delivery_detail )    
+                                          
+       
+       end
+       
+       
+    else
+      @gin = Dispatch.new
+    end 
   end
 
   # GET /deliveries/1/edit
@@ -35,12 +65,14 @@ class DeliveriesController < ApplicationController
   # POST /deliveries
   # POST /deliveries.json
   def create
+    debugger;
+    
     @delivery = Delivery.new(delivery_params)
 
     respond_to do |format|
       if @delivery.save
-        format.html { redirect_to @delivery, notice: 'Delivery was successfully created.' }
-        format.json { render :show, status: :created, location: @delivery }
+        format.html { redirect_to deliveries_url, notice: 'Delivery was successfully created.' }
+        format.json { render :index, status: :created, location: @deliveries }
       else
         format.html { render :new }
         format.json { render json: @delivery.errors, status: :unprocessable_entity }
@@ -80,6 +112,10 @@ class DeliveriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def delivery_params
-      params.require(:delivery).permit(:receiving_number, :transporter_id, :primary_plate_number, :trailer_plate_number, :driver_name, :fdp_id, :gin_number, :waybill_number, :requisition_number, :received_by, :received_date, :status, :operation_id)
+      params.require(:delivery).permit(:receiving_number, :transporter_id, :primary_plate_number, :trailer_plate_number, :driver_name, 
+      :fdp_id, :gin_number, :waybill_number, :requisition_number, :received_by, :received_date, :status, :operation_id,
+      :delivery_details_attributes => [:id, :commodity_id, :uom_id, :sent_quantity, :recieved_quantity])
+
+    
     end
 end
