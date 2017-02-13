@@ -24,7 +24,7 @@
 
 class Commodity < ApplicationRecord
   belongs_to :commodity_category
-  belongs_to :unit_of_measure
+  belongs_to :uom_category
 
   validates :name , presence: true
 end
