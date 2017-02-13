@@ -28,9 +28,16 @@
 
 
       <div class="form-group">
-        <%= f.label :store_id %> <span class="required">*</span>
-        <%= f.collection_select :store_id,
-                  Store.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+        <%= f.label :hub_id, "Hub" %> <span class="required">*</span>
+        <%= f.collection_select :hub_id,
+                  Warehouse.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+      </div>
+
+
+      <div class="form-group">
+        <%= f.label :warehouse_id, "Warehouse" %> <span class="required">*</span>
+        <%= f.collection_select :warehouse_id,
+                  Warehouse.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
       </div>
 
       <div class="form-group">
