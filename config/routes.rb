@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
   resources :organizations
   resources :projects
+  resources :deliveries
 
   resources :rations do
     resources :ration_items

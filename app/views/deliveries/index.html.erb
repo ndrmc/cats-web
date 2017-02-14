@@ -1,0 +1,75 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Deliveries</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Deliveries</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Delivery', new_delivery_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+      <div class="row m-b-sm m-t-sm">
+      <div class="form-group">
+          
+         
+          <form method='GET' class = 'form-inline'>
+            <label>Operation</label> <input name="operation_id"></input>
+            <label>FDP</label> <input name="fdp_id" ></input>
+            <label>Gin</label> <input name="gin_number"></input>
+            <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
+
+          </form>
+        </div>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+                          <th>Receiving number</th> 
+                          <th>FDP</th>
+                          <th>Gin</th>
+                          <th>Requisition number</th>
+                          <th>Received by</th>
+                          <th>Received date</th>
+                          <th>Status</th>
+                          <th>Operation</th>
+                          <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @deliveries.each do |delivery| %>
+            <tr>
+              <td><%= delivery.receiving_number%></td>                          
+              <td><%= delivery.fdp_id%></td>
+              <td><%= delivery.gin_number%></td>
+              <td><%= delivery.requisition_number%></td>
+              <td><%= delivery.received_by%></td>
+              <td><%= delivery.received_date%></td>
+              <td><%= delivery.status%></td>
+               <td><%= delivery.operation_id%></td>
+               <td>
+                <%= link_to 'Edit', edit_delivery_path(delivery) %> &middot;
+                <%= link_to 'Delete', delivery, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
