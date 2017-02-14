@@ -25,20 +25,26 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/new
   def new
     @delivery = Delivery.new
-   
-    if(params[:gin_number])
-      @gin = Dispatch.find_by({'gin_no': params[:gin_number]})
-      @delivery = Delivery.new({transporter_id: @gin.transporter_id,
-                    primary_plate_number: @gin.plate_number,
-                  trailer_plate_number: @gin.trailer_plate_number,
-                  gin_number: @gin.gin_no,
-                  waybill_number: '',
-                  requisition_number: @gin.requisition_number,
-                  driver_name: @gin.drivers_name,
-                  fdp_id: @gin.fdp_id,
-                  operation_id: @gin.operation_id,
-                  delivery_details: []
-                })
+    @gin = Dispatch.find_by({'gin_no': params[:gin_number]})
+    if(@gin)
+      
+      @delivery_exists = Delivery.find_by({'gin_number': params[:gin_number]})
+     
+     if(! @delivery_exists)
+          
+      
+      @delivery = Delivery.new({
+        transporter_id: @gin.transporter_id,
+        gin_number: @gin.gin_no,
+        waybill_number: '',
+        requisition_number: @gin.requisition_number,
+        driver_name: @gin.drivers_name,
+        fdp_id: @gin.fdp_id,
+        operation_id: @gin.operation_id,
+        delivery_details: []
+      })
+
+     
 
       @delivery.delivery_details = []
       @gin.dispatch_items.each do |item|
@@ -47,12 +53,12 @@ class DeliveriesController < ApplicationController
                                                 uom_id: '1',
                                                 sent_quantity: item.quantity})
                                             
-          @delivery.delivery_details.push(@delivery_detail )    
-                                          
+        @delivery.delivery_details.push(@delivery_detail)                                            
        
        end
-       
-       
+      else
+        redirect_to new_delivery_path, :flash => { :error => "Delivery Record with the same GIN number already exists!" }
+        end   
     else
       @gin = Dispatch.new
     end 
@@ -82,10 +88,15 @@ class DeliveriesController < ApplicationController
   # PATCH/PUT /deliveries/1
   # PATCH/PUT /deliveries/1.json
   def update
+    
+    @delivery = Delivery.find(params[:id]);
+    @delivery.delivery_details.destroy_all
+    
+ 
     respond_to do |format|
       if @delivery.update(delivery_params)
-        format.html { redirect_to @delivery, notice: 'Delivery was successfully updated.' }
-        format.json { render :show, status: :ok, location: @delivery }
+        format.html { redirect_to edit_delivery_url(@delivery), notice: 'Delivery was successfully updated.' }
+        format.json { render :edit, status: :ok, location: @delivery }
       else
         format.html { render :edit }
         format.json { render json: @delivery.errors, status: :unprocessable_entity }
@@ -114,7 +125,7 @@ class DeliveriesController < ApplicationController
       params.require(:delivery).permit(:receiving_number, :transporter_id, :primary_plate_number, :trailer_plate_number, :driver_name, 
       :fdp_id, :gin_number, :waybill_number, :requisition_number, :received_by, :received_date, :status, :operation_id,
       :delivery_details_attributes => [:id, :commodity_id, :uom_id, :sent_quantity, :recieved_quantity])
-
-    
+     
+      
     end
 end

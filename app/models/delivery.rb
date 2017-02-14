@@ -6,5 +6,5 @@ class Delivery < ApplicationRecord
     scope :operation_id, -> (operation_id) { where operation_id: operation_id }
 
     has_many :delivery_details
-    accepts_nested_attributes_for :delivery_details
+    accepts_nested_attributes_for :delivery_details, reject_if: :all_blank
 end

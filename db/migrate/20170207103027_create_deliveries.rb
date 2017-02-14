@@ -2,20 +2,16 @@ class CreateDeliveries < ActiveRecord::Migration[5.0]
   def change
     create_table :deliveries do |t|
 
-      t.string :receiving_number
-     
-      t.integer :transporter_id
-      t.string :primary_plate_number
-      t.string :trailer_plate_number
-      t.string :driver_name
-      t.integer :fdp_id
-      t.integer :gin_number
-      t.string :waybill_number
-      t.string :requisition_number     
-      t.string :received_by
-      t.date :received_date     
+      t.string :receiving_number  ,  null: false   
+      t.integer :transporter_id ,  null: false     
+      t.integer :fdp_id, null: false 
+      t.integer :gin_number ,  null: false     
+      t.string :requisition_number ,  null: false     
+      t.string :received_by,  null: false 
+      t.date :received_date ,  null: false     
       t.integer :status     
       t.integer :operation_id
+      t.text  :remark
 
       t.integer :created_by
       t.integer :modified_by
