@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208123024) do
+ActiveRecord::Schema.define(version: 20170214161019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string   "name",        null: false
-    t.string   "type"
+    t.integer  "code"
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20170208123024) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_accounts_on_deleted_at", using: :btree
-    t.index ["name", "type"], name: "index_accounts_on_name_and_type", using: :btree
+    t.index ["name", "code"], name: "index_accounts_on_name_and_code", using: :btree
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -445,6 +445,18 @@ ActiveRecord::Schema.define(version: 20170208123024) do
     t.index ["name"], name: "index_hubs_on_name", unique: true, using: :btree
   end
 
+  create_table "journals", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "code"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "locations", force: :cascade do |t|
     t.string   "name",          null: false
     t.string   "code"
@@ -503,6 +515,49 @@ ActiveRecord::Schema.define(version: 20170208123024) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_organizations_on_deleted_at", using: :btree
+  end
+
+  create_table "posting_items", force: :cascade do |t|
+    t.uuid     "posting_item_code"
+    t.integer  "account_id"
+    t.integer  "journal_id"
+    t.integer  "donor_id"
+    t.integer  "hub_id"
+    t.integer  "warehouse_id"
+    t.integer  "store_id"
+    t.integer  "stack_id"
+    t.integer  "project_id"
+    t.integer  "batch_id"
+    t.integer  "program_id"
+    t.integer  "operation_id"
+    t.integer  "commodity_id"
+    t.integer  "commodityCategory_id"
+    t.decimal  "quantity"
+    t.integer  "region_id"
+    t.integer  "zone_id"
+    t.integer  "woreda_id"
+    t.integer  "fdp_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",              default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  create_table "postings", force: :cascade do |t|
+    t.uuid     "posting_code"
+    t.integer  "document_type"
+    t.integer  "document_id"
+    t.boolean  "posted"
+    t.integer  "reversed_posting_id"
+    t.integer  "posting_type"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",             default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "programs", force: :cascade do |t|
