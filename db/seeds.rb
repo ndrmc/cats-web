@@ -187,14 +187,13 @@ if Account.count == 0
 end
 
 if User.count == 0
-  User.create(name: 'Administrator', email: 'admin@cats.org', password: 'password')
+  User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password')
   puts "Created default user account 'admin@cats.org' with password 'password'"
 end
 
 if Role.count == 0
   [:admin, :guest, :clerk, :manager].each do |role|
-    Role.create(name: role)      
+    Role.create(name: role)
   end
   puts "Created default roles"
 end
-

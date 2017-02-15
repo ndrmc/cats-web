@@ -26,4 +26,5 @@ class RationItem < ApplicationRecord
   def total_amount(beneficiaries)
     return self.amount * beneficiaries
   end
+
 end
