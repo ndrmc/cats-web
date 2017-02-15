@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20170214161019) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -113,7 +112,7 @@ ActiveRecord::Schema.define(version: 20170214161019) do
     t.float    "min_temperature"
     t.float    "max_temperature"
     t.integer  "commodity_category_id"
-    t.integer  "unit_of_measure_id"
+    t.integer  "uom_category_id"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.integer  "created_by"
@@ -124,19 +123,21 @@ ActiveRecord::Schema.define(version: 20170214161019) do
   end
 
   create_table "commodity_categories", force: :cascade do |t|
-    t.string   "name",        null: false
-    t.string   "code",        null: false
+    t.string   "name",            null: false
+    t.string   "code",            null: false
     t.string   "code_am"
     t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.string   "ancestry"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "uom_category_id"
     t.index ["ancestry"], name: "index_commodity_categories_on_ancestry", using: :btree
     t.index ["code"], name: "index_commodity_categories_on_code", unique: true, using: :btree
     t.index ["deleted_at"], name: "index_commodity_categories_on_deleted_at", using: :btree
+    t.index ["uom_category_id"], name: "index_commodity_categories_on_uom_category_id", using: :btree
   end
 
   create_table "commodity_sources", force: :cascade do |t|
@@ -641,10 +642,12 @@ ActiveRecord::Schema.define(version: 20170214161019) do
     t.datetime "deleted_at"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
+    t.integer  "unit_of_measure_id"
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
     t.index ["receipt_id"], name: "index_receipt_lines_on_receipt_id", using: :btree
+    t.index ["unit_of_measure_id"], name: "index_receipt_lines_on_unit_of_measure_id", using: :btree
   end
 
   create_table "receipts", force: :cascade do |t|
@@ -961,4 +964,6 @@ ActiveRecord::Schema.define(version: 20170214161019) do
     t.index ["deleted_at"], name: "index_warehouses_on_deleted_at", using: :btree
   end
 
+  add_foreign_key "commodity_categories", "uom_categories"
+  add_foreign_key "receipt_lines", "unit_of_measures"
 end
