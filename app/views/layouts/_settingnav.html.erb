@@ -78,7 +78,10 @@
       <%= link_to 'Commodity Types', commodity_categories_path %>
     </li>
     <li>
-      <a href="#">Commodity sources</a>
+      <li class="<%= 'active' if is_active_controller('commodity_sources') %>" >
+      <%= link_to 'Commodity sources', commodity_sources_path %>
+      
+      </li>
     </li>
     <li class="<%= 'active' if is_active_controller('unit_of_measures') %>" >
       <%= link_to 'Measurement Units', unit_of_measures_path %>
