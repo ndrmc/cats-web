@@ -174,6 +174,41 @@ ActiveRecord::Schema.define(version: 20170208123024) do
     t.index ["name"], name: "index_currencies_on_name", unique: true, using: :btree
   end
 
+  create_table "deliveries", force: :cascade do |t|
+    t.string   "receiving_number",                   null: false
+    t.integer  "transporter_id",                     null: false
+    t.integer  "fdp_id",                             null: false
+    t.integer  "gin_number",                         null: false
+    t.string   "requisition_number",                 null: false
+    t.string   "received_by",                        null: false
+    t.date     "received_date",                      null: false
+    t.integer  "status"
+    t.integer  "operation_id"
+    t.text     "remark"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",            default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.index ["gin_number"], name: "index_deliveries_on_gin_number", unique: true, using: :btree
+    t.index ["receiving_number"], name: "index_deliveries_on_receiving_number", unique: true, using: :btree
+  end
+
+  create_table "delivery_details", force: :cascade do |t|
+    t.integer  "commodity_id"
+    t.integer  "uom_id"
+    t.decimal  "sent_quantity"
+    t.decimal  "received_quantity"
+    t.integer  "delivery_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",           default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
+
   create_table "dispatch_items", force: :cascade do |t|
     t.integer  "dispatch_id"
     t.integer  "commodity_category_id"
