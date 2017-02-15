@@ -26,11 +26,18 @@
         <%= f.text_field :gin_no, :class => 'form-control', :autofocus => true, :required => true %>
       </div>
 
+      <div class="form-group" id="requisition-input-group">
+        <%= f.label :requisition_number, "Requisition Number" %> <span class="required">*</span> &middot; 
+          <i class="fa fa-times" title="Requisition not found."> </i> 
+          <i class="fa fa-check hidden"  title="Requisition exists."> </i>
+        <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input' %>
+      </div>
+
 
       <div class="form-group">
         <%= f.label :operation_id %> <span class="required">*</span>
         <%= f.collection_select :operation_id,
-                  Operation.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+                  Operation.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:id => 'operation_id_select', :class => 'form-control', :required => true }%>
       </div>
 
       <div class="form-group">
@@ -189,6 +196,42 @@
               var REMOVE_dispatchLINE_BTN = '<a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>';
             
               $( function() { 
+
+                  $('#req_no_input').keyup( $.debounce( 500, function() { 
+                    $.getJSON( '/requisitions/get_requisiton_by_number', 
+                        { requisition_no: $(this).val()}, 
+                        function(data) { 
+
+
+                          $("#requisition-input-group i.fa-check").removeClass('hidden'); 
+                          $("#requisition-input-group i.fa-times").addClass('hidden'); 
+
+
+                          var operation_id = data.requisition.operation_id; 
+                          if( null !== operation_id) { 
+                              $("#operation_id_select").val( operation_id); 
+                          }
+
+                          var region_id = data.requisition.region_id; 
+
+                          if( null !== region_id) { 
+                            
+                            $("select[name=region]:first").val(region_id).change(); 
+
+                            var zone_id = data.requisition.zone_id; 
+
+                            if( null !== zone_id ) { 
+                              $("select[name=zone]:first").data('value', zone_id);
+                            }  
+                          }
+                        }
+                    )
+                    .error(function(event, jqxhr, exception) {
+                        $("#requisition-input-group i.fa-times").removeClass('hidden'); 
+                        $("#requisition-input-group i.fa-check").addClass('hidden'); 
+                    });
+                  }));
+
                   $("#add-dispatch-line").click( function(e) { 
                       e.preventDefault(); 
 

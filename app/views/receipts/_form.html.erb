@@ -28,9 +28,16 @@
 
 
       <div class="form-group">
-        <%= f.label :store_id %> <span class="required">*</span>
-        <%= f.collection_select :store_id,
-                  Store.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+        <%= f.label :hub_id, "Hub" %> <span class="required">*</span>
+        <%= f.collection_select :hub_id,
+                  Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+      </div>
+
+
+      <div class="form-group">
+        <%= f.label :warehouse_id, "Warehouse" %> <span class="required">*</span>
+        <%= f.collection_select :warehouse_id,
+                  Warehouse.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
       </div>
 
       <div class="form-group">
@@ -60,6 +67,7 @@
                 <tr>
                   <th>Commodity Category</th>
                   <th>Commodity</th>
+                  <th>Unit of Measure</th>
                   <th>Quantity</th>
                   <th>Project</th>
                   <th></th>
@@ -80,6 +88,11 @@
                     <td>
                       <select name="receipt[receipt_lines[][commodity_id]]" class="form-control" readonly>
                         <option value="<%= receipt_line.commodity.id %>"><%= receipt_line.commodity.name %></option>
+                      </select>
+                    </td>
+                    <td>
+                      <select name="receipt[receipt_lines[][unit_of_measure_id]]" class="form-control" readonly>
+                        <option value="<%= receipt_line.unit_of_measure.id %>"><%= receipt_line.unit_of_measure.name %></option>
                       </select>
                     </td>
                     <td>
@@ -104,10 +117,23 @@
                         <select name="receipt[receipt_lines[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
                           <option value="">-- Choose --</option>
                           <% Commodity.all.each do |commodity| %>
-                            <option value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden"><%= commodity.name %></option>
+                            <option
+                              data-uom-category-id="<%= commodity.uom_category ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" 
+                              value="<%= commodity.id %>" 
+                              class="cc-<%= commodity.commodity_category.id %> hidden">
+                                <%= commodity.name %>
+                              </option>
                           <% end %>
                         </select>
                       </td>
+
+                      <td>
+                        <select name="receipt[receipt_lines[][unit_of_measure_id]]" id="uom-select" class="form-control" data-parsley-required>
+                          <option value="">-- Choose --</option>
+                          
+                        </select>
+                      </td>
+
                       <td>
                           <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
                       </td>
@@ -207,9 +233,37 @@
 
 <script type="text/javascript">
 
+              var allUnitOfMeasures = [];
+
               var REMOVE_RECEIPTLINE_BTN = '<a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>';
+              
+              var EMPTY_OPTION = '<option value="">-- Choose --</option>'; 
             
               $( function() { 
+
+                  $.getJSON( '/unit_of_measures', {}, function(data) { 
+                    allUnitOfMeasures = data; 
+                  }); 
+
+
+                  $("#commodity-select").change( function() { 
+                      var categoryId = $(this).find('option:selected').data('uom-category-id');
+
+                      if( '' === categoryId )  return; 
+
+                      var unitOfMeasuresInCategory = $.grep( allUnitOfMeasures, function(elem) { return elem.uom_category_id == categoryId } );  
+
+                      var options = $.map( unitOfMeasuresInCategory, function( val ) {
+                        return '<option value="' + val.id + '">' + val.name + '</option>'; 
+                      });
+
+                      options.unshift(EMPTY_OPTION); 
+
+                      $('#uom-select').html( options );  
+
+                  });
+
+
                   $("#add-receipt-line").click( function(e) { 
                       e.preventDefault(); 
 

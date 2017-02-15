@@ -55,6 +55,8 @@ Rails.application.routes.draw do
   resources :receipts 
   resources :dispatches 
 
+  get 'requisitions/get_requisiton_by_number'
+
   root to: 'dashboard#index'
 
 end
