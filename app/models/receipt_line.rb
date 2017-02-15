@@ -14,6 +14,7 @@
 #  deleted_at            :datetime
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  unit_of_measure_id    :integer
 #
 
 class ReceiptLine < ApplicationRecord
@@ -21,6 +22,7 @@ class ReceiptLine < ApplicationRecord
 
     belongs_to :commodity_category
     belongs_to :commodity
+    belongs_to :unit_of_measure
     belongs_to :receipt 
     belongs_to :project 
 end

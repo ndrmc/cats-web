@@ -14,7 +14,7 @@
 #  min_temperature       :float
 #  max_temperature       :float
 #  commodity_category_id :integer
-#  unit_of_measure_id    :integer
+#  uom_category_id       :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  created_by            :integer
@@ -24,7 +24,7 @@
 
 class Commodity < ApplicationRecord
   belongs_to :commodity_category
-  belongs_to :unit_of_measure
+  belongs_to :uom_category
 
   validates :name , presence: true
 end

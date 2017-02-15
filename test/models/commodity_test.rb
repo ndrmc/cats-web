@@ -14,7 +14,7 @@
 #  min_temperature       :float
 #  max_temperature       :float
 #  commodity_category_id :integer
-#  unit_of_measure_id    :integer
+#  uom_category_id       :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  created_by            :integer

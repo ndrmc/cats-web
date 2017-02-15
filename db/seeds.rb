@@ -174,16 +174,22 @@ if Program.count == 0
 end
 
 if Account.count == 0
-  Account.create(name: 'Receivable', type: '', description: 'Resources which are purchase, donated or loanded but have not yet been received at warehouses (Receipt Plan)')
-  Account.create(name: 'Allocated', type: '', description: 'Resources commited for dispatch through RRD. In CATS this indicates dispatch allocation')
-  Account.create(name: 'Receipt', type: '', description: 'Represents resources which are received at the hubs. This account represents Goods Receiving Note (GRN)')
-  Account.create(name: 'Dispatch', type: '', description: 'Commodities which are dispatched from the warehouse to FDPs. This account represents Goods Issue Ticket (GIT) records.')
-  Account.create(name: 'Delivery', type: '', description: 'Commodities which are received at FDPs. This is equivallent to delivery note (GRN) at FDPs.')
-  Account.create(name: 'Loss', type: '', description: 'Commodities which had proper record in the system but are not being accounted. This account is used during Delivery, Annual Inventory or Distribution.')
-  Account.create(name: 'Stock', type: '', description: 'Amount of commodities available at the warehouses')
-  Account.create(name: 'Distribution', type: '', description: 'Commodities which were delivered to FDPs and are distributed to beneficiareis. This account represents distribution reports from CMPM')
-  Account.create(name: 'Statistics', type: '', description: 'This account contains entries made when commodities are taken into (Beginning Inventory, Donation, Purchase and Loan) and released (Utilization) from the system. Similar to "cash book" account.')
+  Account.create(name: 'Borrowed', code: :borrowed, description: 'Resources which are borrowed, but have not yet been received at warehouses (Receipt Plan)')  
+  Account.create(name: 'Purchased', code: :purchased, description: 'Resources which are purchased but have not yet been received at warehouses (Receipt Plan)')
+  Account.create(name: 'Pledged', code: :pledged, description: 'Resources which are donated but have not yet been received at warehouses (Receipt Plan)')
+  Account.create(name: 'Allocated', code: :allocated, description: 'Resources commited for dispatch through RRD. In CATS this indicates dispatch allocation')
+  Account.create(name: 'Received', code: :received, description: 'Represents resources which are received at the hubs. This account represents Goods Receiving Note (GRN)')
+  Account.create(name: 'Dispatched', code: :dispatched, description: 'Commodities which are dispatched from the warehouse to FDPs. This account represents Goods Issue Ticket (GIT) records.')
+  Account.create(name: 'Delivered', code: :delivered, description: 'Commodities which are received at FDPs. This is equivallent to delivery note (GRN) at FDPs.')
+  Account.create(name: 'Lost', code: :lost, description: 'Commodities which had proper record in the system but are not being accounted. This account is used during Delivery, Annual Inventory or Distribution.')
+  Account.create(name: 'Stock', code: :stock, description: 'Amount of commodities available at the warehouses')
+  Account.create(name: 'Distributed', code: :distributed, description: 'Commodities which were delivered to FDPs.This account represents distribution reports from CMPM')
+  Account.create(name: 'Utilized', code: :utilized, description: 'Commodities which are distributed to beneficiareis.')
+  Account.create(name: 'Repaid', code: :repaid, description: 'Commodities which were paid back for a loan made previously.')  
+  Account.create(name: 'Statistics', code: :statistics, description: 'This account contains entries made when commodities are taken into (Beginning Inventory, Donation, Purchase and Loan) and released (Utilization) from the system. Similar to "cash book" account.')
+  
   puts "Created seed data for Account records"
+
 end
 
 if User.count == 0
