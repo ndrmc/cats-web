@@ -77,6 +77,8 @@ GEM
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
+    email_validator (1.6.0)
+      activemodel
     erubis (2.7.0)
     execjs (2.7.0)
     ffi (1.9.14)
@@ -207,6 +209,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   devise (~> 4.2.0)
+  email_validator
   font-awesome-rails (= 4.7.0.0)
   jbuilder (~> 2.5)
   jquery-rails
@@ -228,4 +231,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.13.6
+   1.14.3
