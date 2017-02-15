@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170213130319) do
+ActiveRecord::Schema.define(version: 20170213141922) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -553,10 +553,12 @@ ActiveRecord::Schema.define(version: 20170213130319) do
     t.datetime "deleted_at"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
+    t.integer  "unit_of_measure_id"
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
     t.index ["receipt_id"], name: "index_receipt_lines_on_receipt_id", using: :btree
+    t.index ["unit_of_measure_id"], name: "index_receipt_lines_on_unit_of_measure_id", using: :btree
   end
 
   create_table "receipts", force: :cascade do |t|
@@ -874,4 +876,5 @@ ActiveRecord::Schema.define(version: 20170213130319) do
   end
 
   add_foreign_key "commodity_categories", "uom_categories"
+  add_foreign_key "receipt_lines", "unit_of_measures"
 end
