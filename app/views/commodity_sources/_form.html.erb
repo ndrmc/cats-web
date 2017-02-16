@@ -1,0 +1,34 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(commodity_source) do |f| %>
+        <% if commodity_source.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(commodity_source.errors.count, "error") %> prohibited this commodity_source from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% commodity_source.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :name %>
+                <%= f.text_field :name, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

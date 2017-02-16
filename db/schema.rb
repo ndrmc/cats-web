@@ -11,12 +11,13 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20170214161019) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string   "name",        null: false
-    t.integer  "code"
+    t.string   "type"
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -24,7 +25,7 @@ ActiveRecord::Schema.define(version: 20170214161019) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_accounts_on_deleted_at", using: :btree
-    t.index ["name", "code"], name: "index_accounts_on_name_and_code", using: :btree
+    t.index ["name", "type"], name: "index_accounts_on_name_and_type", using: :btree
   end
 
   create_table "bid_plan_items", force: :cascade do |t|

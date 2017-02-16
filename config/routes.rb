@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resources :currencies
   resources :donors
   resources :programs
+  resources :commodity_sources
   resources :commodity_categories
   resources :commodities
   resources :unit_of_measures
