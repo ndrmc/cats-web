@@ -28,4 +28,6 @@ class Account < ApplicationRecord
         repaid: 10,
         statistics: 11
     }
+
+    validates :name, presence: {messege: " is required!"}
 end

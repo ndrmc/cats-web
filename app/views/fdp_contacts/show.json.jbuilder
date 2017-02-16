@@ -1,0 +1,1 @@
+json.partial! "fdp_contacts/fdp_contact", fdp_contact: @fdp_contact

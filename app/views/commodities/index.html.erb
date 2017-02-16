@@ -30,7 +30,7 @@
               <th>Code</th>
               <th>Description</th>
               <th>Commodity category</th>
-              <th>Unit of measure</th>
+              <th>Unit of measure Category</th>
               <th>Actions</th>
           </tr>
         </thead>
@@ -47,9 +47,7 @@
               <% end %>
             </td>
             <td>
-              <% if commodity.unit_of_measure_id %>
-              <%= commodity.unit_of_measure.name%></td>
-              <% end %>
+              <%= commodity.uom_category ? commodity.uom_category.name : '-'%></td>
             <td>
               <%= link_to 'Edit', edit_commodity_path(commodity) %> &middot;
               <%= link_to 'Delete', commodity, method: :delete, data: { confirm: 'Are you sure?' } %>

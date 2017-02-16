@@ -13,4 +13,6 @@
 #
 
 class CommoditySource < ApplicationRecord
+    validates :name, presence: {message: " is required!"}
+    
 end
