@@ -42,4 +42,6 @@ class Receipt < ApplicationRecord
 
     after_save :pre_post
 
+    after_update :reverse
+
 end

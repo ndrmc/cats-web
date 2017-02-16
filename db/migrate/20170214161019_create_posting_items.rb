@@ -19,7 +19,7 @@ class CreatePostingItems < ActiveRecord::Migration[5.0]
       t.integer :operation_id
 
       t.integer :commodity_id
-      t.integer :commodityCategory_id
+      t.integer :commodity_category_id
 
       t.decimal :quantity
 

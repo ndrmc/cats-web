@@ -28,7 +28,7 @@ module Postable
                     batch_id: 1,
                     program_id: self.program_id,
                     commodity_id: receipt_line.commodity_id,
-                    commodityCategory_id: receipt_line.commodity_category_id,
+                    commodity_category_id: receipt_line.commodity_category_id,
                     quantity: -receipt_line.quantity
 
                 })
@@ -44,7 +44,7 @@ module Postable
                         batch_id: 1,
                         program_id: self.program_id,
                         commodity_id: receipt_line.commodity_id,
-                        commodityCategory_id: receipt_line.commodity_category_id,
+                        commodity_category_id: receipt_line.commodity_category_id,
                         quantity: receipt_line.quantity
                 })
                 posting_items << credit
@@ -73,7 +73,7 @@ module Postable
                     program_id: Operation.find(self.operation_id).program_id,
                     operation_id: self.operation_id,
                     commodity_id: dispatch_line.commodity_id,
-                    commodityCategory_id: dispatch_line.commodity_category_id,
+                    commodity_category_id: dispatch_line.commodity_category_id,
                     quantity: -dispatch_line.quantity
 
                 })
@@ -90,7 +90,7 @@ module Postable
                         program_id: Operation.find(self.operation_id).program_id,
                         operation_id: self.operation_id,
                         commodity_id: dispatch_line.commodity_id,
-                        commodityCategory_id: dispatch_line.commodity_category_id,
+                        commodity_category_id: dispatch_line.commodity_category_id,
                         quantity: dispatch_line.quantity
                 })
                 posting_items << credit
@@ -101,7 +101,49 @@ module Postable
             post( Posting.document_types[:dispatch], self.id, Posting.posting_types[:normal], posting_items)
         
         
-        end
+        
+        elsif(self.is_a?(Delivery))
+                delivery_account = Account.find_by({'code': :delivered})
+                dispatched_account = Account.find_by({'code': :dispatched})
+                        
+
+                delivery_journal = Journal.find_by({'code': :delivery})
+                posting_items = []
+                self.delivery_details.each do |delivery_detail|
+                    debit = PostingItem.new({
+                        account_id: dispatched_account.id,
+                        journal_id: delivery_journal.id,
+                        fdp_id: self.fdp_id, 
+                        batch_id: 1,
+                        program_id: Operation.find(self.operation_id).program_id,
+                        operation_id: self.operation_id,
+                        commodity_id: delivery_detail.commodity_id,
+                        commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
+                        quantity: -delivery_detail.received_quantity
+
+                    })
+
+                    posting_items << debit
+                    credit = PostingItem.new({
+                        account_id: delivery_account.id,
+                        journal_id: delivery_journal.id,
+                        fdp_id: self.fdp_id, 
+                        batch_id: 1,
+                        program_id: Operation.find(self.operation_id).program_id,
+                        operation_id: self.operation_id,
+                        commodity_id: delivery_detail.commodity_id,
+                        commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
+                        quantity: delivery_detail.received_quantity
+                    })
+                    posting_items << credit
+                end 
+
+
+
+                post( Posting.document_types[:delivery], self.id, Posting.posting_types[:normal], posting_items)
+            
+            
+            end
     
     end
 
