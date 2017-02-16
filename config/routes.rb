@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resources :currencies
   resources :donors
   resources :programs
+  resources :commodity_sources
   resources :commodity_categories
   resources :commodities
   resources :unit_of_measures
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
   resources :operations
   resources :accounts
   resources :fdps
+  resources :fdp_contacts
   get 'fdps/location/:location_id', to: 'fdps#get_by_location'
 
   resources :organizations
@@ -52,6 +54,8 @@ Rails.application.routes.draw do
 
   resources :receipts 
   resources :dispatches 
+
+  get 'requisitions/get_requisiton_by_number'
 
   root to: 'dashboard#index'
 

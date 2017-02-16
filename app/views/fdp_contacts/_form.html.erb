@@ -1,0 +1,51 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(fdp_contact) do |f| %>
+        <% if fdp_contact.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(fdp_contact.errors.count, "error") %> prohibited this fdp_contact from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% fdp_contact.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :full_name %>
+                <%= f.text_field :full_name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :mobile %>
+                <%= f.text_field :mobile, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :email %>
+                <%= f.text_field :email, :class => 'form-control' %>
+                        </div>
+
+               
+
+               <div class="form-group">
+          <%= f.label :FDP %>
+          <%= f.collection_select :fdp_id,
+                    Fdp.order(:name),:id,:name,{include_blank: true}, {class:'form-control'}%>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

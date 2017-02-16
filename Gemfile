@@ -80,3 +80,5 @@ gem 'rails-assets-sweetalert2', source: 'https://rails-assets.org'
 gem "paranoia", "~> 2.2"
 
 gem 'bootstrap-datepicker-rails', '~> 1.6', '>= 1.6.0.1'
+
+gem 'email_validator'
