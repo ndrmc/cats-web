@@ -16,9 +16,9 @@ class DispatchesController < ApplicationController
                 filter_map[:dispatch_date] = dates[0]..dates[1]
             end
 
-            if params[:status ]
-                filter_map[:draft ] = params[:status ] == 'Draft'
-            end
+            # if params[:status ]
+            #     filter_map[:draft ] = params[:status ] == 'Draft'
+            # end
 
             @dispatches = Dispatch.joins( :dispatch_items ).where( filter_map ).distinct
         else 
