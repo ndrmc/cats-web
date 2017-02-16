@@ -15,7 +15,7 @@ gem 'puma', '~> 3.0'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
- 
+
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 
@@ -82,3 +82,5 @@ gem "paranoia", "~> 2.2"
 gem 'bootstrap-datepicker-rails', '~> 1.6', '>= 1.6.0.1'
 
 gem 'email_validator'
+
+gem 'hirb-unicode'
