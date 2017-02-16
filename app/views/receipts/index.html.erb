@@ -22,10 +22,10 @@
   <div class="ibox-content">
       <%= form_tag( receipts_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
         <div class="form-group">
-          <%= label_tag :project, "Project", { :class => ' control-label'} %>
+          <%= label_tag :project, "Project", { :class => ' control-label', :required => true } %>
 
           <div class="">
-            <%= select_tag  :project,  options_from_collection_for_select( Project.all, 'id', 'project_code', params[:project] ) , { :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+            <%= select_tag  :project,  options_from_collection_for_select( Project.all, 'id', 'project_code', params[:project] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
           </div>
         </div>
         <div class="form-group">
@@ -62,7 +62,7 @@
 
         <%= form_tag( receipts_path ,{ class: 'form-inline pull-right', style: 'display: inline-block;',role: 'form', method: 'GET'}) do %>
         <div class="form-group">
-          <%= label_tag :grn_no, "GRN Number", { :class => ' control-label'} %>
+          <%= label_tag :grn_no, "GRN", { :class => ' control-label'} %>
 
           <div class="">
             <%= text_field_tag  :grn_no, params[:grn_no], { class: 'form-control'}  %>

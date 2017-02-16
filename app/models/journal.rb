@@ -2,10 +2,10 @@
 #
 # Table name: journals
 #
-#  id   integer          not null: primary key
-#  name string
+#  id          :integer          not null, primary key
+#  name        :string
 #  description :string
-#  code integer
+#  code        :integer
 #  created_by  :integer
 #  modified_by :integer
 #  deleted     :boolean          default(FALSE)

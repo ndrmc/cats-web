@@ -1,7 +1,30 @@
 class DispatchesController < ApplicationController
 
     def index
-        @dispatches = Dispatch.all
+        if params[:find].present? 
+            @dispatches = Dispatch.where gin_no: params[:gin_no]
+            return
+        end
+        
+
+        if params[:operation].present? && params[:hub].present?
+            filter_map = {hub_id: params[:hub], operation_id: params[:operation]}
+            
+            if params[:dispatch_date ].present? 
+                dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
+
+                filter_map[:dispatch_date] = dates[0]..dates[1]
+            end
+
+            if params[:status ]
+                filter_map[:draft ] = params[:status ] == 'Draft'
+            end
+
+            @dispatches = Dispatch.joins( :dispatch_items ).where( filter_map ).distinct
+        else 
+           
+            @dispatches = []
+        end 
     end
 
     def new 

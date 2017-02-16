@@ -4,7 +4,7 @@
 #
 #  id                  :integer          not null, primary key
 #  posting_code        :uuid
-#  document_type        :integer
+#  document_type       :integer
 #  document_id         :integer
 #  posted              :boolean
 #  reversed_posting_id :integer

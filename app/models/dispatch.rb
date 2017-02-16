@@ -21,6 +21,8 @@
 #  deleted_at                  :datetime
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  hub_id                      :integer
+#  warehouse_id                :integer
 #
 
 class Dispatch < ApplicationRecord

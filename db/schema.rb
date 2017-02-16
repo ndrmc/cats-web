@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170214161019) do
+ActiveRecord::Schema.define(version: 20170216125240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -248,9 +248,13 @@ ActiveRecord::Schema.define(version: 20170214161019) do
     t.datetime "deleted_at"
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+    t.integer  "hub_id"
+    t.integer  "warehouse_id"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
+    t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
     t.index ["transporter_id"], name: "index_dispatches_on_transporter_id", using: :btree
+    t.index ["warehouse_id"], name: "index_dispatches_on_warehouse_id", using: :btree
   end
 
   create_table "donors", force: :cascade do |t|
@@ -966,5 +970,7 @@ ActiveRecord::Schema.define(version: 20170214161019) do
   end
 
   add_foreign_key "commodity_categories", "uom_categories"
+  add_foreign_key "dispatches", "hubs"
+  add_foreign_key "dispatches", "warehouses"
   add_foreign_key "receipt_lines", "unit_of_measures"
 end
