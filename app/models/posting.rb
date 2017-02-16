@@ -27,5 +27,8 @@ class Posting < ApplicationRecord
         receipt: 0,
         dispatch: 1,
         delivery: 2
-    }
+    }   
+
+    has_many :posting_items
+
 end

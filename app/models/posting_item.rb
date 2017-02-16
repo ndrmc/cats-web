@@ -31,5 +31,5 @@
 #
 
 class PostingItem < ApplicationRecord
-    
+    belongs_to :posting
 end

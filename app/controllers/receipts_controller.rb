@@ -7,6 +7,7 @@ class ReceiptsController < ApplicationController
 
     def new 
         @receipt = Receipt.new
+        @receipt.commodity_source_id = 1
     end
 
 
@@ -72,7 +73,7 @@ class ReceiptsController < ApplicationController
     private 
 
         def receipt_params
-            params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, 
+            params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :commodity_source_id,
                 :weight_bridge_ticket_no, :transporter_id, :weight_before_unloading, :plate_no, :trailer_plate_no, :drivers_name, :remark,
                 :receipt_lines => [:id, :commodity_category_id, :commodity_id, :quantity, :project_id]
             )

@@ -192,6 +192,26 @@ if Account.count == 0
 
 end
 
+if Journal.count == 0
+  Journal.create(name: 'Beginning Inventory', code: :beginning_inventory, description: '')  
+  Journal.create(name: 'Donation', code: :donation, description: '')
+  Journal.create(name: 'Good Received', code: :goods_received, description: '')
+  Journal.create(name: 'Purchase', code: :purchase, description: '')
+  Journal.create(name: 'Dispatch Allocation', code: :dispatch_allocation, description: '')
+  Journal.create(name: 'Goods Issue', code: :goods_issue, description: '')
+  Journal.create(name: 'Loan', code: :loan, description: '')
+  Journal.create(name: 'Repayment', code: :repayment, description: '')
+  Journal.create(name: 'Transfer', code: :transfer, description: '')
+  Journal.create(name: 'Annual Inventory', code: :annual_inventory, description: '')
+  Journal.create(name: 'Utilization', code: :utilization, description: '')
+  Journal.create(name: 'Delivery', code: :delivery, description: '')  
+  Journal.create(name: 'Distribution', code: :distribution, description: '')
+  
+  puts "Created seed data for Journal records"
+
+end
+
+
 if User.count == 0
   User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password')
   puts "Created default user account 'admin@cats.org' with password 'password'"
