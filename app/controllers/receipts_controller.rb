@@ -1,7 +1,26 @@
 class ReceiptsController < ApplicationController
 
     def index 
-        @receipts = Receipt.all 
+
+        if params[:project].present? && params[:hub].present?
+            filter_map = {hub_id: params[:hub], receipt_lines: { project_id: params[:project]}}
+            
+            if params[:received_date ].present? 
+                dates = params[:received_date].split(' - ').map { |d| Date.parse d }
+
+                filter_map[:received_date] = dates[0]..dates[1]
+            end
+
+            if params[:status ]
+                filter_map[:draft ] = params[:status ] == 'Draft'
+            end
+
+            @receipts = Receipt.joins( :receipt_lines ).where( filter_map ).distinct
+        else 
+           
+            @receipts = []
+        end 
+        
     end
 
 

@@ -39,4 +39,7 @@ class Receipt < ApplicationRecord
 
     has_many :receipt_lines 
 
+    belongs_to :project 
+    belongs_to :hub
+
 end
