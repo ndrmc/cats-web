@@ -25,7 +25,7 @@
 
 class Dispatch < ApplicationRecord
     include Postable 
-    
+
     acts_as_paranoid 
 
     belongs_to :fdp 
@@ -33,4 +33,6 @@ class Dispatch < ApplicationRecord
     has_many :dispatch_items
 
     after_save :pre_post
+
+    after_update :reverse
 end

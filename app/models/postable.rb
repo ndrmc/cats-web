@@ -122,6 +122,34 @@ module Postable
         
     end
 
+    def reverse
+        
+        original_posting = Posting.find_by({'document_id': self.id})
+        original_posting.posting_type = Posting.posting_types[:reversed]
+       
+        original_posting.save!
+
+        reversal_items = []
+        original_posting.posting_items.each do |posting_item|
+            reversal_item = posting_item.dup
+            reversal_item.quantity = -reversal_item.quantity
+            reversal_items << reversal_item
+         end
+
+        reversal_posting = Posting.new({
+            posting_type: Posting.posting_types[:reversal],
+            reversed_posting_id: original_posting.id,
+            document_type: original_posting.document_type,
+            document_id: original_posting.document_id,
+            posting_items: reversal_items
+        })
+       
+       
+       reversal_posting.save!
+       
+
+    end
+
     def validate(posting_items)
         posting_items.map { |h| h[:quantity] }.sum == 0
      
