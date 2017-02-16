@@ -7,7 +7,7 @@ class DispatchesController < ApplicationController
         end
         
 
-        if params[:operation].present? && params[:hub].present?
+        if params[:operation].present? && params[:hub].present? && params[:region].present?
             filter_map = {hub_id: params[:hub], operation_id: params[:operation]}
             
             if params[:dispatch_date ].present? 
@@ -16,9 +16,17 @@ class DispatchesController < ApplicationController
                 filter_map[:dispatch_date] = dates[0]..dates[1]
             end
 
-            # if params[:status ]
-            #     filter_map[:draft ] = params[:status ] == 'Draft'
-            # end
+            if params[:status ]
+                filter_map[:draft ] = params[:status ] == 'Draft'
+            end
+
+            region = Location.find params[:region]
+
+            fdp_locations = region.descendants.map { |d| d.id}.push params[:region] 
+
+            fdp_ids = Fdp.where( location_id: fdp_locations).map { |l| l.id}
+
+            filter_map[:fdp_id] = fdp_ids
 
             @dispatches = Dispatch.joins( :dispatch_items ).where( filter_map ).distinct
         else 
@@ -93,7 +101,8 @@ class DispatchesController < ApplicationController
     private 
         def dispatch_params
             params.require(:dispatch).permit( 
-                :gin_no, :operation_id, :dispatch_date, 
+                :gin_no, :requisition_number,
+                :operation_id, :dispatch_date, 
                 :hub_id, :warehouse_id, 
                 :fdp_id, 
                 :weight_bridge_ticket_number, :transporter_id, 

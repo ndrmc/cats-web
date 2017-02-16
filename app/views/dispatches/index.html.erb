@@ -94,11 +94,14 @@
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table class="table table-striped">
+    <table class="table table-striped cats-datatable">
       <thead>
       <tr>
             <th>GIN Number</th>
+            <th>Requisition Number</th>
             <th>Dispatch Date</th>
+            <th>FDP</th>
+            <th>Status</th>
             <th>Remark</th>
             <th>Actions</th>
       </tr>
@@ -108,7 +111,10 @@
         <% @dispatches.each do |dispatch| %>
             <tr>
                 <td><%= dispatch.gin_no %></td>
-                <td><%= dispatch.dispatch_date %></td>
+                <td><%= dispatch.requisition_number %></td>
+                <td><%= dispatch.dispatch_date.strftime('%d/%m/%Y') %></td>
+                <td><%= dispatch.fdp.name  %></td>
+                <td><%= dispatch.draft ? "Draft" : "Posted" %></td>
                 <td><%= dispatch.remark %></td>
                 <td>
                     <%= link_to 'Edit', edit_dispatch_path(dispatch) %> &middot;
