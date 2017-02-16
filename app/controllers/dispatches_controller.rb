@@ -94,6 +94,7 @@ class DispatchesController < ApplicationController
         def dispatch_params
             params.require(:dispatch).permit( 
                 :gin_no, :operation_id, :dispatch_date, 
+                :hub_id, :warehouse_id, 
                 :fdp_id, 
                 :weight_bridge_ticket_number, :transporter_id, 
                 :plate_number, 

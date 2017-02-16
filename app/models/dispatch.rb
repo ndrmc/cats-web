@@ -29,6 +29,8 @@ class Dispatch < ApplicationRecord
     acts_as_paranoid 
 
     belongs_to :fdp 
+    belongs_to :hub 
+    belongs_to :warehouse 
     
     has_many :dispatch_items
 end
