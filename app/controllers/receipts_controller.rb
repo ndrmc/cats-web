@@ -2,6 +2,12 @@ class ReceiptsController < ApplicationController
 
     def index 
 
+        if params[:find].present? 
+            @receipts = Receipt.where grn_no: params[:grn_no]
+            return
+        end
+        
+
         if params[:project].present? && params[:hub].present?
             filter_map = {hub_id: params[:hub], receipt_lines: { project_id: params[:project]}}
             
