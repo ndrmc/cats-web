@@ -21,6 +21,8 @@
 #  deleted_at                  :datetime
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  hub_id                      :integer
+#  warehouse_id                :integer
 #
 
 class Dispatch < ApplicationRecord
@@ -29,6 +31,8 @@ class Dispatch < ApplicationRecord
     acts_as_paranoid 
 
     belongs_to :fdp 
+    belongs_to :hub 
+    belongs_to :warehouse 
     
     has_many :dispatch_items
 
