@@ -17,14 +17,81 @@
   </div>
 </div>
 
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+      <%= form_tag( receipts_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+        <div class="form-group">
+          <%= label_tag :project, "Project", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :project,  options_from_collection_for_select( Project.all, 'id', 'project_code', params[:project] ) , { :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , { :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :status, "Status", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :status,  options_for_select( ["Draft", "Posted"], params[:status]) , { :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :received_date, "Received Date", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :received_date, params[:received_date], { id: 'received-date-picker',class: 'form-control'}  %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+          </div>
+        </div>
+
+        <% end %>
+
+
+        <%= form_tag( receipts_path ,{ class: 'form-inline pull-right', style: 'display: inline-block;',role: 'form', method: 'GET'}) do %>
+        <div class="form-group">
+          <%= label_tag :grn_no, "GRN Number", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :grn_no, params[:grn_no], { class: 'form-control'}  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+              <input type="submit" name="find" value="Go" class="btn btn-sm btn-primary" />
+          </div>
+        </div>
+
+
+      <% end %>
+  </div>
+</div>
+
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table class="table table-striped">
+    <table class="table table-striped cats-datatable">
       <thead>
       <tr>
             <th>GRN Number</th>
+            <th>Hub</th>
+            <th>Projects</th>
             <th>Received Date</th>
+            <th>Status</th>
             <th>Remark</th>
             <th>Actions</th>
       </tr>
@@ -34,8 +101,11 @@
         <% @receipts.each do |receipt| %>
             <tr>
                 <td><%= receipt.grn_no %></td>
-                <td><%= receipt.received_date %></td>
-                <td><%= receipt.remark %></td>
+                <td><%= receipt.hub ? receipt.hub.name : '-' %></td>
+                <td><%= receipt.receipt_lines.collect { |rl| rl.project.project_code}.uniq.join( ', ') %></td>
+                <td><%= receipt.received_date ? receipt.received_date.strftime('%d/%m/%Y') : '-' %></td>
+                <td><%= receipt.draft ? "Draft" : "Posted" %></td>
+                <td><%= receipt.remark ? receipt.remark : '-' %></td>
                 <td>
                     <%= link_to 'Edit', edit_receipt_path(receipt) %> &middot;
                     <%= link_to 'Delete', receipt, method: :delete, data: { confirm: 'Are you sure?' } %>
@@ -48,3 +118,20 @@
   </div>
 </div>
 
+<script type="text/javascript">
+  $( function() { 
+    $('#received-date-picker').daterangepicker(
+      {
+          locale: {
+            format: 'DD/MM/YYYY'
+          },
+          maxDate: '0', 
+          autoUpdateInput: false
+      }, 
+      function( start, end  ) { 
+        $('#received-date-picker').val( start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY')); 
+      }
+    ); 
+  });
+
+</script>
