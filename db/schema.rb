@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170214161019) do
+ActiveRecord::Schema.define(version: 20170216125240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -187,6 +187,7 @@ ActiveRecord::Schema.define(version: 20170214161019) do
     t.integer  "status"
     t.integer  "operation_id"
     t.text     "remark"
+    t.boolean  "draft"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.boolean  "deleted",            default: false
@@ -248,9 +249,13 @@ ActiveRecord::Schema.define(version: 20170214161019) do
     t.datetime "deleted_at"
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+    t.integer  "hub_id"
+    t.integer  "warehouse_id"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
+    t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
     t.index ["transporter_id"], name: "index_dispatches_on_transporter_id", using: :btree
+    t.index ["warehouse_id"], name: "index_dispatches_on_warehouse_id", using: :btree
   end
 
   create_table "donors", force: :cascade do |t|
@@ -521,6 +526,7 @@ ActiveRecord::Schema.define(version: 20170214161019) do
 
   create_table "posting_items", force: :cascade do |t|
     t.uuid     "posting_item_code"
+    t.integer  "posting_id"
     t.integer  "account_id"
     t.integer  "journal_id"
     t.integer  "donor_id"
@@ -533,7 +539,7 @@ ActiveRecord::Schema.define(version: 20170214161019) do
     t.integer  "program_id"
     t.integer  "operation_id"
     t.integer  "commodity_id"
-    t.integer  "commodityCategory_id"
+    t.integer  "commodity_category_id"
     t.decimal  "quantity"
     t.integer  "region_id"
     t.integer  "zone_id"
@@ -541,10 +547,10 @@ ActiveRecord::Schema.define(version: 20170214161019) do
     t.integer  "fdp_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",              default: false
+    t.boolean  "deleted",               default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   create_table "postings", force: :cascade do |t|
@@ -966,5 +972,7 @@ ActiveRecord::Schema.define(version: 20170214161019) do
   end
 
   add_foreign_key "commodity_categories", "uom_categories"
+  add_foreign_key "dispatches", "hubs"
+  add_foreign_key "dispatches", "warehouses"
   add_foreign_key "receipt_lines", "unit_of_measures"
 end

@@ -16,4 +16,5 @@
  *= require sweetalert2
  *= require dataTables/datatables.min.css
  *= require datepicker/datepicker.css
+ *= require daterangepicker.css
  */

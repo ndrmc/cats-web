@@ -45,24 +45,22 @@ end
 
 # Commodity categories
 if CommodityCategory.count == 0
-  w = UomCategory.find_by(name: "weight")
-
   CommodityCategory.create(name: 'All', code: 'all')
   root = CommodityCategory.find_by(code: 'all')
 
-  CommodityCategory.create(name: 'Food', code: 'food', parent: root, uom_category=w)
+  CommodityCategory.create(name: 'Food', code: 'food', parent: root)
   food = CommodityCategory.find_by(code: 'food')
-  CommodityCategory.create(name: 'Creal', code: 'cereal', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Pulse', code: 'pulse', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Blended Food', code: 'bf', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Oil', code: 'oil', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Supplementary Food', code: 'sf', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Other', code: 'other', parent: food,uom_category=w)
+  CommodityCategory.create(name: 'Creal', code: 'cereal', parent: food)
+  CommodityCategory.create(name: 'Pulse', code: 'pulse', parent: food)
+  CommodityCategory.create(name: 'Blended Food', code: 'bf', parent: food)
+  CommodityCategory.create(name: 'Oil', code: 'oil', parent: food)
+  CommodityCategory.create(name: 'Supplementary Food', code: 'sf', parent: food)
+  CommodityCategory.create(name: 'Other', code: 'other', parent: food)
 
-  CommodityCategory.create(name: 'Non-Food', code: 'nonfood', parent: root,uom_category=w)
+  CommodityCategory.create(name: 'Non-Food', code: 'nonfood', parent: root)
   non_food = CommodityCategory.find_by(code: 'nonfood')
-  CommodityCategory.create(name: 'Cloting', code: 'clothing', parent: non_food,uom_category=w)
-  CommodityCategory.create(name: 'House Equipment', code: 'equipment', parent: non_food,uom_category=w)
+  CommodityCategory.create(name: 'Cloting', code: 'clothing', parent: non_food)
+  CommodityCategory.create(name: 'House Equipment', code: 'equipment', parent: non_food)
 
   puts "Created seed data for CommodityCategory records"
 end
@@ -176,7 +174,7 @@ if Program.count == 0
 end
 
 if Account.count == 0
-  Account.create(name: 'Borrowed', code: :borrowed, description: 'Resources which are borrowed, but have not yet been received at warehouses (Receipt Plan)')
+  Account.create(name: 'Borrowed', code: :borrowed, description: 'Resources which are borrowed, but have not yet been received at warehouses (Receipt Plan)')  
   Account.create(name: 'Purchased', code: :purchased, description: 'Resources which are purchased but have not yet been received at warehouses (Receipt Plan)')
   Account.create(name: 'Pledged', code: :pledged, description: 'Resources which are donated but have not yet been received at warehouses (Receipt Plan)')
   Account.create(name: 'Allocated', code: :allocated, description: 'Resources commited for dispatch through RRD. In CATS this indicates dispatch allocation')
@@ -185,14 +183,32 @@ if Account.count == 0
   Account.create(name: 'Delivered', code: :delivered, description: 'Commodities which are received at FDPs. This is equivallent to delivery note (GRN) at FDPs.')
   Account.create(name: 'Lost', code: :lost, description: 'Commodities which had proper record in the system but are not being accounted. This account is used during Delivery, Annual Inventory or Distribution.')
   Account.create(name: 'Stock', code: :stock, description: 'Amount of commodities available at the warehouses')
-  Account.create(name: 'Distributed', code: :distributed, description: 'Commodities which were delivered to FDPs.This account represents distribution reports from CMPM')
-  Account.create(name: 'Utilized', code: :utilized, description: 'Commodities which are distributed to beneficiareis.')
-  Account.create(name: 'Repaid', code: :repaid, description: 'Commodities which were paid back for a loan made previously.')
+  Account.create(name: 'Distributed', code: :distributed, description: 'Commodities which are distributed to beneficiareis.This account represents distribution reports from CMPM')
+  Account.create(name: 'Repaid', code: :repaid, description: 'Commodities which were paid back for a loan made previously.')  
   Account.create(name: 'Statistics', code: :statistics, description: 'This account contains entries made when commodities are taken into (Beginning Inventory, Donation, Purchase and Loan) and released (Utilization) from the system. Similar to "cash book" account.')
-
+  
   puts "Created seed data for Account records"
 
 end
+
+if Journal.count == 0
+  Journal.create(name: 'Beginning Inventory', code: :beginning_inventory, description: '')  
+  Journal.create(name: 'Donation', code: :donation, description: '')
+  Journal.create(name: 'Good Received', code: :goods_received, description: '')
+  Journal.create(name: 'Purchase', code: :purchase, description: '')
+  Journal.create(name: 'Dispatch Allocation', code: :dispatch_allocation, description: '')
+  Journal.create(name: 'Goods Issue', code: :goods_issue, description: '')
+  Journal.create(name: 'Loan', code: :loan, description: '')
+  Journal.create(name: 'Repayment', code: :repayment, description: '')
+  Journal.create(name: 'Transfer', code: :transfer, description: '')
+  Journal.create(name: 'Annual Inventory', code: :annual_inventory, description: '')
+  Journal.create(name: 'Delivery', code: :delivery, description: '')  
+  Journal.create(name: 'Distribution', code: :distribution, description: '')
+  
+  puts "Created seed data for Journal records"
+
+end
+
 
 if User.count == 0
   User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password')
@@ -201,7 +217,8 @@ end
 
 if Role.count == 0
   [:admin, :guest, :clerk, :manager].each do |role|
-    Role.create(name: role)
+    Role.create(name: role)      
   end
   puts "Created default roles"
 end
+
