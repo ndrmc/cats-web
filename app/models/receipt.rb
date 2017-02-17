@@ -35,11 +35,13 @@
 #
 
 class Receipt < ApplicationRecord
+    include Postable
     acts_as_paranoid
 
     has_many :receipt_lines 
-
     belongs_to :project 
     belongs_to :hub
-
+  
+    after_save :pre_post
+    after_update :reverse
 end

@@ -13,6 +13,7 @@
 #  status             :integer
 #  operation_id       :integer
 #  remark             :text
+#  draft              :boolean
 #  created_by         :integer
 #  modified_by        :integer
 #  deleted            :boolean          default(FALSE)
@@ -23,6 +24,7 @@
 
 class Delivery < ApplicationRecord
     include Filterable
+    include Postable
     
     scope :gin_number, -> (gin_number) { where gin_number: gin_number }
     scope :fdp_id, -> (fdp_id) { where fdp_id: fdp_id }
@@ -34,5 +36,9 @@ class Delivery < ApplicationRecord
     
     validates :receiving_number, uniqueness: true
     validates :gin_number, uniqueness: true
+
+    after_save :pre_post
+
+    after_update :reverse
 
 end
