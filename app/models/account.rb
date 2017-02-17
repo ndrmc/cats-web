@@ -25,9 +25,8 @@ class Account < ApplicationRecord
         lost: 7,
         stock: 8,
         distributed: 9,
-        utilized: 10,
-        repaid: 11,
-        statistics: 12
+        repaid: 10,
+        statistics: 11
     }
 
     validates :name, presence: {messege: " is required!"}

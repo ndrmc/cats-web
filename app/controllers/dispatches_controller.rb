@@ -18,6 +18,8 @@ class DispatchesController < ApplicationController
 
         @dispatch = Dispatch.new( dispatch_map )
 
+        
+        
         respond_to do |format|
             if @dispatch.save
                 format.html { redirect_to dispatches_path, success: 'Dispatch was successfully created.' }

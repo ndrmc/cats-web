@@ -183,14 +183,32 @@ if Account.count == 0
   Account.create(name: 'Delivered', code: :delivered, description: 'Commodities which are received at FDPs. This is equivallent to delivery note (GRN) at FDPs.')
   Account.create(name: 'Lost', code: :lost, description: 'Commodities which had proper record in the system but are not being accounted. This account is used during Delivery, Annual Inventory or Distribution.')
   Account.create(name: 'Stock', code: :stock, description: 'Amount of commodities available at the warehouses')
-  Account.create(name: 'Distributed', code: :distributed, description: 'Commodities which were delivered to FDPs.This account represents distribution reports from CMPM')
-  Account.create(name: 'Utilized', code: :utilized, description: 'Commodities which are distributed to beneficiareis.')
+  Account.create(name: 'Distributed', code: :distributed, description: 'Commodities which are distributed to beneficiareis.This account represents distribution reports from CMPM')
   Account.create(name: 'Repaid', code: :repaid, description: 'Commodities which were paid back for a loan made previously.')  
   Account.create(name: 'Statistics', code: :statistics, description: 'This account contains entries made when commodities are taken into (Beginning Inventory, Donation, Purchase and Loan) and released (Utilization) from the system. Similar to "cash book" account.')
   
   puts "Created seed data for Account records"
 
 end
+
+if Journal.count == 0
+  Journal.create(name: 'Beginning Inventory', code: :beginning_inventory, description: '')  
+  Journal.create(name: 'Donation', code: :donation, description: '')
+  Journal.create(name: 'Good Received', code: :goods_received, description: '')
+  Journal.create(name: 'Purchase', code: :purchase, description: '')
+  Journal.create(name: 'Dispatch Allocation', code: :dispatch_allocation, description: '')
+  Journal.create(name: 'Goods Issue', code: :goods_issue, description: '')
+  Journal.create(name: 'Loan', code: :loan, description: '')
+  Journal.create(name: 'Repayment', code: :repayment, description: '')
+  Journal.create(name: 'Transfer', code: :transfer, description: '')
+  Journal.create(name: 'Annual Inventory', code: :annual_inventory, description: '')
+  Journal.create(name: 'Delivery', code: :delivery, description: '')  
+  Journal.create(name: 'Distribution', code: :distribution, description: '')
+  
+  puts "Created seed data for Journal records"
+
+end
+
 
 if User.count == 0
   User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password')
