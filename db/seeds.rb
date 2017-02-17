@@ -50,19 +50,19 @@ if CommodityCategory.count == 0
   CommodityCategory.create(name: 'All', code: 'all')
   root = CommodityCategory.find_by(code: 'all')
 
-  CommodityCategory.create(name: 'Food', code: 'food', parent: root, uom_category=w)
+  CommodityCategory.create(name: 'Food', code: 'food', parent: root, uom_category: w)
   food = CommodityCategory.find_by(code: 'food')
-  CommodityCategory.create(name: 'Creal', code: 'cereal', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Pulse', code: 'pulse', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Blended Food', code: 'bf', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Oil', code: 'oil', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Supplementary Food', code: 'sf', parent: food,uom_category=w)
-  CommodityCategory.create(name: 'Other', code: 'other', parent: food,uom_category=w)
+  CommodityCategory.create(name: 'Creal', code: 'cereal', parent: food,uom_category: w)
+  CommodityCategory.create(name: 'Pulse', code: 'pulse', parent: food,uom_category: w)
+  CommodityCategory.create(name: 'Blended Food', code: 'bf', parent: food,uom_category: w)
+  CommodityCategory.create(name: 'Oil', code: 'oil', parent: food,uom_category: w)
+  CommodityCategory.create(name: 'Supplementary Food', code: 'sf', parent: food,uom_category: w)
+  CommodityCategory.create(name: 'Other', code: 'other', parent: food,uom_category: w)
 
-  CommodityCategory.create(name: 'Non-Food', code: 'nonfood', parent: root,uom_category=w)
+  CommodityCategory.create(name: 'Non-Food', code: 'nonfood', parent: root,uom_category: w)
   non_food = CommodityCategory.find_by(code: 'nonfood')
-  CommodityCategory.create(name: 'Cloting', code: 'clothing', parent: non_food,uom_category=w)
-  CommodityCategory.create(name: 'House Equipment', code: 'equipment', parent: non_food,uom_category=w)
+  CommodityCategory.create(name: 'Cloting', code: 'clothing', parent: non_food,uom_category: w)
+  CommodityCategory.create(name: 'House Equipment', code: 'equipment', parent: non_food,uom_category: w)
 
   puts "Created seed data for CommodityCategory records"
 end
@@ -71,58 +71,58 @@ end
 if Commodity.count == 0
 
   #FOOD ITEMS
-  mt = UnitOfMeasure.find_by(code: 'MT')
+  weight = UomCategory.find_by(name: 'weight')
   cereal = CommodityCategory.find_by(code: 'cereal')
-  Commodity.create(name: 'Maize', code: 'MAZ', commodity_category: cereal, unit_of_measure: mt)
-  Commodity.create(name: 'Rice', code: 'RIC', commodity_category: cereal, unit_of_measure: mt)
-  Commodity.create(name: 'Sorghum', code: 'SRM', commodity_category: cereal, unit_of_measure: mt)
-  Commodity.create(name: 'Wheat', code: 'WHT', commodity_category: cereal, unit_of_measure: mt)
+  Commodity.create(name: 'Maize', code: 'MAZ', commodity_category: cereal, uom_category: weight)
+  Commodity.create(name: 'Rice', code: 'RIC', commodity_category: cereal, uom_category: weight)
+  Commodity.create(name: 'Sorghum', code: 'SRM', commodity_category: cereal, uom_category: weight)
+  Commodity.create(name: 'Wheat', code: 'WHT', commodity_category: cereal, uom_category: weight)
 
   pulse = CommodityCategory.find_by(code: 'pulse')
-  Commodity.create(name: 'Red Haricot Beans', code: 'RHB', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'White Haricot Beans', code: 'WHB', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Beans', code: 'BNS', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Lentils', code: 'LNT', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Split Lentils', code: 'SLNT', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Peas', code: 'PES', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Yello Split Peas', code: 'YSP', commodity_category: pulse, unit_of_measure: mt)
+  Commodity.create(name: 'Red Haricot Beans', code: 'RHB', commodity_category: pulse, uom_category: weight)
+  Commodity.create(name: 'White Haricot Beans', code: 'WHB', commodity_category: pulse, uom_category: weight)
+  Commodity.create(name: 'Beans', code: 'BNS', commodity_category: pulse, uom_category: weight)
+  Commodity.create(name: 'Lentils', code: 'LNT', commodity_category: pulse, uom_category: weight)
+  Commodity.create(name: 'Split Lentils', code: 'SLNT', commodity_category: pulse, uom_category: weight)
+  Commodity.create(name: 'Peas', code: 'PES', commodity_category: pulse, uom_category: weight)
+  Commodity.create(name: 'Yello Split Peas', code: 'YSP', commodity_category: pulse, uom_category: weight)
 
   blendedfood = CommodityCategory.find_by(code: 'bf')
-  Commodity.create(name: 'Corn soy blends(CSB)', code: 'CSB', commodity_category: blendedfood, unit_of_measure: mt)
-  Commodity.create(name: 'Corn soy blends (CSB+)', code: 'CSB+', commodity_category: blendedfood, unit_of_measure: mt)
-  Commodity.create(name: 'Corn soy blends (CSB++)', code: 'CSB++', commodity_category: blendedfood, unit_of_measure: mt)
-  Commodity.create(name: 'FAMIX', code: 'FMX', commodity_category: blendedfood, unit_of_measure: mt)
+  Commodity.create(name: 'Corn soy blends(CSB)', code: 'CSB', commodity_category: blendedfood, uom_category: weight)
+  Commodity.create(name: 'Corn soy blends (CSB+)', code: 'CSB+', commodity_category: blendedfood, uom_category: weight)
+  Commodity.create(name: 'Corn soy blends (CSB++)', code: 'CSB++', commodity_category: blendedfood, uom_category: weight)
+  Commodity.create(name: 'FAMIX', code: 'FMX', commodity_category: blendedfood, uom_category: weight)
 
   oil = CommodityCategory.find_by(code: 'oil')
-  Commodity.create(name: 'Vegetable Oil', code: 'VO', commodity_category: oil, unit_of_measure: mt)
+  Commodity.create(name: 'Vegetable Oil', code: 'VO', commodity_category: oil, uom_category: weight)
 
   foodsupplement = CommodityCategory.find_by(code: 'sf')
-  Commodity.create(name: 'Biscuit', code: 'BSC', commodity_category: foodsupplement, unit_of_measure: mt)
-  Commodity.create(name: 'Dates', code: 'DAT', commodity_category: foodsupplement, unit_of_measure: mt)
-  Commodity.create(name: 'Wheat Flour', code: 'WFR', commodity_category: foodsupplement, unit_of_measure: mt)
+  Commodity.create(name: 'Biscuit', code: 'BSC', commodity_category: foodsupplement, uom_category: weight)
+  Commodity.create(name: 'Dates', code: 'DAT', commodity_category: foodsupplement, uom_category: weight)
+  Commodity.create(name: 'Wheat Flour', code: 'WFR', commodity_category: foodsupplement, uom_category: weight)
 
   # NON FOOD ITEMS
-  unit = UnitOfMeasure.find_by(code: 'UNIT')
+  unit = UomCategory.find_by(name: 'unit')
 
   cloth = CommodityCategory.find_by(code: 'clothing')
-  Commodity.create(name: 'Blanket', code: 'BKT', commodity_category: cloth, unit_of_measure: unit)
-  Commodity.create(name: 'Bed Sheet', code: 'BST', commodity_category: cloth, unit_of_measure: unit)
+  Commodity.create(name: 'Blanket', code: 'BKT', commodity_category: cloth, uom_category: unit)
+  Commodity.create(name: 'Bed Sheet', code: 'BST', commodity_category: cloth, uom_category: unit)
 
   house_equipments = CommodityCategory.find_by(code: 'equipment')
-  Commodity.create(name: 'Cooking pots', code: 'PTS', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Ladle', code: 'LDL', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Spoon', code: 'SPN', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Fork', code: 'FRK', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Knife', code: 'KNF', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Tray', code: 'TRY', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic plate', code: 'PLP', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic cup', code: 'PLC', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic tea cup', code: 'PTC', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic jug', code: 'PJG', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic bucket', code: 'PBT', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic jerry can', code: 'PJC', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic sheet (4x5),(3x7),(30.5x7.3)', code: 'PST', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Tent (4x3),(4x4),(4x6),(10x6)', code: 'TNT', commodity_category: house_equipments, unit_of_measure: unit)
+  Commodity.create(name: 'Cooking pots', code: 'PTS', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Ladle', code: 'LDL', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Spoon', code: 'SPN', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Fork', code: 'FRK', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Knife', code: 'KNF', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Tray', code: 'TRY', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Plastic plate', code: 'PLP', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Plastic cup', code: 'PLC', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Plastic tea cup', code: 'PTC', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Plastic jug', code: 'PJG', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Plastic bucket', code: 'PBT', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Plastic jerry can', code: 'PJC', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Plastic sheet (4x5),(3x7),(30.5x7.3)', code: 'PST', commodity_category: house_equipments, uom_category: unit)
+  Commodity.create(name: 'Tent (4x3),(4x4),(4x6),(10x6)', code: 'TNT', commodity_category: house_equipments, uom_category: unit)
 
   puts "Created seed data for Commodity records"
 end
@@ -204,4 +204,10 @@ if Role.count == 0
     Role.create(name: role)
   end
   puts "Created default roles"
+end
+
+
+if EtlTask.count == 0
+  EtlTask.create(name: "admin_unit", description: "Migrates AdminUnit records to location entities", executed: false)
+  EtlTask.create(name: "commodity", description: "Migrates commodity records", executed: false)
 end
