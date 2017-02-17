@@ -2,10 +2,10 @@
 #
 # Table name: journals
 #
-#  id   integer          not null: primary key
-#  name string
+#  id          :integer          not null, primary key
+#  name        :string
 #  description :string
-#  code integer
+#  code        :integer
 #  created_by  :integer
 #  modified_by :integer
 #  deleted     :boolean          default(FALSE)
@@ -26,9 +26,8 @@ class Journal < ApplicationRecord
         repayment: 7,
         transfer: 8,
         annual_inventory: 9,
-        utilization: 10,
-        delivery: 11,
-        distribution: 12
+        delivery: 10,
+        distribution: 11
     }
    
 end

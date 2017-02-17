@@ -3,7 +3,7 @@ class CreatePostingItems < ActiveRecord::Migration[5.0]
     create_table :posting_items do |t|     
      
       t.uuid :posting_item_code
-
+      t.integer :posting_id
       t.integer :account_id
       t.integer :journal_id
       t.integer :donor_id
@@ -19,7 +19,7 @@ class CreatePostingItems < ActiveRecord::Migration[5.0]
       t.integer :operation_id
 
       t.integer :commodity_id
-      t.integer :commodityCategory_id
+      t.integer :commodity_category_id
 
       t.decimal :quantity
 

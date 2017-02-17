@@ -12,6 +12,7 @@ class CreateDeliveries < ActiveRecord::Migration[5.0]
       t.integer :status     
       t.integer :operation_id
       t.text  :remark
+      t.boolean :draft
 
       t.integer :created_by
       t.integer :modified_by

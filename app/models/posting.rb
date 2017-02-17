@@ -4,7 +4,7 @@
 #
 #  id                  :integer          not null, primary key
 #  posting_code        :uuid
-#  document_type        :integer
+#  document_type       :integer
 #  document_id         :integer
 #  posted              :boolean
 #  reversed_posting_id :integer
@@ -27,5 +27,8 @@ class Posting < ApplicationRecord
         receipt: 0,
         dispatch: 1,
         delivery: 2
-    }
+    }   
+
+    has_many :posting_items
+
 end
