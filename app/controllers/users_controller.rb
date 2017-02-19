@@ -1,12 +1,15 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles]
 
+ 
+
   layout 'admin'
 
   # GET /users
   # GET /users.json
   def index
     @users = User.all
+    authorize User
   end
 
   # GET /users/1

@@ -82,3 +82,5 @@ gem "paranoia", "~> 2.2"
 gem 'bootstrap-datepicker-rails', '~> 1.6', '>= 1.6.0.1'
 
 gem 'email_validator'
+
+gem 'pundit'
