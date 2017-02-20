@@ -187,7 +187,6 @@ ActiveRecord::Schema.define(version: 20170216125240) do
     t.integer  "status"
     t.integer  "operation_id"
     t.text     "remark"
-    t.boolean  "draft"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.boolean  "deleted",            default: false

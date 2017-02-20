@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :transporters
   get 'setting/index'
   devise_for :users
 
@@ -24,6 +25,7 @@ Rails.application.routes.draw do
   resources :currencies
   resources :donors
   resources :programs
+  
   resources :commodity_sources
   resources :commodity_categories
   resources :commodities
