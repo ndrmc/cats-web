@@ -108,6 +108,14 @@
   <span class="nav-label">Users & accounts</span>
   <span class="fa arrow"></span>
   <% end %>
+<!--
+<% if policy(User).index? %>
+
+    <li class="<%= 'active' if is_active_controller('users') %>">
+      <a href="#"><%= link_to 'User accounts', users_path %></a>
+    </li>
+  <% end %> -->
+
   <ul class="nav nav-second-level collapse">
     <li class="<%= 'active' if is_active_controller('users') %>">
       <a href="#"><%= link_to 'User accounts', users_path %></a>

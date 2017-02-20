@@ -9,7 +9,7 @@ def initialize(current_user,model)
 end
 
 def index?
-    @current_user.has_role? :guest
+    @current_user.has_role? :admin
 end
 
 end
