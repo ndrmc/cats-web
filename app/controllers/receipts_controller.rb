@@ -1,12 +1,38 @@
 class ReceiptsController < ApplicationController
 
     def index 
-        @receipts = Receipt.all 
+
+        if params[:find].present? 
+            @receipts = Receipt.where grn_no: params[:grn_no]
+            return
+        end
+        
+
+        if params[:project].present? && params[:hub].present?
+            filter_map = {hub_id: params[:hub], receipt_lines: { project_id: params[:project]}}
+            
+            if params[:received_date ].present? 
+                dates = params[:received_date].split(' - ').map { |d| Date.parse d }
+
+                filter_map[:received_date] = dates[0]..dates[1]
+            end
+
+            if params[:status ]
+                filter_map[:draft ] = params[:status ] == 'Draft'
+            end
+
+            @receipts = Receipt.joins( :receipt_lines ).where( filter_map ).distinct
+        else 
+           
+            @receipts = []
+        end 
+        
     end
 
 
     def new 
         @receipt = Receipt.new
+        @receipt.commodity_source_id = 1
     end
 
 
@@ -72,7 +98,8 @@ class ReceiptsController < ApplicationController
     private 
 
         def receipt_params
-            params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :hub_id, :warehouse_id,
+
+            params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :hub_id, :warehouse_id, :commodity_source_id,
                 :weight_bridge_ticket_no, :transporter_id, :weight_before_unloading, :plate_no, :trailer_plate_no, :drivers_name, :remark,
                 :receipt_lines => [:id, :commodity_category_id, :commodity_id, :unit_of_measure_id,  :quantity, :project_id]
             )
