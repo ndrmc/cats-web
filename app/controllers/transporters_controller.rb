@@ -42,7 +42,7 @@ class TransportersController < ApplicationController
   def update
     respond_to do |format|
       if @transporter.update(transporter_params)
-        format.html { redirect_to @transporter, notice: 'Transporter was successfully updated.' }
+        format.html { redirect_to transporters_path, notice: 'Transporter was successfully updated.' }
         format.json { render :show, status: :ok, location: @transporter }
       else
         format.html { render :edit }
