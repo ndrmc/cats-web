@@ -78,13 +78,13 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li>
-        <a href="#">Receiving</a>
+      <li class="<%= 'active' if is_active_controller('receipts')  %>">
+            <%= link_to 'Receiving', receipts_path %>
+      </li>
+      <li class="<%= 'active' if is_active_controller('dispatches')  %>">
+            <%= link_to 'Dispatch', dispatches_path %>
       </li>
       <li>
-        <a href="#">Dispatch</a>
-      </li>
-       <li>
         <%= link_to "Delivery", deliveries_url %>
       </li>
       <li>
