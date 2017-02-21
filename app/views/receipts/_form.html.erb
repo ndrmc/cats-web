@@ -54,9 +54,12 @@
         <%= f.label :waybill_no, "Waybill(s)" %> <span class="required">*</span>
         <%= f.text_field :waybill_no, :class => 'form-control', :required => true %>
       </div>
-       <%= f.text_field :commodity_source_id, :class => 'form-control', :required => true %>
-      
-    </div>
+
+      <div class="form-group">
+        <%= f.label :commodity_source_id, "Commodity Source" %> <span class="required">*</span>
+        <%= f.collection_select :commodity_source_id,
+                  CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+      </div>
   </div>
 
 
