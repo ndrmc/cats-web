@@ -86,4 +86,4 @@ gem 'email_validator'
 gem 'pundit'
 
 gem 'hirb-unicode'
-
+gem 'terminal-table'
