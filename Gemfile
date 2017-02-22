@@ -83,4 +83,7 @@ gem 'bootstrap-datepicker-rails', '~> 1.6', '>= 1.6.0.1'
 
 gem 'email_validator'
 
+gem 'pundit'
+
 gem 'hirb-unicode'
+

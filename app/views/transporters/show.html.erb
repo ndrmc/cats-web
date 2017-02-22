@@ -1,0 +1,57 @@
+    <p>
+      <strong>Name:</strong>
+      <%= @transporter.name %>
+    </p>
+
+    <p>
+      <strong>Code:</strong>
+      <%= @transporter.code %>
+    </p>
+
+    <p>
+      <strong>Ownership:</strong>
+      <%= @transporter.ownership %>
+    </p>
+
+    <p>
+      <strong>Vehiclecount:</strong>
+      <%= @transporter.vehicle_count %>
+    </p>
+
+    <p>
+      <strong>Lift capacity:</strong>
+      <%= @transporter.lift_capacity %>
+    </p>
+
+    <p>
+      <strong>Capital:</strong>
+      <%= @transporter.capital %>
+    </p>
+
+    <p>
+      <strong>Employees:</strong>
+      <%= @transporter.employees %>
+    </p>
+
+    <p>
+      <strong>Contact:</strong>
+      <%= @transporter.contact %>
+    </p>
+
+    <p>
+      <strong>Contact phone:</strong>
+      <%= @transporter.contact_phone %>
+    </p>
+
+    <p>
+      <strong>Remark:</strong>
+      <%= @transporter.remark %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @transporter.status %>
+    </p>
+
+<%= link_to 'Edit', edit_transporter_path(@transporter) %> |
+<%= link_to 'Back', transporters_path %>

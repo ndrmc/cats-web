@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  code: MyString
+  ownership: MyString
+  vehicleCount: 
+  lift_capacity: 9.99
+  capital: 9.99
+  employees: 1
+  contact: MyString
+  contact_phone: MyString
+  remark: MyString
+  status: MyString
+
+two:
+  name: MyString
+  code: MyString
+  ownership: MyString
+  vehicleCount: 
+  lift_capacity: 9.99
+  capital: 9.99
+  employees: 1
+  contact: MyString
+  contact_phone: MyString
+  remark: MyString
+  status: MyString

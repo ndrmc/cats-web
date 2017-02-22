@@ -22,6 +22,9 @@
            <li class="<%= 'active' if is_active_controller('organizations') %>">
               <%= link_to 'Organizations', organizations_path %>
           </li>
+          <li class="<%= 'active' if is_active_controller('transporters') %>">
+              <%= link_to 'Transporters', transporters_path %>
+          </li>
         </span>
       </a>
     </li>
@@ -108,6 +111,14 @@
   <span class="nav-label">Users & accounts</span>
   <span class="fa arrow"></span>
   <% end %>
+<!--
+<% if policy(User).index? %>
+
+    <li class="<%= 'active' if is_active_controller('users') %>">
+      <a href="#"><%= link_to 'User accounts', users_path %></a>
+    </li>
+  <% end %> -->
+
   <ul class="nav nav-second-level collapse">
     <li class="<%= 'active' if is_active_controller('users') %>">
       <a href="#"><%= link_to 'User accounts', users_path %></a>

@@ -1,0 +1,21 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>New Transporter</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Transporter</a>
+      </li>
+      <li class="active">
+        <strong>New</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', transporters_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<%= render 'form', transporter: @transporter %>
+
