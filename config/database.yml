@@ -85,3 +85,11 @@ production:
   database: cats_production
   username: cats
   password: <%= ENV['CATS_DATABASE_PASSWORD'] %>
+
+stage:
+  <<: *default
+  host: 10.11.156.20
+  port: 5444
+  database: cats_stage
+  username: postgres
+  password: cats
