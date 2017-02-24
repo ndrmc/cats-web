@@ -115,6 +115,17 @@ class RegionalRequestsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def update_regional_request_item
+    regional_request_item = RegionalRequestItem.find params[:id]
+    regional_request_item.number_of_beneficiaries = params[:new_beneficiaries_value]
+    regional_request_item.save
+
+    respond_to do |format|
+      format.json { head :no_content }
+    end
+  end
+  
   
 
   private

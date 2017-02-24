@@ -60,7 +60,7 @@
           <% @regional_request.regional_request_items.each do |request_item| %>
           <tr>
             <td><%= request_item.fdp.name %></td>
-            <td><%= request_item.number_of_beneficiaries %></td>
+            <td class="beneficiaries_number_cell"><%= request_item.number_of_beneficiaries %></td>
             <td>
               <a href="#" class="edit-rrdi" data-rrdi-id="<%= request_item.id %>">Edit</edit> &middot;<a href="#"  class="delete-rrdi" data-rrdi-id="<%= request_item.id %>">Delete</a>
             </td>
@@ -100,7 +100,11 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<script>
+<script type="text/javascript">
+
+  function isNumber(n) {
+    return !isNaN(parseInt(n, 10)) && isFinite(n);
+  }
 
   var alreadyAddedFdpIds = <%= @fdp_ids_with_a_request %>; 
 
@@ -142,11 +146,34 @@
   }); 
 
   $('#fdps_table').on( 'click', '.edit-rrdi', function(e) { 
-    e.preventDefault(); 
+    e.preventDefault(); //new_beneficiaries_value
 
     var rrdiId = $(this).data('rrdi-id'); 
 
-    alert( rrdiId);
+    var newVal = prompt("Enter new 'Number of Beneficiaries':"); 
+
+    if( !isNumber(newVal)) { 
+      toastr.error("Only numbers are accepted!"); 
+      return; 
+    }
+
+    var beneficiaries_number_cell = $(this).closest('tr').find('td:nth-child(2)')[0];
+
+
+    $.post('/regional_requests/update_regional_request_item', 
+        
+        {id: rrdiId, new_beneficiaries_value: newVal}, function(response) {
+
+           var oTable = $("#fdps_table").DataTable();
+           oTable.cell(beneficiaries_number_cell).data(newVal); 
+
+          toastr.success('Updated!');
+    
+    }, 'json').fail(function() { 
+      toastr.error("Update failed. Please try again shortly.")
+    });
+
+
   }); 
 
   $('#fdps_table').on( 'click', '.delete-rrdi', function(e) { 
