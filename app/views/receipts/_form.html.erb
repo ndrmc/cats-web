@@ -65,7 +65,7 @@
 =======
 
       <div class="form-group">
-        <%= f.label :commodity_source_id, "Commodity Source" %> <span class="required">*</span>
+        <%= f.label :commodity_source_id, "Warehouse" %> <span class="required">*</span>
         <%= f.collection_select :commodity_source_id,
                   CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
       </div>
