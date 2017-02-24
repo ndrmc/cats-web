@@ -149,6 +149,44 @@
     alert( rrdiId);
   }); 
 
+  $('#fdps_table').on( 'click', '.delete-rrdi', function(e) { 
+    e.preventDefault(); 
+
+    var rrdiId = $(this).data('rrdi-id'); 
+
+    var self = this; 
+
+    swal({
+        title: "Are you sure?",
+        text: "You will not be able to undo this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function () {
+        $.ajax({
+          url: "/regional_requests/destroy_regional_request_item/" + rrdiId ,
+          method: 'DELETE',
+          dataType: 'json'
+        }).done(function () {
+
+          alreadyAddedFdpIds.splice( $.inArray(rrdiId, alreadyAddedFdpIds), 1 );
+
+          var oTable = $("#fdps_table").dataTable();
+
+          var target_row = $(self).closest("tr").get(0); // this line did the trick
+          var aPos = oTable.fnGetPosition(target_row); 
+
+          oTable.fnDeleteRow(aPos);
+
+          toastr.success("Deleted!");
+        }).fail(function() { 
+          toastr.error("Delete failed! Please try again shortly.");
+        });
+
+      });
+  }); 
+
   $( function() { 
     $( "#regionSelect-fdp-request-modal").attr("readonly", true ); 
   }); 

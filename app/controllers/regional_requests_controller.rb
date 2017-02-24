@@ -106,8 +106,14 @@ class RegionalRequestsController < ApplicationController
     end
   end
   
-  def delete_regional_request_item
-  
+  def destroy_regional_request_item
+    regional_request_item = RegionalRequestItem.find params[:id]
+
+    regional_request_item.destroy
+
+    respond_to do |format|
+      format.json { head :no_content }
+    end
   end
   
 

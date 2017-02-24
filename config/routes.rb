@@ -61,6 +61,8 @@ Rails.application.routes.draw do
 
   resources :regional_requests 
   post '/regional_requests/add_fdp_to_request'
+  delete '/regional_requests/destroy_regional_request_item/:id', to: 'regional_requests#destroy_regional_request_item'
+
 
   root to: 'dashboard#index'
 
