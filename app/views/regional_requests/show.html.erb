@@ -102,6 +102,8 @@
 
 <script>
 
+  var alreadyAddedFdpIds = <%= @fdp_ids_with_a_request %>; 
+
   $("#add-fdp").click( function() { 
     var fdp_id = $('select[name=fdp_id]').val(); 
     var number_of_beneficiaries = $('#number_of_beneficiaries').val(); 
@@ -111,8 +113,19 @@
       return; 
     }
 
+    if( alreadyAddedFdpIds.indexOf( parseInt(fdp_id, 10 )) != -1 ) { 
+      toastr.error("This FDP has already been added."); 
+      return; 
+    }
+
     $.post('/regional_requests/add_fdp_to_request', {id: <%= @regional_request.id %>, fdp_id: fdp_id, number_of_beneficiaries: number_of_beneficiaries}, function(response) {
         if( response.successful ) {
+
+          alreadyAddedFdpIds.push( parseInt( fdp_id, 10));
+
+          $('select[name=fdp_id]').val('').focus(); 
+          $('#number_of_beneficiaries').val(''); 
+          
           toastr.success( "Added!"); 
 
           var dTable = $("#fdps_table").DataTable().row.add([

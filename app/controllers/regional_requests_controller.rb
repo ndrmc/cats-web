@@ -10,9 +10,7 @@ class RegionalRequestsController < ApplicationController
   # GET /regional_requests/1
   # GET /regional_requests/1.json
   def show
-    # fdp_locations = @regional_request.region.descendants.map { |d| d.id}.push params[:region] 
-
-    # fdps = Fdp.where( location_id: fdp_locations)
+    @fdp_ids_with_a_request = @regional_request.regional_request_items.collect { |rri| rri.fdp_id }
   end
 
   # GET /regional_requests/new
