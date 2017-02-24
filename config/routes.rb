@@ -59,6 +59,9 @@ Rails.application.routes.draw do
 
   get 'requisitions/get_requisiton_by_number'
 
+  resources :regional_requests 
+  post '/regional_requests/add_fdp_to_request'
+
   root to: 'dashboard#index'
 
 end
