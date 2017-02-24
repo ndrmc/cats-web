@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170216120028) do
+ActiveRecord::Schema.define(version: 20170222191751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string   "name",        null: false
-    t.integer  "code"
+    t.string   "type"
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20170216120028) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_accounts_on_deleted_at", using: :btree
-    t.index ["name", "code"], name: "index_accounts_on_name_and_code", using: :btree
+    t.index ["name", "type"], name: "index_accounts_on_name_and_type", using: :btree
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -163,6 +163,12 @@ ActiveRecord::Schema.define(version: 20170216120028) do
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
   end
 
+  create_table "controllers", force: :cascade do |t|
+    t.string   "regional_requests"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
   create_table "currencies", force: :cascade do |t|
     t.string   "name",        null: false
     t.string   "symbol"
@@ -248,9 +254,13 @@ ActiveRecord::Schema.define(version: 20170216120028) do
     t.datetime "deleted_at"
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+    t.integer  "hub_id"
+    t.integer  "warehouse_id"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
+    t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
     t.index ["transporter_id"], name: "index_dispatches_on_transporter_id", using: :btree
+    t.index ["warehouse_id"], name: "index_dispatches_on_warehouse_id", using: :btree
   end
 
   create_table "donors", force: :cascade do |t|
@@ -704,6 +714,37 @@ ActiveRecord::Schema.define(version: 20170216120028) do
     t.index ["warehouse_id"], name: "index_receipts_on_warehouse_id", using: :btree
   end
 
+  create_table "regional_request_items", force: :cascade do |t|
+    t.integer  "regional_request_id"
+    t.integer  "fdp_id"
+    t.decimal  "number_of_beneficiaries"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["fdp_id"], name: "index_regional_request_items_on_fdp_id", using: :btree
+    t.index ["regional_request_id"], name: "index_regional_request_items_on_regional_request_id", using: :btree
+  end
+
+  create_table "regional_requests", force: :cascade do |t|
+    t.integer  "operation_id"
+    t.string   "reference_number"
+    t.integer  "region_id"
+    t.integer  "ration_id"
+    t.datetime "requested_date"
+    t.integer  "program_id"
+    t.text     "remark"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["operation_id"], name: "index_regional_requests_on_operation_id", using: :btree
+    t.index ["program_id"], name: "index_regional_requests_on_program_id", using: :btree
+    t.index ["ration_id"], name: "index_regional_requests_on_ration_id", using: :btree
+  end
+
   create_table "requisition_items", force: :cascade do |t|
     t.integer  "requisition_id"
     t.integer  "commodity_id"
@@ -980,5 +1021,12 @@ ActiveRecord::Schema.define(version: 20170216120028) do
   end
 
   add_foreign_key "commodity_categories", "uom_categories"
+  add_foreign_key "dispatches", "hubs"
+  add_foreign_key "dispatches", "warehouses"
   add_foreign_key "receipt_lines", "unit_of_measures"
+  add_foreign_key "regional_request_items", "fdps"
+  add_foreign_key "regional_request_items", "regional_requests"
+  add_foreign_key "regional_requests", "operations"
+  add_foreign_key "regional_requests", "programs"
+  add_foreign_key "regional_requests", "rations"
 end
