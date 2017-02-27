@@ -1,0 +1,1 @@
+json.partial! "regional_requests/regional_request", regional_request: @regional_request
