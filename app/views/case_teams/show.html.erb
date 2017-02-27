@@ -1,0 +1,17 @@
+    <p>
+      <strong>Name:</strong>
+      <%= @case_team.name %>
+    </p>
+
+    <p>
+      <strong>Discription:</strong>
+      <%= @case_team.discription %>
+    </p>
+
+    <p>
+      <strong>Role type:</strong>
+      <%= @case_team.role_type %>
+    </p>
+
+<%= link_to 'Edit', edit_case_team_path(@case_team) %> |
+<%= link_to 'Back', case_teams_path %>

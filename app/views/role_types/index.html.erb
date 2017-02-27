@@ -1,0 +1,51 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Role Types</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Role Types</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Role Type', new_role_type_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @role_types.each do |role_type| %>
+          <tr>
+                        <td><%= role_type.name
+              %></td>
+                        <td><%= role_type.description
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_role_type_path(role_type) %> &middot;
+              <%= link_to 'Delete', role_type, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

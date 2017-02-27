@@ -56,4 +56,12 @@ class User < ApplicationRecord
   def inactive_message
     "Your account is not active."
   end
+
+  enum role_types: {
+        admin:2,
+        case_team:3,
+        hub:4,
+        regional:5
+    }   
+
 end

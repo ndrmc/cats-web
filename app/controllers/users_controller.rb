@@ -20,10 +20,20 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    
+    @roles = RoleType.all.map{ |t| [t.name, t.id]}
+    @caseTeam= CaseTeam.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
+    @hubs= CaseTeam.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
+    @region = CaseTeam.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
   end
 
   # GET /users/1/edit
   def edit
+    @roles = RoleType.all.map{ |t| [t.name, t.id]}
+    @caseTeam= CaseTeam.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
+    @hubs= CaseTeam.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
+    @region = CaseTeam.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
+
   end
 
   # GET /users/1/roles
@@ -99,6 +109,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :is_active)
+      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub, :region, :case_team, :regionalUser, :hubUser, :mobileNo, :datePreference,:Admin,:IsCaseTeam)
     end
 end

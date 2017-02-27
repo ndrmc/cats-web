@@ -1,0 +1,54 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Case Teams</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Case Teams</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Case Team', new_case_team_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Name</th>
+                        <th>Discription</th>
+                        <th>Role type</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @case_teams.each do |case_team| %>
+          <tr>
+                        <td><%= case_team.name
+              %></td>
+                        <td><%= case_team.discription
+              %></td>
+                        <td><%= case_team.role_type
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_case_team_path(case_team) %> &middot;
+              <%= link_to 'Delete', case_team, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
