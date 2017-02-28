@@ -56,10 +56,16 @@ Rails.application.routes.draw do
 
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
-  resources :receipts 
-  resources :dispatches 
+  resources :receipts
+  resources :dispatches
 
   get 'requisitions/get_requisiton_by_number'
+
+  resources :regional_requests 
+  post '/regional_requests/add_fdp_to_request'
+  post '/regional_requests/update_regional_request_item'
+  delete '/regional_requests/destroy_regional_request_item/:id', to: 'regional_requests#destroy_regional_request_item'
+
 
   root to: 'dashboard#index'
 

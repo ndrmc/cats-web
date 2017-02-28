@@ -14,5 +14,13 @@ module Cats
     config.autoload_paths << Rails.root.join('lib')
 
     config.generators.javascript_engine :js
+
+    def load_console(app = self)
+      super
+      project_specific_irbrc = File.join(Rails.root, ".irbrc")
+      puts "Loading project specific .irbrc ..."
+      load(project_specific_irbrc) if File.exists?(project_specific_irbrc)
+    end
+
   end
 end

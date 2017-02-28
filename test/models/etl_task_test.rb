@@ -1,21 +1,23 @@
 # == Schema Information
 #
-# Table name: accounts
+# Table name: etl_tasks
 #
 #  id          :integer          not null, primary key
 #  name        :string           not null
-#  type        :string
+#  executed    :boolean
+#  executed_at :datetime
 #  description :text
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
 #  created_by  :integer
 #  modified_by :integer
+#  deleted     :boolean          default(FALSE)
 #  deleted_at  :datetime
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
 require 'test_helper'
 
-class AccountTest < ActiveSupport::TestCase
+class EtlTaskTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -45,22 +45,21 @@ end
 
 # Commodity categories
 if CommodityCategory.count == 0
-  CommodityCategory.create(name: 'All', code: 'all')
-  root = CommodityCategory.find_by(code: 'all')
+  weight = UomCategory.find_by(name: 'weight')
+  unit = UomCategory.find_by(name: 'unit')
 
-  CommodityCategory.create(name: 'Food', code: 'food', parent: root)
-  food = CommodityCategory.find_by(code: 'food')
-  CommodityCategory.create(name: 'Creal', code: 'cereal', parent: food)
-  CommodityCategory.create(name: 'Pulse', code: 'pulse', parent: food)
-  CommodityCategory.create(name: 'Blended Food', code: 'bf', parent: food)
-  CommodityCategory.create(name: 'Oil', code: 'oil', parent: food)
-  CommodityCategory.create(name: 'Supplementary Food', code: 'sf', parent: food)
-  CommodityCategory.create(name: 'Other', code: 'other', parent: food)
+  CommodityCategory.create(name: 'Food', code: 'food', uom_category: weight)
+  food = CommodityCategory.find_by(code: 'food', uom_category: weight)
+  CommodityCategory.create(name: 'Creal', code: 'cereal', parent: food, uom_category: weight)
+  CommodityCategory.create(name: 'Pulse', code: 'pulse', parent: food, uom_category: weight)
+  CommodityCategory.create(name: 'Blended Food', code: 'bf', parent: food, uom_category: weight)
+  CommodityCategory.create(name: 'Oil', code: 'oil', parent: food, uom_category: weight)
+  CommodityCategory.create(name: 'Supplementary Food', code: 'sf', parent: food, uom_category: weight)
+  CommodityCategory.create(name: 'Other', code: 'other', parent: food, uom_category: weight)
 
-  CommodityCategory.create(name: 'Non-Food', code: 'nonfood', parent: root)
   non_food = CommodityCategory.find_by(code: 'nonfood')
-  CommodityCategory.create(name: 'Cloting', code: 'clothing', parent: non_food)
-  CommodityCategory.create(name: 'House Equipment', code: 'equipment', parent: non_food)
+  CommodityCategory.create(name: 'Cloting', code: 'clothing', uom_category: unit)
+  CommodityCategory.create(name: 'House Equipment', code: 'equipment', parent: non_food,uom_category: unit)
 
   puts "Created seed data for CommodityCategory records"
 end
@@ -71,56 +70,56 @@ if Commodity.count == 0
   #FOOD ITEMS
   mt = UnitOfMeasure.find_by(code: 'MT')
   cereal = CommodityCategory.find_by(code: 'cereal')
-  Commodity.create(name: 'Maize', code: 'MAZ', commodity_category: cereal, unit_of_measure: mt)
-  Commodity.create(name: 'Rice', code: 'RIC', commodity_category: cereal, unit_of_measure: mt)
-  Commodity.create(name: 'Sorghum', code: 'SRM', commodity_category: cereal, unit_of_measure: mt)
-  Commodity.create(name: 'Wheat', code: 'WHT', commodity_category: cereal, unit_of_measure: mt)
+  Commodity.create(name: 'Maize', code: 'MAZ', commodity_category: cereal)
+  Commodity.create(name: 'Rice', code: 'RIC', commodity_category: cereal)
+  Commodity.create(name: 'Sorghum', code: 'SRM', commodity_category: cereal)
+  Commodity.create(name: 'Wheat', code: 'WHT', commodity_category: cereal)
 
   pulse = CommodityCategory.find_by(code: 'pulse')
-  Commodity.create(name: 'Red Haricot Beans', code: 'RHB', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'White Haricot Beans', code: 'WHB', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Beans', code: 'BNS', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Lentils', code: 'LNT', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Split Lentils', code: 'SLNT', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Peas', code: 'PES', commodity_category: pulse, unit_of_measure: mt)
-  Commodity.create(name: 'Yello Split Peas', code: 'YSP', commodity_category: pulse, unit_of_measure: mt)
+  Commodity.create(name: 'Red Haricot Beans', code: 'RHB', commodity_category: pulse)
+  Commodity.create(name: 'White Haricot Beans', code: 'WHB', commodity_category: pulse)
+  Commodity.create(name: 'Beans', code: 'BNS', commodity_category: pulse)
+  Commodity.create(name: 'Lentils', code: 'LNT', commodity_category: pulse)
+  Commodity.create(name: 'Split Lentils', code: 'SLNT', commodity_category: pulse)
+  Commodity.create(name: 'Peas', code: 'PES', commodity_category: pulse)
+  Commodity.create(name: 'Yello Split Peas', code: 'YSP', commodity_category: pulse)
 
   blendedfood = CommodityCategory.find_by(code: 'bf')
-  Commodity.create(name: 'Corn soy blends(CSB)', code: 'CSB', commodity_category: blendedfood, unit_of_measure: mt)
-  Commodity.create(name: 'Corn soy blends (CSB+)', code: 'CSB+', commodity_category: blendedfood, unit_of_measure: mt)
-  Commodity.create(name: 'Corn soy blends (CSB++)', code: 'CSB++', commodity_category: blendedfood, unit_of_measure: mt)
-  Commodity.create(name: 'FAMIX', code: 'FMX', commodity_category: blendedfood, unit_of_measure: mt)
+  Commodity.create(name: 'Corn soy blends(CSB)', code: 'CSB', commodity_category: blendedfood)
+  Commodity.create(name: 'Corn soy blends (CSB+)', code: 'CSB+', commodity_category: blendedfood)
+  Commodity.create(name: 'Corn soy blends (CSB++)', code: 'CSB++', commodity_category: blendedfood)
+  Commodity.create(name: 'FAMIX', code: 'FMX', commodity_category: blendedfood)
 
   oil = CommodityCategory.find_by(code: 'oil')
-  Commodity.create(name: 'Vegetable Oil', code: 'VO', commodity_category: oil, unit_of_measure: mt)
+  Commodity.create(name: 'Vegetable Oil', code: 'VO', commodity_category: oil)
 
   foodsupplement = CommodityCategory.find_by(code: 'sf')
-  Commodity.create(name: 'Biscuit', code: 'BSC', commodity_category: foodsupplement, unit_of_measure: mt)
-  Commodity.create(name: 'Dates', code: 'DAT', commodity_category: foodsupplement, unit_of_measure: mt)
-  Commodity.create(name: 'Wheat Flour', code: 'WFR', commodity_category: foodsupplement, unit_of_measure: mt)
+  Commodity.create(name: 'Biscuit', code: 'BSC', commodity_category: foodsupplement)
+  Commodity.create(name: 'Dates', code: 'DAT', commodity_category: foodsupplement)
+  Commodity.create(name: 'Wheat Flour', code: 'WFR', commodity_category: foodsupplement)
 
   # NON FOOD ITEMS
   unit = UnitOfMeasure.find_by(code: 'UNIT')
 
   cloth = CommodityCategory.find_by(code: 'clothing')
-  Commodity.create(name: 'Blanket', code: 'BKT', commodity_category: cloth, unit_of_measure: unit)
-  Commodity.create(name: 'Bed Sheet', code: 'BST', commodity_category: cloth, unit_of_measure: unit)
+  Commodity.create(name: 'Blanket', code: 'BKT', commodity_category: cloth)
+  Commodity.create(name: 'Bed Sheet', code: 'BST', commodity_category: cloth)
 
   house_equipments = CommodityCategory.find_by(code: 'equipment')
-  Commodity.create(name: 'Cooking pots', code: 'PTS', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Ladle', code: 'LDL', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Spoon', code: 'SPN', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Fork', code: 'FRK', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Knife', code: 'KNF', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Tray', code: 'TRY', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic plate', code: 'PLP', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic cup', code: 'PLC', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic tea cup', code: 'PTC', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic jug', code: 'PJG', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic bucket', code: 'PBT', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic jerry can', code: 'PJC', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Plastic sheet (4x5),(3x7),(30.5x7.3)', code: 'PST', commodity_category: house_equipments, unit_of_measure: unit)
-  Commodity.create(name: 'Tent (4x3),(4x4),(4x6),(10x6)', code: 'TNT', commodity_category: house_equipments, unit_of_measure: unit)
+  Commodity.create(name: 'Cooking pots', code: 'PTS', commodity_category: house_equipments)
+  Commodity.create(name: 'Ladle', code: 'LDL', commodity_category: house_equipments)
+  Commodity.create(name: 'Spoon', code: 'SPN', commodity_category: house_equipments)
+  Commodity.create(name: 'Fork', code: 'FRK', commodity_category: house_equipments)
+  Commodity.create(name: 'Knife', code: 'KNF', commodity_category: house_equipments)
+  Commodity.create(name: 'Tray', code: 'TRY', commodity_category: house_equipments)
+  Commodity.create(name: 'Plastic plate', code: 'PLP', commodity_category: house_equipments)
+  Commodity.create(name: 'Plastic cup', code: 'PLC', commodity_category: house_equipments)
+  Commodity.create(name: 'Plastic tea cup', code: 'PTC', commodity_category: house_equipments)
+  Commodity.create(name: 'Plastic jug', code: 'PJG', commodity_category: house_equipments)
+  Commodity.create(name: 'Plastic bucket', code: 'PBT', commodity_category: house_equipments)
+  Commodity.create(name: 'Plastic jerry can', code: 'PJC', commodity_category: house_equipments)
+  Commodity.create(name: 'Plastic sheet (4x5),(3x7),(30.5x7.3)', code: 'PST', commodity_category: house_equipments)
+  Commodity.create(name: 'Tent (4x3),(4x4),(4x6),(10x6)', code: 'TNT', commodity_category: house_equipments)
 
   puts "Created seed data for Commodity records"
 end
@@ -174,7 +173,7 @@ if Program.count == 0
 end
 
 if Account.count == 0
-  Account.create(name: 'Borrowed', code: :borrowed, description: 'Resources which are borrowed, but have not yet been received at warehouses (Receipt Plan)')  
+  Account.create(name: 'Borrowed', code: :borrowed, description: 'Resources which are borrowed, but have not yet been received at warehouses (Receipt Plan)')
   Account.create(name: 'Purchased', code: :purchased, description: 'Resources which are purchased but have not yet been received at warehouses (Receipt Plan)')
   Account.create(name: 'Pledged', code: :pledged, description: 'Resources which are donated but have not yet been received at warehouses (Receipt Plan)')
   Account.create(name: 'Allocated', code: :allocated, description: 'Resources commited for dispatch through RRD. In CATS this indicates dispatch allocation')
@@ -184,15 +183,15 @@ if Account.count == 0
   Account.create(name: 'Lost', code: :lost, description: 'Commodities which had proper record in the system but are not being accounted. This account is used during Delivery, Annual Inventory or Distribution.')
   Account.create(name: 'Stock', code: :stock, description: 'Amount of commodities available at the warehouses')
   Account.create(name: 'Distributed', code: :distributed, description: 'Commodities which are distributed to beneficiareis.This account represents distribution reports from CMPM')
-  Account.create(name: 'Repaid', code: :repaid, description: 'Commodities which were paid back for a loan made previously.')  
+  Account.create(name: 'Repaid', code: :repaid, description: 'Commodities which were paid back for a loan made previously.')
   Account.create(name: 'Statistics', code: :statistics, description: 'This account contains entries made when commodities are taken into (Beginning Inventory, Donation, Purchase and Loan) and released (Utilization) from the system. Similar to "cash book" account.')
-  
+
   puts "Created seed data for Account records"
 
 end
 
 if Journal.count == 0
-  Journal.create(name: 'Beginning Inventory', code: :beginning_inventory, description: '')  
+  Journal.create(name: 'Beginning Inventory', code: :beginning_inventory, description: '')
   Journal.create(name: 'Donation', code: :donation, description: '')
   Journal.create(name: 'Good Received', code: :goods_received, description: '')
   Journal.create(name: 'Purchase', code: :purchase, description: '')
@@ -202,9 +201,9 @@ if Journal.count == 0
   Journal.create(name: 'Repayment', code: :repayment, description: '')
   Journal.create(name: 'Transfer', code: :transfer, description: '')
   Journal.create(name: 'Annual Inventory', code: :annual_inventory, description: '')
-  Journal.create(name: 'Delivery', code: :delivery, description: '')  
+  Journal.create(name: 'Delivery', code: :delivery, description: '')
   Journal.create(name: 'Distribution', code: :distribution, description: '')
-  
+
   puts "Created seed data for Journal records"
 
 end
@@ -263,6 +262,3 @@ if CaseTeam.count==0
 
   puts "Created list of roles"
 end
-
-
-
