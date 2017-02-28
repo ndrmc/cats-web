@@ -3,27 +3,27 @@
     <h2>Regional Request (<%=  @regional_request.reference_number %>)</h2>
     <blockquote>
 
-    <table class="table">
-      <tbody>
-        <tr>
-          <td>Region</td>
-          <td><%= @regional_request.region.name %></td>
-        </tr>
-        <tr>
-          <td>Program</td>
-          <td><%= @regional_request.program.name %></td>
-        </tr>
-        <tr>
-          <td>Operation</td>
-          <td><%= @regional_request.operation.name %></td>
-        </tr>
-       
-        <tr>
-          <td>Remark</td>
-          <td><%= @regional_request.remark %></td>
-        </tr>
-      </tbody>
-    </table>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>Region</td>
+            <td><%= @regional_request.region.name %></td>
+          </tr>
+          <tr>
+            <td>Program</td>
+            <td><%= @regional_request.program.name %></td>
+          </tr>
+          <tr>
+            <td>Operation</td>
+            <td><%= @regional_request.operation.name %></td>
+          </tr>
+        
+          <tr>
+            <td>Remark</td>
+            <td><%= @regional_request.remark %></td>
+          </tr>
+        </tbody>
+      </table>
       
     </blockquote>
     <ol class="breadcrumb">
@@ -36,11 +36,30 @@
 
     </ol>
   </div>
+
   <div class="col-sm-8">
     <div class="title-action">
-      <a href="#" class="btn btn-primary" data-toggle="modal"  data-target="#request-item-modal">Add Request Item</a>
+      <a href="/regional_requests/request_items/<%= @regional_request.id %>.xlsx" target="_blank" class="btn btn-primary"><i class="fa fa-download"></i> Download Request Items for Excel</a>
+      <a href="#" class="btn btn-primary" data-toggle="modal"  data-target="#request-item-modal"><i class="fa fa-plus"></i> Add Request Item</a>
     </div>
+
+    <form role="form" method="POST" enctype="multipart/form-data" action="/regional_requests/upload_requests/<%= @regional_request.id %>" class="form-inline pull-right" style="display: inline;margin-top: 15px">
+      
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <div class="form-group">
+        <input type="file" name="file" class="form-control" required />
+      </div>
+
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Upload Request Items" />
+      </div>
+        
+      </form>
   </div>
+
+
+
 </div>
 
 <div class="wrapper wrapper-content">
@@ -50,6 +69,8 @@
       <table class="table table-striped cats-datatable" id="fdps_table">
         <thead>
           <tr>
+            <th>Zone</th>
+            <th>Woreda</th>
             <th>FDP</th>
             <th>Number of Beneficiaries</th>
             <th></th>
@@ -59,6 +80,8 @@
         <tbody>
           <% @regional_request.regional_request_items.each do |request_item| %>
           <tr>
+            <td><%= request_item.fdp.zone.name %></td>
+            <td><%= request_item.fdp.woreda.name %></td>
             <td><%= request_item.fdp.name %></td>
             <td class="beneficiaries_number_cell"><%= request_item.number_of_beneficiaries %></td>
             <td>

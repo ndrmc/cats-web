@@ -125,6 +125,51 @@ class RegionalRequestsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def request_items 
+    set_regional_request 
+
+    @regional_request.regional_request_items 
+
+    respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{@regional_request.region.name} region requests.xlsx\""
+      }
+    end
+    
+  end
+
+  def upload_requests
+    file = params[:file]
+
+    case File.extname(file.original_filename)
+      when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
+      when '.xlsx' then spreadsheet = Roo::Excelx.new(file.path, nil, :ignore)
+      else raise "Unknown file type: #{file.original_filename}"
+    end
+
+    set_regional_request
+
+    (1..spreadsheet.last_row).each do |i|
+      row =  spreadsheet.row(i)
+      request_item = RegionalRequestItem.where(regional_request: @regional_request, fdp_id: row[0]).first
+
+      if request_item
+        request_item.number_of_beneficiaries = row[2]
+        request_item.save
+      else 
+        Rails.logger.info("No RegionalRequestItem found for the fdp id: #{row[0]}. Skipping...")
+      end
+    end
+
+    respond_to do |format|
+        format.html { redirect_to @regional_request, notice: "Excel imported successfully." }
+    end
+    
+
+  end 
+  
+  
   
   
 

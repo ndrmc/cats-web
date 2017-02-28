@@ -1,0 +1,10 @@
+wb = xlsx_package.workbook
+
+sheet = wb.add_worksheet(:name => 'Open Office') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
+
+unlocked = sheet.styles.add_style(:locked => false )
+
+@regional_request.regional_request_items.each do |rri|
+  sheet.add_row [rri.fdp.id, rri.fdp.name, rri.number_of_beneficiaries ], :style => [nil, nil, unlocked]
+end
+
