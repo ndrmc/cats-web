@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :case_teams
+  resources :role_types
   resources :transporters
   get 'setting/index'
   devise_for :users
