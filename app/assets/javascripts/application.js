@@ -29,7 +29,6 @@
 //= require datapicker/bootstrap-datepicker.js
 //= require chosen/chosen.jquery.js
 
-
 //= require_tree .
 
 
@@ -52,3 +51,4 @@ $(document).ready(function() {
         format: 'dd/mm/yyyy'
     });
 });
+

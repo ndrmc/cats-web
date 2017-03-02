@@ -12,7 +12,7 @@ class DeliveriesController < ApplicationController
     #   @deliveries = Post.all.order('created_at DESC')
     #  end
 
-      @deliveries = Delivery.filter(params.slice(:region_id, :fdp_id, :operation_id, :gin_number))
+     @deliveries = Delivery.filter(params.slice(:region_id, :fdp_id, :operation_id, :gin_number))
 
   end
 

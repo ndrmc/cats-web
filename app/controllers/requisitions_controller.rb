@@ -1,4 +1,5 @@
 class RequisitionsController < ApplicationController
+
   before_action :set_requisition, only: [:show, :edit, :update, :destroy]
 
   # GET /requisitions
@@ -171,4 +172,5 @@ class RequisitionsController < ApplicationController
     def requisition_params
       params.require(:requisition).permit(:requisition_no, :operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status)
     end
+
 end

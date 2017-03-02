@@ -23,6 +23,7 @@
 #
 
 class Delivery < ApplicationRecord
+
   include Filterable
   include Postable
 
@@ -38,6 +39,6 @@ class Delivery < ApplicationRecord
   validates :gin_number, uniqueness: true
 
   after_save :pre_post
-
   after_update :reverse
+
 end

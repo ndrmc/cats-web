@@ -6,7 +6,6 @@
 #  operation_id     :integer
 #  reference_number :string
 #  region_id        :integer
-#  ration_id        :integer
 #  requested_date   :datetime
 #  program_id       :integer
 #  remark           :text

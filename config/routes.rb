@@ -58,8 +58,8 @@ Rails.application.routes.draw do
 
   resources :receipts
   resources :dispatches
-  resources :requisitions
 
+  resources :requisitions
 
   get '/requisitions/get_requisiton_by_number'
   get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'

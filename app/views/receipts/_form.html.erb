@@ -22,17 +22,17 @@
       <% end %>
 
       <div class="form-group">
-        <%= f.label :grn_no, "GRN Number" %> <span class="required">*</span>
+        <%= f.label :grn_no, "GRN Number" %>
+        <span class="required">*</span>
         <%= f.text_field :grn_no, :class => 'form-control', :autofocus => true, :required => true %>
       </div>
 
-
       <div class="form-group">
-        <%= f.label :hub_id, "Hub" %> <span class="required">*</span>
+        <%= f.label :hub_id, "Hub" %>
+        <span class="required">*</span>
         <%= f.collection_select :hub_id,
                   Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
       </div>
-
 
       <div class="form-group">
         <%= f.label :warehouse_id, "Warehouse" %>
@@ -60,13 +60,12 @@
       </div>
 
       <div class="form-group">
-        <%= f.label :commodity_source_id, "Commodity Source" %> <span class="required">*</span>
+        <%= f.label :commodity_source_id, "Warehouse" %> <span class="required">*</span>
         <%= f.collection_select :commodity_source_id,
                   CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
       </div>
 
   </div>
-
 
   <div class="ibox float-e-margins">
     <div class="ibox-content">
