@@ -81,7 +81,7 @@
           <% @regional_request.regional_request_items.each do |request_item| %>
           <tr>
             <td><%= request_item.fdp.zone.name %></td>
-            <td><%= request_item.fdp.woreda.name %></td>
+            <td><%= request_item.fdp.woreda ? request_item.fdp.woreda.name : '-' %></td>
             <td><%= request_item.fdp.name %></td>
             <td class="beneficiaries_number_cell"><%= request_item.number_of_beneficiaries %></td>
             <td>
@@ -156,6 +156,8 @@
           toastr.success( "Added!"); 
 
           var dTable = $("#fdps_table").DataTable().row.add([
+              response.zoneName, 
+              response.woredaName, 
               response.fdpName,
               response.number_of_beneficiaries,
               '<a href="#" class="edit-rrdi" data-rrdi-id="' + response.rrdi.id + '">Edit</edit> &middot;<a href="#"  class="delete-rrdi" data-rrdi-id="' + response.rrdi.id + '">Delete</a>'

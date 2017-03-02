@@ -30,10 +30,24 @@ class RegionalRequestsController < ApplicationController
     respond_to do |format|
       if @regional_request.save
 
-        @previous_regional_request = RegionalRequest.where("id < ? AND region_id = ?", @regional_request.id, @regional_request.region_id).order('id desc').limit(1)[0]
+        hrd = @regional_request.operation.hrd
 
-        fdp_locations = @regional_request.region.descendants.map { |d| d.id}.push @regional_request.region_id
+        fdp_locations = []
+
+        if hrd 
+          woredas = hrd.hrd_items.map { |hrd_item| hrd_item.woreda  }
+          zone_ids = woredas.collect { |woreda| woreda.parent_id }
+
+          fdp_locations = zone_ids + woredas.map { |w| w.id}
+
+        else 
+
+          fdp_locations = @regional_request.region.descendants.map { |d| d.id}.push @regional_request.region_id
+        end 
+
         fdp_ids_in_region = Fdp.where( location_id: fdp_locations).map { |l| l.id}
+
+        @previous_regional_request = RegionalRequest.where("id < ? AND region_id = ?", @regional_request.id, @regional_request.region_id).order('id desc').limit(1)[0]
 
         if @previous_regional_request
           @previous_regional_request.regional_request_items.each do |rri|
@@ -99,7 +113,7 @@ class RegionalRequestsController < ApplicationController
       rrdi = RegionalRequestItem.new( regional_request: @regional_request, fdp: fdp, number_of_beneficiaries: number_of_beneficiaries)
       
       if rrdi.save 
-        format.json { render json: {successful: true, fdpName:  fdp.name, number_of_beneficiaries: number_of_beneficiaries, rrdi: rrdi } }
+        format.json { render json: {successful: true, zoneName: fdp.zone.name, woredaName: fdp.woreda ? fdp.woreda.name : '-', fdpName:  fdp.name, number_of_beneficiaries: number_of_beneficiaries, rrdi: rrdi } }
       else 
         format.json { render json: {successful: false, errorMessage: "Save failed. Please try again shortly."} }
       end

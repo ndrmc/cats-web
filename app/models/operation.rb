@@ -25,6 +25,9 @@
 
 class Operation < ApplicationRecord
   enum status: [:draft, :ongoing, :completed, :archived]
+
+  belongs_to :hrd
+
   has_many :requisitions
   has_many :transport_requisitions
   has_many :transport_orders
