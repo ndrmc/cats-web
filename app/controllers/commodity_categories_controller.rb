@@ -70,6 +70,6 @@ class CommodityCategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def commodity_category_params
-      params.require(:commodity_category).permit(:name, :code, :code_am, :description)
+      params.require(:commodity_category).permit(:name, :code, :code_am, :uom_category_id, :description)
     end
 end

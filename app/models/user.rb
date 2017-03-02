@@ -28,6 +28,14 @@
 #  is_active              :boolean          default(TRUE)
 #  first_name             :string
 #  last_name              :string
+#  datePreference         :date
+#  mobileNo               :string
+#  numberOfLogins         :integer
+#  regionalUser           :boolean
+#  hubUser                :boolean
+#  case_team              :integer
+#  Admin                  :boolean
+#  IsCaseTeam             :boolean
 #
 
 class User < ApplicationRecord
@@ -56,4 +64,12 @@ class User < ApplicationRecord
   def inactive_message
     "Your account is not active."
   end
+
+  enum role_types: {
+        admin:2,
+        case_team:3,
+        hub:4,
+        regional:5
+    }   
+
 end

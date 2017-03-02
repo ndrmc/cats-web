@@ -16,4 +16,8 @@
 
 class FdpContact < ApplicationRecord
   belongs_to :fdp
+  validates :full_name, presence: {message: " is required!"}
+  validates :mobile, presence: {message: " # name is required!"}
+  validates :fdp_id, presence: {message: " is required!"}
+  validates :email, email: {strict_mode: true}
 end

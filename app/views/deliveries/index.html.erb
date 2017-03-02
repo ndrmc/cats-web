@@ -26,9 +26,14 @@
           
          
           <form method='GET' class = 'form-inline'>
-            <label>Operation</label> <input name="operation_id"></input>
-            <label>FDP</label> <input name="fdp_id" ></input>
-            <label>Gin</label> <input name="gin_number"></input>
+            <label>Operation</label> 
+              <input name="operation_id" value = "<%= params[:operation_id] ? Operation.find(params[:operation_id]).name : '' %>" > </input>
+            <label>Region</label> 
+              <input name="region_id" value = "<%= params[:region_id] ? Location.find(params[:region_id]).name : '' %>" ></input>
+            <label>FDP</label> 
+              <input name="fdp_id" value = "<%= params[:fdp_id] ? Location.find(params[:fdp_id]).name : '' %>" > </input>
+            <label>Gin</label> 
+              <input name="gin_number"></input>
             <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
 
           </form>

@@ -28,175 +28,209 @@
 
 
       <div class="form-group">
-        <%= f.label :store_id %> <span class="required">*</span>
-        <%= f.collection_select :store_id,
-                  Store.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+        <%= f.label :hub_id, "Hub" %> <span class="required">*</span>
+        <%= f.collection_select :hub_id,
+                  Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+      </div>
+
+
+      <div class="form-group">
+        <%= f.label :warehouse_id, "Warehouse" %>
+        <span class="required">*</span>
+        <%= f.collection_select :warehouse_id,
+                  Warehouse.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
       </div>
 
       <div class="form-group">
-        <%= f.label :received_date %> <span class="required">*</span>
+        <%= f.label :received_date %>
+        <span class="required">*</span>
         <%= f.text_field :received_date, :class => 'form-control datepicker', :required => true  %>
       </div>
 
       <div class="form-group">
-        <%= f.label :storekeeper_name, "Received By" %> <span class="required">*</span>
+        <%= f.label :storekeeper_name, "Received By" %>
+        <span class="required">*</span>
         <%= f.text_field :storekeeper_name, :class => 'form-control', :required => true %>
       </div>
 
       <div class="form-group">
-        <%= f.label :waybill_no, "Waybill(s)" %> <span class="required">*</span>
+        <%= f.label :waybill_no, "Waybill(s)" %>
+        <span class="required">*</span>
         <%= f.text_field :waybill_no, :class => 'form-control', :required => true %>
       </div>
 
-      
-    </div>
+      <div class="form-group">
+        <%= f.label :commodity_source_id, "Commodity Source" %> <span class="required">*</span>
+        <%= f.collection_select :commodity_source_id,
+                  CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+      </div>
+
   </div>
 
 
   <div class="ibox float-e-margins">
     <div class="ibox-content">
       <table class="table">
-              <thead>
-                <tr>
-                  <th>Commodity Category</th>
-                  <th>Commodity</th>
-                  <th>Quantity</th>
-                  <th>Project</th>
-                  <th></th>
-                </tr>
-              </thead>
+        <thead>
+          <tr>
+            <th>Commodity Category</th>
+            <th>Commodity</th>
+            <th>Unit of Measure</th>
+            <th>Quantity</th>
+            <th>Project</th>
+            <th></th>
+          </tr>
+        </thead>
 
-              <tbody id="receiptLinesTableBody">
+        <tbody id="receiptLinesTableBody">
 
-                  <% @receipt.receipt_lines.each do |receipt_line| %>
-                  
-                  <tr class="receipt-line">
-                    <td>
-                      <input type="hidden" name="receipt[receipt_lines[][id]]" value="<%= receipt_line.id %>" />
-                      <select name="receipt[receipt_lines[][commodity_category_id]]" class="form-control" readonly>
-                        <option value="<%= receipt_line.commodity_category.id %>"><%= receipt_line.commodity_category.name %></option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="receipt[receipt_lines[][commodity_id]]" class="form-control" readonly>
-                        <option value="<%= receipt_line.commodity.id %>"><%= receipt_line.commodity.name %></option>
-                      </select>
-                    </td>
-                    <td>
-                          <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" value="<%= receipt_line.quantity %>" readonly/>
-                    </td>
-                    <td>
-                      <select name="receipt[receipt_lines[][project_id]]" class="form-control" readonly>
-                        <option value="<%= receipt_line.project.id %>"><%= receipt_line.project.project_code %></option>
-                      </select>
-                    </td>
-                    <td>
-                      <a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>
-                    </td>
-                  </tr>
-                    
-                  <% end %>
-                  <tr>
-                      <td>
-                         <%= select_tag 'receipt[receipt_lines[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
-                      </td>
-                      <td>
-                        <select name="receipt[receipt_lines[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
-                          <option value="">-- Choose --</option>
-                          <% Commodity.all.each do |commodity| %>
-                            <option value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden"><%= commodity.name %></option>
-                          <% end %>
-                        </select>
-                      </td>
-                      <td>
-                          <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
-                      </td>
-                      <td>
-                       <%= select_tag 'receipt[receipt_lines[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
-                      </td>
-                      <td>
-                          <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
-                      </td>
-                  </tr>
-              </tbody>
-            
-            </table>
+          <% @receipt.receipt_lines.each do |receipt_line| %>
+
+          <tr class="receipt-line">
+            <td>
+              <input type="hidden" name="receipt[receipt_lines[][id]]" value="<%= receipt_line.id %>"/>
+              <select name="receipt[receipt_lines[][commodity_category_id]]" class="form-control" readonly>
+                <option value="<%= receipt_line.commodity_category.id %>"><%= receipt_line.commodity_category.name %></option>
+              </select>
+            </td>
+            <td>
+              <select name="receipt[receipt_lines[][commodity_id]]" class="form-control" readonly>
+                <option value="<%= receipt_line.commodity.id %>"><%= receipt_line.commodity.name %></option>
+              </select>
+            </td>
+            <td>
+              <select name="receipt[receipt_lines[][unit_of_measure_id]]" class="form-control" readonly>
+                <option value="<%= receipt_line.unit_of_measure.id %>"><%= receipt_line.unit_of_measure.name %></option>
+              </select>
+            </td>
+            <td>
+              <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" value="<%= receipt_line.quantity %>" readonly/>
+            </td>
+            <td>
+              <select name="receipt[receipt_lines[][project_id]]" class="form-control" readonly>
+                <option value="<%= receipt_line.project.id %>"><%= receipt_line.project.project_code %></option>
+              </select>
+            </td>
+            <td>
+              <a href="#" class="remove-receipt-line">
+                <i class="fa fa-times"></i>
+              </a>
+            </td>
+          </tr>
+
+          <% end %>
+          <tr>
+            <td>
+              <%= select_tag 'receipt[receipt_lines[][commodity_category_id]]', options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true', :class => 'form-control', :id =>
+              'commodity-category-select'} %>
+            </td>
+            <td>
+              <select name="receipt[receipt_lines[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
+                <option value="">-- Choose --</option>
+                <% Commodity.all.each do |commodity| %>
+                <option data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden">
+                  <%= commodity.name %>
+                </option>
+                <% end %>
+              </select>
+            </td>
+
+            <td>
+              <select name="receipt[receipt_lines[][unit_of_measure_id]]" id="uom-select" class="form-control" data-parsley-required>
+                <option value="">-- Choose --</option>
+
+              </select>
+            </td>
+
+            <td>
+              <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
+            </td>
+            <td>
+              <%= select_tag 'receipt[receipt_lines[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+            </td>
+            <td>
+              <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
     </div>
   </div>
 
-
   <div class="ibox float-e-margins">
     <div class="ibox-content">
-                  <div class="form-group col-md-6">
-                <label  for="weightBridgeTicket">Weight Bridge Ticket # <span class="required">*</span>
-                </label>
-                <div>
-                    <%= f.number_field :weight_bridge_ticket_no, :class => 'form-control', :required => true  %>
-                </div>
-            </div>
-            <div class="form-group col-md-6">
-                <label  for="transporter">Transporter <span class="required">*</span>
-                </label>
-                <div>
-                <%= f.collection_select :transporter_id,
+      <div class="form-group col-md-6">
+        <label for="weightBridgeTicket">Weight Bridge Ticket #
+          <span class="required">*</span>
+        </label>
+        <div>
+          <%= f.number_field :weight_bridge_ticket_no, :class => 'form-control', :required => true  %>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="transporter">Transporter
+          <span class="required">*</span>
+        </label>
+        <div>
+          <%= f.collection_select :transporter_id,
                   Transporter.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true } %>
-                </div>
-            </div>
+        </div>
+      </div>
 
-            <div class="form-group col-md-6">
-                <label  for="weightBeforeUnloading">Weight Before Unloading
-                </label>
-                <div>
-                    <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
-                </div>
-            </div>
-            <div class="form-group col-md-6">
-                <label  for="plateNumber">Plate # <span class="required">*</span>
-                </label>
-                <div>
-                    <%= f.text_field :plate_no, :class => 'form-control', :required => true  %>
-                </div>
-            </div>
+      <div class="form-group col-md-6">
+        <label for="weightBeforeUnloading">Weight Before Unloading
+        </label>
+        <div>
+          <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="plateNumber">Plate #
+          <span class="required">*</span>
+        </label>
+        <div>
+          <%= f.text_field :plate_no, :class => 'form-control', :required => true  %>
+        </div>
+      </div>
 
-            <div class="form-group col-md-6">
-                <label  for="weightAfterUnloading">Weight Before Unloading
-                </label>
-                <div>
-                    <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
-                </div>
-            </div>
-            <div class="form-group col-md-6">
-                <label  for="trailerPlateNumber">Trailer Plate #
-                </label>
-                <div>
-                    <%= f.text_field :trailer_plate_no, :class => 'form-control' %>
-                </div>
-            </div>
+      <div class="form-group col-md-6">
+        <label for="weightAfterUnloading">Weight Before Unloading
+        </label>
+        <div>
+          <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="trailerPlateNumber">Trailer Plate #
+        </label>
+        <div>
+          <%= f.text_field :trailer_plate_no, :class => 'form-control' %>
+        </div>
+      </div>
 
-            <div class="form-group col-md-6">
-                
-            </div>
-            <div class="form-group col-md-6">
-                <label  for="driversName">Driver's Name
-                </label>
-                <div>
-                    <%= f.text_field :drivers_name, :class => 'form-control' %>
-                </div>
-            </div>
+      <div class="form-group col-md-6"></div>
+      <div class="form-group col-md-6">
+        <label for="driversName">Driver's Name
+        </label>
+        <div>
+          <%= f.text_field :drivers_name, :class => 'form-control' %>
+        </div>
+      </div>
 
-            <div class="clearfix"></div>
+      <div class="clearfix"></div>
     </div>
   </div>
 
   <div class="ibox float-e-margins">
     <div class="ibox-content">
       <div class="form-group">
-            <%= f.label :remark %>
-            <%= f.text_area :remark, :class => 'form-control' %>
+        <%= f.label :remark %>
+        <%= f.text_area :remark, :class => 'form-control' %>
       </div>
 
       <div class="actions">
-            <%= f.submit :class => 'btn btn-primary', :id => 'submit-receipt' %>
+        <%= f.submit :class => 'btn btn-primary', :id => 'submit-receipt' %>
       </div>
     </div>
   </div>
@@ -207,80 +241,99 @@
 
 <script type="text/javascript">
 
-              var REMOVE_RECEIPTLINE_BTN = '<a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>';
-            
-              $( function() { 
-                  $("#add-receipt-line").click( function(e) { 
-                      e.preventDefault(); 
+  var allUnitOfMeasures = [];
 
-                      var $this = $(this); 
+  var REMOVE_RECEIPTLINE_BTN = '<a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>';
 
-                      var $receiptLineForm = $this.closest('tr'); 
-                      
-                      var valid = true; 
+  var EMPTY_OPTION = '<option value="">-- Choose --</option>';
 
-                      $receiptLineForm.find(':input').each( function() { 
-                          $(this).parsley().validate(); 
-                          valid = $(this).parsley().isValid() && valid; 
-                      });
+  $(function () {
 
-                      if( !valid ) {
-                        return; 
-                      }
+    $.getJSON('/unit_of_measures', {}, function (data) {
+      allUnitOfMeasures = data;
+    });
 
-                      var $newRow = $receiptLineForm.clone();
+    $("#commodity-select").change(function () {
+      var categoryId = $(this).find('option:selected').data('uom-category-id');
 
-                      $newRow.find('td').last().html(REMOVE_RECEIPTLINE_BTN); 
+      if ('' === categoryId)
+        return;
 
-                      $newRow.find(':input').attr('readonly', true).removeAttr('id'); 
+      var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+        return elem.uom_category_id == categoryId
+      });
 
-                      $newRow.addClass('receipt-line');
+      var options = $.map(unitOfMeasuresInCategory, function (val) {
+        return '<option value="' + val.id + '">' + val.name + '</option>';
+      });
 
-                      $newRow.insertBefore( $receiptLineForm); 
+      options.unshift(EMPTY_OPTION);
 
-                      $receiptLineForm.find(':input').val('');
-                  }); 
+      $('#uom-select').html(options);
 
-                  $('#receiptLinesTableBody').on('click', '.remove-receipt-line', function(e) { 
-                      $(e.target).closest( 'tr').fadeOut('slow', function(){
-                        $(this).remove();
-                      });
-                  });
+    });
 
-                  $('#submit-receipt').click( function(e) { 
+    $("#add-receipt-line").click(function (e) {
+      e.preventDefault();
 
-                      if( $('.receipt-line').length === 0 ) { 
-                        toastr.error("You need to atleast add one commodity."); 
+      var $this = $(this);
 
-                        e.preventDefault();
-                        return; 
-                      }
+      var $receiptLineForm = $this.closest('tr');
 
-                  });
+      var valid = true;
 
+      $receiptLineForm.find(':input').each(function () {
+        $(this).parsley().validate();
+        valid = $(this).parsley().isValid() && valid;
+      });
 
-                  $('#commodity-category-select').change( function() { 
-                    var val = $(this).val();
+      if (!valid) {
+        return;
+      }
 
-                    if( val === '' ) {
-                      return; 
-                    }
+      var $newRow = $receiptLineForm.clone();
 
+      $newRow.find('td').last().html(REMOVE_RECEIPTLINE_BTN);
 
-                    $("#commodity-select > option").addClass('hidden'); 
-                    $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
+      $newRow.find(':input').attr('readonly', true).removeAttr('id');
 
-                    $("#commodity-select > option:first").removeClass('hidden'); 
+      $newRow.addClass('receipt-line');
 
+      $newRow.insertBefore($receiptLineForm);
 
+      $receiptLineForm.find(':input').val('');
+    });
 
-                  });
+    $('#receiptLinesTableBody').on('click', '.remove-receipt-line', function (e) {
+      $(e.target).closest('tr').fadeOut('slow', function () {
+        $(this).remove();
+      });
+    });
 
+    $('#submit-receipt').click(function (e) {
 
+      if ($('.receipt-line').length === 0) {
+        toastr.error("You need to atleast add one commodity.");
 
+        e.preventDefault();
+        return;
+      }
 
-              });
-            </script>
+    });
 
+    $('#commodity-category-select').change(function () {
+      var val = $(this).val();
 
+      if (val === '') {
+        return;
+      }
 
+      $("#commodity-select > option").addClass('hidden');
+      $("#commodity-select > option.cc-" + val).removeClass('hidden');
+
+      $("#commodity-select > option:first").removeClass('hidden');
+
+    });
+
+  });
+</script>

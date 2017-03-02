@@ -27,9 +27,9 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Type</th>
+              <th>Code</th>
               <th>Description</th>
-              <th>Actions</th>
+              <th></th>
             </tr>
           </thead>
 
@@ -39,15 +39,16 @@
               <td>
                 <%= link_to account.name, edit_account_path(account) %>
               </td>
-              <td><%= account.type
+              <td><%= account.code
               %></td>
               <td><%= account.description
               %></td>
+              <!--
               <td>
                 <%= link_to 'Edit', edit_account_path(account) %>
                 &middot;
                 <%= link_to 'Delete', account, method: :delete, data: { confirm: 'Are you sure?' } %>
-              </td>
+              </td> -->
             </tr>
             <% end %>
           </tbody>

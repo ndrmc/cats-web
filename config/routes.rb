@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :case_teams
+  resources :role_types
+  resources :transporters
   get 'setting/index'
   devise_for :users
 
@@ -24,6 +27,8 @@ Rails.application.routes.draw do
   resources :currencies
   resources :donors
   resources :programs
+  
+  resources :commodity_sources
   resources :commodity_categories
   resources :commodities
   resources :unit_of_measures
@@ -38,6 +43,7 @@ Rails.application.routes.draw do
   resources :operations
   resources :accounts
   resources :fdps
+  resources :fdp_contacts
   get 'fdps/location/:location_id', to: 'fdps#get_by_location'
 
   resources :organizations
@@ -50,8 +56,21 @@ Rails.application.routes.draw do
 
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
-  resources :receipts 
-  resources :dispatches 
+  resources :receipts
+  resources :dispatches
+  resources :requisitions
+
+
+  get '/requisitions/get_requisiton_by_number'
+  get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'
+  post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
+  get '/requisitions/summary/:region_id/:operation_id', to: 'requisitions#summary'
+
+  resources :regional_requests 
+  post '/regional_requests/add_fdp_to_request'
+  post '/regional_requests/update_regional_request_item'
+  delete '/regional_requests/destroy_regional_request_item/:id', to: 'regional_requests#destroy_regional_request_item'
+
 
   root to: 'dashboard#index'
 

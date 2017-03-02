@@ -1,12 +1,13 @@
 <%
-   uuid = SecureRandom.uuid
+   uuid = uuid || SecureRandom.uuid
    locationId ||= nil
+   fdpId ||= nil
    location_vals = []
 %>
 
 <%
 
-  if fdpId 
+  if  fdpId 
     fdp = Fdp.find(fdpId)
 
     if fdp
@@ -16,6 +17,9 @@
             location_vals = location.ancestor_ids + [location.id]
         end
     end
+  elsif locationId #this will dictate which location selects will come preselected 
+       
+      location_vals = Location.find(locationId).ancestor_ids + [locationId]
   end
 %>
 
@@ -80,7 +84,6 @@
 </script>
 
 
-<input id="location-id-hidden-<%= uuid %>" type="hidden" name="<%= name || 'location_id' %>" value="<%= locationId %>" />
 
 <div class="form-group">
   <label for="regionSelect-<%= uuid %>">Region</label>
@@ -106,10 +109,10 @@
     <option value="">Choose</option>
   </select>
 </div>
-<div class="form-group">
-  <label for="kebeleSelect-<%= uuid %>">FDP</label>
+<div class="form-group"> 
+  <label for="fdpSelect-<%= uuid %>">FDP</label> <% if  required %> <span class="required">*</span> <% end %>
   <select name="<%= name %>" id="fdpSelect-<%= uuid %>" class="form-control"
-    data-value="<%= fdpId %>"
+    data-value="<%= fdpId %>" <%= required ? 'required' : ''%>
   >
     <option value="">Choose</option>
 </select>

@@ -11,6 +11,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
       t.string :region
       t.string :organization_unit
       t.string :hub
+     
       
       t.string :encrypted_password, null: false, default: ""
 

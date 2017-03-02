@@ -1,0 +1,63 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Regional Requests</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Regional Requests</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Regional Request', new_regional_request_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Reference number</th>
+                        <th>Region</th>
+                        <th>Operation</th>
+                        <th>Program</th>
+                        <th>Requested date</th>
+                        <th>Remark</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @regional_requests.each do |regional_request| %>
+          <tr>
+                        <td><%= link_to regional_request.reference_number, regional_request_path(regional_request.id)
+              %></td>
+                        <td><%= regional_request.region.name
+              %></td>
+                        <td><%= regional_request.operation.name
+              %></td>
+                        <td><%= regional_request.program.name
+              %></td>
+                        <td><%= regional_request.requested_date
+              %></td>
+                        <td><%= regional_request.remark
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_regional_request_path(regional_request) %> &middot;
+              <%= link_to 'Delete', regional_request, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

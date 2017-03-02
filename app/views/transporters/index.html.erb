@@ -1,0 +1,78 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transporters</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Transporters</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Transporter', new_transporter_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Ownership</th>
+                        <th>Vehiclecount</th>
+                        <th>Lift capacity</th>
+                        <th>Capital</th>
+                        <th>Employees</th>
+                        <th>Contact</th>
+                        <th>Contact phone</th>
+                        <th>Remark</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transporters.each do |transporter| %>
+          <tr>
+                        <td><%= transporter.name
+              %></td>
+                        <td><%= transporter.code
+              %></td>
+                        <td><%= transporter.ownership
+              %></td>
+                        <td><%= transporter.vehicle_count
+              %></td>
+                        <td><%= transporter.lift_capacity
+              %></td>
+                        <td><%= transporter.capital
+              %></td>
+                        <td><%= transporter.employees
+              %></td>
+                        <td><%= transporter.contact
+              %></td>
+                        <td><%= transporter.contact_phone
+              %></td>
+                        <td><%= transporter.remark
+              %></td>
+                        <td><%= transporter.status
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_transporter_path(transporter) %> &middot;
+              <%= link_to 'Delete', transporter, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

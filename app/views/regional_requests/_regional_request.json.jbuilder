@@ -1,0 +1,2 @@
+json.extract! regional_request, :id, :reference_number, :operation_id, :program_id, :ration_id, :requested_date, :remark, :created_at, :updated_at
+json.url regional_request_url(regional_request, format: :json)

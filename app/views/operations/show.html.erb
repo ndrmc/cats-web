@@ -30,7 +30,7 @@
             <a href="#">Delete</a>
           </li>
           <li>
-            <a href="#">Close</a>
+            <%= link_to 'Close', operations_path %>
           </li>
           <li class="divider"></li>
           <li>
@@ -54,7 +54,7 @@
             <dl class="dl-horizontal">
               <dt>Status:</dt>
               <dd>
-                <span class="label label-primary">Active</span>
+                <span class="label label-primary"><%= @operation.status %>  </span>
               </dd>
             </dl>
           </div>
@@ -64,13 +64,19 @@
             <dl class="dl-horizontal">
 
               <dt>Program:</dt>
-              <dd><%= @operation.program_id %></dd>
+              <dd><%=Program.find(@operation.program_id).name %></dd>
               <dt>Year:</dt>
               <dd><%=@operation.year%></dd>
               <dt>Month/Round:</dt>
-              <dd>
-                <%= @operation.month %>
-              </dd>
+              <%if @operation.month%>
+                <dd>
+                  <%= Date::MONTHNAMES[@operation.month] %>
+                </dd>
+              <%elsif%>
+                <dd>
+                  <%= @operation.round %>
+                </dd>
+              <%end%>
             </dl>
           </div>
           <div class="col-lg-7" id="cluster_info">
@@ -83,7 +89,7 @@
                 34,5590 mt
               </dd>
               <dt>Total beneficiaries:</dt>
-              <dd>3,998,700</dd>
+              <dd><%= Hrd.find(@operation.hrd_id).hrd_items.sum { |i| i.beneficiary } %></dd>
             </dl>
           </div>
         </div>
@@ -353,18 +359,96 @@
 
                   <div class="tab-pane" id="tab-3">
                     <div>
-                      <h2>
-                        No Dispatchs are made for this operation<br>
-                      </h2>
+                      <%if(@dispatches_map.empty?)%>
+                        <h2>
+                            No Dispatches are made for this operation<br>
+                        </h2>
+                      <%elsif%>
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>Region</th>
+                              <th>Status</th>
+                              <th>Progress</th>
+                            <% @commodities.each do |commodity| %>
+                              <th><%= commodity.name %></th>
+                            <%end%>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% @dispatches_map.each do |region,dispatches| %>
+                            <tr>
+                              <td>                             
+                                <%= link_to region.name, dispatches_path(:region => region.id, :operation => @operation.id) %>                               
+                              </td>
+                              <td>
+                              
+                              </td>
+                              <td>
+                                
+                              </td>
+                              <% @commodities.each do |commodity| %>
+                              <th><%= dispatches[commodity.id] %></th>
+                            <%end%>
+                              
+                            </tr>
+                            <% end %>
+                            <tr>
+                            <td>Total</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      <%end%>
+                     
+                      
                     </div>
 
                   </div>
 
                   <div class="tab-pane" id="tab-4">
                     <div>
-                      <h2>
-                        No Deliveries are made for this operation<br>
-                      </h2>
+                      <%if(@deliveries_map.empty?)%>
+                        <h2>
+                            No Deliveries are made for this operation<br>
+                        </h2>
+                      <%elsif%>
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>Region</th>
+                              <th>Status</th>
+                              <th>Progress</th>
+                            <% @commodities.each do |commodity| %>
+                              <th><%= commodity.name %></th>
+                            <%end%>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% @deliveries_map.each do |region,deliveries| %>
+                            <tr>
+                              <td>
+                                <%= link_to region.name, deliveries_path(:region_id => region.id, :operation_id => @operation.id) %>
+                              </td>
+                              <td>
+                              
+                              </td>
+                              <td>
+                                
+                              </td>
+                              <% @commodities.each do |commodity| %>
+                              <th><%= deliveries[commodity.id] %></th>
+                            <%end%>
+                              
+                            </tr>
+                            <% end %>
+                            <tr>
+                            <td>Total</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      <%end%>
+                     
+                     
                     </div>
 
                   </div>

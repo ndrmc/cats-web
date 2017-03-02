@@ -1,0 +1,220 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Regional Request (<%=  @regional_request.reference_number %>)</h2>
+    <blockquote>
+
+    <table class="table">
+      <tbody>
+        <tr>
+          <td>Region</td>
+          <td><%= @regional_request.region.name %></td>
+        </tr>
+        <tr>
+          <td>Program</td>
+          <td><%= @regional_request.program.name %></td>
+        </tr>
+        <tr>
+          <td>Operation</td>
+          <td><%= @regional_request.operation.name %></td>
+        </tr>
+       
+        <tr>
+          <td>Remark</td>
+          <td><%= @regional_request.remark %></td>
+        </tr>
+      </tbody>
+    </table>
+      
+    </blockquote>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#"><%= link_to 'Regional Requests',  regional_requests_path %></a>
+      </li>
+      <li class="active">
+        <a href="#"><%=  @regional_request.reference_number %></a>
+      </li>
+
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <a href="#" class="btn btn-primary" data-toggle="modal"  data-target="#request-item-modal">Add Request Item</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable" id="fdps_table">
+        <thead>
+          <tr>
+            <th>FDP</th>
+            <th>Number of Beneficiaries</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @regional_request.regional_request_items.each do |request_item| %>
+          <tr>
+            <td><%= request_item.fdp.name %></td>
+            <td class="beneficiaries_number_cell"><%= request_item.number_of_beneficiaries %></td>
+            <td>
+              <a href="#" class="edit-rrdi" data-rrdi-id="<%= request_item.id %>">Edit</edit> &middot;<a href="#"  class="delete-rrdi" data-rrdi-id="<%= request_item.id %>">Delete</a>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="request-item-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add FDP to Request</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" role="form">
+          <%= render 'shared/fdp_selector', name: 'fdp_id', required: true, locationId: @regional_request.region.id, uuid: "fdp-request-modal"  %>
+
+         <div class="form-group">
+            <label for="number_of_beneficiaries">Number of Beneficiaries</label>
+            <span class="required">*</span>
+            <input type="number" name="number_of_beneficiaries" id="number_of_beneficiaries"  class="form-control" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="add-fdp">Add</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+
+  function isNumber(n) {
+    return !isNaN(parseInt(n, 10)) && isFinite(n);
+  }
+
+  var alreadyAddedFdpIds = <%= @fdp_ids_with_a_request %>; 
+
+  $("#add-fdp").click( function() { 
+    var fdp_id = $('select[name=fdp_id]').val(); 
+    var number_of_beneficiaries = $('#number_of_beneficiaries').val(); 
+
+    if( !fdp_id || !number_of_beneficiaries) { 
+      toastr.error("Both 'FDP' and 'Number of Beneficiaries' are required."); 
+      return; 
+    }
+
+    if( alreadyAddedFdpIds.indexOf( parseInt(fdp_id, 10 )) != -1 ) { 
+      toastr.error("This FDP has already been added."); 
+      return; 
+    }
+
+    $.post('/regional_requests/add_fdp_to_request', {id: <%= @regional_request.id %>, fdp_id: fdp_id, number_of_beneficiaries: number_of_beneficiaries}, function(response) {
+        if( response.successful ) {
+
+          alreadyAddedFdpIds.push( parseInt( fdp_id, 10));
+
+          $('select[name=fdp_id]').val('').focus(); 
+          $('#number_of_beneficiaries').val(''); 
+          
+          toastr.success( "Added!"); 
+
+          var dTable = $("#fdps_table").DataTable().row.add([
+              response.fdpName,
+              response.number_of_beneficiaries,
+              '<a href="#" class="edit-rrdi" data-rrdi-id="' + response.rrdi.id + '">Edit</edit> &middot;<a href="#"  class="delete-rrdi" data-rrdi-id="' + response.rrdi.id + '">Delete</a>'
+          ]).draw();
+
+        }
+        else  { 
+
+        }
+    }, 'json');
+  }); 
+
+  $('#fdps_table').on( 'click', '.edit-rrdi', function(e) { 
+    e.preventDefault(); //new_beneficiaries_value
+
+    var rrdiId = $(this).data('rrdi-id'); 
+
+    var newVal = prompt("Enter new 'Number of Beneficiaries':"); 
+
+    if( !isNumber(newVal)) { 
+      toastr.error("Only numbers are accepted!"); 
+      return; 
+    }
+
+    var beneficiaries_number_cell = $(this).closest('tr').find('td:nth-child(2)')[0];
+
+
+    $.post('/regional_requests/update_regional_request_item', 
+        
+        {id: rrdiId, new_beneficiaries_value: newVal}, function(response) {
+
+           var oTable = $("#fdps_table").DataTable();
+           oTable.cell(beneficiaries_number_cell).data(newVal); 
+
+          toastr.success('Updated!');
+    
+    }, 'json').fail(function() { 
+      toastr.error("Update failed. Please try again shortly.")
+    });
+
+
+  }); 
+
+  $('#fdps_table').on( 'click', '.delete-rrdi', function(e) { 
+    e.preventDefault(); 
+
+    var rrdiId = $(this).data('rrdi-id'); 
+
+    var self = this; 
+
+    swal({
+        title: "Are you sure?",
+        text: "You will not be able to undo this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function () {
+        $.ajax({
+          url: "/regional_requests/destroy_regional_request_item/" + rrdiId ,
+          method: 'DELETE',
+          dataType: 'json'
+        }).done(function () {
+
+          alreadyAddedFdpIds.splice( $.inArray(rrdiId, alreadyAddedFdpIds), 1 );
+
+          var oTable = $("#fdps_table").dataTable();
+
+          var target_row = $(self).closest("tr").get(0); // this line did the trick
+          var aPos = oTable.fnGetPosition(target_row); 
+
+          oTable.fnDeleteRow(aPos);
+
+          toastr.success("Deleted!");
+        }).fail(function() { 
+          toastr.error("Delete failed! Please try again shortly.");
+        });
+
+      });
+  }); 
+
+  $( function() { 
+    $( "#regionSelect-fdp-request-modal").attr("readonly", true ); 
+  }); 
+</script>

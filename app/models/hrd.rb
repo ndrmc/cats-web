@@ -8,6 +8,8 @@
 #  month_from  :integer
 #  month_to    :integer
 #  duration    :integer
+#  archived    :boolean
+#  current     :boolean
 #  season_id   :integer
 #  ration_id   :integer
 #  created_at  :datetime         not null
@@ -22,5 +24,9 @@ class Hrd < ApplicationRecord
   belongs_to :season
   belongs_to :ration
   has_many :hrd_items
+
+  def name
+    "#{self.year} ( #{Date::ABBR_MONTHNAMES[self.month_from]} - #{Date::ABBR_MONTHNAMES[self.month_to]} )"
+  end
 
 end

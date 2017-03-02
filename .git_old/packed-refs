@@ -1,0 +1,20 @@
+# pack-refs with: peeled fully-peeled 
+697ace5ee8759da031d048a6b24bf6e49158af04 refs/remotes/origin/CT-3
+486259834088c71f5c93fe124cc4e16120268155 refs/remotes/origin/add-crud-for-fdps
+a4b693c8cc82087ac8eaf8ecf1ce3f645062401f refs/remotes/origin/commodities_crud
+c5b3c367a6e91062aa043703de3f3c503aae4fca refs/remotes/origin/commodity_type_lookup
+d074b2f17a5fbc259901d06baab90b441c374b51 refs/remotes/origin/create-location-crud-ui
+6ae8aa14a74d4cfde22c62f91babd1d645d7e56e refs/remotes/origin/dashboard
+70194015320cd5881ff85c0606e1ad6b5e409f08 refs/remotes/origin/delivery_crud
+71bb75376eb19d0afa8e573287fc81148c8d6a9c refs/remotes/origin/develop
+8fd16d7c905b02653bfefa7d579868d5f70018ba refs/remotes/origin/do-some-ui-stuff
+a530360fbb2e0f399768cfa4086627271f131bdc refs/remotes/origin/feature/add-user-creation-and-role-management
+da7ba45a99139590555a1b1480f10289037e6c05 refs/remotes/origin/feature/build-stock-receipt-ui
+3a04ec1af028f2dd682e89e17a58c487c6fe4c27 refs/remotes/origin/feature/implement-crud-views-for-lookups
+044d9416a0c882a5c17dc4348a8bb5c0cc2b357a refs/remotes/origin/feature/implement-hrd-document
+bbf966c028ecd9c7e29f4f51dd0ac152bd3fd8d9 refs/remotes/origin/feature/operation
+0455809d216d8b80a328f9a6bc808b7655199515 refs/remotes/origin/feature/roles
+50026b4fa58a9c16f526ba63494091c008616ecb refs/remotes/origin/feature/user-tracking
+3d1f3e2816854a138c8b854a473f479e0972cc8e refs/remotes/origin/hubs_and_stores
+433a6d965b1b734ca9e67fc67fa419dc56a41cc4 refs/remotes/origin/master
+f18bc4d8c27caf988ff8a74790205452186ccba8 refs/remotes/origin/receipt_plan
