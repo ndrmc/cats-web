@@ -22,17 +22,17 @@ class UsersController < ApplicationController
     @user = User.new
     
     @roles = RoleType.all.map{ |t| [t.name, t.id]}
-    @caseTeam= CaseTeam.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
-    @hubs= CaseTeam.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
-    @region = CaseTeam.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
+    @department= Department.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
+    @hubs= Department.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
+    @region = Department.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
   end
 
   # GET /users/1/edit
   def edit
     @roles = RoleType.all.map{ |t| [t.name, t.id]}
-    @caseTeam= CaseTeam.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
-    @hubs= CaseTeam.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
-    @region = CaseTeam.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
+    @department= Department.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
+    @hubs= Department.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
+    @region = Department.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
 
   end
 
@@ -109,6 +109,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub, :region, :case_team, :regionalUser, :hubUser, :mobileNo, :datePreference,:Admin,:IsCaseTeam)
+      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub, :region, :case_team, :regional_user, :hub_user, :mobile_no, :date_preference,:is_admin,:is_case_team)
     end
 end
