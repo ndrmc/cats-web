@@ -4,7 +4,10 @@ sheet = wb.add_worksheet(:name => 'Open Office') { |ws| ws.sheet_protection.pass
 
 unlocked = sheet.styles.add_style(:locked => false )
 
+sheet.add_row [ "", "Zone", "Woreda", "FDP", "Number of Beneficiaries" ]
+
 @regional_request.regional_request_items.each do |rri|
-  sheet.add_row [rri.fdp.id, rri.fdp.name, rri.number_of_beneficiaries ], :style => [nil, nil, unlocked]
+  woreda = rri.fdp.woreda
+  sheet.add_row [ rri.fdp.id, rri.fdp.zone.name, woreda ? woreda.name : '', rri.fdp.name, rri.number_of_beneficiaries ], :style => [nil, nil, nil, nil, unlocked]
 end
 

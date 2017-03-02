@@ -133,7 +133,7 @@ class RegionalRequestsController < ApplicationController
 
     respond_to do |format|
       format.xlsx {
-        response.headers['Content-Disposition'] = "attachment; filename=\"#{@regional_request.region.name} region requests.xlsx\""
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{@regional_request.region.name} - #{@regional_request.operation.name}.xlsx\""
       }
     end
     
@@ -150,23 +150,31 @@ class RegionalRequestsController < ApplicationController
 
     set_regional_request
 
-    (1..spreadsheet.last_row).each do |i|
+    number_of_skipped_rows = 0
+
+    (2..spreadsheet.last_row).each do |i|
       row =  spreadsheet.row(i)
       request_item = RegionalRequestItem.where(regional_request: @regional_request, fdp_id: row[0]).first
 
       if request_item
-        request_item.number_of_beneficiaries = row[2]
-        request_item.save
+        if row[4].is_a?( Numeric) && row[4] >= 0 
+          request_item.number_of_beneficiaries = row[4]
+          request_item.save
+        else 
+          number_of_skipped_rows += 1
+        end
       else 
         Rails.logger.info("No RegionalRequestItem found for the fdp id: #{row[0]}. Skipping...")
       end
     end
 
     respond_to do |format|
-        format.html { redirect_to @regional_request, notice: "Excel imported successfully." }
+        if number_of_skipped_rows > 0 
+          flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
+        end
+        
+        format.html { redirect_to @regional_request, notice: "Excel imported successfully."  }
     end
-    
-
   end 
   
   
