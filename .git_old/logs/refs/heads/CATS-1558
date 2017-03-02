@@ -1,8 +1,0 @@
-0000000000000000000000000000000000000000 de1c7f5fd556d7b89dc35c4dbb64abbe2e7a6a01 beza <getbez@gmail.com> 1487835720 +0300	branch: Created from HEAD
-de1c7f5fd556d7b89dc35c4dbb64abbe2e7a6a01 df183dcfe9e4f85c951388a323061dc45f90cdcd beza <getbez@gmail.com> 1487835818 +0300	commit: CATS-1558 fix operation form. add summary tabs for dispatches and deliveries
-df183dcfe9e4f85c951388a323061dc45f90cdcd dc29314975ced01ea27455e8a88c5cd29b1b7e81 beza <getbez@gmail.com> 1487836698 +0300	commit: CATS-1558 fix minor issues
-dc29314975ced01ea27455e8a88c5cd29b1b7e81 8765dad861a1357c7ae25dce29efa0c5fedaad03 beza <getbez@gmail.com> 1487849507 +0300	commit: CATS-1558 add route to dispatches and deliveries path, filtering by region
-8765dad861a1357c7ae25dce29efa0c5fedaad03 0f8bc8033e2227e949241693df09bdfc4e7332f0 beza <getbez@gmail.com> 1487932907 +0300	commit: merge develop
-0f8bc8033e2227e949241693df09bdfc4e7332f0 a0698fbfe8cf4776e16500fdd59b603e0ed5580a beza <getbez@gmail.com> 1488269188 +0300	commit (merge): merging from develop
-a0698fbfe8cf4776e16500fdd59b603e0ed5580a f6d31b8432b21fbc81f3ed6254ef0250cdad4618 beza <getbez@gmail.com> 1488269212 +0300	commit: merging from develop
-f6d31b8432b21fbc81f3ed6254ef0250cdad4618 d343effaa7f5bc7c460cdedcd55af8fb18c16a3e beza <getbez@gmail.com> 1488380313 +0300	commit (merge): CATS-1560 implemented generating requisitions

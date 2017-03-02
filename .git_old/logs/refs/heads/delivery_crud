@@ -1,4 +1,0 @@
-0000000000000000000000000000000000000000 a023890430b8ceff71aa479d165351d734f9123f beza <getbez@gmail.com> 1486713535 +0300	branch: Created from HEAD
-a023890430b8ceff71aa479d165351d734f9123f f30d2f3d6b3427e77c6f77e305f1505d7ac16c74 beza <getbez@gmail.com> 1486713678 +0300	commit: delivery_details
-f30d2f3d6b3427e77c6f77e305f1505d7ac16c74 3c6be2fa7d031a708bc9fc1881a477202ae0d01b beza <getbez@gmail.com> 1487060659 +0300	commit: delivery_from_gin_and_update
-3c6be2fa7d031a708bc9fc1881a477202ae0d01b fdf4f5cca39d8986ea3d226733faa2df0640ae5b beza <getbez@gmail.com> 1487062938 +0300	commit: add_unique_constraint_gin_no_and_receiving_no

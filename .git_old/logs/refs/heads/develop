@@ -1,7 +1,0 @@
-0000000000000000000000000000000000000000 71bb75376eb19d0afa8e573287fc81148c8d6a9c beza <getbez@gmail.com> 1486478992 +0300	clone: from https://github.com/fmip/cats-web.git
-71bb75376eb19d0afa8e573287fc81148c8d6a9c 1e3b8fc92d11e3c448ea57e4c8c3276b6b46c869 beza <getbez@gmail.com> 1486479023 +0300	pull origin delivery_crud: Merge made by the 'recursive' strategy.
-1e3b8fc92d11e3c448ea57e4c8c3276b6b46c869 6057cc2821b1cf146a5964278e7c2b74c704f900 beza <getbez@gmail.com> 1486537274 +0300	commit: deliveries default scaffold
-6057cc2821b1cf146a5964278e7c2b74c704f900 781af24ffb9c08f90668e3ed965d2fa78709e26b beza <getbez@gmail.com> 1486537481 +0300	commit (merge): Merge branch 'develop' of https://github.com/fmip/cats-web into develop
-781af24ffb9c08f90668e3ed965d2fa78709e26b e906d3599ff8325478a76bc367e3145b009087ab beza <getbez@gmail.com> 1486562371 +0300	commit: delivery_details_and_filter
-e906d3599ff8325478a76bc367e3145b009087ab dd3546b410dfcd4785f2bcf420edffb342afa9df beza <getbez@gmail.com> 1486616990 +0300	commit (merge): Merge branch 'develop' of https://github.com/fmip/cats-web into develop
-dd3546b410dfcd4785f2bcf420edffb342afa9df a023890430b8ceff71aa479d165351d734f9123f beza <getbez@gmail.com> 1486713430 +0300	commit: deliveries insert and update with detail

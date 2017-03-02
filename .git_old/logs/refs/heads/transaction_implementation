@@ -1,8 +1,0 @@
-0000000000000000000000000000000000000000 092feb4029f89e229b28ce2d00548ad5d1ea48cf beza <getbez@gmail.com> 1487225670 +0300	branch: Created from HEAD
-092feb4029f89e229b28ce2d00548ad5d1ea48cf d760f0a4cfadb8ea53bbeca31003f251c4085e50 beza <getbez@gmail.com> 1487225741 +0300	commit: dispatch_and_receipt_posting
-d760f0a4cfadb8ea53bbeca31003f251c4085e50 53b96b69aff29e39e75319c1bf136173579ff75d beza <getbez@gmail.com> 1487231805 +0300	commit: reversal
-53b96b69aff29e39e75319c1bf136173579ff75d 7113af1cfc97b4eb8a81be3f482188f6e193dcdb beza <getbez@gmail.com> 1487236082 +0300	commit: delivery_posting
-7113af1cfc97b4eb8a81be3f482188f6e193dcdb 503b41ec5861645b0767dae84d5063b2504aceba beza <getbez@gmail.com> 1487252884 +0300	commit: do_not_post_if draft
-503b41ec5861645b0767dae84d5063b2504aceba 5aa99f9fcf5fc16e3d941ede3b3025c1d523a6b2 beza <getbez@gmail.com> 1487253072 +0300	pull origin transaction_implementation: Merge made by the 'recursive' strategy.
-5aa99f9fcf5fc16e3d941ede3b3025c1d523a6b2 9456377665607bc5a0060b0cc761ec2490de85b3 beza <getbez@gmail.com> 1487320490 +0300	pull origin develop: Fast-forward
-9456377665607bc5a0060b0cc761ec2490de85b3 de1c7f5fd556d7b89dc35c4dbb64abbe2e7a6a01 beza <getbez@gmail.com> 1487762887 +0300	commit: operations
