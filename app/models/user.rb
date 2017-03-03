@@ -58,10 +58,10 @@ class User < ApplicationRecord
   end
 
   enum role_types: {
-        admin:2,
-        case_team:3,
-        hub:4,
-        regional:5
+        admin:5,
+        federal:6,
+        hub:7,
+        regional:8
     }   
 
 end

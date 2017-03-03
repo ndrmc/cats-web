@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170226064916) do
+ActiveRecord::Schema.define(version: 20170302130546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,19 +101,6 @@ ActiveRecord::Schema.define(version: 20170226064916) do
     t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
   end
 
-  create_table "case_teams", force: :cascade do |t|
-    t.string   "name"
-    t.string   "discription"
-    t.integer  "role_type_id"
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",      default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.index ["role_type_id"], name: "index_case_teams_on_role_type_id", using: :btree
-  end
-
   create_table "case_units", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -183,12 +170,6 @@ ActiveRecord::Schema.define(version: 20170226064916) do
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
   end
 
-  create_table "controllers", force: :cascade do |t|
-    t.string   "regional_requests"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-  end
-
   create_table "currencies", force: :cascade do |t|
     t.string   "name",        null: false
     t.string   "symbol"
@@ -235,6 +216,19 @@ ActiveRecord::Schema.define(version: 20170226064916) do
     t.datetime "deleted_at"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "role_type_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",      default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["role_type_id"], name: "index_departments_on_role_type_id", using: :btree
   end
 
   create_table "dispatch_items", force: :cascade do |t|
@@ -565,6 +559,7 @@ ActiveRecord::Schema.define(version: 20170226064916) do
 
   create_table "posting_items", force: :cascade do |t|
     t.uuid     "posting_item_code"
+    t.integer  "posting_id"
     t.integer  "account_id"
     t.integer  "journal_id"
     t.integer  "donor_id"
@@ -577,7 +572,7 @@ ActiveRecord::Schema.define(version: 20170226064916) do
     t.integer  "program_id"
     t.integer  "operation_id"
     t.integer  "commodity_id"
-    t.integer  "commodityCategory_id"
+    t.integer  "commodity_category_id"
     t.decimal  "quantity"
     t.integer  "region_id"
     t.integer  "zone_id"
@@ -585,10 +580,10 @@ ActiveRecord::Schema.define(version: 20170226064916) do
     t.integer  "fdp_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",              default: false
+    t.boolean  "deleted",               default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   create_table "postings", force: :cascade do |t|
@@ -1020,14 +1015,13 @@ ActiveRecord::Schema.define(version: 20170226064916) do
     t.boolean  "is_active",              default: true
     t.string   "first_name"
     t.string   "last_name"
-    t.date     "datePreference"
-    t.string   "mobileNo"
-    t.integer  "numberOfLogins"
-    t.boolean  "regionalUser"
-    t.boolean  "hubUser"
+    t.date     "date_preference"
+    t.string   "mobile_no"
+    t.boolean  "regional_user"
+    t.boolean  "hub_user"
     t.integer  "case_team"
-    t.boolean  "Admin"
-    t.boolean  "IsCaseTeam"
+    t.boolean  "is_admin"
+    t.boolean  "is_case_team"
     t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
@@ -1060,6 +1054,7 @@ ActiveRecord::Schema.define(version: 20170226064916) do
   end
 
   add_foreign_key "commodity_categories", "uom_categories"
+  add_foreign_key "departments", "role_types"
   add_foreign_key "dispatches", "hubs"
   add_foreign_key "dispatches", "warehouses"
   add_foreign_key "receipt_lines", "unit_of_measures"

@@ -223,42 +223,42 @@ end
 
 if RoleType.count==0
   RoleType.create(name: 'Admin', description: '')
-  RoleType.create(name: 'Case Team', description: '')
+  RoleType.create(name: 'Federal', description: '')
   RoleType.create(name: 'Hubs', description: '')
   RoleType.create(name: 'Regional', description: '')
   puts "Created default role types"
 end
 
-if CaseTeam.count==0
+if Department.count==0
 
-  caseTeam = RoleType.find_by(name: 'Case Team')
+  department = RoleType.find_by(name: 'Federal')
 
-  CaseTeam.create(name: 'Early warning', role_type: caseTeam)
-  CaseTeam.create(name: 'FSCD')
-  CaseTeam.create(name: 'Logistics', role_type: caseTeam)
-  CaseTeam.create(name: 'Procurement', role_type: caseTeam)
-  CaseTeam.create(name: 'Finance', role_type: caseTeam)
+  Department.create(name: 'Early warning', role_type: department)
+  Department.create(name: 'FSCD' , role_type: department)
+  Department.create(name: 'Logistics', role_type: department)
+  Department.create(name: 'Procurement', role_type: department)
+  Department.create(name: 'Finance', role_type: department)
 
   hub = RoleType.find_by(name: 'Hubs')
 
-  CaseTeam.create(name: 'Adama', role_type: hub)
-  CaseTeam.create(name: 'Dire Dawa' , role_type: hub)
-  CaseTeam.create(name: 'Kombolcha' , role_type: hub)
-  CaseTeam.create(name: 'Mekele' , role_type: hub)
+  Department.create(name: 'Adama', role_type: hub)
+  Department.create(name: 'Dire Dawa' , role_type: hub)
+  Department.create(name: 'Kombolcha' , role_type: hub)
+  Department.create(name: 'Mekele' , role_type: hub)
 
  region = RoleType.find_by(name: 'Regional')
 
 
-  CaseTeam.create(name: 'Afar', role_type: region)
-  CaseTeam.create(name: 'Amhara', role_type: region)
-  CaseTeam.create(name: 'Tigray', role_type: region)
-  CaseTeam.create(name: 'Oromia', role_type: region)
-  CaseTeam.create(name: 'Benshangule', role_type: region)
-  CaseTeam.create(name: 'SNNPR', role_type: region)
-  CaseTeam.create(name: 'Gambella', role_type: region)
-  CaseTeam.create(name: 'Dire Dawa', role_type: region)
-  CaseTeam.create(name: 'Harari', role_type: region)
-  CaseTeam.create(name: 'Somalia', role_type: region)
+  Department.create(name: 'Afar', role_type: region)
+  Department.create(name: 'Amhara', role_type: region)
+  Department.create(name: 'Tigray', role_type: region)
+  Department.create(name: 'Oromia', role_type: region)
+  Department.create(name: 'Benshangule', role_type: region)
+  Department.create(name: 'SNNPR', role_type: region)
+  Department.create(name: 'Gambella', role_type: region)
+  Department.create(name: 'Dire Dawa', role_type: region)
+  Department.create(name: 'Harari', role_type: region)
+  Department.create(name: 'Somalia', role_type: region)
 
   puts "Created list of roles"
 end
