@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     @user = User.new
     
     @roles = RoleType.all.map{ |t| [t.name, t.id]}
-    @department= Department.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
+    @department= Department.where(role_type: User.role_types[:federal]).map{ |h| [h.name, h.id]} # case teams
     @hubs= Department.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
     @region = Department.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
   end
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @roles = RoleType.all.map{ |t| [t.name, t.id]}
-    @department= Department.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
+    @department= Department.where(role_type: User.role_types[:federal]).map{ |h| [h.name, h.id]} # case teams
     @hubs= Department.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
     @region = Department.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
 

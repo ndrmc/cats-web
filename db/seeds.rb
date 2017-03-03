@@ -223,7 +223,7 @@ end
 
 if RoleType.count==0
   RoleType.create(name: 'Admin', description: '')
-  RoleType.create(name: 'Case Team', description: '')
+  RoleType.create(name: 'Federal', description: '')
   RoleType.create(name: 'Hubs', description: '')
   RoleType.create(name: 'Regional', description: '')
   puts "Created default role types"
@@ -231,13 +231,13 @@ end
 
 if Department.count==0
 
-  caseTeam = RoleType.find_by(name: 'Case Team')
+  department = RoleType.find_by(name: 'Federal')
 
-  Department.create(name: 'Early warning', role_type: caseTeam)
-  Department.create(name: 'FSCD' , role_type: caseTeam)
-  Department.create(name: 'Logistics', role_type: caseTeam)
-  Department.create(name: 'Procurement', role_type: caseTeam)
-  Department.create(name: 'Finance', role_type: caseTeam)
+  Department.create(name: 'Early warning', role_type: department)
+  Department.create(name: 'FSCD' , role_type: department)
+  Department.create(name: 'Logistics', role_type: department)
+  Department.create(name: 'Procurement', role_type: department)
+  Department.create(name: 'Finance', role_type: department)
 
   hub = RoleType.find_by(name: 'Hubs')
 

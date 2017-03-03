@@ -38,13 +38,13 @@
                 <%= f.check_box :is_active, :class => 'form-control' %>
                         </div>
                 
-                <%= f.check_box :hub_user, :class => 'form-control' %>
+                <%= f.check_box :hub_user, :class => 'form-control hidden' %>
                        
-                <%= f.check_box :regional_user, :class => 'form-control ' %>
+                <%= f.check_box :regional_user, :class => 'form-control hidden' %>
 
-                <%= f.check_box :is_admin, :class => 'form-control ' %>
+                <%= f.check_box :is_admin, :class => 'form-control hidden ' %>
 
-                <%= f.check_box :is_case_team, :class => 'form-control ' %>       
+                <%= f.check_box :is_case_team, :class => 'form-control hidden' %>       
                
                        
                 
@@ -93,7 +93,7 @@
   
     if (document.getElementById("user_is_case_team").checked){
 
-      document.getElementById("role").value = 2
+      document.getElementById("role").value = 6
       
       
       $('#div-department').show();
@@ -106,7 +106,7 @@
     }
     else if (document.getElementById("user_hub_user").checked){
        
-      document.getElementById("role").value = 3
+      document.getElementById("role").value = 7
 
       $('#div-department').hide();
       $('#div-region').hide();
@@ -117,7 +117,7 @@
     }
     else if (document.getElementById("user_regional_user").checked){
 
-      document.getElementById("role").value = 4
+      document.getElementById("role").value = 8
 
       $('#div-department').hide();
       $('#div-region').show();
@@ -134,7 +134,7 @@
 
   $('#role').change(function()
   {
-    if (this.value == 2){ /* case team */
+    if (this.value == 6){ /* case team */
 
       $('#div-department').show();
       $('#div-region').hide();
@@ -146,7 +146,7 @@
       document.getElementById("user_regional_user").checked = false;
 
     }
-    else if (this.value == 3){ /* hubs */
+    else if (this.value == 7 ){ /* hubs */
       $('#div-department').hide();
       $('#div-region').hide();
       $('#div-hub').show();
@@ -159,7 +159,7 @@
       
 
     }
-    else if (this.value == 4){ /* regional */
+    else if (this.value == 8){ /* regional */
       $('#div-department').hide();
       $('#div-region').show();
       $('#div-hub').hide();
