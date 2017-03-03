@@ -85,3 +85,6 @@ gem 'email_validator'
 
 gem 'hirb-unicode'
 gem 'terminal-table'
+
+gem "graphql"
+gem "graphiql-rails"

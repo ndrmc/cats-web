@@ -12,7 +12,7 @@ def index?
     @current_user.has_role? :admin
 end
 
-def new?n
+def new?
      @current_user.has_role? :admin
 end
 

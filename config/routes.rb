@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   resources :currencies
   resources :donors
   resources :programs
-  
+
   resources :commodity_sources
   resources :commodity_categories
   resources :commodities
@@ -61,12 +61,17 @@ Rails.application.routes.draw do
 
   get 'requisitions/get_requisiton_by_number'
 
-  resources :regional_requests 
+  resources :regional_requests
   post '/regional_requests/add_fdp_to_request'
   post '/regional_requests/update_regional_request_item'
   delete '/regional_requests/destroy_regional_request_item/:id', to: 'regional_requests#destroy_regional_request_item'
 
 
   root to: 'dashboard#index'
+
+  # GraphQL configuration
+  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/queries"
+  resources :queries
+
 
 end
