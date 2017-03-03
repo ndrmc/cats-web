@@ -85,3 +85,5 @@ gem 'email_validator'
 
 gem 'hirb-unicode'
 gem 'terminal-table'
+
+gem 'rails_12factor', group: :production
