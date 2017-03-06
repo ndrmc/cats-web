@@ -59,7 +59,12 @@ Rails.application.routes.draw do
   resources :receipts
   resources :dispatches
 
-  get 'requisitions/get_requisiton_by_number'
+  resources :requisitions
+
+  get '/requisitions/get_requisiton_by_number'
+  get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'
+  post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
+  get '/requisitions/summary/:region_id/:operation_id', to: 'requisitions#summary'
 
   resources :regional_requests 
   post '/regional_requests/add_fdp_to_request'

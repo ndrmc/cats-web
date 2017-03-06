@@ -1,0 +1,2 @@
+json.extract! requisition, :id, :requisition_no, :operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status, :created_at, :updated_at
+json.url requisition_url(requisition, format: :json)

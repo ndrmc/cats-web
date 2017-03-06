@@ -36,28 +36,44 @@
           <div class="form-group">
             <%= f.label :program_id, :class => 'col-sm-2 control-label' %>
             <div class="col-sm-4">
-              <%= f.text_field :program_id, :class => 'form-control' %>
+              <%= f.collection_select :program_id, Program.order(:name), :id, :name,{include_blank: 'Select Program'}, {:class => 'form-control'} %>
+            </div>
+          </div>
+
+           <div class="form-group">
+            <%= f.label :hrd_id, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-4">
+              <%= f.collection_select :hrd_id, Hrd.order(:year), :id, :name,{include_blank: 'Select HRD'}, {:class => 'form-control'} %>
+            </div>
+          </div>
+
+           <div class="form-group">
+            <%= f.label :ration_id, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-4">
+              <%= f.collection_select :ration_id, Ration.order(:description), :id, :description,{include_blank: 'Select Ration'}, {:class => 'form-control'} %>
             </div>
           </div>
 
           <div class="form-group">
             <%= f.label :year, :class=>'col-sm-2 control-label' %>
             <div class="col-sm-4">
-              <%= f.text_field :year, :class => 'form-control' %>
+             
+               <%= select_year(@operation.year.to_i, {prompt: 'Select year'}, {name: 'operation[year]' , :class => 'form-control' }) %>
             </div>
           </div>
 
           <div class="form-group">
             <%= f.label :month, :class=> 'col-sm-2 control-label' %>
             <div class="col-sm-4">
-              <%= f.text_field :month, :class => 'form-control' %>
+             <%= select_month(@operation.month, {prompt: 'Select month'}, {name: 'operation[month]',:class => 'form-control' }) %>
+
             </div>
           </div>
 
           <div class="form-group">
             <%= f.label :status, :class=> 'col-sm-2 control-label' %>
             <div class="col-sm-4">
-              <%= f.text_field :status, :class => 'form-control' %>
+              <%= f.collection_select :status, Operation.statuses, :second, :first,{include_blank: 'Select Status'}, {:class => 'form-control'} %>
             </div>
           </div>
 

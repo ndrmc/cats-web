@@ -27,7 +27,7 @@ class Location < ApplicationRecord
     kebele: 4
   }
 
-  has_ancestry
+  has_ancestry 
 
   has_many :fdps
   

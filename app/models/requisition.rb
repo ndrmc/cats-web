@@ -17,6 +17,7 @@
 #  created_by     :integer
 #  modified_by    :integer
 #  deleted_at     :datetime
+#  request_id     :integer          not null
 #
 
 class Requisition < ApplicationRecord
