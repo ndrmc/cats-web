@@ -27,6 +27,7 @@
 
 //= require daterangepicker.js
 //= require datapicker/bootstrap-datepicker.js
+//= require chosen/chosen.jquery.js
 
 //= require_tree .
 
@@ -35,20 +36,19 @@
 $(document).ready(function() {
     /**
      * Activates parent menu items if children are acive
-    */
+     */
     var activeLi = $('li.active');
-    activeLi.parentsUntil( 'nav', 'li').addClass('active');
-    activeLi.parentsUntil( 'nav', 'ul').removeClass('collapse');
+    activeLi.parentsUntil('nav', 'li').addClass('active');
+    activeLi.parentsUntil('nav', 'ul').removeClass('collapse');
 
-    $('.cats-datatable').DataTable({"info": false});
+    $('.cats-datatable').DataTable({ "info": false });
 
-    $('.datepicker').datepicker({ 
+    $('.datepicker').datepicker({
         format: 'dd/mm/yyyy'
-    }); 
+    });
 
-    $('.cats-daterangepicker').daterangepicker({ 
+    $('.cats-daterangepicker').daterangepicker({
         format: 'dd/mm/yyyy'
-    }); 
+    });
 });
-
 

@@ -35,7 +35,7 @@
               <select class="input-sm form-control">
                 <option value="notstarted">Not started yet</option>
                 <option value="ongoing" selected="true">On going</option>
-                <option value="complted">Complted</option>
+                <option value="complted">Completed</option>
                 <option value="archive">Archived</option>
               </select>
             </div>
@@ -92,9 +92,9 @@
                     <i class="fa fa-folder"></i>
                     View
                   </a>
-                  <a href="#" class="btn btn-white btn-sm">
-                    <i class="fa fa-pencil"></i>
-                    Edit
+                  <a href="<%= edit_operation_path(operation)%>" class="btn btn-white btn-sm">
+                    <i class="fa fa-pencil"></i>   
+                    Edit                   
                   </a>
                   <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks

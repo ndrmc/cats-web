@@ -1,0 +1,76 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "nestable",
+        "scope": null,
+        "escapedName": "nestable",
+        "name": "nestable",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/beza/git/cats_web_rails/cats-web"
+    ]
+  ],
+  "_from": "nestable@latest",
+  "_id": "nestable@0.2.0",
+  "_inCache": true,
+  "_location": "/nestable",
+  "_nodeVersion": "0.12.7",
+  "_npmUser": {
+    "name": "luqin",
+    "email": "h-io@qq.com"
+  },
+  "_npmVersion": "2.14.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "nestable",
+    "scope": null,
+    "escapedName": "nestable",
+    "name": "nestable",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/nestable/-/nestable-0.2.0.tgz",
+  "_shasum": "9bbe45e51f6135fc3fb0845fdf6b10167a70009c",
+  "_shrinkwrap": null,
+  "_spec": "nestable",
+  "_where": "/home/beza/git/cats_web_rails/cats-web",
+  "bugs": {
+    "url": "https://github.com/dbushell/Nestable/issues"
+  },
+  "dependencies": {},
+  "description": "Drag & drop hierarchical list with mouse and touch compatibility (jQuery plugin)",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "9bbe45e51f6135fc3fb0845fdf6b10167a70009c",
+    "tarball": "https://registry.npmjs.org/nestable/-/nestable-0.2.0.tgz"
+  },
+  "homepage": "https://github.com/dbushell/Nestable#readme",
+  "keywords": [],
+  "license": "ISC",
+  "main": "jquery.nestable.js",
+  "maintainers": [
+    {
+      "name": "luqin",
+      "email": "h-io@qq.com"
+    }
+  ],
+  "name": "nestable",
+  "optionalDependencies": {},
+  "peerDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbushell/Nestable.git"
+  },
+  "scripts": {},
+  "version": "0.2.0"
+}

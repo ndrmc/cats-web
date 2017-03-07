@@ -1,0 +1,112 @@
+<form>
+    <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5><%= @operation.name%> , 
+                            <%= @request.region.name %></h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li><a href="#">Config option 1</a>
+                                        </li>
+                                        <li><a href="#">Config option 2</a>
+                                        </li>
+                                    </ul>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                            
+                            <input name="operation_id" value="<%=@operation.id%>" type="hidden"></input>
+                                <div class="panel-body">
+                                    <div class="panel-group" id="accordion">
+                                    <% @requests_per_zone.each do |zonal_req|%>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#<%= zonal_req.first.id%>"><%= zonal_req.first.name %></a>
+                                                    
+                                                </h5>
+                                            </div>
+                                            <div id="<%= zonal_req.first.id%>" class="panel-collapse collapse in">
+                                                <div class="panel-body">
+                                                <input name="zonal_request[][zone_id]" value="<%= zonal_req.first.id%>" type="hidden"> </input>
+                                                        <div class="form-group">
+                                                                    <label class="font-noraml">Requested Commodities</label>
+                                                                    <div class="input-group">
+                                                                        <select name = "zonal_request[]commodity_ids[]"  class="chosen-select" multiple style="width:350px;" tabindex="4">
+                                                                            <option value="">Select</option>
+                                                                            <% @commodities.each do |c| %>
+                                                                                <option value="<%= c.id %>" selected = "selected"><%= c.name %></option>
+                                                                            <% end %>
+                                                                        </select>
+                                                                         
+
+                                                                    </div>
+                                                        </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% end %>
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+    </div>
+    <button id="create_requisitions" type="submit">Create</button>
+</form>
+
+<script type="text/javascript">
+      
+        var config = {
+            '.chosen-select': {},
+            '.chosen-select-deselect': {
+                allow_single_deselect: true
+            },
+            '.chosen-select-no-single': {
+                disable_search_threshold: 10
+            },
+            '.chosen-select-no-results': {
+                no_results_text: 'Oops, nothing found!'
+            },
+            '.chosen-select-width': {
+                width: "95%"
+            }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+ $(function () {
+   
+
+    $('#create_requisitions').click(function (e) {    
+
+     e.preventDefault();
+        $.ajax({
+          url: "<%= url_for controller: 'requisitions', action: 'generate' %>",
+          method: 'POST',
+          data: $('form').serialize(),
+        });
+
+      });
+
+    
+
+  });   
+
+
+ 
+      
+</script>

@@ -58,18 +58,13 @@
         <span class="required">*</span>
         <%= f.text_field :waybill_no, :class => 'form-control', :required => true %>
       </div>
-<<<<<<< HEAD
-      <%= f.text_field :commodity_source_id, :class => 'form-control', :required => true %>
-
-    </div>
-=======
 
       <div class="form-group">
         <%= f.label :commodity_source_id, "Warehouse" %> <span class="required">*</span>
         <%= f.collection_select :commodity_source_id,
                   CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
       </div>
->>>>>>> d09ac2b839c42cf30a37e94eb803fbe419252e56
+
   </div>
 
   <div class="ibox float-e-margins">

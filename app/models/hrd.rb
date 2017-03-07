@@ -25,4 +25,8 @@ class Hrd < ApplicationRecord
   belongs_to :ration
   has_many :hrd_items
 
+  def name
+    "#{self.year} ( #{Date::ABBR_MONTHNAMES[self.month_from]} - #{Date::ABBR_MONTHNAMES[self.month_to]} )"
+  end
+
 end
