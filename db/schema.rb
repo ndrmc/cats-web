@@ -1008,12 +1008,11 @@ ActiveRecord::Schema.define(version: 20170301150658) do
     t.boolean  "is_active",              default: true
     t.string   "first_name"
     t.string   "last_name"
-    t.date     "datePreference"
-    t.string   "mobileNo"
-    t.integer  "numberOfLogins"
-    t.boolean  "regionalUser"
-    t.boolean  "hubUser"
-    t.integer  "role"
+    t.date     "date_preference"
+    t.string   "mobile_no"
+    t.integer  "number_of_logins"
+    t.boolean  "region_user"
+    t.boolean  "hub_user"
     t.integer  "user_type_id"
     t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree

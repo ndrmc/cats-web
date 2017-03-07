@@ -1,45 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CATS</title>
 
-    <!-- Main css styles -->
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CATS</title>
+
+  <!-- Main css styles -->
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 
     <!-- Main javascript files -->
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-    <%= csrf_meta_tags %>
+      <%= csrf_meta_tags %>
 
-    <%= render 'layouts/layout_common_js' %>
-  </head>
-  <body>
+        <%= render 'layouts/layout_common_js' %>
 
-    <!-- Wrapper-->
-    <div id="wrapper">
+          <script src="/assets/core-js/client/shim.min.js"></script>
+          <script src="/assets/zone.js/dist/zone.js"></script>
+          <script src="/assets/reflect-metadata/Reflect.js"></script>
+          <script src="/assets/systemjs/dist/system.src.js"></script>
+          <script src="system.config.js"></script>
+          <script>
+            System.import('app').catch(function (err) {
+              console.error(err);
+            });
 
-      <% if user_signed_in? %>
+          </script>
+
+
+</head>
+
+<body>
+
+  <!-- Wrapper-->
+  <div id="wrapper">
+
+    <% if user_signed_in? %>
       <!-- Navigation -->
       <%= render 'layouts/navigation' %>
-      <% end %>
-      <!-- Page wraper -->
-      <div id="page-wrapper" class="gray-bg">
+        <% end %>
+          <!-- Page wraper -->
+          <div id="page-wrapper" class="gray-bg">
 
-        <!-- Page wrapper -->
-        <%= render 'layouts/topnavbar' %>
+            <!-- Page wrapper -->
+            <%= render 'layouts/topnavbar' %>
 
-        <!-- Main view  -->
-        <%= yield %>
+              <!-- Main view  -->
+              <%= yield %>
 
-        <!-- Footer -->
-        <%= render 'layouts/footer' %>
+                <!-- Footer -->
+                <%= render 'layouts/footer' %>
 
-      </div>
-      <!-- End page wrapper-->
+          </div>
+          <!-- End page wrapper-->
 
-    </div>
-    <!-- End wrapper-->
+  </div>
+  <!-- End wrapper-->
 
-  </body>
+</body>
+
 </html>
