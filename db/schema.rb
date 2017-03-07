@@ -104,21 +104,12 @@ ActiveRecord::Schema.define(version: 20170301150658) do
   create_table "case_teams", force: :cascade do |t|
     t.string   "name"
     t.string   "discription"
-    t.integer  "role_type_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",      default: false
+    t.boolean  "deleted",     default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.index ["role_type_id"], name: "index_case_teams_on_role_type_id", using: :btree
-  end
-
-  create_table "case_units", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -181,12 +172,6 @@ ActiveRecord::Schema.define(version: 20170301150658) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
-  end
-
-  create_table "controllers", force: :cascade do |t|
-    t.string   "regional_requests"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
   end
 
   create_table "currencies", force: :cascade do |t|
@@ -592,7 +577,6 @@ ActiveRecord::Schema.define(version: 20170301150658) do
     t.datetime "deleted_at"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
-
   end
 
   create_table "postings", force: :cascade do |t|
