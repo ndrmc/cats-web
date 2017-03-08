@@ -1,10 +1,10 @@
 # == Schema Information
 #
-# Table name: role_types
+# Table name: case_teams
 #
 #  id          :integer          not null, primary key
 #  name        :string
-#  description :string
+#  discription :string
 #  created_by  :integer
 #  modified_by :integer
 #  deleted     :boolean          default(FALSE)
@@ -15,7 +15,7 @@
 
 require 'test_helper'
 
-class RoleTypeTest < ActiveSupport::TestCase
+class DepartmentTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

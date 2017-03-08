@@ -82,8 +82,10 @@ test:
 #
 production:
   <<: *default
+  host: 197.156.65.234
+  port: 5444
   database: cats_production
-  username: cats
+  username: cats_prod
   password: <%= ENV['CATS_DATABASE_PASSWORD'] %>
 
 stage:
