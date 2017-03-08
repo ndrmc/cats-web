@@ -1,11 +1,10 @@
-
 # == Schema Information
 #
-# Table name: case_teams
+# Table name: role_types
 #
 #  id          :integer          not null, primary key
 #  name        :string
-#  discription :string
+#  description :string
 #  created_by  :integer
 #  modified_by :integer
 #  deleted     :boolean          default(FALSE)
@@ -14,6 +13,10 @@
 #  updated_at  :datetime         not null
 #
 
-class CaseTeam < ApplicationRecord
-     belongs_to :role_type
+require 'test_helper'
+
+class UserTypeTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
 end

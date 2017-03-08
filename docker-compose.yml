@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  webapp_setup:
+    build: .
+    environment:
+     - PASSENGER_APP_ENV=stage
+    entrypoint: ./setup.sh
+
+  webapp:
+    container_name: catsweb
+    build: .
+    depends_on:
+     - webapp_setup
+    environment:
+     - PASSENGER_APP_ENV=stage
+    ports:
+     - "80:80"
