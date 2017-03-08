@@ -15,6 +15,7 @@
 
 
 class RegionalRequestItem < ApplicationRecord
+
     belongs_to :regional_request
     belongs_to :fdp
 end 

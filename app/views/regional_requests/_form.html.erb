@@ -25,7 +25,7 @@
 
 
                 <div class="form-group">
-                  <%= f.label :region_id, "Ration" %>
+                  <%= f.label :region_id, "Region" %>
                   <span class="required">*</span>
                   <%= f.collection_select :region_id,
                             Location.where(location_type: "region"), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>

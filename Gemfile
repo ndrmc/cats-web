@@ -86,4 +86,8 @@ gem 'email_validator'
 gem 'hirb-unicode'
 gem 'terminal-table'
 
-gem 'rails_12factor', group: :production
+gem 'rubyzip', '= 1.0.0'
+gem 'axlsx', '= 2.0.1'
+gem 'axlsx_rails'
+
+gem 'roo'
