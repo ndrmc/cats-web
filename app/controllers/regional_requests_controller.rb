@@ -30,10 +30,24 @@ class RegionalRequestsController < ApplicationController
     respond_to do |format|
       if @regional_request.save
 
-        @previous_regional_request = RegionalRequest.where("id < ? AND region_id = ?", @regional_request.id, @regional_request.region_id).order('id desc').limit(1)[0]
+        hrd = @regional_request.operation.hrd
 
-        fdp_locations = @regional_request.region.descendants.map { |d| d.id}.push @regional_request.region_id
+        fdp_locations = []
+
+        if hrd 
+          woredas = hrd.hrd_items.map { |hrd_item| hrd_item.woreda  }
+          zone_ids = woredas.collect { |woreda| woreda.parent_id }
+
+          fdp_locations = zone_ids + woredas.map { |w| w.id}
+
+        else 
+
+          fdp_locations = @regional_request.region.descendants.map { |d| d.id}.push @regional_request.region_id
+        end 
+
         fdp_ids_in_region = Fdp.where( location_id: fdp_locations).map { |l| l.id}
+
+        @previous_regional_request = RegionalRequest.where("id < ? AND region_id = ?", @regional_request.id, @regional_request.region_id).order('id desc').limit(1)[0]
 
         if @previous_regional_request
           @previous_regional_request.regional_request_items.each do |rri|
@@ -99,7 +113,7 @@ class RegionalRequestsController < ApplicationController
       rrdi = RegionalRequestItem.new( regional_request: @regional_request, fdp: fdp, number_of_beneficiaries: number_of_beneficiaries)
       
       if rrdi.save 
-        format.json { render json: {successful: true, fdpName:  fdp.name, number_of_beneficiaries: number_of_beneficiaries, rrdi: rrdi } }
+        format.json { render json: {successful: true, zoneName: fdp.zone.name, woredaName: fdp.woreda ? fdp.woreda.name : '-', fdpName:  fdp.name, number_of_beneficiaries: number_of_beneficiaries, rrdi: rrdi } }
       else 
         format.json { render json: {successful: false, errorMessage: "Save failed. Please try again shortly."} }
       end
@@ -125,6 +139,59 @@ class RegionalRequestsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def request_items 
+    set_regional_request 
+
+    @regional_request.regional_request_items 
+
+    respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{@regional_request.region.name} - #{@regional_request.operation.name}.xlsx\""
+      }
+    end
+    
+  end
+
+  def upload_requests
+    file = params[:file]
+
+    case File.extname(file.original_filename)
+      when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
+      when '.xlsx' then spreadsheet = Roo::Excelx.new(file.path, nil, :ignore)
+      else raise "Unknown file type: #{file.original_filename}"
+    end
+
+    set_regional_request
+
+    number_of_skipped_rows = 0
+
+    (2..spreadsheet.last_row).each do |i|
+      row =  spreadsheet.row(i)
+      request_item = RegionalRequestItem.where(regional_request: @regional_request, fdp_id: row[0]).first
+
+      if request_item
+        if row[4].is_a?( Numeric) && row[4] >= 0 
+          request_item.number_of_beneficiaries = row[4]
+          request_item.save
+        else 
+          number_of_skipped_rows += 1
+        end
+      else 
+        Rails.logger.info("No RegionalRequestItem found for the fdp id: #{row[0]}. Skipping...")
+      end
+    end
+
+    respond_to do |format|
+        if number_of_skipped_rows > 0 
+          flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
+        end
+        
+        format.html { redirect_to @regional_request, notice: "Excel imported successfully."  }
+    end
+  end 
+  
+  
   
   
 

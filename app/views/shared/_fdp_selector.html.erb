@@ -76,6 +76,10 @@
 
         if( value ) {
           getAndPopulateChildren( value , entityTypes[ entityTypes.indexOf(entityType) + 1] );
+
+          if( entityType == 'zone')  { 
+            getAndPopulateChildren( value , 'fdp' );
+          }
         }
       });
     });
