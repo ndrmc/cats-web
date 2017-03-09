@@ -92,3 +92,6 @@ gem 'axlsx', '= 2.0.1'
 gem 'axlsx_rails'
 
 gem 'roo'
+
+gem 'responders'
+gem 'react-rails'
