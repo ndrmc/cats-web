@@ -10,7 +10,6 @@ class RationsController < ApplicationController
   # GET /rations/1
   # GET /rations/1.json
   def show
-    redirect_to ration_ration_items_path(@ration)
   end
 
   # GET /rations/new
@@ -70,6 +69,6 @@ class RationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ration_params
-      params.require(:ration).permit(:reference_no, :description, :current)
+      params.require(:ration).permit(:reference_no, :description)
     end
 end

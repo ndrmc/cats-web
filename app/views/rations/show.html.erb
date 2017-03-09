@@ -1,17 +1,20 @@
-    <p>
-      <strong>Reference no:</strong>
-      <%= @ration.reference_no %>
-    </p>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Ration [<%= @ration.reference_no %>]</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Ration</a>
+      </li>
+      <li class="active">
+        <strong>Show</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">            
+      <%= link_to 'Cancel', rations_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
 
-    <p>
-      <strong>Description:</strong>
-      <%= @ration.description %>
-    </p>
-
-    <p>
-      <strong>Current:</strong>
-      <%= @ration.current %>
-    </p>
-
-<%= link_to 'Edit', edit_ration_path(@ration) %> |
-<%= link_to 'Back', rations_path %>
+<%= render 'ration_view', ration: @ration %>

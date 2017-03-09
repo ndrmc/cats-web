@@ -1,0 +1,96 @@
+<div class="wrapper wrapper-content">
+  <div>
+    <%= form_for(ration,:html=> {:class => 'form-horizontal'})  do |f| %>
+
+      <div>
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>Basic information</h5>
+            <div class="ibox-tools">
+              <%= link_to 'Edit', edit_ration_path(@ration),  :class => "btn btn-primary btn-xs"%>
+            </div>
+          </div>
+
+          <div class="ibox-content">
+
+            <div class="form-group form-group-lg">
+              <%= f.label :reference_no, :class => 'col-sm-2 control-label' %>
+                <div class="col-sm-10">
+                  <%= f.text_field :reference_no, :class => 'form-control', disabled: true %>
+                </div>
+            </div>
+
+            <div class="form-group form-group">
+              <%= f.label :description, :class => 'col-sm-2 control-label' %>
+                <div class="col-sm-10">
+                  <%= f.text_area :description, :class => 'form-control', disabled: true %>
+                </div>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :current, :class => 'col-sm-2 control-label' %>
+                <div class="col-sm-4">
+                  <%= f.check_box :current, :class => 'form-control', disabled: true %>
+                </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="ibox float-e-margins">
+
+          <div class="ibox-title">
+            <h5>Ration Items (Commodities)</h5>
+            <div class="ibox-tools">
+              <%= link_to 'Add Commodity', new_ration_item_path(:ration_id => @ration.id),  :class => "btn btn-primary btn-xs"%>
+            </div>
+          </div>
+
+          <div class="ibox-content">
+
+            <% if @ration.ration_items.count == 0 %>
+              <h2>There are no commodities in this ration. Click below to add items</h2>
+              <%= link_to 'Add Commodity', new_ration_item_path(:ration_id => ration.id),  :class => "btn btn-primary btn-lg"%>
+            <% else %>
+
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Commodity</th>
+                        <th>Unit of Measure</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <% @ration.ration_items.each do |ri| %>
+                        <tr>
+                          <td>
+                            <%= ri.commodity.name %>
+                          </td>
+                          <td>
+                            <%= ri.unit_of_measure.name %>
+                          </td>
+                          <td>
+                            <%= ri.amount %>
+                          </td>
+                          <td>
+                            <%= link_to 'Edit', edit_ration_item_path(ri) %> &middot;
+                              <%= link_to 'Delete', ri, method: :delete, data: { confirm: 'Are you sure you want to remove this commodity?' } %>
+                          </td>
+                        </tr>
+                        <% end %>
+                    </tbody>
+                  </table>
+                  <% end %>
+          </div>
+        </div>
+      </div>
+
+      <% end %>
+
+  </div>
+
+</div>
