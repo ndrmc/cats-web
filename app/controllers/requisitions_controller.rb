@@ -142,7 +142,7 @@ class RequisitionsController < ApplicationController
       @operation = Operation.find(@request.operation_id)
       @ration_items = RationItem.where({ration_id: @operation.ration_id})
       @request_items_for_zone = @request.regional_request_items.select { |ri| Fdp.find(ri.fdp_id).location.ancestors.find { |a| a.id == Integer(params[:zone_id]) } }
-      debugger;
+      
       @requisition = {} 
  
      

@@ -29,6 +29,10 @@
 #
 
 class GiftCertificate < ApplicationRecord
+  include Filterable
+
+  scope :status, ->(status) { where status: status }
+  scope :donor_id, ->(donor_id) { where donor_id: donor_id }
+
   enum status: [:draft, :approved, :canceled, :closed, :archived]
-  has_many :gift_certificate_items
 end
