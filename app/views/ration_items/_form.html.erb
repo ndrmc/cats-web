@@ -25,8 +25,8 @@
         </div>
 
         <div class="ibox-content">
-        
-        <%= f.hidden_field :ration_id, :value => ration_item.ration_id %>
+
+          <%= f.hidden_field :ration_id, :value => ration_item.ration_id %>
 
           <div class="form-group">
             <%= f.label :commodity_id, :class => 'col-sm-2 control-label' %>
@@ -42,7 +42,7 @@
             </div>
           </div>
 
-           <div class="form-group">
+          <div class="form-group">
             <%= f.label :unit_of_measure_id, :class => 'col-sm-2 control-label' %>
             <div class="col-sm-6">
               <%= f.collection_select :unit_of_measure_id, UnitOfMeasure.order(:name), :id, :name,{include_blank: 'Select Unit of Measure'}, {:class => 'form-control'} %>

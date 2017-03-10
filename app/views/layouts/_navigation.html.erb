@@ -16,7 +16,7 @@
           <li>
             <a href="#">PSNP Annual Plan</a>
           </li>
-          <li >
+          <li class="<%= 'active' if is_active_controller('projects')  %>">
             <%= link_to 'Receipt Plan', projects_path %>
           </li>
           <li>
@@ -37,11 +37,11 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li>
+      <li class="<%= 'active' if is_active_controller('gift_certificates')  %>">
         <a href="#">Gift Certificate</a>
       </li>
-      <li>
-        <a href="#">Donors</a>
+      <li class="<%= 'active' if is_active_controller('donors')  %>">
+        <%= link_to 'Donors', donors_path%>
       </li>
     </ul>
   </li>
@@ -53,7 +53,7 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li>
+      <li class="<%= 'active' if is_active_controller('operations')  %>">
         <%= link_to "Operations", operations_url %>
       </li>
       <li class="<%= 'active' if current_page?(home_other_url) %>">
@@ -84,7 +84,7 @@
       <li class="<%= 'active' if is_active_controller('dispatches')  %>">
             <%= link_to 'Dispatch', dispatches_path %>
       </li>
-      <li>
+      <li class="<%= 'active' if is_active_controller('deliveries')  %>">
         <%= link_to "Delivery", deliveries_url %>
       </li>
       <li>
@@ -112,6 +112,9 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
+      <li class="<%= 'active' if is_active_controller('transporters')  %>">
+        <%= link_to 'Transporters', transporters_path %>
+      </li>
       <li>
         <a href="#">Bids</a>
       </li>
@@ -120,10 +123,7 @@
       </li>
       <li>
         <a href="#">Bid Evaluation</a>
-      </li>
-      <li>
-        <%= link_to 'Transporters', transporters_path %>
-      </li>
+      </li>      
     </ul>
   </li>
 
@@ -156,8 +156,8 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li>
-        <a href="#">Request</a>
+      <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
+        <%= link_to 'Requests', regional_requests_path %>
       </li>
       <li>
         <a href="#">FDP Receipts</a>
