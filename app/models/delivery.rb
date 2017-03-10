@@ -13,7 +13,6 @@
 #  status             :integer
 #  operation_id       :integer
 #  remark             :text
-#  draft              :boolean
 #  created_by         :integer
 #  modified_by        :integer
 #  deleted            :boolean          default(FALSE)

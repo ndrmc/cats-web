@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: case_teams
+# Table name: departments
 #
 #  id          :integer          not null, primary key
 #  name        :string

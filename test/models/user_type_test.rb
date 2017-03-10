@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: role_types
+# Table name: user_types
 #
 #  id          :integer          not null, primary key
 #  name        :string
