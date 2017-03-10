@@ -7,7 +7,7 @@
         <div class="ibox-title">
           <h5>Basic information</h5>
           <div class="ibox-tools">
-            <%= link_to 'Edit', edit_ration_path(@ration),  :class => "btn btn-primary btn-xs"%>
+            <%= link_to 'Edit', edit_ration_path(@ration),  :class => "btn btn-success btn-xs"%>
           </div>
         </div>
 
@@ -43,7 +43,7 @@
         <div class="ibox-title">
           <h5>Ration Items (Commodities)</h5>
           <div class="ibox-tools">
-            <%= link_to 'Add Commodity', new_ration_item_path(:ration_id => @ration.id),  :class => "btn btn-primary btn-xs"%>
+            <%= link_to 'Add Commodity', new_ration_item_path(:ration_id => @ration.id),  :class => "btn btn-success btn-xs"%>
 
           </div>
         </div>
@@ -69,7 +69,7 @@
               <% @ration.ration_items.each do |ri| %>
               <tr>
                 <td>
-                  <%= ri.commodity.name %>
+                  <%= link_to ri.commodity.name, edit_ration_item_path(ri) %>
                 </td>
                 <td>
                   <%= ri.unit_of_measure.name %>

@@ -95,3 +95,5 @@ gem 'roo'
 
 gem 'responders'
 gem 'react-rails'
+
+gem 'data-confirm-modal'
