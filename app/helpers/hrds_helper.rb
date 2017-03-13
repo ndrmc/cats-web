@@ -1,0 +1,2 @@
+module HrdsHelper
+end

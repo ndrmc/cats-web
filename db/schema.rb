@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170310094210) do
+ActiveRecord::Schema.define(version: 20170313092407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,13 +448,10 @@ ActiveRecord::Schema.define(version: 20170310094210) do
   end
 
   create_table "hrds", force: :cascade do |t|
-    t.string   "year",                    null: false
+    t.integer  "year_greg",               null: false
     t.integer  "status",      default: 0, null: false
     t.integer  "month_from"
-    t.integer  "month_to"
     t.integer  "duration"
-    t.boolean  "archived"
-    t.boolean  "current"
     t.integer  "season_id"
     t.integer  "ration_id"
     t.datetime "created_at",              null: false
@@ -462,8 +459,9 @@ ActiveRecord::Schema.define(version: 20170310094210) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "year_jul"
     t.index ["deleted_at"], name: "index_hrds_on_deleted_at", using: :btree
-    t.index ["year", "season_id"], name: "index_hrds_on_year_and_season_id", unique: true, using: :btree
+    t.index ["year_greg", "season_id"], name: "index_hrds_on_year_greg_and_season_id", unique: true, using: :btree
   end
 
   create_table "hubs", force: :cascade do |t|
