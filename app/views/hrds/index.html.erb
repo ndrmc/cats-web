@@ -29,11 +29,12 @@
           </div>
           <div class="col-md-2">
             <div class="input-group">
-              <select class="input-sm form-control">
-                <option value="notstarted">Not started yet</option>
-                <option value="ongoing" selected="true">On going</option>
-                <option value="complted">Completed</option>
-                <option value="archive">Archived</option>
+        
+              <select class="input-sm form-control" id="status-filter">
+                <option value="">All</option>
+                <% Hrd.statuses.map { |s| s[0] }.each do |status|%>
+                    <option value="<%= status %>"><%= status.capitalize %></option>
+                <% end %>
               </select>
             </div>
           </div>
@@ -106,3 +107,11 @@
       </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function() { 
+        $("#status-filter").change( function() { 
+            window.location.href = '/hrds/?status=' + $(this).val();  
+        });
+    }); 
+</script>

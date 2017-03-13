@@ -1,9 +1,12 @@
 class HrdsController < ApplicationController
 
     def index 
-        @hrds = Hrd.all 
+        if params[:status]
+            @hrds = Hrd.where status: params[:status]
+        else
+            @hrds = Hrd.all  
+        end 
     end 
-
 
     def new 
         @hrd = Hrd.new 
