@@ -1,0 +1,2 @@
+module GiftCertificatesHelper
+end
