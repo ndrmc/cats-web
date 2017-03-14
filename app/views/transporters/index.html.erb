@@ -3,10 +3,12 @@
     <h2>Transporters</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <a href="#">Transport</a>
       </li>
       <li class="active">
-        <strong>Transporters</strong>
+        <strong>
+          <a href="#">Transporters</a>
+        </strong>
       </li>
     </ol>
   </div>
@@ -39,24 +41,15 @@
           <tbody>
             <% @transporters.each do |transporter| %>
             <tr>
-              <td><%= transporter.name
-                %></td>
-              <td><%= transporter.code
-                %></td>
-              <td><%= transporter.ownership
-                %></td>
-              <td><%= transporter.vehicle_count
-                %></td>
-              <td><%= transporter.lift_capacity
-                %></td>
-              <td><%= transporter.contact
-                %></td>
-              <td><%= transporter.contact_phone
-                %></td>
+              <td><%= link_to transporter.name, edit_transporter_path(transporter) %></td>
+              <td><%= transporter.code %></td>
+              <td><%= transporter.ownership %></td>
+              <td><%= transporter.vehicle_count %></td>
+              <td><%= transporter.lift_capacity %></td>
+              <td><%= transporter.contact %></td>
+              <td><%= transporter.contact_phone %></td>
               <td>
-                <%= link_to 'Edit', edit_transporter_path(transporter) %>
-                &middot;
-                <%= link_to 'Delete', transporter, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <%= link_to 'Delete', transporter, method: :delete, data: { confirm: "Are you sure you want to delete transporter: #{transporter.name}?" } %>
               </td>
             </tr>
             <% end %>
