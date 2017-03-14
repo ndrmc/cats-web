@@ -31,6 +31,7 @@
               <th>Code</th>
               <th>Ownership</th>
               <th>Total number of vehicles</th>
+              <th>Employees</th>
               <th>Lift capacity</th>
               <th>Contact Person</th>
               <th>Phone</th>
@@ -41,14 +42,17 @@
           <tbody>
             <% @transporters.each do |transporter| %>
             <tr>
-              <td><%= link_to transporter.name, edit_transporter_path(transporter) %></td>
+              <td><%= link_to transporter.name, transporter_path(transporter) %></td>
               <td><%= transporter.code %></td>
               <td><%= transporter.ownership %></td>
               <td><%= transporter.vehicle_count %></td>
+              <td><%= transporter.employees %></td>
               <td><%= transporter.lift_capacity %></td>
               <td><%= transporter.contact %></td>
               <td><%= transporter.contact_phone %></td>
               <td>
+                <%= link_to 'Edit', edit_transporter_path(transporter) %>
+                &middot;
                 <%= link_to 'Delete', transporter, method: :delete, data: { confirm: "Are you sure you want to delete transporter: #{transporter.name}?" } %>
               </td>
             </tr>
