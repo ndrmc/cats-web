@@ -73,7 +73,7 @@ class RequisitionsController < ApplicationController
   end
 
   def generate
-   
+   debugger
     @request = RegionalRequest.find(params[:request_id])
     if(!@request.generated)
       @operation = Operation.find(@request.operation_id)
@@ -82,9 +82,9 @@ class RequisitionsController < ApplicationController
       @requisition = {} 
  
       params[:zonal_request].each do |zonal_req|
-        @requisition_items = [] 
+       
         zonal_req[:commodity_ids].each do |commodity_id|
-          
+           @requisition_items = [] 
           zone_id = zonal_req[:zone_id]
         
           @requests_per_zone[Integer(zone_id)].each do |request_item|
