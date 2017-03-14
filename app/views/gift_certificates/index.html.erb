@@ -1,0 +1,80 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+ <div class="col-sm-4">
+  <h2>Gift Certificates</h2>
+  <ol class="breadcrumb">
+   <li>
+    <a href="#">Lookups</a>
+   </li>
+   <li class="active">
+    <strong>Gift Certificates</strong>
+   </li>
+  </ol>
+ </div>
+ <div class="col-sm-8">
+  <div class="title-action">
+   <%= link_to 'New Gift Certificate', new_gift_certificate_path, :class => "btn btn-primary"%>
+  </div>
+ </div>
+</div>
+<div class="row">
+<div class="wrapper wrapper-content">
+ <div class="ibox float-e-margins">
+  <div class="ibox-content">
+   <div>
+    <form role="form" class="form-inline">
+     <div class="form-group">
+      <label>Donor</label>
+      <%= select_tag "donor_id", options_from_collection_for_select(Organization.all, :id, :name,:selected=>params[:donor_id]),
+      { :prompt => ' Please Select ',class: 'form-control'}%>
+     </div>
+     <div class="form-group">
+      <label>Status</label>
+      <%= select_tag "status", options_from_collection_for_select(GiftCertificate.statuses, :first, :first,:selected=>params[:status]),
+      { :prompt => ' Please Select ',class: 'form-control'}%>
+     </div>
+     <button class="btn btn-primary" type="submit"><span class="fa fa-search"></span>Search</button>
+    </form>
+   </div>
+   <table class="table table-striped">
+    <thead>
+     <tr>
+      <th>Reference no</th>
+      <th>Gift date</th>
+      <th>Donor</th>
+      <th>Status</th>
+      <th>Declaration no</th>
+      <th>Actions</th>
+     </tr>
+    </thead>
+    <tbody>
+     <% @gift_certificates.each do |gift_certificate| %>
+      <tr>
+       <td>
+        <%= gift_certificate.reference_no %>
+       </td>
+       <td>
+        <%= gift_certificate.gift_date %>
+       </td>       
+       <td>
+        <%= Organization.find(gift_certificate.donor_id).name  %>
+       </td>       
+       <td>
+        <%= gift_certificate.status %>
+       </td>
+       <td>
+        <%= gift_certificate.customs_declaration_no %>
+       </td>    
+       
+      
+       <td>
+        <%= link_to 'Edit', edit_gift_certificate_path(gift_certificate) %> &middot;
+         <%= link_to 'Delete', gift_certificate, method: :delete, data: { confirm: 'Are you sure?' } %>
+       </td>
+      </tr>
+      <% end %>
+    </tbody>
+   </table>
+  </div>
+ </div>
+</div>
+</div>

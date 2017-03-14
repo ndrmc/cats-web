@@ -26,10 +26,9 @@
                 <% if @requisitions.find_by({zone_id: zone.id,commodity_id: c.id}) %>
                 <td> <%= @requisitions.find_by({zone_id: zone.id,commodity_id: c.id}).requisition_no %></td>
                 <% else %>
-                   <td> <a href="#" class='btn btn-primary' >Create</a></td>
+                   <td> <a href='/requisitions/add_requisition/<%=@request.id%>/<%=zone.id%>/<%=c.id%>' class='btn btn-primary' >Create</a> </td>
                 <% end %>
-
-               <% end %>
+            <% end %>
           </tr>
          <% end %>
         </tbody>
