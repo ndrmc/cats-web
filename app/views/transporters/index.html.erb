@@ -17,62 +17,53 @@
   </div>
 </div>
 
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
 
-      <table class="table table-striped">
-        <thead>
-          <tr>
-                        <th>Name</th>
-                        <th>Code</th>
-                        <th>Ownership</th>
-                        <th>Vehiclecount</th>
-                        <th>Lift capacity</th>
-                        <th>Capital</th>
-                        <th>Employees</th>
-                        <th>Contact</th>
-                        <th>Contact phone</th>
-                        <th>Remark</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-          </tr>
-        </thead>
+        <table class="table table-striped cats-datatable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Code</th>
+              <th>Ownership</th>
+              <th>Total number of vehicles</th>
+              <th>Lift capacity</th>
+              <th>Contact Person</th>
+              <th>Phone</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <% @transporters.each do |transporter| %>
-          <tr>
-                        <td><%= transporter.name
-              %></td>
-                        <td><%= transporter.code
-              %></td>
-                        <td><%= transporter.ownership
-              %></td>
-                        <td><%= transporter.vehicle_count
-              %></td>
-                        <td><%= transporter.lift_capacity
-              %></td>
-                        <td><%= transporter.capital
-              %></td>
-                        <td><%= transporter.employees
-              %></td>
-                        <td><%= transporter.contact
-              %></td>
-                        <td><%= transporter.contact_phone
-              %></td>
-                        <td><%= transporter.remark
-              %></td>
-                        <td><%= transporter.status
-              %></td>
-                        <td>
-              <%= link_to 'Edit', edit_transporter_path(transporter) %> &middot;
-              <%= link_to 'Delete', transporter, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+          <tbody>
+            <% @transporters.each do |transporter| %>
+            <tr>
+              <td><%= transporter.name
+                %></td>
+              <td><%= transporter.code
+                %></td>
+              <td><%= transporter.ownership
+                %></td>
+              <td><%= transporter.vehicle_count
+                %></td>
+              <td><%= transporter.lift_capacity
+                %></td>
+              <td><%= transporter.contact
+                %></td>
+              <td><%= transporter.contact_phone
+                %></td>
+              <td>
+                <%= link_to 'Edit', edit_transporter_path(transporter) %>
+                &middot;
+                <%= link_to 'Delete', transporter, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
 
+      </div>
     </div>
   </div>
 </div>
