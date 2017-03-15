@@ -228,3 +228,13 @@ if UserType.count==0
   UserType.create(name: 'region', description: '')
   puts "Created default User types"
 end
+
+if OwnershipType.count == 0
+  OwnershipType.create(name: 'private', description: '')
+  OwnershipType.create(name: 'plc', description: '')
+  OwnershipType.create(name: 'share company', description: '')
+  OwnershipType.create(name: 'government', description: '')
+  OwnershipType.create(name: 'ngo', description: '')
+  OwnershipType.create(name: 'other', description: '')
+  puts "Created ownership types lookup"
+end

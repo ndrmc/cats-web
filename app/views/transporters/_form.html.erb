@@ -63,8 +63,8 @@
         <div class="row">
           <div class="col-sm-5">
             <div class="form-group">
-              <%= f.label :ownership, 'Ownership type (Plc, Share company or Private)' %>
-              <%= f.text_field :ownership, :class => 'form-control' %>
+              <%= f.label :ownership_type_id, 'Ownership type (Plc, Share company or Private)' %>
+              <%= f.collection_select :ownership_type_id, OwnershipType.order(:name), :id, :name,{include_blank: 'Select ownership type'}, {:class => 'form-control'} %>
             </div>
           </div>
           <div class="col-sm-1"></div>
