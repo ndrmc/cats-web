@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+ scope "(:locale)", locale: /en|am/ do
   resources :case_teams
   resources :role_types
   resources :transporters
@@ -75,5 +76,5 @@ Rails.application.routes.draw do
 
   
   root to: 'dashboard#index'
-
+ end
 end

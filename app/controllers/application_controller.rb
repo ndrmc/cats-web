@@ -5,8 +5,16 @@ class ApplicationController < ActionController::Base
   around_filter :set_current_user
 
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :authenticate_user!
+  before_action :authenticate_user! 
+  before_action :set_locale
+ 
+  def set_locale
+    I18n.locale = (current_user&&current_user.language)  ? current_user.language : params[:locale] 
+  end  
   
+  def default_url_options
+   { locale: I18n.locale }
+  end
 
   include Pundit
 
