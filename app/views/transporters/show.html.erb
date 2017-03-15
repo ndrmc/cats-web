@@ -9,7 +9,7 @@
         <%= link_to 'Transporters', transporters_path %>
       </li>
       <li class="active">
-        <strong><%= @transporter.name %></strong>
+        <strong><%= @transporter.code %></strong>
       </li>
     </ol>
   </div>
@@ -121,7 +121,7 @@
           <h5>Address and Contact Information
           </h5>
           <div class="ibox-tools">
-            <%= link_to edit_transporter_path(@transporter), class: "btn btn-xs" do %>
+            <%= link_to new_transporter_address_path(:transporter_id => @transporter.id), class: "btn btn-xs" do %>
             <i class="fa fa-plus-square"></i>
             Address
             <% end %>
@@ -136,36 +136,36 @@
             <thead>
               <tr>
                 <th>Region</th>
+                <th>City</th>
                 <th>Zone/Subcity</th>
-                <th>Woreda</th>
                 <th>Kebele</th>
                 <th>House#</th>
                 <th>Phone</th>
                 <th>Email</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
+              <% @transporter.transporter_addresses.each do |transporter_address| %>
               <tr>
-                <td>Addis Ababa</td>
-                <td>Gulele</td>
-                <td>03</td>
-                <td>N/A</td>
-                <td>New</td>
-                <td>0922752433</td>
-                <td>info@fetnoderashtrans.com</td>
+                <td><%= link_to Location.find(transporter_address.region_id).name, edit_transporter_address_path(transporter_address) %></td>
+                <td><%= transporter_address.city %></td>
+                <td><%= transporter_address.subcity %></td>
+                <td><%= transporter_address.kebele %></td>
+                <td><%= transporter_address.house_no %></td>
+                <td><%= transporter_address.phone %></td>
+                <td><%= transporter_address.email %></td>
+                <td>
+                  <%= link_to 'Edit', edit_transporter_address_path(transporter_address) %>
+                  &middot;
+                  <%= link_to 'Delete', transporter_address, method: :delete, data: { confirm: "Are you sure you want to delete the selected address record?" } %>
+                </td>
               </tr>
-              <tr>
-                <td>Oromia</td>
-                <td>Adama</td>
-                <td>Adama-01</td>
-                <td>01</td>
-                <td>766</td>
-                <td>0922752433</td>
-                <td>adama@fetnoderashtrans.com</td>
-              </tr>
+              <% end %>
             </tbody>
           </table>
         </div>
+
       </div>
 
       <div class="ibox float-e-margins">
@@ -179,7 +179,7 @@
           </div>
         </div>
         <div class="ibox-content" style="display: block;">
-          <h2>No address information avaialble. Click here to add.</h2>
+          <h2>No outstanding invoices and payments</h2>
         </div>
       </div>
 

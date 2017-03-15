@@ -26,6 +26,6 @@ class Transporter < ApplicationRecord
   enum status: [:active, :inactive]
   has_many :transporter_addresses
 
-  validates :name, presence: {message: "  is required!"}
+  validates :name, presence: {message: "  is required!"}  
 
 end

@@ -1,0 +1,124 @@
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+        <%= form_for(transporter_address, :html => {:class => 'form-horizontal'}) do |f| %>
+        <% if transporter_address.errors.any? %>
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <%= pluralize(transporter_address.errors.count, "error") %>
+            prohibited this transporter_address from being saved.
+          </div>
+
+          <div class="panel-body">
+            <ul>
+              <% transporter_address.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+        <% end %>
+
+        <%= f.hidden_field :transporter_id, :value => transporter_address.transporter_id %>
+
+        <div class="row">
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :region_id, 'Region' %>
+              <%= f.collection_select :region_id, Location.where(location_type: :region), :id, :name,{include_blank: 'Select region'}, {:class => 'form-control'} %>
+            </div>
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :city %>
+              <%= f.text_field :city, :class => 'form-control' %>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :subcity, 'Zone/Subcity' %>
+              <%= f.text_field :subcity, :class => 'form-control' %>
+            </div>
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :kebele %>
+              <%= f.text_field :kebele, :class => 'form-control' %>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :house_no %>
+              <%= f.text_field :house_no, :class => 'form-control' %>
+            </div>
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="col-sm-5"></div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :phone %>
+              <%= f.text_field :phone, :class => 'form-control' %>
+            </div>
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :mobile %>
+              <%= f.text_field :mobile, :class => 'form-control' %>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :email %>
+              <%= f.text_field :email, :class => 'form-control' %>
+            </div>
+          </div>
+
+          <div class="col-sm-1"></div>
+
+          <div class="col-sm-5"></div>
+
+        </div>
+
+        <div class="actions">
+          <%= f.submit :class => 'btn btn-primary' %>          
+          <%= link_to 'Cancel', transporter_path(@transporter_address.transporter),  :class => "btn btn-default"%>          
+        </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>

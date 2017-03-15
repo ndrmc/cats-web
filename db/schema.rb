@@ -920,8 +920,7 @@ ActiveRecord::Schema.define(version: 20170315072655) do
   create_table "transporter_addresses", force: :cascade do |t|
     t.integer  "transporter_id"
     t.integer  "region_id"
-    t.integer  "zone_id"
-    t.integer  "woreda_id"
+    t.string   "city"
     t.string   "subcity"
     t.string   "kebele"
     t.string   "house_no"
