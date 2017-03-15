@@ -3,8 +3,7 @@ class CreateTransporterAddresses < ActiveRecord::Migration[5.0]
     create_table :transporter_addresses do |t|
       t.integer :transporter_id
       t.integer :region_id
-      t.integer :zone_id
-      t.integer :woreda_id
+      t.string :city
       t.string :subcity
       t.string :kebele
       t.string :house_no

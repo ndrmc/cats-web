@@ -21,4 +21,5 @@
 #
 
 class TransporterAddress < ApplicationRecord
+  belongs_to :transporter, dependent: :destroy
 end
