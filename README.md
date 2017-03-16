@@ -1,3 +1,4 @@
+Build status [![Build Status](https://travis-ci.org/ndrmc/cats-web.svg?branch=develop)](https://travis-ci.org/ndrmc/cats-web)
 # README
 
 This README would normally document whatever steps are necessary to get the
