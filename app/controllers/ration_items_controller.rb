@@ -31,7 +31,7 @@ class RationItemsController < ApplicationController
   def unitOfMeasureSelectForCommodity
     commodity = Commodity.find params[:commodity_id]
 
-    @relevant_uoms = commodity.unit_of_measure.uom_category.unit_of_measures
+    @relevant_uoms = commodity.uom_category.unit_of_measures
 
     render partial: 'ration_items/unitOfMeasureSelectForCommodity', relevant_uoms: @relevant_uoms
   end

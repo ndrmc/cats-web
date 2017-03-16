@@ -73,8 +73,10 @@ Rails.application.routes.draw do
   get '/regional_requests/request_items/:id', to: 'regional_requests#request_items'
   post '/regional_requests/upload_requests/:id', to: 'regional_requests#upload_requests'
 
-  resources :hrds
+  get '/hrds/hrd_items', to: 'hrds#hrd_items'
+  get '/hrds/download_hrd_items/:id', to: 'hrds#download_hrd_items'
   get '/hrds/archive/:id', to: 'hrds#archive'
+  resources :hrds
 
   
   root to: 'dashboard#index'

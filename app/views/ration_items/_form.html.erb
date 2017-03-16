@@ -21,7 +21,7 @@
 
         <div class="form-group">
           <%= f.label :commodity_id %>
-          <%= f.select :commodity_id, all_commodities.all.map { |u| [u.name, u.id, {'data-uom-id' => u.unit_of_measure.id}]}, {include_blank: "-- Choose --"},{:class => 'form-control', :id => 'ration_commodity_select' } %>
+          <%= f.select :commodity_id, all_commodities.all.map { |u| [u.name, u.id]}, {include_blank: "-- Choose --"},{:class => 'form-control', :id => 'ration_commodity_select' } %>
         </div>
 
         <div class="form-group">
@@ -70,8 +70,6 @@
 
         var $rationItemUomSelect = $('#ration_item_uom_select');
         $rationItemUomSelect.replaceWith(data);
-
-        $('#ration_item_uom_select').val($this.find(':selected').data('uom-id'));
       });
 
 

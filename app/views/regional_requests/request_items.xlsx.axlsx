@@ -1,6 +1,6 @@
 wb = xlsx_package.workbook
 
-sheet = wb.add_worksheet(:name => 'Open Office') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
+sheet = wb.add_worksheet(:name => 'Request Items') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
 
 unlocked = sheet.styles.add_style(:locked => false )
 

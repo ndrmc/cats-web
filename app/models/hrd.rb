@@ -29,4 +29,5 @@ class Hrd < ApplicationRecord
     "#{self.season.name} #{self.year_ec} EC"
   end
 
+
 end

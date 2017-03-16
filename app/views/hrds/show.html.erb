@@ -1,0 +1,96 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2><%= @hrd.name %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">HRD</a>
+      </li>
+      <li class="active">
+        <strong>Show</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to  '#',  :class => "btn btn-default"  do %>
+        <i class="fa fa-edit"></i> 
+        Edit
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <table class="table">
+            <thead>
+                <tr><th>Ration</th></tr>
+            </thead>
+            <tbody>
+                <% @hrd.ration.ration_items.each do |ration_item|  %>
+                    <tr>
+                        <td><%= ration_item.commodity.name %></td>
+                        <td><%= ration_item.amount.to_s + ration_item.unit_of_measure.name %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="form-group">
+    <div class="tabs-container">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">Regions</a></li>
+        <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">Commodities</a></li>
+        <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">Contribution</a></li>
+      </ul>
+      <div class="tab-content">
+
+        <div id="tab-1" class="tab-pane active">
+          <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Region</td>
+                            <td>Number of Beneficiaries</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @beneficiaries_by_region.each  do |aggregate| %>
+                            <tr>
+                                <td><%= Location.find(aggregate.region_id).name %></td>
+                                <td><%= aggregate.total_beneficiaries %></td>
+                                <td><a href="/hrds/hrd_items?hrd_id=<%= @hrd.id %>&region_id=<%= aggregate.region_id %>"> <i class="fa fa-edit"></i> Edit</a></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                
+                </table>
+          </div>
+        </div>
+
+        <div id="tab-2" class="tab-pane">
+          <div class="panel-body">
+                Commodities panel here 
+          </div>
+        </div>
+
+        <div id="tab-3" class="tab-pane">
+          <div class="panel-body">
+                Contribution panel here 
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+</div>
+  </div>
+</div>

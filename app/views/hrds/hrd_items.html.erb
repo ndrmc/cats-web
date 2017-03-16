@@ -1,0 +1,76 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2><%= @hrd.name %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">HRD</a>
+      </li>
+      <li class="active">
+        <strong>Show</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to  '#',  :class => "btn btn-primary"  do %>
+        <i class="fa fa-plus"></i> 
+        Add Woreda
+      <% end %>
+
+      <%= link_to  '#',  :class => "btn btn-primary"  do %>
+        <i class="fa fa-download"></i> 
+        Download for Excel
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="panel">
+       
+        <div class="panel-heading">
+            <form role="form" class="form-inline" action="/hrds/hrd_items" method="GET">
+                <input type="hidden" name="hrd_id" value="<%= @hrd.id %>">
+                <%= select_tag  :region_id,  options_from_collection_for_select( Location.where(location_type: 'region') , 'id', 'name', params[:region_id] ) , { :prompt => "Choose Region", :id => 'region-select', :class => 'form-control' }  %>
+            </form>
+
+        </div>
+
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Woreda</th>
+                        <th>Duration of Assistance</th>
+                        <th>Starting Month</th>
+                        <th>Number of Beneficiaries</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @hrd_items.each do |hrd_item| %>
+                        <tr>
+                            <td><%= hrd_item.woreda.name %></td>
+                            <td><%= hrd_item.duration %></td>
+                            <td><%= Date::MONTHNAMES[hrd_item.starting_month] %></td>
+                            <td><%= hrd_item.beneficiary %></td>
+                            <td></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</div>  
+
+<script type="text/javascript">
+    $( function() { 
+        $('#region-select').change( function() { 
+            if( !$(this).val() ) return; 
+
+            $(this).closest('form').submit(); 
+        }); 
+    });
+</script>

@@ -8,6 +8,23 @@ class HrdsController < ApplicationController
         end 
     end 
 
+    def show
+        @hrd = Hrd.find params[:id]
+
+        @beneficiaries_by_region = HrdItem.group('region_id' ).select( 'region_id, SUM(beneficiary) as total_beneficiaries')
+    end
+
+    def hrd_items 
+        @hrd = Hrd.find params[:hrd_id]
+        @hrd_items = HrdItem.where hrd_id: params[:hrd_id], region_id: params[:region_id]
+    end 
+
+    def download_hrd_items 
+        @hrd = Hrd.find params[:id]
+        @hrd_items = HrdItem.where hrd_id: params[:id]
+    end 
+    
+
     def new 
         @hrd = Hrd.new 
     end
@@ -15,16 +32,26 @@ class HrdsController < ApplicationController
     def create
         @hrd = Hrd.new hrd_params  
 
-        respond_to do |format|
-            if @hrd.save
-                format.html { redirect_to hrds_url, notice: 'HRD was successfully created.' }
-            else
-                format.html { 
-                    flash[:error] = "Save failed! Please check your input and try again shortly."
-                    render :new 
-                }
-            end
-        end   
+        if @hrd.save
+            all_woredas = Location.where location_type: 'woreda'
+
+            all_woredas.each do |woreda| 
+                HrdItem.new( woreda_id: woreda.id, hrd: @hrd, starting_month: @hrd.month_from, beneficiary: 0, duration: @hrd.duration ).save
+            end 
+
+            # Add error handling in case when HrdItem save fails 
+
+            respond_to do |format|
+                    format.html { redirect_to hrds_url, notice: 'HRD was successfully created.' }
+            end   
+        else 
+            respond_to do |format|
+                    format.html { 
+                        flash[:error] = "Save failed! Please check your input and try again shortly."
+                        render :new 
+                    }
+            end   
+        end 
     end
 
     def edit

@@ -16,10 +16,21 @@
 #
 
 class HrdItem < ApplicationRecord
+
+  before_save :populate_region_id
+
   belongs_to :hrd
 
   def woreda
-    Location.find_by(id: self.woreda_id)
+    if @woreda 
+      return @woreda 
+    end
+    
+    return @woreda = Location.find_by(id: self.woreda_id)
+  end
+
+  def populate_region_id
+    self.region_id = woreda.ancestor_ids[0]      
   end
   
 end

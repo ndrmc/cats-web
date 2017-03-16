@@ -33,7 +33,7 @@
               <select class="input-sm form-control" id="status-filter">
                 <option value="">All</option>
                 <% Hrd.statuses.map { |s| s[0] }.each do |status|%>
-                    <option value="<%= status %>"><%= status.capitalize %></option>
+                    <option value="<%= status %>" <%= 'selected' if params[:status] == status %>><%= status.capitalize %></option>
                 <% end %>
               </select>
             </div>
