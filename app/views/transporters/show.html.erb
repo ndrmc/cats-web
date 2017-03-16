@@ -1,57 +1,190 @@
-    <p>
-      <strong>Name:</strong>
-      <%= @transporter.name %>
-    </p>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transporter Summary</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Transport</a>
+      </li>
+      <li>
+        <%= link_to 'Transporters', transporters_path %>
+      </li>
+      <li class="active">
+        <strong><%= @transporter.code %></strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Back', transporters_path,  :class => "btn btn-default"%>
+      <%= link_to 'Edit', edit_transporter_path(@transporter),  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
 
-    <p>
-      <strong>Code:</strong>
-      <%= @transporter.code %>
-    </p>
+<div class="wrapper wrapper-content">
+  <div class="row m-b-lg m-t-lg">
+    <div class="col-md-6">
 
-    <p>
-      <strong>Ownership:</strong>
-      <%= @transporter.ownership %>
-    </p>
+      <div class="">
+        <div>
+          <h2 class="no-margins">
+            <%= @transporter.name %>
+          </h2>
+          <h4>Code:
+            <%= @transporter.code %></h4>
+          <p>Registered since:
+            <%= time_ago_in_words(@transporter.created_at) %></p>
+          <small>
+            <%= @transporter.remark %>
+          </small>
+        </div>
+      </div>
 
-    <p>
-      <strong>Vehiclecount:</strong>
-      <%= @transporter.vehicle_count %>
-    </p>
+    </div>
 
-    <p>
-      <strong>Lift capacity:</strong>
-      <%= @transporter.lift_capacity %>
-    </p>
+    <div class="col-md-3">
+      <table class="table small m-b-xs">
+        <tbody>
+          <tr>
+            <td>
+              <strong><%= @transporter.vehicle_count %></strong>
+              Vehicles (trucks)
+            </td>
+            <td>
+              <strong><%= @transporter.employees %></strong>
+              Employees
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>61</strong>
+              <a href="#">Pending delivery notes</a>
+            </td>
+            <td>
+              <strong>2</strong>
+              <a href="#">Pending invoices</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-3">
+      <small>Total amount of commodity moved</small>
+      <h2 class="no-margins">26,480.7 mt</h2>
+      <div id="sparkline1"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="ibox">
+        <div class="ibox-content">
+          <h3>Contact Information</h3>
+          <ul class="list-unstyled file-list">
+            <li>
+              <i class="fa fa-female"></i>
+              Contact person:
+              <%= @transporter.contact %>
+            </li>
+            <li>
+              <i class="fa fa-phone"></i>
+              Phone#:
+              <%= @transporter.contact_phone %>
+            </li>
 
-    <p>
-      <strong>Capital:</strong>
-      <%= @transporter.capital %>
-    </p>
+          </ul>
+        </div>
+      </div>
 
-    <p>
-      <strong>Employees:</strong>
-      <%= @transporter.employees %>
-    </p>
+      <div class="ibox">
+        <div class="ibox-content">
+          <h3>Comment</h3>
 
-    <p>
-      <strong>Contact:</strong>
-      <%= @transporter.contact %>
-    </p>
+          <p class="small">
+            Add comment for this transporter. Please be as specific as possible
+          </p>
 
-    <p>
-      <strong>Contact phone:</strong>
-      <%= @transporter.contact_phone %>
-    </p>
+          <div class="form-group">
+            <label>Comment</label>
+            <textarea class="form-control" placeholder="Your comment" rows="3"></textarea>
+          </div>
+          <button class="btn btn-primary btn-block">Add Comment</button>
 
-    <p>
-      <strong>Remark:</strong>
-      <%= @transporter.remark %>
-    </p>
+        </div>
+      </div>
 
-    <p>
-      <strong>Status:</strong>
-      <%= @transporter.status %>
-    </p>
+    </div>
 
-<%= link_to 'Edit', edit_transporter_path(@transporter) %> |
-<%= link_to 'Back', transporters_path %>
+    <div class="col-lg-9">
+
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Address and Contact Information
+          </h5>
+          <div class="ibox-tools">
+            <%= link_to new_transporter_address_path(:transporter_id => @transporter.id), class: "btn btn-xs" do %>
+            <i class="fa fa-plus-square"></i>
+            Address
+            <% end %>
+            <a class="collapse-link">
+              <i class="fa fa-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+        <div class="ibox-content">
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Region</th>
+                <th>City</th>
+                <th>Zone/Subcity</th>
+                <th>Kebele</th>
+                <th>House#</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @transporter.transporter_addresses.each do |transporter_address| %>
+              <tr>
+                <td><%= link_to Location.find(transporter_address.region_id).name, edit_transporter_address_path(transporter_address) %></td>
+                <td><%= transporter_address.city %></td>
+                <td><%= transporter_address.subcity %></td>
+                <td><%= transporter_address.kebele %></td>
+                <td><%= transporter_address.house_no %></td>
+                <td><%= transporter_address.phone %></td>
+                <td><%= transporter_address.email %></td>
+                <td>
+                  <%= link_to 'Edit', edit_transporter_address_path(transporter_address) %>
+                  &middot;
+                  <%= link_to 'Delete', transporter_address, method: :delete, data: { confirm: "Are you sure you want to delete the selected address record?" } %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Outstanding invoices & payment requests
+          </h5>
+          <div class="ibox-tools">
+            <a class="collapse-link">
+              <i class="fa fa-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+        <div class="ibox-content" style="display: block;">
+          <h2>No outstanding invoices and payments</h2>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

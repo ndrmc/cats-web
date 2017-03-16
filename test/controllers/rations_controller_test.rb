@@ -17,7 +17,7 @@ class RationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create ration" do
     assert_difference('Ration.count') do
-      post rations_url, params: { ration: { current: @ration.current, description: @ration.description, reference_no: @ration.reference_no } }
+      post rations_url, params: { ration: { description: @ration.description, reference_no: @ration.reference_no } }
     end
 
     assert_redirected_to ration_url(Ration.last)
@@ -34,7 +34,7 @@ class RationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update ration" do
-    patch ration_url(@ration), params: { ration: { current: @ration.current, description: @ration.description, reference_no: @ration.reference_no } }
+    patch ration_url(@ration), params: { ration: { description: @ration.description, reference_no: @ration.reference_no } }
     assert_redirected_to ration_url(@ration)
   end
 

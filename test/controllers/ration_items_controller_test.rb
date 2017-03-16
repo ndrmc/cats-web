@@ -17,7 +17,7 @@ class RationItemsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create ration_item" do
     assert_difference('RationItem.count') do
-      post ration_items_url, params: { ration_item: { amount: @ration_item.amount, commodity_id: @ration_item.commodity_id, ration_id: @ration_item.ration_id, unit_of_measure_id: @ration_item.unit_of_measure_id } }
+      post ration_items_url, params: { ration_item: { amount: @ration_item.amount } }
     end
 
     assert_redirected_to ration_item_url(RationItem.last)
@@ -34,7 +34,7 @@ class RationItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update ration_item" do
-    patch ration_item_url(@ration_item), params: { ration_item: { amount: @ration_item.amount, commodity_id: @ration_item.commodity_id, ration_id: @ration_item.ration_id, unit_of_measure_id: @ration_item.unit_of_measure_id } }
+    patch ration_item_url(@ration_item), params: { ration_item: { amount: @ration_item.amount } }
     assert_redirected_to ration_item_url(@ration_item)
   end
 
