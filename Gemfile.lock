@@ -262,6 +262,8 @@ DEPENDENCIES
   rack-cors
   rails (~> 5.0.0, >= 5.0.0.1)
   rails-assets-sweetalert2!
+  react-rails
+  responders
   rolify
   roo
   rubyzip (= 1.0.0)
