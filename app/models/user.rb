@@ -28,14 +28,12 @@
 #  is_active              :boolean          default(TRUE)
 #  first_name             :string
 #  last_name              :string
-#  datePreference         :date
-#  mobileNo               :string
-#  numberOfLogins         :integer
-#  regionalUser           :boolean
-#  hubUser                :boolean
-#  case_team              :integer
-#  Admin                  :boolean
-#  IsCaseTeam             :boolean
+#  date_preference        :date
+#  mobile_no              :string
+#  number_of_logins       :integer
+#  region_user            :boolean
+#  hub_user               :boolean
+#  user_type_id           :integer
 #
 
 class User < ApplicationRecord

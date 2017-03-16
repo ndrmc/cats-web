@@ -28,14 +28,12 @@
 #  is_active              :boolean          default(TRUE)
 #  first_name             :string
 #  last_name              :string
-#  datePreference         :date
-#  mobileNo               :string
-#  numberOfLogins         :integer
-#  regionalUser           :boolean
-#  hubUser                :boolean
-#  case_team              :integer
-#  Admin                  :boolean
-#  IsCaseTeam             :boolean
+#  date_preference        :date
+#  mobile_no              :string
+#  number_of_logins       :integer
+#  region_user            :boolean
+#  hub_user               :boolean
+#  user_type_id           :integer
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
@@ -44,8 +42,8 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
+one:
+  email: admin@cats.org
 #
 two: {}
 # column: value
