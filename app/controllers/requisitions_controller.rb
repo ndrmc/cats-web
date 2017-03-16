@@ -73,7 +73,6 @@ class RequisitionsController < ApplicationController
   end
 
   def generate
-   debugger
     @request = RegionalRequest.find(params[:request_id])
     if(!@request.generated)
       @operation = Operation.find(@request.operation_id)

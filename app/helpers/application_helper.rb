@@ -15,4 +15,11 @@ module ApplicationHelper
         end
     end
 
+    def show_date(date)
+      if(current_user.language=='en')
+      
+      elsif(current_user.language=='am')
+      end
+    end
+
 end

@@ -7,23 +7,23 @@
       <li class="<%= 'active' if current_page?('/home/minor') %>">
         <%=link_to "plan#index" do %>
         <i class="fa fa-calendar"></i>
-        <span class="nav-label">Plan</span>
+        <span class="nav-label"><%= t(:plan) %></span>
         <span class="fa arrow"></span><% end %>
         <ul class="nav nav-second-level collapse">
           <li>
-            <a href="#">HRD</a>
+            <a href="#"><%= t(:hrd_plan) %></a>
           </li>
           <li>
-            <a href="#">PSNP Annual Plan</a>
+            <a href="#"><%= t(:psnp_plan) %></a>
           </li>
-          <li class="<%= 'active' if is_active_controller('projects')  %>">
-            <%= link_to 'Receipt Plan', projects_path %>
+          <li >
+            <%= link_to  t(:receipt_plan) , projects_path %>
           </li>
           <li>
-            <a href="#">Bid Plans</a>
+            <a href="#"><%= t(:bid_plan) %></a>
           </li>
           <li class="<%= 'active' if is_active_controller('rations') || is_active_controller('ration_items')  %>">
-            <%= link_to 'Rations', rations_path %>
+            <%= link_to t(:ration), rations_path %>
           </li>
         </a>
       </li>
@@ -33,15 +33,15 @@
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-hdd-o"></i>
-    <span class="nav-label">Resource</span>
+    <span class="nav-label"><%= t(:resource) %></span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li class="<%= 'active' if is_active_controller('gift_certificates')  %>">
-        <a href="#">Gift Certificate</a>
+      <li>
+        <a href="#"><%= t(:gift_certificate) %></a>
       </li>
-      <li class="<%= 'active' if is_active_controller('donors')  %>">
-        <%= link_to 'Donors', donors_path%>
+      <li>
+        <a href="#"><%= t(:donors) %></a>
       </li>
     </ul>
   </li>
@@ -49,24 +49,24 @@
   <li class="<%= 'active' if current_page?(" /allocation/home") %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-hdd-o"></i>
-    <span class="nav-label">Operation</span>
+    <span class="nav-label"><%= t(:operation)%></span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li class="<%= 'active' if is_active_controller('operations')  %>">
-        <%= link_to "Operations", operations_url %>
+      <li>
+        <%= link_to t(:operations), operations_url %>
       </li>
       <li class="<%= 'active' if current_page?(home_other_url) %>">
-        <%= link_to 'Regional Request', home_other_url %>
+        <%= link_to t(:regional_request), home_other_url %>
       </li>
       <li>
-        <a href="#">Request Allocation</a>
+        <a href="#"><%= t(:request_allocation)%></a>
       </li>
       <li>
-        <a href="#">Dispatch Allocation</a>
+        <a href="#"><%= t(:dispatch_allocation)%></a>
       </li>
       <li>
-        <a href="#">Transport Requisition</a>
+        <a href="#"><%= t(:transport_requisition)%></a>
       </li>
     </ul>
   </li>
@@ -74,33 +74,33 @@
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-cube"></i>
-    <span class="nav-label">Stock</span>
+    <span class="nav-label"><%= t(:stock)%></span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
       <li class="<%= 'active' if is_active_controller('receipts')  %>">
-            <%= link_to 'Receiving', receipts_path %>
+            <%= link_to t(:receiving), receipts_path %>
       </li>
       <li class="<%= 'active' if is_active_controller('dispatches')  %>">
-            <%= link_to 'Dispatch', dispatches_path %>
-      </li>
-      <li class="<%= 'active' if is_active_controller('deliveries')  %>">
-        <%= link_to "Delivery", deliveries_url %>
+            <%= link_to t(:dispatch), dispatches_path %>
       </li>
       <li>
-        <a href="#">Transfer</a>
+        <%= link_to t(:delivery), deliveries_url %>
       </li>
       <li>
-        <a href="#">Adjustment</a>
+        <a href="#"><%= t(:transfer)%></a>
       </li>
       <li>
-        <a href="#">Stock Take</a>
+        <a href="#"><%= t(:adjustment)%></a>
       </li>
       <li>
-        <a href="#">Internal Movement</a>
+        <a href="#"><%= t(:stock_take)%></a>
       </li>
       <li>
-        <a href="#">Store Ledger</a>
+        <a href="#"><%= t(:internal_move)%></a>
+      </li>
+      <li>
+        <a href="#"><%= t(:stock_ledger)%></a>
       </li>
     </ul>
   </li>
@@ -108,43 +108,43 @@
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-truck"></i>
-    <span class="nav-label">Transport</span>
+    <span class="nav-label"><%= t(:transport)%></span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li class="<%= 'active' if is_active_controller('transporters')  %>">
+      <li>
+        <a href="#"><%= t(:bids)%></a>
+      </li>
+      <li>
+        <a href="#"><%= t(:rfq)%></a>
+      </li>
+      <li>
+        <a href="#"><%= t(:bid_evaluation)%></a>
+      </li>
+      <li>
         <%= link_to 'Transporters', transporters_path %>
       </li>
-      <li>
-        <a href="#">Bids</a>
-      </li>
-      <li>
-        <a href="#">RFQ</a>
-      </li>
-      <li>
-        <a href="#">Bid Evaluation</a>
-      </li>      
     </ul>
   </li>
 
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-money"></i>
-    <span class="nav-label">Contract</span>
+    <span class="nav-label"><%= t(:contract)%></span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
       <li>
-        <a href="#">Transport Orders</a>
+        <a href="#"><%= t(:transport_order)%></a>
       </li>
       <li>
-        <a href="#">Contract Administration</a>
+        <a href="#"><%= t(:contract_admin)%></a>
       </li>
       <li>
-        <a href="#">Payment Request</a>
+        <a href="#"><%= t(:payment_request)%></a>
       </li>
       <li>
-        <a href="#">Payment Tracking</a>
+        <a href="#"><%= t(:payment_tracking)%></a>
       </li>
     </ul>
   </li>
@@ -152,21 +152,21 @@
   <li class="<%= 'active' if current_page?('/home/minor') %>">
     <%= link_to "/home/minor" do %>
     <i class="fa fa-map-o"></i>
-    <span class="nav-label">Region</span>
+    <span class="nav-label"><%= t(:region)%></span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
-        <%= link_to 'Requests', regional_requests_path %>
+      <li>
+        <a href="#">Request</a>
       </li>
       <li>
-        <a href="#">FDP Receipts</a>
+        <a href="#"><%= t(:fdp_receipts)%></a>
       </li>
       <li>
-        <a href="#">CMPM Reports</a>
+        <a href="#"><%= t(:cmpm_reports)%></a>
       </li>
       <li>
-        <a href="#">Needs Assessment</a>
+        <a href="#"><%= t(:needs_assessment)%></a>
       </li>
     </ul>
   </li>
@@ -174,7 +174,7 @@
   <li class="<%= 'active' if current_page?(setting_index_url) %>">
     <%= link_to setting_index_url do %>
     <i class="fa fa-cog"></i>
-    <span class="nav-label">Settings</span>
+    <span class="nav-label"><%= t(:setting) %> </span>
     <% end %>
   </li>
 

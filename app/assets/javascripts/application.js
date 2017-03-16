@@ -28,7 +28,12 @@
 //= require daterangepicker.js
 //= require datapicker/bootstrap-datepicker.js
 //= require chosen/chosen.jquery.js
-
+//= require jquery.calendars/jquery.plugin.js
+//= require jquery.calendars/jquery.calendars.js
+//= require jquery.calendars/jquery.calendars.plus.js
+//= require jquery.calendars/jquery.calendars.picker.js
+//= require jquery.calendars/jquery.calendars.ethiopian.js
+//= require jquery.calendars/jquery.calendars.ethiopian-am.js
 
 //= require_tree .
 
@@ -45,6 +50,11 @@ $(document).ready(function() {
     $('.cats-datatable').DataTable({ "info": false });
 
     $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
+
+    $('.custom_datepicker').calendarsPicker({
+        calendar: $.calendars.instance('ethiopian', 'am'),
         format: 'dd/mm/yyyy'
     });
 
