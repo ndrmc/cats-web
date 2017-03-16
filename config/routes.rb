@@ -50,9 +50,9 @@ Rails.application.routes.draw do
   resources :projects
   resources :deliveries
 
-  resources :rations do
-    resources :ration_items
-  end
+  resources :rations
+  resources :ration_items
+
 
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
