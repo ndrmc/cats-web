@@ -5,8 +5,7 @@
 #  id             :integer          not null, primary key
 #  transporter_id :integer
 #  region_id      :integer
-#  zone_id        :integer
-#  woreda_id      :integer
+#  city           :string
 #  subcity        :string
 #  kebele         :string
 #  house_no       :string
