@@ -16,8 +16,29 @@ class HrdsController < ApplicationController
 
     def hrd_items 
         @hrd = Hrd.find params[:hrd_id]
-        @hrd_items = HrdItem.where hrd_id: params[:hrd_id], region_id: params[:region_id]
+        hrd_items = HrdItem.where hrd_id: params[:hrd_id], region_id: params[:region_id]
+
+        @hrd_items_by_zone = hrd_items.group_by { |item| item.zone_id }
     end 
+
+    def edit_hrd_form 
+        @hrd_item = HrdItem.find(params[:id])
+        render partial: 'edit_hrd_form', layout: false 
+    end 
+
+    def update_hrd_item 
+         @hrd_item = HrdItem.find(params[:id])
+
+         params.delete :id
+
+         respond_to do |format|
+            if @hrd_item.update( params.permit(:starting_month, :duration, :beneficiary ))
+                format.json { render json: { :successful => true }}
+            else 
+                format.json { render json: { :successful => false }}
+            end 
+         end 
+    end
 
     def download_hrd_items 
         @hrd = Hrd.find params[:id]

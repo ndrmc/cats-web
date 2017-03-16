@@ -17,18 +17,15 @@
         Add Woreda
       <% end %>
 
-      <%= link_to  '#',  :class => "btn btn-primary"  do %>
-        <i class="fa fa-download"></i> 
-        Download for Excel
-      <% end %>
     </div>
   </div>
 </div>
 
+
+
 <div class="row">
-  <div class="wrapper wrapper-content">
+
     <div class="panel">
-       
         <div class="panel-heading">
             <form role="form" class="form-inline" action="/hrds/hrd_items" method="GET">
                 <input type="hidden" name="hrd_id" value="<%= @hrd.id %>">
@@ -36,41 +33,132 @@
             </form>
 
         </div>
-
-        <div class="panel-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Woreda</th>
-                        <th>Duration of Assistance</th>
-                        <th>Starting Month</th>
-                        <th>Number of Beneficiaries</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% @hrd_items.each do |hrd_item| %>
-                        <tr>
-                            <td><%= hrd_item.woreda.name %></td>
-                            <td><%= hrd_item.duration %></td>
-                            <td><%= Date::MONTHNAMES[hrd_item.starting_month] %></td>
-                            <td><%= hrd_item.beneficiary %></td>
-                            <td></td>
-                        </tr>
-                    <% end %>
-                </tbody>
-            </table>
-        </div>
     </div>
+
+   
+
+    <div class="wrapper wrapper-content">
+
+     <% @hrd_items_by_zone.each do |zone_id, hrd_items| %>
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5><%= Location.find(zone_id).name %></span></h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="ibox-content">
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr> 
+                                <th>Woreda</th>
+                                <th>Starting Month</th>
+                                <th>Duration</th>
+                                <th>Number of Beneficiaries</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% hrd_items.each do |item| %>
+                                <tr id="hrd-item-<%= item.id %>">
+                                    <td><%= item.woreda.name  %></td>
+                                    <td id="starting-month-<%= item.id %>"><%= Date::MONTHNAMES[item.starting_month] %></td>
+                                    <td id="duration-<%= item.id %>"><%= item.duration %></td>
+                                    <td id="beneficiary-<%= item.id %>"><%= item.beneficiary %></td>
+                                    <td><a href="#" data-toggle="modal" data-target="#edit-hrd-item" data-hrd-item-id="<%= item.id %>">edit</a></td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+
+                    </table>
+
+                
+                </div>
+            </div>
+    </div>
+
+    <% end %>
+
+    
   </div>
 </div>  
 
+<div class="modal inmodal" id="edit-hrd-item" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Edit</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-container">
+        </div>
+        <div class="spinner">
+            Loading...
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="save-hrd-item-btn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
+    var MONTHNAMES = [null].concat( <%= raw( Date::MONTHNAMES[1..-1]) %>);
     $( function() { 
         $('#region-select').change( function() { 
             if( !$(this).val() ) return; 
 
             $(this).closest('form').submit(); 
         }); 
+
+        $('#edit-hrd-item').on('shown.bs.modal', function (e) {
+            e.preventDefault(); 
+
+            var hrd_item_id = $( e.relatedTarget ).data('hrd-item-id'); 
+
+            $('#edit-hrd-item .spinner').show(); 
+            $('#edit-hrd-item .form-container').hide(); 
+
+            $("#edit-hrd-item .form-container").load( '/hrds/edit_hrd_form/' + hrd_item_id, function() { 
+                $('#edit-hrd-item .spinner').hide(); 
+                $('#edit-hrd-item .form-container').show(); 
+            }); 
+        });
+
+        $('#save-hrd-item-btn').click( function() { 
+            var hrd_item = {};
+
+            $('.hrd-item-form-field').each( function() { 
+                hrd_item[$(this).attr('name')] = $(this).val(); 
+            }); 
+
+            $.getJSON( '/hrds/update_hrd_item', hrd_item, function(data) { 
+                if( data.successful ) { 
+                    toastr.success('Updated!'); 
+
+                    $('#duration-' + hrd_item.id ).text( hrd_item['duration']);
+                    $('#starting-month-' + hrd_item.id ).text( MONTHNAMES[hrd_item['starting_month']]);
+                    $('#beneficiary-' + hrd_item.id ).text( hrd_item['beneficiary']);
+
+                    $('#edit-hrd-item').modal('hide'); 
+                }
+                else { 
+                    toastr.error("Update failed. Please check your values and try again."); 
+                }
+            }); 
+        }); 
+
+
     });
 </script>

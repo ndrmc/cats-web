@@ -76,6 +76,8 @@ Rails.application.routes.draw do
   get '/hrds/hrd_items', to: 'hrds#hrd_items'
   get '/hrds/download_hrd_items/:id', to: 'hrds#download_hrd_items'
   get '/hrds/archive/:id', to: 'hrds#archive'
+  get '/hrds/edit_hrd_form/:id', to: 'hrds#edit_hrd_form'
+  get '/hrds/update_hrd_item', to: 'hrds#update_hrd_item'
   resources :hrds
 
   

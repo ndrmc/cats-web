@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315081020) do
+ActiveRecord::Schema.define(version: 20170316082211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -445,6 +445,7 @@ ActiveRecord::Schema.define(version: 20170315081020) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "region_id"
+    t.integer  "zone_id"
     t.index ["deleted_at"], name: "index_hrd_items_on_deleted_at", using: :btree
   end
 
