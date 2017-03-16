@@ -26,13 +26,12 @@ class OperationsController < ApplicationController
     if @deliveries
       @deliveries_map = @deliveries.group_by { |d| Fdp.find(d.fdp_id).location.ancestors.find { |a| a.location_type == 'region' } }
       @deliveries.map(&:delivery_details).each do |d| 
-         debugger;
+         
          @delivery_commodites << d.map(&:commodity_id).first
          
         end
 
     end
-    debugger;
     @delivery_commodites.uniq!
     
 

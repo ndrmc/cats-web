@@ -4,14 +4,11 @@ class RequisitionsController < ApplicationController
 
   # GET /requisitions
   # GET /requisitions.json
-  def index
-    @requisitions = Requisition.all
+  def index    
+    @requisitions = Requisition.filter(params.slice(:operation, :region, :status))
   end
 
-  # GET /requisitions/1
-  # GET /requisitions/1.json
-  def show
-  end
+  
 
   # GET /requisitions/new
   def new
@@ -29,8 +26,8 @@ class RequisitionsController < ApplicationController
   def update
     respond_to do |format|
       if @requisition.update(requisition_params)
-        format.html { redirect_to @requisition, notice: 'Requisition was successfully updated.' }
-        format.json { render :show, status: :ok, location: @requisition }
+        format.html { redirect_to edit_requisition_path(@requisition), notice: 'Requisition was successfully updated.' }
+        format.json { render :edit, status: :ok, location: @requisition }
       else
         format.html { render :edit }
         format.json { render json: @requisition.errors, status: :unprocessable_entity }
@@ -76,7 +73,7 @@ class RequisitionsController < ApplicationController
   end
 
   def generate
-   
+   debugger
     @request = RegionalRequest.find(params[:request_id])
     if(!@request.generated)
       @operation = Operation.find(@request.operation_id)
@@ -85,9 +82,9 @@ class RequisitionsController < ApplicationController
       @requisition = {} 
  
       params[:zonal_request].each do |zonal_req|
-        @requisition_items = [] 
+       
         zonal_req[:commodity_ids].each do |commodity_id|
-          
+           @requisition_items = [] 
           zone_id = zonal_req[:zone_id]
         
           @requests_per_zone[Integer(zone_id)].each do |request_item|
@@ -133,6 +130,63 @@ class RequisitionsController < ApplicationController
 
     end
     
+    
+  end
+
+  def add_requisition
+
+    @request = RegionalRequest.find(params[:request_id])
+
+   
+
+      @operation = Operation.find(@request.operation_id)
+      @ration_items = RationItem.where({ration_id: @operation.ration_id})
+      @request_items_for_zone = @request.regional_request_items.select { |ri| Fdp.find(ri.fdp_id).location.ancestors.find { |a| a.id == Integer(params[:zone_id]) } }
+      
+      @requisition = {} 
+ 
+     
+      @requisition_items = [] 
+   
+          
+      zone_id = Integer(params[:zone_id])
+        
+        @request_items_for_zone.each do |request_item|
+            
+          requisition_item = RequisitionItem.new({
+              fdp_id: request_item[:fdp_id],
+              beneficiary_no: request_item[:number_of_beneficiaries],
+              amount: @ration_items.select { |hash| hash[:commodity_id] == Integer(params[:commodity_id]) }.first.amount*request_item[:number_of_beneficiaries]
+          })
+          @requisition_items << requisition_item
+
+        end
+
+        @requisition = Requisition.new({
+           request_id: params[:request_id],
+           requisition_no: SecureRandom.uuid,
+           operation_id: @request.operation_id,
+           commodity_id: Integer(params[:commodity_id]),
+           region_id: @request.region_id,
+           zone_id: zone_id,
+           ration_id: Operation.find(@request.operation_id).ration_id,
+           requested_on: @request.requested_date,
+           status: 'draft',
+           requisition_items: @requisition_items
+         })
+        
+         if(@requisition.save)
+           @request.generated = true
+           @request.save
+           redirect_to "/requisitions/summary/#{@request.region_id}/#{@request.operation_id}" , :flash => { notice: :success }
+         else
+           redirect_to RegionalRequest.find(params[:request_id]), :flash => { error: :unprocessable_entity }
+         end
+
+       
+        
+      
+   
     
   end
 

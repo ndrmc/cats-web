@@ -1,0 +1,21 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>New Gift Certificate</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Gift Certificate</a>
+      </li>
+      <li class="active">
+        <strong>New</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', gift_certificates_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<%= render 'form', gift_certificate: @gift_certificate %>
+
