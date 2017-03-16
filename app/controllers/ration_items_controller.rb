@@ -16,7 +16,7 @@ class RationItemsController < ApplicationController
   def new
     @ration = Ration.find(params[:ration_id])
 
-    if @ration == nil
+    if @ration.nil?
       format.html {render :new}
       format.json {render json: @ration.errors, status: :unprocessable_entity}
     end
@@ -29,7 +29,7 @@ class RationItemsController < ApplicationController
     @ration = Ration.find(params[:ration_id])
     @ration_item = RationItem.new
     @ration_item.ration_id = @ration.id
-    
+
     respond_to do |format|
       format.html
       format.js

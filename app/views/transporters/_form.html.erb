@@ -1,84 +1,124 @@
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
-      <%= form_for(transporter) do |f| %>
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+        <%= form_for(transporter, :html => {:class => 'form-horizontal'}) do |f| %>
         <% if transporter.errors.any? %>
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <%= pluralize(transporter.errors.count, "error") %> prohibited this transporter from being saved.
-            </div>
-
-            <div class="panel-body">
-              <ul>
-                <% transporter.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-                <% end %>
-              </ul>
-            </div>
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <%= pluralize(transporter.errors.count, "error") %>
+            prohibited this transporter from being saved.
           </div>
+
+          <div class="panel-body">
+            <ul>
+              <% transporter.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
         <% end %>
 
-                <div class="form-group">
-                            <%= f.label :name %>
-                <%= f.text_field :name, :class => 'form-control' %>
-                        </div>
+        <div class="form-group form-group-lg">
+          <%= f.label :name, :class => 'col-sm-1 control-label text-left' %>
+          <div class="col-sm-8">
+            <%= f.text_field :name, :class => 'form-control' %>
+          </div>
+        </div>
 
-                <div class="form-group">
-                            <%= f.label :code %>
-                <%= f.text_field :code, :class => 'form-control' %>
-                        </div>
+        <div class="form-group">
+          <%= f.label :code, :class => 'col-sm-1 control-label text-left' %>
+          <div class="col-sm-8">
+            <%= f.text_field :code, :class => 'form-control' %>
+          </div>
+        </div>
 
-                <div class="form-group">
-                            <%= f.label :ownership %>
-                <%= f.text_field :ownership, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :vehicleCount %>
-                <%= f.text_field :vehicle_count, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :lift_capacity %>
-                <%= f.text_field :lift_capacity, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :capital %>
-                <%= f.text_field :capital, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :employees %>
-                <%= f.number_field :employees, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :contact %>
-                <%= f.text_field :contact, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :contact_phone %>
-                <%= f.text_field :contact_phone, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :remark %>
-                <%= f.text_field :remark, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :status %>
-                <%= f.text_field :status, :class => 'form-control' %>
-                        </div>
-
-      
-      <div class="actions">
-        <%= f.submit :class => 'btn btn-primary' %>
       </div>
-  <% end %>
-
     </div>
+
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        Capacity and Organization
+      </div>
+
+      <div class="ibox-content">
+
+        <div class='row'>
+          <div class='col-sm-5'>
+            <div class="form-group">
+              <%= f.label :contact, 'Primary contact person' %>
+              <%= f.text_field :contact, :class => 'form-control' %>
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class='col-sm-5'>
+            <div class="form-group">
+              <%= f.label :contact_phone, 'Primary contact phone' %>
+              <%= f.text_field :contact_phone, :class => 'form-control' %>
+            </div>
+          </div>
+        </div>
+        <hr/>
+        <div class="row">
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :ownership_type_id, 'Ownership type (Plc, Share company or Private)' %>
+              <%= f.collection_select :ownership_type_id, OwnershipType.order(:name), :id, :name,{include_blank: 'Select ownership type'}, {:class => 'form-control'} %>
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :vehicleCount, 'Total number of vehicles' %>
+              <%= f.text_field :vehicle_count, :class => 'form-control' %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :lift_capacity %>
+              <%= f.text_field :lift_capacity, :class => 'form-control' %>
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :capital %>
+              <%= f.text_field :capital, :class => 'form-control' %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-5">
+            <div class="form-group">
+              <%= f.label :employees, 'Number of employees' %>
+              <%= f.number_field :employees, :class => 'form-control' %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+        <div class="form-group">
+          <%= f.label :remark %>
+          <%= f.text_area :remark, :class => 'form-control' %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit :class => 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+
+    <% end %>
+
   </div>
+
 </div>

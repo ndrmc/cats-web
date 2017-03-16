@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :case_teams
   resources :role_types
   resources :transporters
+  resources :transporter_addresses  
   get 'setting/index'
   devise_for :users
 
@@ -27,7 +28,7 @@ Rails.application.routes.draw do
   resources :currencies
   resources :donors
   resources :programs
-  
+
   resources :commodity_sources
   resources :commodity_categories
   resources :commodities
@@ -68,14 +69,14 @@ Rails.application.routes.draw do
   get '/requisitions/summary/:region_id/:operation_id', to: 'requisitions#summary'
   get '/requisitions/add_requisition/:request_id/:zone_id/:commodity_id', to: 'requisitions#add_requisition'
 
-  resources :regional_requests 
+  resources :regional_requests
   post '/regional_requests/add_fdp_to_request'
   post '/regional_requests/update_regional_request_item'
   delete '/regional_requests/destroy_regional_request_item/:id', to: 'regional_requests#destroy_regional_request_item'
   get '/regional_requests/request_items/:id', to: 'regional_requests#request_items'
   post '/regional_requests/upload_requests/:id', to: 'regional_requests#upload_requests'
 
-  
+
   root to: 'dashboard#index'
 
 end

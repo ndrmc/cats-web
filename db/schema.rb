@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170309152300) do
+ActiveRecord::Schema.define(version: 20170315072655) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -534,6 +535,17 @@ ActiveRecord::Schema.define(version: 20170309152300) do
     t.index ["deleted_at"], name: "index_organizations_on_deleted_at", using: :btree
   end
 
+  create_table "ownership_types", force: :cascade do |t|
+    t.string   "name",                        null: false
+    t.text     "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "posting_items", force: :cascade do |t|
     t.uuid     "posting_item_code"
     t.integer  "posting_id"
@@ -904,8 +916,7 @@ ActiveRecord::Schema.define(version: 20170309152300) do
   create_table "transporter_addresses", force: :cascade do |t|
     t.integer  "transporter_id"
     t.integer  "region_id"
-    t.integer  "zone_id"
-    t.integer  "woreda_id"
+    t.string   "city"
     t.string   "subcity"
     t.string   "kebele"
     t.string   "house_no"
@@ -921,9 +932,8 @@ ActiveRecord::Schema.define(version: 20170309152300) do
   end
 
   create_table "transporters", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.string   "code",                      null: false
-    t.string   "ownership"
+    t.string   "name",                          null: false
+    t.string   "code",                          null: false
     t.integer  "vehicle_count"
     t.decimal  "lift_capacity"
     t.decimal  "capital"
@@ -931,12 +941,13 @@ ActiveRecord::Schema.define(version: 20170309152300) do
     t.string   "contact"
     t.string   "contact_phone"
     t.text     "remark"
-    t.integer  "status",        default: 0, null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "status",            default: 0, null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "ownership_type_id"
     t.index ["deleted_at"], name: "index_transporters_on_deleted_at", using: :btree
   end
 
