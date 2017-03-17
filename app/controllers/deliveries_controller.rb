@@ -24,6 +24,7 @@ class DeliveriesController < ApplicationController
 
   # GET /deliveries/new
   def new
+   
     @delivery = Delivery.new
     @gin = Dispatch.find_by({'gin_no': params[:gin_number]})
     if(@gin)
