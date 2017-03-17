@@ -87,6 +87,47 @@
 
     <% end %>
 
+
+    <% @zones_with_no_hrd_item.each do |zone_id| %>
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5><%= Location.find(zone_id).name %></span></h5>
+                <div class="ibox-tools">
+                    <a class="btn btn-white btn-sm" data-hrd-id="<%= @hrd.id %>" data-zone-id="<%= zone_id %>" data-target="#new-hrd-item" data-toggle="modal">
+                        <i class="fa fa-plus"></i> Add woreda
+                    </a>
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="ibox-content">
+                <div>
+                    <table class="table" id="zone-<%= zone_id %>">
+                        <thead>
+                            <tr> 
+                                <th>Woreda</th>
+                                <th>Starting Month</th>
+                                <th>Duration</th>
+                                <th>Number of Beneficiaries</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+
+                    </table>
+
+                
+                </div>
+            </div>
+    </div>
+
+    <% end %>
+
     
   </div>
 </div>  

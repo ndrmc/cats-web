@@ -19,6 +19,8 @@ class HrdsController < ApplicationController
         hrd_items = HrdItem.where hrd_id: params[:hrd_id], region_id: params[:region_id]
 
         @hrd_items_by_zone = hrd_items.group_by { |item| item.zone_id }
+
+        @zones_with_no_hrd_item = Location.find(params[:region_id]).children.pluck(:id) - @hrd_items_by_zone.keys
     end 
 
     def new_hrd_item
