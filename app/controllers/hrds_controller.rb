@@ -21,6 +21,33 @@ class HrdsController < ApplicationController
         @hrd_items_by_zone = hrd_items.group_by { |item| item.zone_id }
     end 
 
+    def new_hrd_item
+        @hrd = Hrd.find params[:id]
+
+        zone = Location.find params[:zone_id]
+
+        taken_woredas_in_zone = HrdItem.where( zone_id: zone.id, hrd_id: @hrd.id).pluck(:woreda_id) 
+
+        all_woreda_ids_in_zone = zone.children.pluck(:id)
+
+        @available_woredas = Location.find( all_woreda_ids_in_zone - taken_woredas_in_zone)
+
+        render partial: 'add_woreda_form'
+    end 
+
+    def save_hrd_item
+        @hrd_item = HrdItem.new(params.permit(:hrd_id, :woreda_id,  :beneficiary, :starting_month, :duration))
+
+        if @hrd_item.save 
+            render partial: 'hrd_item_row'
+        else 
+            render nothing: true, status: 400 
+        end
+
+    end 
+    
+    
+
     def edit_hrd_form 
         @hrd_item = HrdItem.find(params[:id])
         render partial: 'edit_hrd_form', layout: false 
