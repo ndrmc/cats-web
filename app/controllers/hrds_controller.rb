@@ -43,8 +43,18 @@ class HrdsController < ApplicationController
         else 
             render nothing: true, status: 400 
         end
-
     end 
+
+    def remove_hrd_id 
+        hrd_item = HrdItem.find params[:id]
+
+        hrd_item.destroy
+
+        respond_to do |format|
+            format.json { head :no_content }
+        end
+    end
+    
     
     
 

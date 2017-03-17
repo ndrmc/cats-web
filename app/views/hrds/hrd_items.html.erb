@@ -70,7 +70,10 @@
                                     <td id="starting-month-<%= item.id %>"><%= Date::MONTHNAMES[item.starting_month] %></td>
                                     <td id="duration-<%= item.id %>"><%= item.duration %></td>
                                     <td id="beneficiary-<%= item.id %>"><%= item.beneficiary %></td>
-                                    <td><a href="#" data-toggle="modal" data-target="#edit-hrd-item" data-hrd-item-id="<%= item.id %>">edit</a></td>
+                                    <td>
+                                        <a href="#" data-toggle="modal" data-target="#edit-hrd-item" data-hrd-item-id="<%= item.id %>">edit</a>
+                                        <a href="#" class="remove-hrd-item" data-confir="Are you sure?" data-hrd-item-id="<%= item.id %>">delete</a>
+                                    </td>
                                 </tr>
                             <% end %>
                         </tbody>
@@ -214,8 +217,20 @@
             .fail(function() { 
                 toastr.error("Save failed. Please check your values and try again.")
             }); 
+        }); 
 
+        $('.remove-hrd-item').click(function(e) { 
+            e.preventDefault(); 
+
+            var hrd_item_id = $(this).data('hrd-item-id'); 
             
+            $.ajax( { url: '/hrds/remove_hrd_id/' + $(this).data('hrd-item-id'), method: 'DELETE'})
+            .done( function() { 
+
+                toastr.success("Removed!"); 
+
+                $('tr#hrd-item-' + hrd_item_id ).fadeOut('slow', function() { $(this).remove(); }); 
+            }); 
         }); 
 
 

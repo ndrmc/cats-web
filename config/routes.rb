@@ -80,6 +80,7 @@ Rails.application.routes.draw do
   get '/hrds/new_hrd_item/:id', to: 'hrds#new_hrd_item'
   get '/hrds/update_hrd_item', to: 'hrds#update_hrd_item'
   post '/hrds/save_hrd_item', to: 'hrds#save_hrd_item'
+  delete '/hrds/remove_hrd_id/:id', to: 'hrds#remove_hrd_id'
   resources :hrds
 
   
