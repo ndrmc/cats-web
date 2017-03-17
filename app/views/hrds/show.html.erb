@@ -78,7 +78,31 @@
 
         <div id="tab-2" class="tab-pane">
           <div class="panel-body">
-                Commodities panel here 
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Region</td>
+                            <td>Number of Beneficiaries</td>
+                            <% @hrd.ration.ration_items.each do |item| %>
+                              <td><%= item.commodity.name %></td>
+                            <% end %>
+                            <td>Total</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @beneficiaries_by_region.each  do |aggregate| %>
+                            <tr>
+                                <td><%= Location.find(aggregate.region_id).name %></td>
+                                <td><%= aggregate.total_beneficiaries %></td>
+                                <% @hrd.ration.ration_items.each do |item| %>
+                                  <td><%= item.amount * aggregate.total_beneficiaries %></td>
+                                <% end %>
+                                <td><%= @hrd.ration.ration_items.inject(0) { |result, ration_item| result + ration_item.amount } * aggregate.total_beneficiaries  %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                
+                </table>
           </div>
         </div>
 
