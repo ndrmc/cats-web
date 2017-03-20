@@ -19,6 +19,7 @@ class GiftCertificatesController < ApplicationController
 
   # GET /gift_certificates/1/edit
   def edit
+   
   end
 
   # POST /gift_certificates
