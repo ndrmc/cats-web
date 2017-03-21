@@ -73,7 +73,7 @@
           <div class="form-group">
             <%= f.label :status, :class=> 'col-sm-2 control-label' %>
             <div class="col-sm-4">
-              <%= f.collection_select :status, Operation.statuses, :second, :first,{include_blank: 'Select Status'}, {:class => 'form-control'} %>
+              <%= f.collection_select :status, Operation.statuses, :first, :first,{include_blank: 'Select Status'}, {:class => 'form-control'} %>
             </div>
           </div>
 

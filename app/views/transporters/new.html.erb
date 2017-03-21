@@ -3,7 +3,10 @@
     <h2>New Transporter</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Transporter</a>
+        <a href="#">Transport</a>
+      </li>
+      <li>
+        <%= link_to 'Transporters', transporters_path %>
       </li>
       <li class="active">
         <strong>New</strong>
@@ -18,4 +21,3 @@
 </div>
 
 <%= render 'form', transporter: @transporter %>
-

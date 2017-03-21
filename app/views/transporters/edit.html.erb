@@ -1,12 +1,15 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Edit Transporter</h2>
+    <h2>Edit Transporter [<%= @transporter.name %>]</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Transporter</a>
+        <a href="#">Transport</a>
+      </li>
+      <li>
+        <%= link_to 'Transporters', transporters_path %>
       </li>
       <li class="active">
-        <strong>Edit</strong>
+        <strong><%= @transporter.name %></strong>
       </li>
     </ol>
   </div>
@@ -18,4 +21,3 @@
 </div>
 
 <%= render 'form', transporter: @transporter %>
-

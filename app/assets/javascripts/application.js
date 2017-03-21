@@ -28,6 +28,12 @@
 //= require daterangepicker.js
 //= require datapicker/bootstrap-datepicker.js
 //= require chosen/chosen.jquery.js
+//= require jquery.calendars/jquery.plugin.js
+//= require jquery.calendars/jquery.calendars.js
+//= require jquery.calendars/jquery.calendars.plus.js
+//= require jquery.calendars/jquery.calendars.picker.js
+//= require jquery.calendars/jquery.calendars.ethiopian.js
+//= require jquery.calendars/jquery.calendars.ethiopian-am.js
 
 //= require_tree .
 
@@ -35,7 +41,7 @@
 
 $(document).ready(function() {
     /**
-     * Activates parent menu items if children are acive
+     * Activates parent menu items if children are active
      */
     var activeLi = $('li.active');
     activeLi.parentsUntil('nav', 'li').addClass('active');
@@ -47,8 +53,22 @@ $(document).ready(function() {
         format: 'dd/mm/yyyy'
     });
 
+    $('.custom_datepicker').calendarsPicker({
+
+        calendar: $.calendars.instance('ethiopian', 'am'),
+        format: 'dd/mm/yyyy',
+
+        onSelect: function(dateText, inst) {
+
+            var dateAsObject = $(this).calendarsPicker('getDate');
+            var jd = dateAsObject[0].toJD();
+            var date_gc = $.calendars.instance('gregorian').fromJD(jd);
+            $(this).val(date_gc.formatDate('dd/mm/yyyy'));
+
+        }
+    });
+
     $('.cats-daterangepicker').daterangepicker({
         format: 'dd/mm/yyyy'
     });
 });
-

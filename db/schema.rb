@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20170320051844) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "name",        null: false
-    t.string   "type"
+    t.integer  "code"
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20170320051844) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_accounts_on_deleted_at", using: :btree
-    t.index ["name", "type"], name: "index_accounts_on_name_and_type", using: :btree
+    t.index ["name", "code"], name: "index_accounts_on_name_and_code", using: :btree
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -209,6 +209,7 @@ ActiveRecord::Schema.define(version: 20170320051844) do
     t.integer  "status"
     t.integer  "operation_id"
     t.text     "remark"
+    t.boolean  "draft"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.boolean  "deleted",            default: false
@@ -422,7 +423,7 @@ ActiveRecord::Schema.define(version: 20170320051844) do
   end
 
   create_table "gift_certificates", force: :cascade do |t|
-    t.string   "reference_no",                       null: false
+    t.string   "reference_no",                                                null: false
     t.date     "gift_date"
     t.string   "vessel"
     t.integer  "donor_id"
@@ -430,21 +431,23 @@ ActiveRecord::Schema.define(version: 20170320051844) do
     t.integer  "program_id"
     t.integer  "mode_of_transport_id"
     t.string   "port_name"
-    t.integer  "status",                 default: 0, null: false
+    t.integer  "status",                                          default: 0, null: false
     t.string   "customs_declaration_no"
-    t.string   "bill_of_ladding"
-    t.float    "amount"
-    t.float    "estimated_price"
-    t.float    "estimated_tax"
     t.string   "purchase_year"
     t.date     "expiry_date"
     t.integer  "fund_type_id"
     t.string   "account_no"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.string   "bill_of_loading"
+    t.decimal  "amount",                 precision: 15, scale: 2
+    t.decimal  "estimated_price",        precision: 15, scale: 2
+    t.decimal  "estimated_tax",          precision: 15, scale: 2
+    t.integer  "fund_source_id"
+    t.integer  "currency_id"
     t.index ["deleted_at"], name: "index_gift_certificates_on_deleted_at", using: :btree
     t.index ["reference_no"], name: "index_gift_certificates_on_reference_no", unique: true, using: :btree
   end
@@ -570,8 +573,20 @@ ActiveRecord::Schema.define(version: 20170320051844) do
     t.index ["deleted_at"], name: "index_organizations_on_deleted_at", using: :btree
   end
 
+  create_table "ownership_types", force: :cascade do |t|
+    t.string   "name",                        null: false
+    t.text     "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "posting_items", force: :cascade do |t|
     t.uuid     "posting_item_code"
+    t.integer  "posting_id"
     t.integer  "account_id"
     t.integer  "journal_id"
     t.integer  "donor_id"
@@ -584,7 +599,7 @@ ActiveRecord::Schema.define(version: 20170320051844) do
     t.integer  "program_id"
     t.integer  "operation_id"
     t.integer  "commodity_id"
-    t.integer  "commodityCategory_id"
+    t.integer  "commodity_category_id"
     t.decimal  "quantity"
     t.integer  "region_id"
     t.integer  "zone_id"
@@ -592,10 +607,10 @@ ActiveRecord::Schema.define(version: 20170320051844) do
     t.integer  "fdp_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",              default: false
+    t.boolean  "deleted",               default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   create_table "postings", force: :cascade do |t|
@@ -829,8 +844,6 @@ ActiveRecord::Schema.define(version: 20170320051844) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.integer  "month_from"
-    t.integer  "month_to"
     t.index ["deleted_at"], name: "index_seasons_on_deleted_at", using: :btree
     t.index ["name"], name: "index_seasons_on_name", unique: true, using: :btree
   end
@@ -930,8 +943,7 @@ ActiveRecord::Schema.define(version: 20170320051844) do
   create_table "transporter_addresses", force: :cascade do |t|
     t.integer  "transporter_id"
     t.integer  "region_id"
-    t.integer  "zone_id"
-    t.integer  "woreda_id"
+    t.string   "city"
     t.string   "subcity"
     t.string   "kebele"
     t.string   "house_no"
@@ -947,9 +959,8 @@ ActiveRecord::Schema.define(version: 20170320051844) do
   end
 
   create_table "transporters", force: :cascade do |t|
-    t.string   "name",                      null: false
-    t.string   "code",                      null: false
-    t.string   "ownership"
+    t.string   "name",                          null: false
+    t.string   "code",                          null: false
     t.integer  "vehicle_count"
     t.decimal  "lift_capacity"
     t.decimal  "capital"
@@ -957,12 +968,13 @@ ActiveRecord::Schema.define(version: 20170320051844) do
     t.string   "contact"
     t.string   "contact_phone"
     t.text     "remark"
-    t.integer  "status",        default: 0, null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "status",            default: 0, null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "ownership_type_id"
     t.index ["deleted_at"], name: "index_transporters_on_deleted_at", using: :btree
   end
 
