@@ -54,40 +54,31 @@
         <% @requisitions.each do |requisition| %>
             <tr>
               <td>
-                <%= requisition.requisition_no
-                %>
+                <%= requisition.requisition_no %>
               </td>
               <td>
-                <%= requisition.operation_id
-                %>
+                <%= requisition.operation_id %>
               </td>
               <td>
-                <%= requisition.commodity_id
-                %>
+                <%= requisition.commodity_id %>
               </td>
               <td>
-                <%= requisition.region_id
-                %>
+                <%= requisition.region_id %>
               </td>
               <td>
-                <%= requisition.zone_id
-                %>
+                <%= requisition.zone_id %>
               </td>
               <td>
-                <%= requisition.ration_id
-                %>
+                <%= requisition.ration_id %>
               </td>
               <td>
-                <%= requisition.requested_by
-                %>
+                <%= requisition.requested_by %>
               </td>
               <td>
-                <%= requisition.requested_on
-                %>
+                <%= requisition.requested_on %>
               </td>
               <td>
-                <%= requisition.status
-                %>
+                <%= requisition.status %>
               </td>
               <td>
                 <%= link_to 'Edit', edit_requisition_path(requisition) %> &middot;
