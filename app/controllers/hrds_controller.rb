@@ -11,6 +11,8 @@ class HrdsController < ApplicationController
     def show
         @hrd = Hrd.find params[:id]
 
+        @contributions = Contribution.where( hrd_id: @hrd.id)
+
         @beneficiaries_by_region = HrdItem.group('region_id' ).select( 'region_id, SUM(beneficiary) as total_beneficiaries')
     end
 

@@ -12,6 +12,8 @@
 #  deleted_at        :datetime
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  hrd_id            :integer
+#  pledged_date      :datetime
 #
 
 require 'test_helper'

@@ -83,6 +83,9 @@ Rails.application.routes.draw do
   delete '/hrds/remove_hrd_id/:id', to: 'hrds#remove_hrd_id'
   resources :hrds
 
+
+  resources :contributions
+
   
   root to: 'dashboard#index'
 
