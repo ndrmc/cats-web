@@ -120,6 +120,9 @@
   <% end %> -->
 
   <ul class="nav nav-second-level collapse">
+      <li class="<%= 'active' if is_active_controller('departments') %>">
+      <a href="#"><%= link_to t(:departments), departments_path %></a>
+    </li>
     <li class="<%= 'active' if is_active_controller('users') %>">
       <a href="#"><%= link_to t(:user_accounts), users_path %></a>
     </li>

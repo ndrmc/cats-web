@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322110633) do
+ActiveRecord::Schema.define(version: 20170322133007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string   "name",        null: false
-    t.integer  "code"
+    t.string   "type"
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_accounts_on_deleted_at", using: :btree
-    t.index ["name", "code"], name: "index_accounts_on_name_and_code", using: :btree
+    t.index ["name", "type"], name: "index_accounts_on_name_and_type", using: :btree
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -99,6 +99,13 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
+  end
+
+  create_table "case_units", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -187,7 +194,6 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.integer  "status"
     t.integer  "operation_id"
     t.text     "remark"
-    t.boolean  "draft"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.boolean  "deleted",            default: false
@@ -214,13 +220,12 @@ ActiveRecord::Schema.define(version: 20170322110633) do
 
   create_table "departments", force: :cascade do |t|
     t.string   "name"
-    t.string   "discription"
+    t.string   "description"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "dispatch_items", force: :cascade do |t|
@@ -460,17 +465,6 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.string   "address"
     t.index ["deleted_at"], name: "index_hubs_on_deleted_at", using: :btree
     t.index ["name"], name: "index_hubs_on_name", unique: true, using: :btree
-  end
-
-  create_table "idp_reasons", force: :cascade do |t|
-    t.string   "name"
-    t.text     "description"
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
   end
 
   create_table "journals", force: :cascade do |t|
@@ -796,6 +790,17 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.index ["requisition_no"], name: "index_requisitions_on_requisition_no", unique: true, using: :btree
   end
 
+  create_table "role_types", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by"
@@ -805,9 +810,11 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.integer  "role_type_id"
     t.index ["deleted_at"], name: "index_roles_on_deleted_at", using: :btree
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
+    t.index ["role_type_id"], name: "index_roles_on_role_types_id", using: :btree
   end
 
   create_table "seasons", force: :cascade do |t|
@@ -844,6 +851,10 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+  end
+
+  create_table "test", id: false, force: :cascade do |t|
+    t.bigint "id"
   end
 
   create_table "transport_order_items", force: :cascade do |t|
@@ -917,7 +928,8 @@ ActiveRecord::Schema.define(version: 20170322110633) do
   create_table "transporter_addresses", force: :cascade do |t|
     t.integer  "transporter_id"
     t.integer  "region_id"
-    t.string   "city"
+    t.integer  "zone_id"
+    t.integer  "woreda_id"
     t.string   "subcity"
     t.string   "kebele"
     t.string   "house_no"
@@ -978,17 +990,6 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.index ["deleted_at"], name: "index_uom_categories_on_deleted_at", using: :btree
   end
 
-  create_table "user_types", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",   null: false
     t.string   "language"
@@ -1017,13 +1018,17 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.string   "last_name"
     t.date     "date_preference"
     t.string   "mobile_no"
-    t.integer  "number_of_logins"
-    t.boolean  "region_user"
+    t.boolean  "regional_user"
     t.boolean  "hub_user"
+    t.integer  "case_team"
+    t.boolean  "is_admin"
+    t.boolean  "is_case_team"
+    t.integer  "role_types_id"
     t.integer  "user_type_id"
     t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["role_types_id"], name: "index_users_on_role_types_id", using: :btree
   end
 
   create_table "users_roles", id: false, force: :cascade do |t|
@@ -1061,4 +1066,6 @@ ActiveRecord::Schema.define(version: 20170322110633) do
   add_foreign_key "regional_requests", "operations"
   add_foreign_key "regional_requests", "programs"
   add_foreign_key "regional_requests", "rations"
+  add_foreign_key "roles", "role_types"
+  add_foreign_key "users", "role_types", column: "role_types_id"
 end

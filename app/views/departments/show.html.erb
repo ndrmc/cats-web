@@ -1,0 +1,12 @@
+    <p>
+      <strong>Name:</strong>
+      <%= @department.name %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @department.description %>
+    </p>
+
+<%= link_to 'Edit', edit_department_path(@department) %> |
+<%= link_to 'Back', departments_path %>

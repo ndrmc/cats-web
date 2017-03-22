@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :departments
  scope "(:locale)", locale: /en|am/ do
   resources :case_teams
   resources :role_types
