@@ -1,4 +1,4 @@
-module ApplicationHelper
+module ApplicationHelper 
     def is_active_controller(controller_name)
         params[:controller] == controller_name ? "active" : nil
     end
@@ -13,13 +13,6 @@ module ApplicationHelper
             when :alert then 'error'
             else level
         end
-    end
-
-    def show_date(date)
-      if(current_user.language=='en')
-      
-      elsif(current_user.language=='am')
-      end
     end
 
 end

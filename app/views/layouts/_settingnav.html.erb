@@ -7,23 +7,23 @@
       <li class="<%= 'active' if current_page?('/home/minor') %>">
         <%=link_to "plan#index" do %>
         <i class="fa fa-bookmark-o"></i>
-        <span class="nav-label">General</span>
+        <span class="nav-label"><% t(:general_settings)%></span>
         <span class="fa arrow"></span><% end %>
         <ul class="nav nav-second-level collapse">
           <li>
-            <a href="#">Global settings</a>
+            <a href="#"><% t(:global_settings)%></a>
           </li>
           <li class="<%= 'active' if is_active_controller('programs') %>">
-            <%= link_to 'Programs', programs_path %>
+            <%= link_to t(:programs), programs_path %>
           </li>
           <li class="<%= 'active' if is_active_controller('currencies') %>">
-            <%= link_to 'Currency', currencies_path %>
+            <%= link_to t(:currencies), currencies_path %>
           </li>
            <li class="<%= 'active' if is_active_controller('organizations') %>">
-              <%= link_to 'Organizations', organizations_path %>
+              <%= link_to t(:organizations), organizations_path %>
           </li>
           <li class="<%= 'active' if is_active_controller('transporters') %>">
-              <%= link_to 'Transporters', transporters_path %>
+              <%= link_to t(:transporters), transporters_path %>
           </li>
         </span>
       </a>
@@ -34,19 +34,19 @@
   <li>
     <%= link_to "#" do %>
     <i class="fa fa-globe"></i>
-    <span class="nav-label">Geography</span>
+    <span class="nav-label"><%t(:geography)%></span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
       <li class="<%= 'active' if is_active_controller('locations') %>">
-        <%= link_to 'Locations', locations_path %>
+        <%= link_to t(:locations), locations_path %>
       </li>
 
       <li class="<%= 'active' if is_active_controller('fdps') %>">
-        <%= link_to 'FDPs', fdps_path %>
+        <%= link_to t(:fdps), fdps_path %>
       </li>
       <li class="<%= 'active' if is_active_controller('fdp_contact') %>">
-        <%= link_to 'FDP Contact', fdp_contacts_path %>
+        <%= link_to t(:fdp_contacts), fdp_contacts_path %>
       </li>
     </ul>
   </li>
@@ -54,15 +54,15 @@
 <li>
   <%= link_to "#" do %>
   <i class="fa fa-bank"></i>
-  <span class="nav-label">Warehouses & Stores</span>
+  <span class="nav-label"><%t(:warehouses_and_stores)%></span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
     <li class="<%= 'active' if is_active_controller('hubs') %>">
-        <%= link_to 'Hubs', hubs_path %>
+        <%= link_to t(:hubs), hubs_path %>
     </li>
     <li class="<%= 'active' if is_active_controller('warehouses') %>">
-      <%= link_to 'Warehouses', warehouses_path %>
+      <%= link_to t(:warehouses), warehouses_path %>
     </li>
   </ul>
 </li>
@@ -70,24 +70,24 @@
  <li>
   <%= link_to "#" do %>
   <i class="fa fa-cube"></i>
-  <span class="nav-label">Commodity</span>
+  <span class="nav-label"><%t(:commodity)%></span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
     <li class="<%= 'active' if is_active_controller('commodities') %>" >
-      <%= link_to 'Commodity', commodities_path %>
+      <%= link_to t(:commodities), commodities_path %>
     </li>
     <li class="<%= 'active' if is_active_controller('commodity_categories') %>" >
-      <%= link_to 'Commodity Types', commodity_categories_path %>
+      <%= link_to t(:commodity_types), commodity_categories_path %>
     </li>
     <li>
       <li class="<%= 'active' if is_active_controller('commodity_sources') %>" >
-      <%= link_to 'Commodity sources', commodity_sources_path %>
+      <%= link_to t(:commodity_sources), commodity_sources_path %>
       
       </li>
     </li>
     <li class="<%= 'active' if is_active_controller('unit_of_measures') %>" >
-      <%= link_to 'Measurement Units', unit_of_measures_path %>
+      <%= link_to t(:measurement_units), unit_of_measures_path %>
     </li>
   </ul>
 </li>
@@ -95,12 +95,12 @@
 <li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "#" do %>
   <i class="fa fa-cube"></i>
-  <span class="nav-label">Accounting</span>
+  <span class="nav-label"><%t(:accounting)%></span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
     <li class="<%= 'active' if is_active_controller('accounts') %>" >
-      <%= link_to 'Accounts', accounts_path %>
+      <%= link_to t(:accounts), accounts_path %>
     </li>
   </ul>
 </li>
@@ -108,23 +108,23 @@
 <li>
   <%= link_to "/home/minor" do %>
   <i class="fa fa-users"></i>
-  <span class="nav-label">Users & accounts</span>
+  <span class="nav-label"><%t(:users_and_accounts)%></span>
   <span class="fa arrow"></span>
   <% end %>
 <!--
 <% if policy(User).index? %>
 
     <li class="<%= 'active' if is_active_controller('users') %>">
-      <a href="#"><%= link_to 'User accounts', users_path %></a>
+      <a href="#"><%= link_to t(:user_accounts), users_path %></a>
     </li>
   <% end %> -->
 
   <ul class="nav nav-second-level collapse">
     <li class="<%= 'active' if is_active_controller('users') %>">
-      <a href="#"><%= link_to 'User accounts', users_path %></a>
+      <a href="#"><%= link_to t(:user_accounts), users_path %></a>
     </li>
     <li class="<%= 'active' if is_active_controller('roles') %>">
-      <a href="#"><%= link_to 'Roles', roles_path %></a>
+      <a href="#"><%= link_to t(:roles), roles_path %></a>
     </li>
   </ul>
 </li>
@@ -132,15 +132,15 @@
 <li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "/home/minor" do %>
   <i class="fa fa-power-off"></i>
-  <span class="nav-label">System</span>
+  <span class="nav-label"><%t(:system)%></span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
     <li>
-      <a href="#">Error logs</a>
+      <a href="#"><%t(:error_logs)%></a>
     </li>
     <li>
-      <a href="#">User activity</a>
+      <a href="#"><%t(:user_activity)%></a>
     </li>
   </ul>
 </li>

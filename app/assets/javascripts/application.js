@@ -41,7 +41,7 @@
 
 $(document).ready(function() {
     /**
-     * Activates parent menu items if children are acive
+     * Activates parent menu items if children are active
      */
     var activeLi = $('li.active');
     activeLi.parentsUntil('nav', 'li').addClass('active');
@@ -54,8 +54,18 @@ $(document).ready(function() {
     });
 
     $('.custom_datepicker').calendarsPicker({
+
         calendar: $.calendars.instance('ethiopian', 'am'),
-        format: 'dd/mm/yyyy'
+        format: 'dd/mm/yyyy',
+
+        onSelect: function(dateText, inst) {
+
+            var dateAsObject = $(this).calendarsPicker('getDate');
+            var jd = dateAsObject[0].toJD();
+            var date_gc = $.calendars.instance('gregorian').fromJD(jd);
+            $(this).val(date_gc.formatDate('dd/mm/yyyy'));
+
+        }
     });
 
     $('.cats-daterangepicker').daterangepicker({

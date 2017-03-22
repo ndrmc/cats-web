@@ -1,7 +1,7 @@
 <div class="wrapper wrapper-content">
  <div class="ibox float-e-margins">
   <div class="ibox-content">
-   <%= form_for(gift_certificate,  :html => {:class => 'form-horizontal'}) do |f| %>
+   <%= form_for(gift_certificate, builder: CustomFormBuilder, :html => {:class => 'form-horizontal'}) do |f| %>
     <% if gift_certificate.errors.any? %>
      <div class="panel panel-danger">
       <div class="panel-heading">
@@ -19,13 +19,13 @@
      </div>
      <% end %>   
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
-       <%= f.label :reference_no,  :class=>"control-label" %><span class="required">*
+       <%= f.label :reference_no,  :class=>"control-label" %><span class="required"/>*
         <%= f.text_field :reference_no,  :class => 'form-control', :required => true %>
       </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-12">
        <div class="col-md-10">
-        <%= f.label :gift_date %><span class="required">*
-         <%= f.text_field :gift_date, :class => 'form-control datepicker', :required => true %>
+        <%= f.label :gift_date %><span class="required"/>*
+         <%= f.date_field :gift_date, params[:locale],:class => 'form-control', :required => true %>
        </div>
       </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-12">
