@@ -97,5 +97,5 @@ gem 'responders'
 gem 'react-rails'
 
 gem 'data-confirm-modal'
-
+gem 'geocoder'
 gem 'wdm', '>=0.1.0' if Gem.win_platform?
