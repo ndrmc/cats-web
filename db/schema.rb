@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315072655) do
+ActiveRecord::Schema.define(version: 20170322110633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -408,6 +408,7 @@ ActiveRecord::Schema.define(version: 20170315072655) do
     t.decimal  "estimated_tax",          precision: 15, scale: 2
     t.integer  "fund_source_id"
     t.integer  "currency_id"
+    t.integer  "commodity_id"
     t.index ["deleted_at"], name: "index_gift_certificates_on_deleted_at", using: :btree
     t.index ["reference_no"], name: "index_gift_certificates_on_reference_no", unique: true, using: :btree
   end
@@ -456,8 +457,20 @@ ActiveRecord::Schema.define(version: 20170315072655) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.string   "address"
     t.index ["deleted_at"], name: "index_hubs_on_deleted_at", using: :btree
     t.index ["name"], name: "index_hubs_on_name", unique: true, using: :btree
+  end
+
+  create_table "idp_reasons", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "journals", force: :cascade do |t|
