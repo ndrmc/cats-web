@@ -101,4 +101,3 @@ gem 'data-confirm-modal'
 gem 'geocoder'
 gem 'gmaps4rails'
 
-gem 'wdm', '>=0.1.0'
