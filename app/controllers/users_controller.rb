@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles, :departments, :updateDepartments]
 
  
 
@@ -36,6 +36,28 @@ class UsersController < ApplicationController
 
   end
 
+
+  def departments
+    @all_departments = Department.all
+  end
+  
+  def updateDepartments
+    new_departments =  params.require(:departments)
+    UsersDepartment.where(user_id: @user.id).destroy_all
+   
+
+    new_departments.each do |department|
+      
+      dep =  UsersDepartment.new({
+        department_id:department.to_i,
+        user_id: @user.id
+      })
+      dep.save
+    end
+
+    redirect_to users_path, success: 'Departments successfully updated.'
+    end
+  
   # GET /users/1/roles
   def roles
     @all_roles = Role.all

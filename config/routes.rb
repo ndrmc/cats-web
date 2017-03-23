@@ -27,6 +27,10 @@ Rails.application.routes.draw do
 
   put 'users/:id/updateRoles', to: 'users#updateRoles'
 
+  get 'users/:id/departments', to: 'users#departments'
+
+  put 'users/:id/updateDepartments', to: 'users#updateDepartments'
+
   resources :currencies
   resources :donors
   resources :programs

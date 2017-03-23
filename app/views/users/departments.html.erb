@@ -1,0 +1,50 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Manage department for <em><%= @user.name %></em></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">User</a>
+      </li>
+      <li class="active">
+        <strong>Departments</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', users_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <%= form_tag "/users/#{@user.id}/updateDepartments", method: :put do %>
+
+
+        <table class="table table-bordered">
+          <tbody>
+            <% @all_departments.each do |department| %>
+              <tr>
+                <td>
+                  <%= check_box_tag "departments[#{department.id}]", 1 , @user.departments.include?(department)  %>
+                </td>
+                <td><%= department.name %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <div class="actions">
+          <%= submit_tag 'Save Changes', :class => 'btn btn-primary' %>
+        </div>
+
+      <% end %>
+
+
+    </div>
+  </div>
+</div>

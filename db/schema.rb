@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322133007) do
+ActiveRecord::Schema.define(version: 20170322184115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -810,11 +810,9 @@ ActiveRecord::Schema.define(version: 20170322133007) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.integer  "role_type_id"
     t.index ["deleted_at"], name: "index_roles_on_deleted_at", using: :btree
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
-    t.index ["role_type_id"], name: "index_roles_on_role_types_id", using: :btree
   end
 
   create_table "seasons", force: :cascade do |t|
@@ -1031,6 +1029,18 @@ ActiveRecord::Schema.define(version: 20170322133007) do
     t.index ["role_types_id"], name: "index_users_on_role_types_id", using: :btree
   end
 
+  create_table "users_departments", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "department_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["department_id"], name: "index_users_departments_on_department_id", using: :btree
+    t.index ["user_id"], name: "index_users_departments_on_user_id", using: :btree
+  end
+
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -1066,6 +1076,7 @@ ActiveRecord::Schema.define(version: 20170322133007) do
   add_foreign_key "regional_requests", "operations"
   add_foreign_key "regional_requests", "programs"
   add_foreign_key "regional_requests", "rations"
-  add_foreign_key "roles", "role_types"
   add_foreign_key "users", "role_types", column: "role_types_id"
+  add_foreign_key "users_departments", "departments"
+  add_foreign_key "users_departments", "users"
 end
