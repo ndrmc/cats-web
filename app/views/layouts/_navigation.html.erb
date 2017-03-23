@@ -10,8 +10,8 @@
         <span class="nav-label"><%= t(:plan) %></span>
         <span class="fa arrow"></span><% end %>
         <ul class="nav nav-second-level collapse">
-          <li>
-            <a href="#"><%= t(:hrd_plan) %></a>
+          <li class="<%= 'active' if is_active_controller('hrds')  %>">
+            <%= link_to t(:hrd_plan), hrds_url %>            
           </li>
           <li>
             <a href="#"><%= t(:psnp_plan) %></a>
@@ -56,7 +56,7 @@
       <li>
         <%= link_to t(:operations), operations_url %>
       </li>
-      <li class="<%= 'active' if current_page?(home_other_url) %>">
+      <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
         <%= link_to t(:regional_request), regional_requests_url %>
       </li>
       <li>
