@@ -2,39 +2,39 @@ GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
   specs:
-    actioncable (5.0.1)
-      actionpack (= 5.0.1)
-      nio4r (~> 1.2)
+    actioncable (5.0.2)
+      actionpack (= 5.0.2)
+      nio4r (>= 1.2, < 3.0)
       websocket-driver (~> 0.6.1)
-    actionmailer (5.0.1)
-      actionpack (= 5.0.1)
-      actionview (= 5.0.1)
-      activejob (= 5.0.1)
+    actionmailer (5.0.2)
+      actionpack (= 5.0.2)
+      actionview (= 5.0.2)
+      activejob (= 5.0.2)
       mail (~> 2.5, >= 2.5.4)
       rails-dom-testing (~> 2.0)
-    actionpack (5.0.1)
-      actionview (= 5.0.1)
-      activesupport (= 5.0.1)
+    actionpack (5.0.2)
+      actionview (= 5.0.2)
+      activesupport (= 5.0.2)
       rack (~> 2.0)
       rack-test (~> 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionview (5.0.1)
-      activesupport (= 5.0.1)
+    actionview (5.0.2)
+      activesupport (= 5.0.2)
       builder (~> 3.1)
       erubis (~> 2.7.0)
       rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    activejob (5.0.1)
-      activesupport (= 5.0.1)
+      rails-html-sanitizer (~> 1.0, >= 1.0.3)
+    activejob (5.0.2)
+      activesupport (= 5.0.2)
       globalid (>= 0.3.6)
-    activemodel (5.0.1)
-      activesupport (= 5.0.1)
-    activerecord (5.0.1)
-      activemodel (= 5.0.1)
-      activesupport (= 5.0.1)
+    activemodel (5.0.2)
+      activesupport (= 5.0.2)
+    activerecord (5.0.2)
+      activemodel (= 5.0.2)
+      activesupport (= 5.0.2)
       arel (~> 7.0)
-    activesupport (5.0.1)
+    activesupport (5.0.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -45,7 +45,7 @@ GEM
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
     arel (7.1.4)
-    autoprefixer-rails (6.7.5)
+    autoprefixer-rails (6.7.7)
       execjs
     axlsx (2.0.1)
       htmlentities (~> 4.3.1)
@@ -59,6 +59,7 @@ GEM
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
     bcrypt (3.1.11)
+    bcrypt (3.1.11-x86-mingw32)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -81,11 +82,11 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
-    connection_pool (2.2.0)
+    connection_pool (2.2.1)
     data-confirm-modal (1.3.0)
       railties (>= 3.0)
     debug_inspector (0.0.2)
-    devise (4.2.0)
+    devise (4.2.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
@@ -95,9 +96,11 @@ GEM
       activemodel
     erubis (2.7.0)
     execjs (2.7.0)
-    ffi (1.9.17)
+    ffi (1.9.18)
+    ffi (1.9.18-x86-mingw32)
     font-awesome-rails (4.7.0.0)
       railties (>= 3.2, < 5.1)
+    geocoder (1.4.3)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     hirb (0.7.3)
@@ -127,13 +130,16 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     multi_json (1.12.1)
-    nio4r (1.2.1)
-    nokogiri (1.7.0.1)
+    nio4r (2.0.0)
+    nokogiri (1.7.1)
+      mini_portile2 (~> 2.1.0)
+    nokogiri (1.7.1-x86-mingw32)
       mini_portile2 (~> 2.1.0)
     orm_adapter (0.5.0)
     paranoia (2.2.1)
       activerecord (>= 4.0, < 5.1)
     pg (0.19.0)
+    pg (0.19.0-x86-mingw32)
     puma (3.7.1)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
@@ -141,29 +147,29 @@ GEM
     rack-cors (0.4.1)
     rack-test (0.6.3)
       rack (>= 1.0)
-    rails (5.0.1)
-      actioncable (= 5.0.1)
-      actionmailer (= 5.0.1)
-      actionpack (= 5.0.1)
-      actionview (= 5.0.1)
-      activejob (= 5.0.1)
-      activemodel (= 5.0.1)
-      activerecord (= 5.0.1)
-      activesupport (= 5.0.1)
+    rails (5.0.2)
+      actioncable (= 5.0.2)
+      actionmailer (= 5.0.2)
+      actionpack (= 5.0.2)
+      actionview (= 5.0.2)
+      activejob (= 5.0.2)
+      activemodel (= 5.0.2)
+      activerecord (= 5.0.2)
+      activesupport (= 5.0.2)
       bundler (>= 1.3.0, < 2.0)
-      railties (= 5.0.1)
+      railties (= 5.0.2)
       sprockets-rails (>= 2.0.0)
     rails-assets-es6-promise (4.0.5)
-    rails-assets-sweetalert2 (6.4.2)
+    rails-assets-sweetalert2 (6.4.4)
       rails-assets-es6-promise
     rails-dom-testing (2.0.2)
       activesupport (>= 4.2.0, < 6.0)
       nokogiri (~> 1.6)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    railties (5.0.1)
-      actionpack (= 5.0.1)
-      activesupport (= 5.0.1)
+    railties (5.0.2)
+      actionpack (= 5.0.2)
+      activesupport (= 5.0.2)
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
@@ -171,12 +177,12 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
-    react-rails (1.6.0)
+    react-rails (1.10.0)
       babel-transpiler (>= 0.7.0)
       coffee-script-source (~> 1.8)
       connection_pool
       execjs
-      rails (>= 3.2)
+      railties (>= 3.2)
       tilt
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
@@ -185,7 +191,7 @@ GEM
       nokogiri
       rubyzip
       spreadsheet (> 0.6.4)
-    ruby-ole (1.2.12)
+    ruby-ole (1.2.12.1)
     rubyzip (1.0.0)
     sass (3.4.23)
     sass-rails (5.0.6)
@@ -211,7 +217,7 @@ GEM
     terminal-table (1.6.0)
     thor (0.19.4)
     thread_safe (0.3.6)
-    tilt (2.0.6)
+    tilt (2.0.7)
     toastr-rails (1.0.3)
       railties (>= 3.1.0)
     turbolinks (5.0.1)
@@ -219,7 +225,9 @@ GEM
     turbolinks-source (5.0.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (3.1.1)
+    tzinfo-data (1.2017.1)
+      tzinfo (>= 1.0.0)
+    uglifier (3.1.9)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (0.1.1)
     warden (1.2.7)
@@ -235,12 +243,14 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   ancestry
   annotate
   axlsx (= 2.0.1)
   axlsx_rails
+  bcrypt
   better_errors
   binding_of_caller
   bootstrap-datepicker-rails (~> 1.6, >= 1.6.0.1)
@@ -251,6 +261,7 @@ DEPENDENCIES
   devise (~> 4.2.0)
   email_validator
   font-awesome-rails (= 4.7.0.0)
+  geocoder
   hirb-unicode
   jbuilder (~> 2.5)
   jquery-rails
@@ -278,4 +289,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.14.4
+   1.14.6

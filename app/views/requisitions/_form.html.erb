@@ -32,23 +32,23 @@
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :operation_id, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-              <%= f.text_field :operation_id,:value=> Operation.find(requisition.operation_id).name, :disabled => true %>
+              <%= f.text_field :operation_id,:value=> requisition.operation_id ? Operation.find(requisition.operation_id).name : nil , :disabled => true %>
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :commodity_id, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-              <%= f.text_field :commodity_id, :value=> Commodity.find(requisition.commodity_id).name, :disabled => true %>
+              <%= f.text_field :commodity_id, :value=> requisition.commodity_id ? Commodity.find(requisition.commodity_id).name : nil, :disabled => true %>
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :region_id, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-              <%= f.text_field :region_id, :value=> Location.find(requisition.region_id).name, :disabled => true %>
+              <%= f.text_field :region_id, :value=> requisition.region_id ?  Location.find(requisition.region_id).name : nil, :disabled => true %>
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :zone_id, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-              <%= f.text_field :zone_id, :value=> Location.find(requisition.zone_id).name, :disabled => true %>
+              <%= f.text_field :zone_id, :value=> requisition.zone_id ? Location.find(requisition.zone_id).name : nil, :disabled => true %>
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :ration_id, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-              <%= f.text_field :ration_id,:value=> Ration.find(requisition.ration_id).description, :disabled => true %>
+              <%= f.text_field :ration_id,:value=> requisition.zone_id ? Ration.find(requisition.ration_id).description : nil, :disabled => true %>
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :requested_on, :class=>"control-label col-md-3 col-sm-3 col-xs-6"%>
