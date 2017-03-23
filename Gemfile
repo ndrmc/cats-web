@@ -101,4 +101,4 @@ gem 'data-confirm-modal'
 gem 'geocoder'
 gem 'gmaps4rails'
 
-gem 'wdm', '>=0.1.0' if Gem.win_platform?
+gem 'wdm', '>=0.1.0'
