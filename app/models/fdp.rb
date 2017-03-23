@@ -22,6 +22,9 @@ class Fdp < ApplicationRecord
   belongs_to :location
   has_many :fdp_contacts
 
+  reverse_geocoded_by :lat , :lon
+
+  after_validation :reverse_geocode
 
   attr_reader :zone, :woreda, :region
 
@@ -49,4 +52,6 @@ class Fdp < ApplicationRecord
     def init_default_vals
       self.active = true if self.active.nil?
     end
+
+
 end

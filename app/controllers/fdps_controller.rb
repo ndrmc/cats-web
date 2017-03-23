@@ -44,7 +44,7 @@ class FdpsController < ApplicationController
   def update
     respond_to do |format|
       if @fdp.update(fdp_params)
-        format.html { redirect_to fdps_path, notice: 'Fdp was successfully updated.' }
+        format.html { redirect_to @fdp, notice: 'Fdp was successfully updated.' }
         format.json { render :show, status: :ok, location: @fdp }
       else
         format.html { render :edit }

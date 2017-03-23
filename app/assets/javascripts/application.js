@@ -34,7 +34,8 @@
 //= require jquery.calendars/jquery.calendars.picker.js
 //= require jquery.calendars/jquery.calendars.ethiopian.js
 //= require jquery.calendars/jquery.calendars.ethiopian-am.js
-
+//= require underscore-min
+//= require gmaps/google
 //= require_tree .
 
 

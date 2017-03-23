@@ -33,6 +33,7 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.11'
 gem 'bcrypt', platforms: :ruby
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -98,4 +99,6 @@ gem 'react-rails'
 
 gem 'data-confirm-modal'
 gem 'geocoder'
+gem 'gmaps4rails'
+
 gem 'wdm', '>=0.1.0' if Gem.win_platform?

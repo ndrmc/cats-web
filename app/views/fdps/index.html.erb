@@ -36,7 +36,7 @@
         <tbody>
         <% @fdps.each do |fdp| %>
             <tr>
-              <td><%= fdp.name %></td>
+              <td><%=link_to fdp.name, fdp_path(fdp.id) %></td>
               <td><%= fdp.region.try(:[], :name)  %></td>
               <td><%= fdp.zone.try(:[], :name)  %></td>
               <td><%= fdp.woreda.try(:[], :name) %></td>
