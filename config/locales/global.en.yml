@@ -82,6 +82,7 @@ en:
   measurement_units: "Measurement Units"
   accounting: "Accounting"
   accounts: "Accounts"
+  journals: "Journals"
   users_and_accounts: "Users & Accounts"
   user_accounts: "User Accounts"
   roles: "Roles"

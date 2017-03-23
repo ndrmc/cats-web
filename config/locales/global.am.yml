@@ -81,6 +81,7 @@ am:
   measurement_units: "መለኪያ"
   accounting: "ሒሳብ"
   accounts: "አካውንት"
+  journals: "ጆርናል"
   users_and_accounts: "ተጠቃሚዎች"
   user_accounts: "የተጠቃሚዎች አካውንት"
   roles: "ሚናዎች"
