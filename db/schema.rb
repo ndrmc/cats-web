@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170325094736) do
+ActiveRecord::Schema.define(version: 20170325120145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -555,6 +555,9 @@ ActiveRecord::Schema.define(version: 20170325094736) do
   create_table "permissions", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
@@ -1002,6 +1005,17 @@ ActiveRecord::Schema.define(version: 20170325094736) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_uom_categories_on_deleted_at", using: :btree
+  end
+
+  create_table "user_types", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "users", force: :cascade do |t|

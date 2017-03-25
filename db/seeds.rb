@@ -238,3 +238,31 @@ if OwnershipType.count == 0
   OwnershipType.create(name: 'other', description: '')
   puts "Created ownership types lookup"
 end
+
+if Permission.count == 0 
+  Permission.create(name: 'HRD', description: '')
+  Permission.create(name: 'Gift Certificate', description: '')
+  Permission.create(name: 'Receipts', description: '')
+  Permission.create(name: 'Project', description: '')
+  Permission.create(name: 'Ration', description: '')
+
+  Permission.create(name: 'Dispatch', description: '')
+  Permission.create(name: 'Need Assessment', description: '')
+  Permission.create(name: 'Commodity', description: '')
+  Permission.create(name: 'Warehouses', description: '')
+  Permission.create(name: 'PSNP Annual Plan', description: '')
+
+  Permission.create(name: 'Delivery', description: '')
+  Permission.create(name: 'Transfers', description: '')
+  Permission.create(name: 'Donor', description: '')
+  Permission.create(name: 'Organizations', description: '')
+  Permission.create(name: 'Unit of Measurements', description: '')
+ 
+  Permission.create(name: 'Operation', description: '')
+  Permission.create(name: 'Currencies', description: '')
+  Permission.create(name: 'FDP', description: '')
+  Permission.create(name: 'locations', description: '')
+  Permission.create(name: 'Programs', description: '')
+
+end
+

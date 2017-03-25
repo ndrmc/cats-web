@@ -28343,3 +28343,442 @@ Migrating to CreatePermissions (20170325094952)
   [1m[35m (2.2ms)[0m  [1m[35mCREATE TABLE "permissions" ("id" serial primary key, "name" character varying, "description" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
   [1m[35m (0.1ms)[0m  [1m[31mROLLBACK[0m
   [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(782232805093510260)[0m
+Started GET "/" for 127.0.0.1 at 2017-03-25 14:29:32 +0300
+  [1m[36mActiveRecord::SchemaMigration Load (4.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+DEPRECATION WARNING: around_filter is deprecated and will be removed in Rails 5.1. Use around_action instead. (called from <class:ApplicationController> at /home/dawit/cats/cats-web/app/controllers/application_controller.rb:5)
+Processing by DashboardController#index as HTML
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  Rendering dashboard/index.html.erb within layouts/application
+  Rendered dashboard/index.html.erb within layouts/application (11.9ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (4.5ms)
+  Rendered layouts/_navigation.html.erb (30.8ms)
+  Rendered layouts/_topnavbar.html.erb (1.2ms)
+  Rendered layouts/_footer.html.erb (1.3ms)
+Completed 200 OK in 4129ms (Views: 4019.1ms | ActiveRecord: 8.2ms)
+
+
+Started GET "/en/setting/index" for 127.0.0.1 at 2017-03-25 14:29:41 +0300
+Processing by SettingController#index as HTML
+  Parameters: {"locale"=>"en"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  Rendering setting/index.html.erb within layouts/admin
+  Rendered setting/index.html.erb within layouts/admin (1.7ms)
+  Rendered layouts/_headcontent.html.erb (449.3ms)
+  Rendered layouts/_layout_common_js.html.erb (0.9ms)
+  Rendered layouts/_logoheader.html.erb (13.7ms)
+  Rendered layouts/_settingnav.html.erb (49.5ms)
+  Rendered layouts/_topnavbar.html.erb (6.3ms)
+  Rendered layouts/_footer.html.erb (0.6ms)
+Completed 200 OK in 547ms (Views: 539.2ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/departments?locale=en" for 127.0.0.1 at 2017-03-25 14:29:46 +0300
+Processing by DepartmentsController#index as HTML
+  Parameters: {"locale"=>"en"}
+  [1m[36mUser Load (2.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  Rendering departments/index.html.erb within layouts/admin
+  [1m[36mDepartment Load (1.5ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL[0m
+  Rendered departments/index.html.erb within layouts/admin (34.2ms)
+  Rendered layouts/_headcontent.html.erb (576.6ms)
+  Rendered layouts/_layout_common_js.html.erb (0.8ms)
+  Rendered layouts/_logoheader.html.erb (11.4ms)
+  Rendered layouts/_settingnav.html.erb (49.1ms)
+  Rendered layouts/_topnavbar.html.erb (7.8ms)
+  Rendered layouts/_footer.html.erb (0.9ms)
+Completed 200 OK in 749ms (Views: 680.4ms | ActiveRecord: 12.3ms)
+
+
+Started GET "/departments/new?locale=en" for 127.0.0.1 at 2017-03-25 14:29:50 +0300
+Processing by DepartmentsController#new as HTML
+  Parameters: {"locale"=>"en"}
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  Rendering departments/new.html.erb within layouts/admin
+  Rendered departments/_form.html.erb (39.9ms)
+  Rendered departments/new.html.erb within layouts/admin (63.2ms)
+  Rendered layouts/_headcontent.html.erb (447.0ms)
+  Rendered layouts/_layout_common_js.html.erb (0.5ms)
+  Rendered layouts/_logoheader.html.erb (5.8ms)
+  Rendered layouts/_settingnav.html.erb (19.1ms)
+  Rendered layouts/_topnavbar.html.erb (1.4ms)
+  Rendered layouts/_footer.html.erb (0.4ms)
+Completed 200 OK in 592ms (Views: 557.8ms | ActiveRecord: 1.4ms)
+
+
+Started POST "/departments?locale=en" for 127.0.0.1 at 2017-03-25 14:29:55 +0300
+Processing by DepartmentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"lhoU7XNGZcJIMO9ZH3uyJgBYXwU+XFx145itx/uWV8JvJaUW7JhtBTd6MJ7gf4j8FepJaPhrnzM3+h7qJyEiDg==", "department"=>{"name"=>"bb", "description"=>""}, "commit"=>"Create Department", "locale"=>"en"}
+  [1m[36mUser Load (2.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[35m (1.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mDepartment Exists (6.8ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" WHERE "departments"."name" = $1 AND "departments"."deleted_at" IS NULL LIMIT $2[0m  [["name", "bb"], ["LIMIT", 1]]
+  [1m[35mSQL (128.8ms)[0m  [1m[32mINSERT INTO "departments" ("name", "description", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["name", "bb"], ["description", ""], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 11:29:55 UTC], ["updated_at", 2017-03-25 11:29:55 UTC]]
+  [1m[35m (175.6ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/departments?locale=en
+Completed 302 Found in 356ms (ActiveRecord: 315.0ms)
+
+
+Started GET "/departments?locale=en" for 127.0.0.1 at 2017-03-25 14:29:55 +0300
+Processing by DepartmentsController#index as HTML
+  Parameters: {"locale"=>"en"}
+  [1m[36mUser Load (7.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  Rendering departments/index.html.erb within layouts/admin
+  [1m[36mDepartment Load (1.7ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL[0m
+  Rendered departments/index.html.erb within layouts/admin (9.7ms)
+  Rendered layouts/_headcontent.html.erb (431.5ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (6.4ms)
+  Rendered layouts/_settingnav.html.erb (23.5ms)
+  Rendered layouts/_topnavbar.html.erb (1.2ms)
+  Rendered layouts/_footer.html.erb (0.3ms)
+Completed 200 OK in 506ms (Views: 487.6ms | ActiveRecord: 9.4ms)
+
+
+Started GET "/en/users" for 127.0.0.1 at 2017-03-25 14:29:59 +0300
+Processing by UsersController#index as HTML
+  Parameters: {"locale"=>"en"}
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/admin
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."deleted_at" IS NULL[0m
+  [1m[36mRole Load (4.4ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[36mRole Load (2.7ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 26]]
+  [1m[36mRole Load (0.6ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 18]]
+  Rendered users/index.html.erb within layouts/admin (161.9ms)
+  Rendered layouts/_headcontent.html.erb (438.4ms)
+  Rendered layouts/_layout_common_js.html.erb (5.3ms)
+  Rendered layouts/_logoheader.html.erb (3.7ms)
+  Rendered layouts/_settingnav.html.erb (39.5ms)
+  Rendered layouts/_topnavbar.html.erb (5.8ms)
+  Rendered layouts/_footer.html.erb (0.9ms)
+Completed 200 OK in 693ms (Views: 669.1ms | ActiveRecord: 16.4ms)
+
+
+Started GET "/users/26/departments" for 127.0.0.1 at 2017-03-25 14:30:03 +0300
+Processing by UsersController#departments as HTML
+  Parameters: {"id"=>"26"}
+  [1m[36mUser Load (1.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (2.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 26], ["LIMIT", 1]]
+  [1m[35m (3.4ms)[0m  [1m[34mSELECT "users_departments"."department_id" FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 26]]
+  Rendering users/departments.html.erb within layouts/admin
+  [1m[36mDepartment Load (0.6ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL AND "departments"."id" IN (1, 2)[0m
+  [1m[36mDepartment Exists (4.8ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 2], ["LIMIT", 1]]
+  [1m[36mRole Load (0.4ms)[0m  [1m[34mSELECT "roles".* FROM "roles" WHERE "roles"."deleted_at" IS NULL[0m
+  [1m[36mRole Exists (6.4ms)[0m  [1m[34mSELECT  1 AS one FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1 AND "roles"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 76], ["LIMIT", 1]]
+  [1m[36mRole Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1 AND "roles"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 77], ["LIMIT", 1]]
+  [1m[36mRole Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1 AND "roles"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 78], ["LIMIT", 1]]
+  [1m[36mRole Exists (5.1ms)[0m  [1m[34mSELECT  1 AS one FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1 AND "roles"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 79], ["LIMIT", 1]]
+  Rendered users/departments.html.erb within layouts/admin (114.4ms)
+  Rendered layouts/_headcontent.html.erb (398.0ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (8.8ms)
+  Rendered layouts/_settingnav.html.erb (67.2ms)
+  Rendered layouts/_topnavbar.html.erb (1.2ms)
+  Rendered layouts/_footer.html.erb (1.8ms)
+Completed 200 OK in 651ms (Views: 590.7ms | ActiveRecord: 27.6ms)
+
+
+Started GET "/en/users/26/user_departments?user_id=26" for 127.0.0.1 at 2017-03-25 14:30:09 +0300
+Processing by UsersController#user_departments as HTML
+  Parameters: {"user_id"=>"26", "locale"=>"en", "id"=>"26"}
+  [1m[36mUser Load (6.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 26], ["LIMIT", 1]]
+  Rendering users/user_departments.html.erb within layouts/admin
+  [1m[36mDepartment Load (1.5ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL[0m
+  [1m[36mDepartment Exists (5.1ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (5.6ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 6], ["LIMIT", 1]]
+  Rendered users/user_departments.html.erb within layouts/admin (36.5ms)
+  Rendered layouts/_headcontent.html.erb (412.6ms)
+  Rendered layouts/_layout_common_js.html.erb (5.9ms)
+  Rendered layouts/_logoheader.html.erb (6.8ms)
+  Rendered layouts/_settingnav.html.erb (36.7ms)
+  Rendered layouts/_topnavbar.html.erb (1.3ms)
+  Rendered layouts/_footer.html.erb (1.8ms)
+Completed 200 OK in 535ms (Views: 507.7ms | ActiveRecord: 20.1ms)
+
+
+Started PUT "/users/26/updateDepartments" for 127.0.0.1 at 2017-03-25 14:30:14 +0300
+Processing by UsersController#updateDepartments as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"f7LGsX7SN43PWnkWS6Wtvw38jPdkcvc/pDgNQIYpc1uGjXdK4Qw/SrAQptG0oZdlGE6amqJFNHlwWr5tWp4Glw==", "departments"=>{"1"=>"1", "2"=>"1", "6"=>"1"}, "commit"=>"Save Changes", "id"=>"26"}
+  [1m[36mUser Load (5.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (2.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 26], ["LIMIT", 1]]
+  [1m[36mUsersDepartment Load (1.6ms)[0m  [1m[34mSELECT "users_departments".* FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 26]]
+  [1m[35m (2.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.4ms)[0m  [1m[33mUPDATE "users_departments" SET "deleted_at" = '2017-03-25 11:30:14.146276', "updated_at" = '2017-03-25 11:30:14.146343' WHERE "users_departments"."id" = $1[0m  [["id", 117]]
+  [1m[35m (61.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[33mUPDATE "users_departments" SET "deleted_at" = '2017-03-25 11:30:14.212990', "updated_at" = '2017-03-25 11:30:14.213026' WHERE "users_departments"."id" = $1[0m  [["id", 118]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.0ms)[0m  [1m[32mINSERT INTO "users_departments" ("user_id", "department_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 26], ["department_id", 1], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 11:30:14 UTC], ["updated_at", 2017-03-25 11:30:14 UTC]]
+  [1m[35m (2.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.3ms)[0m  [1m[32mINSERT INTO "users_departments" ("user_id", "department_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 26], ["department_id", 2], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 11:30:14 UTC], ["updated_at", 2017-03-25 11:30:14 UTC]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (4.5ms)[0m  [1m[32mINSERT INTO "users_departments" ("user_id", "department_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 26], ["department_id", 6], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 11:30:14 UTC], ["updated_at", 2017-03-25 11:30:14 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/en/users/26/departments
+Completed 302 Found in 152ms (ActiveRecord: 95.9ms)
+
+
+Started GET "/en/users/26/departments" for 127.0.0.1 at 2017-03-25 14:30:14 +0300
+Processing by UsersController#departments as HTML
+  Parameters: {"locale"=>"en", "id"=>"26"}
+  [1m[36mUser Load (4.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (5.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 26], ["LIMIT", 1]]
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "users_departments"."department_id" FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 26]]
+  Rendering users/departments.html.erb within layouts/admin
+  [1m[36mDepartment Load (0.4ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL AND "departments"."id" IN (1, 2, 6)[0m
+  [1m[36mDepartment Exists (1.7ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (2.3ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (2.6ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 6], ["LIMIT", 1]]
+  [1m[36mRole Load (2.1ms)[0m  [1m[34mSELECT "roles".* FROM "roles" WHERE "roles"."deleted_at" IS NULL[0m
+  [1m[36mRole Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1 AND "roles"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 76], ["LIMIT", 1]]
+  [1m[36mRole Exists (1.0ms)[0m  [1m[34mSELECT  1 AS one FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1 AND "roles"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 77], ["LIMIT", 1]]
+  [1m[36mRole Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1 AND "roles"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 78], ["LIMIT", 1]]
+  [1m[36mRole Exists (2.0ms)[0m  [1m[34mSELECT  1 AS one FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1 AND "roles"."id" = $2 LIMIT $3[0m  [["user_id", 26], ["id", 79], ["LIMIT", 1]]
+  Rendered users/departments.html.erb within layouts/admin (66.8ms)
+  Rendered layouts/_headcontent.html.erb (414.2ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (9.5ms)
+  Rendered layouts/_settingnav.html.erb (28.7ms)
+  Rendered layouts/_topnavbar.html.erb (3.3ms)
+  Rendered layouts/_footer.html.erb (4.2ms)
+Completed 200 OK in 567ms (Views: 525.0ms | ActiveRecord: 23.3ms)
+
+
+Started GET "/en/users" for 127.0.0.1 at 2017-03-25 14:30:18 +0300
+Processing by UsersController#index as HTML
+  Parameters: {"locale"=>"en"}
+  [1m[36mUser Load (6.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/admin
+  [1m[36mUser Load (2.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."deleted_at" IS NULL[0m
+  [1m[36mRole Load (6.2ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[36mRole Load (2.4ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 26]]
+  [1m[36mRole Load (7.4ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 18]]
+  Rendered users/index.html.erb within layouts/admin (57.3ms)
+  Rendered layouts/_headcontent.html.erb (496.9ms)
+  Rendered layouts/_layout_common_js.html.erb (0.7ms)
+  Rendered layouts/_logoheader.html.erb (6.5ms)
+  Rendered layouts/_settingnav.html.erb (28.4ms)
+  Rendered layouts/_topnavbar.html.erb (4.6ms)
+  Rendered layouts/_footer.html.erb (0.5ms)
+Completed 200 OK in 630ms (Views: 596.6ms | ActiveRecord: 25.6ms)
+
+
+  [1m[35m (1.9ms)[0m  [1m[34mSELECT pg_try_advisory_lock(782232805093510260);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePermissions (20170325094952)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mDROP TABLE "permissions"[0m
+  [1m[35mSQL (2.2ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = $1[0m  [["version", "20170325094952"]]
+  [1m[35m (35.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.5ms)[0m  [1m[34mSELECT pg_advisory_unlock(782232805093510260)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(782232805093510260);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePermissions (20170325094952)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (42.1ms)[0m  [1m[35mCREATE TABLE "permissions" ("id" serial primary key, "name" character varying, "description" character varying, "created_by" integer, "modified_by" integer, "deleted_at" timestamp, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (1.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170325094952"]]
+  [1m[35m (13.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (3.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(782232805093510260)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (135.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "seasons" WHERE "seasons"."deleted_at" IS NULL[0m
+  [1m[35m (25.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "uom_categories" WHERE "uom_categories"."deleted_at" IS NULL[0m
+  [1m[35m (2.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "unit_of_measures" WHERE "unit_of_measures"."deleted_at" IS NULL[0m
+  [1m[35m (49.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "commodity_categories" WHERE "commodity_categories"."deleted_at" IS NULL[0m
+  [1m[35m (11.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "commodities" WHERE "commodities"."deleted_at" IS NULL[0m
+  [1m[35m (11.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "mode_of_transports" WHERE "mode_of_transports"."deleted_at" IS NULL[0m
+  [1m[35m (19.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "fund_sources" WHERE "fund_sources"."deleted_at" IS NULL[0m
+  [1m[35m (2.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "fund_types" WHERE "fund_types"."deleted_at" IS NULL[0m
+  [1m[35m (3.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "currencies" WHERE "currencies"."deleted_at" IS NULL[0m
+  [1m[35m (2.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "programs" WHERE "programs"."deleted_at" IS NULL[0m
+  [1m[35m (2.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "accounts" WHERE "accounts"."deleted_at" IS NULL[0m
+  [1m[35m (28.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "journals" WHERE "journals"."deleted_at" IS NULL[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "roles" WHERE "roles"."deleted_at" IS NULL[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(782232805093510260);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(782232805093510260)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(782232805093510260);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(782232805093510260)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (4.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(782232805093510260);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePermissions (20170325094952)
+  [1m[35m (3.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.3ms)[0m  [1m[35mDROP TABLE "permissions"[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = $1[0m  [["version", "20170325094952"]]
+  [1m[35m (51.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateUsersDepartments (20170322184115)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.7ms)[0m  [1m[35mDROP TABLE "users_departments"[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = $1[0m  [["version", "20170322184115"]]
+  [1m[35m (62.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateDepartments (20170322133007)
+  [1m[35m (1.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.8ms)[0m  [1m[35mDROP TABLE "departments"[0m
+  [1m[35m (0.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT pg_advisory_unlock(782232805093510260)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(782232805093510260);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUsersDepartments (20170322184115)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (83.4ms)[0m  [1m[35mCREATE TABLE "users_departments" ("id" serial primary key, "user_id" integer, "department_id" integer, "created_by" integer, "modified_by" integer, "deleted_at" timestamp, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_cbafd1e5ff"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_b917af0f43"
+FOREIGN KEY ("department_id")
+  REFERENCES "departments" ("id")
+)[0m
+  [1m[35m (2.9ms)[0m  [1m[35mCREATE  INDEX  "index_users_departments_on_user_id" ON "users_departments"  ("user_id")[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE  INDEX  "index_users_departments_on_department_id" ON "users_departments"  ("department_id")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170322184115"]]
+  [1m[35m (23.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreatePermissions (20170325094952)
+  [1m[35m (1.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (71.2ms)[0m  [1m[35mCREATE TABLE "permissions" ("id" serial primary key, "name" character varying, "description" character varying, "created_by" integer, "modified_by" integer, "deleted_at" timestamp, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (1.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170325094952"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(782232805093510260)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(782232805093510260);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUserTypes (20170325120145)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.2ms)[0m  [1m[35mCREATE TABLE "user_types" ("id" serial primary key, "name" character varying, "description" character varying, "created_by" integer, "modified_by" integer, "deleted" boolean DEFAULT 'f', "deleted_at" timestamp, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170325120145"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (4.9ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (3.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(782232805093510260)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "seasons" WHERE "seasons"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "uom_categories" WHERE "uom_categories"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "unit_of_measures" WHERE "unit_of_measures"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "commodity_categories" WHERE "commodity_categories"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "commodities" WHERE "commodities"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "mode_of_transports" WHERE "mode_of_transports"."deleted_at" IS NULL[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "fund_sources" WHERE "fund_sources"."deleted_at" IS NULL[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "fund_types" WHERE "fund_types"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "currencies" WHERE "currencies"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "programs" WHERE "programs"."deleted_at" IS NULL[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "accounts" WHERE "accounts"."deleted_at" IS NULL[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "journals" WHERE "journals"."deleted_at" IS NULL[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" WHERE "users"."deleted_at" IS NULL[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "roles" WHERE "roles"."deleted_at" IS NULL[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "user_types" WHERE "user_types"."deleted_at" IS NULL[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "user_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "admin"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (37.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "user_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "federal"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "user_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "hub"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "user_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "region"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (14.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "ownership_types" WHERE "ownership_types"."deleted_at" IS NULL[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (13.7ms)[0m  [1m[32mINSERT INTO "ownership_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "private"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "ownership_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "plc"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (3.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "ownership_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "share company"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "ownership_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "government"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.8ms)[0m  [1m[32mINSERT INTO "ownership_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "ngo"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (4.2ms)[0m  [1m[32mINSERT INTO "ownership_types" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "other"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "permissions" WHERE "permissions"."deleted_at" IS NULL[0m
+  [1m[35m (1.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "HRD"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.4ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Gift Certificate"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Receipts"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.8ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Project"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Ration"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (3.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Dispatch"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (3.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Need Assessment"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.0ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Commodity"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (6.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.7ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Warehouses"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "PSNP Annual Plan"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (4.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Delivery"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.4ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Transfers"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (28.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.2ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Donor"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (48.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Organizations"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (35.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.9ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Unit of Measurements"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Operation"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Currencies"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "FDP"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "locations"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Programs"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
