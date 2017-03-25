@@ -1,18 +1,18 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Manage departments for <em><%= @user.name %></em></h2>
+    <h2>Manage permission for <em><%= @user.name %></em></h2>
     <ol class="breadcrumb">
       <li>
         <a href="#">User</a>
       </li>
       <li class="active">
-        <strong>Departments</strong>
+        <strong>Permissions</strong>
       </li>
     </ol>
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'Cancel', users_path,  :class => "btn btn-default"%>
+      <%= link_to 'Cancel', "/users/#{@user.id}/departments",  :class => "btn btn-default"%>
     </div>
   </div>
 
