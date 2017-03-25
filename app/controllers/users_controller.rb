@@ -36,9 +36,14 @@ class UsersController < ApplicationController
 
   end
 
+  def user_departments
+     @user = User.find(params[:user_id])
+     @all_departments = Department.all
+  end
 
   def departments
-    @all_departments = Department.all
+    @all_departments = Department.where(id: @user.users_departments.pluck(:department_id))
+    @all_roles = Role.all
   end
   
   def updateDepartments
@@ -55,7 +60,7 @@ class UsersController < ApplicationController
       dep.save
     end
 
-    redirect_to users_path, success: 'Departments successfully updated.'
+    redirect_to :action => "departments"
     end
   
   # GET /users/1/roles

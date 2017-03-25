@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Manage department for <em><%= @user.name %></em></h2>
+    <h2>Manage user for <em><%= @user.name %></em></h2>
     <ol class="breadcrumb">
       <li>
         <a href="#">User</a>
@@ -15,16 +15,80 @@
       <%= link_to 'Cancel', users_path,  :class => "btn btn-default"%>
     </div>
   </div>
+
+ <div class="col-sm-3">
+   <% if @user.is_active %>
+      <span class="badge badge-success"> Active </span>
+    <%else%>
+      <span class="label label-default"> Active </span>
+    <%end%>
+    </div>
 </div>
+
 
 
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
-      <%= form_tag "/users/#{@user.id}/updateDepartments", method: :put do %>
+
+<div class="row">
+<div class="col-sm-4">
+  <div class="control-label col-sm-3"> User</div>
+  <div class="col-sm-5"> <%= @user.name %> </div>
+</div>
+
+<div class="col-sm-4">
+  <div class="control-label col-sm-3"> Registered since </div>
+  <div class="col-sm-5"> <%= @user.created_at.strftime("%m/%d/%y") %> </div>
+</div>
+
+<div class="col-sm-4">
+  <div class="control-label col-sm-3"> Last login</div>
+  <div class="col-sm-5"> <%= @user.last_sign_in_at.strftime("%m/%d/%y") %> </div>
+</div>
+</div>
 
 
+  <div class="row">
+<div class="col-sm-4">
+  <div class="control-label col-sm-3"> Region </div>
+  <div class="col-sm-5"> -</div>
+</div>
+
+<div class="col-sm-4">
+  <div class="control-label col-sm-3"> User type </div>
+  <div class="col-sm-5"> -</div>
+</div>
+
+<div class="col-sm-4">
+  <div class="control-label col-sm-3"> Hub </div>
+  <div class="col-sm-5"> - </div>
+</div>
+</div>
+
+
+</div>
+</div>
+</div>
+
+
+
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+   <div class="ibox-title">
+          <h5>Department</h5>
+          <div class="pull-right">
+          <%= link_to 'Join department',  {:controller => "users", :action => "user_departments", :user_id => @user.id }, :class => "btn btn-success btn-sm" %>
+   </div>
+   </div>
+
+    <div class="ibox-content">
+
+ 
+
+  
         <table class="table table-bordered">
           <tbody>
             <% @all_departments.each do |department| %>
@@ -37,12 +101,47 @@
             <% end %>
           </tbody>
         </table>
+    </div>
+  </div>
+</div>
 
-        <div class="actions">
-          <%= submit_tag 'Save Changes', :class => 'btn btn-primary' %>
-        </div>
 
-      <% end %>
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+
+   <div class="ibox-title">
+          <h5>Permission</h5>
+   
+   <div class="pull-right">
+     <%= link_to 'New permission', roles_path, :class => "btn btn-success btn-sm"%>
+   </div>
+   </div>
+    <div class="ibox-content">
+
+    
+
+  
+
+     
+
+
+        <table class="table table-bordered">
+          <tbody>
+            <% @all_roles.each do |role| %>
+              <tr>
+                <td>
+                  <%= check_box_tag "roles[#{role.name}]", 1 , @user.roles.include?(role)  %>
+                  <%= role.name %>
+                </td>
+               
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+       
+
+     
 
 
     </div>

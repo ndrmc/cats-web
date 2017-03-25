@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
   put 'users/:id/updateDepartments', to: 'users#updateDepartments'
 
+  get 'users/:id/user_departments', to: 'users#user_departments'
+
   resources :currencies
   resources :donors
   resources :programs

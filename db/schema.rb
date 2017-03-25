@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322184115) do
+ActiveRecord::Schema.define(version: 20170323074334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -815,6 +815,15 @@ ActiveRecord::Schema.define(version: 20170322184115) do
     t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
+  create_table "roles_departments", force: :cascade do |t|
+    t.integer  "roles_id"
+    t.integer  "departments_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["departments_id"], name: "index_roles_departments_on_departments_id", using: :btree
+    t.index ["roles_id"], name: "index_roles_departments_on_roles_id", using: :btree
+  end
+
   create_table "seasons", force: :cascade do |t|
     t.string   "name",        null: false
     t.string   "description"
@@ -1076,6 +1085,8 @@ ActiveRecord::Schema.define(version: 20170322184115) do
   add_foreign_key "regional_requests", "operations"
   add_foreign_key "regional_requests", "programs"
   add_foreign_key "regional_requests", "rations"
+  add_foreign_key "roles_departments", "departments", column: "departments_id"
+  add_foreign_key "roles_departments", "roles", column: "roles_id"
   add_foreign_key "users", "role_types", column: "role_types_id"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
