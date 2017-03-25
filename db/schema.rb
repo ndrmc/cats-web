@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170325120145) do
+ActiveRecord::Schema.define(version: 20170325120808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1007,6 +1007,15 @@ ActiveRecord::Schema.define(version: 20170325120145) do
     t.index ["deleted_at"], name: "index_uom_categories_on_deleted_at", using: :btree
   end
 
+  create_table "user_permissions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "permission_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["permission_id"], name: "index_user_permissions_on_permission_id", using: :btree
+    t.index ["user_id"], name: "index_user_permissions_on_user_id", using: :btree
+  end
+
   create_table "user_types", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -1108,6 +1117,8 @@ ActiveRecord::Schema.define(version: 20170325120145) do
   add_foreign_key "regional_requests", "rations"
   add_foreign_key "roles_departments", "departments", column: "departments_id"
   add_foreign_key "roles_departments", "roles", column: "roles_id"
+  add_foreign_key "user_permissions", "permissions"
+  add_foreign_key "user_permissions", "users"
   add_foreign_key "users", "role_types", column: "role_types_id"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"

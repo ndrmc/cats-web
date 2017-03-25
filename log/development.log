@@ -28782,3 +28782,23 @@ Migrating to CreateUserTypes (20170325120145)
   [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
   [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "permissions" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Programs"], ["description", ""], ["created_at", 2017-03-25 12:02:22 UTC], ["updated_at", 2017-03-25 12:02:22 UTC]]
   [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(782232805093510260);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUserPermissions (20170325120808)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (42.0ms)[0m  [1m[35mCREATE TABLE "user_permissions" ("id" serial primary key, "user_id" integer, "permission_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_b29e483ce4"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_e2cb0687d2"
+FOREIGN KEY ("permission_id")
+  REFERENCES "permissions" ("id")
+)[0m
+  [1m[35m (3.7ms)[0m  [1m[35mCREATE  INDEX  "index_user_permissions_on_user_id" ON "user_permissions"  ("user_id")[0m
+  [1m[35m (3.4ms)[0m  [1m[35mCREATE  INDEX  "index_user_permissions_on_permission_id" ON "user_permissions"  ("permission_id")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170325120808"]]
+  [1m[35m (18.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.7ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT pg_advisory_unlock(782232805093510260)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
