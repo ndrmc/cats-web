@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles, :departments, :updateDepartments, :updatePermissions]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles, :user_profile, :updateDepartments, :updatePermissions]
 
  
 
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
   end
   
 
-  def departments
+  def user_profile
     @all_departments = Department.where(id: @user.users_departments.pluck(:department_id))
     @all_permissions = Permission.where(id: @user.users_permissions.pluck(:permission_id))
   end
@@ -66,7 +66,7 @@ class UsersController < ApplicationController
       dep.save
     end
 
-    redirect_to :action => "departments"
+    redirect_to :action => "user_profile"
     end
   
  def updatePermissions
@@ -83,7 +83,7 @@ class UsersController < ApplicationController
      _permission.save
    end
 
-   redirect_to :action => "departments"
+   redirect_to :action => "user_profile"
  end
 
 

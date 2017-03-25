@@ -38,7 +38,7 @@
           <% @users.each do |user| %>
           <tr>
            
-            <td> <%= link_to user.first_name, "/users/#{user.id}/departments "%> &middot;</td>
+            <td> <%= link_to user.first_name, "/users/#{user.id}/user_profile "%> &middot;</td>
             <td><%= user.last_name  %></td>
             <td><%= user.email %></td>
             <td><%= user.roles.map {|r| r.name}.join ', ' %></td>

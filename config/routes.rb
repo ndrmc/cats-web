@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
   put 'users/:id/updateRoles', to: 'users#updateRoles'
 
-  get 'users/:id/departments', to: 'users#departments'
+  get 'users/:id/user_profile', to: 'users#user_profile'
 
   put 'users/:id/updateDepartments', to: 'users#updateDepartments'
 

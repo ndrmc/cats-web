@@ -31380,3 +31380,591 @@ Processing by UsersController#departments as HTML
 Completed 200 OK in 628ms (Views: 565.9ms | ActiveRecord: 35.1ms)
 
 
+Started GET "/en/users/21/user_permissions?user_id=21" for 127.0.0.1 at 2017-03-25 19:07:11 +0300
+  [1m[36mActiveRecord::SchemaMigration Load (1.9ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+DEPRECATION WARNING: around_filter is deprecated and will be removed in Rails 5.1. Use around_action instead. (called from <class:ApplicationController> at /home/dawit/cats/cats-web/app/controllers/application_controller.rb:5)
+Processing by UsersController#user_permissions as HTML
+  Parameters: {"user_id"=>"21", "locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (4.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (5.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  Rendering users/user_permissions.html.erb within layouts/admin
+  [1m[36mPermission Load (3.4ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL[0m
+  [1m[36mPermission Exists (4.3ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.7ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mPermission Exists (5.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 5], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 7], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 8], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.1ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 9], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 10], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 11], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.3ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 12], ["LIMIT", 1]]
+  [1m[36mPermission Exists (6.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 13], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.1ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 14], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 15], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.0ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 16], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 17], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 18], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 19], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.1ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 20], ["LIMIT", 1]]
+  Rendered users/user_permissions.html.erb within layouts/admin (261.6ms)
+  Rendered layouts/_headcontent.html.erb (2101.3ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (13.6ms)
+  Rendered layouts/_settingnav.html.erb (44.8ms)
+  Rendered layouts/_topnavbar.html.erb (1.4ms)
+  Rendered layouts/_footer.html.erb (0.5ms)
+Completed 200 OK in 2616ms (Views: 2403.5ms | ActiveRecord: 90.8ms)
+
+
+Started GET "/en/users/" for 127.0.0.1 at 2017-03-25 19:07:33 +0300
+Processing by UsersController#index as HTML
+  Parameters: {"locale"=>"en"}
+  [1m[36mUser Load (6.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/admin
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."deleted_at" IS NULL[0m
+  [1m[36mRole Load (0.8ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[36mRole Load (0.7ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 26]]
+  [1m[36mRole Load (8.9ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 18]]
+  Rendered users/index.html.erb within layouts/admin (104.9ms)
+  Rendered layouts/_headcontent.html.erb (450.8ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (7.5ms)
+  Rendered layouts/_settingnav.html.erb (36.3ms)
+  Rendered layouts/_topnavbar.html.erb (5.6ms)
+  Rendered layouts/_footer.html.erb (0.5ms)
+Completed 200 OK in 650ms (Views: 610.1ms | ActiveRecord: 27.0ms)
+
+
+Started GET "/users/21/departments" for 127.0.0.1 at 2017-03-25 19:07:38 +0300
+  
+ActionController::RoutingError (No route matches [GET] "/users/21/departments"):
+  
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.4.0) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.4.0) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.4.0) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.4.0) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.7.1) lib/puma/configuration.rb:232:in `call'
+puma (3.7.1) lib/puma/server.rb:578:in `handle_request'
+puma (3.7.1) lib/puma/server.rb:415:in `process_client'
+puma (3.7.1) lib/puma/server.rb:275:in `block in run'
+puma (3.7.1) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+  Rendering /home/dawit/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /home/dawit/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/dawit/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.2ms)
+  Rendered collection of /home/dawit/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/routes/_route.html.erb [312 times] (242.6ms)
+  Rendered /home/dawit/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/routes/_table.html.erb (26.1ms)
+  Rendering /home/dawit/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/dawit/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.1ms)
+  Rendered /home/dawit/.rbenv/versions/2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (417.3ms)
+Started GET "/en/users/" for 127.0.0.1 at 2017-03-25 19:08:10 +0300
+  [1m[36mActiveRecord::SchemaMigration Load (3.7ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+DEPRECATION WARNING: around_filter is deprecated and will be removed in Rails 5.1. Use around_action instead. (called from <class:ApplicationController> at /home/dawit/cats/cats-web/app/controllers/application_controller.rb:5)
+Processing by UsersController#index as HTML
+  Parameters: {"locale"=>"en"}
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  Rendering users/index.html.erb within layouts/admin
+  [1m[36mUser Load (3.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."deleted_at" IS NULL[0m
+  [1m[36mRole Load (0.9ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[36mRole Load (0.6ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 26]]
+  [1m[36mRole Load (6.8ms)[0m  [1m[34mSELECT "roles".* FROM "roles" INNER JOIN "users_roles" ON "roles"."id" = "users_roles"."role_id" WHERE "roles"."deleted_at" IS NULL AND "users_roles"."user_id" = $1[0m  [["user_id", 18]]
+  Rendered users/index.html.erb within layouts/admin (132.3ms)
+  Rendered layouts/_headcontent.html.erb (2046.9ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (7.5ms)
+  Rendered layouts/_settingnav.html.erb (43.7ms)
+  Rendered layouts/_topnavbar.html.erb (4.7ms)
+  Rendered layouts/_footer.html.erb (0.5ms)
+Completed 200 OK in 2417ms (Views: 2257.1ms | ActiveRecord: 25.0ms)
+
+
+Started GET "/users/21/user_profile" for 127.0.0.1 at 2017-03-25 19:08:17 +0300
+Processing by UsersController#user_profile as HTML
+  Parameters: {"id"=>"21"}
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[35m (10.0ms)[0m  [1m[34mSELECT "users_departments"."department_id" FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "users_permissions"."permission_id" FROM "users_permissions" WHERE "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1[0m  [["user_id", 21]]
+  Rendering users/user_profile.html.erb within layouts/admin
+  [1m[36mDepartment Load (1.8ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL AND "departments"."id" IN (1, 2)[0m
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (3.4ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Load (3.4ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL AND "permissions"."id" IN (1, 2, 3)[0m
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.4ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  Rendered users/user_profile.html.erb within layouts/admin (175.1ms)
+  Rendered layouts/_headcontent.html.erb (510.7ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (12.4ms)
+  Rendered layouts/_settingnav.html.erb (40.0ms)
+  Rendered layouts/_topnavbar.html.erb (1.1ms)
+  Rendered layouts/_footer.html.erb (0.5ms)
+Completed 200 OK in 863ms (Views: 731.8ms | ActiveRecord: 42.3ms)
+
+
+Started GET "/en/users/21/user_departments?user_id=21" for 127.0.0.1 at 2017-03-25 19:08:28 +0300
+Processing by UsersController#user_departments as HTML
+  Parameters: {"user_id"=>"21", "locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (7.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (3.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  Rendering users/user_departments.html.erb within layouts/admin
+  [1m[36mDepartment Load (4.5ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL[0m
+  [1m[36mDepartment Exists (5.4ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (2.8ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  Rendered users/user_departments.html.erb within layouts/admin (51.6ms)
+  Rendered layouts/_headcontent.html.erb (478.9ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (10.6ms)
+  Rendered layouts/_settingnav.html.erb (31.7ms)
+  Rendered layouts/_topnavbar.html.erb (2.2ms)
+  Rendered layouts/_footer.html.erb (0.5ms)
+Completed 200 OK in 612ms (Views: 577.0ms | ActiveRecord: 24.1ms)
+
+
+Started PUT "/users/21/updateDepartments" for 127.0.0.1 at 2017-03-25 19:08:33 +0300
+Processing by UsersController#updateDepartments as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"095DEh1QC1+YNKotYCnjIKE3aynH5A+pZpO7SIjrXioq4fLpgo4DmOd+deqfLdn6tIV9RAHTzO+y8QhlVFwr5g==", "departments"=>{"1"=>"1", "2"=>"1", "4"=>"1", "6"=>"1"}, "commit"=>"Save Changes", "id"=>"21"}
+  [1m[36mUser Load (4.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (7.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[36mUsersDepartment Load (1.4ms)[0m  [1m[34mSELECT "users_departments".* FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.0ms)[0m  [1m[33mUPDATE "users_departments" SET "deleted_at" = '2017-03-25 16:08:33.369548', "updated_at" = '2017-03-25 16:08:33.369620' WHERE "users_departments"."id" = $1[0m  [["id", 1]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.5ms)[0m  [1m[33mUPDATE "users_departments" SET "deleted_at" = '2017-03-25 16:08:33.379763', "updated_at" = '2017-03-25 16:08:33.379812' WHERE "users_departments"."id" = $1[0m  [["id", 2]]
+  [1m[35m (41.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (3.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.9ms)[0m  [1m[32mINSERT INTO "users_departments" ("user_id", "department_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["department_id", 1], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:08:33 UTC], ["updated_at", 2017-03-25 16:08:33 UTC]]
+  [1m[35m (15.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "users_departments" ("user_id", "department_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["department_id", 2], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:08:33 UTC], ["updated_at", 2017-03-25 16:08:33 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.8ms)[0m  [1m[32mINSERT INTO "users_departments" ("user_id", "department_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["department_id", 4], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:08:33 UTC], ["updated_at", 2017-03-25 16:08:33 UTC]]
+  [1m[35m (2.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.3ms)[0m  [1m[32mINSERT INTO "users_departments" ("user_id", "department_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["department_id", 6], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:08:33 UTC], ["updated_at", 2017-03-25 16:08:33 UTC]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/en/users/21/user_profile
+Completed 302 Found in 176ms (ActiveRecord: 104.4ms)
+
+
+Started GET "/en/users/21/user_profile" for 127.0.0.1 at 2017-03-25 19:08:33 +0300
+Processing by UsersController#user_profile as HTML
+  Parameters: {"locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (5.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (4.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[35m (2.3ms)[0m  [1m[34mSELECT "users_departments"."department_id" FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (2.6ms)[0m  [1m[34mSELECT "users_permissions"."permission_id" FROM "users_permissions" WHERE "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1[0m  [["user_id", 21]]
+  Rendering users/user_profile.html.erb within layouts/admin
+  [1m[36mDepartment Load (1.9ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL AND "departments"."id" IN (1, 2, 4, 6)[0m
+  [1m[36mDepartment Exists (9.0ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (2.4ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (2.8ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Load (3.3ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL AND "permissions"."id" IN (1, 2, 3)[0m
+  [1m[36mPermission Exists (2.4ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (6.3ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  Rendered users/user_profile.html.erb within layouts/admin (89.8ms)
+  Rendered layouts/_headcontent.html.erb (453.5ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (10.5ms)
+  Rendered layouts/_settingnav.html.erb (51.8ms)
+  Rendered layouts/_topnavbar.html.erb (1.1ms)
+  Rendered layouts/_footer.html.erb (0.5ms)
+Completed 200 OK in 672ms (Views: 599.1ms | ActiveRecord: 45.5ms)
+
+
+Started GET "/en/users/21/user_permissions?user_id=21" for 127.0.0.1 at 2017-03-25 19:08:39 +0300
+Processing by UsersController#user_permissions as HTML
+  Parameters: {"user_id"=>"21", "locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  Rendering users/user_permissions.html.erb within layouts/admin
+  [1m[36mPermission Load (0.6ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL[0m
+  [1m[36mPermission Exists (3.0ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (5.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mPermission Exists (5.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 5], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.0ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 7], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 8], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.0ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 9], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 10], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.0ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 11], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 12], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.7ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 13], ["LIMIT", 1]]
+  [1m[36mPermission Exists (6.0ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 14], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 15], ["LIMIT", 1]]
+  [1m[36mPermission Exists (4.0ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 16], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 17], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 18], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 19], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 20], ["LIMIT", 1]]
+  Rendered users/user_permissions.html.erb within layouts/admin (187.3ms)
+  Rendered layouts/_headcontent.html.erb (493.0ms)
+  Rendered layouts/_layout_common_js.html.erb (7.1ms)
+  Rendered layouts/_logoheader.html.erb (10.8ms)
+  Rendered layouts/_settingnav.html.erb (28.2ms)
+  Rendered layouts/_topnavbar.html.erb (1.1ms)
+  Rendered layouts/_footer.html.erb (0.5ms)
+Completed 200 OK in 775ms (Views: 707.0ms | ActiveRecord: 53.8ms)
+
+
+Started PUT "/users/21/updatePermissions" for 127.0.0.1 at 2017-03-25 19:08:51 +0300
+Processing by UsersController#updatePermissions as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"pi+fe7cFQDtRdjsL2XN0K4goPhDmHdT/37c5KSuUSvpfEC6AKNtI/C485Mwmd07xnZoofSAqF7kL1YoE9yM/Ng==", "permissions"=>{"1"=>"1", "2"=>"1", "3"=>"1", "5"=>"1", "6"=>"1"}, "commit"=>"Save Changes", "id"=>"21"}
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[36mUsersPermission Load (0.5ms)[0m  [1m[34mSELECT "users_permissions".* FROM "users_permissions" WHERE "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (1.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.8ms)[0m  [1m[33mUPDATE "users_permissions" SET "deleted_at" = '2017-03-25 16:08:51.075850', "updated_at" = '2017-03-25 16:08:51.075913' WHERE "users_permissions"."id" = $1[0m  [["id", 3]]
+  [1m[35m (19.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[33mUPDATE "users_permissions" SET "deleted_at" = '2017-03-25 16:08:51.103906', "updated_at" = '2017-03-25 16:08:51.103941' WHERE "users_permissions"."id" = $1[0m  [["id", 4]]
+  [1m[35m (23.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.9ms)[0m  [1m[33mUPDATE "users_permissions" SET "deleted_at" = '2017-03-25 16:08:51.129614', "updated_at" = '2017-03-25 16:08:51.129654' WHERE "users_permissions"."id" = $1[0m  [["id", 5]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.4ms)[0m  [1m[32mINSERT INTO "users_permissions" ("user_id", "permission_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["permission_id", 1], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:08:51 UTC], ["updated_at", 2017-03-25 16:08:51 UTC]]
+  [1m[35m (3.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "users_permissions" ("user_id", "permission_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["permission_id", 2], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:08:51 UTC], ["updated_at", 2017-03-25 16:08:51 UTC]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.3ms)[0m  [1m[32mINSERT INTO "users_permissions" ("user_id", "permission_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["permission_id", 3], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:08:51 UTC], ["updated_at", 2017-03-25 16:08:51 UTC]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (8.5ms)[0m  [1m[32mINSERT INTO "users_permissions" ("user_id", "permission_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["permission_id", 5], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:08:51 UTC], ["updated_at", 2017-03-25 16:08:51 UTC]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.7ms)[0m  [1m[32mINSERT INTO "users_permissions" ("user_id", "permission_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["permission_id", 6], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:08:51 UTC], ["updated_at", 2017-03-25 16:08:51 UTC]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/en/users/21/user_profile
+Completed 302 Found in 167ms (ActiveRecord: 85.9ms)
+
+
+Started GET "/en/users/21/user_profile" for 127.0.0.1 at 2017-03-25 19:08:51 +0300
+Processing by UsersController#user_profile as HTML
+  Parameters: {"locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[35m (3.8ms)[0m  [1m[34mSELECT "users_departments"."department_id" FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT "users_permissions"."permission_id" FROM "users_permissions" WHERE "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1[0m  [["user_id", 21]]
+  Rendering users/user_profile.html.erb within layouts/admin
+  [1m[36mDepartment Load (2.9ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL AND "departments"."id" IN (1, 2, 4, 6)[0m
+  [1m[36mDepartment Exists (3.1ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (3.3ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.8ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (5.0ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Load (0.6ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL AND "permissions"."id" IN (1, 2, 3, 5, 6)[0m
+  [1m[36mPermission Exists (3.2ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 5], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  Rendered users/user_profile.html.erb within layouts/admin (128.1ms)
+  Rendered layouts/_headcontent.html.erb (429.8ms)
+  Rendered layouts/_layout_common_js.html.erb (14.0ms)
+  Rendered layouts/_logoheader.html.erb (6.5ms)
+  Rendered layouts/_settingnav.html.erb (38.1ms)
+  Rendered layouts/_topnavbar.html.erb (1.5ms)
+  Rendered layouts/_footer.html.erb (2.1ms)
+Completed 200 OK in 691ms (Views: 623.3ms | ActiveRecord: 30.9ms)
+
+
+Started GET "/en/users/21/user_departments?user_id=21" for 127.0.0.1 at 2017-03-25 19:09:03 +0300
+Processing by UsersController#user_departments as HTML
+  Parameters: {"user_id"=>"21", "locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (3.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  Rendering users/user_departments.html.erb within layouts/admin
+  [1m[36mDepartment Load (0.4ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL[0m
+  [1m[36mDepartment Exists (4.8ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (5.1ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (1.4ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  Rendered users/user_departments.html.erb within layouts/admin (52.2ms)
+Started GET "/en/users/21/user_departments?user_id=21" for 127.0.0.1 at 2017-03-25 19:09:03 +0300
+Processing by UsersController#user_departments as HTML
+  Parameters: {"user_id"=>"21", "locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (8.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (26.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  Rendering users/user_departments.html.erb within layouts/admin
+  [1m[36mDepartment Load (0.4ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL[0m
+  Rendered layouts/_headcontent.html.erb (566.6ms)
+  [1m[36mDepartment Exists (16.3ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (1.1ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  [1m[36mDepartment Exists (6.8ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  Rendered layouts/_logoheader.html.erb (10.4ms)
+  [1m[36mDepartment Exists (17.1ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  Rendered layouts/_settingnav.html.erb (50.5ms)
+  Rendered users/user_departments.html.erb within layouts/admin (107.3ms)
+  Rendered layouts/_topnavbar.html.erb (1.2ms)
+  Rendered layouts/_footer.html.erb (0.4ms)
+Completed 200 OK in 747ms (Views: 718.0ms | ActiveRecord: 16.2ms)
+
+
+  Rendered layouts/_headcontent.html.erb (457.2ms)
+  Rendered layouts/_layout_common_js.html.erb (0.5ms)
+  Rendered layouts/_logoheader.html.erb (4.4ms)
+  Rendered layouts/_settingnav.html.erb (30.7ms)
+  Rendered layouts/_topnavbar.html.erb (4.4ms)
+  Rendered layouts/_footer.html.erb (0.4ms)
+Completed 200 OK in 681ms (Views: 593.5ms | ActiveRecord: 76.7ms)
+
+
+Started GET "/users/21/user_profile" for 127.0.0.1 at 2017-03-25 19:09:06 +0300
+Processing by UsersController#user_profile as HTML
+  Parameters: {"id"=>"21"}
+  [1m[36mUser Load (2.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (4.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT "users_departments"."department_id" FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (7.7ms)[0m  [1m[34mSELECT "users_permissions"."permission_id" FROM "users_permissions" WHERE "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1[0m  [["user_id", 21]]
+  Rendering users/user_profile.html.erb within layouts/admin
+  [1m[36mDepartment Load (0.6ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL AND "departments"."id" IN (1, 2, 4, 6)[0m
+  [1m[36mDepartment Exists (8.1ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (5.3ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Load (0.5ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL AND "permissions"."id" IN (1, 2, 3, 5, 6)[0m
+  [1m[36mPermission Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (5.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.1ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 5], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  Rendered users/user_profile.html.erb within layouts/admin (109.7ms)
+  Rendered layouts/_headcontent.html.erb (425.9ms)
+  Rendered layouts/_layout_common_js.html.erb (4.9ms)
+  Rendered layouts/_logoheader.html.erb (7.6ms)
+  Rendered layouts/_settingnav.html.erb (41.3ms)
+  Rendered layouts/_topnavbar.html.erb (4.0ms)
+  Rendered layouts/_footer.html.erb (0.4ms)
+Completed 200 OK in 660ms (Views: 589.6ms | ActiveRecord: 41.9ms)
+
+
+Started GET "/en/users/21/user_permissions?user_id=21" for 127.0.0.1 at 2017-03-25 19:09:16 +0300
+Processing by UsersController#user_permissions as HTML
+  Parameters: {"user_id"=>"21", "locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (7.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (1.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  Rendering users/user_permissions.html.erb within layouts/admin
+  [1m[36mPermission Load (3.0ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL[0m
+  [1m[36mPermission Exists (1.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.4ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.7ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 5], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Exists (4.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 7], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 8], ["LIMIT", 1]]
+  [1m[36mPermission Exists (5.4ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 9], ["LIMIT", 1]]
+  [1m[36mPermission Exists (4.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 10], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 11], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.4ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 12], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 13], ["LIMIT", 1]]
+  [1m[36mPermission Exists (5.3ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 14], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.2ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 15], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 16], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 17], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 18], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 19], ["LIMIT", 1]]
+  [1m[36mPermission Exists (7.3ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 20], ["LIMIT", 1]]
+  Rendered users/user_permissions.html.erb within layouts/admin (186.0ms)
+  Rendered layouts/_headcontent.html.erb (427.6ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (10.3ms)
+  Rendered layouts/_settingnav.html.erb (42.2ms)
+  Rendered layouts/_topnavbar.html.erb (1.3ms)
+  Rendered layouts/_footer.html.erb (0.4ms)
+Completed 200 OK in 716ms (Views: 634.9ms | ActiveRecord: 60.2ms)
+
+
+Started GET "/users/21/user_profile" for 127.0.0.1 at 2017-03-25 19:09:20 +0300
+Processing by UsersController#user_profile as HTML
+  Parameters: {"id"=>"21"}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[35m (6.3ms)[0m  [1m[34mSELECT "users_departments"."department_id" FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (3.0ms)[0m  [1m[34mSELECT "users_permissions"."permission_id" FROM "users_permissions" WHERE "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1[0m  [["user_id", 21]]
+  Rendering users/user_profile.html.erb within layouts/admin
+  [1m[36mDepartment Load (1.2ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL AND "departments"."id" IN (1, 2, 4, 6)[0m
+  [1m[36mDepartment Exists (4.1ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (9.3ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (4.6ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Load (0.5ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL AND "permissions"."id" IN (1, 2, 3, 5, 6)[0m
+  [1m[36mPermission Exists (4.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.4ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.2ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 5], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.4ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  Rendered users/user_profile.html.erb within layouts/admin (98.2ms)
+  Rendered layouts/_headcontent.html.erb (470.2ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (12.4ms)
+  Rendered layouts/_settingnav.html.erb (36.7ms)
+  Rendered layouts/_topnavbar.html.erb (9.0ms)
+  Rendered layouts/_footer.html.erb (0.7ms)
+Completed 200 OK in 693ms (Views: 626.3ms | ActiveRecord: 42.2ms)
+
+
+Started GET "/users/21/user_profile" for 127.0.0.1 at 2017-03-25 19:10:54 +0300
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+DEPRECATION WARNING: around_filter is deprecated and will be removed in Rails 5.1. Use around_action instead. (called from <class:ApplicationController> at /home/dawit/cats/cats-web/app/controllers/application_controller.rb:5)
+Processing by UsersController#user_profile as HTML
+  Parameters: {"id"=>"21"}
+  [1m[36mUser Load (14.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (2.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "users_departments"."department_id" FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT "users_permissions"."permission_id" FROM "users_permissions" WHERE "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1[0m  [["user_id", 21]]
+  Rendering users/user_profile.html.erb within layouts/admin
+  [1m[36mDepartment Load (4.8ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL AND "departments"."id" IN (1, 2, 4, 6)[0m
+  [1m[36mDepartment Exists (1.8ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.7ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (12.3ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (2.4ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Load (0.6ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL AND "permissions"."id" IN (1, 2, 3, 5, 6)[0m
+  [1m[36mPermission Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (4.7ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 5], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  Rendered users/user_profile.html.erb within layouts/admin (242.1ms)
+  Rendered layouts/_headcontent.html.erb (2352.5ms)
+  Rendered layouts/_layout_common_js.html.erb (0.6ms)
+  Rendered layouts/_logoheader.html.erb (5.0ms)
+  Rendered layouts/_settingnav.html.erb (70.7ms)
+  Rendered layouts/_topnavbar.html.erb (4.3ms)
+  Rendered layouts/_footer.html.erb (0.4ms)
+Completed 200 OK in 2961ms (Views: 2676.2ms | ActiveRecord: 84.0ms)
+
+
+Started GET "/en/users/21/user_permissions?user_id=21" for 127.0.0.1 at 2017-03-25 19:11:15 +0300
+Processing by UsersController#user_permissions as HTML
+  Parameters: {"user_id"=>"21", "locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (3.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  Rendering users/user_permissions.html.erb within layouts/admin
+  [1m[36mPermission Load (1.7ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL[0m
+  [1m[36mPermission Exists (0.7ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.1ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  [1m[36mPermission Exists (4.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 5], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Exists (6.1ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 7], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.7ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 8], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.3ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 9], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.1ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 10], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 11], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 12], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 13], ["LIMIT", 1]]
+  [1m[36mPermission Exists (2.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 14], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 15], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 16], ["LIMIT", 1]]
+  [1m[36mPermission Exists (4.4ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 17], ["LIMIT", 1]]
+  [1m[36mPermission Exists (3.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 18], ["LIMIT", 1]]
+  [1m[36mPermission Exists (4.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 19], ["LIMIT", 1]]
+  [1m[36mPermission Exists (7.1ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 20], ["LIMIT", 1]]
+  Rendered users/user_permissions.html.erb within layouts/admin (178.6ms)
+  Rendered layouts/_headcontent.html.erb (430.8ms)
+  Rendered layouts/_layout_common_js.html.erb (0.5ms)
+  Rendered layouts/_logoheader.html.erb (9.3ms)
+  Rendered layouts/_settingnav.html.erb (29.8ms)
+  Rendered layouts/_topnavbar.html.erb (4.2ms)
+  Rendered layouts/_footer.html.erb (0.7ms)
+Completed 200 OK in 714ms (Views: 637.6ms | ActiveRecord: 59.9ms)
+
+
+Started PUT "/users/21/updatePermissions" for 127.0.0.1 at 2017-03-25 19:11:22 +0300
+Processing by UsersController#updatePermissions as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"HODaXmpmbaCO+KIBwBZcuDoUQ9saxCjaXfY/BT8R3VPl32ul9bhlZ/GyfcY/EmZiL6ZVttzz65yJlIwo46aonw==", "permissions"=>{"1"=>"1", "2"=>"1", "3"=>"1", "5"=>"1"}, "commit"=>"Save Changes", "id"=>"21"}
+  [1m[36mUser Load (3.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (2.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[36mUsersPermission Load (2.7ms)[0m  [1m[34mSELECT "users_permissions".* FROM "users_permissions" WHERE "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.1ms)[0m  [1m[33mUPDATE "users_permissions" SET "deleted_at" = '2017-03-25 16:11:22.183681', "updated_at" = '2017-03-25 16:11:22.183747' WHERE "users_permissions"."id" = $1[0m  [["id", 6]]
+  [1m[35m (21.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[33mUPDATE "users_permissions" SET "deleted_at" = '2017-03-25 16:11:22.211860', "updated_at" = '2017-03-25 16:11:22.211896' WHERE "users_permissions"."id" = $1[0m  [["id", 7]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[33mUPDATE "users_permissions" SET "deleted_at" = '2017-03-25 16:11:22.215137', "updated_at" = '2017-03-25 16:11:22.215171' WHERE "users_permissions"."id" = $1[0m  [["id", 8]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.2ms)[0m  [1m[33mUPDATE "users_permissions" SET "deleted_at" = '2017-03-25 16:11:22.220172', "updated_at" = '2017-03-25 16:11:22.220209' WHERE "users_permissions"."id" = $1[0m  [["id", 9]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "users_permissions" SET "deleted_at" = '2017-03-25 16:11:22.225683', "updated_at" = '2017-03-25 16:11:22.225719' WHERE "users_permissions"."id" = $1[0m  [["id", 10]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (3.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.7ms)[0m  [1m[32mINSERT INTO "users_permissions" ("user_id", "permission_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["permission_id", 1], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:11:22 UTC], ["updated_at", 2017-03-25 16:11:22 UTC]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "users_permissions" ("user_id", "permission_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["permission_id", 2], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:11:22 UTC], ["updated_at", 2017-03-25 16:11:22 UTC]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (2.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.2ms)[0m  [1m[32mINSERT INTO "users_permissions" ("user_id", "permission_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["permission_id", 3], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:11:22 UTC], ["updated_at", 2017-03-25 16:11:22 UTC]]
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (4.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (2.4ms)[0m  [1m[32mINSERT INTO "users_permissions" ("user_id", "permission_id", "created_by", "modified_by", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 21], ["permission_id", 5], ["created_by", 18], ["modified_by", 18], ["created_at", 2017-03-25 16:11:22 UTC], ["updated_at", 2017-03-25 16:11:22 UTC]]
+  [1m[35m (2.2ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/en/users/21/user_profile
+Completed 302 Found in 158ms (ActiveRecord: 74.2ms)
+
+
+Started GET "/en/users/21/user_profile" for 127.0.0.1 at 2017-03-25 19:11:22 +0300
+Processing by UsersController#user_profile as HTML
+  Parameters: {"locale"=>"en", "id"=>"21"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."deleted_at" IS NULL AND "users"."id" = $1 LIMIT $2[0m  [["id", 21], ["LIMIT", 1]]
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "users_departments"."department_id" FROM "users_departments" WHERE "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1[0m  [["user_id", 21]]
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "users_permissions"."permission_id" FROM "users_permissions" WHERE "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1[0m  [["user_id", 21]]
+  Rendering users/user_profile.html.erb within layouts/admin
+  [1m[36mDepartment Load (4.7ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."deleted_at" IS NULL AND "departments"."id" IN (1, 2, 4, 6)[0m
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "departments" INNER JOIN "users_departments" ON "departments"."id" = "users_departments"."department_id" WHERE "departments"."deleted_at" IS NULL AND "users_departments"."deleted_at" IS NULL AND "users_departments"."user_id" = $1 AND "departments"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 6], ["LIMIT", 1]]
+  [1m[36mPermission Load (3.3ms)[0m  [1m[34mSELECT "permissions".* FROM "permissions" WHERE "permissions"."deleted_at" IS NULL AND "permissions"."id" IN (1, 2, 3, 5)[0m
+  [1m[36mPermission Exists (0.9ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 1], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 2], ["LIMIT", 1]]
+  [1m[36mPermission Exists (1.0ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 3], ["LIMIT", 1]]
+  [1m[36mPermission Exists (0.8ms)[0m  [1m[34mSELECT  1 AS one FROM "permissions" INNER JOIN "users_permissions" ON "permissions"."id" = "users_permissions"."permission_id" WHERE "permissions"."deleted_at" IS NULL AND "users_permissions"."deleted_at" IS NULL AND "users_permissions"."user_id" = $1 AND "permissions"."id" = $2 LIMIT $3[0m  [["user_id", 21], ["id", 5], ["LIMIT", 1]]
+  Rendered users/user_profile.html.erb within layouts/admin (85.5ms)
+  Rendered layouts/_headcontent.html.erb (403.1ms)
+  Rendered layouts/_layout_common_js.html.erb (8.2ms)
+  Rendered layouts/_logoheader.html.erb (12.0ms)
+  Rendered layouts/_settingnav.html.erb (33.7ms)
+  Rendered layouts/_topnavbar.html.erb (2.7ms)
+  Rendered layouts/_footer.html.erb (0.4ms)
+Completed 200 OK in 607ms (Views: 555.4ms | ActiveRecord: 17.6ms)
+
+

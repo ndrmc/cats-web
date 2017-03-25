@@ -94,7 +94,7 @@
             <% @all_departments.each do |department| %>
               <tr>
                 <td>
-                  <%= check_box_tag "departments[#{department.id}]", 1 , @user.departments.include?(department)  %>
+                  <%= check_box_tag "departments[#{department.id}]", 1 , @user.departments.include?(department), disabled: true  %>
                 </td>
                 <td><%= department.name %></td>
               </tr>
@@ -130,7 +130,7 @@
             <% @all_permissions.each do |permission| %>
               <tr>
                 <td>
-                  <%= check_box_tag "permissions[#{permission.name}]", 1 , @user.permissions.include?(permission)  %>
+                  <%= check_box_tag "permissions[#{permission.name}]", 1 , @user.permissions.include?(permission), disabled: true %>
                   <%= permission.name %>
                 </td>
                
