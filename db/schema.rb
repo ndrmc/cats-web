@@ -1007,15 +1007,6 @@ ActiveRecord::Schema.define(version: 20170325120808) do
     t.index ["deleted_at"], name: "index_uom_categories_on_deleted_at", using: :btree
   end
 
-  create_table "user_permissions", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "permission_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.index ["permission_id"], name: "index_user_permissions_on_permission_id", using: :btree
-    t.index ["user_id"], name: "index_user_permissions_on_user_id", using: :btree
-  end
-
   create_table "user_types", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -1080,6 +1071,18 @@ ActiveRecord::Schema.define(version: 20170325120808) do
     t.index ["user_id"], name: "index_users_departments_on_user_id", using: :btree
   end
 
+  create_table "users_permissions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "permission_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["permission_id"], name: "index_users_permissions_on_permission_id", using: :btree
+    t.index ["user_id"], name: "index_users_permissions_on_user_id", using: :btree
+  end
+
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -1117,9 +1120,9 @@ ActiveRecord::Schema.define(version: 20170325120808) do
   add_foreign_key "regional_requests", "rations"
   add_foreign_key "roles_departments", "departments", column: "departments_id"
   add_foreign_key "roles_departments", "roles", column: "roles_id"
-  add_foreign_key "user_permissions", "permissions"
-  add_foreign_key "user_permissions", "users"
   add_foreign_key "users", "role_types", column: "role_types_id"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
+  add_foreign_key "users_permissions", "permissions"
+  add_foreign_key "users_permissions", "users"
 end

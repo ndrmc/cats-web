@@ -38,8 +38,10 @@
 
 class User < ApplicationRecord
   rolify
+  has_many :users_permissions
   has_many :users_departments
   has_many :departments, through: :users_departments
+  has_many :permissions, through: :users_permissions
   after_create :assign_default_role
 
   # Include default devise modules. Others available are:

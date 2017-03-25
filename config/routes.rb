@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :permissions
+  
   resources :departments
  scope "(:locale)", locale: /en|am/ do
   resources :case_teams
@@ -33,6 +33,10 @@ Rails.application.routes.draw do
   put 'users/:id/updateDepartments', to: 'users#updateDepartments'
 
   get 'users/:id/user_departments', to: 'users#user_departments'
+
+  put 'users/:id/updatePermissions', to: 'users#updatePermissions'
+
+  get 'users/:id/user_permissions', to: 'users#user_permissions'
 
   resources :currencies
   resources :donors

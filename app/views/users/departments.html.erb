@@ -113,7 +113,7 @@
           <h5>Permission</h5>
    
    <div class="pull-right">
-     <%= link_to 'New permission', roles_path, :class => "btn btn-success btn-sm"%>
+     <%= link_to 'New permission',  {:controller => "users", :action => "user_permissions", :user_id => @user.id }, :class => "btn btn-success btn-sm" %>
    </div>
    </div>
     <div class="ibox-content">
@@ -127,11 +127,11 @@
 
         <table class="table table-bordered">
           <tbody>
-            <% @all_roles.each do |role| %>
+            <% @all_permissions.each do |permission| %>
               <tr>
                 <td>
-                  <%= check_box_tag "roles[#{role.name}]", 1 , @user.roles.include?(role)  %>
-                  <%= role.name %>
+                  <%= check_box_tag "permissions[#{permission.name}]", 1 , @user.permissions.include?(permission)  %>
+                  <%= permission.name %>
                 </td>
                
               </tr>
