@@ -28,6 +28,7 @@ class Fdp < ApplicationRecord
 
   attr_reader :zone, :woreda, :region
 
+=begin
   after_find do |fdp|
     location = location_id ? Location.find(location_id) : nil
 
@@ -44,6 +45,28 @@ class Fdp < ApplicationRecord
       @region = @region ? @region : ancestors.find { |a| a.location_type == 'region' }
       @zone = @zone ? @zone : ancestors.find { |a| a.location_type == 'zone' }
       @woreda = @woreda ? @woreda : ancestors.find { |a| a.location_type == 'woreda' }
+    end
+
+  end
+=end
+
+  before_save do
+
+    location = Location.find(location_id)
+    if location
+
+      ancestors = location.ancestors
+
+      self.region = ancestors.find { |a| a.location_type == 'region' } ? ancestors.find { |a| a.location_type == 'region' }.name : ''
+      self.zone = ancestors.find { |a| a.location_type == 'zone' } ? ancestors.find { |a| a.location_type == 'zone' }.name : ''
+      self.woreda = ancestors.find { |a| a.location_type == 'woreda' } ? ancestors.find { |a| a.location_type == 'woreda' }.name : ''
+
+      if location.location_type == 'zone'
+        self.zone = location.name
+      elsif location.location_type == 'woreda'
+        self.woreda = location.name
+      end
+
     end
 
   end
