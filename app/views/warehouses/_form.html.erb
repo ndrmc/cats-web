@@ -34,7 +34,7 @@
                 <div class="form-group">
                   <%= f.label 'Owner' %>
                   <%= f.collection_select :organization_id,
-                      Organization.order(:name),:id,:name, include_blank: true, :class => 'form-control' %>
+                      Organization.order(:name),:id,:name, {include_blank: true}, {:class => 'form-control' }%>
                   </div>
 
                   <div class="form-group">

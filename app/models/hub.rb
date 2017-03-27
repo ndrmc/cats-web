@@ -19,7 +19,9 @@ class Hub < ApplicationRecord
   has_many :warehouses
   has_many :stores, through: :warehouses
 
-  reverse_geocoded_by :lat, :lon
+
+  reverse_geocoded_by :lat , :lon
+
   after_validation :reverse_geocode
 
 

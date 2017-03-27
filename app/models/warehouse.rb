@@ -21,4 +21,9 @@ class Warehouse < ApplicationRecord
     belongs_to :hub
     has_many :stores
     belongs_to :organization
+
+
+    reverse_geocoded_by :lat , :lon
+    after_validation :reverse_geocode
 end
+

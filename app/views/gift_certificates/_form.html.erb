@@ -22,6 +22,11 @@
        <%= f.label :reference_no,  :class=>"control-label" %><span class="required"/>*
         <%= f.text_field :reference_no,  :class => 'form-control', :required => true %>
       </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <%= f.label :commodity_id,  :class=>"control-label" %><span class="required"/>*
+        <%= f.collection_select :commodity_id, Commodity.all, :id, :name, {:include_blank => ' -- Select -- '}, {:required => true,:class => 'form-control'} %>
+
+      </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-12">
        <div class="col-md-10">
         <%= f.label :gift_date %><span class="required"/>*
