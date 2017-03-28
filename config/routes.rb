@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   resources :stores
   resources :operations
   resources :accounts
+  resources :journals
   resources :fdps
   resources :fdp_contacts
   get 'fdps/location/:location_id', to: 'fdps#get_by_location'

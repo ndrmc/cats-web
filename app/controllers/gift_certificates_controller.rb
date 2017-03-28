@@ -72,7 +72,7 @@ class GiftCertificatesController < ApplicationController
     def gift_certificate_params
       params.require(:gift_certificate).permit(:reference_no, :gift_date, :vessel, :donor_id, :eta, :program_id, :mode_of_transport_id, 
       :port_name, :status, :customs_declaration_no,:purchase_year,:expiry_date,:fund_type_id,:account_no, :bill_of_loading, :amount,
-      :estimated_price, :estimated_tax, :fund_source_id, :currency_id)
+      :estimated_price, :estimated_tax, :fund_source_id, :currency_id, :commodity_id)
     end
 end
   

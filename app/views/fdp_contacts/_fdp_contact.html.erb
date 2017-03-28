@@ -1,0 +1,23 @@
+<%= fields_for(fdp_contact,:html=> {:class => 'form-horizontal'})  do |f| %>
+<div class="contact-box center-version">
+
+  <a href="/fdp_contacts/<%=fdp_contact.id%>">
+
+
+    <h3 class="m-b-xs"><strong><%= fdp_contact.full_name%></strong></h3>
+
+
+    <address class="m-t-md">
+      <div>
+        <i class="fa fa-phone"></i> <%= fdp_contact.mobile %>
+      </div>
+     <div>
+       <i class="fa fa-envelope"></i> <%= fdp_contact.email %>
+     </div>
+
+    </address>
+
+  </a>
+
+</div>
+<% end %>

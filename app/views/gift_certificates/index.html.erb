@@ -41,6 +41,7 @@
       <th>Reference no</th>
       <th>Gift date</th>
       <th>Donor</th>
+      <th>Commodity</th>
       <th>Status</th>
       <th>Declaration no</th>
       <th>Actions</th>
@@ -57,7 +58,10 @@
        </td>       
        <td>
         <%= Organization.find(gift_certificate.donor_id).name  %>
-       </td>       
+       </td>
+       <td>
+         <%= Commodity.find(gift_certificate.commodity_id).name  %>
+       </td>
        <td>
         <%= gift_certificate.status %>
        </td>

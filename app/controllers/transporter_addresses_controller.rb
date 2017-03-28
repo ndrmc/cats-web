@@ -77,6 +77,6 @@ class TransporterAddressesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transporter_address_params
-      params.require(:transporter_address).permit(:region_id, :transporter_id, :city, :subcity, :kebele, :house_no, :phone, :email)
+      params.require(:transporter_address).permit(:region_id, :transporter_id, :city, :subcity, :kebele, :house_no, :phone, :mobile, :email)
     end
 end

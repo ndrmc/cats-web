@@ -17,7 +17,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="wrapper wrapper-content animated fadeInUp">
+  <div class="wrapper wrapper-content">
     <div class="ibox">
       <div class="ibox-content">
         <%= fields_for(@hub) do |f| %>
@@ -60,9 +60,15 @@
                 </dd>
                 <dt><i class="fa fa-map-marker"></i></dt>
 
-                   <dd> <%= @hub.address %> </dd>
-              </dl>
 
+                    <dd> <%=@hub.address%> </dd>
+
+              </dl>
+              <% if @hub.lat && @hub.lon %>
+                <div style='width: 800px;'>
+                  <div id="map" style='width: 600px; height: 300px;'></div>
+                </div>
+              <% end %>
 
             </div>
           </div>
@@ -171,3 +177,20 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+    handler = Gmaps.build('Google');
+
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+        markers = handler.addMarkers([
+            {
+                "lat": <%= @hub.lat %>,
+                "lng": <%= @hub.lon %> ,
+                "infowindow": "<span class='text-navy'><%= @hub.name %> Hub </span>"
+            }
+        ]);
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+        handler.getMap().setZoom(15);
+    });
+</script>

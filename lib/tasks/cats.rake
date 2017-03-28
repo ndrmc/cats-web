@@ -27,4 +27,19 @@ namespace :cats do
       puts "Completed migration of AdminUnit records to Location hierarchy"
     end
   end
+    namespace :fdp do
+      desc "Updates region, zone and woreda fields for all FDPs"
+      task update_locations: :environment do
+        puts "Started update ..."
+
+        # Iterate over all records and save again (triggers before_save method and updates the fields)
+        Fdp.all.each do |l|
+          l.save
+        end
+
+
+
+        puts "Completed update"
+      end
+    end
 end

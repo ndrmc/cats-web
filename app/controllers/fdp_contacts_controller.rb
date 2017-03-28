@@ -17,6 +17,9 @@ class FdpContactsController < ApplicationController
   # GET /fdp_contacts/new
   def new
     @fdp_contact = FdpContact.new
+    if(params[:fdp_id])
+      @fdp_contact.fdp_id = params[:fdp_id]
+    end
   end
 
   # GET /fdp_contacts/1/edit
@@ -31,7 +34,7 @@ class FdpContactsController < ApplicationController
 
     respond_to do |format|
       if @fdp_contact.save
-        format.html { redirect_to fdp_contacts_path, notice: 'Fdp contact was successfully created.' }
+        format.html { redirect_to fdp_path(Fdp.find(@fdp_contact.fdp_id)), notice: 'Fdp contact was successfully created.' }
         format.json { render :show, status: :created, location: @fdp_contact }
       else
         format.html { render :new }
