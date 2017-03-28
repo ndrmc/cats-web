@@ -15,6 +15,8 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @all_departments = Department.where(id: @user.users_departments.pluck(:department_id))
+    @all_permissions = Permission.where(id: @user.users_permissions.pluck(:permission_id))
   end
 
   # GET /users/new
@@ -66,7 +68,7 @@ class UsersController < ApplicationController
       dep.save
     end
 
-    redirect_to :action => "user_profile"
+     redirect_to  @user
     end
   
  def updatePermissions
@@ -83,7 +85,7 @@ class UsersController < ApplicationController
      _permission.save
    end
 
-   redirect_to :action => "user_profile"
+    redirect_to @user, success: 'User profile was successfully updated.' 
  end
 
 
