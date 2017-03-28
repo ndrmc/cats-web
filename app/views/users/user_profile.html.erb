@@ -80,7 +80,7 @@
    <div class="ibox-title">
           <h5>Department</h5>
           <div class="pull-right">
-          <%= link_to 'Join department',  {:controller => "users", :action => "user_departments", :user_id => @user.id }, :class => "btn btn-success btn-sm" %>
+          <%= link_to 'Join / Leave Department',  {:controller => "users", :action => "user_departments", :user_id => @user.id }, :class => "btn btn-success btn-sm" %>
    </div>
    </div>
 
@@ -93,9 +93,7 @@
           <tbody>
             <% @all_departments.each do |department| %>
               <tr>
-                <td>
-                  <%= check_box_tag "departments[#{department.id}]", 1 , @user.departments.include?(department), disabled: true  %>
-                </td>
+               
                 <td><%= department.name %></td>
               </tr>
             <% end %>
@@ -113,7 +111,7 @@
           <h5>Permission</h5>
    
    <div class="pull-right">
-     <%= link_to 'New permission',  {:controller => "users", :action => "user_permissions", :user_id => @user.id }, :class => "btn btn-success btn-sm" %>
+     <%= link_to 'Grant / Revoke Permission',  {:controller => "users", :action => "user_permissions", :user_id => @user.id }, :class => "btn btn-success btn-sm" %>
    </div>
    </div>
     <div class="ibox-content">
@@ -130,7 +128,7 @@
             <% @all_permissions.each do |permission| %>
               <tr>
                 <td>
-                  <%= check_box_tag "permissions[#{permission.name}]", 1 , @user.permissions.include?(permission), disabled: true %>
+                 
                   <%= permission.name %>
                 </td>
                

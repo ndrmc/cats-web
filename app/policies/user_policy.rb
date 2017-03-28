@@ -9,7 +9,7 @@ def initialize(current_user,model)
 end
 
 def index?
-   return true
+   @current_user.permissions.where(name: 'HRD').count > 0
 end
 
 def new?
