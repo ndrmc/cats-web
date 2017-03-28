@@ -22,19 +22,16 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    
-    @roles = RoleType.all.map{ |t| [t.name, t.id]}
-    @caseTeam= CaseTeam.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
-    @hubs= CaseTeam.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
-    @region = CaseTeam.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
+    @department= Department.all.map{ |h| [h.name, h.id]} # case teams
+    @region= Location.where(location_type: 1).map{ |h| [h.name, h.id]}     # regions
+    @hubs = Hub.all.map{ |r| [r.name, r.id]}  # hubs
   end
 
   # GET /users/1/edit
   def edit
-    @roles = RoleType.all.map{ |t| [t.name, t.id]}
-    @caseTeam= CaseTeam.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
-    @hubs= CaseTeam.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
-    @region = CaseTeam.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
+    @department= Department.all.map{ |h| [h.name, h.id]} # case teams
+    @region= Location.where(location_type: 1).map{ |h| [h.name, h.id]}     # regions
+    @hubs = Hub.all.map{ |r| [r.name, r.id]}  # hubs
 
   end
 
@@ -49,11 +46,7 @@ class UsersController < ApplicationController
   end
   
 
-  def user_profile
-    @all_departments = Department.where(id: @user.users_departments.pluck(:department_id))
-    @all_permissions = Permission.where(id: @user.users_permissions.pluck(:permission_id))
-  end
-  
+   
   def updateDepartments
     new_departments =  params.require(:departments)
     UsersDepartment.where(user_id: @user.id).destroy_all
@@ -162,6 +155,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub, :region, :case_team, :regionalUser, :hubUser, :mobileNo, :datePreference,:Admin,:IsCaseTeam)
+      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub, :region, :mobileNo, :user_type_id, :department)
     end
 end

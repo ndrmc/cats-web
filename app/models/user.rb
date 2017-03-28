@@ -67,11 +67,11 @@ class User < ApplicationRecord
     "Your account is not active."
   end
 
-  enum role_types: {
-        admin:2,
-        case_team:3,
-        hub:4,
-        regional:5
+  enum user_types: {
+        Admin:2,
+        Federal:3,
+        Hub:4,
+        Regional:5
     }   
 
 end

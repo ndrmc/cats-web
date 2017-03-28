@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20170327072202) do
-
+ActiveRecord::Schema.define(version: 20170328134548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1052,17 +1050,11 @@ ActiveRecord::Schema.define(version: 20170327072202) do
     t.string   "last_name"
     t.date     "date_preference"
     t.string   "mobile_no"
-    t.boolean  "regional_user"
-    t.boolean  "hub_user"
-    t.integer  "case_team"
-    t.boolean  "is_admin"
-    t.boolean  "is_case_team"
-    t.integer  "role_types_id"
     t.integer  "user_type_id"
+    t.integer  "department"
     t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-    t.index ["role_types_id"], name: "index_users_on_role_types_id", using: :btree
   end
 
   create_table "users_departments", force: :cascade do |t|
@@ -1127,7 +1119,6 @@ ActiveRecord::Schema.define(version: 20170327072202) do
   add_foreign_key "regional_requests", "rations"
   add_foreign_key "roles_departments", "departments", column: "departments_id"
   add_foreign_key "roles_departments", "roles", column: "roles_id"
-  add_foreign_key "users", "role_types", column: "role_types_id"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
   add_foreign_key "users_permissions", "permissions"

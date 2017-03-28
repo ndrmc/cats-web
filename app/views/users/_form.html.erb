@@ -38,26 +38,21 @@
                 <%= f.check_box :is_active, :class => 'form-control' %>
                         </div>
                 
-                <%= f.check_box :hubUser, :class => 'form-control hidden' %>
-                       
-                <%= f.check_box :regionalUser, :class => 'form-control hidden ' %>
-
-                <%= f.check_box :Admin, :class => 'form-control hidden' %>
-
-                <%= f.check_box :IsCaseTeam, :class => 'form-control hidden' %>       
+                   
                
                        
                 
 
-                 <div class="form-group" id="div-role">
-                            <%= f.label :Role %>
-                <%= select_tag(:role,options_for_select(@roles),{:class => 'form-control'}) %>
+               
+                 <div class="form-group" id="div-caseTeam">
+                            <%= f.label :'User Type' %>
+                <%= f.select :user_type_id,options_for_select(User.user_types.map {|k,v| [k,v] }, :selected => f.object.user_type_id, :include_blank => true),{}, {:class => 'form-control'} %>
                 </div>
 
 
                  <div class="form-group" id="div-caseTeam">
-                            <%= f.label :Role %>
-                <%= f.select :case_team,options_for_select(@caseTeam, :selected => f.object.case_team, :include_blank => true),{}, {:class => 'form-control'} %>
+                            <%= f.label :Department %>
+                <%= f.select :department,options_for_select(@department, :selected => f.object.department, :include_blank => true),{}, {:class => 'form-control'} %>
                 </div>
 
                  
@@ -85,102 +80,3 @@
 </div>
 
 
-<script>
-  
-  $(document).ready(function()
-  {
-   
-  
-    if (document.getElementById("user_IsCaseTeam").checked){
-
-      document.getElementById("role").value = 3
-      
-      
-      $('#div-caseTeam').show();
-      $('#div-region').hide();
-      $('#div-hub').hide();
-   
-
-     
-
-    }
-    else if (document.getElementById("user_hubUser").checked){
-       
-      document.getElementById("role").value = 4
-
-      $('#div-caseTeam').hide();
-      $('#div-region').hide();
-      $('#div-hub').show();
-
-     
-
-    }
-    else if (document.getElementById("user_regionalUser").checked){
-
-      document.getElementById("role").value = 5
-
-      $('#div-caseTeam').hide();
-      $('#div-region').show();
-      $('#div-hub').hide();
-
-    
-    }
-    else{
-        $('#div-caseTeam').hide();
-      $('#div-region').hide();
-      $('#div-hub').hide();
-    }
-  });
-
-  $('#role').change(function()
-  {
-    if (this.value == 3){ /* case team */
-
-      $('#div-caseTeam').show();
-      $('#div-region').hide();
-      $('#div-hub').hide();
-
-      document.getElementById("user_Admin").checked = false;
-      document.getElementById("user_IsCaseTeam").checked = true;
-      document.getElementById("user_hubUser").checked = false;
-      document.getElementById("user_regionalUser").checked = false;
-
-    }
-    else if (this.value == 4){ /* hubs */
-      $('#div-caseTeam').hide();
-      $('#div-region').hide();
-      $('#div-hub').show();
-
-      
-      document.getElementById("user_Admin").checked = false;
-      document.getElementById("user_IsCaseTeam").checked = false;
-      document.getElementById("user_hubUser").checked = true;
-      document.getElementById("user_regionalUser").checked = false;
-      
-
-    }
-    else if (this.value == 5){ /* regional */
-      $('#div-caseTeam').hide();
-      $('#div-region').show();
-      $('#div-hub').hide();
-
-      document.getElementById("user_Admin").checked = false;
-      document.getElementById("user_IsCaseTeam").checked = false;
-      document.getElementById("user_regionalUser").checked = true;
-      document.getElementById("user_hubUser").checked = false;
-
-    }
-    else{     
-                       /* admin */
-      $('#div-caseTeam').hide();
-      $('#div-region').hide();
-      $('#div-hub').hide();
-
-      document.getElementById("user_Admin").checked = true;
-      document.getElementById("user_IsCaseTeam").checked = false;
-      document.getElementById("user_regionalUser").checked = false;
-      document.getElementById("user_hubUser").checked = false;
-
-    }
-  });
-</script>
