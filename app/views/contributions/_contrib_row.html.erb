@@ -1,0 +1,11 @@
+<tr id="contrib-<%= contribution.id %>">
+    <td><%= contribution.donor.name %></td>
+    <td><%= contribution.contribution_type %></td>
+    <td><%= contribution.pledged_date.strftime("%F") %></td>
+    <td><%= contribution.amount %><%= contribution.contribution_type == 'cash' ? ' USD' : ' mt' %></td>
+    <td>
+        <a href="#" data-toggle="modal" data-target="#contribution-modal" data-contribution-id="<%= contribution.id %>">edit</a> 
+        &middot; 
+        <a href="#" class="delete-contribution" data-contribution-id="<%= contribution.id %>">delete</a>
+    </td>
+</tr>

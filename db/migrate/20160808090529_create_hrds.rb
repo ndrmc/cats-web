@@ -13,6 +13,5 @@ class CreateHrds < ActiveRecord::Migration[5.0]
       t.timestamps
     end
 
-    add_index :hrds, [:year, :season_id], :unique => true
   end
 end

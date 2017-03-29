@@ -1,0 +1,117 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>HRDs</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>HRDs</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New HRD', new_hrd_path, :class => "btn btn-primary" %>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox">
+
+      <div class="ibox-content">
+        <div class="row m-b-sm m-t-sm">
+          <div class="col-md-1">
+            <a href="javascript:window.location.reload(true)" type="button" id="loading-example-btn" class="btn btn-white btn-sm">
+              <i class="fa fa-refresh"></i>
+              Refresh</a>
+          </div>
+          <div class="col-md-2">
+            <div class="input-group">
+        
+              <select class="input-sm form-control" id="status-filter">
+                <option value="">All</option>
+                <% Hrd.statuses.map { |s| s[0] }.each do |status|%>
+                    <option value="<%= status %>" <%= 'selected' if params[:status] == status %>><%= status.capitalize %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-9">
+            <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-sm btn-primary">
+                  Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-list">
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Year (EC)</th>
+                <th>Progress</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @hrds.each do |hrd| %>
+              <tr>
+                <td class="project-status">
+                  <span class="label label-primary"><%= hrd.status %></span>
+                </td>
+                <td class="project-title">
+                  <%= link_to hrd.name, hrd_path(hrd) %>
+                  <br/>
+                  <small>Created <%= hrd.created_at %></small>
+                </td>
+                <td class="project-status">
+                  <span><%= hrd.year_ec %></span>
+                </td>
+                <td class="project-completion">
+                  <small>48% completed</small>
+                  <div class="progress progress-mini">
+                    <div style="width: 48%;" class="progress-bar"></div>
+                  </div>
+                </td>
+                <td class="project-actions">
+                  <a href="<%= hrd_path(hrd)%>" class="btn btn-white btn-sm">
+                    <i class="fa fa-folder"></i>
+                    View
+                  </a>
+                  <a href="<%= edit_hrd_path(hrd)%>" class="btn btn-white btn-sm">
+                    <i class="fa fa-pencil"></i>   
+                    Edit                   
+                  </a>
+                  <% if hrd.status != "archived" %>
+                    <%= link_to 'hrds/archive/' + hrd.id.to_s , :class => "btn btn-white btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                            <i class="fa fa-archive"></i>   
+                        Archive     
+                    <% end %>
+                  <% end %>
+
+                </td>
+              </tr>
+              <% end %>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() { 
+        $("#status-filter").change( function() { 
+            window.location.href = '/hrds/?status=' + $(this).val();  
+        });
+    }); 
+</script>

@@ -1,0 +1,32 @@
+wb = xlsx_package.workbook
+
+sheet = wb.add_worksheet(:name => 'HRD Items') do  |ws| 
+  ws.add_data_validation("D2:D100", {
+      :type => :list,
+      :formula1 => "'Month Names'!A$1:M$1",
+      :showDropDown => false,
+      :showErrorMessage => true,
+      :errorTitle => '',
+      :error => 'Please use the dropdown selector to choose the value',
+      :errorStyle => :stop,
+      :showInputMessage => true,
+      :prompt => 'Choose the value from the dropdown'
+  }) 
+  ws.sheet_protection.password = 'pa55w0rd' 
+end
+
+unlocked = sheet.styles.add_style(:locked => false )
+
+sheet.add_row [ "", "Zone", "Woreda", "Starting Month", "Number of Beneficiaries" ]
+
+@hrd_items.each_with_index do |item, index|
+  woreda = item.woreda
+  sheet.add_row [ item.woreda_id, woreda.parent.name, woreda.name , Date::MONTHNAMES[item.starting_month], item.beneficiary ], :style => [nil, nil, nil, unlocked, unlocked, nil]
+end
+
+hidden = sheet.styles.add_style(:hidden => true )
+
+months_sheet = wb.add_worksheet(:name => 'Month Names') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
+months_sheet.add_row Date::MONTHNAMES
+
+
