@@ -1,0 +1,41 @@
+<%= form_tag  '',  :id => 'contribution-form'  do  %>
+    <div class="form-group">
+        <label for="donor_id">Donor</label>
+
+        <%= select_tag  :donor_id,  options_from_collection_for_select( @available_donors, 'id', 'name', @contribution.donor_id ) , { :prompt => "-- Choose --", :class => 'form-control contrib-form-field' }  %>
+    </div>
+
+    <input type="hidden" name="hrd_id" value="<%= @contribution.hrd_id ||  params[:hrd_id] %>" class="contrib-form-field">
+    <% if params[:id] %>
+        <input type="hidden" name="id" value="<%= params[:id] %>" class="contrib-form-field">
+    <% end %>
+    <div class="form-group">
+        <label for="contribution_type">Contribution Type</label>
+
+         <select class="form-control contrib-form-field" name="contribution_type">
+            <option value="">Choose</option>
+            <% Contribution.contribution_types.map { |s| s[0] }.each do |cType|%>
+                <option value="<%= cType %>" <%= 'selected' if @contribution.contribution_type == cType %>><%= cType.capitalize %></option>
+            <% end %>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="pledged_date">Pledged Date</label>
+        <input name='pledged_date' type="text" value="<%= @contribution.pledged_date ? @contribution.pledged_date.strftime('%d/%m/%Y') : '' %>" class="form-control datepicker contrib-form-field"   >
+    </div>
+
+    <div class="form-group">
+        <label for="amount">Amount</label>
+        <input name='amount'  type="number" value="<%= @contribution.amount %>"  class="form-control contrib-form-field"  >
+    </div>
+<% end %>
+
+
+<script>
+    $(function() {
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy'
+        });
+    }); 
+</script>

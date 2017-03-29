@@ -35,9 +35,11 @@
 //= require jquery.calendars/jquery.calendars.ethiopian.js
 //= require jquery.calendars/jquery.calendars.ethiopian-am.js
 
+//= require data-confirm-modal
+//= require underscore-min
+//= require gmaps/google
+
 //= require_tree .
-
-
 
 $(document).ready(function() {
     /**

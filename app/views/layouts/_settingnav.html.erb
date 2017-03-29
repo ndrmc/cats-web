@@ -7,12 +7,9 @@
       <li class="<%= 'active' if current_page?('/home/minor') %>">
         <%=link_to "plan#index" do %>
         <i class="fa fa-bookmark-o"></i>
-        <span class="nav-label"><% t(:general_settings)%></span>
+        <span class="nav-label"><%= t(:general_settings)%></span>
         <span class="fa arrow"></span><% end %>
         <ul class="nav nav-second-level collapse">
-          <li>
-            <a href="#"><% t(:global_settings)%></a>
-          </li>
           <li class="<%= 'active' if is_active_controller('programs') %>">
             <%= link_to t(:programs), programs_path %>
           </li>
@@ -34,7 +31,7 @@
   <li>
     <%= link_to "#" do %>
     <i class="fa fa-globe"></i>
-    <span class="nav-label"><%t(:geography)%></span>
+    <span class="nav-label"><%= t(:geography)%></span>
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
@@ -54,7 +51,7 @@
 <li>
   <%= link_to "#" do %>
   <i class="fa fa-bank"></i>
-  <span class="nav-label"><%t(:warehouses_and_stores)%></span>
+  <span class="nav-label"><%= t(:warehouses_and_stores)%></span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
@@ -70,7 +67,7 @@
  <li>
   <%= link_to "#" do %>
   <i class="fa fa-cube"></i>
-  <span class="nav-label"><%t(:commodity)%></span>
+  <span class="nav-label"><%= t(:commodity)%></span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
@@ -95,12 +92,15 @@
 <li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "#" do %>
   <i class="fa fa-cube"></i>
-  <span class="nav-label"><%t(:accounting)%></span>
+  <span class="nav-label"><%= t(:accounting)%></span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">
     <li class="<%= 'active' if is_active_controller('accounts') %>" >
       <%= link_to t(:accounts), accounts_path %>
+    </li>
+    <li class="<%= 'active' if is_active_controller('journals') %>" >
+      <%= link_to t(:journals), journals_path %>
     </li>
   </ul>
 </li>
@@ -108,7 +108,7 @@
 <li>
   <%= link_to "/home/minor" do %>
   <i class="fa fa-users"></i>
-  <span class="nav-label"><%t(:users_and_accounts)%></span>
+  <span class="nav-label"><%= t(:users_and_accounts)%></span>
   <span class="fa arrow"></span>
   <% end %>
 <!--
@@ -132,7 +132,7 @@
 <li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "/home/minor" do %>
   <i class="fa fa-power-off"></i>
-  <span class="nav-label"><%t(:system)%></span>
+  <span class="nav-label"><%= t(:system)%></span>
   <span class="fa arrow"></span>
   <% end %>
   <ul class="nav nav-second-level collapse">

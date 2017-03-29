@@ -10,6 +10,8 @@
 #  created_by  :integer
 #  modified_by :integer
 #  deleted_at  :datetime
+#  month_from  :integer
+#  month_to    :integer
 #
 
 class Season < ApplicationRecord

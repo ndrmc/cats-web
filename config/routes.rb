@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   resources :currencies
   resources :donors
   resources :programs
-
+  
   resources :commodity_sources
   resources :commodity_categories
   resources :commodities
@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   resources :stores
   resources :operations
   resources :accounts
+  resources :journals
   resources :fdps
   resources :fdp_contacts
   get 'fdps/location/:location_id', to: 'fdps#get_by_location'
@@ -54,7 +55,6 @@ Rails.application.routes.draw do
 
   resources :rations
   resources :ration_items
-
 
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
@@ -77,11 +77,23 @@ Rails.application.routes.draw do
   get '/regional_requests/request_items/:id', to: 'regional_requests#request_items'
   post '/regional_requests/upload_requests/:id', to: 'regional_requests#upload_requests'
 
+  get '/hrds/hrd_items', to: 'hrds#hrd_items'
+  get '/hrds/download_hrd_items/:id', to: 'hrds#download_hrd_items'
+  get '/hrds/archive/:id', to: 'hrds#archive'
+  get '/hrds/edit_hrd_form/:id', to: 'hrds#edit_hrd_form'
+  get '/hrds/new_hrd_item/:id', to: 'hrds#new_hrd_item'
+  get '/hrds/update_hrd_item', to: 'hrds#update_hrd_item'
+  post '/hrds/save_hrd_item', to: 'hrds#save_hrd_item'
+  delete '/hrds/remove_hrd_id/:id', to: 'hrds#remove_hrd_id'
+  resources :hrds
 
+
+  resources :contributions
+
+  
   root to: 'dashboard#index'
   # GraphQL configuration
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/queries"
   resources :queries
 end
-
 end

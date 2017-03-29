@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322110633) do
+ActiveRecord::Schema.define(version: 20170327072202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -161,6 +161,22 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
+  end
+
+  create_table "contributions", force: :cascade do |t|
+    t.integer  "donor_id"
+    t.integer  "contribution_type"
+    t.decimal  "amount"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",           default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "hrd_id"
+    t.datetime "pledged_date"
+    t.index ["donor_id"], name: "index_contributions_on_donor_id", using: :btree
+    t.index ["hrd_id"], name: "index_contributions_on_hrd_id", using: :btree
   end
 
   create_table "currencies", force: :cascade do |t|
@@ -322,6 +338,10 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.string   "address"
+    t.string   "woreda"
+    t.string   "zone"
+    t.string   "region"
     t.index ["deleted_at"], name: "index_fdps_on_deleted_at", using: :btree
   end
 
@@ -424,17 +444,16 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "region_id"
+    t.integer  "zone_id"
     t.index ["deleted_at"], name: "index_hrd_items_on_deleted_at", using: :btree
   end
 
   create_table "hrds", force: :cascade do |t|
-    t.string   "year",                    null: false
+    t.integer  "year_gc",                 null: false
     t.integer  "status",      default: 0, null: false
     t.integer  "month_from"
-    t.integer  "month_to"
     t.integer  "duration"
-    t.boolean  "archived"
-    t.boolean  "current"
     t.integer  "season_id"
     t.integer  "ration_id"
     t.datetime "created_at",              null: false
@@ -442,8 +461,9 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "year_ec"
     t.index ["deleted_at"], name: "index_hrds_on_deleted_at", using: :btree
-    t.index ["year", "season_id"], name: "index_hrds_on_year_and_season_id", unique: true, using: :btree
+    t.index ["year_gc", "season_id"], name: "index_hrds_on_year_gc_and_season_id", unique: true, using: :btree
   end
 
   create_table "hubs", force: :cascade do |t|
@@ -807,6 +827,8 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "month_from"
+    t.integer  "month_to"
     t.index ["deleted_at"], name: "index_seasons_on_deleted_at", using: :btree
     t.index ["name"], name: "index_seasons_on_name", unique: true, using: :btree
   end
@@ -1038,10 +1060,13 @@ ActiveRecord::Schema.define(version: 20170322110633) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.string   "address"
     t.index ["deleted_at"], name: "index_warehouses_on_deleted_at", using: :btree
   end
 
   add_foreign_key "commodity_categories", "uom_categories"
+  add_foreign_key "contributions", "donors"
+  add_foreign_key "contributions", "hrds"
   add_foreign_key "dispatches", "hubs"
   add_foreign_key "dispatches", "warehouses"
   add_foreign_key "receipt_lines", "unit_of_measures"

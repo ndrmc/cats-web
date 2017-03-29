@@ -13,6 +13,8 @@
 #  created_by     :integer
 #  modified_by    :integer
 #  deleted_at     :datetime
+#  region_id      :integer
+#  zone_id        :integer
 #
 
 require 'test_helper'

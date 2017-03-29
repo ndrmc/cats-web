@@ -22,9 +22,13 @@ class Fdp < ApplicationRecord
   belongs_to :location
   has_many :fdp_contacts
 
+  reverse_geocoded_by :lat , :lon
+
+  after_validation :reverse_geocode
 
   attr_reader :zone, :woreda, :region
 
+=begin
   after_find do |fdp|
     location = location_id ? Location.find(location_id) : nil
 
@@ -44,9 +48,33 @@ class Fdp < ApplicationRecord
     end
 
   end
+=end
+
+  before_save do
+
+    location = Location.find(location_id)
+    if location
+
+      ancestors = location.ancestors
+
+      self.region = ancestors.find { |a| a.location_type == 'region' } ? ancestors.find { |a| a.location_type == 'region' }.name : ''
+      self.zone = ancestors.find { |a| a.location_type == 'zone' } ? ancestors.find { |a| a.location_type == 'zone' }.name : ''
+      self.woreda = ancestors.find { |a| a.location_type == 'woreda' } ? ancestors.find { |a| a.location_type == 'woreda' }.name : ''
+
+      if location.location_type == 'zone'
+        self.zone = location.name
+      elsif location.location_type == 'woreda'
+        self.woreda = location.name
+      end
+
+    end
+
+  end
 
   private
     def init_default_vals
       self.active = true if self.active.nil?
     end
+
+
 end

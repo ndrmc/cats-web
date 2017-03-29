@@ -101,6 +101,7 @@ GEM
     graphiql-rails (1.4.1)
       rails
     graphql (1.4.2)
+    gmaps4rails (2.1.2)
     hirb (0.7.3)
     hirb-unicode (0.0.5)
       hirb (~> 0.5)
@@ -256,6 +257,7 @@ DEPENDENCIES
   geocoder
   graphiql-rails
   graphql
+  gmaps4rails
   hirb-unicode
   jbuilder (~> 2.5)
   jquery-rails

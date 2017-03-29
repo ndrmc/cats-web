@@ -13,12 +13,14 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
       <%= csrf_meta_tags %>
 
-        <%= render 'layouts/layout_common_js' %>          
+        <%= render 'layouts/layout_common_js' %>
+
 </head>
 
 <body>
 
-  <!-- Wrapper-->
+
+<!-- Wrapper-->
   <div id="wrapper">
 
     <% if user_signed_in? %>

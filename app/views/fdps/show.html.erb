@@ -1,27 +1,95 @@
-    <p>
-      <strong>Name:</strong>
-      <%= @fdp.name %>
-    </p>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>View FDP</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">FDP</a>
+      </li>
+      <li class="active">
+        <strong>Show</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', fdps_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
 
-    <p>
-      <strong>Description:</strong>
-      <%= @fdp.description %>
-    </p>
+ <div class='row'>
+   <div class="wrapper wrapper-content col-lg-6">
+     <div class="ibox float-e-margins">
+       <div class="ibox-title">General Information</div>
+       <div class="ibox-content">
+              <%= link_to 'Edit', edit_fdp_path(@fdp),  :class => "btn btn-primary pull-right"%>
+              <h2><%= @fdp.name %></h2>
+              <h4> <%= @fdp.description%></h4>
+              <br/>
+              <dl class="dl-horizontal">
 
-    <p>
-      <strong>Lat:</strong>
-      <%= @fdp.lat %>
-    </p>
+                <dt><%= label_tag :location_id %> </dt>
+                <dd>
+                  <% if @fdp.location_id %>
+                      <% Location.find(@fdp.location_id).ancestors.each do |a|%>
+                          <%= link_to a.name, location_path(a.id), :class => 'text-navy'%> /
+                      <% end %>
 
-    <p>
-      <strong>Lon:</strong>
-      <%= @fdp.lon %>
-    </p>
+                      <%= link_to Location.find(@fdp.location_id).name ,location_path(@fdp.location_id), :class => 'text-navy'%>
+                  <% end %>
+                </dd>
+                <dt><i class="fa fa-map-marker"></i></dt>
 
-    <p>
-      <strong>Active:</strong>
-      <%= @fdp.active %>
-    </p>
 
-<%= link_to 'Edit', edit_fdp_path(@fdp) %> |
-<%= link_to 'Back', fdps_path %>
+                <dd> <%=@fdp.address%> </dd>
+
+              </dl>
+          <% if @fdp.lat && @fdp.lon %>
+              <div style='width: 800px;'>
+                <div id="map" style='width: 600px; height: 300px;'></div>
+              </div>
+          <% end %>
+
+            </div>
+     </div>
+
+   </div>
+   <div class="wrapper wrapper-content animated col-lg-6">
+     <div class="ibox float-e-margins">
+       <div class="ibox-title">Contacts
+         <%= link_to 'Add Contact', new_fdp_contact_path(fdp_id: @fdp.id),  :class => "btn btn-primary pull-right"%>
+       </div>
+       <div class="ibox-content">
+         <div class="row">
+
+             <% @fdp.fdp_contacts.each do |contact| %>
+                 <div class="col-lg-6">
+                   <%= render 'fdp_contacts/fdp_contact', fdp_contact: contact %>
+                 </div>
+             <% end%>
+           </div>
+
+       </div>
+     </div>
+
+   </div>
+
+</div>
+
+
+       <script type="text/javascript">
+           handler = Gmaps.build('Google');
+
+           handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+               markers = handler.addMarkers([
+                   {
+                       "lat": <%= @fdp.lat %>,
+                       "lng": <%= @fdp.lon %> ,
+                       "infowindow": "<span class='text-navy'><%= @fdp.name %> FDPr </span>"
+                   }
+               ]);
+               handler.bounds.extendWith(markers);
+               handler.fitMapToBounds();
+               handler.getMap().setZoom(15);
+           });
+       </script>
