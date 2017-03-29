@@ -61,9 +61,9 @@ QueryRoot = GraphQL::ObjectType.define do
   field :grn do
     type ReceiptType
     argument :id, !types.ID
-    resolve -> (root, args, ctx){
+    resolve  RescueFrom.new(ActiveRecord::RecordNotFound, ->(root, args, ctx){
       Receipt.find(args[:id])
-    }
+    })
   end
 
 end
