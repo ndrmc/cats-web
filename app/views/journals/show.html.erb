@@ -1,0 +1,21 @@
+
+    <p>
+      <strong>Name:</strong>
+      <%= @journal.name %>
+    </p>
+
+
+    <p>
+      <strong>Description:</strong>
+      <%= @journal.description %>
+    </p>
+
+
+    <p>
+      <strong>Code:</strong>
+      <%= @journal.code %>
+    </p>
+
+
+<%= link_to 'Edit', edit_journal_path(@journal) %> |
+<%= link_to 'Back', journals_path %>

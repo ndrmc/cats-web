@@ -6,7 +6,7 @@ class FdpsController < ApplicationController
   # GET /fdps
   # GET /fdps.json
   def index
-    @fdps = Fdp.all
+    @fdps = Fdp.all   
   end
 
   # GET /fdps/1
@@ -44,7 +44,7 @@ class FdpsController < ApplicationController
   def update
     respond_to do |format|
       if @fdp.update(fdp_params)
-        format.html { redirect_to fdps_path, notice: 'Fdp was successfully updated.' }
+        format.html { redirect_to @fdp, notice: 'Fdp was successfully updated.' }
         format.json { render :show, status: :ok, location: @fdp }
       else
         format.html { render :edit }
@@ -78,6 +78,6 @@ class FdpsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fdp_params
-      params.require(:fdp).permit(:name, :description, :lat, :lon, :active, :location_id)
+      params.require(:fdp).permit(:name, :description, :lat, :lon, :active, :location_id, :region, :zone, :woreda)
     end
 end
