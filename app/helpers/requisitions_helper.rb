@@ -1,0 +1,2 @@
+module RequisitionsHelper
+end

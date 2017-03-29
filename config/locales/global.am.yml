@@ -1,0 +1,93 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+am:
+  hello: "ሰላም ለሁሉም!"
+  setting: "ማስተካከያዎች"
+  profile: "ፕሮፋይል"
+  plan: "እቅድ"
+  hrd_plan: "የሰብእዊ እርዳታ ሰነድ እቅድ"
+  psnp_plan: "ዓመታዊ የPSNP እቅድ"
+  receipt_plan: "የቅበላ እቅድ"
+  bid_plan: "የጨረታ እቅድ"
+  ration: "ኮታ"
+  resource: "ምንጮች"
+  gift_certificate: "የስጦታ የምስክር ወረቀት"
+  donors: "ለጋሾች"
+  operation: "የስራ ሂደት"
+  operations: "የስራ ሂደቶች"
+  regional_request: "ክልላዊ መጠየቂያ"
+  request_allocation: "የገቢ ማዝዣ"
+  dispatch_allocation: "የወጪ ማዝዣ"
+  transport_requisition: "የማጉዋጉዋዣ ማዘዣ"
+  stock: "ክምችት"
+  receiving: "ገቢ"
+  dispatch: "ወጪ"
+  delivery: "ርክክብ"
+  transfer: "ቅያሪ/ልዋጭ"
+  adjustment: "ማስተካከያ"
+  stock_take: "ቆጠራ"
+  internal_move: "ዉስጣዊ እንቅስቃሴ"
+  stock_ledger: "የክምችት መዝገብ"
+  transport: "ማጓጓዣ"
+  bids: "ጨረታዎች"
+  rfq: "RFQ"
+  bid_evaluation: "የጨረታ ምርመራ"
+  contract: "ስምምነት"
+  transport_order: "የጉዞ ማዘዣ"
+  contract_admin: "የስምምነት አስተዳደር"
+  payment_request: "የክፍያ መጠየቂያ"
+  region: "ክልል"
+  request: "መጠየቂያ"
+  fdp_receipts: "የምግብ ማሰራጫ ጣብያ ደረሰኞች"
+  cmpm_reports: "CMPM ዘገባ"
+  needs_assessment: "የእርዳታ ፍላጎት ጥናት"
+  payment_tracking: "የክፍያ ክትትል"
+  general_setting: "አጠቃላይ ማስተካክያዎች"
+  global_setting: "አጠቃላይ ማስተካክያዎች"
+  programs: "ፕሮግራም"
+  currencies: "ገንዘብ"
+  organizations: "ድርጅቶች"
+  transporters: "አጓጓዥ ድርጅቶች"
+  geography: "መልክዓ ምድር"
+  locations: "ቦታዎች"
+  fdps: "የምግብ ማሰራጫ ጣብያዎች"
+  fdp_contacts: "የምግብ ማሰራጫ ጣብያ ሰዎች"
+  warehouses_and_stores: "ዌርህውስ እና መጋዘኖች"
+  hubs: "ሃብ"
+  warehouses: "ዌርህውስ"
+  commodity: "ሽቀጥ"
+  commodities: "ሸቀጦች"
+  commodity_types: "የሽቀጥ አይነት"
+  commodity_sources: "የሽቀጥ ምንጭ"
+  measurement_units: "መለኪያ"
+  accounting: "ሒሳብ"
+  accounts: "አካውንት"
+  users_and_accounts: "ተጠቃሚዎች"
+  user_accounts: "የተጠቃሚዎች አካውንት"
+  roles: "ሚናዎች"
+  system: "ሲስተም"
+  error_logs: "የስህተት መዝገብ"
+  user_activity: "የተጠቃሚዎች ክንውን"
+  name: "ስም"
+  type: "አይነት"
+  code: "ኮድ"
+  description: "ገለፃ"

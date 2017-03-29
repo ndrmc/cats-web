@@ -19,13 +19,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  code: MyString
+  name: Category1
+  code: Code1
   code_am: MyString
   description: MyString
 
 two:
-  name: MyString
-  code: MyString
+  name: Category2
+  code: Code2
   code_am: MyString
   description: MyString

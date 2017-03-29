@@ -215,50 +215,26 @@ if User.count == 0
 end
 
 if Role.count == 0
-  [:admin, :guest, :clerk, :manager, :'Early warning', :Logistics, :FSCD, :Procurement, :Finance, :Hub, :Region].each do |role|
-    Role.create(name: role)      
+  [:admin, :guest, :clerk, :manager].each do |role|
+    Role.create(name: role)
   end
   puts "Created default roles"
 end
 
-if RoleType.count==0
-  RoleType.create(name: 'Admin', description: '')
-  RoleType.create(name: 'Case Team', description: '')
-  RoleType.create(name: 'Hubs', description: '')
-  RoleType.create(name: 'Regional', description: '')
-  puts "Created default role types"
+if UserType.count==0
+  UserType.create(name: 'admin', description: '')
+  UserType.create(name: 'federal', description: '')
+  UserType.create(name: 'hub', description: '')
+  UserType.create(name: 'region', description: '')
+  puts "Created default User types"
 end
 
-if CaseTeam.count==0
-
-  caseTeam = RoleType.find_by(name: 'Case Team')
-
-  CaseTeam.create(name: 'Early warning', role_type: caseTeam)
-  CaseTeam.create(name: 'FSCD')
-  CaseTeam.create(name: 'Logistics', role_type: caseTeam)
-  CaseTeam.create(name: 'Procurement', role_type: caseTeam)
-  CaseTeam.create(name: 'Finance', role_type: caseTeam)
-
-  hub = RoleType.find_by(name: 'Hubs')
-
-  CaseTeam.create(name: 'Adama', role_type: hub)
-  CaseTeam.create(name: 'Dire Dawa' , role_type: hub)
-  CaseTeam.create(name: 'Kombolcha' , role_type: hub)
-  CaseTeam.create(name: 'Mekele' , role_type: hub)
-
- region = RoleType.find_by(name: 'Regional')
-
-
-  CaseTeam.create(name: 'Afar', role_type: region)
-  CaseTeam.create(name: 'Amhara', role_type: region)
-  CaseTeam.create(name: 'Tigray', role_type: region)
-  CaseTeam.create(name: 'Oromia', role_type: region)
-  CaseTeam.create(name: 'Benshangule', role_type: region)
-  CaseTeam.create(name: 'SNNPR', role_type: region)
-  CaseTeam.create(name: 'Gambella', role_type: region)
-  CaseTeam.create(name: 'Dire Dawa', role_type: region)
-  CaseTeam.create(name: 'Harari', role_type: region)
-  CaseTeam.create(name: 'Somalia', role_type: region)
-
-  puts "Created list of roles"
+if OwnershipType.count == 0
+  OwnershipType.create(name: 'private', description: '')
+  OwnershipType.create(name: 'plc', description: '')
+  OwnershipType.create(name: 'share company', description: '')
+  OwnershipType.create(name: 'government', description: '')
+  OwnershipType.create(name: 'ngo', description: '')
+  OwnershipType.create(name: 'other', description: '')
+  puts "Created ownership types lookup"
 end

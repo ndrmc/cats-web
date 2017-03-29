@@ -42,7 +42,7 @@ class TransportersController < ApplicationController
   def update
     respond_to do |format|
       if @transporter.update(transporter_params)
-        format.html { redirect_to transporters_path, notice: 'Transporter was successfully updated.' }
+        format.html { redirect_to transporter_path @transporter, notice: 'Transporter was successfully updated.' }
         format.json { render :show, status: :ok, location: @transporter }
       else
         format.html { render :edit }
@@ -69,6 +69,6 @@ class TransportersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transporter_params
-      params.require(:transporter).permit(:name, :code, :ownership, :vehicleCount, :lift_capacity, :capital, :employees, :contact, :contact_phone, :remark, :status)
+      params.require(:transporter).permit(:name, :code, :ownership_type_id, :vehicle_count, :lift_capacity, :capital, :employees, :contact, :contact_phone, :remark, :status)
     end
 end

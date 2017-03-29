@@ -28,6 +28,12 @@
 #  is_active              :boolean          default(TRUE)
 #  first_name             :string
 #  last_name              :string
+#  date_preference        :date
+#  mobile_no              :string
+#  number_of_logins       :integer
+#  region_user            :boolean
+#  hub_user               :boolean
+#  user_type_id           :integer
 #
 
 require 'test_helper'

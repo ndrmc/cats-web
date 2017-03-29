@@ -1,0 +1,47 @@
+    <p>
+      <strong>Requisition no:</strong>
+      <%= @requisition.requisition_no %>
+    </p>
+
+    <p>
+      <strong>Operation:</strong>
+      <%= @requisition.operation_id %>
+    </p>
+
+    <p>
+      <strong>Commodity:</strong>
+      <%= @requisition.commodity_id %>
+    </p>
+
+    <p>
+      <strong>Region:</strong>
+      <%= @requisition.region_id %>
+    </p>
+
+    <p>
+      <strong>Zone:</strong>
+      <%= @requisition.zone_id %>
+    </p>
+
+    <p>
+      <strong>Ration:</strong>
+      <%= @requisition.ration_id %>
+    </p>
+
+    <p>
+      <strong>Requested by:</strong>
+      <%= @requisition.requested_by %>
+    </p>
+
+    <p>
+      <strong>Requested on:</strong>
+      <%= @requisition.requested_on %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @requisition.status %>
+    </p>
+
+<%= link_to 'Edit', edit_requisition_path(@requisition) %> |
+<%= link_to 'Back', requisitions_path %>

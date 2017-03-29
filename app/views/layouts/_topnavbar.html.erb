@@ -12,17 +12,37 @@
       </ul>
 
     </div>
+
+    <% if user_signed_in? %>
+
     <ul class="nav navbar-top-links navbar-right">
-      <li>
-        <a href="#" title="Help">
-          <i class="fa fa-lg fa-question-circle"></i>
-        </a>
-      </li>
-      <% if user_signed_in? %>
       <li>
         <a href="<%= setting_index_url %>" title="Settings & Configurations">
           <i class="fa fa-lg fa-cog"></i>
         </a>
+      </li>
+
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Help">
+          <i class="fa fa-lg fa-question-circle"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#">
+              <i class="fa fa-lg fa-question-circle"></i>
+              <span>User manual</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">Quick command list</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="#">
+              <i class="fa fa-lg fa-bug"></i>
+              Report bug</a>
+          </li>
+        </ul>
       </li>
 
       <li class="dropdown">

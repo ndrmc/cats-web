@@ -1,43 +1,60 @@
 <div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
-      <%= form_for(ration) do |f| %>
-        <% if ration.errors.any? %>
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <%= pluralize(ration.errors.count, "error") %> prohibited this ration from being saved.
-            </div>
+  <div>
+    <%= form_for(ration,:html=> {:class => 'form-horizontal'})  do |f| %>
+    <% if ration.errors.any? %>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <%= pluralize(ration.errors.count, "error") %>
+        prohibited this ration from being saved.
+      </div>
 
-            <div class="panel-body">
-              <ul>
-                <% ration.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-                <% end %>
-              </ul>
+      <div class="panel-body">
+        <ul>
+          <% ration.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    <% end %>
+
+    <div>
+      <div class="ibox">
+        <div class="ibox-content">
+
+          <div class="form-group form-group-lg">
+            <%= f.label :reference_no, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-10">
+              <%= f.text_field :reference_no, :class => 'form-control' %>
             </div>
           </div>
-        <% end %>
 
-                <div class="form-group">
-                            <%= f.label :reference_no %>
-                <%= f.text_field :reference_no, :class => 'form-control' %>
-                        </div>
+          <div class="form-group form-group">
+            <%= f.label :description, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-10">
+              <%= f.text_area :description, :class => 'form-control' %>
+            </div>
+          </div>
 
-                <div class="form-group">
-                            <%= f.label :description %>
-                <%= f.text_field :description, :class => 'form-control' %>
-                        </div>
+          <div class="form-group form-group">
+            <%= f.label :current, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-10">
+              <%= f.check_box :current, :class => 'form-control' %>
+            </div>
+          </div>
 
-                <div class="form-group">
-                  <%= f.check_box :current %> <%= f.label :current %>
-                </div>
+        </div>
 
-      
+      </div>
+
       <div class="actions">
         <%= f.submit :class => 'btn btn-primary' %>
       </div>
-  <% end %>
 
     </div>
+
+    <% end %>
+
   </div>
+
 </div>

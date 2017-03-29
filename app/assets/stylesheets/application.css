@@ -17,4 +17,11 @@
  *= require dataTables/datatables.min.css
  *= require datepicker/datepicker.css
  *= require daterangepicker.css
+ *= require chosen/chosen.css
+ *= require jquery.calendars/jquery.calendars.picker.css
  */
+
+
+ .form-horizontal .control-label.text-left{
+     text-align: left;
+ }

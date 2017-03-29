@@ -1,71 +1,73 @@
 <%= form_for(receipt, :html=> {:id => 'receipt-form'} ) do |f| %>
 
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
 
-      <% if receipt.errors.any? %>
-      <div class="panel panel-danger">
-        <div class="panel-heading">
-          <%= pluralize(receipt.errors.count, "error") %>
-          prohibited this receipt from being saved.
+        <% if receipt.errors.any? %>
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <%= pluralize(receipt.errors.count, "error") %>
+            prohibited this receipt from being saved.
+          </div>
+
+          <div class="panel-body">
+            <ul>
+              <% receipt.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= f.label :grn_no, "GRN Number" %>
+          <span class="required">*</span>
+          <%= f.text_field :grn_no, :class => 'form-control', :autofocus => true, :required => true %>
         </div>
 
-        <div class="panel-body">
-          <ul>
-            <% receipt.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-      <% end %>
-
-      <div class="form-group">
-        <%= f.label :grn_no, "GRN Number" %>
-        <span class="required">*</span>
-        <%= f.text_field :grn_no, :class => 'form-control', :autofocus => true, :required => true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :hub_id, "Hub" %>
-        <span class="required">*</span>
-        <%= f.collection_select :hub_id,
+        <div class="form-group">
+          <%= f.label :hub_id, "Hub" %>
+          <span class="required">*</span>
+          <%= f.collection_select :hub_id,
                   Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
-      </div>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :warehouse_id, "Warehouse" %>
-        <span class="required">*</span>
-        <%= f.collection_select :warehouse_id,
+        <div class="form-group">
+          <%= f.label :warehouse_id, "Warehouse" %>
+          <span class="required">*</span>
+          <%= f.collection_select :warehouse_id,
                   Warehouse.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
-      </div>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :received_date %>
-        <span class="required">*</span>
-        <%= f.text_field :received_date, :class => 'form-control datepicker', :required => true  %>
-      </div>
+        <div class="form-group">
+          <%= f.label :received_date %>
+          <span class="required">*</span>
+          <%= f.text_field :received_date, :class => 'form-control datepicker', :required => true  %>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :storekeeper_name, "Received By" %>
-        <span class="required">*</span>
-        <%= f.text_field :storekeeper_name, :class => 'form-control', :required => true %>
-      </div>
+        <div class="form-group">
+          <%= f.label :storekeeper_name, "Received By" %>
+          <span class="required">*</span>
+          <%= f.text_field :storekeeper_name, :class => 'form-control', :required => true %>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :waybill_no, "Waybill(s)" %>
-        <span class="required">*</span>
-        <%= f.text_field :waybill_no, :class => 'form-control', :required => true %>
-      </div>
+        <div class="form-group">
+          <%= f.label :waybill_no, "Waybill(s)" %>
+          <span class="required">*</span>
+          <%= f.text_field :waybill_no, :class => 'form-control', :required => true %>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :commodity_source_id, "Commodity Source" %>
-        <span class="required">*</span>
-        <%= f.collection_select :commodity_source_id,
+        <div class="form-group">
+          <%= f.label :commodity_source_id, "Warehouse" %>
+          <span class="required">*</span>
+          <%= f.collection_select :commodity_source_id,
                   CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
-      </div>
+        </div>
 
+      </div>
     </div>
 
     <div class="ibox float-e-margins">
@@ -236,7 +238,6 @@
     </div>
 
   </div>
-
   <% end %>
 
   <script type="text/javascript">

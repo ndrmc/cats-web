@@ -6,6 +6,7 @@
 #  operation_id     :integer
 #  reference_number :string
 #  region_id        :integer
+#  ration_id        :integer
 #  requested_date   :datetime
 #  program_id       :integer
 #  remark           :text
@@ -14,8 +15,8 @@
 #  deleted_at       :datetime
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  generated        :boolean
 #
-
 
 class RegionalRequest < ApplicationRecord
 

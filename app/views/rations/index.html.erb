@@ -3,7 +3,7 @@
     <h2>Rations</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <a href="#">Plan</a>
       </li>
       <li class="active">
         <strong>Rations</strong>
@@ -17,36 +17,39 @@
   </div>
 </div>
 
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
 
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Reference no</th>
-            <th>Description</th>
-            <th>Current</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Reference no</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <% @rations.each do |ration| %>
-          <tr>
-            <td><%= ration.reference_no %></td>
-            <td><%= ration.description %></td>
-            <td><%= ration.current %></td>
-            <td>
-              <%= link_to 'Manage Items', ration_ration_items_path(ration) %> &middot;
-              <%= link_to 'Edit', edit_ration_path(ration) %> &middot;
-              <%= link_to 'Delete', ration, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+          <tbody>
+            <% @rations.each do |ration| %>
+            <tr>
+              <td>
+                <%= link_to ration.reference_no, ration_path(ration)%>
+              </td>
+              <td><%= ration.description
+              %></td>
+              <td>
+                <%= link_to 'Edit', edit_ration_path(ration) %>
+                &middot;
+                <%= link_to 'Delete', ration, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
 
+      </div>
     </div>
   </div>
 </div>

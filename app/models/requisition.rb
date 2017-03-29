@@ -17,9 +17,16 @@
 #  created_by     :integer
 #  modified_by    :integer
 #  deleted_at     :datetime
+#  request_id     :integer          not null
 #
 
 class Requisition < ApplicationRecord
+   include Filterable
+ 
+  scope :operation, ->(operation) { where operation_id: operation }
+  scope :status, ->(status) { where status: status }  
+  scope :region, ->(region) {where region_id: region}
+  
   enum status: [:draft, :approved, :ongoing, :completed, :archived]
   belongs_to :operation
   has_many :requisition_items

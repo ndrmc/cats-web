@@ -12,17 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'Cancel', ration_ration_items_path(@ration_item.ration),  :class => "btn btn-default"%>
+      <%= link_to 'Cancel', ration_path(@ration_item.ration),  :class => "btn btn-default"%>
     </div>
   </div>
 </div>
 
-
-<%= render 'form',
-           ration_item: @ration_item,
-           ration: @ration_item.ration,
-           all_commodities: @all_commodities,
-           unit_of_measures: @unit_of_measures
-%>
-
-
+<%= render 'form', ration_item: @ration_item %>

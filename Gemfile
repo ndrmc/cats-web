@@ -31,8 +31,8 @@ gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
+# gem 'bcrypt', '~> 3.1.11'
+gem 'bcrypt', platforms: :ruby
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -86,5 +86,16 @@ gem 'email_validator'
 gem 'hirb-unicode'
 gem 'terminal-table'
 
+gem 'rack-cors', :require => 'rack/cors'
+gem 'rubyzip', '= 1.0.0'
+gem 'axlsx', '= 2.0.1'
+gem 'axlsx_rails'
 gem "graphql"
 gem "graphiql-rails"
+gem 'roo'
+
+gem 'responders'
+
+gem 'data-confirm-modal'
+gem 'geocoder'
+gem 'wdm', '>=0.1.0' if Gem.win_platform?

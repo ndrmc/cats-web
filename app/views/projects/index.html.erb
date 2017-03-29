@@ -3,7 +3,7 @@
     <h2>Projects</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <a href="#">Plan</a>
       </li>
       <li class="active">
         <strong>Projects</strong>
@@ -19,25 +19,25 @@
 
 <div class="row">
   <div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
-      <table class="table table-striped cats-datatable">
-        <thead>
-          <tr>
-            <th>Project code</th>
-            <th>Commodity</th>
-            <th>Commodity source</th>
-            <th>Organization</th>
-            <th>Amount</th>
-            <th>Unit of measure</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+        <table class="table table-striped cats-datatable">
+          <thead>
+            <tr>
+              <th>Project code</th>
+              <th>Commodity</th>
+              <th>Commodity source</th>
+              <th>Organization</th>
+              <th>Amount</th>
+              <th>Unit of measure</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <% @projects.each do |project| %>
-          <tr>
+          <tbody>
+            <% @projects.each do |project| %>
+            <tr>
               <td><%= project.project_code %></td>
               <td><%= Commodity.find(project.commodity_id).name%></td>
               <td><%= project.commodity_source%></td>
@@ -46,15 +46,16 @@
               <td><%= UnitOfMeasure.find(project.unit_of_measure_id).name%></td>
               <td><%= project.publish_date.strftime('%d-%b-%Y')%></td>
               <td>
-                <%= link_to 'Edit', edit_project_path(project) %> &middot;
+                <%= link_to 'Edit', edit_project_path(project) %>
+                &middot;
                 <%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' } %>
               </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
 
+      </div>
     </div>
   </div>
-</div>
 </div>

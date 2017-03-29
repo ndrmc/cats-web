@@ -21,12 +21,21 @@
 #  created_by          :integer
 #  modified_by         :integer
 #  deleted_at          :datetime
+#  ration_id           :integer
 #
 
 class Operation < ApplicationRecord
   enum status: [:draft, :ongoing, :completed, :archived]
+
+  belongs_to :hrd
+
   has_many :requisitions
   has_many :transport_requisitions
   has_many :transport_orders
 
+  validates :program_id, presence: {message: " is required!"}
+  validates :name, presence: {message: " is required!"}
+  validates :year, presence: {message: " is required!"}
+  validates :hrd_id, presence: {message: "is required!"}
+  validates :ration_id, presence: {message: "is required!"}
 end
