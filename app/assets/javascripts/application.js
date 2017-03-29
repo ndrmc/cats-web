@@ -34,12 +34,12 @@
 //= require jquery.calendars/jquery.calendars.picker.js
 //= require jquery.calendars/jquery.calendars.ethiopian.js
 //= require jquery.calendars/jquery.calendars.ethiopian-am.js
+
+//= require data-confirm-modal
 //= require underscore-min
 //= require gmaps/google
+
 //= require_tree .
-//= require data-confirm-modal
-
-
 
 $(document).ready(function() {
     /**

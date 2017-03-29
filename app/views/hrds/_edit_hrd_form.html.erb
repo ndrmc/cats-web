@@ -1,0 +1,22 @@
+<%= form_tag  '',  :id => 'edit_hrd_item_form'  do  %>
+    <div class="form-group">
+        <label for="woreda">Woreda</label>
+        <input name='woreda' value="<%= @hrd_item.woreda.name %>" readonly type="text" class="form-control" autofocus>
+    </div>
+
+    <input type="hidden" name="id" value="<%= @hrd_item.id %>" class="hrd-item-form-field" />
+
+    <div class="form-group">
+        <label for="starting_month">Starting Month</label>
+        <%= select_tag 'starting_month',  options_for_select( Date::MONTHNAMES[1..-1].map.with_index { |e, i | [e, i + 1] }, @hrd_item.starting_month) , { :required => true, :prompt => "-- Choose --", :class => 'hrd-item-form-field form-control' }  %>
+
+    </div>
+    <div class="form-group">
+        <label for="duration">Duration</label>
+        <input name='duration' type="number" class="form-control hrd-item-form-field" value="<%= @hrd_item.duration %>"  >
+    </div>
+    <div class="form-group">
+        <label for="beneficiary">Number of Beneficiaries</label>
+        <input name='beneficiary'  type="number" class="form-control hrd-item-form-field" value="<%= @hrd_item.beneficiary %>" >
+    </div>
+<% end %>

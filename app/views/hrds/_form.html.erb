@@ -1,0 +1,72 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(hrd) do |f| %>
+        <% if hrd.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(hrd.errors.count, "error") %> prohibited this hrd from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% hrd.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                    <%= f.label :year_ec, "Year (EC)" %>
+                    <span class="required">*</span>
+                    <%= f.number_field :year_ec, :class => 'form-control', required: true,  autofocus: true  %>
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :year_gc, "Year (GC)" %>
+                    <span class="required">*</span>
+                    <%= f.number_field :year_gc, :class => 'form-control', required: true  %>
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :season_id %>
+                    <span class="required">*</span>
+                    <%= f.collection_select :season_id,
+                                Season.order(:name),:id,:name, {prompt: "-- Choose --"}, {class:'form-control', required: true } %>
+
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :ration_id %>
+                    <span class="required">*</span>
+                    <%= f.collection_select :ration_id,
+                                Ration.order(:reference_no),:id,:reference_no, {prompt: "-- Choose --"}, {class:'form-control', required: true } %>
+
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :duration %>
+                    <span class="required">*</span>
+                    <%= f.number_field :duration, :class => 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                    <%= f.label :month_from %>
+                    <span class="required">*</span>
+                    <%= f.select :month_from,  options_for_select( Date::MONTHNAMES[1..-1].map.with_index { |e, i | [e, i + 1] }, @hrd.month_from ) , {}, { :required => true, :prompt => "-- Choose --", :class => 'form-control' }  %>
+
+                </div>
+
+
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>
