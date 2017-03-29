@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170328134548) do
+ActiveRecord::Schema.define(version: 20170329081608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1028,9 +1028,7 @@ ActiveRecord::Schema.define(version: 20170328134548) do
     t.string   "keyboard"
     t.string   "calendar"
     t.string   "default_uom"
-    t.string   "region"
     t.string   "organization_unit"
-    t.string   "hub"
     t.string   "encrypted_password",     default: "",   null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -1051,9 +1049,14 @@ ActiveRecord::Schema.define(version: 20170328134548) do
     t.date     "date_preference"
     t.string   "mobile_no"
     t.integer  "user_type_id"
-    t.integer  "department"
+    t.integer  "location_id"
+    t.integer  "hub_id"
+    t.integer  "department_id"
     t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
+    t.index ["department_id"], name: "index_users_on_department_id", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["hub_id"], name: "index_users_on_hub_id", using: :btree
+    t.index ["location_id"], name: "index_users_on_location_id", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 

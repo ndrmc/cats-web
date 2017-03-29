@@ -17,60 +17,83 @@
   </div>
 
  <div class="col-sm-3">
-   <% if @user.is_active %>
-      <span class="badge badge-success"> Active </span>
-    <%else%>
-      <span class="label label-default"> Active </span>
-    <%end%>
+   
     </div>
 </div>
 
-
-
 <div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
+  <div class="row m-b-lg m-t-lg">
+
+<div class="col-md-12">
+   <div>
+      <% if @user.is_active %>
+      <span class="btn  btn-success .btn-lg"> Active </span>
+    <%else%>
+      <span class="btn btn-warning .btn-lg"> Inacive </span>
+    <%end%>
+      
+      </div>
+</div>
+    <div class="col-md-4">
+
+      <div class="">
+
+     
+        <div>
+          <h2 class="no-margins">
+            <%= @user.name %>
+          </h2>
+          User type <%= @user_type_id %> </br>
+          Registered since:
+            <%= time_ago_in_words(@user.created_at) %>
+          <p> Last Login:      
+           <%= time_ago_in_words(@user.last_sign_in_at) %> </p>
+          
+        </div>
+      </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+      <div class="">
+        <div>
+          Language:
+            <%= @language %> <br>
+           Calendor:
+            <%= @calendor %>
+           Hub:
+          
+           <%= @hub %> </br>
+           Region: <%= @user.location.name  %>
+          
+        </div>
+      </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+      <div class="">
+        <div>
+          Language:
+            <%= @language %> <br>
+           Calendor:
+            <%= @calendor %>
+           Hub:
+          
+           <%= @hub %> </br>
+           Region: <%= @region  %>
+          
+        </div>
+      </div>
+
+      </div>
+  </div>
+</div>
 
 
-<div class="row">
-<div class="col-sm-4">
-  <div class="control-label col-sm-3"> User</div>
-  <div class="col-sm-5"> <%= @user.name %> </div>
-</div>
 
-<div class="col-sm-4">
-  <div class="control-label col-sm-3"> Registered since </div>
-  <div class="col-sm-5"> <%= @user.created_at.strftime("%m/%d/%y") %> </div>
-</div>
-
-<div class="col-sm-4">
-  <div class="control-label col-sm-3"> Last login</div>
-  <div class="col-sm-5"> <%= @user.last_sign_in_at.strftime("%m/%d/%y") %> </div>
-</div>
-</div>
-
-
-  <div class="row">
-<div class="col-sm-4">
-  <div class="control-label col-sm-3"> Region </div>
-  <div class="col-sm-5"> -</div>
-</div>
-
-<div class="col-sm-4">
-  <div class="control-label col-sm-3"> User type </div>
-  <div class="col-sm-5"> -</div>
-</div>
-
-<div class="col-sm-4">
-  <div class="control-label col-sm-3"> Hub </div>
-  <div class="col-sm-5"> - </div>
-</div>
-</div>
-
-
-</div>
-</div>
-</div>
 
 
 

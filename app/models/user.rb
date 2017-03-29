@@ -38,6 +38,7 @@
 
 class User < ApplicationRecord
   rolify
+  belongs_to :location
   has_many :users_permissions
   has_many :users_departments
   has_many :departments, through: :users_departments
