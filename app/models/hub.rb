@@ -16,6 +16,7 @@
 #
 
 class Hub < ApplicationRecord
+  has_many :users
   has_many :warehouses
   has_many :stores, through: :warehouses
 

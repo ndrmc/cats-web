@@ -6,7 +6,7 @@
         <a href="#">User</a>
       </li>
       <li class="active">
-        <strong>Departments</strong>
+        <strong>User profile</strong>
       </li>
     </ol>
   </div>
@@ -33,6 +33,7 @@
     <%end%>
       
       </div>
+      </br>
 </div>
     <div class="col-md-4">
 
@@ -40,14 +41,10 @@
 
      
         <div>
-          <h2 class="no-margins">
-            <%= @user.name %>
-          </h2>
-          User type <%= @user_type_id %> </br>
-          Registered since:
-            <%= time_ago_in_words(@user.created_at) %>
-          <p> Last Login:      
-           <%= time_ago_in_words(@user.last_sign_in_at) %> </p>
+          
+          User type: <%=   %> </br>
+          Registered since:  <%= time_ago_in_words(@user.created_at) %>
+          <p> Last Login:    <%= time_ago_in_words(@user.last_sign_in_at) %> </p>
           
         </div>
       </div>
@@ -58,15 +55,10 @@
 
       <div class="">
         <div>
-          Language:
-            <%= @language %> <br>
-           Calendor:
-            <%= @calendor %>
-           Hub:
-          
-           <%= @hub %> </br>
-           Region: <%= @user.location.name  %>
-          
+           Keyboard:   <%= @keyboard %> </br>
+           Unit of measurement:   <%= @default_uom %> </br>
+           Region:     <%= @user.location.name  %> </br>
+           Department: <%= Department.find_by(id: @user.department_id).name %>
         </div>
       </div>
 
@@ -76,14 +68,10 @@
 
       <div class="">
         <div>
-          Language:
-            <%= @language %> <br>
-           Calendor:
-            <%= @calendor %>
-           Hub:
-          
-           <%= @hub %> </br>
-           Region: <%= @region  %>
+          Language: <%= @language %> </br>
+          Calendor: <%= @calendor %> </br>
+          Hub:      <%= @user.hub.name  %> </br>
+          Mobile No: <%= @user.mobile_no%>
           
         </div>
       </div>
