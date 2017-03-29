@@ -91,11 +91,11 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'rubyzip', '= 1.0.0'
 gem 'axlsx', '= 2.0.1'
 gem 'axlsx_rails'
-
+gem "graphql"
+gem "graphiql-rails"
 gem 'roo'
 
 gem 'responders'
-gem 'react-rails'
 
 gem 'data-confirm-modal'
 gem 'geocoder'

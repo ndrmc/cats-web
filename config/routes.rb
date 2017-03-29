@@ -92,5 +92,8 @@ Rails.application.routes.draw do
 
   
   root to: 'dashboard#index'
+  # GraphQL configuration
+  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/queries"
+  resources :queries
 end
 end
