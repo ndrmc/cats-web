@@ -70,10 +70,10 @@ class User < ApplicationRecord
   end
 
   enum user_types: {
-        Admin:2,
-        Federal:3,
-        Hub:4,
-        Regional:5
+        guest:2,
+        admin:3,
+        cleark:4,
+        manager:5
     }   
 
 end

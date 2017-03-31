@@ -101,7 +101,7 @@ class UsersController < ApplicationController
     end
 
 
-    redirect_to users_path, success: 'Roles successfully updated.'
+    redirect_to @user, success: 'Roles successfully updated.'
 
 
   end
@@ -155,6 +155,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub_id, :location_id, :mobile_no, :user_type_id, :department_id)
+      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub_id, :location_id, :mobile_no, :user_types, :department_id)
     end
 end

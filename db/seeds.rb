@@ -215,7 +215,7 @@ if User.count == 0
 end
 
 if Role.count == 0
-  [:admin, :guest, :clerk, :manager].each do |role|
+  [:hub, :federal, :region].each do |role|
     Role.create(name: role)
   end
   puts "Created default roles"

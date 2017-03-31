@@ -43,17 +43,13 @@
                 <%= f.check_box :is_active, :class => 'form-control' %>
                         </div>
                 
-                   
-               
+                                
                        
-                
-
-               
+                             
                  <div class="form-group" id="div-caseTeam">
                             <%= f.label :'User Type' %>
-                <%= f.select :user_type_id,options_for_select(User.user_types.map {|k,v| [k,v] }, :selected => f.object.user_type_id, :include_blank => true),{}, {:class => 'form-control'} %>
+                <%=f.select(:user_types, User.user_types.keys ,{}, {:class => 'form-control'}) %>
                 </div>
-
 
                  <div class="form-group" id="div-caseTeam">
                             <%= f.label :Department %>

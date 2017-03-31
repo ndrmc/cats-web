@@ -28,6 +28,7 @@
               <th>Last name</th>
               <th>Email</th>
               <th>Roles</th>
+              <th>User type</th>
               <th>Is active</th>
             
               <th>Actions</th>
@@ -41,12 +42,13 @@
             <td> <%= link_to user.first_name, "/users/#{user.id} "%> &middot;</td>
             <td><%= user.last_name  %></td>
             <td><%= user.email %></td>
+            <td><%= user.user_types %> </td>
             <td><%= user.roles.map {|r| r.name}.join ', ' %></td>
             <td><%= user.is_active%></td>
            
             <td>
               
-              <%= link_to 'Manage Roles', "/users/#{user.id}/roles"%> &middot;
+             
               <%= link_to 'Edit', edit_user_path(user) %> &middot;
               <%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>

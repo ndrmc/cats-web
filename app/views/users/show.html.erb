@@ -15,68 +15,165 @@
       <%= link_to 'Cancel', users_path,  :class => "btn btn-default"%>
     </div>
   </div>
-
- <div class="col-sm-3">
-   
-    </div>
 </div>
 
 <div class="wrapper wrapper-content">
   <div class="row m-b-lg m-t-lg">
 
-<div class="col-md-12">
+  <div class="col-md-12">
+  
    <div>
       <% if @user.is_active %>
-      <span class="btn  btn-success .btn-lg"> Active </span>
+           <span class="btn  btn-primary .btn-lg"> Active </span>
     <%else%>
-      <span class="btn btn-warning .btn-lg"> Inacive </span>
+          <span class="btn btn-warning .btn-lg"> Inacive </span>
     <%end%>
       
-      </div>
-      </br>
+  </div>
+
+  
 </div>
-    <div class="col-md-4">
+<div class="col-md-12 ">
+    <div class="pull-right">
+       <%= link_to 'Manage Roles', "/users/#{@user.id}/roles", :class => "btn btn-success btn-sm" %> &middot;
+  </div>
+</div>
 
-      <div class="">
+<div class="portlet-body">
+<div class="form-horizontal" >
+ <div class="row">
 
-     
-        <div>
-          
-          User type: <%=   %> </br>
-          Registered since:  <%= time_ago_in_words(@user.created_at) %>
-          <p> Last Login:    <%= time_ago_in_words(@user.last_sign_in_at) %> </p>
-          
+  <div class="controls col-sm-4">
+
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Role(s)</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @user.roles.map {|r| r.name}.join ', ' %></p>
         </div>
-      </div>
+    </div>
+   </div>
+   
 
-      </div>
-
-      <div class="col-md-4">
-
-      <div class="">
-        <div>
-           Keyboard:   <%= @keyboard %> </br>
-           Unit of measurement:   <%= @default_uom %> </br>
-           Region:     <%= @user.location.name  %> </br>
-           Department: <%= Department.find_by(id: @user.department_id).name %>
+  <div class="controls col-sm-4">
+   <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>User Type</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @user.user_types  %> </p>
         </div>
-      </div>
+    </div>
+</div>
+    
 
-      </div>
-
-      <div class="col-md-4">
-
-      <div class="">
-        <div>
-          Language: <%= @language %> </br>
-          Calendor: <%= @calendor %> </br>
-          Hub:      <%= @user.hub.name  %> </br>
-          Mobile No: <%= @user.mobile_no%>
-          
+  <div class="controls col-sm-4">
+     <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Registered since</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= time_ago_in_words(@user.created_at) %></p>
         </div>
-      </div>
+    </div>
+</div>
+</div>
 
-      </div>
+<div class="row">
+  <div class="controls col-sm-4">
+
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Last login</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= time_ago_in_words(@user.last_sign_in_at) %></p>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>keyboard</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @keyboard %> </p>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Unit of measurement</trong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"> <%= @default_uom %></p>
+        </div>
+    </div>
+  </div>
+</div>
+
+ <div class="row">
+  <div class="controls col-sm-4">
+
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Region</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @user.location.name  %> </p>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Department</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"> <%= Department.find_by(id: @user.department_id).name %> </p>
+        </div>
+    </div>
+ </div>
+
+
+  <div class="controls col-sm-4">
+     <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Language</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @language %> </p>
+        </div>
+    </div>
+</div>
+</div>
+
+ <div class="row">
+<div class="controls col-sm-4">
+
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Calendor</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"> <%= @calendor %> </p>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Hub</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @user.hub.name  %> </p>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"> <strong>Mobile No </strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static">  <%= @user.mobile_no%> </p>
+        </div>
+    </div>
+
+  </div>
+  </div>
+
+</div>
+</div>
+
   </div>
 </div>
 

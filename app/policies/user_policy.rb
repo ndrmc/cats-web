@@ -1,15 +1,8 @@
-class UserPolicy
-attr_reader :current_user, :model
+class UserPolicy < ApplicationPolicy
 
-
-
-def initialize(current_user,model)
-    @current_user = current_user
-    @model = model
-end
 
 def index?
-   @current_user.permissions.where(name: 'HRD').count > 0
+   @current_user.permissions.where(name: 'HRD').count > 0 || @current_user.user_types == 'admin'
 end
 
 def new?
