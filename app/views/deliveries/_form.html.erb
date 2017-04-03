@@ -36,24 +36,24 @@
 
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
           <%= f.label :gin_number , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-          <%= f.text_field :gin_number,:value => @delivery.gin_number  %>
+          <%= f.text_field :gin_number,:value => @delivery.gin_number ,:class=>"col-md-6 col-sm-6 col-xs-6 " %>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
           <%= f.label :requisition_number , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-          <%= f.text_field :requisition_number,:value => @delivery.requisition_number  %>
+          <%= f.text_field :requisition_number,:value => @delivery.requisition_number ,:class=>"col-md-6 col-sm-6 col-xs-6" %>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
           <%= f.label :operation_id , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-          <%= f.collection_select :operation_id,
-                        Operation.order(:name), :id, :name, {include_blank: '--- Select Operation ---'}, {:required => true } %>
+          <%= f.collection_select :operation_id,Operation.order(:name), :id, :name,
+                                  {include_blank: '--- Select ---'}, {:class=>"col-md-6 col-sm-6 col-xs-6",:required => true } %>
 
         </div>
 
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
           <%= f.label :transporter_id , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
 
-          <%= f.collection_select :transporter_id,
-                        Transporter.order(:name), :id, :name, {include_blank: '--- Select Transporter ---'}, {:required => true } %>
+          <%= f.collection_select :transporter_id, Transporter.order(:name), :id, :name,
+                                  {include_blank: '--- Select ---'}, {:class=>"col-md-6 col-sm-6 col-xs-6",:required => true } %>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
 

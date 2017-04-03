@@ -41,7 +41,7 @@ class PsnpPlansController < ApplicationController
   end
 
   def save_psnp_plan_item
-    @psnp_plan_item = PsnpPlanItem.new(params.permit(:psnp_plan_id, :woreda_id,  :beneficiary, :starting_month, :duration))
+    @psnp_plan_item = PsnpPlanItem.new(params.permit(:psnp_plan_id, :woreda_id,  :beneficiary, :starting_month, :duration, :cash_ratio,:kind_ratio))
 
     if @psnp_plan_item.save
       render partial: 'psnp_plan_item_row'
@@ -74,10 +74,11 @@ class PsnpPlansController < ApplicationController
     params.delete :id
 
     respond_to do |format|
-      if @psnp_plan_item.update( params.permit(:starting_month, :duration, :beneficiary ))
+      if @psnp_plan_item.update( params.permit(:starting_month, :duration, :beneficiary, :cash_ratio, :kind_ratio ))
         format.json { render json: { :successful => true }}
       else
-        format.json { render json: { :successful => false }}
+
+        format.json { render json: { :successful => false, :messages => @psnp_plan_item.errors.full_messages }}
       end
     end
   end
@@ -165,6 +166,6 @@ class PsnpPlansController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def psnp_plan_params
-      params.require(:psnp_plan).permit( :id, :year_ec, :year_gc, :month_from, :season_id, :ration_id, :duration, :cash_ratio, :kind_ratio )
+      params.require(:psnp_plan).permit( :id, :year_ec, :year_gc, :month_from, :season_id, :ration_id, :duration )
     end
 end

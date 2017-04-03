@@ -31,14 +31,6 @@
                 </div>
 
                 <div class="form-group">
-                    <%= f.label :season_id %>
-                    <span class="required">*</span>
-                    <%= f.collection_select :season_id,
-                                Season.order(:name),:id,:name, {prompt: "-- Choose --"}, {class:'form-control', required: true } %>
-
-                </div>
-
-                <div class="form-group">
                     <%= f.label :ration_id %>
                     <span class="required">*</span>
                     <%= f.collection_select :ration_id,
@@ -53,24 +45,11 @@
                 </div>
 
                 <div class="form-group">
-                  <%= f.label :cash_ratio %>
-                  <span class="required">*</span>
-                  <%= f.number_field :cash_ratio, :class => 'form-control' %>
-                </div>
-                <div class="form-group">
-                  <%= f.label :kind_ratio %>
-                  <span class="required">*</span>
-                  <%= f.number_field :kind_ratio, :class => 'form-control' %>
-                </div>
-
-                <div class="form-group">
                     <%= f.label :month_from %>
                     <span class="required">*</span>
                     <%= f.select :month_from,  options_for_select( Date::MONTHNAMES[1..-1].map.with_index { |e, i | [e, i + 1] }, @psnp_plan.month_from ) , {}, { :required => true, :prompt => "-- Choose --", :class => 'form-control' }  %>
 
                 </div>
-
-
 
       
       <div class="actions">

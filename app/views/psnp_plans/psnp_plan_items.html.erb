@@ -237,8 +237,8 @@
 
                     $('#edit-psnp_plan-item').modal('hide'); 
                 }
-                else { 
-                    toastr.error("Update failed. Please check your values and try again."); 
+                else {
+                    toastr.error("Update failed. "+data.messages);
                 }
             }); 
         }); 

@@ -482,17 +482,6 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.index ["name"], name: "index_hubs_on_name", unique: true, using: :btree
   end
 
-  create_table "idp_reasons", force: :cascade do |t|
-    t.string   "name"
-    t.text     "description"
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
   create_table "journals", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -648,6 +637,7 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "old_id"
     t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
   end
 
@@ -659,6 +649,8 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.integer  "beneficiary"
     t.integer  "region_id"
     t.integer  "zone_id"
+    t.integer  "cash_ratio"
+    t.integer  "kind_ratio"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.boolean  "deleted",        default: false
@@ -673,9 +665,6 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.integer  "status",      default: 0,     null: false
     t.integer  "month_from"
     t.integer  "duration"
-    t.integer  "cash_ratio"
-    t.integer  "kind_ratio"
-    t.integer  "season_id"
     t.integer  "ration_id"
     t.integer  "created_by"
     t.integer  "modified_by"

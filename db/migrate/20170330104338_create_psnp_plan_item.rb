@@ -9,6 +9,8 @@ class CreatePsnpPlanItem < ActiveRecord::Migration[5.0]
       t.integer  "beneficiary"
       t.integer  "region_id"
       t.integer  "zone_id"
+      t.integer  "cash_ratio"
+      t.integer  "kind_ratio"
 
       t.integer  "created_by"
       t.integer  "modified_by"

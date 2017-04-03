@@ -6,9 +6,6 @@ class CreatePsnpPlan < ActiveRecord::Migration[5.0]
       t.integer  "status",      default: 0, null: false
       t.integer  "month_from"
       t.integer  "duration"
-      t.integer  "cash_ratio"
-      t.integer  "kind_ratio"
-      t.integer  "season_id"
       t.integer  "ration_id"
 
       t.integer  "created_by"
