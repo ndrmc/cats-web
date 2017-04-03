@@ -76,4 +76,16 @@ class User < ApplicationRecord
         manager:5
     }   
 
+
+
+   
+    def has_permission(permission)
+         self.permissions.where(name: permission).count > 0 ? true : false
+         
+    end
+
+    def user_type_in(users_types)
+        users_types.include?(self.user_types)
+    end
+
 end

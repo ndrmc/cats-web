@@ -12,10 +12,12 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <%if policy(Hrd).edit? %>
       <%= link_to  edit_hrd_path(@hrd),  :class => "btn btn-default"  do %>
         <i class="fa fa-edit"></i> 
         Edit
       <% end %>
+    <%end%>
     </div>
   </div>
 </div>
@@ -67,7 +69,10 @@
                             <tr>
                                 <td><%= Location.find(aggregate.region_id).name %></td>
                                 <td><%= aggregate.total_beneficiaries %></td>
+                               <% if policy(Hrd).edit? %>
+                               
                                 <td><a href="/hrds/hrd_items?hrd_id=<%= @hrd.id %>&region_id=<%= aggregate.region_id %>"> <i class="fa fa-edit"></i> Edit</a></td>
+                                <%end%>
                             </tr>
                         <% end %>
                     </tbody>
@@ -110,7 +115,9 @@
           <div class="panel">
             <div class="panel-heading">
               <div class="pull-right">
+              <%if policy(Hrd).edit? %>
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#contribution-modal">Add Contribution</a>
+                <%end%>
               </div>
               <div class="clearfix"></div>
             </div>

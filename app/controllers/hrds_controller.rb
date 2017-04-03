@@ -1,6 +1,8 @@
 class HrdsController < ApplicationController
 
     def index 
+
+        authorize Hrd
         if params[:status]
             @hrds = Hrd.where status: params[:status]
         else
@@ -9,6 +11,7 @@ class HrdsController < ApplicationController
     end 
 
     def show
+        authorize Hrd
         @hrd = Hrd.find params[:id]
 
         @contributions = Contribution.where( hrd_id: @hrd.id)
@@ -92,6 +95,7 @@ class HrdsController < ApplicationController
     end
 
     def create
+        authorize Hrd
         @hrd = Hrd.new hrd_params  
 
         if @hrd.save
@@ -118,9 +122,11 @@ class HrdsController < ApplicationController
 
     def edit
         @hrd = Hrd.find params[:id]
+        authorize Hrd
     end
 
     def update 
+        authorize Hrd
         @hrd = Hrd.find params[:id]  
 
         respond_to do |format|
@@ -136,6 +142,7 @@ class HrdsController < ApplicationController
     end
 
     def archive
+        authorize Hrd
         @hrd = Hrd.find params[:id] 
 
         @hrd.status = :archived 
