@@ -90,6 +90,15 @@ Rails.application.routes.draw do
 
   resources :contributions
 
+  get '/psnp_plans/psnp_plan_items', to: 'psnp_plans#psnp_plan_items'
+  get '/psnp_plans/archive/:id', to: 'psnp_plans#archive'
+  get '/psnp_plans/edit_psnp_plan_form/:id', to: 'psnp_plans#edit_psnp_plan_form'
+  get '/psnp_plans/new_psnp_plan_item/:id', to: 'psnp_plans#new_psnp_plan_item'
+  get '/psnp_plans/update_psnp_plan_item', to: 'psnp_plans#update_psnp_plan_item'
+  post '/psnp_plans/save_psnp_plan_item', to: 'psnp_plans#save_psnp_plan_item'
+  delete '/psnp_plans/remove_psnp_plan_id/:id', to: 'psnp_plans#remove_psnp_plan_id'
+  resources :psnp_plans
+
   
   root to: 'dashboard#index'
   # GraphQL configuration
