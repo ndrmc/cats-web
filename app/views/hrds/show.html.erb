@@ -58,7 +58,7 @@
                     <thead>
                         <tr>
                             <td>Region</td>
-                            <td>Number of Beneficiaries</td>
+                            <td class="text-right" >Number of Beneficiaries</td>
                             <td></td>
                         </tr>
                     </thead>
@@ -66,7 +66,7 @@
                         <% @beneficiaries_by_region.each  do |aggregate| %>
                             <tr>
                                 <td><%= Location.find(aggregate.region_id).name %></td>
-                                <td><%= aggregate.total_beneficiaries %></td>
+                                <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter aggregate.total_beneficiaries %></td>
                                 <td><a href="/hrds/hrd_items?hrd_id=<%= @hrd.id %>&region_id=<%= aggregate.region_id %>"> <i class="fa fa-edit"></i> Edit</a></td>
                             </tr>
                         <% end %>
@@ -82,22 +82,22 @@
                     <thead>
                         <tr>
                             <td>Region</td>
-                            <td>Number of Beneficiaries</td>
+                            <td class="text-right"> Number of Beneficiaries</td>
                             <% @hrd.ration.ration_items.each do |item| %>
-                              <td><%= item.commodity.name %></td>
+                              <td class="text-right"><%= item.commodity.name %></td>
                             <% end %>
-                            <td>Total</td>
+                            <td class="text-right">Total</td>
                         </tr>
                     </thead>
                     <tbody>
                         <% @beneficiaries_by_region.each  do |aggregate| %>
                             <tr>
                                 <td><%= Location.find(aggregate.region_id).name %></td>
-                                <td><%= aggregate.total_beneficiaries %></td>
+                                <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter aggregate.total_beneficiaries %></td>
                                 <% @hrd.ration.ration_items.each do |item| %>
-                                  <td><%= item.amount * aggregate.total_beneficiaries %></td>
+                                  <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter(item.amount * aggregate.total_beneficiaries) %></td>
                                 <% end %>
-                                <td><%= @hrd.ration.ration_items.inject(0) { |result, ration_item| result + ration_item.amount } * aggregate.total_beneficiaries  %></td>
+                                <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter(@hrd.ration.ration_items.inject(0) { |result, ration_item| result + ration_item.amount } * aggregate.total_beneficiaries)  %></td>
                             </tr>
                         <% end %>
                     </tbody>
