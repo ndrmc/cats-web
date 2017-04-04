@@ -1,0 +1,30 @@
+<%= form_tag  '',  :id => 'edit_psnp_plan_item_form'  do  %>
+    <div class="form-group">
+        <label for="woreda">Woreda</label>
+        <input name='woreda' value="<%= @psnp_plan_item.woreda.name %>" readonly type="text" class="form-control" autofocus>
+    </div>
+
+    <input type="hidden" name="id" value="<%= @psnp_plan_item.id %>" class="psnp_plan-item-form-field" />
+
+    <div class="form-group">
+        <label for="starting_month">Starting Month</label>
+        <%= select_tag 'starting_month',  options_for_select( Date::MONTHNAMES[1..-1].map.with_index { |e, i | [e, i + 1] }, @psnp_plan_item.starting_month) , { :required => true, :prompt => "-- Choose --", :class => 'psnp_plan-item-form-field form-control' }  %>
+
+    </div>
+    <div class="form-group">
+        <label for="duration">Duration</label>
+        <input name='duration' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.duration %>"  >
+    </div>
+    <div class="form-group">
+      <label for="cash_ratio">Cash Ratio</label>
+      <input name='cash_ratio' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.cash_ratio %>"  >
+    </div>
+    <div class="form-group">
+      <label for="kind_ratio">Kind Ratio</label>
+      <input name='kind_ratio' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.kind_ratio %>"  >
+    </div>
+    <div class="form-group">
+        <label for="beneficiary">Number of Beneficiaries</label>
+        <input name='beneficiary'  type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.beneficiary %>" >
+    </div>
+<% end %>

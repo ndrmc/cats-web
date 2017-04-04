@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170329124823) do
+ActiveRecord::Schema.define(version: 20170327072202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string   "name",        null: false
-    t.string   "type"
+    t.integer  "code"
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_accounts_on_deleted_at", using: :btree
-    t.index ["name", "type"], name: "index_accounts_on_name_and_type", using: :btree
+    t.index ["name", "code"], name: "index_accounts_on_name_and_code", using: :btree
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -99,13 +99,6 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
-  end
-
-  create_table "case_units", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -210,6 +203,7 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.integer  "status"
     t.integer  "operation_id"
     t.text     "remark"
+    t.boolean  "draft"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.boolean  "deleted",            default: false
@@ -239,6 +233,7 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.string   "description"
     t.integer  "created_by"
     t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
     t.datetime "deleted_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -967,8 +962,7 @@ ActiveRecord::Schema.define(version: 20170329124823) do
   create_table "transporter_addresses", force: :cascade do |t|
     t.integer  "transporter_id"
     t.integer  "region_id"
-    t.integer  "zone_id"
-    t.integer  "woreda_id"
+    t.string   "city"
     t.string   "subcity"
     t.string   "kebele"
     t.string   "house_no"

@@ -2,3 +2,5 @@
 *.log
 # ignore tmp files
 **/tmp
+
+.idea/

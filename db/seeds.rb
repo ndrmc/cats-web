@@ -49,8 +49,9 @@ if CommodityCategory.count == 0
   unit = UomCategory.find_by(name: 'unit')
 
   CommodityCategory.create(name: 'Food', code: 'food', uom_category: weight)
+  CommodityCategory.create(name: 'Non Food', code: 'nonfood', uom_category: weight)
   food = CommodityCategory.find_by(code: 'food', uom_category: weight)
-  CommodityCategory.create(name: 'Creal', code: 'cereal', parent: food, uom_category: weight)
+  CommodityCategory.create(name: 'Cereal', code: 'cereal', parent: food, uom_category: weight)
   CommodityCategory.create(name: 'Pulse', code: 'pulse', parent: food, uom_category: weight)
   CommodityCategory.create(name: 'Blended Food', code: 'bf', parent: food, uom_category: weight)
   CommodityCategory.create(name: 'Oil', code: 'oil', parent: food, uom_category: weight)
@@ -58,71 +59,108 @@ if CommodityCategory.count == 0
   CommodityCategory.create(name: 'Other', code: 'other', parent: food, uom_category: weight)
 
   non_food = CommodityCategory.find_by(code: 'nonfood')
-  CommodityCategory.create(name: 'Cloting', code: 'clothing', uom_category: unit)
+  CommodityCategory.create(name: 'Machine', code: 'machine', parent: non_food, uom_category: unit)
+  CommodityCategory.create(name: 'Clothing', code: 'clothing', uom_category: unit)
   CommodityCategory.create(name: 'House Equipment', code: 'equipment', parent: non_food,uom_category: unit)
 
   puts "Created seed data for CommodityCategory records"
 end
 
 # Commodities
-if Commodity.count == 0
+# Commodities
 
-  #FOOD ITEMS
-  mt = UnitOfMeasure.find_by(code: 'MT')
-  cereal = CommodityCategory.find_by(code: 'cereal')
-  Commodity.create(name: 'Maize', code: 'MAZ', commodity_category: cereal)
-  Commodity.create(name: 'Rice', code: 'RIC', commodity_category: cereal)
-  Commodity.create(name: 'Sorghum', code: 'SRM', commodity_category: cereal)
-  Commodity.create(name: 'Wheat', code: 'WHT', commodity_category: cereal)
+#FOOD ITEMS
+uom_category = UomCategory.find_by(name: 'weight')
 
-  pulse = CommodityCategory.find_by(code: 'pulse')
-  Commodity.create(name: 'Red Haricot Beans', code: 'RHB', commodity_category: pulse)
-  Commodity.create(name: 'White Haricot Beans', code: 'WHB', commodity_category: pulse)
-  Commodity.create(name: 'Beans', code: 'BNS', commodity_category: pulse)
-  Commodity.create(name: 'Lentils', code: 'LNT', commodity_category: pulse)
-  Commodity.create(name: 'Split Lentils', code: 'SLNT', commodity_category: pulse)
-  Commodity.create(name: 'Peas', code: 'PES', commodity_category: pulse)
-  Commodity.create(name: 'Yello Split Peas', code: 'YSP', commodity_category: pulse)
-
-  blendedfood = CommodityCategory.find_by(code: 'bf')
-  Commodity.create(name: 'Corn soy blends(CSB)', code: 'CSB', commodity_category: blendedfood)
-  Commodity.create(name: 'Corn soy blends (CSB+)', code: 'CSB+', commodity_category: blendedfood)
-  Commodity.create(name: 'Corn soy blends (CSB++)', code: 'CSB++', commodity_category: blendedfood)
-  Commodity.create(name: 'FAMIX', code: 'FMX', commodity_category: blendedfood)
-
-  oil = CommodityCategory.find_by(code: 'oil')
-  Commodity.create(name: 'Vegetable Oil', code: 'VO', commodity_category: oil)
-
-  foodsupplement = CommodityCategory.find_by(code: 'sf')
-  Commodity.create(name: 'Biscuit', code: 'BSC', commodity_category: foodsupplement)
-  Commodity.create(name: 'Dates', code: 'DAT', commodity_category: foodsupplement)
-  Commodity.create(name: 'Wheat Flour', code: 'WFR', commodity_category: foodsupplement)
-
-  # NON FOOD ITEMS
-  unit = UnitOfMeasure.find_by(code: 'UNIT')
-
-  cloth = CommodityCategory.find_by(code: 'clothing')
-  Commodity.create(name: 'Blanket', code: 'BKT', commodity_category: cloth)
-  Commodity.create(name: 'Bed Sheet', code: 'BST', commodity_category: cloth)
-
-  house_equipments = CommodityCategory.find_by(code: 'equipment')
-  Commodity.create(name: 'Cooking pots', code: 'PTS', commodity_category: house_equipments)
-  Commodity.create(name: 'Ladle', code: 'LDL', commodity_category: house_equipments)
-  Commodity.create(name: 'Spoon', code: 'SPN', commodity_category: house_equipments)
-  Commodity.create(name: 'Fork', code: 'FRK', commodity_category: house_equipments)
-  Commodity.create(name: 'Knife', code: 'KNF', commodity_category: house_equipments)
-  Commodity.create(name: 'Tray', code: 'TRY', commodity_category: house_equipments)
-  Commodity.create(name: 'Plastic plate', code: 'PLP', commodity_category: house_equipments)
-  Commodity.create(name: 'Plastic cup', code: 'PLC', commodity_category: house_equipments)
-  Commodity.create(name: 'Plastic tea cup', code: 'PTC', commodity_category: house_equipments)
-  Commodity.create(name: 'Plastic jug', code: 'PJG', commodity_category: house_equipments)
-  Commodity.create(name: 'Plastic bucket', code: 'PBT', commodity_category: house_equipments)
-  Commodity.create(name: 'Plastic jerry can', code: 'PJC', commodity_category: house_equipments)
-  Commodity.create(name: 'Plastic sheet (4x5),(3x7),(30.5x7.3)', code: 'PST', commodity_category: house_equipments)
-  Commodity.create(name: 'Tent (4x3),(4x4),(4x6),(10x6)', code: 'TNT', commodity_category: house_equipments)
-
-  puts "Created seed data for Commodity records"
+cereal = CommodityCategory.find_by(code: 'cereal')
+commodities = Commodity.where(:name => ['Cereal','Grain','Maize ','Rice','Sorghum','Wheat'])
+commodities.each do |c|
+  c.commodity_category_id = cereal.id
+  c.uom_category_id = uom_category.id
+  c.save!
 end
+
+pulse = CommodityCategory.find_by(code: 'pulse')
+commodities = Commodity.where(:name => ['Pulse','Red Haricot Beans','White Haricot Beans','Beans','Lentils','Split Lentils','Peas','Yellow Split Peas'])
+commodities.each do |c|
+  c.commodity_category_id = pulse.id
+  c.uom_category_id = uom_category.id
+  c.save!
+end
+
+blendedfood = CommodityCategory.find_by(code: 'bf')
+commodities = Commodity.where(:name => ['Blended food','CSB','CSB+','CSB++','FAMIX','Fafa Relief'])
+commodities.each do |c|
+  c.commodity_category_id = blendedfood.id
+  c.uom_category_id = uom_category.id
+  c.save!
+end
+
+oil = CommodityCategory.find_by(code: 'oil')
+commodities = Commodity.where(:name => ['Oil','Vegitable Oil','Palm Oil','Olive Oil'])
+commodities.each do |c|
+  c.commodity_category_id = oil.id
+  c.uom_category_id = uom_category.id
+  c.save!
+end
+
+foodsupplement = CommodityCategory.find_by(code: 'sf')
+commodities = Commodity.where(:name => ['Sup. Food','Biscuit','Dates','Wheat Flour', 'Milk'])
+commodities.each do |c|
+  c.commodity_category_id = foodsupplement.id
+  c.uom_category_id = uom_category.id
+  c.save!
+end
+
+food = CommodityCategory.find_by(code: 'food')
+commodities = Commodity.where(:name => ['Other Foods'])
+commodities.each do |c|
+  c.commodity_category_id = food.id
+  c.uom_category_id = uom_category.id
+  c.save!
+end
+
+# NON FOOD ITEMS
+
+uom_category = UomCategory.find_by(name: 'unit')
+
+cloth = CommodityCategory.find_by(code: 'clothing')
+commodities = Commodity.where(:name => ['Clothing','Blanket','Bed Sheet','Black Blanket'])
+commodities.each do |c|
+  c.commodity_category_id = cloth.id
+  c.uom_category_id = uom_category.id
+  c.save!
+end
+
+non_food = CommodityCategory.find_by(code: 'nonfood')
+commodities = Commodity.where(:name => ['Other Non-Food'])
+commodities.each do |c|
+  c.commodity_category_id = non_food.id
+  c.uom_category_id = uom_category.id
+  c.save!
+end
+
+house_equipments = CommodityCategory.find_by(code: 'equipment')
+commodities = Commodity.where(:name => ['House Equipment','Cooking Pots','Ladle','Spoon','Fork','Knife','Tray','Plastic Plate','Plastic Cup','Plastic Tea Cup','Plastic Jug','Plastic Bucket','Plastic Jerry Can','Plastic Sheet','Tent'])
+commodities.each do |c|
+  c.commodity_category_id = house_equipments.id
+  c.uom_category_id = uom_category.id
+  c.save!
+end
+
+
+machine = CommodityCategory.find_by(code: 'machine')
+commodities = Commodity.where(:name => ['Pump'])
+commodities.each do |c|
+  c.commodity_category_id = machine.id
+  c.uom_category_id = uom_category.id
+  c.save!
+end
+
+
+puts "Created seed data for Commodity records"
+
+
 
 # Mode of Transport
 if ModeOfTransport.count == 0

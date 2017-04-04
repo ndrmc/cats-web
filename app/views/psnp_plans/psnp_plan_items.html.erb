@@ -1,9 +1,9 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2><%= @hrd.name %></h2>
+    <h2><%= @psnp_plan.name %></h2>
     <ol class="breadcrumb">
       <li>
-        <a href="/hrds/<%= @hrd.id %>">HRD</a>
+        <a href="/psnp_plans/<%= @psnp_plan.id %>">HRD</a>
       </li>
       <li class="active">
         <strong>Items</strong>
@@ -24,8 +24,8 @@
 
     <div class="panel">
         <div class="panel-heading">
-            <form role="form" class="form-inline" action="/hrds/hrd_items" method="GET">
-                <input type="hidden" name="hrd_id" value="<%= @hrd.id %>">
+            <form role="form" class="form-inline" action="/psnp_plans/psnp_plan_items" method="GET">
+                <input type="hidden" name="psnp_plan_id" value="<%= @psnp_plan.id %>">
                 <%= select_tag  :region_id,  options_from_collection_for_select( Location.where(location_type: 'region') , 'id', 'name', params[:region_id] ) , { :prompt => "Choose Region", :id => 'region-select', :class => 'form-control' }  %>
             </form>
 
@@ -36,13 +36,13 @@
 
     <div class="wrapper wrapper-content">
 
-     <% @hrd_items_by_zone.each do |zone_id, hrd_items| %>
+     <% @psnp_plan_items_by_zone.each do |zone_id, psnp_plan_items| %>
 
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5><%= Location.find(zone_id).name %></span></h5>
                 <div class="ibox-tools">
-                    <a class="btn btn-white btn-sm" data-hrd-id="<%= @hrd.id %>" data-zone-id="<%= zone_id %>" data-target="#new-hrd-item" data-toggle="modal">
+                    <a class="btn btn-white btn-sm" data-psnp_plan-id="<%= @psnp_plan.id %>" data-zone-id="<%= zone_id %>" data-target="#new-psnp_plan-item" data-toggle="modal">
                         <i class="fa fa-plus"></i> Add woreda
                     </a>
                     <a class="collapse-link">
@@ -64,15 +64,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% hrd_items.each do |item| %>
-                                <tr id="hrd-item-<%= item.id %>">
+                            <% psnp_plan_items.each do |item| %>
+                                <tr id="psnp_plan-item-<%= item.id %>">
                                     <td><%= item.woreda.name  %></td>
                                     <td id="starting-month-<%= item.id %>"><%= Date::MONTHNAMES[item.starting_month] %></td>
                                     <td id="duration-<%= item.id %>"><%= item.duration %></td>
                                     <td id="beneficiary-<%= item.id %>"><%= item.beneficiary %></td>
                                     <td>
-                                        <a href="#" data-toggle="modal" data-target="#edit-hrd-item" data-hrd-item-id="<%= item.id %>">edit</a>
-                                        <a href="#" class="remove-hrd-item" data-confir="Are you sure?" data-hrd-item-id="<%= item.id %>">delete</a>
+                                        <a href="#" data-toggle="modal" data-target="#edit-psnp_plan-item" data-psnp_plan-item-id="<%= item.id %>">edit</a>
+                                        <a href="#" class="remove-psnp_plan-item" data-confir="Are you sure?" data-psnp_plan-item-id="<%= item.id %>">delete</a>
                                     </td>
                                 </tr>
                             <% end %>
@@ -88,13 +88,13 @@
     <% end %>
 
 
-    <% @zones_with_no_hrd_item.each do |zone_id| %>
+    <% @zones_with_no_psnp_plan_item.each do |zone_id| %>
 
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5><%= Location.find(zone_id).name %></span></h5>
                 <div class="ibox-tools">
-                    <a class="btn btn-white btn-sm" data-hrd-id="<%= @hrd.id %>" data-zone-id="<%= zone_id %>" data-target="#new-hrd-item" data-toggle="modal">
+                    <a class="btn btn-white btn-sm" data-psnp_plan-id="<%= @psnp_plan.id %>" data-zone-id="<%= zone_id %>" data-target="#new-psnp_plan-item" data-toggle="modal">
                         <i class="fa fa-plus"></i> Add woreda
                     </a>
                     <a class="collapse-link">
@@ -132,7 +132,7 @@
   </div>
 </div>  
 
-<div class="modal inmodal" id="edit-hrd-item" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal" id="edit-psnp_plan-item" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -151,13 +151,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="save-hrd-item-btn">Save</button>
+        <button type="button" class="btn btn-primary" id="save-psnp_plan-item-btn">Save</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal inmodal" id="new-hrd-item" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal" id="new-psnp_plan-item" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -176,7 +176,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="save-hrd-item-btn">Save</button>
+        <button type="button" class="btn btn-primary" id="save-psnp_plan-item-btn">Save</button>
       </div>
     </div>
   </div>
@@ -191,94 +191,97 @@
             $(this).closest('form').submit(); 
         }); 
 
-        $('#edit-hrd-item').on('shown.bs.modal', function (e) {
+        $('#edit-psnp_plan-item').on('shown.bs.modal', function (e) {
             e.preventDefault(); 
 
-            var hrd_item_id = $( e.relatedTarget ).data('hrd-item-id'); 
+            var psnp_plan_item_id = $( e.relatedTarget ).data('psnp_plan-item-id'); 
 
-            $('#edit-hrd-item .spinner').show(); 
-            $('#edit-hrd-item .form-container').hide(); 
+            $('#edit-psnp_plan-item .spinner').show(); 
+            $('#edit-psnp_plan-item .form-container').hide(); 
 
-            $("#edit-hrd-item .form-container").load( '/hrds/edit_hrd_form/' + hrd_item_id, function() { 
-                $('#edit-hrd-item .spinner').hide(); 
-                $('#edit-hrd-item .form-container').show(); 
+            $("#edit-psnp_plan-item .form-container").load( '/psnp_plans/edit_psnp_plan_form/' + psnp_plan_item_id, function() { 
+                $('#edit-psnp_plan-item .spinner').hide(); 
+                $('#edit-psnp_plan-item .form-container').show(); 
             }); 
         });
 
-        $('#new-hrd-item').on('shown.bs.modal', function (e) {
+        $('#new-psnp_plan-item').on('shown.bs.modal', function (e) {
             e.preventDefault(); 
 
-            var hrd_id = $( e.relatedTarget ).data('hrd-id'); 
+            var psnp_plan_id = $( e.relatedTarget ).data('psnp_plan-id'); 
             var zone_id = $( e.relatedTarget ).data('zone-id'); 
 
-            $('#new-hrd-item .spinner').show(); 
-            $('#new-hrd-item .form-container').hide(); 
+            $('#new-psnp_plan-item .spinner').show(); 
+            $('#new-psnp_plan-item .form-container').hide(); 
 
-            $("#new-hrd-item .form-container").load( '/hrds/new_hrd_item/' + hrd_id + '?zone_id=' + zone_id, function() { 
-                $('#new-hrd-item .spinner').hide(); 
-                $('#new-hrd-item .form-container').show(); 
+            $("#new-psnp_plan-item .form-container").load( '/psnp_plans/new_psnp_plan_item/' + psnp_plan_id + '?zone_id=' + zone_id, function() { 
+                $('#new-psnp_plan-item .spinner').hide(); 
+                $('#new-psnp_plan-item .form-container').show(); 
             }); 
         });
 
-        $('#edit-hrd-item #save-hrd-item-btn').click( function() { 
-            var hrd_item = {};
+        $('#edit-psnp_plan-item #save-psnp_plan-item-btn').click( function() { 
+            var psnp_plan_item = {};
 
-            $('#edit-hrd-item .hrd-item-form-field').each( function() { 
-                hrd_item[$(this).attr('name')] = $(this).val(); 
+            $('#edit-psnp_plan-item .psnp_plan-item-form-field').each( function() { 
+                psnp_plan_item[$(this).attr('name')] = $(this).val(); 
             }); 
 
-            $.getJSON( '/hrds/update_hrd_item', hrd_item, function(data) { 
+            $.getJSON( '/psnp_plans/update_psnp_plan_item', psnp_plan_item, function(data) { 
                 if( data.successful ) { 
                     toastr.success('Updated!'); 
 
-                    $('#duration-' + hrd_item.id ).text( hrd_item['duration']);
-                    $('#starting-month-' + hrd_item.id ).text( MONTHNAMES[hrd_item['starting_month']]);
-                    $('#beneficiary-' + hrd_item.id ).text( hrd_item['beneficiary']);
+                    $('#duration-' + psnp_plan_item.id ).text( psnp_plan_item['duration']);
+                    $('#starting-month-' + psnp_plan_item.id ).text( MONTHNAMES[psnp_plan_item['starting_month']]);
+                    $('#beneficiary-' + psnp_plan_item.id ).text( psnp_plan_item['beneficiary']);
 
-                    $('#edit-hrd-item').modal('hide'); 
+                    $('#edit-psnp_plan-item').modal('hide'); 
                 }
-                else { 
-                    toastr.error("Update failed. Please check your values and try again."); 
+                else {
+                    toastr.error("Update failed. "+data.messages);
                 }
             }); 
         }); 
 
-        $('#new-hrd-item #save-hrd-item-btn').click( function() { 
-            var hrd_item = {};
+        $('#new-psnp_plan-item #save-psnp_plan-item-btn').click( function() { 
+            var psnp_plan_item = {};
 
-            $('#new-hrd-item .hrd-item-form-field').each( function() { 
-                hrd_item[$(this).attr('name')] = $(this).val(); 
+            $('#new-psnp_plan-item .psnp_plan-item-form-field').each( function() { 
+                psnp_plan_item[$(this).attr('name')] = $(this).val(); 
             });
 
-            $.post( "/hrds/save_hrd_item", hrd_item)
+            $.post( "/psnp_plans/save_psnp_plan_item", psnp_plan_item)
             .done( function( data ) {
-                $('#new-hrd-item').modal('hide');
-                $(data).appendTo('table#zone-' + hrd_item.zone_id); 
+                $('#new-psnp_plan-item').modal('hide');
+                $(data).appendTo('table#zone-' + psnp_plan_item.zone_id); 
             })
             .fail(function() { 
                 toastr.error("Save failed. Please check your values and try again.")
             }); 
         }); 
 
-        $('.remove-hrd-item').click(function(e) { 
-            e.preventDefault(); 
+        $('.remove-psnp_plan-item').click(function(e) {
+            e.preventDefault();
 
-            var hrd_item_id = $(this).data('hrd-item-id');
-            remove_hrd_item(hrd_item_id);
+            var psnp_plan_item_id = $(this).data('psnp_plan-item-id');
 
-        }); 
+            remove_psnp_item(psnp_plan_item_id);
+
+        });
+
+
 
 
     });
 
-    function remove_hrd_item(id){
-        $.ajax( { url: '/hrds/remove_hrd_id/' + id, method: 'DELETE'})
+    function remove_psnp_item( id)
+    {
+        $.ajax( { url: '/psnp_plans/remove_psnp_plan_id/' + id, method: 'DELETE'})
             .done( function() {
 
                 toastr.success("Removed!");
 
-                $('tr#hrd-item-' + id ).fadeOut('slow', function() { $(this).remove(); });
+                $('tr#psnp_plan-item-' + id ).fadeOut('slow', function() { $(this).remove(); });
             });
-
     }
 </script>
