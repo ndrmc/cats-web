@@ -50,7 +50,7 @@
            <div class="form-group">
             <%= f.label :ration_id, :class => 'col-sm-2 control-label' %>
             <div class="col-sm-4">
-              <%= f.collection_select :ration_id, Ration.order(:description), :id, :description,{include_blank: 'Select Ration'}, {:class => 'form-control'} %>
+              <%= f.collection_select :ration_id, Ration.order(:description), :id, :reference_no,{include_blank: 'Select Ration'}, {:class => 'form-control'} %>
             </div>
           </div>
 
