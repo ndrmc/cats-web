@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170329124823) do
+ActiveRecord::Schema.define(version: 20170330104338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string   "name",        null: false
-    t.string   "type"
+    t.integer  "code"
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_accounts_on_deleted_at", using: :btree
-    t.index ["name", "type"], name: "index_accounts_on_name_and_type", using: :btree
+    t.index ["name", "code"], name: "index_accounts_on_name_and_code", using: :btree
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -99,13 +99,6 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
-  end
-
-  create_table "case_units", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -210,6 +203,7 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.integer  "status"
     t.integer  "operation_id"
     t.text     "remark"
+    t.boolean  "draft"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.boolean  "deleted",            default: false
@@ -652,7 +646,42 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "old_id"
     t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
+  end
+
+  create_table "psnp_plan_items", force: :cascade do |t|
+    t.integer  "psnp_plan_id"
+    t.integer  "woreda_id"
+    t.integer  "duration"
+    t.integer  "starting_month"
+    t.integer  "beneficiary"
+    t.integer  "region_id"
+    t.integer  "zone_id"
+    t.integer  "cash_ratio"
+    t.integer  "kind_ratio"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",        default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  create_table "psnp_plans", force: :cascade do |t|
+    t.integer  "year_gc",                     null: false
+    t.integer  "year_ec"
+    t.integer  "status",      default: 0,     null: false
+    t.integer  "month_from"
+    t.integer  "duration"
+    t.integer  "ration_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["year_gc"], name: "index_psnp_plans_on_year_gc", using: :btree
   end
 
   create_table "quotations", force: :cascade do |t|
@@ -820,17 +849,6 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.index ["requisition_no"], name: "index_requisitions_on_requisition_no", unique: true, using: :btree
   end
 
-  create_table "role_types", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by"
@@ -843,15 +861,6 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.index ["deleted_at"], name: "index_roles_on_deleted_at", using: :btree
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
-  end
-
-  create_table "roles_departments", force: :cascade do |t|
-    t.integer  "roles_id"
-    t.integer  "departments_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.index ["departments_id"], name: "index_roles_departments_on_departments_id", using: :btree
-    t.index ["roles_id"], name: "index_roles_departments_on_roles_id", using: :btree
   end
 
   create_table "seasons", force: :cascade do |t|
@@ -890,10 +899,6 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
-  end
-
-  create_table "test", id: false, force: :cascade do |t|
-    t.bigint "id"
   end
 
   create_table "transport_order_items", force: :cascade do |t|
@@ -967,8 +972,7 @@ ActiveRecord::Schema.define(version: 20170329124823) do
   create_table "transporter_addresses", force: :cascade do |t|
     t.integer  "transporter_id"
     t.integer  "region_id"
-    t.integer  "zone_id"
-    t.integer  "woreda_id"
+    t.string   "city"
     t.string   "subcity"
     t.string   "kebele"
     t.string   "house_no"
@@ -1066,6 +1070,8 @@ ActiveRecord::Schema.define(version: 20170329124823) do
     t.string   "last_name"
     t.date     "date_preference"
     t.string   "mobile_no"
+    t.integer  "number_of_logins"
+    t.boolean  "region_user"
     t.integer  "user_types"
     t.integer  "location_id"
     t.integer  "hub_id"
@@ -1140,8 +1146,6 @@ ActiveRecord::Schema.define(version: 20170329124823) do
   add_foreign_key "regional_requests", "operations"
   add_foreign_key "regional_requests", "programs"
   add_foreign_key "regional_requests", "rations"
-  add_foreign_key "roles_departments", "departments", column: "departments_id"
-  add_foreign_key "roles_departments", "roles", column: "roles_id"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
   add_foreign_key "users_permissions", "permissions"

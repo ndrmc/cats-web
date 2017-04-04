@@ -263,17 +263,22 @@
         $('.remove-hrd-item').click(function(e) { 
             e.preventDefault(); 
 
-            var hrd_item_id = $(this).data('hrd-item-id'); 
-            
-            $.ajax( { url: '/hrds/remove_hrd_id/' + $(this).data('hrd-item-id'), method: 'DELETE'})
-            .done( function() { 
+            var hrd_item_id = $(this).data('hrd-item-id');
+            remove_hrd_item(hrd_item_id);
 
-                toastr.success("Removed!"); 
-
-                $('tr#hrd-item-' + hrd_item_id ).fadeOut('slow', function() { $(this).remove(); }); 
-            }); 
         }); 
 
 
     });
+
+    function remove_hrd_item(id){
+        $.ajax( { url: '/hrds/remove_hrd_id/' + id, method: 'DELETE'})
+            .done( function() {
+
+                toastr.success("Removed!");
+
+                $('tr#hrd-item-' + id ).fadeOut('slow', function() { $(this).remove(); });
+            });
+
+    }
 </script>

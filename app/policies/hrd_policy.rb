@@ -29,6 +29,13 @@ class HrdPolicy < ApplicationPolicy
          @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
 
-    
+    def hrd_items?
+        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+
+    def update_hrd_item?
+      @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+
 end
 

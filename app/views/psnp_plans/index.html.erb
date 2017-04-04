@@ -1,0 +1,117 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>PSNP Plans</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>PSNP Plans</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New PSNP Plan', new_psnp_plan_path, :class => "btn btn-primary" %>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox">
+
+      <div class="ibox-content">
+        <div class="row m-b-sm m-t-sm">
+          <div class="col-md-1">
+            <a href="javascript:window.location.reload(true)" type="button" id="loading-example-btn" class="btn btn-white btn-sm">
+              <i class="fa fa-refresh"></i>
+              Refresh</a>
+          </div>
+          <div class="col-md-2">
+            <div class="input-group">
+        
+              <select class="input-sm form-control" id="status-filter">
+                <option value="">All</option>
+                <% PsnpPlan.statuses.map { |s| s[0] }.each do |status|%>
+                    <option value="<%= status %>" <%= 'selected' if params[:status] == status %>><%= status.capitalize %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-9">
+            <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-sm btn-primary">
+                  Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-list">
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Year (EC)</th>
+                <th>Progress</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @psnp_plans.each do |psnp_plan| %>
+              <tr>
+                <td class="project-status">
+                  <span class="label label-primary"><%= psnp_plan.status %></span>
+                </td>
+                <td class="project-title">
+                  <%= link_to psnp_plan.name, psnp_plan_path(psnp_plan) %>
+                  <br/>
+                  <small>Created <%= psnp_plan.created_at %></small>
+                </td>
+                <td class="project-status">
+                  <span><%= psnp_plan.year_ec %></span>
+                </td>
+                <td class="project-completion">
+                  <small>48% completed</small>
+                  <div class="progress progress-mini">
+                    <div style="width: 48%;" class="progress-bar"></div>
+                  </div>
+                </td>
+                <td class="project-actions">
+                  <a href="<%= psnp_plan_path(psnp_plan)%>" class="btn btn-white btn-sm">
+                    <i class="fa fa-folder"></i>
+                    View
+                  </a>
+                  <a href="<%= edit_psnp_plan_path(psnp_plan)%>" class="btn btn-white btn-sm">
+                    <i class="fa fa-pencil"></i>   
+                    Edit                   
+                  </a>
+                  <% if psnp_plan.status != "archived" %>
+                    <%= link_to 'psnp_plans/archive/' + psnp_plan.id.to_s , :class => "btn btn-white btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                            <i class="fa fa-archive"></i>   
+                        Archive     
+                    <% end %>
+                  <% end %>
+
+                </td>
+              </tr>
+              <% end %>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() { 
+        $("#status-filter").change( function() { 
+            window.location.href = '/psnp_plans/?status=' + $(this).val();  
+        });
+    }); 
+</script>

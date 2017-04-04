@@ -43,7 +43,7 @@
            <div class="form-group">
             <%= f.label :hrd_id, :class => 'col-sm-2 control-label' %>
             <div class="col-sm-4">
-              <%= f.collection_select :hrd_id, Hrd.order(:year), :id, :name,{include_blank: 'Select HRD'}, {:class => 'form-control'} %>
+              <%= f.collection_select :hrd_id, Hrd.order(:year_ec), :id, :name,{include_blank: 'Select HRD'}, {:class => 'form-control'} %>
             </div>
           </div>
 

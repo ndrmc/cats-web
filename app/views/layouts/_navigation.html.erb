@@ -16,7 +16,7 @@
           </li>
           <%end%>
           <li>
-            <a href="#"><%= t(:psnp_plan) %></a>
+            <%= link_to  t(:psnp_plan), psnp_plans_url %>
           </li>
           <li class="<%= 'active' if is_active_controller('projects')  %>">
             <%= link_to  t(:receipt_plan) , projects_path %>

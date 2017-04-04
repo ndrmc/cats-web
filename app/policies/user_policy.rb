@@ -2,6 +2,7 @@ class UserPolicy < ApplicationPolicy
 
 
 def index?
+
   return true
 end
 
