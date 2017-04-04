@@ -27,6 +27,12 @@ development:
   database: cats_development
   username: cats
   password: cats
+
+import:
+  <<: *default
+  database: cats_import
+  username: cats
+  password: cats
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
