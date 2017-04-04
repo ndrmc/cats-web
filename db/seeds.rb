@@ -44,12 +44,14 @@ if UnitOfMeasure.count == 0
 end
 
 # Commodity categories
+CommodityCategory.find_or_initialize_by(name: 'Non Food', code: 'nonfood', uom_category: weight)
+
 if CommodityCategory.count == 0
   weight = UomCategory.find_by(name: 'weight')
   unit = UomCategory.find_by(name: 'unit')
 
   CommodityCategory.create(name: 'Food', code: 'food', uom_category: weight)
-  CommodityCategory.create(name: 'Non Food', code: 'nonfood', uom_category: weight)
+
   food = CommodityCategory.find_by(code: 'food', uom_category: weight)
   CommodityCategory.create(name: 'Cereal', code: 'cereal', parent: food, uom_category: weight)
   CommodityCategory.create(name: 'Pulse', code: 'pulse', parent: food, uom_category: weight)

@@ -19,7 +19,8 @@ class HrdsController < ApplicationController
         @beneficiaries_by_region = HrdItem.group('region_id' ).select( 'region_id, SUM(beneficiary) as total_beneficiaries')
     end
 
-    def hrd_items 
+    def hrd_items
+        authorize Hrd
         @hrd = Hrd.find params[:hrd_id]
         hrd_items = HrdItem.where hrd_id: params[:hrd_id], region_id: params[:region_id]
 
@@ -70,7 +71,8 @@ class HrdsController < ApplicationController
         render partial: 'edit_hrd_form', layout: false 
     end 
 
-    def update_hrd_item 
+    def update_hrd_item
+        authorize Hrd
          @hrd_item = HrdItem.find(params[:id])
 
          params.delete :id
@@ -90,7 +92,8 @@ class HrdsController < ApplicationController
     end 
     
 
-    def new 
+    def new
+        authorize Hrd
         @hrd = Hrd.new 
     end
 
