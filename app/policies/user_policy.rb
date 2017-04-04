@@ -2,7 +2,7 @@ class UserPolicy < ApplicationPolicy
 
 
 def index?
-   @current_user.permissions.where(name: 'HRD').count > 0 || @current_user.user_types == 'admin'
+  return true
 end
 
 def new?
