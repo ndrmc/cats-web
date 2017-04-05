@@ -1,18 +1,8 @@
-# == Schema Information
-#
-# Table name: departments
-#
-#  id          :integer          not null, primary key
-#  name        :string
-#  discription :string
-#  created_by  :integer
-#  modified_by :integer
-#  deleted     :boolean          default(FALSE)
-#  deleted_at  :datetime
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#
-
 class Department < ApplicationRecord
+   
+    validates_uniqueness_of :name
+    has_many :users_departments
+    has_many :users, through: :users_departments
+
      
 end

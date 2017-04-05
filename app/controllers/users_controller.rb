@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles, :user_profile, :updateDepartments, :updatePermissions]
 
  
 
@@ -15,26 +15,72 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @all_departments = Department.where(id: @user.users_departments.pluck(:department_id))
+    @all_permissions = Permission.where(id: @user.users_permissions.pluck(:permission_id))
   end
 
   # GET /users/new
   def new
     @user = User.new
-    
-    @roles = RoleType.all.map{ |t| [t.name, t.id]}
-    @caseTeam= CaseTeam.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
-    @hubs= CaseTeam.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
-    @region = CaseTeam.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
+    @department= Department.all.map{ |h| [h.name, h.id]} # case teams
+    @region= Location.where(location_type: 1).map{ |h| [h.name, h.id]}     # regions
+    @hubs = Hub.all.map{ |r| [r.name, r.id]}  # hubs
   end
 
   # GET /users/1/edit
   def edit
-    @roles = RoleType.all.map{ |t| [t.name, t.id]}
-    @caseTeam= CaseTeam.where(role_type: User.role_types[:case_team]).map{ |h| [h.name, h.id]} # case teams
-    @hubs= CaseTeam.where(role_type: User.role_types[:hub]).map{ |h| [h.name, h.id]}     # hubs
-    @region = CaseTeam.where(role_type: User.role_types[:regional]).map{ |r| [r.name, r.id]}  # regions
+    @department= Department.all.map{ |h| [h.name, h.id]} # case teams
+    @region= Location.where(location_type: 1).map{ |h| [h.name, h.id]}     # regions
+    @hubs = Hub.all.map{ |r| [r.name, r.id]}  # hubs
 
   end
+
+  def user_departments
+     @user = User.find(params[:user_id])
+     @all_departments = Department.all
+  end
+
+  def user_permissions
+      @user = User.find(params[:user_id])
+      @all_permissions = Permission.all
+  end
+  
+
+   
+  def updateDepartments
+    new_departments =  params.require(:departments)
+    UsersDepartment.where(user_id: @user.id).destroy_all
+   
+
+    new_departments.each do |department|
+      
+      dep =  UsersDepartment.new({
+        department_id:department.to_i,
+        user_id: @user.id
+      })
+      dep.save
+    end
+
+     redirect_to  @user
+    end
+  
+ def updatePermissions
+    puts @user.id 
+   new_permissions = params.require(:permissions)
+   UsersPermission.where(user_id: @user.id).destroy_all
+
+   new_permissions.each do |permission|
+     _permission = UsersPermission.new ({
+       permission_id: permission.to_i,
+       user_id: @user.id
+     })
+
+     _permission.save
+   end
+
+    redirect_to @user, success: 'User profile was successfully updated.' 
+ end
+
 
   # GET /users/1/roles
   def roles
@@ -55,7 +101,7 @@ class UsersController < ApplicationController
     end
 
 
-    redirect_to users_path, success: 'Roles successfully updated.'
+    redirect_to @user, success: 'Roles successfully updated.'
 
 
   end
@@ -109,6 +155,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub, :region, :case_team, :regionalUser, :hubUser, :mobileNo, :datePreference,:Admin,:IsCaseTeam)
+      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub_id, :location_id, :mobile_no, :user_types, :department_id)
     end
 end

@@ -1,6 +1,8 @@
 class HrdsController < ApplicationController
 
     def index 
+
+        authorize Hrd
         if params[:status]
             @hrds = Hrd.where status: params[:status]
         else
@@ -9,6 +11,7 @@ class HrdsController < ApplicationController
     end 
 
     def show
+        authorize Hrd
         @hrd = Hrd.find params[:id]
 
         @contributions = Contribution.where( hrd_id: @hrd.id)
@@ -16,7 +19,8 @@ class HrdsController < ApplicationController
         @beneficiaries_by_region = @hrd.hrd_items.group('region_id' ).select( 'region_id, SUM(beneficiary) as total_beneficiaries')
     end
 
-    def hrd_items 
+    def hrd_items
+        authorize Hrd
         @hrd = Hrd.find params[:hrd_id]
         hrd_items = HrdItem.where hrd_id: params[:hrd_id], region_id: params[:region_id]
 
@@ -67,7 +71,8 @@ class HrdsController < ApplicationController
         render partial: 'edit_hrd_form', layout: false 
     end 
 
-    def update_hrd_item 
+    def update_hrd_item
+        authorize Hrd
          @hrd_item = HrdItem.find(params[:id])
 
          params.delete :id
@@ -87,11 +92,13 @@ class HrdsController < ApplicationController
     end 
     
 
-    def new 
+    def new
+        authorize Hrd
         @hrd = Hrd.new 
     end
 
     def create
+        authorize Hrd
         @hrd = Hrd.new hrd_params  
 
         if @hrd.save
@@ -118,9 +125,11 @@ class HrdsController < ApplicationController
 
     def edit
         @hrd = Hrd.find params[:id]
+        authorize Hrd
     end
 
     def update 
+        authorize Hrd
         @hrd = Hrd.find params[:id]  
 
         respond_to do |format|
@@ -136,6 +145,7 @@ class HrdsController < ApplicationController
     end
 
     def archive
+        authorize Hrd
         @hrd = Hrd.find params[:id] 
 
         @hrd.status = :archived 

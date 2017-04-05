@@ -10,9 +10,11 @@
         <span class="nav-label"><%= t(:plan) %></span>
         <span class="fa arrow"></span><% end %>
         <ul class="nav nav-second-level collapse">
+         <% if policy(Hrd).index? %>
           <li class="<%= 'active' if is_active_controller('hrds')  %>">
             <%= link_to t(:hrd_plan), hrds_url %>            
           </li>
+          <%end%>
           <li>
             <%= link_to  t(:psnp_plan), psnp_plans_url %>
           </li>

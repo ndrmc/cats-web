@@ -38,6 +38,12 @@
 
 class User < ApplicationRecord
   rolify
+  belongs_to :location
+  belongs_to :hub
+  has_many :users_permissions
+  has_many :users_departments
+  has_many :departments, through: :users_departments
+  has_many :permissions, through: :users_permissions
   after_create :assign_default_role
 
   # Include default devise modules. Others available are:
@@ -63,11 +69,23 @@ class User < ApplicationRecord
     "Your account is not active."
   end
 
-  enum role_types: {
-        admin:2,
-        case_team:3,
-        hub:4,
-        regional:5
+  enum user_types: {
+        guest:2,
+        admin:3,
+        cleark:4,
+        manager:5
     }   
+
+
+
+   
+    def has_permission(permission)
+         self.permissions.where(name: permission).count > 0 ? true : false
+         
+    end
+
+    def user_type_in(users_types)
+        users_types.include?(self.user_types)
+    end
 
 end

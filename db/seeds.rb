@@ -44,12 +44,14 @@ if UnitOfMeasure.count == 0
 end
 
 # Commodity categories
+CommodityCategory.find_or_initialize_by(name: 'Non Food', code: 'nonfood', uom_category: weight)
+
 if CommodityCategory.count == 0
   weight = UomCategory.find_by(name: 'weight')
   unit = UomCategory.find_by(name: 'unit')
 
   CommodityCategory.create(name: 'Food', code: 'food', uom_category: weight)
-  CommodityCategory.create(name: 'Non Food', code: 'nonfood', uom_category: weight)
+
   food = CommodityCategory.find_by(code: 'food', uom_category: weight)
   CommodityCategory.create(name: 'Cereal', code: 'cereal', parent: food, uom_category: weight)
   CommodityCategory.create(name: 'Pulse', code: 'pulse', parent: food, uom_category: weight)
@@ -253,7 +255,7 @@ if User.count == 0
 end
 
 if Role.count == 0
-  [:admin, :guest, :clerk, :manager].each do |role|
+  [:hub, :federal, :region].each do |role|
     Role.create(name: role)
   end
   puts "Created default roles"
@@ -276,3 +278,31 @@ if OwnershipType.count == 0
   OwnershipType.create(name: 'other', description: '')
   puts "Created ownership types lookup"
 end
+
+if Permission.count == 0 
+  Permission.create(name: 'HRD', description: '')
+  Permission.create(name: 'Gift Certificate', description: '')
+  Permission.create(name: 'Receipts', description: '')
+  Permission.create(name: 'Project', description: '')
+  Permission.create(name: 'Ration', description: '')
+
+  Permission.create(name: 'Dispatch', description: '')
+  Permission.create(name: 'Need Assessment', description: '')
+  Permission.create(name: 'Commodity', description: '')
+  Permission.create(name: 'Warehouses', description: '')
+  Permission.create(name: 'PSNP Annual Plan', description: '')
+
+  Permission.create(name: 'Delivery', description: '')
+  Permission.create(name: 'Transfers', description: '')
+  Permission.create(name: 'Donor', description: '')
+  Permission.create(name: 'Organizations', description: '')
+  Permission.create(name: 'Unit of Measurements', description: '')
+ 
+  Permission.create(name: 'Operation', description: '')
+  Permission.create(name: 'Currencies', description: '')
+  Permission.create(name: 'FDP', description: '')
+  Permission.create(name: 'locations', description: '')
+  Permission.create(name: 'Programs', description: '')
+
+end
+

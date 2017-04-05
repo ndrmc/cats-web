@@ -31,7 +31,8 @@
                 <% @psnp_plan.ration.ration_items.each do |ration_item|  %>
                     <tr>
                         <td><%= ration_item.commodity.name %></td>
-                        <td><%= ration_item.amount.to_s + ration_item.unit_of_measure.name %></td>
+                        <% uom = ration_item.unit_of_measure ? ration_item.unit_of_measure.name : '' %>
+                      <td><%= ration_item.amount.to_s %>&nbsp;<span class = "label label-info"> <%= uom %> </span></td>
                     </tr>
                 <% end %>
             </tbody>

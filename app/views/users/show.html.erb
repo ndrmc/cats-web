@@ -1,22 +1,261 @@
-    <p>
-      <strong>First name:</strong>
-      <%= @user.first_name %>
-    </p>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Manage user for <em><%= @user.name %></em></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">User</a>
+      </li>
+      <li class="active">
+        <strong>User profile</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', users_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
 
-    <p>
-      <strong>Last name:</strong>
-      <%= @user.last_name %>
-    </p>
+<div class="wrapper wrapper-content">
+  <div class="row m-b-lg m-t-lg">
 
-    <p>
-      <strong>Email:</strong>
-      <%= @user.email %>
-    </p>
+  <div class="col-md-12">
+  
+   <div>
+      <% if @user.is_active %>
+           <span class="btn  btn-primary .btn-lg"> Active </span>
+    <%else%>
+          <span class="btn btn-warning .btn-lg"> Inacive </span>
+    <%end%>
+      
+  </div>
 
-    <p>
-      <strong>Is active:</strong>
-      <%= @user.is_active %>
-    </p>
+  
+</div>
+<div class="col-md-12 ">
+    <div class="pull-right">
+       <%= link_to 'Manage Roles', "/users/#{@user.id}/roles", :class => "btn btn-success btn-sm" %> &middot;
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<div class="portlet-body">
+<div class="form-horizontal" >
+ <div class="row">
+
+  <div class="controls col-sm-4">
+
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Role(s)</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @user.roles.map {|r| r.name}.join ', ' %></p>
+        </div>
+    </div>
+   </div>
+   
+
+  <div class="controls col-sm-4">
+   <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>User Type</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @user.user_types  %> </p>
+        </div>
+    </div>
+</div>
+    
+
+  <div class="controls col-sm-4">
+     <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Registered since</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= time_ago_in_words(@user.created_at) %></p>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="row">
+  <div class="controls col-sm-4">
+
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Last login</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= time_ago_in_words(@user.last_sign_in_at) %></p>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>keyboard</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @keyboard %> </p>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Unit of measurement</trong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"> <%= @default_uom %></p>
+        </div>
+    </div>
+  </div>
+</div>
+
+ <div class="row">
+  <div class="controls col-sm-4">
+
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Region</strong></div>
+        <div class="controls col-sm-7">
+            <% if !@user.location.nil? %>
+            <p   class="form-control-static"><%= @user.location.name  %> </p>
+            <%end%>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Department</strong></div>
+        <div class="controls col-sm-7">
+          <% if !@user.departments.nil?  && !Department.find_by(id: @user.department_id).nil? %>
+            <p   class="form-control-static"> <%= Department.find_by(id: @user.department_id).name %> </p>
+          <%end%>
+        </div>
+    </div>
+ </div>
+
+
+  <div class="controls col-sm-4">
+     <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Language</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"><%= @language %> </p>
+        </div>
+    </div>
+</div>
+</div>
+
+ <div class="row">
+<div class="controls col-sm-4">
+
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Calendor</strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static"> <%= @calendor %> </p>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"><strong>Hub</strong></div>
+        <div class="controls col-sm-7">
+          <% if !@user.hub.nil?  %>
+            <p   class="form-control-static"><%= @user.hub.name  %> </p>
+          <%end%>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="controls col-sm-4">
+    <div class="control-group">
+        <div   class="control-label col-sm-5"> <strong>Mobile No </strong></div>
+        <div class="controls col-sm-7">
+            <p   class="form-control-static">  <%= @user.mobile_no%> </p>
+        </div>
+    </div>
+
+  </div>
+  </div>
+
+</div>
+</div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+   <div class="ibox-title">
+          <h5>Department</h5>
+          <div class="pull-right">
+          <%= link_to 'Join / Leave Department',  {:controller => "users", :action => "user_departments", :user_id => @user.id }, :class => "btn btn-success btn-sm" %>
+   </div>
+   </div>
+
+    <div class="ibox-content">
+
+ 
+
+  
+        <table class="table table-bordered">
+          <tbody>
+            <% @all_departments.each do |department| %>
+              <tr>
+               
+                <td><%= department.name %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    </div>
+  </div>
+</div>
+
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+
+   <div class="ibox-title">
+          <h5>Permission</h5>
+   
+   <div class="pull-right">
+     <%= link_to 'Grant / Revoke Permission',  {:controller => "users", :action => "user_permissions", :user_id => @user.id }, :class => "btn btn-success btn-sm" %>
+   </div>
+   </div>
+    <div class="ibox-content">
+
+    
+
+  
+
+     
+
+
+        <table class="table table-bordered">
+          <tbody>
+            <% @all_permissions.each do |permission| %>
+              <tr>
+                <td>
+                 
+                  <%= permission.name %>
+                </td>
+               
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+       
+
+     
+
+
+    </div>
+  </div>
+</div>

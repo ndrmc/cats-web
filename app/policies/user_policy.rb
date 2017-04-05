@@ -1,35 +1,29 @@
-class UserPolicy
-attr_reader :current_user, :model
+class UserPolicy < ApplicationPolicy
 
-
-
-def initialize(current_user,model)
-    @current_user = current_user
-    @model = model
-end
 
 def index?
-    @current_user.has_role? :admin
+
+  return true
 end
 
 def new?
-     @current_user.has_role? :admin
+    return true
 end
 
 def roles
-     @current_user.has_role? :admin
+    return true
 end
 
 def create
-     @current_user.has_role? :admin
+    return true
 end
 
 def update
-    @current_user.has_role? :admin
+   return true
 end
 
 def updateRoles
-    @current_user.has_role? :admin
+   return true
 end
 
 end

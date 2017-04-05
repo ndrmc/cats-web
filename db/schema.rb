@@ -230,13 +230,12 @@ ActiveRecord::Schema.define(version: 20170330104338) do
 
   create_table "departments", force: :cascade do |t|
     t.string   "name"
-    t.string   "discription"
+    t.string   "description"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "dispatch_items", force: :cascade do |t|
@@ -565,6 +564,16 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "posting_items", force: :cascade do |t|
@@ -1041,9 +1050,7 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.string   "keyboard"
     t.string   "calendar"
     t.string   "default_uom"
-    t.string   "region"
     t.string   "organization_unit"
-    t.string   "hub"
     t.string   "encrypted_password",     default: "",   null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -1065,11 +1072,40 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.string   "mobile_no"
     t.integer  "number_of_logins"
     t.boolean  "region_user"
-    t.boolean  "hub_user"
-    t.integer  "user_type_id"
+    t.integer  "user_types"
+    t.integer  "location_id"
+    t.integer  "hub_id"
+    t.integer  "department_id"
     t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
+    t.index ["department_id"], name: "index_users_on_department_id", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["hub_id"], name: "index_users_on_hub_id", using: :btree
+    t.index ["location_id"], name: "index_users_on_location_id", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "users_departments", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "department_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["department_id"], name: "index_users_departments_on_department_id", using: :btree
+    t.index ["user_id"], name: "index_users_departments_on_user_id", using: :btree
+  end
+
+  create_table "users_permissions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "permission_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["permission_id"], name: "index_users_permissions_on_permission_id", using: :btree
+    t.index ["user_id"], name: "index_users_permissions_on_user_id", using: :btree
   end
 
   create_table "users_roles", id: false, force: :cascade do |t|
@@ -1110,4 +1146,8 @@ ActiveRecord::Schema.define(version: 20170330104338) do
   add_foreign_key "regional_requests", "operations"
   add_foreign_key "regional_requests", "programs"
   add_foreign_key "regional_requests", "rations"
+  add_foreign_key "users_departments", "departments"
+  add_foreign_key "users_departments", "users"
+  add_foreign_key "users_permissions", "permissions"
+  add_foreign_key "users_permissions", "users"
 end

@@ -30,5 +30,5 @@ class Location < ApplicationRecord
   has_ancestry 
 
   has_many :fdps
-  
+  has_many :users
 end

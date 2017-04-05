@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'New HRD', new_hrd_path, :class => "btn btn-primary" %>
+      <% if policy(@hrds).new? %>
+        <%= link_to 'New HRD', new_hrd_path, :class => "btn btn-primary" %>
+      <%end%>
     </div>
   </div>
 </div>
@@ -86,17 +88,22 @@
                     <i class="fa fa-folder"></i>
                     View
                   </a>
+                  
+                  <% if policy(@hrds).edit? %>
                   <a href="<%= edit_hrd_path(hrd)%>" class="btn btn-white btn-sm">
                     <i class="fa fa-pencil"></i>   
                     Edit                   
                   </a>
+                  <%end%>
+
+                  <% if policy(@hrds).archive? %>
                   <% if hrd.status != "archived" %>
                     <%= link_to 'hrds/archive/' + hrd.id.to_s , :class => "btn btn-white btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
                             <i class="fa fa-archive"></i>   
                         Archive     
                     <% end %>
                   <% end %>
-
+                <% end %>
                 </td>
               </tr>
               <% end %>
