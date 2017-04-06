@@ -44,11 +44,17 @@ if UnitOfMeasure.count == 0
 end
 
 # Commodity categories
-CommodityCategory.find_or_initialize_by(name: 'Non Food', code: 'nonfood', uom_category: weight)
+
+weight = UomCategory.find_by(name: 'weight')
+unit = UomCategory.find_by(name: 'unit')
+non_food = CommodityCategory.find_or_initialize_by(name: 'Non Food', code: 'nonfood', uom_category: weight)
+non_food.save!
+
+machine = CommodityCategory.find_or_initialize_by(name: 'Machine', code: 'machine', uom_category: unit)
+machine.parent = non_food
+machine.save!
 
 if CommodityCategory.count == 0
-  weight = UomCategory.find_by(name: 'weight')
-  unit = UomCategory.find_by(name: 'unit')
 
   CommodityCategory.create(name: 'Food', code: 'food', uom_category: weight)
 
@@ -61,14 +67,12 @@ if CommodityCategory.count == 0
   CommodityCategory.create(name: 'Other', code: 'other', parent: food, uom_category: weight)
 
   non_food = CommodityCategory.find_by(code: 'nonfood')
-  CommodityCategory.create(name: 'Machine', code: 'machine', parent: non_food, uom_category: unit)
   CommodityCategory.create(name: 'Clothing', code: 'clothing', uom_category: unit)
   CommodityCategory.create(name: 'House Equipment', code: 'equipment', parent: non_food,uom_category: unit)
 
   puts "Created seed data for CommodityCategory records"
 end
 
-# Commodities
 # Commodities
 
 #FOOD ITEMS
@@ -150,8 +154,6 @@ commodities.each do |c|
   c.save!
 end
 
-
-machine = CommodityCategory.find_by(code: 'machine')
 commodities = Commodity.where(:name => ['Pump'])
 commodities.each do |c|
   c.commodity_category_id = machine.id
@@ -161,6 +163,7 @@ end
 
 
 puts "Created seed data for Commodity records"
+
 
 
 
