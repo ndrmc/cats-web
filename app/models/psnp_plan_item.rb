@@ -3,7 +3,7 @@ class PsnpPlanItem < ApplicationRecord
 
   belongs_to :psnp_plan
 
-  validate :duration_ratio
+  #validate :duration_ratio
 
   def duration_ratio
     if(self.cash_ratio!=nil || self.kind_ratio!=nil)
