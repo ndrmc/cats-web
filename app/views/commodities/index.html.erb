@@ -43,7 +43,7 @@
               <td><%= commodity.description%></td>
             <td>
               <% if commodity.commodity_category_id %>
-                <%= commodity.commodity_category.name%>
+                <%= commodity.commodity_category&.name%>
               <% end %>
             </td>
             <td>

@@ -1,24 +1,9 @@
-# == Schema Information
-#
-# Table name: accounts
-#
-#  id          :integer          not null, primary key
-#  name        :string           not null
-#  type        :string
-#  description :text
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  created_by  :integer
-#  modified_by :integer
-#  deleted_at  :datetime
-#
-
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: Ration1  
-  description: MyText
+  id: 1
+  name: Borrowed
+  code: borrowed
+  description: Resources which are borrowed, but have not yet been received at warehouses
+    (Receipt Plan)
 
-two:
-  name: Ration2
-  description: MyText
+
