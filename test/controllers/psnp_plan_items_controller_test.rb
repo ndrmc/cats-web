@@ -1,12 +1,15 @@
 require 'test_helper'
 
 class PsnpPlanItemsControllerTest < ActionDispatch::IntegrationTest
+   include Devise::Test::IntegrationHelpers
+
   setup do
+    sign_in users(:admin)
     @psnp_plan_item = psnp_plan_items(:one)
   end
 
   test "should get index" do
-    get psnp_plan_items_url
+    get psnp_plans_item
     assert_response :success
   end
 

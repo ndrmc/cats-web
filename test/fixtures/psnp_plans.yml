@@ -9,6 +9,7 @@ one:
     year_ec: 2008
     status: 1      
     month_from: 1
+    status: 1
     duration: 6
     ration_id: 1
     created_by: 1
@@ -22,6 +23,7 @@ two:
     year_ec: 2010
     status: 1      
     month_from: 1
+    status: 1
     duration: 6
     ration_id: 1
     created_by: 1

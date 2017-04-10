@@ -22,7 +22,7 @@ class PsnpPlansControllerTest < ActionDispatch::IntegrationTest
   test "should create psnp_plan" do
     assert_difference('PsnpPlan.count') do
       post psnp_plans_url, params: { psnp_plan: { 
-         year_ec: '2009', year_gc: '2017', month_from: 1, ration_id: 1, duration: 6
+         year_ec: '2009', year_gc: '2017', month_from: 1, status: :draft, ration_id: 1, duration: 6
        } }
     end
 
@@ -41,15 +41,13 @@ class PsnpPlansControllerTest < ActionDispatch::IntegrationTest
 
   test "should update psnp_plan" do
     patch psnp_plan_url(id: @psnp_plan.id), params: { psnp_plan: {
-       year_ec: '2009', year_gc: '2017', month_from: 1,ration_id: 1, duration: 6
+       year_ec: '2009', year_gc: '2017', month_from: 1, status: :draft,  ration_id: 1, duration: 6
       } }
     assert_redirected_to psnp_plans_url
   end
 
   test "should destroy psnp_plan" do
      get "/psnp_plans/archive/#{@psnp_plan.id}"
-    assert_equal(@psnp_plan.status.to_i, PsnpPlan.statuses[:archived])
-
-    assert_redirected_to psnp_plans_url
+      assert_redirected_to psnp_plans_url
   end
 end
