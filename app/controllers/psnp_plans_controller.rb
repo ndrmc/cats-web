@@ -166,6 +166,6 @@ class PsnpPlansController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def psnp_plan_params
-      params.require(:psnp_plan).permit( :id, :year_ec, :year_gc, :month_from, :season_id, :ration_id, :duration )
+      params.require(:psnp_plan).permit( :id, :year_ec, :year_gc, :month_from, :season_id, :ration_id, :duration, :status )
     end
 end
