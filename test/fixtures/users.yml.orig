@@ -1,0 +1,26 @@
+
+<<<<<<< HEAD
+one:
+  id: 1
+  email: admin@cats.org
+  encrypted_password: "$2a$11$8cGyBn8rmSYYRyskhFtLI.NZImBOX8o9OwQfK/NZLsJmO/jV7iR0u"
+  first_name: Administrator
+
+=======
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+admin:
+  first_name: Admin
+  last_name:
+  email: admin@cats.org
+  is_active: true
+  encrypted_password: <%= User.new.send(:password_digest, 'password') %>
+
+
+#
+# column: value
+>>>>>>> f1331d98ae5c9d86ddf9954b5faaa1fcf33a2e8e

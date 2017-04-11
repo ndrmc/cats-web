@@ -4,7 +4,7 @@ class CommodityCategoriesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    sign_in users(:one)
+    sign_in users(:admin)
     @commodity_category = commodity_categories(:commodity_category_1)
   end
 

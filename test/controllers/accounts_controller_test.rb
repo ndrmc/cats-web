@@ -4,7 +4,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    sign_in users(:one)
+    sign_in users(:admin)
     @account = accounts(:one)
   end
 
