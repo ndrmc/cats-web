@@ -21,25 +21,25 @@ class WarehousesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create warehouse" do
     assert_difference('Warehouse.count') do
-      post warehouses_url, params: { warehouse: {name: 'WH 1', description: 'Des', hub_id: 1, location_id: 1, organization_id: 1, lat: 0, lon: 0  } }
+      post warehouses_url, params: { warehouse: {name: 'WH 1', description: 'Des', location_id: 1, organization_id: 1, lat: 0, lon: 0  } }
     end
 
     assert_redirected_to warehouses_url
   end
 
   test "should show warehouse" do
-    get warehouse_url(@warehouse)
+    get warehouses_url
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_warehouse_url(@warehouse)
+    get edit_warehouse_url(id: @warehouse.id)
     assert_response :success
   end
 
   test "should update warehouse" do
-    patch warehouse_url(@warehouse), params: { warehouse: { name: 'WH 1', description: 'Des', hub_id: 1, location_id: 1, organization_id: 1, lat: 0, lon: 0  } }
-    assert_redirected_to warehouse_url(@warehouse)
+    patch warehouse_url(id: @warehouse.id), params: { warehouse: { name: 'WH 1', description: 'Des', location_id: 1, organization_id: 1, lat: 0, lon: 0  } }
+    assert_redirected_to warehouse_url(id: @warehouse.id)
   end
 
   test "should destroy warehouse" do
@@ -47,6 +47,6 @@ class WarehousesControllerTest < ActionDispatch::IntegrationTest
       delete warehouse_url(@warehouse)
     end
 
-    assert_redirected_to warehouses_url
+    assert_redirected_to warehouse_url(@hub)
   end
 end
