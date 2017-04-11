@@ -38,13 +38,13 @@
           <tbody>
             <% @projects.each do |project| %>
             <tr>
-              <td><%= project.project_code %></td>
+              <td><%= link_to project.project_code, edit_project_path(project) %></td>
               <td><%= Commodity.find(project.commodity_id).name%></td>
               <td><%= project.commodity_source%></td>
               <td><%= Organization.find(project.organization_id).name%></td>
-              <td><%= project.amount%></td>
+              <td class="text-right"><%= project.amount%></td>
               <td><%= UnitOfMeasure.find(project.unit_of_measure_id).name%></td>
-              <td><%= project.publish_date.strftime('%d-%b-%Y')%></td>
+              <td><%= project&.publish_date&.strftime('%d-%b-%Y')%></td>
               <td>
                 <%= link_to 'Edit', edit_project_path(project) %>
                 &middot;

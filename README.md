@@ -1,5 +1,6 @@
 # Commodity & Allocation Tracking System
-[![Build Status](https://travis-ci.org/ndrmc/cats-web.svg?branch=develop)](https://travis-ci.org/ndrmc/cats-web)
+
+[![CircleCI](https://circleci.com/gh/ndrmc/cats-web.svg?style=shield)](https://circleci.com/gh/ndrmc/cats-web)
 
 
 CATS (Commodity & Allocation Tracking System) is a software for tracking commodity movements managed through NDRMC (National Disaster Risk Management Commission) humaniterian supply chain. CATS is an initateve by NDRMC and FMIP (Food Management Improvement Project) designed to link the different parts of the NDRMC supply chain so that commodities received from a particular donor can be tracked all the way to the beneficiary.

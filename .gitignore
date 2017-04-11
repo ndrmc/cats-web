@@ -1,5 +1,5 @@
 # ignore all logs
-*.log
+/log/*.log
 # ignore tmp files
 **/tmp
 
