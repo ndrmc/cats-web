@@ -1,0 +1,9 @@
+ one:
+        name: warehouse1
+        description: warehouse in adama
+        hub_id: 1
+        location_id: 1
+        organization_id: 1
+        lat: 0
+        lon: 0
+     
