@@ -56,7 +56,7 @@ class User < ApplicationRecord
   end
 
   def assign_default_role
-    self.add_role(:guest) if self.roles.blank?
+    self.add_role(:Federal) if self.roles.blank?
   end
 
 
