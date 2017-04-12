@@ -154,7 +154,7 @@ commodities.each do |c|
   c.save!
 end
 
-commodities = Commodity.where(:name => ['Pump'])
+commodities = Commodity.where(:name => ['Machine','Pump'])
 commodities.each do |c|
   c.commodity_category_id = machine.id
   c.uom_category_id = uom_category.id
