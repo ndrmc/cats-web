@@ -309,3 +309,16 @@ if Permission.count == 0
 
 end
 
+if Department.count == 0
+  Department.create(name: 'Early warning')
+  Department.create(name: 'FSCD')
+  Department.create(name: 'Logistics')
+  Department.create(name: 'Procurement')
+  Department.create(name: 'Finance')
+  Department.create(name: 'Hub')
+  Department.create(name: 'Regional')
+
+  puts "Created seed data for departments"
+end
+
+
