@@ -11,9 +11,11 @@
     </ol>
   </div>
   <div class="col-sm-8">
+    <% if policy(Operation).new? %>
     <div class="title-action">
       <%= link_to 'New Operation', new_operation_path, :class => "btn btn-primary"%>
     </div>
+  <%end%>
   </div>
 </div>
 
@@ -92,10 +94,12 @@
                     <i class="fa fa-folder"></i>
                     View
                   </a>
+                  <% if policy(Operation).edit? %>
                   <a href="<%= edit_operation_path(operation)%>" class="btn btn-white btn-sm">
                     <i class="fa fa-pencil"></i>   
                     Edit                   
                   </a>
+                  <%end%>
                   <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
                       <span class="caret"></span>

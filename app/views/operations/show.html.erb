@@ -17,28 +17,38 @@
   <div class="col-sm-8">
     <div class="title-action">
       <%= link_to 'Cancel', operations_path,  :class => "btn btn-default"%>
-      <%= link_to 'Edit', edit_operation_path(@operation), :class => "btn btn-default" %>
+      <% if policy(Operation).edit? %>
+        <%= link_to 'Edit', edit_operation_path(@operation), :class => "btn btn-default" %>
+      <%end%>
       <div class="btn-group">
         <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu pull-right">
+          <% if policy(Operation).edit? %>
           <li>
             <a href="#">Add region</a>
           </li>
+          <%end%>
+          <% if policy(Operation).destroy? %>
           <li>
             <a href="#">Delete</a>
           </li>
+          <%end%>
           <li>
             <%= link_to 'Close', operations_path %>
           </li>
           <li class="divider"></li>
+          <% if policy(Operation).edit? %>
           <li>
             <a href="#">Export</a>
           </li>
+          <%end%>
+          <% if policy(Operation).edit? %>
           <li>
             <a href="#">Print</a>
           </li>
+          <%end%>
         </ul>
       </div>
     </div>

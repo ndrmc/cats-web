@@ -41,9 +41,11 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
+      <%if policy(Operation).index?%>
       <li class="<%= 'active' if is_active_controller('operations')  %>">
         <%= link_to t(:operations), operations_url %>
       </li>
+      <%end%>
       <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
         <%= link_to t(:regional_request), regional_requests_url %>
       </li>
