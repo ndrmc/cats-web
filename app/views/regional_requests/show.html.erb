@@ -37,7 +37,9 @@
     </ol>
   </div>
 
+ <% if policy(RegionalRequest).new? %>
   <div class="col-sm-8">
+  
     <div class="title-action">
       <a href="/regional_requests/request_items/<%= @regional_request.id %>.xlsx" target="_blank" class="btn btn-primary"><i class="fa fa-download"></i> Download Request Items for Excel</a>
       <a href="#" class="btn btn-primary" data-toggle="modal"  data-target="#request-item-modal"><i class="fa fa-plus"></i> Add Request Item</a>
@@ -57,7 +59,7 @@
         
       </form>
   </div>
-
+<%end%>
 
 
 </div>
@@ -85,7 +87,9 @@
             <td><%= request_item.fdp.name %></td>
             <td class="beneficiaries_number_cell"><%= request_item.number_of_beneficiaries %></td>
             <td>
-              <a href="#" class="edit-rrdi" data-rrdi-id="<%= request_item.id %>">Edit</edit> &middot;<a href="#"  class="delete-rrdi" data-rrdi-id="<%= request_item.id %>">Delete</a>
+            <% if policy(RegionalRequest).edit? %>
+              <a href="#" class="edit-rrdi" data-rrdi-id="<%= request_item.id %>">Edit</edit> &middot; <% if policy(RegionalRequest).destroy? %> <a href="#"  class="delete-rrdi" data-rrdi-id="<%= request_item.id %>">Delete</a><%end%>
+            <%end%>
             </td>
           </tr>
           <% end %>
