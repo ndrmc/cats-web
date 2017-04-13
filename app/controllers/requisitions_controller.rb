@@ -63,7 +63,7 @@ class RequisitionsController < ApplicationController
    @request = RegionalRequest.find(params[:request_id])
   
    @requests_per_zone = @request.regional_request_items.group_by { |ri| Fdp.find(ri.fdp_id).location.ancestors.find { |a| a.location_type == 'zone' } }
-  @operation = Operation.find(@request.operation)
+  @operation = Operation.find(@request.operation_id)
  
    @ration = Ration.find(@operation.ration_id)
     @commodities = []

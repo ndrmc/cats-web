@@ -1,7 +1,7 @@
 module Postable
   
     def pre_post  
-        return if self.draft 
+        return if self.draft
         if(self.is_a?(Receipt))
              
                 stock_account = Account.find_by({'code': :stock})

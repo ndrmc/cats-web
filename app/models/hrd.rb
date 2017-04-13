@@ -26,7 +26,13 @@ class Hrd < ApplicationRecord
   has_many :hrd_items
 
   def name
-    "#{self.season.name} #{self.year_ec} EC"
+    name = "#{self.season.name} - "
+    if self.year_ec
+      name = name + "#{self.year_ec} EC / "
+    end
+    if self.year_gc
+      name = name + "#{self.year_gc} GC"
+    end
   end
 
 

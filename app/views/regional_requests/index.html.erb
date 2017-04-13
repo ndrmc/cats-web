@@ -21,13 +21,46 @@
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
-      <table class="table table-striped">
+      <%= form_tag( regional_requests_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+          <div class="form-group">
+            <%= label_tag :program, "Program", { :class => ' control-label', :required => true } %>
+
+            <div class="">
+              <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :region, "Region", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :region,  options_from_collection_for_select( Location.where(location_type:'region'), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for=""></label>
+            <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+            </div>
+          </div>
+
+      <% end %>
+
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <table class="table table-striped  cats-datatable">
         <thead>
           <tr>
                         <th>Reference number</th>
-                        <th>Region</th>
-                        <th>Operation</th>
-                        <th>Program</th>
                         <th>Requested date</th>
                         <th>Remark</th>
                         <th>Actions</th>
@@ -39,18 +72,13 @@
           <tr>
                         <td><%= link_to regional_request.reference_number, regional_request_path(regional_request.id)
               %></td>
-                        <td><%= regional_request.region.name
-              %></td>
-                        <td><%= regional_request.operation.name
-              %></td>
-                        <td><%= regional_request.program.name
-              %></td>
+
                         <td><%= regional_request.requested_date
               %></td>
                         <td><%= regional_request.remark
               %></td>
                         <td>
-                <%if !regional_request.generated %>
+                <%if !Requisition.find_by_request_id(regional_request.id) %>
                 <a class="btn btn-primary" href="/requisitions/prepare/<%=regional_request.id%>">Create RRD </a> &middot;
               <%else%>
                <a class="btn btn-info" href="/requisitions/summary/<%=regional_request.region_id%>/<%=regional_request.operation_id%>">RRD Detail</a> &middot;
