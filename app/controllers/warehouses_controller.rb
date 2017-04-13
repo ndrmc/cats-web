@@ -1,6 +1,7 @@
 class WarehousesController < ApplicationController
   before_action :set_warehouse, only: [:show, :edit, :update, :destroy]
   layout 'admin'
+  include Administrated
   # GET /warehouses
   # GET /warehouses.json
   def index

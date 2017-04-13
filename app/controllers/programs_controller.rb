@@ -2,6 +2,7 @@ class ProgramsController < ApplicationController
   layout 'admin'
   before_action :set_program, only: [:show, :edit, :update, :destroy]
 
+  include Administrated
   # GET /programs
   # GET /programs.json
   def index

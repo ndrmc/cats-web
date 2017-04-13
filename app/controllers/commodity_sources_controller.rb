@@ -1,6 +1,6 @@
 class CommoditySourcesController < ApplicationController
   before_action :set_commodity_source, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /commodity_sources
   # GET /commodity_sources.json
   def index

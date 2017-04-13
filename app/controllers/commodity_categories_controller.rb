@@ -1,7 +1,7 @@
 class CommodityCategoriesController < ApplicationController
   layout 'admin'
   before_action :set_commodity_category, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /commodity_categories
   # GET /commodity_categories.json
   def index

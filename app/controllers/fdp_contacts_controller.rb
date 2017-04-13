@@ -1,6 +1,8 @@
 class FdpContactsController < ApplicationController
   before_action :set_fdp_contact, only: [:show, :edit, :update, :destroy]
 
+include Administrated
+
  layout 'admin'
  
   # GET /fdp_contacts

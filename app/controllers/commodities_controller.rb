@@ -1,6 +1,7 @@
 class CommoditiesController < ApplicationController
   layout 'admin'
   before_action :set_commodity, only: [:show, :edit, :update, :destroy]
+  include Administrated
 
   # GET /commodities
   # GET /commodities.json
