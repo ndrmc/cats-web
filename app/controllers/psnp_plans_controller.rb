@@ -2,6 +2,8 @@ class PsnpPlansController < ApplicationController
   before_action :set_psnp_plan, only: [:show, :edit, :update, :destroy]
 
   def index
+    authorize PsnpPlan
+    
     if params[:status]
       @psnp_plans = PsnpPlan.where status: params[:status]
     else
@@ -10,6 +12,8 @@ class PsnpPlansController < ApplicationController
   end
 
   def show
+    authorize PsnpPlan
+
     @psnp_plan = PsnpPlan.find params[:id]
 
     #@contributions = Contribution.where( psnp_plan_id: @psnp_plan.id)
@@ -18,6 +22,7 @@ class PsnpPlansController < ApplicationController
   end
 
   def psnp_plan_items
+    authorize PsnpPlan
     @psnp_plan = PsnpPlan.find params[:psnp_plan_id]
     psnp_plan_items = PsnpPlanItem.where psnp_plan_id: params[:psnp_plan_id], region_id: params[:region_id]
 
@@ -27,6 +32,7 @@ class PsnpPlansController < ApplicationController
   end
 
   def new_psnp_plan_item
+    authorize PsnpPlan
     @psnp_plan = PsnpPlan.find params[:id]
 
     zone = Location.find params[:zone_id]
@@ -41,6 +47,7 @@ class PsnpPlansController < ApplicationController
   end
 
   def save_psnp_plan_item
+    authorize PsnpPlan
     @psnp_plan_item = PsnpPlanItem.new(params.permit(:psnp_plan_id, :woreda_id,  :beneficiary, :starting_month, :duration, :cash_ratio,:kind_ratio))
 
     if @psnp_plan_item.save
@@ -51,6 +58,7 @@ class PsnpPlansController < ApplicationController
   end
 
   def remove_psnp_plan_id
+    authorize PsnpPlan
     psnp_plan_item = PsnpPlanItem.find params[:id]
 
     psnp_plan_item.destroy
@@ -64,11 +72,13 @@ class PsnpPlansController < ApplicationController
 
 
   def edit_psnp_plan_form
+    authorize PsnpPlan
     @psnp_plan_item = PsnpPlanItem.find(params[:id])
     render partial: 'edit_psnp_plan_form', layout: false
   end
 
   def update_psnp_plan_item
+    authorize PsnpPlan
     @psnp_plan_item = PsnpPlanItem.find(params[:id])
 
     params.delete :id
@@ -84,16 +94,19 @@ class PsnpPlansController < ApplicationController
   end
 
   def download_psnp_plan_items
+    authorize PsnpPlan
     @psnp_plan = PsnpPlan.find params[:id]
     @psnp_plan_items = PsnpPlanItem.where psnp_plan_id: params[:id]
   end
 
 
   def new
+    authorize PsnpPlan
     @psnp_plan = PsnpPlan.new
   end
 
   def create
+    authorize PsnpPlan
     @psnp_plan = PsnpPlan.new psnp_plan_params
 
     if @psnp_plan.save
@@ -119,10 +132,12 @@ class PsnpPlansController < ApplicationController
   end
 
   def edit
+    authorize PsnpPlan
     @psnp_plan = PsnpPlan.find params[:id]
   end
 
   def update
+    authorize PsnpPlan
     @psnp_plan = PsnpPlan.find params[:id]
 
     respond_to do |format|
@@ -138,6 +153,7 @@ class PsnpPlansController < ApplicationController
   end
 
   def archive
+    authorize PsnpPlan
     @psnp_plan = PsnpPlan.find params[:id]
 
     @psnp_plan.status = :archived

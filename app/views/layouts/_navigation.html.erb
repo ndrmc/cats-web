@@ -15,9 +15,11 @@
             <%= link_to t(:hrd_plan), hrds_url %>            
           </li>
           <%end%>
+          <%if policy(PsnpPlan).index? %>
           <li>
             <%= link_to  t(:psnp_plan), psnp_plans_url %>
           </li>
+          <%end%>
           <li class="<%= 'active' if is_active_controller('projects')  %>">
             <%= link_to  t(:receipt_plan) , projects_path %>
           </li>
