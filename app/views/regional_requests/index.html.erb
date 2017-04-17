@@ -81,7 +81,7 @@
                 <%if !Requisition.find_by_request_id(regional_request.id) %>
                 <a class="btn btn-primary" href="/requisitions/prepare/<%=regional_request.id%>">Create RRD </a> &middot;
               <%else%>
-               <a class="btn btn-info" href="/requisitions/summary/<%=regional_request.region_id%>/<%=regional_request.operation_id%>">RRD Detail</a> &middot;
+               <a class="btn btn-info" href="/requisitions/summary?region=<%=regional_request.region_id%>&operation=<%=regional_request.operation_id%>">RRD Detail</a> &middot;
               <%end%>
               <%= link_to 'Edit', edit_regional_request_path(regional_request) %> &middot;
               <%= link_to 'Delete', regional_request, method: :delete, data: { confirm: 'Are you sure?' } %>

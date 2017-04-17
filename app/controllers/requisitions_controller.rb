@@ -4,8 +4,13 @@ class RequisitionsController < ApplicationController
 
   # GET /requisitions
   # GET /requisitions.json
-  def index    
-    @requisitions = Requisition.filter(params.slice(:operation, :region, :status))
+  def index
+    if(params[:operation].present? && params[:region].present?)
+      @requisitions = Requisition.filter(params.slice(:operation, :region, :status))
+    else
+      @requisitions = []
+    end
+
   end
 
   
@@ -120,7 +125,7 @@ class RequisitionsController < ApplicationController
         end  
         
       end
-    render :js => "window.location = '/requisitions/summary/#{@request.region_id}/#{@request.operation_id}' , 
+    render :js => "window.location = '/requisitions/summary?region=#{@request.region_id}&operation=#{@request.operation_id}' ,
                     window.success = 'Requisitions generated' "
     else
       
@@ -134,38 +139,38 @@ class RequisitionsController < ApplicationController
 
   def add_requisition
 
-    @request = RegionalRequest.find(params[:request_id])
+    @request = RegionalRequest.find(params[:request])
 
    
 
       @operation = Operation.find(@request.operation_id)
       @ration_items = RationItem.where({ration_id: @operation.ration_id})
-      @request_items_for_zone = @request.regional_request_items.select { |ri| Fdp.find(ri.fdp_id).location.ancestors.find { |a| a.id == Integer(params[:zone_id]) } }
+      @request_items_for_zone = @request.regional_request_items.select { |ri| Fdp.find(ri.fdp_id).location.ancestors.find { |a| a.id == Integer(params[:zone]) } }
       
       @requisition = {} 
  
      
-      @requisition_items = [] 
-   
-          
-      zone_id = Integer(params[:zone_id])
+      @requisition_items = []
+
+
+      zone_id = Integer(params[:zone])
         
         @request_items_for_zone.each do |request_item|
             
           requisition_item = RequisitionItem.new({
               fdp_id: request_item[:fdp_id],
               beneficiary_no: request_item[:number_of_beneficiaries],
-              amount: @ration_items.select { |hash| hash[:commodity_id] == Integer(params[:commodity_id]) }.first.amount*request_item[:number_of_beneficiaries]
+              amount: @ration_items.select { |hash| hash[:commodity_id] == Integer(params[:commodity]) }.first.amount*request_item[:number_of_beneficiaries]
           })
           @requisition_items << requisition_item
 
         end
 
         @requisition = Requisition.new({
-           request_id: params[:request_id],
+           request_id: params[:request],
            requisition_no: SecureRandom.uuid,
            operation_id: @request.operation_id,
-           commodity_id: Integer(params[:commodity_id]),
+           commodity_id: Integer(params[:commodity]),
            region_id: @request.region_id,
            zone_id: zone_id,
            ration_id: Operation.find(@request.operation_id).ration_id,
@@ -177,22 +182,16 @@ class RequisitionsController < ApplicationController
          if(@requisition.save)
            @request.generated = true
            @request.save
-           redirect_to "/requisitions/summary/#{@request.region_id}/#{@request.operation_id}" , :flash => { notice: :success }
+           redirect_to "/requisitions/summary?region=#{@request.region_id}&operation=#{@request.operation_id}" , :flash => { notice: :success }
          else
            redirect_to RegionalRequest.find(params[:request_id]), :flash => { error: :unprocessable_entity }
          end
-
-       
-        
-      
-   
-    
   end
 
   def summary
     
-    @request = RegionalRequest.find_by({operation_id: params[:operation_id], 
-                                    region_id: params[:region_id]})
+    @request = RegionalRequest.find_by({operation_id: params[:operation],
+                                    region_id: params[:region]})
     @operation = Operation.find(@request.operation_id)
  
    @ration = Ration.find(@operation.ration_id)

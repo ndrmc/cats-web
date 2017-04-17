@@ -27,7 +27,7 @@
                 <% requisition = @requisitions.find_by({zone_id: zone.id,commodity_id: c.id}) %>
                 <td><%= link_to  requisition.requisition_no , edit_requisition_path(requisition) %></td>
                 <% else %>
-                   <td> <a href='/requisitions/add_requisition/<%=@request.id%>/<%=zone.id%>/<%=c.id%>' class='btn btn-primary' >Create</a> </td>
+                   <td> <a href='/requisitions/add_requisition?request=<%=@request.id%>&zone=<%=zone.id%>&commodity=<%=c.id%>' class='btn btn-primary' >Create</a> </td>
                 <% end %>
             <% end %>
           </tr>
