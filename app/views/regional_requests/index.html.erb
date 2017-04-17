@@ -11,9 +11,11 @@
     </ol>
   </div>
   <div class="col-sm-8">
+   <% if policy(RegionalRequest).new? %>
     <div class="title-action">
       <%= link_to 'New Regional Request', new_regional_request_path, :class => "btn btn-primary"%>
     </div>
+  <%end%>
   </div>
 </div>
 
@@ -50,15 +52,22 @@
                         <td><%= regional_request.remark
               %></td>
                         <td>
+                 <% if policy(RegionalRequest).new? %>
                 <%if !regional_request.generated %>
                 <a class="btn btn-primary" href="/requisitions/prepare/<%=regional_request.id%>">Create RRD </a> &middot;
               <%else%>
                <a class="btn btn-info" href="/requisitions/summary/<%=regional_request.region_id%>/<%=regional_request.operation_id%>">RRD Detail</a> &middot;
               <%end%>
-              <%= link_to 'Edit', edit_regional_request_path(regional_request) %> &middot;
+              <% if policy(RegionalRequest).edit? %>
+              <%= link_to 'Edit', edit_regional_request_path(regional_request) %> 
+              <%end%>
+              &middot;
+              <% if policy(RegionalRequest).destroy? %>
               <%= link_to 'Delete', regional_request, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%end%>
             </td>
           </tr>
+          <% end %>
           <% end %>
         </tbody>
       </table>

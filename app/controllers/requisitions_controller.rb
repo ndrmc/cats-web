@@ -6,6 +6,7 @@ class RequisitionsController < ApplicationController
   # GET /requisitions.json
   def index    
     @requisitions = Requisition.filter(params.slice(:operation, :region, :status))
+    authorize Requisition
   end
 
   
@@ -13,10 +14,12 @@ class RequisitionsController < ApplicationController
   # GET /requisitions/new
   def new
     @requisition = Requisition.new
+     authorize Requisition
   end
 
   # GET /requisitions/1/edit
   def edit
+     authorize Requisition
   end
 
   
@@ -24,6 +27,8 @@ class RequisitionsController < ApplicationController
   # PATCH/PUT /requisitions/1
   # PATCH/PUT /requisitions/1.json
   def update
+     authorize Requisition
+
     respond_to do |format|
       if @requisition.update(requisition_params)
         format.html { redirect_to edit_requisition_path(@requisition), notice: 'Requisition was successfully updated.' }
@@ -38,6 +43,7 @@ class RequisitionsController < ApplicationController
   # DELETE /requisitions/1
   # DELETE /requisitions/1.json
   def destroy
+     authorize Requisition
     @requisition.destroy
     respond_to do |format|
       format.html { redirect_to requisitions_url, notice: 'Requisition was successfully destroyed.' }
@@ -47,6 +53,7 @@ class RequisitionsController < ApplicationController
 
 
   def get_requisiton_by_number
+     authorize Requisition
       requisition = Requisition.find_by_requisition_no params[:requisition_no]
         respond_to do |format|
            if requisition
@@ -59,6 +66,8 @@ class RequisitionsController < ApplicationController
 
 # PREPARE /requisitions/prepare?request_id=1
   def prepare
+
+     authorize Requisition
     
    @request = RegionalRequest.find(params[:request_id])
   
@@ -73,6 +82,8 @@ class RequisitionsController < ApplicationController
   end
 
   def generate
+     authorize Requisition
+
     @request = RegionalRequest.find(params[:request_id])
     if(!@request.generated)
       @operation = Operation.find(@request.operation_id)
@@ -134,6 +145,7 @@ class RequisitionsController < ApplicationController
 
   def add_requisition
 
+ authorize Requisition
     @request = RegionalRequest.find(params[:request_id])
 
    
@@ -190,7 +202,8 @@ class RequisitionsController < ApplicationController
   end
 
   def summary
-    
+     authorize Requisition
+     
     @request = RegionalRequest.find_by({operation_id: params[:operation_id], 
                                     region_id: params[:region_id]})
     @operation = Operation.find(@request.operation_id)
