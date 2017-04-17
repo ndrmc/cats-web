@@ -44,9 +44,11 @@
       <li class="<%= 'active' if is_active_controller('operations')  %>">
         <%= link_to t(:operations), operations_url %>
       </li>
+       <% if policy(RegionalRequest).index? %>
       <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
         <%= link_to t(:regional_request), regional_requests_url %>
       </li>
+      <%end%>
       <li>
         <%= link_to t(:request_allocation), requisitions_url %></a>
       </li>
@@ -144,9 +146,7 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li class="<%= 'active' if is_active_controller('regional_request')  %>">
-        <%= link_to t(:regional_requests), regional_requests_url%>              
-      </li>
+     
       <li>
         <a href="#"><%= t(:fdp_receipts)%></a>
       </li>

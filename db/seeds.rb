@@ -283,6 +283,7 @@ if OwnershipType.count == 0
 end
 
 if Permission.count == 0 
+  
   Permission.create(name: 'HRD', description: '')
   Permission.create(name: 'Gift Certificate', description: '')
   Permission.create(name: 'Receipts', description: '')
@@ -306,6 +307,10 @@ if Permission.count == 0
   Permission.create(name: 'FDP', description: '')
   Permission.create(name: 'locations', description: '')
   Permission.create(name: 'Programs', description: '')
+
+  Permission.create(name: 'Regional Requests', description: '')
+  Permission.create(name: 'Requisition', description: '')
+  Permission.create(name: 'Settings', description: '')
 
 end
 
