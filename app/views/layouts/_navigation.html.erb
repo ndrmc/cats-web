@@ -49,9 +49,11 @@
         <%= link_to t(:regional_request), regional_requests_url %>
       </li>
       <%end%>
+      <% if policy(Requisition).index? %>
       <li>
         <%= link_to t(:request_allocation), requisitions_url %></a>
       </li>
+      <%end%>
       <li>
         <a href="#"><%= t(:dispatch_allocation)%></a>
       </li>
