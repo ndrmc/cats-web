@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles, :user_profile, :updateDepartments, :updatePermissions]
-
+  include Administrated
  
 
   layout 'admin'

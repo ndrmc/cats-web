@@ -1,6 +1,8 @@
 class FdpsController < ApplicationController
   before_action :set_fdp, only: [:show, :edit, :update, :destroy]
 
+   include Administrated
+   
   layout 'admin'
 
   # GET /fdps

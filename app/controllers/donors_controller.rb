@@ -1,6 +1,6 @@
 class DonorsController < ApplicationController
   before_action :set_donor, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /donors
   # GET /donors.json
   def index
