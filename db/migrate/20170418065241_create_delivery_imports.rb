@@ -9,7 +9,7 @@ class CreateDeliveryImports < ActiveRecord::Migration[5.0]
       t.string :delivery_date
       t.string :quantity_received_qtl
       t.string :prepared_date
-      t.string :repared_by
+      t.string :prepared_by
       t.string :gin
       t.string :dispatch_date
       t.string :region
@@ -30,7 +30,7 @@ class CreateDeliveryImports < ActiveRecord::Migration[5.0]
       t.string :si_number
       t.string :transporter_name
       t.string :received_by
-      t.string :plat_no
+      t.string :plate_no
       t.string :trailer_no
       t.string :driver_license
       t.string :hub_storekeeper
