@@ -1,0 +1,2 @@
+class GitImport < ApplicationRecord
+end
