@@ -15,9 +15,11 @@
             <%= link_to t(:hrd_plan), hrds_url %>            
           </li>
           <%end%>
+          <%if policy(PsnpPlan).index? %>
           <li>
             <%= link_to  t(:psnp_plan), psnp_plans_url %>
           </li>
+          <%end%>
           <li class="<%= 'active' if is_active_controller('projects')  %>">
             <%= link_to  t(:receipt_plan) , projects_path %>
           </li>
@@ -41,15 +43,22 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
+      <%if policy(Operation).index?%>
       <li class="<%= 'active' if is_active_controller('operations')  %>">
         <%= link_to t(:operations), operations_url %>
       </li>
+      <%end%>
+      <% if policy(RegionalRequest).index? %>
+
       <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
         <%= link_to t(:regional_request), regional_requests_url %>
       </li>
+      <%end%>
+      <% if policy(Requisition).index? %>
       <li>
         <%= link_to t(:request_allocation), requisitions_url %></a>
       </li>
+      <%end%>
       <li>
         <a href="#"><%= t(:dispatch_allocation)%></a>
       </li>
@@ -144,9 +153,7 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li class="<%= 'active' if is_active_controller('regional_request')  %>">
-        <%= link_to t(:regional_requests), regional_requests_url%>              
-      </li>
+     
       <li>
         <a href="#"><%= t(:fdp_receipts)%></a>
       </li>
@@ -158,14 +165,14 @@
       </li>
     </ul>
   </li>
-
+<%if policy(:admin).admin?%>
   <li class="<%= 'active' if current_page?(setting_index_url) %>">
     <%= link_to setting_index_url do %>
     <i class="fa fa-cog"></i>
     <span class="nav-label"><%= t(:setting) %> </span>
     <% end %>
   </li>
-
+<%end%>
 </ul>
 
 </div>

@@ -1,6 +1,6 @@
 class JournalsController < ApplicationController
   before_action :set_journal, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /journals
   # GET /journals.json
   def index

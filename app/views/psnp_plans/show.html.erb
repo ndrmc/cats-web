@@ -12,10 +12,13 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(PsnpPlan).edit? %>
       <%= link_to  edit_psnp_plan_path(@psnp_plan),  :class => "btn btn-default"  do %>
         <i class="fa fa-edit"></i> 
         Edit
       <% end %>
+
+      <%  end %>
     </div>
   </div>
 </div>
@@ -67,7 +70,11 @@
                             <tr>
                                 <td><%= Location.find(aggregate.region_id).name %></td>
                                 <td><%= aggregate.total_beneficiaries %></td>
+                                <% if policy(PsnpPlan).edit? %>
+                                <% if policy(PsnpPlan).edit? %>
                                 <td><a href="/psnp_plans/psnp_plan_items?psnp_plan_id=<%= @psnp_plan.id %>&region_id=<%= aggregate.region_id %>"> <i class="fa fa-edit"></i> Edit</a></td>
+                                <%end%>
+                                <% end %>
                             </tr>
                         <% end %>
                     </tbody>
@@ -109,9 +116,11 @@
         <div id="tab-3" class="tab-pane">
           <div class="panel">
             <div class="panel-heading">
+            <% if policy(PsnpPlan).new? %>
               <div class="pull-right">
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#contribution-modal">Add Contribution</a>
               </div>
+              <%end%>
               <div class="clearfix"></div>
             </div>
 

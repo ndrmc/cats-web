@@ -1,7 +1,7 @@
 class CurrenciesController < ApplicationController
   layout 'admin'
   before_action :set_currency, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /currencies
   # GET /currencies.json
   def index

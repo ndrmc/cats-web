@@ -10,7 +10,7 @@ class RequisitionsController < ApplicationController
     else
       @requisitions = []
     end
-
+    authorize Requisition
   end
 
   
@@ -18,10 +18,12 @@ class RequisitionsController < ApplicationController
   # GET /requisitions/new
   def new
     @requisition = Requisition.new
+     authorize Requisition
   end
 
   # GET /requisitions/1/edit
   def edit
+     authorize Requisition
   end
 
   
@@ -29,6 +31,8 @@ class RequisitionsController < ApplicationController
   # PATCH/PUT /requisitions/1
   # PATCH/PUT /requisitions/1.json
   def update
+     authorize Requisition
+
     respond_to do |format|
       if @requisition.update(requisition_params)
         format.html { redirect_to edit_requisition_path(@requisition), notice: 'Requisition was successfully updated.' }
@@ -43,6 +47,7 @@ class RequisitionsController < ApplicationController
   # DELETE /requisitions/1
   # DELETE /requisitions/1.json
   def destroy
+     authorize Requisition
     @requisition.destroy
     respond_to do |format|
       format.html { redirect_to requisitions_url, notice: 'Requisition was successfully destroyed.' }
@@ -52,6 +57,7 @@ class RequisitionsController < ApplicationController
 
 
   def get_requisiton_by_number
+     authorize Requisition
       requisition = Requisition.find_by_requisition_no params[:requisition_no]
         respond_to do |format|
            if requisition
@@ -64,6 +70,8 @@ class RequisitionsController < ApplicationController
 
 # PREPARE /requisitions/prepare?request_id=1
   def prepare
+
+     authorize Requisition
     
    @request = RegionalRequest.find(params[:request_id])
   
@@ -78,6 +86,8 @@ class RequisitionsController < ApplicationController
   end
 
   def generate
+     authorize Requisition
+
     @request = RegionalRequest.find(params[:request_id])
     if(!@request.generated)
       @operation = Operation.find(@request.operation_id)
@@ -139,9 +149,8 @@ class RequisitionsController < ApplicationController
 
   def add_requisition
 
-    @request = RegionalRequest.find(params[:request])
-
-   
+      @request = RegionalRequest.find(params[:request])
+      authorize Requisition   
 
       @operation = Operation.find(@request.operation_id)
       @ration_items = RationItem.where({ration_id: @operation.ration_id})
@@ -191,17 +200,19 @@ class RequisitionsController < ApplicationController
   def summary
     
     @request = RegionalRequest.find_by({operation_id: params[:operation],
-                                    region_id: params[:region]})
+                                      region_id: params[:region]})
+    authorize Requisition
+
     @operation = Operation.find(@request.operation_id)
- 
-   @ration = Ration.find(@operation.ration_id)
+
+    @ration = Ration.find(@operation.ration_id)
     @commodities = []
     @ration.ration_items.each do |ration_item|
       @commodities << Commodity.find(ration_item.commodity_id)
     end
     @request_zones =  @request.regional_request_items.collect{|i| Fdp.find(i.fdp_id).location.ancestors.find { |a| a.location_type == 'zone' } }.uniq   
                          
-   @requisitions = Requisition.where({request_id: @request.id})
+    @requisitions = Requisition.where({request_id: @request.id})
    
   
    respond_to do |format|

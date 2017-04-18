@@ -4,8 +4,6 @@ class RegionalRequestsController < ApplicationController
   # GET /regional_requests
   # GET /regional_requests.json
   def index
-    @regional_requests = RegionalRequest.all
-
     if params[:program].present? && params[:operation].present? && params[:region].present?
       filter_map = {program_id: params[:program], operation_id: params[:operation], region_id: params[:region]}
 
@@ -14,29 +12,32 @@ class RegionalRequestsController < ApplicationController
 
       @regional_requests = []
     end
-
+    authorize RegionalRequest
   end
 
   # GET /regional_requests/1
   # GET /regional_requests/1.json
   def show
     @fdp_ids_with_a_request = @regional_request.regional_request_items.collect { |rri| rri.fdp_id }
+    authorize RegionalRequest
   end
 
   # GET /regional_requests/new
   def new
     @regional_request = RegionalRequest.new
+    authorize RegionalRequest
   end
 
   # GET /regional_requests/1/edit
   def edit
+    authorize RegionalRequest
   end
 
   # POST /regional_requests
   # POST /regional_requests.json
   def create
     @regional_request = RegionalRequest.new(regional_request_params)
-
+    authorize RegionalRequest
     respond_to do |format|
       if @regional_request.save
 
@@ -84,6 +85,8 @@ class RegionalRequestsController < ApplicationController
   # PATCH/PUT /regional_requests/1
   # PATCH/PUT /regional_requests/1.json
   def update
+    authorize RegionalRequest
+
     respond_to do |format|
       if @regional_request.update(regional_request_params)
         format.html { redirect_to @regional_request, notice: 'Regional request was successfully updated.' }
@@ -98,6 +101,7 @@ class RegionalRequestsController < ApplicationController
   # DELETE /regional_requests/1
   # DELETE /regional_requests/1.json
   def destroy
+    authorize RegionalRequest
     @regional_request.destroy
     respond_to do |format|
       format.html { redirect_to regional_requests_url, notice: 'Regional request was successfully destroyed.' }
@@ -106,6 +110,8 @@ class RegionalRequestsController < ApplicationController
   end
 
   def add_fdp_to_request 
+    authorize RegionalRequest
+
     set_regional_request
 
     fdp = Fdp.find params[:fdp_id]
@@ -131,6 +137,8 @@ class RegionalRequestsController < ApplicationController
   end
   
   def destroy_regional_request_item
+    authorize RegionalRequest
+
     regional_request_item = RegionalRequestItem.find params[:id]
 
     regional_request_item.destroy
@@ -151,6 +159,8 @@ class RegionalRequestsController < ApplicationController
   end
 
   def request_items 
+    authorize RegionalRequest
+    
     set_regional_request 
 
     @regional_request.regional_request_items 
@@ -164,6 +174,8 @@ class RegionalRequestsController < ApplicationController
   end
 
   def upload_requests
+    authorize RegionalRequest
+    
     file = params[:file]
 
     case File.extname(file.original_filename)

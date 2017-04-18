@@ -253,7 +253,7 @@ end
 
 
 if User.count == 0
-  User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password')
+  User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password', user_types: User.user_types[:admin] )
   puts "Created default user account 'admin@cats.org' with password 'password'"
 end
 
@@ -283,6 +283,7 @@ if OwnershipType.count == 0
 end
 
 if Permission.count == 0 
+  
   Permission.create(name: 'HRD', description: '')
   Permission.create(name: 'Gift Certificate', description: '')
   Permission.create(name: 'Receipts', description: '')
@@ -306,6 +307,10 @@ if Permission.count == 0
   Permission.create(name: 'FDP', description: '')
   Permission.create(name: 'locations', description: '')
   Permission.create(name: 'Programs', description: '')
+
+  Permission.create(name: 'Regional Requests', description: '')
+  Permission.create(name: 'Requisition', description: '')
+  Permission.create(name: 'Settings', description: '')
 
 end
 

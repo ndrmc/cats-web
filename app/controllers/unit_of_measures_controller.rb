@@ -1,7 +1,7 @@
 class UnitOfMeasuresController < ApplicationController
   layout 'admin'
   before_action :set_unit_of_measure, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /unit_of_measures
   # GET /unit_of_measures.json
   def index

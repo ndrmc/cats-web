@@ -1,7 +1,7 @@
 class OrganizationsController < ApplicationController
   layout 'admin'
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /organizations
   # GET /organizations.json
   def index

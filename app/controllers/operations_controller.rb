@@ -5,11 +5,14 @@ class OperationsController < ApplicationController
   # GET /operations.json
   def index
     @operations = Operation.all
+    authorize Operation
   end
 
   # GET /operations/1
   # GET /operations/1.json
   def show
+    authorize Operation
+
     @operation = Operation.find(params[:id])
     # find the ration for current operation
     @ration = Ration.find(@operation.ration_id)
@@ -77,14 +80,19 @@ class OperationsController < ApplicationController
   # GET /operations/new
   def new
     @operation = Operation.new
+    authorize Operation
   end
 
   # GET /operations/1/edit
-  def edit; end
+  def edit;
+authorize Operation
+ end
 
   # POST /operations
   # POST /operations.json
   def create
+    authorize Operation
+    
     @operation = Operation.new(operation_params)
 
     respond_to do |format|
@@ -101,6 +109,8 @@ class OperationsController < ApplicationController
   # PATCH/PUT /operations/1
   # PATCH/PUT /operations/1.json
   def update
+    authorize Operation
+
     respond_to do |format|
       if @operation.update(operation_params)
         format.html { redirect_to @operation, notice: 'Operation was successfully updated.' }
@@ -115,6 +125,7 @@ class OperationsController < ApplicationController
   # DELETE /operations/1
   # DELETE /operations/1.json
   def destroy
+    authorize Operation
     @operation.destroy
     respond_to do |format|
       format.html { redirect_to operations_url, notice: 'Operation was successfully deleted.' }
