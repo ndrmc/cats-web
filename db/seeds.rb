@@ -154,7 +154,7 @@ commodities.each do |c|
   c.save!
 end
 
-commodities = Commodity.where(:name => ['Pump'])
+commodities = Commodity.where(:name => ['Machine','Pump'])
 commodities.each do |c|
   c.commodity_category_id = machine.id
   c.uom_category_id = uom_category.id
@@ -326,4 +326,17 @@ if Department.count == 0
   puts "Created seed data for departments"
 end
 
+hubs = Hub.all
 
+hubs.each do |h|
+  main_warehouse = Warehouse.new({
+      name: h.name+' Main Warehouse',
+      description: 'Main Warehouse at '+h.name+' hub',
+      hub_id: h.id,
+      location_id: h.location_id
+  })
+
+  main_warehouse.save!
+
+end
+puts "Created warehouse records"
