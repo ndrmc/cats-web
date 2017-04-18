@@ -82,8 +82,8 @@
         <tbody>
           <% @regional_request.regional_request_items.each do |request_item| %>
           <tr>
-            <td><%= request_item.fdp.zone.name %></td>
-            <td><%= request_item.fdp.woreda ? request_item.fdp.woreda.name : '-' %></td>
+            <td><%= request_item.fdp[:zone] %></td>
+            <td><%= request_item.fdp[:woreda] %></td>
             <td><%= request_item.fdp.name %></td>
             <td class="beneficiaries_number_cell"><%= request_item.number_of_beneficiaries %></td>
             <td>

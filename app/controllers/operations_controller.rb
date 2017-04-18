@@ -142,6 +142,6 @@ authorize Operation
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def operation_params
-    params.require(:operation).permit(:name, :program_id, :year, :month, :status, :hrd_id, :ration_id)
+    params.require(:operation).permit(:name, :program_id, :year, :month, :status, :hrd_id,:fscd_annual_plan_id, :ration_id)
   end
 end

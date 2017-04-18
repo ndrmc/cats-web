@@ -4,7 +4,14 @@ class RegionalRequestsController < ApplicationController
   # GET /regional_requests
   # GET /regional_requests.json
   def index
-    @regional_requests = RegionalRequest.all
+    if params[:program].present? && params[:operation].present? && params[:region].present?
+      filter_map = {program_id: params[:program], operation_id: params[:operation], region_id: params[:region]}
+
+      @regional_requests = RegionalRequest.where( filter_map )
+    else
+
+      @regional_requests = []
+    end
     authorize RegionalRequest
   end
 

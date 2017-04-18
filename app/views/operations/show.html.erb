@@ -99,7 +99,13 @@
                 34,5590 mt
               </dd>
               <dt>Total beneficiaries:</dt>
-              <dd><%= Hrd.find(@operation.hrd_id).hrd_items.sum { |i| i.beneficiary } %></dd>
+              <% if @operation.hrd_id %>
+                  <dd><%= Hrd.find(@operation.hrd_id).hrd_items.sum { |i| i.beneficiary } %></dd>
+              <% end %>
+              <% if @operation.fscd_annual_plan_id %>
+                  <dd><%= PsnpPlan.find(@operation.fscd_annual_plan_id).psnp_plan_items.sum { |i| i.beneficiary } %></dd>
+              <% end %>
+
             </dl>
           </div>
         </div>
