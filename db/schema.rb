@@ -647,6 +647,9 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "old_id"
+    t.string   "reference_no"
+    t.integer  "si_id"
+    t.text     "si_value"
     t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
   end
 
@@ -732,11 +735,13 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",               default: false
+    t.boolean  "deleted",                          default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.integer  "unit_of_measure_id"
+    t.string   "receive_id",            limit: 36,                 null: false
+    t.string   "receive_item_id",       limit: 36,                 null: false
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
@@ -744,8 +749,27 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.index ["unit_of_measure_id"], name: "index_receipt_lines_on_unit_of_measure_id", using: :btree
   end
 
+  create_table "receipt_lines_temp", id: :integer, force: :cascade do |t|
+    t.integer  "receipt_id"
+    t.integer  "commodity_category_id"
+    t.integer  "commodity_id"
+    t.decimal  "quantity"
+    t.integer  "project_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",                          default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.integer  "unit_of_measure_id"
+    t.string   "receive_id",            limit: 36,                 null: false
+    t.string   "receive_item_id",       limit: 36,                 null: false
+    t.string   "project_name"
+    t.string   "si_value"
+  end
+
   create_table "receipts", force: :cascade do |t|
-    t.string   "grn_no",                                  null: false
+    t.string   "grn_no",                                             null: false
     t.datetime "received_date"
     t.integer  "hub_id"
     t.integer  "warehouse_id"
@@ -767,13 +791,14 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.integer  "store_id"
     t.string   "drivers_name"
     t.text     "remark"
-    t.boolean  "draft",                   default: false
+    t.boolean  "draft",                              default: false
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",                 default: false
+    t.boolean  "deleted",                            default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.string   "receiveid",               limit: 36,                 null: false
     t.index ["commodity_source_id"], name: "index_receipts_on_commodity_source_id", using: :btree
     t.index ["hub_id"], name: "index_receipts_on_hub_id", using: :btree
     t.index ["program_id"], name: "index_receipts_on_program_id", using: :btree
