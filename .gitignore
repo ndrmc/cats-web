@@ -62,3 +62,6 @@ bower.json
 
 node_modules/
 typings
+
+# Excel data imports
+/data

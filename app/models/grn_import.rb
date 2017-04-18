@@ -1,0 +1,2 @@
+class GrnImport < ApplicationRecord
+end

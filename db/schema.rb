@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330104338) do
+ActiveRecord::Schema.define(version: 20170418065241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -228,6 +228,49 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.datetime "updated_at",                        null: false
   end
 
+  create_table "delivery_imports", force: :cascade do |t|
+    t.string   "transporter_ref_no"
+    t.string   "grn"
+    t.string   "requisition_no"
+    t.string   "received_by"
+    t.string   "received_date"
+    t.string   "delivery_date"
+    t.string   "quantity_received_qtl"
+    t.string   "prepared_date"
+    t.string   "prepared_by"
+    t.string   "gin"
+    t.string   "dispatch_date"
+    t.string   "region"
+    t.string   "origin_warehouse"
+    t.string   "zone"
+    t.string   "woreda"
+    t.string   "destination"
+    t.string   "allocation_month"
+    t.string   "allocation_year"
+    t.string   "round"
+    t.string   "program"
+    t.string   "commodity_type"
+    t.string   "sub_commodity"
+    t.string   "unit_type"
+    t.string   "allocation_quantity"
+    t.string   "dispatch_quantity"
+    t.string   "donor"
+    t.string   "si_number"
+    t.string   "transporter_name"
+    t.string   "plate_no"
+    t.string   "trailer_no"
+    t.string   "driver_license"
+    t.string   "hub_storekeeper"
+    t.string   "project_code"
+    t.string   "ltcd_no"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",               default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
   create_table "departments", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -430,6 +473,70 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.integer  "commodity_id"
     t.index ["deleted_at"], name: "index_gift_certificates_on_deleted_at", using: :btree
     t.index ["reference_no"], name: "index_gift_certificates_on_reference_no", unique: true, using: :btree
+  end
+
+  create_table "git_imports", force: :cascade do |t|
+    t.string   "gin"
+    t.string   "hub"
+    t.string   "requisition_no"
+    t.string   "round"
+    t.string   "region"
+    t.string   "zone"
+    t.string   "woreda"
+    t.string   "fdp"
+    t.string   "transporter"
+    t.string   "driver"
+    t.string   "plat_no"
+    t.string   "trailer_no"
+    t.string   "dispatch_date"
+    t.string   "project_code"
+    t.string   "commodity_class"
+    t.string   "commodity_type"
+    t.string   "rounded_allocation_mt"
+    t.string   "total_units_dispatched"
+    t.string   "quintals_dispatched"
+    t.string   "mt_dispatched"
+    t.string   "allocation_period"
+    t.string   "storekeeper"
+    t.string   "store_no"
+    t.string   "remark"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",                default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "grn_imports", force: :cascade do |t|
+    t.string   "hub"
+    t.string   "warehouse"
+    t.string   "storekeeper"
+    t.string   "received_date"
+    t.string   "donor"
+    t.string   "supplier"
+    t.string   "origin"
+    t.string   "si_donor"
+    t.string   "project_code"
+    t.string   "grn"
+    t.string   "waybill_no"
+    t.string   "commodity_class"
+    t.string   "commodity_type"
+    t.string   "total_units_received"
+    t.string   "unit_weight"
+    t.string   "sent_mt"
+    t.string   "received_in_bag"
+    t.string   "received_in_mt"
+    t.string   "vessel_name"
+    t.string   "transporter_name"
+    t.string   "plat_no"
+    t.string   "trailer_no"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",              default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "hrd_items", force: :cascade do |t|
