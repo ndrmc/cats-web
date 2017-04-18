@@ -166,11 +166,14 @@
     </ul>
   </li>
 <%if policy(:admin).admin?%>
-  <li class="<%= 'active' if current_page?(setting_index_url) %>">
-    <%= link_to setting_index_url do %>
-    <i class="fa fa-cog"></i>
-    <span class="nav-label"><%= t(:setting) %> </span>
+
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+        <i class="fa fa-cog"></i>
+        <span class="nav-label"><%= t(:setting) %> </span>
+        <span class="fa arrow"></span>
     <% end %>
+    <%= render 'layouts/settingnav' %>
   </li>
 <%end%>
 </ul>
