@@ -1,3 +1,5 @@
+require 'capistrano-rbenv'
+
 server '10.11.157.73', port: 22, roles: [:web, :app, :db], primary: true
 
 set :application, 	  'cats'
@@ -7,7 +9,7 @@ set :puma_threads,    [4, 16]
 set :puma_workers,    1
 
 # rbenv and ruby settings
-set :rbenv_ruby_version, "2.3.0"
+set :rbenv_ruby, "2.3.0"
 
 # Don't change these unless you know what you're doing
 set :pty,             true
@@ -24,6 +26,9 @@ set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
 set :puma_init_active_record, true  # Change to false when not using ActiveRecord
+
+append :linked_files, "config/database.yml", "config/secrets.yml"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", "public/system", "public/uploads"
 
 ## Defaults:
 #set :scm,           :git
@@ -52,8 +57,8 @@ namespace :deploy do
   desc "Make sure local git is in sync with remote."
   task :check_revision do
     on roles(:app) do
-      unless `git rev-parse HEAD` == `git rev-parse origin/master`
-        puts "WARNING: HEAD is not the same as origin/master"
+      unless `git rev-parse HEAD` == `git rev-parse origin/deployment`
+        puts "WARNING: HEAD is not the same as origin/deployment"
         puts "Run `git push` to sync changes."
         exit
       end
