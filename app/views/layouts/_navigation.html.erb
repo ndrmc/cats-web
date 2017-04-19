@@ -26,9 +26,11 @@
           <li>
             <a href="#"><%= t(:bid_plan) %></a>
           </li>
+          <%if policy(Ration).index? %>
           <li class="<%= 'active' if is_active_controller('rations') || is_active_controller('ration_items')  %>">
             <%= link_to t(:ration), rations_path %>
           </li>
+          <%end%>
           <li class="<%= 'active' if is_active_controller('gift_certificates')  %>">
               <%= link_to t(:gift_certificate), gift_certificates_url %>
           </li>        
