@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Receipt).new? %>
       <%= link_to 'New Receipt', new_receipt_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -103,8 +105,12 @@
                 <td><%= receipt.draft ? "Draft" : "Posted" %></td>
                 <td><%= receipt.remark ? receipt.remark : '-' %></td>
                 <td>
+                <% if policy(Receipts).edit? %>
                     <%= link_to 'Edit', edit_receipt_path(receipt) %> &middot;
+                <%end%>
+                <% if policy(Receipts).edit? %>
                     <%= link_to 'Delete', receipt, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <%end%>
                 </td>
             </tr>
         <% end %>
