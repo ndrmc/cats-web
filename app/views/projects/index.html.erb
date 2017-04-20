@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+      <% if policy(Project).new? %>
       <%= link_to 'New Project', new_project_path, :class => "btn btn-primary"%>
+      <%end%>
     </div>
   </div>
 </div>
@@ -46,9 +48,13 @@
               <td><%= UnitOfMeasure.find(project.unit_of_measure_id).name%></td>
               <td><%= project&.publish_date&.strftime('%d-%b-%Y')%></td>
               <td>
+              <% if policy(project).edit? %>
                 <%= link_to 'Edit', edit_project_path(project) %>
                 &middot;
+                <%end%>
+                <% if policy(Project).new? %>
                 <%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <%end%>
               </td>
             </tr>
             <% end %>

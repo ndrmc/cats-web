@@ -287,6 +287,8 @@ if Permission.count == 0
   Permission.create(name: 'HRD', description: '')
   Permission.create(name: 'Gift Certificate', description: '')
   Permission.create(name: 'Receipts', description: '')
+  Permission.create(name: 'Receipt Plan', description: '')
+  Permission.create(name: 'Bid Plan', description: '')
   Permission.create(name: 'Project', description: '')
   Permission.create(name: 'Ration', description: '')
 
@@ -340,3 +342,18 @@ hubs.each do |h|
 
 end
 puts "Created warehouse records"
+
+if UsersPermission.count == 0 
+  users  = User.find_by(first_name: 'Administrator')
+  permissions = Permission.all
+
+  permissions.each do |p|
+    user_permission =  UsersPermission.new({
+      user_id: users.id,
+      permission_id: p.id
+    })
+    user_permission.save!
+  end
+  
+end
+

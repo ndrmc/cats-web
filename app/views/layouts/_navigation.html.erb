@@ -20,9 +20,11 @@
             <%= link_to  t(:psnp_plan), psnp_plans_url %>
           </li>
           <%end%>
+          <% if policy(Project).index? %>
           <li class="<%= 'active' if is_active_controller('projects')  %>">
             <%= link_to  t(:receipt_plan) , projects_path %>
           </li>
+          <%end%>
           <li>
             <a href="#"><%= t(:bid_plan) %></a>
           </li>
