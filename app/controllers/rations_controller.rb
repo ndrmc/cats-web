@@ -4,26 +4,31 @@ class RationsController < ApplicationController
   # GET /rations
   # GET /rations.json
   def index
+    authorize Ration
     @rations = Ration.all
   end
 
   # GET /rations/1
   # GET /rations/1.json
   def show
+    authorize Ration
   end
 
   # GET /rations/new
   def new
+    authorize Ration
     @ration = Ration.new
   end
 
   # GET /rations/1/edit
   def edit
+    authorize Ration
   end
 
   # POST /rations
   # POST /rations.json
   def create
+    authorize Ration
     @ration = Ration.new(ration_params)
 
     respond_to do |format|
@@ -40,6 +45,7 @@ class RationsController < ApplicationController
   # PATCH/PUT /rations/1
   # PATCH/PUT /rations/1.json
   def update
+    authorize Ration
     respond_to do |format|
       if @ration.update(ration_params)
         format.html { redirect_to @ration, notice: 'Ration was successfully updated.' }
@@ -54,6 +60,7 @@ class RationsController < ApplicationController
   # DELETE /rations/1
   # DELETE /rations/1.json
   def destroy
+    authorize Ration
     @ration.destroy
     respond_to do |format|
       format.html { redirect_to rations_url, notice: 'Ration was successfully destroyed.' }
