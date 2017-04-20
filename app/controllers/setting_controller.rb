@@ -1,5 +1,8 @@
 class SettingController < ApplicationController
   layout 'admin'
+
+  include Administrated
+  
   def index
     
   end
