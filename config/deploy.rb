@@ -85,6 +85,10 @@ namespace :deploy do
     run "cd #{release_path} && bundle exec rake db:seed RAILS_ENV=#{fetch(:rails_env)}"
   end
 
+  after 'deploy:cold' do
+   run "RAILS_ENV=#{rails_env} #{bundle} exec rake seed"
+  end
+
   before :starting,     :check_revision
   after  :finishing,    :compile_assets
   after  :finishing,    :cleanup
