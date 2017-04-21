@@ -82,7 +82,7 @@ namespace :deploy do
 
   desc "Reload the database with seed data"
   task :seed do    
-    run "cd #{release_path} && bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+    run "cd #{release_path} && bundle exec rake db:seed RAILS_ENV=#{fetch(:rails_env)}"
   end
 
   before :starting,     :check_revision
