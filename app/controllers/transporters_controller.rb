@@ -1,29 +1,35 @@
 class TransportersController < ApplicationController
   before_action :set_transporter, only: [:show, :edit, :update, :destroy]
-include Administrated
+
   # GET /transporters
   # GET /transporters.json
   def index
+    authorize Transporter
     @transporters = Transporter.all
   end
 
   # GET /transporters/1
   # GET /transporters/1.json
   def show
+    authorize Transporter
   end
 
   # GET /transporters/new
   def new
+    authorize Transporter
     @transporter = Transporter.new
   end
 
   # GET /transporters/1/edit
   def edit
+    authorize Transporter
   end
 
   # POST /transporters
   # POST /transporters.json
   def create
+    authorize Transporter
+
     @transporter = Transporter.new(transporter_params)
 
     respond_to do |format|
@@ -40,6 +46,8 @@ include Administrated
   # PATCH/PUT /transporters/1
   # PATCH/PUT /transporters/1.json
   def update
+    authorize Transporter
+
     respond_to do |format|
       if @transporter.update(transporter_params)
         format.html { redirect_to transporter_path @transporter, notice: 'Transporter was successfully updated.' }
@@ -54,6 +62,8 @@ include Administrated
   # DELETE /transporters/1
   # DELETE /transporters/1.json
   def destroy
+    authorize Transporter
+
     @transporter.destroy
     respond_to do |format|
       format.html { redirect_to transporters_url, notice: 'Transporter was successfully destroyed.' }
