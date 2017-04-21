@@ -85,3 +85,10 @@ namespace :deploy do
   after  :finishing,    :cleanup
   after  :finishing,    :restart
 end
+
+namespace :seed do
+  desc 'Run database seed on a remote server'
+  task :default do
+    run("cd #{deploy_to}/current; /usr/bin/env bundle exec rake db:seed RAILS_ENV=#{rails_env}")
+  end
+end
