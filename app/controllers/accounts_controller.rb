@@ -26,7 +26,7 @@ class AccountsController < ApplicationController
   # POST /accounts.json
   def create
     @account = Account.new(account_params)
-
+    @account.created_by = current_user.id
     respond_to do |format|
       if @account.save
         format.html { redirect_to accounts_path, notice: 'Account was successfully created.' }
@@ -42,6 +42,7 @@ class AccountsController < ApplicationController
   # PATCH/PUT /accounts/1.json
   def update
     respond_to do |format|
+      @account.updated_by = current_user.id
       if @account.update(account_params)
         format.html { redirect_to accounts_path, notice: 'Account was successfully updated.' }
         format.json { render :show, status: :ok, location: @account }
