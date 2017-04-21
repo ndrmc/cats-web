@@ -10,11 +10,14 @@
       </li>
     </ol>
   </div>
+  <% if policy(Delivery).new? %>
   <div class="col-sm-8">
     <div class="title-action">
+
       <%= link_to 'New Delivery', new_delivery_path, :class => "btn btn-primary"%>
     </div>
   </div>
+  <% end %>
 </div>
 
 <div class="row">
@@ -66,8 +69,12 @@
               <td><%= delivery.status%></td>
                <td><%= delivery.operation_id%></td>
                <td>
+               <%if policy(Delivery).edit? %>
                 <%= link_to 'Edit', edit_delivery_path(delivery) %> &middot;
+                <%end%>
+                <%if policy(Delivery).destroy? %>
                 <%= link_to 'Delete', delivery, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <%end%>
               </td>
             </tr>
             <% end %>
