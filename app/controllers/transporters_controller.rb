@@ -25,7 +25,7 @@ include Administrated
   # POST /transporters.json
   def create
     @transporter = Transporter.new(transporter_params)
-
+    @transporter.created_by = current_user.id
     respond_to do |format|
       if @transporter.save
         format.html { redirect_to transporters_path, notice: 'Transporter was successfully created.' }
@@ -40,6 +40,7 @@ include Administrated
   # PATCH/PUT /transporters/1
   # PATCH/PUT /transporters/1.json
   def update
+    @transporter.modified_by = current_user.id
     respond_to do |format|
       if @transporter.update(transporter_params)
         format.html { redirect_to transporter_path @transporter, notice: 'Transporter was successfully updated.' }

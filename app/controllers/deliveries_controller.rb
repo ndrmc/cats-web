@@ -72,6 +72,7 @@ class DeliveriesController < ApplicationController
   def create
 
     @delivery = Delivery.new(delivery_params)
+    @delivery.created_by = current_user.id
 
     respond_to do |format|
       if @delivery.save
@@ -90,7 +91,7 @@ class DeliveriesController < ApplicationController
 
     @delivery = Delivery.find(params[:id]);
     @delivery.delivery_details.destroy_all
-
+    @delivery.modified_by = current_user.id
 
     respond_to do |format|
       if @delivery.update(delivery_params)

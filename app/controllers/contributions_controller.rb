@@ -26,10 +26,11 @@ class ContributionsController < ApplicationController
 
         if params[:id] #update 
             @contribution = Contribution.find params[:id]
-
+            @contribution.modified_by = current_user.id
             @contribution.update( contribution_params )
         else 
             @contribution = Contribution.new( contribution_params)
+            @contribution.created_by = current_user.id
             @contribution = @contribution.save ? @contribution : nil
         end 
 

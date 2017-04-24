@@ -26,6 +26,7 @@ class UnitOfMeasuresController < ApplicationController
   # POST /unit_of_measures.json
   def create
     @unit_of_measure = UnitOfMeasure.new(unit_of_measure_params)
+    @unit_of_measure.created_by = current_user.id
 
     respond_to do |format|
       if @unit_of_measure.save
@@ -41,6 +42,7 @@ class UnitOfMeasuresController < ApplicationController
   # PATCH/PUT /unit_of_measures/1
   # PATCH/PUT /unit_of_measures/1.json
   def update
+     @unit_of_measure.modified_by = current_user.id
     respond_to do |format|
       if @unit_of_measure.update(unit_of_measure_params)
         format.html { redirect_to unit_of_measures_path, notice: 'Unit of measure was successfully updated.' }

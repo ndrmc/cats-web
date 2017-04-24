@@ -100,7 +100,7 @@ class HrdsController < ApplicationController
     def create
         authorize Hrd
         @hrd = Hrd.new hrd_params  
-
+        @hrd.created_by = current_user.id
         if @hrd.save
             all_woredas = Location.where location_type: 'woreda'
 
@@ -131,7 +131,7 @@ class HrdsController < ApplicationController
     def update 
         authorize Hrd
         @hrd = Hrd.find params[:id]  
-
+         @hrd.modified_by = current_user.id
         respond_to do |format|
             if @hrd.update(hrd_params)
                 format.html { redirect_to hrds_url, notice: 'HRD was successfully updated.' }
