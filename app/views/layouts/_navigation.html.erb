@@ -34,7 +34,9 @@
           </li>
           <%end%>
           <li class="<%= 'active' if is_active_controller('gift_certificates')  %>">
+          <% if policy(GiftCertificate).index? %>
               <%= link_to t(:gift_certificate), gift_certificates_url %>
+          <% end %>
           </li>        
       </li>
     </ul>
