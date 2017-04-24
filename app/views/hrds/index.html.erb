@@ -83,12 +83,13 @@
                     <div style="width: 48%;" class="progress-bar"></div>
                   </div>
                 </td>
+                  <% if policy(@hrds).show? %>
                 <td class="project-actions">
                   <a href="<%= hrd_path(hrd)%>" class="btn btn-white btn-sm">
                     <i class="fa fa-folder"></i>
                     View
                   </a>
-                  
+                  <%end%>
                   <% if policy(@hrds).edit? %>
                   <a href="<%= edit_hrd_path(hrd)%>" class="btn btn-white btn-sm">
                     <i class="fa fa-pencil"></i>   

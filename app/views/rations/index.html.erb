@@ -11,9 +11,11 @@
     </ol>
   </div>
   <div class="col-sm-8">
+  <% if policy(Ration).new? %>
     <div class="title-action">
       <%= link_to 'New Ration', new_ration_path, :class => "btn btn-primary"%>
     </div>
+  <%end%>
   </div>
 </div>
 
@@ -39,11 +41,17 @@
               </td>
               <td><%= ration.description
               %></td>
+              
               <td>
+              <% if policy(Ration).edit? %>
                 <%= link_to 'Edit', edit_ration_path(ration) %>
+              <%end%>
                 &middot;
+              <%if policy(Ration).destroy? %>
                 <%= link_to 'Delete', ration, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%end%>
               </td>
+              
             </tr>
             <% end %>
           </tbody>

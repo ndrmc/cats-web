@@ -1,7 +1,8 @@
 class ReceiptsController < ApplicationController
 
     def index 
-
+    
+    authorize Receipt
         if params[:find].present? 
             @receipts = Receipt.where grn_no: params[:grn_no]
             return
@@ -31,6 +32,7 @@ class ReceiptsController < ApplicationController
 
 
     def new 
+        authorize Receipt
         @receipt = Receipt.new
         @receipt.commodity_source_id = 1
     end
