@@ -202,6 +202,8 @@ if Permission.count == 0
   Permission.create(name: 'HRD', description: '')
   Permission.create(name: 'Gift Certificate', description: '')
   Permission.create(name: 'Receipts', description: '')
+  Permission.create(name: 'Receipt Plan', description: '')
+  Permission.create(name: 'Bid Plan', description: '')
   Permission.create(name: 'Project', description: '')
   Permission.create(name: 'Ration', description: '')
 
@@ -226,6 +228,9 @@ if Permission.count == 0
   Permission.create(name: 'Regional Requests', description: '')
   Permission.create(name: 'Requisition', description: '')
   Permission.create(name: 'Settings', description: '')
+  Permission.create(name: 'Transporters', description: '')
+
+  puts "Permissions created"
 
 end
 
@@ -241,3 +246,16 @@ if Department.count == 0
   puts "Created seed data for departments"
 end
 
+if UsersPermission.count == 0 
+  users  = User.find_by(first_name: 'Administrator')
+  permissions = Permission.all
+
+  permissions.each do |p|
+    user_permission =  UsersPermission.new({
+      user_id: users.id,
+      permission_id: p.id
+    })
+    user_permission.save!
+  end
+  puts "Default permissisons for administrator created"
+end
