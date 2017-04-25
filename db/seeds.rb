@@ -343,3 +343,33 @@ hubs.each do |h|
 
 end
 puts "Created warehouse records"
+
+if Supplier.count == 0
+  Supplier.create(name: 'Abay International PLC')
+  Supplier.create(name: 'Addis Zemen ')
+  Supplier.create(name: 'Admas PLC  ')
+  Supplier.create(name: 'Ambasel ')
+  Supplier.create(name: 'Ambo')
+  Supplier.create(name: 'Asayita')
+  Supplier.create(name: 'Damot / Union')
+  Supplier.create(name: 'Debre Birhan')
+  Supplier.create(name: 'Debre Markos')
+  Supplier.create(name: 'Dire Dawa NDRMC')
+  Supplier.create(name: 'EFSRA')
+  Supplier.create(name: 'Ethio.Agri. CEFT PLC.')
+  Supplier.create(name: 'Ethiopian Ehel Nigde Derjit')
+  Supplier.create(name: 'FAFA Food ')
+  Supplier.create(name: 'Government purchase')
+  Supplier.create(name: 'Gozamen F Union')
+  Supplier.create(name: 'Mota')
+  Supplier.create(name: 'Mota G/H/S/M')
+  Supplier.create(name: 'Nazreth C/Wh')
+  Supplier.create(name: 'Nazreth NDRMC')
+  Supplier.create(name: 'NDRMC')
+  Supplier.create(name: 'Noriva PLC')
+  Supplier.create(name: 'Nur Hussen Adem')
+  Supplier.create(name: 'Soreti Int. Trading')
+  Supplier.create(name: 'Tena migib Amrach')
+  Supplier.create(name: 'Woreta')
+  Supplier.create(name: 'Woreta EFSRA')
+end

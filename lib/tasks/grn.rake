@@ -15,7 +15,7 @@ namespace :cats do
           hub_id = Hub.find_by_name(gi.hub)
           warehouse_id = Warehouse.find_by_name(gi.warehouse)
           supplier_id = Supplier.find_by_name(gi.supplier)
-          transporter_id = Transporter.find_by_name(gi.transporter).id
+          transporter = Transporter.find_by_name(gi.transporter_name)
           commodity_id = Commodity.find_by_name(gi.commodity_type).id
           commodity_cat_id = CommodityCategory.find_by_name(gi.commodity_class).id
           uom_id = UnitOfMeasure.find_by_name('mt').id
@@ -30,8 +30,8 @@ namespace :cats do
                 hub_id:hub_id,
                 warehouse_id:warehouse_id,
                 delivered_by:'',
-                supplier_id:supplier_id,
-                transporter_id:transporter_id,
+                supplier_id:supplier_id ? supplier_id : nil,
+                transporter_id:transporter ? transporter.id : nil,
                 plate_no:gi.plat_no,
                 trailer_plate_no:gi.trailer_no,
                 weight_bridge_ticket_no:'',
