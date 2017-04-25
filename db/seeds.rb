@@ -75,94 +75,6 @@ end
 
 # Commodities
 
-#FOOD ITEMS
-uom_category = UomCategory.find_by(name: 'weight')
-
-cereal = CommodityCategory.find_by(code: 'cereal')
-commodities = Commodity.where(:name => ['Cereal','Grain','Maize ','Rice','Sorghum','Wheat'])
-commodities.each do |c|
-  c.commodity_category_id = cereal.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-pulse = CommodityCategory.find_by(code: 'pulse')
-commodities = Commodity.where(:name => ['Pulse','Red Haricot Beans','White Haricot Beans','Beans','Lentils','Split Lentils','Peas','Yellow Split Peas'])
-commodities.each do |c|
-  c.commodity_category_id = pulse.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-Commodity.create(name: 'Cream Pulse', code:'CRP' ,commodity_category: pulse, uom_category: uom_category)
-Commodity.create(name: 'Cream Beans', code: 'CRB' , commodity_category: pulse, uom_category: uom_category)
-Commodity.create(name: 'Soya Beans', code: 'SYB' , commodity_category: pulse, uom_category: uom_category)
-
-blendedfood = CommodityCategory.find_by(code: 'bf')
-commodities = Commodity.where(:name => ['Blended food','CSB','CSB+','CSB++','FAMIX','Fafa Relief'])
-commodities.each do |c|
-  c.commodity_category_id = blendedfood.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-oil = CommodityCategory.find_by(code: 'oil')
-commodities = Commodity.where(:name => ['Oil','Vegitable Oil','Palm Oil','Olive Oil'])
-commodities.each do |c|
-  c.commodity_category_id = oil.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-foodsupplement = CommodityCategory.find_by(code: 'sf')
-commodities = Commodity.where(:name => ['Sup. Food','Biscuit','Dates','Wheat Flour', 'Milk'])
-commodities.each do |c|
-  c.commodity_category_id = foodsupplement.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-food = CommodityCategory.find_by(code: 'food')
-commodities = Commodity.where(:name => ['Other Foods'])
-commodities.each do |c|
-  c.commodity_category_id = food.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-# NON FOOD ITEMS
-
-uom_category = UomCategory.find_by(name: 'unit')
-
-cloth = CommodityCategory.find_by(code: 'clothing')
-commodities = Commodity.where(:name => ['Clothing','Blanket','Bed Sheet','Black Blanket'])
-commodities.each do |c|
-  c.commodity_category_id = cloth.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-non_food = CommodityCategory.find_by(code: 'nonfood')
-commodities = Commodity.where(:name => ['Other Non-Food'])
-commodities.each do |c|
-  c.commodity_category_id = non_food.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-house_equipments = CommodityCategory.find_by(code: 'equipment')
-commodities = Commodity.where(:name => ['House Equipment','Cooking Pots','Ladle','Spoon','Fork','Knife','Tray','Plastic Plate','Plastic Cup','Plastic Tea Cup','Plastic Jug','Plastic Bucket','Plastic Jerry Can','Plastic Sheet','Tent'])
-commodities.each do |c|
-  c.commodity_category_id = house_equipments.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-commodities = Commodity.where(:name => ['Machine','Pump'])
-commodities.each do |c|
-  c.commodity_category_id = machine.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
 
 
 puts "Created seed data for Commodity records"
@@ -290,6 +202,8 @@ if Permission.count == 0
   Permission.create(name: 'HRD', description: '')
   Permission.create(name: 'Gift Certificate', description: '')
   Permission.create(name: 'Receipts', description: '')
+  Permission.create(name: 'Receipt Plan', description: '')
+  Permission.create(name: 'Bid Plan', description: '')
   Permission.create(name: 'Project', description: '')
   Permission.create(name: 'Ration', description: '')
 
@@ -314,6 +228,9 @@ if Permission.count == 0
   Permission.create(name: 'Regional Requests', description: '')
   Permission.create(name: 'Requisition', description: '')
   Permission.create(name: 'Settings', description: '')
+  Permission.create(name: 'Transporters', description: '')
+
+  puts "Permissions created"
 
 end
 
@@ -329,20 +246,19 @@ if Department.count == 0
   puts "Created seed data for departments"
 end
 
-hubs = Hub.all
+if UsersPermission.count == 0 
+  users  = User.find_by(first_name: 'Administrator')
+  permissions = Permission.all
 
-hubs.each do |h|
-  main_warehouse = Warehouse.new({
-      name: h.name+' Main Warehouse',
-      description: 'Main Warehouse at '+h.name+' hub',
-      hub_id: h.id,
-      location_id: h.location_id
-  })
-
-  main_warehouse.save!
-
+  permissions.each do |p|
+    user_permission =  UsersPermission.new({
+      user_id: users.id,
+      permission_id: p.id
+    })
+    user_permission.save!
+  end
+  puts "Default permissisons for administrator created"
 end
-puts "Created warehouse records"
 
 if Supplier.count == 0
   Supplier.create(name: 'Abay International PLC')

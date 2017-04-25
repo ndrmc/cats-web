@@ -26,7 +26,7 @@ class DepartmentsController < ApplicationController
   # POST /departments.json
   def create
     @department = Department.new(department_params)
-
+    @department.created_by = current_user.id
     respond_to do |format|
       if @department.save
         format.html { redirect_to departments_path, notice: 'Department was successfully created.' }
@@ -41,6 +41,7 @@ class DepartmentsController < ApplicationController
   # PATCH/PUT /departments/1
   # PATCH/PUT /departments/1.json
   def update
+    @department.modified_by = current_user.id
     respond_to do |format|
       if @department.update(department_params)
         format.html { redirect_to departments_path, notice: 'Department was successfully updated.' }

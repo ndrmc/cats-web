@@ -44,7 +44,7 @@ class RationItemsController < ApplicationController
   # POST /ration_items.json
   def create
     @ration_item = RationItem.new(ration_item_params)
-
+    @ration_item.created_by = current_user.id
     respond_to do |format|
       if @ration_item.save
         format.html { redirect_to ration_path(Ration.find(@ration_item.ration_id)), notice: 'Ration item was successfully created.' }
@@ -59,6 +59,7 @@ class RationItemsController < ApplicationController
   # PATCH/PUT /ration_items/1
   # PATCH/PUT /ration_items/1.json
   def update
+    @ration_item.modified_by = current_user.id
     respond_to do |format|
       if @ration_item.update(ration_item_params)
         format.html { redirect_to ration_path(Ration.find(@ration_item.ration_id)), notice: 'Ration item was successfully updated.' }

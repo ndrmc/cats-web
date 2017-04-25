@@ -1,18 +1,16 @@
 class OperationsController < ApplicationController
   before_action :set_operation, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /operations
   # GET /operations.json
   def index
     @operations = Operation.all
-    authorize Operation
   end
 
   # GET /operations/1
   # GET /operations/1.json
   def show
-    authorize Operation
-
     @operation = Operation.find(params[:id])
     # find the ration for current operation
     @ration = Ration.find(@operation.ration_id)
@@ -33,12 +31,10 @@ class OperationsController < ApplicationController
         end
 
     end
-   
     @delivery_commodites.uniq!
-    
 
     # find sum total of amount by commodity within a region
-  
+
     @deliveries_map.each do |region, d_list|
       @delivery_summary_region = {}
       @commodities.each do |c|
@@ -66,12 +62,12 @@ class OperationsController < ApplicationController
     @dispatches_map.each do |region, dispatch_list|
       @dispatch_summary_region={}
       @commodities.each do |c|
-     
-          dispatch_list.each do |dispatch|
-            sum = dispatch.dispatch_items.select { |item| item.commodity_id == c.id }.sum(&:quantity)
-            @dispatch_summary_region[c.id] = @dispatch_summary_region[c.id] ? @dispatch_summary_region[c.id] + sum : sum
-          end
-       
+
+        dispatch_list.each do |dispatch|
+          sum = dispatch.dispatch_items.select { |item| item.commodity_id == c.id }.sum(&:quantity)
+          @dispatch_summary_region[c.id] = @dispatch_summary_region[c.id] ? @dispatch_summary_region[c.id] + sum : sum
+        end
+
       end
       @dispatches_map[region] = @dispatch_summary_region
     end
@@ -80,21 +76,17 @@ class OperationsController < ApplicationController
   # GET /operations/new
   def new
     @operation = Operation.new
-    authorize Operation
   end
 
   # GET /operations/1/edit
-  def edit;
-authorize Operation
- end
+  def edit
+  end
 
   # POST /operations
   # POST /operations.json
   def create
-    authorize Operation
-    
     @operation = Operation.new(operation_params)
-
+    @operation.created_by = current_user.id
     respond_to do |format|
       if @operation.save
         format.html { redirect_to @operation, notice: 'Operation was successfully created.' }
@@ -109,8 +101,8 @@ authorize Operation
   # PATCH/PUT /operations/1
   # PATCH/PUT /operations/1.json
   def update
-    authorize Operation
 
+    @operation.modified_by = current_user.id
     respond_to do |format|
       if @operation.update(operation_params)
         format.html { redirect_to @operation, notice: 'Operation was successfully updated.' }
@@ -125,7 +117,7 @@ authorize Operation
   # DELETE /operations/1
   # DELETE /operations/1.json
   def destroy
-    authorize Operation
+
     @operation.destroy
     respond_to do |format|
       format.html { redirect_to operations_url, notice: 'Operation was successfully deleted.' }

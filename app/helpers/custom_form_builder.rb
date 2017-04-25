@@ -2,9 +2,9 @@
 
 class CustomFormBuilder  < ActionView::Helpers::FormBuilder
  
-  def date_field(method, locale ,options = {})
+  def date_field(method, locale, user, options = {})
 
-       if (locale =='am' || r ) 
+       if (locale =='am' || user.language=='am' ) 
            options[:class] = options[:class] + " custom_datepicker"
            #options[:value] = '01/01/2017'
          else
