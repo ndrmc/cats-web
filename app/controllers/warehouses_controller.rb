@@ -1,6 +1,6 @@
 class WarehousesController < ApplicationController
   before_action :set_warehouse, only: [:show, :edit, :update, :destroy]
-  layout 'admin'
+
   include Administrated
   # GET /warehouses
   # GET /warehouses.json
@@ -32,7 +32,7 @@ class WarehousesController < ApplicationController
     if(!@warehouse.hub_id)
       @warehouse.hub_id=params[:hub_id]
     end
-     @warehouse.modified_by = current_user.id
+    @warehouse.modified_by = current_user.id
     respond_to do |format|
       if @warehouse.save
         format.html { redirect_to warehouses_path, notice: 'Store location was successfully created.' }
@@ -71,13 +71,13 @@ class WarehousesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_warehouse
-      @warehouse = Warehouse.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_warehouse
+    @warehouse = Warehouse.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def warehouse_params
-      params.require(:warehouse).permit(:name, :description, :hub_id, :location_id, :organization_id, :lat, :lon)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def warehouse_params
+    params.require(:warehouse).permit(:name, :description, :hub_id, :location_id, :organization_id, :lat, :lon)
+  end
 end

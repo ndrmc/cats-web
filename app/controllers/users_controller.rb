@@ -1,9 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles, :user_profile, :updateDepartments, :updatePermissions]
   include Administrated
- 
-
-  layout 'admin'
 
   # GET /users
   # GET /users.json
@@ -36,51 +33,51 @@ class UsersController < ApplicationController
   end
 
   def user_departments
-     @user = User.find(params[:user_id])
-     @all_departments = Department.all
+    @user = User.find(params[:user_id])
+    @all_departments = Department.all
   end
 
   def user_permissions
-      @user = User.find(params[:user_id])
-      @all_permissions = Permission.all
+    @user = User.find(params[:user_id])
+    @all_permissions = Permission.all
   end
-  
 
-   
+
+
   def updateDepartments
     new_departments =  params.require(:departments)
     UsersDepartment.where(user_id: @user.id).destroy_all
-   
+
 
     new_departments.each do |department|
-      
+
       dep =  UsersDepartment.new({
-        department_id:department.to_i,
-        user_id: @user.id
+                                   department_id:department.to_i,
+                                   user_id: @user.id
       })
-       dep.modified_by = current_user.id
+      dep.modified_by = current_user.id
       dep.save
     end
 
-     redirect_to  @user
+    redirect_to  @user
+  end
+
+  def updatePermissions
+    puts @user.id
+    new_permissions = params.require(:permissions)
+    UsersPermission.where(user_id: @user.id).destroy_all
+
+    new_permissions.each do |permission|
+      _permission = UsersPermission.new ({
+                                           permission_id: permission.to_i,
+                                           user_id: @user.id
+      })
+      _permission.modified_by = current_user.id
+      _permission.save
     end
-  
- def updatePermissions
-    puts @user.id 
-   new_permissions = params.require(:permissions)
-   UsersPermission.where(user_id: @user.id).destroy_all
 
-   new_permissions.each do |permission|
-     _permission = UsersPermission.new ({
-       permission_id: permission.to_i,
-       user_id: @user.id
-     })
-     _permission.modified_by = current_user.id
-     _permission.save
-   end
-
-    redirect_to @user, success: 'User profile was successfully updated.' 
- end
+    redirect_to @user, success: 'User profile was successfully updated.'
+  end
 
 
   # GET /users/1/roles
@@ -151,13 +148,13 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub_id, :location_id, :mobile_no, :user_types, :department_id)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:first_name, :last_name, :email, :is_active, :hub_id, :location_id, :mobile_no, :user_types, :department_id)
+  end
 end

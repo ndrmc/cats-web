@@ -1,6 +1,7 @@
 class DispatchesController < ApplicationController
 
     def index
+        authorize Dispatch
         if params[:find].present? 
             @dispatches = Dispatch.where gin_no: params[:gin_no]
             return
@@ -36,10 +37,13 @@ class DispatchesController < ApplicationController
     end
 
     def new 
+        authorize Dispatch
         @dispatch = Dispatch.new
     end
 
     def create 
+        authorize Dispatch
+
         dispatch_lines_hash = dispatch_params[:dispatch_items][0...-1]
         dispatch_items = dispatch_lines_hash.collect { |h| DispatchItem.new( h)}
 
@@ -61,10 +65,12 @@ class DispatchesController < ApplicationController
     end
 
     def edit 
+        authorize Dispatch
         @dispatch = Dispatch.find( params[:id])
     end
 
     def update
+        authorize Dispatch
 
         @dispatch = Dispatch.find(params[:id])
 

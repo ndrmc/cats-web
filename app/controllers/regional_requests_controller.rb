@@ -1,36 +1,30 @@
 class RegionalRequestsController < ApplicationController
   before_action :set_regional_request, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
   # GET /regional_requests
   # GET /regional_requests.json
   def index
     if params[:program].present? && params[:operation].present? && params[:region].present?
       filter_map = {program_id: params[:program], operation_id: params[:operation], region_id: params[:region]}
-
       @regional_requests = RegionalRequest.where( filter_map )
     else
-
       @regional_requests = []
     end
-    authorize RegionalRequest
   end
 
   # GET /regional_requests/1
   # GET /regional_requests/1.json
   def show
     @fdp_ids_with_a_request = @regional_request.regional_request_items.collect { |rri| rri.fdp_id }
-    authorize RegionalRequest
   end
 
   # GET /regional_requests/new
   def new
     @regional_request = RegionalRequest.new
-    authorize RegionalRequest
   end
 
   # GET /regional_requests/1/edit
   def edit
-    authorize RegionalRequest
   end
 
   # POST /regional_requests
@@ -38,24 +32,23 @@ class RegionalRequestsController < ApplicationController
   def create
     @regional_request = RegionalRequest.new(regional_request_params)
     @regional_request.created_by = current_user.id
-    authorize RegionalRequest
+
     respond_to do |format|
       if @regional_request.save
-
         hrd = @regional_request.operation.hrd
 
         fdp_locations = []
 
-        if hrd 
+        if hrd
           woredas = hrd.hrd_items.map { |hrd_item| hrd_item.woreda  }
           zone_ids = woredas.collect { |woreda| woreda.parent_id }
 
           fdp_locations = zone_ids + woredas.map { |w| w.id}
 
-        else 
+        else
 
           fdp_locations = @regional_request.region.descendants.map { |d| d.id}.push @regional_request.region_id
-        end 
+        end
 
         fdp_ids_in_region = Fdp.where( location_id: fdp_locations).map { |l| l.id}
 
@@ -63,16 +56,16 @@ class RegionalRequestsController < ApplicationController
 
         if @previous_regional_request
           @previous_regional_request.regional_request_items.each do |rri|
-             RegionalRequestItem.new( regional_request_id: @regional_request.id, fdp_id: rri.fdp_id, number_of_beneficiaries: rri.number_of_beneficiaries).save
+            RegionalRequestItem.new( regional_request_id: @regional_request.id, fdp_id: rri.fdp_id, number_of_beneficiaries: rri.number_of_beneficiaries).save
 
-             fdp_ids_in_region -= [rri.fdp_id]
-           end
+            fdp_ids_in_region -= [rri.fdp_id]
+          end
         end
 
-       fdp_ids_in_region.each do |fdp_id |
+        fdp_ids_in_region.each do |fdp_id |
           RegionalRequestItem.new( regional_request_id: @regional_request.id, fdp_id: fdp_id, number_of_beneficiaries: 0).save
-       end
-        
+        end
+
 
         format.html { redirect_to @regional_request, notice: 'Regional request was successfully created.' }
         format.json { render :show, status: :created, location: @regional_request }
@@ -86,7 +79,6 @@ class RegionalRequestsController < ApplicationController
   # PATCH/PUT /regional_requests/1
   # PATCH/PUT /regional_requests/1.json
   def update
-    authorize RegionalRequest
     @regional_request.modified_by = current_user.id
     respond_to do |format|
       if @regional_request.update(regional_request_params)
@@ -102,7 +94,6 @@ class RegionalRequestsController < ApplicationController
   # DELETE /regional_requests/1
   # DELETE /regional_requests/1.json
   def destroy
-    authorize RegionalRequest
     @regional_request.destroy
     respond_to do |format|
       format.html { redirect_to regional_requests_url, notice: 'Regional request was successfully destroyed.' }
@@ -110,35 +101,33 @@ class RegionalRequestsController < ApplicationController
     end
   end
 
-  def add_fdp_to_request 
-    authorize RegionalRequest
+  def add_fdp_to_request
 
     set_regional_request
 
     fdp = Fdp.find params[:fdp_id]
 
-    number_of_beneficiaries = Float( params[:number_of_beneficiaries]) rescue nil 
+    number_of_beneficiaries = Float( params[:number_of_beneficiaries]) rescue nil
 
     if !fdp || !number_of_beneficiaries then
       respond_to do |format|
         format.json { render json: {successful: false, errorMessage: "All required inputs are not supplied."} }
       end
-      return       
+      return
     end
 
     respond_to do |format|
       rrdi = RegionalRequestItem.new( regional_request: @regional_request, fdp: fdp, number_of_beneficiaries: number_of_beneficiaries)
-      
-      if rrdi.save 
+
+      if rrdi.save
         format.json { render json: {successful: true, zoneName: fdp.zone.name, woredaName: fdp.woreda ? fdp.woreda.name : '-', fdpName:  fdp.name, number_of_beneficiaries: number_of_beneficiaries, rrdi: rrdi } }
-      else 
+      else
         format.json { render json: {successful: false, errorMessage: "Save failed. Please try again shortly."} }
       end
     end
   end
-  
+
   def destroy_regional_request_item
-    authorize RegionalRequest
 
     regional_request_item = RegionalRequestItem.find params[:id]
 
@@ -159,30 +148,28 @@ class RegionalRequestsController < ApplicationController
     end
   end
 
-  def request_items 
-    authorize RegionalRequest
-    
-    set_regional_request 
+  def request_items
 
-    @regional_request.regional_request_items 
+    set_regional_request
+
+    @regional_request.regional_request_items
 
     respond_to do |format|
       format.xlsx {
         response.headers['Content-Disposition'] = "attachment; filename=\"#{@regional_request.region.name} - #{@regional_request.operation.name}.xlsx\""
       }
     end
-    
+
   end
 
   def upload_requests
-    authorize RegionalRequest
-    
+
     file = params[:file]
 
     case File.extname(file.original_filename)
-      when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
-      when '.xlsx' then spreadsheet = Roo::Excelx.new(file.path, nil, :ignore)
-      else raise "Unknown file type: #{file.original_filename}"
+    when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
+    when '.xlsx' then spreadsheet = Roo::Excelx.new(file.path, nil, :ignore)
+    else raise "Unknown file type: #{file.original_filename}"
     end
 
     set_regional_request
@@ -194,38 +181,38 @@ class RegionalRequestsController < ApplicationController
       request_item = RegionalRequestItem.where(regional_request: @regional_request, fdp_id: row[0]).first
 
       if request_item
-        if row[4].is_a?( Numeric) && row[4] >= 0 
+        if row[4].is_a?( Numeric) && row[4] >= 0
           request_item.number_of_beneficiaries = row[4]
           request_item.save
-        else 
+        else
           number_of_skipped_rows += 1
         end
-      else 
+      else
         Rails.logger.info("No RegionalRequestItem found for the fdp id: #{row[0]}. Skipping...")
       end
     end
 
     respond_to do |format|
-        if number_of_skipped_rows > 0 
-          flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
-        end
-        
-        format.html { redirect_to @regional_request, notice: "Excel imported successfully."  }
+      if number_of_skipped_rows > 0
+        flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
+      end
+
+      format.html { redirect_to @regional_request, notice: "Excel imported successfully."  }
     end
-  end 
-  
-  
-  
-  
+  end
+
+
+
+
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_regional_request
-      @regional_request = RegionalRequest.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_regional_request
+    @regional_request = RegionalRequest.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def regional_request_params
-      params.require(:regional_request).permit(:reference_number, :operation_id, :program_id, :region_id, :requested_date, :remark)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def regional_request_params
+    params.require(:regional_request).permit(:reference_number, :operation_id, :program_id, :region_id, :requested_date, :remark)
+  end
 end

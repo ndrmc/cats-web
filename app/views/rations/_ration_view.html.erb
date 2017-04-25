@@ -7,7 +7,9 @@
         <div class="ibox-title">
           <h5>Basic information</h5>
           <div class="ibox-tools">
+            <%if policy(Ration).edit? %>
             <%= link_to 'Edit', edit_ration_path(@ration),  :class => "btn btn-success btn-xs"%>
+            <%end%>
           </div>
         </div>
 
@@ -43,16 +45,19 @@
         <div class="ibox-title">
           <h5>Ration Items (Commodities)</h5>
           <div class="ibox-tools">
+          <%if policy(Ration).create? %>
             <%= link_to 'Add Commodity', new_ration_item_path(:ration_id => @ration.id),  :class => "btn btn-success btn-xs"%>
-
+          <%end%>
           </div>
         </div>
 
         <div class="ibox-content">
-
+       
           <% if @ration.ration_items.count == 0 %>
+            <%if policy(Ration).create? %>
           <h2>There are no commodities in this ration. Click below to add items</h2>
           <%= link_to 'Add Commodity', new_ration_item_path(:ration_id => ration.id),  :class => "btn btn-primary btn-lg"%>
+          <%end%>
         <% else %>
 
           <table class="table table-striped">
@@ -68,9 +73,16 @@
             <tbody>
               <% @ration.ration_items.each do |ri| %>
               <tr>
-                <td>
+                <%if policy(Ration).edit? %>
+                  <td>
                   <%= link_to ri.commodity.name, edit_ration_item_path(ri) %>
                 </td>
+                <%else%>
+                  <td>
+                  <%= ri.commodity.name %>
+                </td>
+                <%end%>
+                
                 <td>
                   <%= ri.unit_of_measure.name %>
                 </td>
@@ -78,9 +90,12 @@
                   <%= ri.amount %>
                 </td>
                 <td>
-                  <%= link_to 'Edit', edit_ration_item_path(ri) %>
+                 <% if policy(Ration).edit? %>
+                  <%= link_to 'Edit', edit_ration_item_path(ri) %> <%end%>
                   &middot;
+                   <% if policy(Ration).destroy? %>
                   <%= link_to 'Delete', ri, method: :delete, data: { confirm: 'Are you sure you want to remove this commodity?' } %>
+                <%end%>
                 </td>
               </tr>
               <% end %>

@@ -12,7 +12,9 @@
  </div>
  <div class="col-sm-8">
   <div class="title-action">
+  <% if policy(GiftCertificate).new? %>
    <%= link_to 'New Gift Certificate', new_gift_certificate_path, :class => "btn btn-primary"%>
+  <%end%>
   </div>
  </div>
 </div>
@@ -71,8 +73,12 @@
        
       
        <td>
+       <% if policy(GiftCertificate).edit? %>
         <%= link_to 'Edit', edit_gift_certificate_path(gift_certificate) %> &middot;
+        <%end%>
+        <% if policy(GiftCertificate).destroy? %>
          <%= link_to 'Delete', gift_certificate, method: :delete, data: { confirm: 'Are you sure?' } %>
+       <%end%>
        </td>
       </tr>
       <% end %>
