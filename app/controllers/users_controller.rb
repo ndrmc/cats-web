@@ -58,6 +58,7 @@ class UsersController < ApplicationController
         department_id:department.to_i,
         user_id: @user.id
       })
+       dep.modified_by = current_user.id
       dep.save
     end
 
@@ -74,7 +75,7 @@ class UsersController < ApplicationController
        permission_id: permission.to_i,
        user_id: @user.id
      })
-
+     _permission.modified_by = current_user.id
      _permission.save
    end
 
@@ -93,10 +94,11 @@ class UsersController < ApplicationController
     new_roles = params.require(:roles).permit!.keys.map { |key| key.to_sym}
 
     @user.roles =[]
-
+    @user.modified_by = current_user.id
     @user.save
 
     new_roles.each do |role|
+      @user.modified_by = current_user.id
       @user.add_role role
     end
 
@@ -111,7 +113,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-
+    @user.created_by = current_user.id
     respond_to do |format|
       if @user.save
         format.html { redirect_to users_path, success: 'User was successfully created.' }
@@ -126,6 +128,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    @user.modified_by = current_user.id
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to users_path, success: 'User was successfully updated.' }

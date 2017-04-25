@@ -25,7 +25,7 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
     @project = Project.new(project_params)
-
+    @project.created_by = current_user.id
     respond_to do |format|
       if @project.save
         format.html { redirect_to projects_path, notice: 'Project was successfully created.' }
@@ -41,6 +41,7 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1.json
   def update
     respond_to do |format|
+    @project.modified_by = current_user.id
       if @project.update(project_params)
         format.html { redirect_to projects_path, notice: 'Project was successfully updated.' }
         format.json { render :show, status: :ok, location: @project }

@@ -124,6 +124,8 @@ class RequisitionsController < ApplicationController
             requisition_items: @requisition_items
           })
           
+          @requisition.created_by = current_user.id
+
           if(@requisition.save)
             @request.generated = true
             @request.save
@@ -187,6 +189,8 @@ class RequisitionsController < ApplicationController
            status: 'draft',
            requisition_items: @requisition_items
          })
+         
+          @requisition.created_by = current_user.id
         
          if(@requisition.save)
            @request.generated = true

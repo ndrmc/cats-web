@@ -48,7 +48,7 @@ class DispatchesController < ApplicationController
         dispatch_map[:dispatch_items] = dispatch_items
 
         @dispatch = Dispatch.new( dispatch_map )
-
+        @dispatch.created_by = current_user.id
         
         
         respond_to do |format|
@@ -67,6 +67,8 @@ class DispatchesController < ApplicationController
     def update
 
         @dispatch = Dispatch.find(params[:id])
+
+        @dispatch.modified = current_user.id
 
         dispatch_line_ids = @dispatch.dispatch_items.collect { |rl| rl.id }
 

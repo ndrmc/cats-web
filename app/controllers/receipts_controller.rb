@@ -45,7 +45,7 @@ class ReceiptsController < ApplicationController
         receipt_map[:receipt_lines] = receipt_lines
 
         @receipt = Receipt.new( receipt_map )
-
+        @receipt.created_by = current_user.id
         respond_to do |format|
             if @receipt.save
                 format.html { redirect_to receipts_path, success: 'Receipt was successfully created.' }
@@ -62,7 +62,7 @@ class ReceiptsController < ApplicationController
     def update
 
         @receipt = Receipt.find(params[:id])
-
+        @receipt.modified_by = current_user.id
         receipt_line_ids = @receipt.receipt_lines.collect { |rl| rl.id }
 
         recept_lines_hash = receipt_params[:receipt_lines][0...-1]

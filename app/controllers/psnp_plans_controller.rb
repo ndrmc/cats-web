@@ -137,9 +137,10 @@ class PsnpPlansController < ApplicationController
   end
 
   def update
+
     authorize PsnpPlan
     @psnp_plan = PsnpPlan.find params[:id]
-
+    @psnp_plan.modified_by = current_user.id
     respond_to do |format|
       if @psnp_plan.update(psnp_plan_params)
         format.html { redirect_to psnp_plans_url, notice: 'PSNP Plan was successfully updated.' }

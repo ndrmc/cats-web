@@ -32,6 +32,7 @@ class WarehousesController < ApplicationController
     if(!@warehouse.hub_id)
       @warehouse.hub_id=params[:hub_id]
     end
+     @warehouse.modified_by = current_user.id
     respond_to do |format|
       if @warehouse.save
         format.html { redirect_to warehouses_path, notice: 'Store location was successfully created.' }
@@ -46,6 +47,7 @@ class WarehousesController < ApplicationController
   # PATCH/PUT /warehouses/1
   # PATCH/PUT /warehouses/1.json
   def update
+    @warehouse.modified_by = current_user.id
     respond_to do |format|
       if @warehouse.update(warehouse_params)
         format.html { redirect_to warehouse_path(@warehouse), notice: 'Store location was successfully updated.' }
