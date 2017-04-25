@@ -4,6 +4,7 @@ class DeliveriesController < ApplicationController
   # GET /deliveries
   # GET /deliveries.json
   def index
+    authorize Delivery
     # @deliveries = Delivery.all
 
     #  if params[:search]
@@ -20,11 +21,13 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/1
   # GET /deliveries/1.json
   def show
+    authorize Delivery
   end
 
   # GET /deliveries/new
   def new
-   
+   authorize Delivery
+
     @delivery = Delivery.new
     @gin = Dispatch.find_by({'gin_no': params[:gin_number]})
     if(@gin)
@@ -71,6 +74,8 @@ class DeliveriesController < ApplicationController
   # POST /deliveries.json
   def create
 
+    authorize Delivery
+
     @delivery = Delivery.new(delivery_params)
 
     respond_to do |format|
@@ -87,6 +92,8 @@ class DeliveriesController < ApplicationController
   # PATCH/PUT /deliveries/1
   # PATCH/PUT /deliveries/1.json
   def update
+
+    authorize Delivery
 
     @delivery = Delivery.find(params[:id]);
     @delivery.delivery_details.destroy_all
@@ -106,6 +113,7 @@ class DeliveriesController < ApplicationController
   # DELETE /deliveries/1
   # DELETE /deliveries/1.json
   def destroy
+    authorize Delivery
     @delivery.destroy
     respond_to do |format|
       format.html { redirect_to deliveries_url, notice: 'Delivery was successfully destroyed.' }
