@@ -93,6 +93,9 @@ commodities.each do |c|
   c.uom_category_id = uom_category.id
   c.save!
 end
+Commodity.create(name: 'Cream Pulse', code:'CRP' ,commodity_category: pulse, uom_category: uom_category)
+Commodity.create(name: 'Cream Beans', code: 'CRB' , commodity_category: pulse, uom_category: uom_category)
+Commodity.create(name: 'Soya Beans', code: 'SYB' , commodity_category: pulse, uom_category: uom_category)
 
 blendedfood = CommodityCategory.find_by(code: 'bf')
 commodities = Commodity.where(:name => ['Blended food','CSB','CSB+','CSB++','FAMIX','Fafa Relief'])

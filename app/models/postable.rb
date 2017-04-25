@@ -8,9 +8,9 @@ module Postable
                 receivable_account = nil 
                     if(self.commodity_source_id == 1)
                         receivable_account = Account.find_by({'code': :pledged})
-                    elsif (self.commodity_source_id == 2)
-                        receivable_account = Account.find_by({'code': :purchased})
                     elsif (self.commodity_source_id == 3)
+                        receivable_account = Account.find_by({'code': :purchased})
+                    elsif (self.commodity_source_id == 2)
                         receivable_account = Account.find_by({'code': :borrowed})
                     else
                         raise Exception('Commodity source unknown')
@@ -166,7 +166,8 @@ module Postable
     end
 
     def reverse
-        
+
+        return if self.draft
         original_posting = Posting.find_by({'document_id': self.id})
         original_posting.posting_type = Posting.posting_types[:reversed]
        

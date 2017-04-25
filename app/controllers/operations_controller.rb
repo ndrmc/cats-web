@@ -27,7 +27,7 @@ class OperationsController < ApplicationController
    
    @delivery_commodites =[]
     if @deliveries
-      @deliveries_map = @deliveries.group_by { |d| Fdp.find(d.fdp_id).location.ancestors.find { |a| a.location_type == 'region' } }
+      @deliveries_map = @deliveries.group_by { |d| Fdp.find(d.fdp_id).region}
       @deliveries.map(&:delivery_details).each do |d| 
          @delivery_commodites << d.map(&:commodity_id).first         
         end
@@ -56,7 +56,7 @@ class OperationsController < ApplicationController
     @dispatches = Dispatch.where(operation_id: params[:id])
     # group dispatches by region
     if @dispatches
-      @dispatches_map = @dispatches.group_by { |d| Fdp.find(d.fdp_id).location.ancestors.find { |a| a.location_type == 'region' } }
+      @dispatches_map = @dispatches.group_by { |d| Fdp.find(d.fdp_id).region }
 
     end
 
