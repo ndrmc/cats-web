@@ -32,7 +32,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bund
 
 ## Defaults:
 #set :scm,           :git
-set :branch,        :deployment
+set :branch,        :develop
 set :format,        :pretty
 set :log_level,     :debug
 set :keep_releases, 5
