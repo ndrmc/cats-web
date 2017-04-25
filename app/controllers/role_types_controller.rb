@@ -25,7 +25,7 @@ class RoleTypesController < ApplicationController
   # POST /role_types.json
   def create
     @role_type = RoleType.new(role_type_params)
-
+    @role_type.created_by = current_user.id
     respond_to do |format|
       if @role_type.save
         format.html { redirect_to @role_type, notice: 'Role type was successfully created.' }
@@ -40,6 +40,7 @@ class RoleTypesController < ApplicationController
   # PATCH/PUT /role_types/1
   # PATCH/PUT /role_types/1.json
   def update
+     @role_type.modified_by = current_user.id
     respond_to do |format|
       if @role_type.update(role_type_params)
         format.html { redirect_to @role_type, notice: 'Role type was successfully updated.' }

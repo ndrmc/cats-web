@@ -26,7 +26,7 @@ class GiftCertificatesController < ApplicationController
   # POST /gift_certificates.json
   def create
     @gift_certificate = GiftCertificate.new(gift_certificate_params)
-
+    @gift_certificate.created_by = current_user.id
     respond_to do |format|
       if @gift_certificate.save
         format.html { redirect_to gift_certificates_path, notice: 'Gift certificate was successfully created.' }
@@ -41,6 +41,7 @@ class GiftCertificatesController < ApplicationController
   # PATCH/PUT /gift_certificates/1
   # PATCH/PUT /gift_certificates/1.json
   def update
+    @gift_certificate.modified_by = current_user.id
     respond_to do |format|
       if @gift_certificate.update(gift_certificate_params)
         format.html { redirect_to gift_certificates_path, notice: 'Gift certificate was successfully updated.' }

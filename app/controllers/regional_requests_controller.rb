@@ -37,6 +37,7 @@ class RegionalRequestsController < ApplicationController
   # POST /regional_requests.json
   def create
     @regional_request = RegionalRequest.new(regional_request_params)
+    @regional_request.created_by = current_user.id
     authorize RegionalRequest
     respond_to do |format|
       if @regional_request.save
@@ -86,7 +87,7 @@ class RegionalRequestsController < ApplicationController
   # PATCH/PUT /regional_requests/1.json
   def update
     authorize RegionalRequest
-
+    @regional_request.modified_by = current_user.id
     respond_to do |format|
       if @regional_request.update(regional_request_params)
         format.html { redirect_to @regional_request, notice: 'Regional request was successfully updated.' }

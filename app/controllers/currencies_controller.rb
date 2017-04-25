@@ -26,7 +26,7 @@ class CurrenciesController < ApplicationController
   # POST /currencies.json
   def create
     @currency = Currency.new(currency_params)
-
+    @currency.created_by = current_user.id
     respond_to do |format|
       if @currency.save
         format.html { redirect_to currencies_url, notice: 'Currency was successfully created.' }
@@ -42,6 +42,7 @@ class CurrenciesController < ApplicationController
   # PATCH/PUT /currencies/1.json
   def update
     respond_to do |format|
+       @currency.modified_by = current_user.id
       if @currency.update(currency_params)
         format.html { redirect_to currencies_url  , notice: 'Currency was successfully updated.' }
         format.json { render :show, status: :ok, location: @currency }

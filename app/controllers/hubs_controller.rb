@@ -26,7 +26,7 @@ class HubsController < ApplicationController
   # POST /hubs.json
   def create
     @hub = Hub.new(hub_params)
-
+    @hub.created_by = current_user.id
     respond_to do |format|
       if @hub.save
         format.html { redirect_to hubs_path, notice: 'Hub was successfully created.' }
@@ -41,6 +41,7 @@ class HubsController < ApplicationController
   # PATCH/PUT /hubs/1
   # PATCH/PUT /hubs/1.json
   def update
+    @hub.modified_by = current_user.id
     respond_to do |format|
       if @hub.update(hub_params)
         format.html { redirect_to @hub, notice: 'Hub was successfully updated.' }
