@@ -16,7 +16,9 @@
   <div class="col-sm-8">
     <div class="title-action">
       <%= link_to 'Back', transporters_path,  :class => "btn btn-default"%>
-      <%= link_to 'Edit', edit_transporter_path(@transporter),  :class => "btn btn-default"%>
+        <% if policy(Transporter).edit? %>
+          <%= link_to 'Edit', edit_transporter_path(@transporter),  :class => "btn btn-default"%>
+      <% end %>
     </div>
   </div>
 </div>
@@ -107,7 +109,9 @@
             <label>Comment</label>
             <textarea class="form-control" placeholder="Your comment" rows="3"></textarea>
           </div>
+            <% if policy(Transporter).edit? %>
           <button class="btn btn-primary btn-block">Add Comment</button>
+          <% end %>
 
         </div>
       </div>
@@ -120,6 +124,7 @@
         <div class="ibox-title">
           <h5>Address and Contact Information
           </h5>
+            <% if policy(Transporter).edit? %>
           <div class="ibox-tools">
             <%= link_to new_transporter_address_path(:transporter_id => @transporter.id), class: "btn btn-xs" do %>
             <i class="fa fa-plus-square"></i>
@@ -129,6 +134,7 @@
               <i class="fa fa-chevron-up"></i>
             </a>
           </div>
+          <% end %>
         </div>
         <div class="ibox-content">
 
@@ -156,9 +162,13 @@
                 <td><%= transporter_address.phone %></td>
                 <td><%= transporter_address.email %></td>
                 <td>
+                  <% if policy(Transporter).edit? %>
                   <%= link_to 'Edit', edit_transporter_address_path(transporter_address) %>
+                  <% end %>
                   &middot;
+                    <% if policy(Transporter).delete? %>
                   <%= link_to 'Delete', transporter_address, method: :delete, data: { confirm: "Are you sure you want to delete the selected address record?" } %>
+                  <% end %>
                 </td>
               </tr>
               <% end %>

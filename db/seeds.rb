@@ -313,6 +313,9 @@ if Permission.count == 0
   Permission.create(name: 'Regional Requests', description: '')
   Permission.create(name: 'Requisition', description: '')
   Permission.create(name: 'Settings', description: '')
+  Permission.create(name: 'Transporters', description: '')
+
+  puts "Permissions created"
 
 end
 
@@ -354,6 +357,6 @@ if UsersPermission.count == 0
     })
     user_permission.save!
   end
-  
+  puts "Default permissisons for administrator created"
 end
 

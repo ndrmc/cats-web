@@ -130,9 +130,11 @@
       <li>
         <a href="#"><%= t(:bid_evaluation)%></a>
       </li>
+      <% if policy(Transporter).index? %>
       <li class="<%= 'active' if is_active_controller('transporters')  %>">
         <%= link_to 'Transporters', transporters_path %>
       </li>
+      <%end%>
     </ul>
   </li>
 
