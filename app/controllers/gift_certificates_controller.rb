@@ -1,34 +1,32 @@
 class GiftCertificatesController < ApplicationController
   before_action :set_gift_certificate, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+
 
   # GET /gift_certificates
   # GET /gift_certificates.json
-  def index
-    authorize GiftCertificate
+  def index    
     @gift_certificates = GiftCertificate.filter(params.slice(:donor_id, :status))
   end
 
   # GET /gift_certificates/1
   # GET /gift_certificates/1.json
   def show
-     authorize GiftCertificate
+     
   end
 
   # GET /gift_certificates/new
-  def new
-     authorize GiftCertificate
+  def new     
     @gift_certificate = GiftCertificate.new
   end
 
   # GET /gift_certificates/1/edit
   def edit
-     authorize GiftCertificate
   end
 
   # POST /gift_certificates
   # POST /gift_certificates.json
   def create
-     authorize GiftCertificate
     @gift_certificate = GiftCertificate.new(gift_certificate_params)
 
     respond_to do |format|
@@ -45,7 +43,6 @@ class GiftCertificatesController < ApplicationController
   # PATCH/PUT /gift_certificates/1
   # PATCH/PUT /gift_certificates/1.json
   def update
-     authorize GiftCertificate
     respond_to do |format|
       if @gift_certificate.update(gift_certificate_params)
         format.html { redirect_to gift_certificates_path, notice: 'Gift certificate was successfully updated.' }
@@ -60,7 +57,6 @@ class GiftCertificatesController < ApplicationController
   # DELETE /gift_certificates/1
   # DELETE /gift_certificates/1.json
   def destroy
-     authorize GiftCertificate
     @gift_certificate.destroy
     respond_to do |format|
       format.html { redirect_to gift_certificates_url, notice: 'Gift certificate was successfully destroyed.' }

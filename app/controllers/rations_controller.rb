@@ -1,36 +1,31 @@
 class RationsController < ApplicationController
   before_action :set_ration, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
   # GET /rations
   # GET /rations.json
   def index
-    authorize Ration
     @rations = Ration.all
   end
 
   # GET /rations/1
   # GET /rations/1.json
   def show
-    authorize Ration
   end
 
   # GET /rations/new
   def new
-    authorize Ration
     @ration = Ration.new
   end
 
   # GET /rations/1/edit
   def edit
-    authorize Ration
   end
 
   # POST /rations
   # POST /rations.json
   def create
-    authorize Ration
     @ration = Ration.new(ration_params)
-
+    @ration.created_by = current_user.id
     respond_to do |format|
       if @ration.save
         format.html { redirect_to @ration, notice: 'Ration was successfully created.' }
@@ -45,8 +40,9 @@ class RationsController < ApplicationController
   # PATCH/PUT /rations/1
   # PATCH/PUT /rations/1.json
   def update
-    authorize Ration
+
     respond_to do |format|
+      @ration.modified_by = current_user.id
       if @ration.update(ration_params)
         format.html { redirect_to @ration, notice: 'Ration was successfully updated.' }
         format.json { render :show, status: :ok, location: @ration }
@@ -60,7 +56,6 @@ class RationsController < ApplicationController
   # DELETE /rations/1
   # DELETE /rations/1.json
   def destroy
-    authorize Ration
     @ration.destroy
     respond_to do |format|
       format.html { redirect_to rations_url, notice: 'Ration was successfully destroyed.' }
@@ -69,13 +64,13 @@ class RationsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_ration
-      @ration = Ration.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_ration
+    @ration = Ration.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def ration_params
-      params.require(:ration).permit(:reference_no, :description)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def ration_params
+    params.require(:ration).permit(:reference_no, :description)
+  end
 end

@@ -1,4 +1,4 @@
-UserType = GraphQL::ObjectType.define do
+UserAccountType = GraphQL::ObjectType.define do
   name 'User'
   description '...'
 
@@ -128,7 +128,7 @@ QueryRoot = GraphQL::ObjectType.define do
   description '...'
 
   field :user do
-    type UserType
+    type UserAccountType
     argument :id, !types.String
     resolve -> (root, args, ctx) {
       User.find(args[:id])

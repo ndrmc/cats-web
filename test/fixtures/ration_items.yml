@@ -1,0 +1,9 @@
+one:
+  amount: 15
+  unit_of_measure: kg
+  commodity: cereal
+
+two:
+  amount: 4.5
+  unit_of_measure: kg
+  commodity: csb
