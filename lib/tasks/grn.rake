@@ -1,5 +1,5 @@
 namespace :cats do
-  namespace :grn do
+  namespace :grn_import do
     desc "Migrates grn_imports table from the excel entry into receipts table"
     task import: :environment do
       Rails.logger.info "Started reading grn_import records."
@@ -87,7 +87,8 @@ namespace :cats do
       Rails.logger.info "Copied #{success} grn_import records successfully."
       Rails.logger.info "Failed records: #{fail}"
       Rails.logger.info "Failed rows \n #{ failed_rows }"
-  end
+    end
+
   end
 end
 

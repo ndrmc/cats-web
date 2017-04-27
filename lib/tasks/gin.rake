@@ -1,5 +1,5 @@
 namespace :cats do
-  namespace :gin do
+  namespace :gin_import do
     desc "Migrates git_imports table from the excel entry into dispatches table"
     task import: :environment do
       Rails.logger.info "Started reading git_import records."
@@ -36,8 +36,7 @@ namespace :cats do
 
 
             end
-            items_dup = gin.dispatch_items.where(commodity_id: commodity_id, quantity: gi.mt_dispatched,project_id: project_id)
-           Rails.logger.info items_dup
+
             #if gin is saved check if this is another dispatch_item with a different commodity_id
             if !gin.dispatch_items.where(commodity_id: commodity_id, quantity: gi.mt_dispatched,project_id: project_id).empty?
 
@@ -71,7 +70,214 @@ namespace :cats do
       Rails.logger.info "Copied #{success} git_import records successfully."
       Rails.logger.info "Failed records: #{fail}"
       Rails.logger.info "Failed rows \n #{ failed_rows }"
-  end
+    end
+    task update_projects: :environment do
+      mt = UnitOfMeasure.find_by_code('MT').id
+      oil = Commodity.find_by_name('Vegitable Oil').id
+      pulse = Commodity.find_by_name('Pulse').id
+      maize = Commodity.find_by_name('Maize ').id
+      cereal = Commodity.find_by_name('Cereal').id
+      blended_food = Commodity.find_by_name('Blended food').id
+      wheat = Commodity.find_by_name('Wheat').id
+      purchase = Project.commodity_sources[:Purchase]
+      loan = Project.commodity_sources[:Loan]
+
+      eth_gov = Organization.find_by_name('Government of ET').id
+      efsra = Organization.find_by_name('EFSRA').id
+      wfp = Organization.find_by_name('UN - World Food Program').id
+      fscd = Organization.find_by_name('FSCD').id
+
+=begin
+      project_1 = Project.new(
+        project_code: 'Government Purchase/Pulse',
+        commodity_id: pulse,
+        commodity_source: purchase,
+        organization_id: eth_gov,
+        unit_of_measure_id: mt
+      )
+      project_1.save!
+      puts "saved project #{project_1.project_code}"
+
+      project_2 = Project.new(
+          project_code: 'EFSRA/Maize',
+          commodity_id: maize,
+          commodity_source: purchase,
+          organization_id: efsra,
+          unit_of_measure_id: mt
+      )
+      project_2.save!
+      puts "saved project #{project_2.project_code}"
+
+      project_3 = Project.new(
+          project_code: 'FSCD/Maize',
+          commodity_id: maize,
+          commodity_source: purchase,
+          organization_id: fscd,
+          unit_of_measure_id: mt
+      )
+      project_3.save!
+      puts "saved project #{project_3.project_code}"
+
+      project_4 = Project.new(
+          project_code: 'Government Purchase/Union/Pulse',
+          commodity_id: pulse,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_4.save!
+      puts "saved project #{project_4.project_code}"
+
+      project_5 = Project.new(
+          project_code: 'Government Purchase/Union/VOil',
+          commodity_id: oil,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_5.save!
+      puts "saved project #{project_5.project_code}"
+
+      project_6 = Project.new(
+          project_code: 'Government Purchase/Cereal',
+          commodity_id: cereal,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_6.save!
+      puts "saved project #{project_6.project_code}"
+
+      project_7 = Project.new(
+          project_code: 'Government Purchase/BlendedFood',
+          commodity_id: blended_food,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_7.save!
+      puts "saved project #{project_7.project_code}"
+
+      project_8 = Project.new(
+          project_code: 'Government Purchase/VOil',
+          commodity_id: oil,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_8.save!
+      puts "saved project #{project_8.project_code}"
+
+      project_9 = Project.new(
+          project_code: 'WFP-25000',
+          commodity_id: wheat,
+          commodity_source: loan,
+          organization_id: wfp,
+          unit_of_measure_id: mt
+      )
+      project_9.save!
+      puts "saved project #{project_9.project_code}"
+
+      project_10 = Project.new(
+          project_code: 'WFP/Pulse',
+          commodity_id: pulse,
+          commodity_source: loan,
+          organization_id: wfp,
+          unit_of_measure_id: mt
+      )
+      project_10.save!
+      puts "saved project #{project_10.project_code}"
+
+      project_11 = Project.new(
+          project_code: 'WFP/Cereal',
+          commodity_id: cereal,
+          commodity_source: loan,
+          organization_id: wfp,
+          unit_of_measure_id: mt
+      )
+      project_11.save!
+      puts "saved project #{project_11.project_code}"
+
+      project_12 = Project.new(
+          project_code: 'WFP/VOil',
+          commodity_id: oil,
+          commodity_source: loan,
+          organization_id: wfp,
+          unit_of_measure_id: mt
+      )
+      project_12.save!
+      puts "saved project #{project_12.project_code}"
+
+      project_13 = Project.new(
+          project_code: 'DRMFSS Purchase/Pulse',
+          commodity_id: pulse,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_13.save!
+      puts "saved project #{project_13.project_code}"
+
+      project_14 = Project.new(
+          project_code: 'DRMFSS Purchase/BlendedFood',
+          commodity_id: blended_food,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_14.save!
+      puts "saved project #{project_14.project_code}"
+
+      project_15 = Project.new(
+          project_code: 'DRMFSS Purchase/Wheat',
+          commodity_id: wheat,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_15.save!
+      puts "saved project #{project_15.project_code}"
+
+      project_16 = Project.new(
+          project_code: 'EFSRA/Wheat',
+          commodity_id: wheat,
+          commodity_source: purchase,
+          organization_id: efsra,
+          unit_of_measure_id: mt
+      )
+      project_16.save!
+      puts "saved project #{project_16.project_code}"
+
+      project_17 = Project.new(
+          project_code: 'Government Purchase/Union/Cereal',
+          commodity_id: cereal,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_17.save!
+      puts "saved project #{project_17.project_code}"
+=end
+      project_18 = Project.new(
+          project_code: 'DRMFSS Purchase 11459 Mt. ',
+          commodity_id: oil,
+          commodity_source: purchase,
+          organization_id: eth_gov,
+          unit_of_measure_id: mt
+      )
+      project_18.save!
+      puts "saved project #{project_18.project_code}"
+
+      project_19 = Project.new(
+          project_code: 'EFSRA 6000 MT',
+          commodity_id: oil,
+          commodity_source: purchase,
+          organization_id: efsra,
+          unit_of_measure_id: mt
+      )
+      project_19.save!
+      puts "saved project #{project_19.project_code}"
+    end
   end
 end
 
