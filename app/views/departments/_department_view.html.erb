@@ -3,6 +3,9 @@
     <%= form_for(department,:html=> {:class => 'form-horizontal'})  do |f| %>
 
     <div>
+
+
+
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <h5>Basic information</h5>
@@ -34,7 +37,7 @@
         </div>
 
       </div>
-
+<% end %>
     <div class="ibox float-e-margins">
 
         <div class="ibox-title">
@@ -44,12 +47,18 @@
 
         <div class="ibox-content">
         
+        <div>
+          <input type="checkbox" id="selectAll" value="selectAll"> Select / Deselect All<br/><br/>
+        </div>
+
+        <%= form_tag "/users/#{@department.id}/updateDepartmentPermission", method: :put do %>
+        <%= hidden_field_tag :department_id, @department.id %>
          <table class="table table-bordered">
           <tbody>
             <% @all_permissions.each do |permission| %>
               <tr>
                 <td>
-                  <%= check_box_tag "permissions[#{permission.id}]", 1 , true  %>
+                  <%= check_box_tag "permissions[#{permission.id}]", 1 , @department.permissions.include?(permission)  %>
                 </td>
                 <td><%= permission.name %></td>
               </tr>
@@ -60,7 +69,7 @@
          <div class="actions">
           <%= submit_tag 'Save Changes', :class => 'btn btn-primary' %>
           </div>
-         
+
         </div>
       </div>
       
@@ -70,3 +79,18 @@
     
 
 </div>
+
+
+<script>
+$('#selectAll').click(function() {
+   if (this.checked) {
+       $(':checkbox').each(function() {
+           this.checked = true;                        
+       });
+   } else {
+      $(':checkbox').each(function() {
+           this.checked = false;                        
+       });
+   } 
+});
+</script>

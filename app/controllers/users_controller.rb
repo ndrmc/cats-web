@@ -61,11 +61,35 @@ class UsersController < ApplicationController
       dep.save
     end
 
+    user_deparments =  UsersDepartment.where(user_id: @user.id)
+
+    if user_deparments.count>0 then
+      UsersPermission.where(user_id: @user.id).destroy_all
+    end
+    
+    user_deparments.each do |user_department|
+        
+        departmentPermissions = DepartmentPermission.where(department_id: user_department.department_id)
+        departmentPermissions.each do |d|
+         
+         if !UsersPermission.exists? user_id: @user.id , permission_id: d.permission_id then
+            dep =  UsersPermission.new({
+            permission_id: d.permission_id,
+            user_id: user_department.user_id
+            })
+            dep.save
+        end
+
+        end
+        
+    end
+
+
      redirect_to  @user
     end
   
  def updatePermissions
-    puts @user.id 
+  
    new_permissions = params.require(:permissions)
    UsersPermission.where(user_id: @user.id).destroy_all
 
@@ -79,6 +103,56 @@ class UsersController < ApplicationController
    end
 
     redirect_to @user, success: 'User profile was successfully updated.' 
+ end
+
+
+
+def updateDepartmentPermission
+  
+   department_id = params[:department_id]  
+ 
+   new_permissions = params.require(:permissions)
+   DepartmentPermission.where(department_id: department_id).destroy_all
+
+   new_permissions.each do |permission|
+     _departmentPermission = DepartmentPermission.new ({
+       permission_id: permission.to_i,
+       department_id: department_id
+     })
+
+     _departmentPermission.save
+   end
+
+
+
+   user_departments = UsersDepartment.all
+    user_departments.each do |d|
+      UsersPermission.where(user_id: d.user_id).destroy_all
+    end
+  
+   user_departments.each do |d|
+  
+  
+   departmentPermissions = DepartmentPermission.where(department_id: d.department_id).all
+        departmentPermissions.each do |departmentPermission|
+         
+         if !UsersPermission.exists? user_id: d.user_id , permission_id: departmentPermission.permission_id then
+            dep =  UsersPermission.new({
+            permission_id: departmentPermission.permission_id,
+            user_id: d.user_id
+            })
+            dep.save
+        end
+
+        end
+     
+
+     end
+
+
+
+
+    redirect_to departments_path, success: 'Department detail was successfully updated.' 
  end
 
 

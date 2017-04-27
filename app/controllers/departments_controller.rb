@@ -56,7 +56,42 @@ class DepartmentsController < ApplicationController
   # DELETE /departments/1
   # DELETE /departments/1.json
   def destroy
-    @department.destroy
+   
+    users = UsersDepartment.where(department_id: @department.id)
+    user_departments = UsersDepartment.where.not(department_id: @department.id)
+     
+     if user_departments.count < 1 then
+        users.each do |d|
+        UsersPermission.where(user_id: d.user_id).delete_all
+        DepartmentPermission.where(department_id: d.department_id).delete_all
+         end
+    
+    else
+
+      user_departments.each do |d|
+        UsersPermission.where(user_id: d.user_id).delete_all
+        DepartmentPermission.where(department_id: d.id).delete_all
+     end
+
+   user_departments.each do |d|
+   
+   departmentPermissions = DepartmentPermission.where(department_id: d.department_id).all
+        departmentPermissions.each do |departmentPermission|
+         
+         if !UsersPermission.exists? user_id: d.user_id , permission_id: departmentPermission.permission_id then
+            dep =  UsersPermission.new({
+            permission_id: departmentPermission.permission_id,
+            user_id: d.user_id
+            })
+            dep.save
+        end
+
+        end
+     
+
+     end
+end
+ @department.destroy
     respond_to do |format|
       format.html { redirect_to departments_url, notice: 'Department was successfully destroyed.' }
       format.json { head :no_content }

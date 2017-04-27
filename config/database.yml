@@ -88,18 +88,18 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-production:
-  <<: *default
-  host: 197.156.65.234
-  port: 5444
-  database: cats_production
-  username: cats_prod
-  password: <%= ENV['CATS_DATABASE_PASSWORD'] %>
+#production:
+#  <<: *default
+#  host: 197.156.65.234
+#  port: 5444
+#  database: cats_production
+#  username: cats_prod
+#  password: <%= ENV['CATS_DATABASE_PASSWORD'] %>
 
-stage:
-  <<: *default
-  host: 10.11.156.20
-  port: 5444
-  database: cats_stage
-  username: postgres
-  password: cats
+#stage:
+#  <<: *default
+#  host: 10.11.156.20
+#  port: 5444
+#  database: cats_stage
+#  username: postgres
+#  password: cats
