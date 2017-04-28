@@ -59,7 +59,7 @@ class UsersController < ApplicationController
       dep.save
     end
 
-<<<<<<< HEAD
+
     user_deparments =  UsersDepartment.where(user_id: @user.id)
 
     if user_deparments.count>0 then
@@ -87,14 +87,7 @@ class UsersController < ApplicationController
      redirect_to  @user
     end
   
- def updatePermissions
-  
-   new_permissions = params.require(:permissions)
-   UsersPermission.where(user_id: @user.id).destroy_all
-=======
-    redirect_to  @user
-  end
->>>>>>> 17d6395d20b470b5b3118e8f322910bde3f2d9c6
+
 
   def updatePermissions
     puts @user.id
