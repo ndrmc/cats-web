@@ -95,29 +95,23 @@
   </ul>
 </li>
 
-<li>
-  <%= link_to "/home/minor" do %>
+<li class="<%= 'active' if current_page?('/home/minor') %>">
+  <%= link_to "#" do %>
   <span class="nav-label"><%= t(:users_and_accounts)%></span>
   <span class="fa arrow"></span>
   <% end %>
-<!--
-<% if policy(User).index? %>
-
-    <li class="<%= 'active' if is_active_controller('users') %>">
-      <a href="#"><%= link_to t(:user_accounts), users_path %></a>
+  <ul class="nav nav-third-level collapse">
+    <% if policy(User).index? %>
+    <li class="<%= 'active' if is_active_controller('users') %>" >
+      <%= link_to t(:user_accounts), users_path %>
+    </li>    
+    <li class="<%= 'active' if is_active_controller('departments') %>" >
+      <%= link_to t(:departments), departments_path %>
     </li>
-  <% end %> -->
-
-  <ul class="nav nav-second-level collapse">
-      <li class="<%= 'active' if is_active_controller('departments') %>">
-      <a href="#"><%= link_to t(:departments), departments_path %></a>
+    <li class="<%= 'active' if is_active_controller('roles') %>" >
+      <%= link_to t(:roles), roles_path %>
     </li>
-    <li class="<%= 'active' if is_active_controller('users') %>">
-      <a href="#"><%= link_to t(:user_accounts), users_path %></a>
-    </li>
-    <li class="<%= 'active' if is_active_controller('roles') %>">
-      <a href="#"><%= link_to t(:roles), roles_path %></a>
-    </li>
+    <% end %>    
   </ul>
 </li>
 

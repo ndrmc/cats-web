@@ -34,7 +34,9 @@
           </li>
           <%end%>
           <li class="<%= 'active' if is_active_controller('gift_certificates')  %>">
+          <% if policy(GiftCertificate).index? %>
               <%= link_to t(:gift_certificate), gift_certificates_url %>
+          <% end %>
           </li>        
       </li>
     </ul>
@@ -89,9 +91,11 @@
             <%= link_to t(:dispatch), dispatches_path %>
       </li>
       <%end%>
+      <%if policy(Delivery).index? %>
       <li class="<%= 'active' if is_active_controller('deliveries')  %>">
         <%= link_to t(:delivery), deliveries_url %>
       </li>
+      <%end%>
       <li>
         <a href="#"><%= t(:transfer)%></a>
       </li>
@@ -126,9 +130,11 @@
       <li>
         <a href="#"><%= t(:bid_evaluation)%></a>
       </li>
+      <% if policy(Transporter).index? %>
       <li class="<%= 'active' if is_active_controller('transporters')  %>">
         <%= link_to 'Transporters', transporters_path %>
       </li>
+      <%end%>
     </ul>
   </li>
 

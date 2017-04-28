@@ -1,25 +1,27 @@
 class GiftCertificatesController < ApplicationController
   before_action :set_gift_certificate, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+
 
   # GET /gift_certificates
   # GET /gift_certificates.json
-  def index
+  def index    
     @gift_certificates = GiftCertificate.filter(params.slice(:donor_id, :status))
   end
 
   # GET /gift_certificates/1
   # GET /gift_certificates/1.json
   def show
+     
   end
 
   # GET /gift_certificates/new
-  def new
+  def new     
     @gift_certificate = GiftCertificate.new
   end
 
   # GET /gift_certificates/1/edit
   def edit
-   
   end
 
   # POST /gift_certificates

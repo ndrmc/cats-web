@@ -16,7 +16,7 @@ class CreateGrnImports < ActiveRecord::Migration[5.0]
       t.string :commodity_type
       t.string :total_units_received
       t.string :unit_weight
-      t.string :sent_mt
+      t.string :sent_mt # The value is not in Mt but rather Qtl even if the field name says 'mt'
       t.string :received_in_bag
       t.string :received_in_mt
       t.string :vessel_name

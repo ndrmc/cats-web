@@ -32,7 +32,7 @@ include Administrated
   # POST /fdp_contacts.json
   def create
     @fdp_contact = FdpContact.new(fdp_contact_params)
-     
+    @fdp_contact.created_by = current_user.id
 
     respond_to do |format|
       if @fdp_contact.save
@@ -48,6 +48,7 @@ include Administrated
   # PATCH/PUT /fdp_contacts/1
   # PATCH/PUT /fdp_contacts/1.json
   def update
+    @fdp_contact.modified_by = current_user.id
     respond_to do |format|
       if @fdp_contact.update(fdp_contact_params)
         format.html { redirect_to fdp_contacts_path, notice: 'Fdp contact was successfully updated.' }

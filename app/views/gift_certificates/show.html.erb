@@ -73,5 +73,8 @@
       <%= @gift_certificate.expiry_date %>
     </p>
 
-<%= link_to 'Edit', edit_gift_certificate_path(@gift_certificate) %> |
+<% if policy(GiftCertificate).new? %>
+<%= link_to 'Edit', edit_gift_certificate_path(@gift_certificate) %>  <%end%> |
+<% if policy(GiftCertificate).destroy? %>
 <%= link_to 'Back', gift_certificates_path %>
+<%end%>

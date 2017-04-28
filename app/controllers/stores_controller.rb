@@ -29,6 +29,7 @@ class StoresController < ApplicationController
     @store = Store.new(store_params)
     @store.warehouse_id=params[:warehouse_id]
     @warehouse= Warehouse.find(@store.warehouse_id)
+    @store.created_by = current_user.id
     respond_to do |format|
       if @store.save
         format.html { redirect_to warehouse_path(@warehouse), notice: 'Store was successfully created.' }
@@ -44,6 +45,7 @@ class StoresController < ApplicationController
   # PATCH/PUT /stores/1.json
   def update
     @warehouse= Warehouse.find(@store.warehouse_id)
+    @store.modified_by = current_user.id
     respond_to do |format|
       if @store.update(store_params)
         format.html { redirect_to warehouse_path(@warehouse), notice: 'Store was successfully updated.' }

@@ -31,8 +31,9 @@ class TransporterAddressesController < ApplicationController
   # POST /transporter_addresses
   # POST /transporter_addresses.json
   def create
-    @transporter_address = TransporterAddress.new(transporter_address_params)
 
+    @transporter_address = TransporterAddress.new(transporter_address_params)
+    @transporter_address.created_by = current_user.id
 
     respond_to do |format|
       if @transporter_address.save
@@ -48,6 +49,7 @@ class TransporterAddressesController < ApplicationController
   # PATCH/PUT /transporter_addresses/1
   # PATCH/PUT /transporter_addresses/1.json
   def update
+    @transporter_address.modified_by = current_user.id
     respond_to do |format|
       if @transporter_address.update(transporter_address_params)
         format.html { redirect_to @transporter_address, notice: 'Transporter address was successfully updated.' }
