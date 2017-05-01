@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 
   get 'users/:id/user_permissions', to: 'users#user_permissions'
 
+  put 'users/:id/updateDepartmentPermission', to: 'users#updateDepartmentPermission'
+
   resources :currencies
   resources :donors
   resources :programs
