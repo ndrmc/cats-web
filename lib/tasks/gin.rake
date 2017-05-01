@@ -7,13 +7,14 @@ namespace :cats do
       fail = 0
       failed_rows = ''
       GitImport.all.each do |gi|
+          next if gi.imported?
         Rails.logger.info "------------------#{gi.id}-------------------------"
 
            transporter_id = Transporter.find_by_name(gi.transporter) ? Transporter.find_by_name(gi.transporter).id : nil
            fdp_id = Fdp.find_by_name(gi.fdp).id
            gin = Dispatch.find_by_gin_no(gi.gin)
-           commodity_id = Commodity.find_by_name(gi.commodity_type).id
-           commodity_cat_id = CommodityCategory.find_by_name(gi.commodity_class).id
+           commodity_id = Commodity.find_by_name(gi.commodity_type)? Commodity.find_by_name(gi.commodity_type).id : ''
+           commodity_cat_id = CommodityCategory.find_by_name(gi.commodity_class) ? CommodityCategory.find_by_name(gi.commodity_class).id : ''
            project_id = Project.find_by_project_code(gi.project_code).id
         begin
           if (gin.nil?)
@@ -54,11 +55,15 @@ namespace :cats do
 
             end
            success += 1
+           gi.imported = true
+           gi.save!
            Rails.logger.info "git_import id  #{gi.id}  saved as gin #{ gin.id}"
            Rails.logger.info "Updated #{success} gin record(s)"
          rescue Exception => e
            fail += 1
            failed_rows += ",#{gi.id}"
+           gi.imported = false
+           gi.save
            Rails.logger.info "Exception while trying to save git_import, id: #{gi.id}"
            Rails.logger.info 'Cause: '+ e.message
            Rails.logger.info e.backtrace.join("\n")
