@@ -2,8 +2,8 @@ require 'capistrano-rbenv'
 
 server '10.11.157.20', port: 22, roles: [:web, :app, :db], primary: true
 
-set :application, 	  'cats'
-set :repo_url, 		  'https://github.com/ndrmc/cats-web.git'
+set :application,     'cats'
+set :repo_url,      'https://github.com/ndrmc/cats-web.git'
 set :user,            'fmip'
 set :puma_threads,    [4, 16]
 set :puma_workers,    1
@@ -57,8 +57,8 @@ namespace :deploy do
   desc "Make sure local git is in sync with remote."
   task :check_revision do
     on roles(:app) do
-      unless `git rev-parse HEAD` == `git rev-parse origin/deployment`
-        puts "WARNING: HEAD is not the same as origin/deployment"
+      unless `git rev-parse HEAD` == `git rev-parse origin/develop`
+        puts "WARNING: HEAD is not the same as origin/develop"
         puts "Run `git push` to sync changes."
         exit
       end
@@ -81,7 +81,7 @@ namespace :deploy do
   end
 
   desc "Reload the database with seed data"
-  task :seed do    
+  task :seed do
     run "cd #{release_path} && bundle exec rake db:seed RAILS_ENV=#{fetch(:rails_env)}"
   end
 
