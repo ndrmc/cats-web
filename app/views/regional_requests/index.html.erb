@@ -70,34 +70,38 @@
         </thead>
 
         <tbody>
-          <% @regional_requests.each do |regional_request| %>
-          <tr>
-                        <td><%= link_to regional_request.reference_number, regional_request_path(regional_request.id)
-              %></td>
+        <% @regional_requests.each do |regional_request| %>
+            <tr>
+              <td>
+                <%= link_to regional_request.reference_number, regional_request_path(regional_request.id)%>
+              </td>
+              <td>
+                <%= regional_request.requested_date%>
+              </td>
+              <td>
+                <%= regional_request.remark%>
+              </td>
+              <td>
+                <% if policy(Requisition).new? %>
+                    <% if !Requisition.find_by_request_id(regional_request.id) %>
+                        <a class="btn btn-primary" href="/requisitions/prepare/<%= regional_request.id %>">Create
+                          RRD </a> &middot;
+                    <% else %>
+                        <a class="btn btn-info" href="/requisitions/summary?region=<%= regional_request.region_id %>&operation=<%= regional_request.operation_id %>">RRD
+                          Detail</a> &middot;
+                    <% end %>
+                <% end %>
+                <% if policy(RegionalRequest).edit? %>
+                    <%= link_to 'Edit', edit_regional_request_path(regional_request) %>
+                <% end %>
+                    &middot;
+                <% if policy(RegionalRequest).destroy? %>
+                     <%= link_to 'Delete', regional_request, method: :delete, data: {confirm: 'Are you sure?'} %>
+                <% end %>
+              </td>
+            </tr>
 
-                        <td><%= regional_request.requested_date
-              %></td>
-                        <td><%= regional_request.remark
-              %></td>
-                        <td>
-
-                 <% if policy(Requisition).new? %>
-                 <%if !Requisition.find_by_request_id(regional_request.id) %>
-                <a class="btn btn-primary" href="/requisitions/prepare/<%=regional_request.id%>">Create RRD </a> &middot;
-              <%else%>
-               <a class="btn btn-info" href="/requisitions/summary?region=<%=regional_request.region_id%>&operation=<%=regional_request.operation_id%>">RRD Detail</a> &middot;
-              <%end%>
-              <% if policy(RegionalRequest).edit? %>
-              <%= link_to 'Edit', edit_regional_request_path(regional_request) %> 
-              <%end%>
-              &middot;
-              <% if policy(RegionalRequest).destroy? %>
-              <%= link_to 'Delete', regional_request, method: :delete, data: { confirm: 'Are you sure?' } %>
-              <%end%>
-            </td>
-          </tr>
-          <% end %>
-          <% end %>
+        <% end %>
         </tbody>
       </table>
 
