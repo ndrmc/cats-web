@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20170428130940) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -270,6 +272,18 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.datetime "deleted_at"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
+  end
+
+  create_table "department_permissions", force: :cascade do |t|
+    t.integer  "department_id"
+    t.integer  "permission_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["department_id"], name: "index_department_permissions_on_department_id", using: :btree
+    t.index ["permission_id"], name: "index_department_permissions_on_permission_id", using: :btree
   end
 
   create_table "departments", force: :cascade do |t|
@@ -574,7 +588,6 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.datetime "deleted_at"
     t.integer  "year_ec"
     t.index ["deleted_at"], name: "index_hrds_on_deleted_at", using: :btree
-    t.index ["year_gc", "season_id"], name: "index_hrds_on_year_gc_and_season_id", unique: true, using: :btree
   end
 
   create_table "hubs", force: :cascade do |t|
@@ -758,10 +771,6 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "old_id"
-    t.string   "reference_no"
-    t.integer  "si_id"
-    t.text     "si_value"
     t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
   end
 
@@ -847,13 +856,8 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",                          default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
     t.integer  "unit_of_measure_id"
-    t.string   "receive_id",            limit: 36,                 null: false
-    t.string   "receive_item_id",       limit: 36,                 null: false
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
@@ -881,7 +885,6 @@ ActiveRecord::Schema.define(version: 20170428130940) do
   end
 
   create_table "receipts", force: :cascade do |t|
-    t.string   "grn_no",                                             null: false
     t.datetime "received_date"
     t.integer  "hub_id"
     t.integer  "warehouse_id"
@@ -903,14 +906,9 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.integer  "store_id"
     t.string   "drivers_name"
     t.text     "remark"
-    t.boolean  "draft",                              default: false
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",                            default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
-    t.string   "receiveid",               limit: 36,                 null: false
+    t.datetime "deleted_at"                     
     t.index ["commodity_source_id"], name: "index_receipts_on_commodity_source_id", using: :btree
     t.index ["hub_id"], name: "index_receipts_on_hub_id", using: :btree
     t.index ["program_id"], name: "index_receipts_on_program_id", using: :btree
@@ -1169,7 +1167,7 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_uom_categories_on_deleted_at", using: :btree
   end
-
+  
   create_table "user_types", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -1259,7 +1257,7 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.string   "name",                                      null: false
     t.string   "description"
     t.integer  "hub_id"
-    t.integer  "location_id"
+    t.integer  "location_id"    
     t.integer  "organization_id"
     t.decimal  "lat",             precision: 15, scale: 13
     t.decimal  "lon",             precision: 15, scale: 13
@@ -1275,6 +1273,8 @@ ActiveRecord::Schema.define(version: 20170428130940) do
   add_foreign_key "commodity_categories", "uom_categories"
   add_foreign_key "contributions", "donors"
   add_foreign_key "contributions", "hrds"
+  add_foreign_key "department_permissions", "departments"
+  add_foreign_key "department_permissions", "permissions"
   add_foreign_key "dispatches", "hubs"
   add_foreign_key "dispatches", "warehouses"
   add_foreign_key "receipt_lines", "unit_of_measures"
