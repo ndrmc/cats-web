@@ -76,6 +76,7 @@ namespace :cats do
       Rails.logger.info "Failed records: #{fail}"
       Rails.logger.info "Failed rows \n #{ failed_rows }"
     end
+    
     task update_projects: :environment do
       mt = UnitOfMeasure.find_by_code('MT').id
       oil = Commodity.find_by_name('Vegitable Oil').id
@@ -92,7 +93,7 @@ namespace :cats do
       wfp = Organization.find_by_name('UN - World Food Program').id
       fscd = Organization.find_by_name('FSCD').id
 
-=begin
+
       project_1 = Project.new(
         project_code: 'Government Purchase/Pulse',
         commodity_id: pulse,
@@ -262,7 +263,7 @@ namespace :cats do
       )
       project_17.save!
       puts "saved project #{project_17.project_code}"
-=end
+
       project_18 = Project.new(
           project_code: 'DRMFSS Purchase 11459 Mt. ',
           commodity_id: oil,
