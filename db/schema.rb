@@ -510,6 +510,7 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.datetime "deleted_at"
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.boolean  "imported"
   end
 
   create_table "grn_imports", force: :cascade do |t|

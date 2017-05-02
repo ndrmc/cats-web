@@ -100,6 +100,30 @@ namespace :cats do
           c.save!
         end
 
+        cream_beans = Commodity.find_or_initialize_by(name: 'Cream Beans')
+        cream_beans.commodity_category_id =  pulse.id
+        cream_beans.code = 'CRB'
+        cream_beans.uom_category_id = uom_category.id
+        cream_beans.save!
+
+        cream_pulse = Commodity.find_or_initialize_by(name: 'Cream Pulse' )
+        cream_pulse.commodity_category_id = pulse.id
+        cream_pulse.code = 'CRP'
+        cream_pulse.uom_category_id = uom_category.id
+        cream_pulse.save!
+
+        soya = Commodity.find_or_initialize_by(name: 'Soya Beans')
+        soya.commodity_category_id =  pulse.id
+        soya.code = 'SYB'
+        soya.uom_category_id = uom_category.id
+        soya.save!
+
+        mecarone = Commodity.find_or_initialize_by(name: 'Mecarone')
+        mecarone.commodity_category_id = foodsupplement.id
+        mecarone.code = 'MCR'
+        mecarone.uom_category_id = uom_category.id
+        mecarone.save!
+
         # NON FOOD ITEMS
 
         uom_category = UomCategory.find_by(name: 'unit')
@@ -134,9 +158,7 @@ namespace :cats do
           c.uom_category_id = uom_category.id
           c.save!
         end
-
-
-
+        
         puts "Completed update"
       end
     end
