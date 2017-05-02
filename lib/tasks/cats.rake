@@ -25,8 +25,8 @@ namespace :cats do
       puts table
 
       puts "Completed migration of AdminUnit records to Location hierarchy"
+     end
     end
-  end
     namespace :fdp do
       desc "Updates region, zone and woreda fields for all FDPs"
       task update_locations: :environment do
@@ -177,14 +177,8 @@ namespace :cats do
 
           main_warehouse.save!
       end
-    end
-  end
-  namespace :users do
-    task update_admin: :environment do
-      admin = User.find_or_initialize_by(email: 'admin@cats.org')
-      admin.user_types = User.user_types[:admin]
-      admin.save
-    end
+     end
+	  end
     namespace :users do
       task update_admin: :environment do
         admin = User.find_or_initialize_by(email: 'admin@cats.org')
