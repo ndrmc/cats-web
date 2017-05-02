@@ -178,6 +178,12 @@ namespace :cats do
           main_warehouse.save!
       end
     end
+  end
+  namespace :users do
+    task update_admin: :environment do
+      admin = User.find_or_initialize_by(email: 'admin@cats.org')
+      admin.user_types = User.user_types[:admin]
+      admin.save
     end
     namespace :users do
       task update_admin: :environment do

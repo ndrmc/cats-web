@@ -19,6 +19,17 @@ namespace :setup do
     end
   end
 
+  desc "Check migration status."
+  task :db_version do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "db:migrate:status"
+        end
+      end
+    end
+  end
+
   desc "Symlinks config files for Nginx and Unicorn."
   task :symlink_config do
     on roles(:app) do
@@ -26,7 +37,7 @@ namespace :setup do
 
       execute "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{fetch(:application)}"
       execute "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{fetch(:application)}"
-   end
+    end
   end
 
 

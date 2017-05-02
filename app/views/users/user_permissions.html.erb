@@ -20,6 +20,9 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
+<div>
+  <input type="checkbox" id="selectAll" value="selectAll"> Select / Deselect All<br/><br/>
+</div>
 
  <%= form_tag "/users/#{@user.id}/updatePermissions", method: :put do %>
 
@@ -48,3 +51,16 @@
 </div>
 
 
+<script>
+$('#selectAll').click(function() {
+   if (this.checked) {
+       $(':checkbox').each(function() {
+           this.checked = true;                        
+       });
+   } else {
+      $(':checkbox').each(function() {
+           this.checked = false;                        
+       });
+   } 
+});
+</script>

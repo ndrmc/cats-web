@@ -39,9 +39,7 @@ namespace :cats do
                 draft: true
             )
             else 
-                gin.draft = true       
-
-
+                gin.draft = true  
             end
 
             #if gin is saved check if this is another dispatch_item with a different commodity_id
