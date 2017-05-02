@@ -75,6 +75,7 @@ end
 
 # Commodities
 
+<<<<<<< HEAD
 #FOOD ITEMS
 uom_category = UomCategory.find_by(name: 'weight')
 
@@ -93,6 +94,9 @@ commodities.each do |c|
   c.uom_category_id = uom_category.id
   c.save!
 end
+Commodity.create(name: 'Cream Pulse', code:'CRP' ,commodity_category: pulse, uom_category: uom_category)
+Commodity.create(name: 'Cream Beans', code: 'CRB' , commodity_category: pulse, uom_category: uom_category)
+Commodity.create(name: 'Soya Beans', code: 'SYB' , commodity_category: pulse, uom_category: uom_category)
 
 blendedfood = CommodityCategory.find_by(code: 'bf')
 commodities = Commodity.where(:name => ['Blended food','CSB','CSB+','CSB++','FAMIX','Fafa Relief'])
@@ -160,6 +164,8 @@ commodities.each do |c|
   c.uom_category_id = uom_category.id
   c.save!
 end
+=======
+>>>>>>> 17d6395d20b470b5b3118e8f322910bde3f2d9c6
 
 
 puts "Created seed data for Commodity records"
@@ -253,7 +259,7 @@ end
 
 
 if User.count == 0
-  User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password')
+  User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password', user_types: User.user_types[:admin] )
   puts "Created default user account 'admin@cats.org' with password 'password'"
 end
 
@@ -283,9 +289,12 @@ if OwnershipType.count == 0
 end
 
 if Permission.count == 0 
+  
   Permission.create(name: 'HRD', description: '')
   Permission.create(name: 'Gift Certificate', description: '')
   Permission.create(name: 'Receipts', description: '')
+  Permission.create(name: 'Receipt Plan', description: '')
+  Permission.create(name: 'Bid Plan', description: '')
   Permission.create(name: 'Project', description: '')
   Permission.create(name: 'Ration', description: '')
 
@@ -307,24 +316,15 @@ if Permission.count == 0
   Permission.create(name: 'locations', description: '')
   Permission.create(name: 'Programs', description: '')
 
-end
+  Permission.create(name: 'Regional Requests', description: '')
+  Permission.create(name: 'Requisition', description: '')
+  Permission.create(name: 'Settings', description: '')
+  Permission.create(name: 'Transporters', description: '')
 
-<<<<<<< HEAD
-hubs = Hub.all
-
-hubs.each do |h|
-  main_warehouse = Warehouse.new({
-      name: h.name+' Main Warehouse',
-      description: 'Main Warehouse at '+h.name+' hub',
-      hub_id: h.id,
-      location_id: h.location_id
-  })
-
-  main_warehouse.save!
+  puts "Permissions created"
 
 end
-puts "Created warehouse records"
-=======
+
 if Department.count == 0
   Department.create(name: 'Early warning')
   Department.create(name: 'FSCD')
@@ -337,5 +337,50 @@ if Department.count == 0
   puts "Created seed data for departments"
 end
 
+if UsersPermission.count == 0 
+  users  = User.find_by(first_name: 'Administrator')
+  permissions = Permission.all
 
->>>>>>> 8bbcabab726a20d1388b0fd17dd663ad8da15c1b
+  permissions.each do |p|
+    user_permission =  UsersPermission.new({
+      user_id: users.id,
+      permission_id: p.id
+    })
+    user_permission.save!
+  end
+  puts "Default permissisons for administrator created"
+end
+<<<<<<< HEAD
+puts "Created warehouse records"
+
+if Supplier.count == 0
+  Supplier.create(name: 'Abay International PLC')
+  Supplier.create(name: 'Addis Zemen ')
+  Supplier.create(name: 'Admas PLC  ')
+  Supplier.create(name: 'Ambasel ')
+  Supplier.create(name: 'Ambo')
+  Supplier.create(name: 'Asayita')
+  Supplier.create(name: 'Damot / Union')
+  Supplier.create(name: 'Debre Birhan')
+  Supplier.create(name: 'Debre Markos')
+  Supplier.create(name: 'Dire Dawa NDRMC')
+  Supplier.create(name: 'EFSRA')
+  Supplier.create(name: 'Ethio.Agri. CEFT PLC.')
+  Supplier.create(name: 'Ethiopian Ehel Nigde Derjit')
+  Supplier.create(name: 'FAFA Food ')
+  Supplier.create(name: 'Government purchase')
+  Supplier.create(name: 'Gozamen F Union')
+  Supplier.create(name: 'Mota')
+  Supplier.create(name: 'Mota G/H/S/M')
+  Supplier.create(name: 'Nazreth C/Wh')
+  Supplier.create(name: 'Nazreth NDRMC')
+  Supplier.create(name: 'NDRMC')
+  Supplier.create(name: 'Noriva PLC')
+  Supplier.create(name: 'Nur Hussen Adem')
+  Supplier.create(name: 'Soreti Int. Trading')
+  Supplier.create(name: 'Tena migib Amrach')
+  Supplier.create(name: 'Woreta')
+  Supplier.create(name: 'Woreta EFSRA')
+end
+=======
+>>>>>>> 17d6395d20b470b5b3118e8f322910bde3f2d9c6

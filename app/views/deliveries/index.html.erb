@@ -30,13 +30,18 @@
          
           <form method='GET' class = 'form-inline'>
             <label>Operation</label> 
-              <input name="operation_id" value = "<%= params[:operation_id] ? Operation.find(params[:operation_id]).name : '' %>" > </input>
-            <label>Region</label> 
-              <input name="region_id" value = "<%= params[:region_id] ? Location.find(params[:region_id]).name : '' %>" ></input>
-            <label>FDP</label> 
-              <input name="fdp_id" value = "<%= params[:fdp_id] ? Location.find(params[:fdp_id]).name : '' %>" > </input>
+              <%= select_tag "operation_id",  options_from_collection_for_select( Operation.all, 'id', 'name',params[:operation_id] ) , {:required => true, :prompt => "-- Choose --", :class => 'form-control data-parsley-required'} %>
+              
+            <%# <label>Region</label> 
+             
+              <%= select_tag "region",  options_from_collection_for_select( Location.all.where(location_type: :region).order(:name), 'name', 'name',params[:region] ) , {:required => true, :prompt => "-- Choose --", :class => 'form-control data-parsley-required'} 
+              
+              <label>FDP</label> 
+              <select id= "select-fdp", name="fdp_id" ,value = "<%= params[:fdp_id] " required = true, class="form-control data-parsley-required" > </select>%>
+              <%= render 'shared/fdp_selector', name: 'fdp_id', fdpId: (params[:fdp_id] ?  params[:fdp_id] : nil), required: true  %>
+          <hr/>
             <label>Gin</label> 
-              <input name="gin_number"></input>
+              <input name="gin_number" class= 'form-control'></input>
             <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
 
           </form>
@@ -85,3 +90,21 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+$(function(){
+  $("#region").change(function(e){
+    //alert('hi');
+     $('#select-fdp option:gt(0)').remove();
+    fdps_in_region = <%= Fdp.select {|f| f.region == params[:region]}%>
+    $.each(fdps_in_region, function(key,value) {
+    $('#select-fdp').append($("<option></option>")
+      .attr("value", value).text(key));
+    });
+    
+
+   
+  });
+});
+
+ </script>

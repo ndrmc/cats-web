@@ -82,7 +82,7 @@
                 <dd>
                   <%= Date::MONTHNAMES[@operation.month] %>
                 </dd>
-              <%elsif%>
+              <%else%>
                 <dd>
                   <%= @operation.round %>
                 </dd>
@@ -379,7 +379,7 @@
                         <h2>
                             No Dispatches are made for this operation<br>
                         </h2>
-                      <%elsif%>
+                      <%else%>
                         <table class="table table-hover">
                           <thead>
                             <tr>
@@ -395,7 +395,7 @@
                             <% @dispatches_map.each do |region,dispatches| %>
                             <tr>
                               <td>                             
-                                <%= link_to region.name, dispatches_path(:region => region.id, :operation => @operation.id) %>                               
+                                <%= link_to region, dispatches_path(:region => region, :operation => @operation.id) %>
                               </td>
                               <td>
                               
@@ -427,7 +427,7 @@
                         <h2>
                             No Deliveries are made for this operation<br>
                         </h2>
-                      <%elsif%>
+                      <%else%>
                         <table class="table table-hover">
                           <thead>
                             <tr>
@@ -443,7 +443,7 @@
                             <% @deliveries_map.each do |region,deliveries| %>
                             <tr>
                               <td>
-                                <%= link_to region.name, deliveries_path(:region_id => region.id, :operation_id => @operation.id) %>
+                                <%= link_to region, deliveries_path(:region_id => region, :operation_id => @operation.id) %>
                               </td>
                               <td>
                               

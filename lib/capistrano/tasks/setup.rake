@@ -40,4 +40,17 @@ namespace :setup do
     end
   end
 
+
+   desc "import GIN"
+  task :import_gin do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "cats:gin_import:update_projects"
+          execute :rake, "cats:gin_import:import"
+        end
+      end
+    end
+  end
+
 end
