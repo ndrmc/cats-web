@@ -2,13 +2,18 @@ namespace :cats do
   namespace :gin_import do
     desc "Migrates git_imports table from the excel entry into dispatches table"
     task import: :environment do
-      Rails.logger.info "Started reading git_import records."
+      
+      log = ActiveSupport::Logger.new('log/gin_import.log')
+      start_time = Time.now
+      log.info "Started reading git_import records at #{start_time}"
+     
       success = 0
       fail = 0
       failed_rows = ''
       GitImport.all.each do |gi|
           next if gi.imported?
-        Rails.logger.info "------------------#{gi.id}-------------------------"
+
+        log.info "------------------#{gi.id}-------------------------"
 
            transporter_id = Transporter.find_by_name(gi.transporter) ? Transporter.find_by_name(gi.transporter).id : nil
            fdp_id = Fdp.find_by_name(gi.fdp).id
@@ -34,15 +39,15 @@ namespace :cats do
                 remark: gi.remark,
                 draft: true
             )
-
-
+            else 
+                gin.draft = true  
             end
 
             #if gin is saved check if this is another dispatch_item with a different commodity_id
             if !gin.dispatch_items.where(commodity_id: commodity_id, quantity: gi.mt_dispatched,project_id: project_id).empty?
 
-                Rails.logger.info "This record (#{gi.id}) seems to be a duplicate of dispatch record #{gin.id}"
-                Rails.logger.info "gin: #{gin.gin_no} , commodity_id:#{commodity_id}"
+                log.info "This record (#{gi.id}) seems to be a duplicate of dispatch record #{gin.id}"
+                log.info "gin: #{gin.gin_no} , commodity_id:#{commodity_id}"
             else
               gin.dispatch_items.build(
                                        commodity_category_id: commodity_cat_id,
@@ -57,25 +62,35 @@ namespace :cats do
            success += 1
            gi.imported = true
            gi.save!
-           Rails.logger.info "git_import id  #{gi.id}  saved as gin #{ gin.id}"
-           Rails.logger.info "Updated #{success} gin record(s)"
+          
+           log.info "git_import id  #{gi.id}  saved as gin #{ gin.id}"
+           log.info "Updated #{success} gin record(s)"
+
          rescue Exception => e
            fail += 1
            failed_rows += ",#{gi.id}"
            gi.imported = false
            gi.save
-           Rails.logger.info "Exception while trying to save git_import, id: #{gi.id}"
-           Rails.logger.info 'Cause: '+ e.message
-           Rails.logger.info e.backtrace.join("\n")
+
+           log.info "Exception while trying to save git_import, id: #{gi.id}"
+           log.info 'Cause: '+ e.message
+           log.info e.backtrace.join("\n")
+
          end
 
 
-        Rails.logger.info "------------------//-------------------------"
+        log.info "------------------//-------------------------"
       end
-      Rails.logger.info "Copied #{success} git_import records successfully."
-      Rails.logger.info "Failed records: #{fail}"
-      Rails.logger.info "Failed rows \n #{ failed_rows }"
+      log.info "Copied #{success} git_import records successfully."
+      log.info "Failed records: #{fail}"
+      log.info "Failed rows \n #{ failed_rows }"
+
+      end_time = Time.now
+      duration = (end_time - start_time ) / 1.minute
+      log.info "Task finished at #{end_time} and lasted #{duration} minutes."
+      log.close
     end
+
     task update_projects: :environment do
       mt = UnitOfMeasure.find_by_code('MT').id
       oil = Commodity.find_by_name('Vegitable Oil').id
@@ -92,7 +107,7 @@ namespace :cats do
       wfp = Organization.find_by_name('UN - World Food Program').id
       fscd = Organization.find_by_name('FSCD').id
 
-=begin
+
       project_1 = Project.new(
         project_code: 'Government Purchase/Pulse',
         commodity_id: pulse,
@@ -262,7 +277,7 @@ namespace :cats do
       )
       project_17.save!
       puts "saved project #{project_17.project_code}"
-=end
+
       project_18 = Project.new(
           project_code: 'DRMFSS Purchase 11459 Mt. ',
           commodity_id: oil,

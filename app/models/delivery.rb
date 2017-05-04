@@ -28,8 +28,6 @@ include Filterable
   
   #scope :fdp_id, ->(fdp_id) { where fdp_id: fdp_id }
   scope :operation_id, ->(operation_id) { where operation_id: operation_id }
-  #scope :region, ->(region) {where Location.find(region).children.exists?(self)}
-  #scope :zone, ->(zone) {where Location.find(zone).children.exists?(self)}
   scope :woreda, ->(woreda) {where fdp_id: Fdp.find_by_location_id(woreda)? Fdp.find_by_location_id(woreda).id : nil}
 
   has_many :delivery_details

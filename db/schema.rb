@@ -272,6 +272,18 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.datetime "updated_at",                            null: false
   end
 
+  create_table "department_permissions", force: :cascade do |t|
+    t.integer  "department_id"
+    t.integer  "permission_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["department_id"], name: "index_department_permissions_on_department_id", using: :btree
+    t.index ["permission_id"], name: "index_department_permissions_on_permission_id", using: :btree
+  end
+
   create_table "departments", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -510,6 +522,7 @@ ActiveRecord::Schema.define(version: 20170428130940) do
     t.datetime "deleted_at"
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.boolean  "imported"
   end
 
   create_table "grn_imports", force: :cascade do |t|
@@ -1275,6 +1288,8 @@ ActiveRecord::Schema.define(version: 20170428130940) do
   add_foreign_key "commodity_categories", "uom_categories"
   add_foreign_key "contributions", "donors"
   add_foreign_key "contributions", "hrds"
+  add_foreign_key "department_permissions", "departments"
+  add_foreign_key "department_permissions", "permissions"
   add_foreign_key "dispatches", "hubs"
   add_foreign_key "dispatches", "warehouses"
   add_foreign_key "receipt_lines", "unit_of_measures"

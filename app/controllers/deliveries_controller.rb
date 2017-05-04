@@ -12,6 +12,7 @@ class DeliveriesController < ApplicationController
     #  else
     #   @deliveries = Post.all.order('created_at DESC')
     #  end
+
     if(params[:gin_number] && !params[:gin_number].empty?)
       @deliveries = Delivery.where(gin_number: params[:gin_number])
     elsif(params[:operation_id] && params[:woreda])
