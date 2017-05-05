@@ -15,10 +15,11 @@ class DeliveriesController < ApplicationController
 
     if(params[:gin_number] && !params[:gin_number].empty?)
       @deliveries = Delivery.where(gin_number: params[:gin_number])
-    elsif(params[:operation_id] && params[:woreda])
-       @deliveries = Delivery.filter(params.slice(:woreda,:operation_id))
-    else
+    elsif(params[:operation_id]&&!params[:operation_id].empty? && params[:woreda])
+      @deliveries = Delivery.filter(params.slice(:woreda,:operation_id))
+    else      
       @deliveries = []
+       
     end
 
   end

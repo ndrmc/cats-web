@@ -27,14 +27,20 @@
       <div class="row m-b-sm m-t-sm">
       <div class="form-group">
           <form method='GET' class = 'form-inline'>          
-            <label>Operation</label>             
-             <%= select_tag "operation_id",  options_from_collection_for_select( Operation.all, 'id', 'name',params[:operation_id] ) , {:prompt => "-- Choose --", :class => 'form-control data-parsley-required'} %>
-             <%= render 'shared/location_selector', name: 'fdp_id', requiredLevels:['region', 'zone','woreda'], locationId: params[:fdp_id] %>
-             <hr>
+            <label>Operation</label> *            
+             <%= select_tag "operation_id",  options_from_collection_for_select( Operation.all, 'id', 'name',params[:operation_id] ) , {required: true,:prompt => "-- Choose --", :class => 'form-control data-parsley-required'} %>
+             <%= render 'shared/location_selector', name: 'woreda', requiredLevels:[], locationId: params[:woreda]%>
+             <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
+            <hr>
+          </form>
+
+           <form method='GET' class = 'form-inline'>          
+          
             <label>Gin</label> 
               <input name="gin_number" class = 'form-control'></input>          
             <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
           </form>
+          
         </div>
 
         <table class="table table-striped cats-datatable">
