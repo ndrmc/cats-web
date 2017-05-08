@@ -85,10 +85,13 @@
             <td><%= request_item.fdp[:zone] %></td>
             <td><%= request_item.fdp[:woreda] %></td>
             <td><%= request_item.fdp.name %></td>
-            <td class="beneficiaries_number_cell"><%= request_item.number_of_beneficiaries %></td>
+            <td id = "<%request_item.id%>" class="beneficiaries_number_cell"><%= request_item.number_of_beneficiaries %></td>
             <td>
             <% if policy(RegionalRequest).edit? %>
-              <a href="#" class="edit-rrdi" data-rrdi-id="<%= request_item.id %>">Edit</edit> &middot; <% if policy(RegionalRequest).destroy? %> <a href="#"  class="delete-rrdi" data-rrdi-id="<%= request_item.id %>">Delete</a><%end%>
+              <a href="#" class="edit-rrdi" data-rrdi-id="<%= request_item.id %>"
+              data-rrdi-zone="<%=  request_item.fdp[:zone]  %> "
+              data-rrdi-woreda="<%= request_item.fdp[:woreda] %> "
+              data-rrdi-fdp="<%= request_item.fdp.name %>">Edit</edit> &middot; <% if policy(RegionalRequest).destroy? %> <a href="#"  class="delete-rrdi" data-rrdi-id="<%= request_item.id %>">Delete</a><%end%>
             <%end%>
             </td>
           </tr>
@@ -127,12 +130,74 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="no_of_beneficiary_modal" role="dialog">
+    <div class="modal-dialog">      
+      <!-- Modal content-->
+      <div class="modal-content">
+
+        <div class="modal-header">
+        <span class = 'label' id="zone" ></span> /
+        <span class = 'label'  id="woreda" ></span>  /
+        <span class = 'label'  id="fdp" ></span>
+         
+        </div>
+        <div class="modal-body" >
+          <form role="form" id="update_beneficiary_num">
+            <div class="form-group">
+              <label>No Of Beneficiary</label>
+              <input type='text' class="form-control" id="beneficiary_num" >
+               <input type="hidden" id="request_id"/>
+            </div>
+          
+          
+             
+          </form>
+        </div>
+       
+      </div>
+      
+    </div>
+  </div> 
+
 <script type="text/javascript">
 
   function isNumber(n) {
     return !isNaN(parseInt(n, 10)) && isFinite(n);
   }
 
+
+   $('#update_beneficiary_num').submit(function(e) {
+    
+    var num = $('#beneficiary_num').val();
+    var req_id = $('#request_id').val();   
+  
+    $('#no_of_beneficiary_modal').modal('hide');
+     debugger;
+     if( !isNumber(num)) { 
+     
+      toastr.error("Only numbers are accepted!"); 
+      return; 
+    }
+
+      $.post('/regional_requests/update_regional_request_item', 
+      
+        {id: req_id, new_beneficiaries_value: num}, function(response) {
+            debugger;
+           var oTable = $("#fdps_table").DataTable();
+           //var beneficiaries_number_cell = $("#" + req_id).closest('tr').find('td:nth-child(4)')[0];
+           $("#" + req_id).data(num); 
+
+          toastr.success('Updated!');
+    
+    }, 'json').fail(function() { 
+      toastr.error("Update failed. Please try again shortly.")
+    });
+    
+
+  
+
+  });
+  
   var alreadyAddedFdpIds = <%= @fdp_ids_with_a_request %>; 
 
   $("#add-fdp").click( function() { 
@@ -175,34 +240,20 @@
   }); 
 
   $('#fdps_table').on( 'click', '.edit-rrdi', function(e) { 
+  
     e.preventDefault(); //new_beneficiaries_value
 
     var rrdiId = $(this).data('rrdi-id'); 
-
-    var newVal = prompt("Enter new 'Number of Beneficiaries':"); 
-
-    if( !isNumber(newVal)) { 
-      toastr.error("Only numbers are accepted!"); 
-      return; 
-    }
-
-    var beneficiaries_number_cell = $(this).closest('tr').find('td:nth-child(4)')[0];
-
-
-    $.post('/regional_requests/update_regional_request_item', 
-        
-        {id: rrdiId, new_beneficiaries_value: newVal}, function(response) {
-
-           var oTable = $("#fdps_table").DataTable();
-           oTable.cell(beneficiaries_number_cell).data(newVal); 
-
-          toastr.success('Updated!');
+    var zone = $(this).data('rrdi-zone'); 
+    var woreda = $(this).data('rrdi-woreda'); 
+    var fdp = $(this).data('rrdi-fdp'); 
+    $(".modal-header #zone").text( zone);
+    $(".modal-header #woreda").text( woreda );
+    $(".modal-header #fdp").text( fdp );
+    $(".modal-body #request_id").val( rrdiId );    
     
-    }, 'json').fail(function() { 
-      toastr.error("Update failed. Please try again shortly.")
-    });
-
-
+    $('#no_of_beneficiary_modal').modal();
+    
   }); 
 
   $('#fdps_table').on( 'click', '.delete-rrdi', function(e) { 
