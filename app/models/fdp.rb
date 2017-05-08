@@ -26,7 +26,7 @@ class Fdp < ApplicationRecord
 
   after_validation :reverse_geocode
 
-  attr_reader :zone, :woreda, :region
+  #attr_reader :zone, :woreda, :region
 
 =begin
   after_find do |fdp|
