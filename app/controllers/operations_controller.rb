@@ -22,13 +22,14 @@ class OperationsController < ApplicationController
     # Find all deliveries within current operation
     @deliveries = Delivery.where(operation_id: params[:id])
     # group deliveries by region
-
-    @delivery_commodites =[]
+   
+   @delivery_commodites =[]
     if @deliveries
-      @deliveries_map = @deliveries.group_by { |d| Fdp.find(d.fdp_id).location.ancestors.find { |a| a.location_type == 'region' } }
-      @deliveries.map(&:delivery_details).each do |d|
-        @delivery_commodites << d.map(&:commodity_id).first
-      end
+      @deliveries_map = @deliveries.group_by { |d| Fdp.find(d.fdp_id).region}
+      @deliveries.map(&:delivery_details).each do |d| 
+         @delivery_commodites << d.map(&:commodity_id).first         
+        end
+
     end
     @delivery_commodites.uniq!
 
@@ -37,11 +38,12 @@ class OperationsController < ApplicationController
     @deliveries_map.each do |region, d_list|
       @delivery_summary_region = {}
       @commodities.each do |c|
-
-        d_list.each do |delivery|
-          sum = delivery.delivery_details.select { |detail| detail.commodity_id == c.id }.sum(&:received_quantity)
-          @delivery_summary_region[c.id] = @delivery_summary_region[c.id] ? @delivery_summary_region[c.id] + sum : sum
-        end
+     
+          d_list.each do |delivery|
+            sum = delivery.delivery_details.select { |detail| detail.commodity_id == c.id }.sum(&:received_quantity)
+            @delivery_summary_region[c.id] = @delivery_summary_region[c.id] ? @delivery_summary_region[c.id] + sum : sum
+          end
+       
       end
       @deliveries_map[region] = @delivery_summary_region
     end
@@ -50,7 +52,7 @@ class OperationsController < ApplicationController
     @dispatches = Dispatch.where(operation_id: params[:id])
     # group dispatches by region
     if @dispatches
-      @dispatches_map = @dispatches.group_by { |d| Fdp.find(d.fdp_id).location.ancestors.find { |a| a.location_type == 'region' } }
+      @dispatches_map = @dispatches.group_by { |d| Fdp.find(d.fdp_id).region }
 
     end
 

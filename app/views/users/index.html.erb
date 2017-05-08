@@ -39,7 +39,7 @@
           <% @users.each do |user| %>
           <tr>
            
-            <td> <%= link_to user.first_name, "/users/#{user.id} "%> &middot;</td>
+            <td> <%= link_to user.first_name, "/users/#{user.id} "%> </td>
             <td><%= user.last_name  %></td>
             <td><%= user.email %></td>
             <td><%= user.user_types %> </td>
