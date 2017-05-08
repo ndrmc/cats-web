@@ -6,7 +6,8 @@ class GiftCertificatesController < ApplicationController
   # GET /gift_certificates
   # GET /gift_certificates.json
   def index    
-    @gift_certificates = GiftCertificate.filter(params.slice(:donor_id, :status))
+    # @gift_certificates = GiftCertificate.filter(params.slice(:donor_id, :status))
+    @gift_certificates = GiftCertificate.filter(params.slice(:donor_id, :status)).includes([:donor, :commodity])
   end
 
   # GET /gift_certificates/1

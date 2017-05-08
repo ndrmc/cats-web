@@ -28,7 +28,7 @@
                 <td><%= link_to  requisition.requisition_no , edit_requisition_path(requisition) %></td>
                 <% else %>
 
-                   <% if policy(Requisition).create? %>
+                   <% if policy(Requisition).add_requisition? %>
                    <td> <a href='/requisitions/add_requisition?request=<%=@request.id%>&zone=<%=zone.id%>&commodity=<%=c.id%>' class='btn btn-primary' >Create</a> </td>
                    <%end%>
 

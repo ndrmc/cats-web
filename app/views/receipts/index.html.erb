@@ -98,6 +98,9 @@
       </thead>
 
       <tbody>
+
+      <% can_edit = policy(Receipt).edit? %>
+      
         <% @receipts.each do |receipt| %>
             <tr>
                 <td><%= receipt.grn_no %></td>
@@ -105,12 +108,10 @@
                 <td><%= receipt.draft ? "Draft" : "Posted" %></td>
                 <td><%= receipt.remark ? receipt.remark : '-' %></td>
                 <td>
-                <% if policy(Receipts).edit? %>
+                <% if can_edit %>
                     <%= link_to 'Edit', edit_receipt_path(receipt) %> &middot;
-                <%end%>
-                <% if policy(Receipts).edit? %>
                     <%= link_to 'Delete', receipt, method: :delete, data: { confirm: 'Are you sure?' } %>
-                <%end%>
+                <%end%>                
                 </td>
             </tr>
         <% end %>

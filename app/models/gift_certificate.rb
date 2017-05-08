@@ -37,4 +37,12 @@ class GiftCertificate < ApplicationRecord
   scope :donor_id, ->(donor_id) { where donor_id: donor_id }
 
   enum status: [:draft, :approved, :canceled, :closed, :archived]
+
+  belongs_to :program
+  belongs_to :commodity
+  belongs_to :currency
+  belongs_to :mode_of_transport
+  belongs_to :fund_source
+  belongs_to :fund_type
+  belongs_to :donor
 end
