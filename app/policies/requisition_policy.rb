@@ -13,41 +13,41 @@ class RequisitionPolicy < ApplicationPolicy
   end
 
 
-  def edit
+  def edit?
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
 
   
 
  
-  def update
+  def update?
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
 
   
-  def destroy
+  def destroy?
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
 
 
-  def get_requisiton_by_number
+  def get_requisiton_by_number?
       @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
 
 
-  def prepare
+  def prepare?
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
 
-  def generate
+  def generate?
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
 
-  def add_requisition
+  def add_requisition?
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
 
-  def summary
+  def summary?
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['guest','admin', 'cleark', 'manager'])
   end
 
