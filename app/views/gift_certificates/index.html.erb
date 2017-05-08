@@ -50,6 +50,10 @@
      </tr>
     </thead>
     <tbody>
+    
+    <% can_edit = policy(GiftCertificate).edit? %>
+    <% can_destroy = policy(GiftCertificate).destroy? %>
+
      <% @gift_certificates.each do |gift_certificate| %>
       <tr>
        <td>
@@ -59,10 +63,10 @@
         <%= gift_certificate.gift_date %>
        </td>       
        <td>
-        <%= Organization.find(gift_certificate.donor_id).name  %>
+        <%= gift_certificate.donor_id  %>
        </td>
        <td>
-         <%= Commodity.find(gift_certificate.commodity_id).name  %>
+         <%= gift_certificate.commodity.name  %>
        </td>
        <td>
         <%= gift_certificate.status %>
@@ -70,16 +74,16 @@
        <td>
         <%= gift_certificate.customs_declaration_no %>
        </td>    
-       
-      
+           
        <td>
-       <% if policy(GiftCertificate).edit? %>
+       <% if can_edit %>
         <%= link_to 'Edit', edit_gift_certificate_path(gift_certificate) %> &middot;
         <%end%>
-        <% if policy(GiftCertificate).destroy? %>
+        <% if can_destroy %>
          <%= link_to 'Delete', gift_certificate, method: :delete, data: { confirm: 'Are you sure?' } %>
        <%end%>
        </td>
+
       </tr>
       <% end %>
     </tbody>
