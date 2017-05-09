@@ -25,7 +25,7 @@
         <div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
           <div class="">
-            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+            <%= select_tag  :hub, options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
           </div>
         </div>
 

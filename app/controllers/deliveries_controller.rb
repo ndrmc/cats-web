@@ -12,10 +12,14 @@ class DeliveriesController < ApplicationController
     #  else
     #   @deliveries = Post.all.order('created_at DESC')
     #  end
-    if(params[:operation_id] && params[:region] && !params[:fdp_id].empty?)
-       @deliveries = Delivery.filter(params.slice(:region, :fdp_id, :operation_id, :gin_number))
-    else
+
+    if(params[:gin_number] && !params[:gin_number].empty?)
+      @deliveries = Delivery.where(gin_number: params[:gin_number])
+    elsif(params[:operation_id]&&!params[:operation_id].empty? && params[:woreda])
+      @deliveries = Delivery.filter(params.slice(:woreda,:operation_id))
+    else      
       @deliveries = []
+       
     end
 
   end

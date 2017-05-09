@@ -99,13 +99,5 @@
     <option value="">Choose</option>
   </select>
 </div>
-<div class="form-group">
-  <label for="kebeleSelect-<%= uuid %>">Kebele <%= '*' if requiredLevels.include? 'kebele' %></label>
-  <select name="kebele" id="kebeleSelect-<%= uuid %>" class="form-control"
-          <%= 'required' if requiredLevels.include? 'kebele' %>
-          data-value="<%= location_vals.shift %>"
-  >
-    <option value="">Choose</option>
-</select>
-</div>
+
 
