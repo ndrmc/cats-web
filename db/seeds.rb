@@ -289,3 +289,12 @@ if Supplier.count == 0
   Supplier.create(name: 'Woreta')
   Supplier.create(name: 'Woreta EFSRA')
 end
+
+o1 = Organization.find_or_initialize_by(name: "EGTE")
+o1.long_name = "Ethiopian Grain Trade Enterprise"
+o1.save!
+
+o2 = Organization.find_or_initialize_by(name: "Saudi Government")
+o2.long_name = "Government of Saudi Arabia"
+o2.save!
+
