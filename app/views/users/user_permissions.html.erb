@@ -26,7 +26,14 @@
 
  <%= form_tag "/users/#{@user.id}/updatePermissions", method: :put do %>
 
-         <table class="table table-bordered">
+         <table class="table table-bordered cats-datatable">
+         <thead>
+          <tr>
+             <th></th>
+             <th>Name</th>
+          </tr>
+         </thead>
+        
           <tbody>
             <% @all_permissions.each do |permission| %>
               <tr>
