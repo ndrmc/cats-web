@@ -13,6 +13,13 @@ insert into transporters(name,code,created_at,updated_at) values ('Bekelecha Tra
 insert into transporters(name,code,created_at,updated_at) values ('Biftu Transport','New','2017-01-20','2017-01-20');
 insert into transporters(name,code,created_at,updated_at) values ('Getas TransPort','New','2017-01-20','2017-01-20');
 
+COPY (select * from git_imports where project_code is null)
+TO 'D:/CATS/gins_without_project_code.csv' DELIMITER ',' CSV HEADER;
+
+COPY (select * from git_imports where gin is null) TO 'D:/CATS/gins_without_gin_no.csv' DELIMITER ',' CSV HEADER;
+
+COPY (select * from git_imports where fdp is null and woreda is null and zone is null)
+TO 'D:/CATS/gins_without_location.csv' DELIMITER ',' CSV HEADER;
 
 delete from git_imports where id > 35247;
 delete from git_imports where fdp is null and woreda is null and zone is null;
