@@ -23,7 +23,7 @@ namespace :cats do
         begin
           if (gin.nil?)
 
-            operation_id = Operation.where(year: '2016', round: gi.round, program_id: 1)
+            operation_id = Operation.find_by(year: '2016', round: gi.round, program_id: 1).id
             gin = Dispatch.new(
                 gin_no: gi.gin,
                 operation_id: operation_id,
