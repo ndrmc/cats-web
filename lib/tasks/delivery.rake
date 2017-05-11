@@ -55,6 +55,9 @@ namespace :cats do
                                       received_quantity: di.quantity_received_qtl.to_f*0.1,
                                       guid_ref_delivery_id: delivery.delivery_id_guid
               )
+              if(Delivery.find_by_receiving_number(delivery.grn) != nil)
+                delivery.grn = delivery.grn +"-"+ gi.id
+              end
               delivery.save!
 
 
@@ -64,7 +67,9 @@ namespace :cats do
            di.save!
            log.info "delivery_import id  #{di.id}  saved as Delivery #{ delivery.id}"
            log.info "Updated #{success} Delivery record(s)"
+        
          rescue Exception => e
+
            fail += 1
            failed_rows += ",#{di.id}"
            di.imported = false
