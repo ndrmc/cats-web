@@ -546,9 +546,14 @@ update git_imports set fdp = 'Yegem' where fdp = 'yigem';
 update git_imports set fdp = 'Erer Hwaye' where fdp is null and region = 'Harari' and woreda = 'Erer Hwaye';
 
 
+update git_imports set round = 'UNKNOWN' where round is null;
+
 
 
 /*
+select count(*) , round from git_imports 
+group by round
+
 
 select count(*), commodity_type, name from git_imports left outer join commodities 
 on git_imports.commodity_type = commodities.name group by commodity_type, name
