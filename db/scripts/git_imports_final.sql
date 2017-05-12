@@ -1,18 +1,3 @@
-                
-insert into fdps(name,active,location_id,woreda,zone,region,created_at,updated_at) values ('Gashamo',true,11824,'Gashamo','Jarar','Somali','2017-01-20','2017-01-20');
-insert into fdps(name,active,location_id,woreda,zone,region,created_at,updated_at) values ('Gebisa',true,406,'Mesela','W.Hararghe','Oromia','2017-01-20','2017-01-20');
-insert into fdps(name,active,location_id,woreda,zone,region,created_at,updated_at) values ('Mender 104',true,634,'','Pawi','Beneshangul Gumuz','2017-01-20','2017-01-20');
-insert into fdps(name,active,location_id,woreda,zone,region,created_at,updated_at) values ('Mender 127',true,634,'','Pawi','Beneshangul Gumuz','2017-01-20','2017-01-20');
-
-
-select (setval('transporters_id_seq',(select max(id) from transporters)));
-insert into transporters(name,code,created_at,updated_at) values ('Hailemariam Mazengia','New','2017-01-20','2017-01-20');
-insert into transporters(name,code,created_at,updated_at) values ('Nur Hussien','New','2017-01-20','2017-01-20');
-insert into transporters(name,code,created_at,updated_at) values ('Assefa Tamer Dry Freight Private Transport','New','2017-01-20','2017-01-20');
-insert into transporters(name,code,created_at,updated_at) values ('Bekelecha Transport SH.Co.','New','2017-01-20','2017-01-20');
-insert into transporters(name,code,created_at,updated_at) values ('Biftu Transport','New','2017-01-20','2017-01-20');
-insert into transporters(name,code,created_at,updated_at) values ('Getas TransPort','New','2017-01-20','2017-01-20');
-
 COPY (select * from git_imports where project_code is null)
 TO 'D:/CATS/gins_without_project_code.csv' DELIMITER ',' CSV HEADER;
 
@@ -52,9 +37,6 @@ update git_imports set commodity_class = 'Blended Food' where commodity_class in
 update git_imports set commodity_class = 'Pulse' where commodity_class in ('pulse');
 update git_imports set commodity_class = 'Oil' where commodity_class in ('oil','V.Oil','V.oil','v.oil');
 
-
-select * from (select count(*), commodity_class,commodity_type, name from git_imports left outer join commodity_categories 
-on git_imports.commodity_class = commodity_categories.name group by commodity_class,commodity_type, name) as c where c.commodity_class is null;
 
 update git_imports set commodity_class = 'Oil' where commodity_class is null and commodity_type =  ('Vegitable Oil');
 update git_imports set commodity_class = 'Blended Food' where commodity_class is null and commodity_type =  ('CSB');
@@ -565,9 +547,6 @@ update git_imports set fdp = 'Erer Hwaye' where fdp is null and region = 'Harari
 
 
 
-select setval('dispatches_id_seq',(select max(id) from dispatches) );
-select setval('dispatch_items_id_seq',(select max(id) from dispatch_items));
-
 
 /*
 
@@ -585,6 +564,8 @@ select * from (select count(*), fdp, git_imports.region,git_imports.zone,git_imp
 select count(*),git_imports.project_code, git_imports.commodity_type, projects.project_code,projects.commodity_source
 from git_imports left outer join projects on git_imports.project_code = projects.project_code 
 group by git_imports.project_code, git_imports.commodity_type, projects.project_code, projects.commodity_source
+
+
 
 */
 

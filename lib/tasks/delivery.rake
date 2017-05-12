@@ -2,6 +2,7 @@ namespace :cats do
   namespace :delivery_import do
     desc "Migrates delivery_imports table from the excel entry into deliveries table"
     task import: :environment do
+     
       log = ActiveSupport::Logger.new('log/delivery_import.log')
       start_time = Time.now
       log.info "Started reading delivery_import records at #{start_time}"
@@ -9,6 +10,7 @@ namespace :cats do
       success = 0
       fail = 0
       failed_rows = ''
+      
       DeliveryImport.all.each do |di|
         next if di.imported?
         log.info "------------------#{di.id}-------------------------"
@@ -17,7 +19,7 @@ namespace :cats do
           delivery = Delivery.find_by_receiving_number(di.grn)
           transporter = Transporter.find_by_name(di.transporter_name)
           fdp_id= Fdp.find_by_name(di.destination).id
-          operation_id = Operation.find_by(year: di.allocation_year, round: di.round, program_id: 1).id       
+          operation_id = Operation.find_by(year: di.allocation_year, month: di.round[0], program_id: 1).id       
           commodity_id = Commodity.find_by_name(di.commodity_type).id          
           uom_id =  UnitOfMeasure.find_by_code('MT').id
 
@@ -31,7 +33,8 @@ namespace :cats do
                gin_number: di.gin,
                requisition_number: di.requisition_no,
                received_by: di.received_by ? di.received_by : "" ,
-               received_date: di.received_date,
+               received_date: DateTime.now,
+               received_date_ec: di.received_date,
                operation_id:operation_id,
                draft: true,
                delivery_id_guid:SecureRandom.uuid,
@@ -55,8 +58,8 @@ namespace :cats do
                                       received_quantity: di.quantity_received_qtl.to_f*0.1,
                                       guid_ref_delivery_id: delivery.delivery_id_guid
               )
-              if(Delivery.find_by_receiving_number(delivery.grn) != nil)
-                delivery.grn = delivery.grn +"-"+ gi.id
+              if(Delivery.find_by_receiving_number(delivery.receiving_number) != nil)
+                delivery.receiving_number = "#{delivery.receiving_number}-#{di.id.to_s}"
               end
               delivery.save!
 

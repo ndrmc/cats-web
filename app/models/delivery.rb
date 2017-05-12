@@ -35,7 +35,7 @@ class Delivery < ApplicationRecord
   accepts_nested_attributes_for :delivery_details, reject_if: :all_blank
 
   validates :receiving_number, uniqueness: true
-  validates :gin_number, uniqueness: true
+  #validates :gin_number, uniqueness: true
 
   after_save :pre_post
 

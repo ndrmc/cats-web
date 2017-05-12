@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170510120632) do
+ActiveRecord::Schema.define(version: 20170511150828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -211,6 +211,7 @@ ActiveRecord::Schema.define(version: 20170510120632) do
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
     t.string   "delivery_id_guid"
+    t.string   "received_date_ec"
     t.index ["receiving_number"], name: "index_deliveries_on_receiving_number", unique: true, using: :btree
   end
 

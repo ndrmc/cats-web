@@ -7,6 +7,7 @@ To import gin records from git imports follow the following steps
     - run rails cats:commodities:update 
     - run rails cats:migrate:location
     - run rails cats:fdp:update_locations
+    - run run all statements in db/scripts/data_for_import.sql on the database. 
 
 Optional(not needed for the import but for the application to work)
 

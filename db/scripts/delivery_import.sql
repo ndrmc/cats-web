@@ -1,12 +1,7 @@
-select count(*), commodity_type, name from delivery_imports left outer join commodities 
-on delivery_imports.commodity_type = commodities.name group by commodity_type, name;
-
 update delivery_imports set commodity_type = sub_commodity where commodity_type is null;
 update delivery_imports set commodity_type = 'Vegitable Oil' where commodity_type in ('Vegtable oil','Vegetable Oil','Vegetabel oil','V.Oil');
 update delivery_imports set commodity_type = 'Oil' where commodity_type = 'oil';
 update delivery_imports set commodity_type = 'Blended food' where commodity_type in ('Blended Food','Mixed');
-
-insert into fdps(name,active,location_id,woreda,zone,region,created_at,updated_at) values ('Akobo',true,257,'Akobo','Nuer','Gambella','2017-10-15','2017-10-15');
 
 update delivery_imports set destination = 'Abobo town' where destination = 'Abobo Town';
 update delivery_imports set destination = 'Alge' where destination = 'Alege';
@@ -62,11 +57,25 @@ update delivery_imports set destination = 'Meta' where destination = 'Wayiber';
 update delivery_imports set destination = 'yeri' where destination = 'Yeri';
 
 
+update delivery_imports set transporter_name = 'Bekele Wolde Local Inland  F.P. Transport' where transporter_name like '%Bekele%Wolde%Local%Inland%F.P.%Transport';
+update delivery_imports set transporter_name = 'Fekeru Garedew F.T' where transporter_name like '%Fekeru%Garedew%Local%Level%4%F.D.P.T';
+update delivery_imports set transporter_name = 'UNKNOWN' where transporter_name is null;
+update delivery_imports set transporter_name = 'UNKNOWN' where transporter_name = 'y';
+
+update delivery_imports set allocation_year = '2008' where allocation_year = '2009';
+
+
+/*select count(*), allocation_year, round, program from delivery_imports 
+group by allocation_year, round, program order by allocation_year;
 
 select count(*), transporter_name, name from delivery_imports
 left outer join transporters on delivery_imports.transporter_name = transporters.name 
 where name is null 
 group by transporter_name,name order by transporter_name;
 
-update delivery_imports set transporter_name = 'Bekele Wolde Local Inland  F.P. Transport' where transporter_name like '%Bekele%Wolde%Local%Inland%F.P.%Transport';
-update delivery_imports set transporter_name = 'Fekeru Garedew F.T' where transporter_name like '%Fekeru%Garedew%Local%Level%4%F.D.P.T';
+select count(*), commodity_type, name from delivery_imports left outer join commodities 
+on delivery_imports.commodity_type = commodities.name group by commodity_type, name;
+
+                       
+select * from (select count(*), destination, name from delivery_imports left outer join fdps 
+on delivery_imports.destination = fdps.name group by destination, name ) as d where d.name is null;*/

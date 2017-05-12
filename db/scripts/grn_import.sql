@@ -1,20 +1,7 @@
-/*COPY (select * from grn_imports where project_code is null)
-TO 'D:/CATS/grns_without_project_code.csv' DELIMITER ',' CSV HEADER;*/
+COPY (select * from grn_imports where project_code is null)
+TO 'D:/CATS/grns_without_project_code.csv' DELIMITER ',' CSV HEADER;
 
 delete from grn_imports where project_code is null;
-
-select count(*), project_code, commodity_source from grn_imports
-group by project_code,commodity_source order by count desc;
-
-select * from (select count(*), commodity_class, name from grn_imports left outer join commodity_categories 
-on grn_imports.commodity_class = commodity_categories.name group by commodity_class, name) as c where c.name is null;
-
-select * from (select count(*), commodity_type, name from grn_imports left outer join commodities
-on grn_imports.commodity_type = commodities.name group by commodity_type, name) as c where c.name is null;
-
-select count(*), commodity_type, name from grn_imports left outer join commodities 
-on grn_imports.commodity_type = commodities.name group by commodity_type, name order by commodity_type asc
-
 
 update grn_imports set commodity_source = 'Local Purchase' 
 where supplier = 'Government purchase' or 
@@ -48,8 +35,6 @@ update grn_imports set commodity_type = 'White Haricot Beans' where commodity_ty
 update grn_imports set commodity_type = 'Fafa Relief' where commodity_type in ('FAFA');
 update grn_imports set commodity_type = 'Mecarone' where commodity_type in ('Makroni');
 
-select * from (select count(*), commodity_class, name from grn_imports left outer join commodity_categories 
-on grn_imports.commodity_class = commodity_categories.name group by commodity_class, name) as c where c.name is null;
 
 update grn_imports set commodity_class = 'Creal' where commodity_class in ('Grain','Cereal','Rice');
 update grn_imports set commodity_class = 'Supplementary Food' where commodity_class in ('Dates','Flour');
@@ -95,12 +80,6 @@ update grn_imports set transporter_name = 'Tikur Abay Transport P.L.C' where tra
 update grn_imports set transporter_name = 'Abbarci Trans Co. Ltd' where transporter_name in ('abbarci TransPort');
 update grn_imports set transporter_name = 'Abyssnia' where transporter_name in ('ABYSSINIA');
 
-select count(*), transporter_name, name from grn_imports left outer  join transporters 
-on grn_imports.transporter_name = transporters.name group by transporter_name, name order by transporter_name asc;
-
-select count(*), grn_imports.project_code,grn_imports.commodity_type, projects.project_code from grn_imports left outer  join projects 
-on grn_imports.project_code = projects.project_code group by grn_imports.project_code,grn_imports.commodity_type, projects.project_code 
-order by grn_imports.project_code asc;
 
 update grn_imports set project_code = 'Govenment Purchase/499,536Mt' where project_code in ('FSRA/499MT Govrement Purchase','499,336/19,100MT Government Purchase','499,366/23,600MT Government Purchase','499,536/17425MT Government Purchase','499,536Mt Government Purchase','499536/24496.26mt  Government Purchase',E'Gov\'t pur 499536 mt','Govenment Purchase/499,536Mt');
 update grn_imports set project_code = 'Government purchase 405000mt ' where project_code in ('405,000mt government purchase');
@@ -145,9 +124,18 @@ select count(*),grn_imports.project_code, grn_imports.commodity_type, projects.p
 from grn_imports left outer join projects on grn_imports.project_code = projects.project_code 
 group by grn_imports.project_code, grn_imports.commodity_type, projects.project_code, projects.commodity_source;
 
-COPY (select * from (select count(*), grn_imports.project_code,grn_imports.commodity_type, projects.project_code as pro_code from grn_imports left outer  join projects 
-on grn_imports.project_code = projects.project_code group by grn_imports.project_code,grn_imports.commodity_type, projects.project_code 
-) as p where p.pro_code is null ) 
 
-TO 'D:/CATS/grns_with_unknown_project_codes.csv' DELIMITER ',' CSV HEADER;
+select count(*), project_code, commodity_source from grn_imports
+group by project_code,commodity_source order by count desc;
+
+select * from (select count(*), commodity_class, name from grn_imports left outer join commodity_categories 
+on grn_imports.commodity_class = commodity_categories.name group by commodity_class, name) as c where c.name is null;
+
+select * from (select count(*), commodity_type, name from grn_imports left outer join commodities
+on grn_imports.commodity_type = commodities.name group by commodity_type, name) as c where c.name is null;
+
+select count(*), transporter_name, name from grn_imports left outer  join transporters 
+on grn_imports.transporter_name = transporters.name group by transporter_name, name order by transporter_name asc;
+
+
 */
