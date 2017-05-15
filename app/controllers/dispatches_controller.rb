@@ -118,6 +118,7 @@ class DispatchesController < ApplicationController
                 :weight_bridge_ticket_number, :transporter_id, 
                 :plate_number, 
                 :trailer_plate_number, 
+                :storekeeper_name,
                 :drivers_name, 
                 :remark,
                 :dispatch_items => [:id, :commodity_category_id, :commodity_id, :quantity, :project_id]
