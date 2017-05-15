@@ -134,7 +134,7 @@ class RegionalRequestsController < ApplicationController
     regional_request_item.destroy
 
     respond_to do |format|
-      format.json { head :no_content }
+      format.json { render json: {item_id: regional_request_item.id} }
     end
   end
 
