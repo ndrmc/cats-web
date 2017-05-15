@@ -1,8 +1,9 @@
-                
+
 insert into fdps(name,active,location_id,woreda,zone,region,created_at,updated_at) values ('Gashamo',true,11824,'Gashamo','Jarar','Somali','2017-01-20','2017-01-20');
 insert into fdps(name,active,location_id,woreda,zone,region,created_at,updated_at) values ('Gebisa',true,406,'Mesela','W.Hararghe','Oromia','2017-01-20','2017-01-20');
 insert into fdps(name,active,location_id,woreda,zone,region,created_at,updated_at) values ('Mender 104',true,634,'','Pawi','Beneshangul Gumuz','2017-01-20','2017-01-20');
 insert into fdps(name,active,location_id,woreda,zone,region,created_at,updated_at) values ('Mender 127',true,634,'','Pawi','Beneshangul Gumuz','2017-01-20','2017-01-20');
+
 
 
 select (setval('transporters_id_seq',(select max(id) from transporters)));
@@ -12,6 +13,7 @@ insert into transporters(name,code,created_at,updated_at) values ('Assefa Tamer 
 insert into transporters(name,code,created_at,updated_at) values ('Bekelecha Transport SH.Co.','New','2017-01-20','2017-01-20');
 insert into transporters(name,code,created_at,updated_at) values ('Biftu Transport','New','2017-01-20','2017-01-20');
 insert into transporters(name,code,created_at,updated_at) values ('Getas TransPort','New','2017-01-20','2017-01-20');
+
 
 
 delete from git_imports where id > 35247;
@@ -555,11 +557,6 @@ update git_imports set fdp = 'Yirgalem' where fdp = 'Yergalem';
 update git_imports set fdp = 'yeri' where fdp = 'Yeri';
 update git_imports set fdp = 'Yegem' where fdp = 'yigem';
 update git_imports set fdp = 'Erer Hwaye' where fdp is null and region = 'Harari' and woreda = 'Erer Hwaye';
-
-
-
-select setval('dispatches_id_seq',(select max(id) from dispatches) );
-select setval('dispatch_items_id_seq',(select max(id) from dispatch_items));
 
 
 /*

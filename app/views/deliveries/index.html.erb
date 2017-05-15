@@ -26,38 +26,31 @@
       <div class="ibox-content">
       <div class="row m-b-sm m-t-sm">
       <div class="form-group">
-          
-         
-          <form method='GET' class = 'form-inline'>
-            <label>Operation</label> 
-              <%= select_tag "operation_id",  options_from_collection_for_select( Operation.all, 'id', 'name',params[:operation_id] ) , {:required => true, :prompt => "-- Choose --", :class => 'form-control data-parsley-required'} %>
-              
-            <%# <label>Region</label> 
-             
-              <%= select_tag "region",  options_from_collection_for_select( Location.all.where(location_type: :region).order(:name), 'name', 'name',params[:region] ) , {:required => true, :prompt => "-- Choose --", :class => 'form-control data-parsley-required'} 
-              
-              <label>FDP</label> 
-              <select id= "select-fdp", name="fdp_id" ,value = "<%= params[:fdp_id] " required = true, class="form-control data-parsley-required" > </select>%>
-              <%= render 'shared/fdp_selector', name: 'fdp_id', fdpId: (params[:fdp_id] ?  params[:fdp_id] : nil), required: true  %>
-          <hr/>
-            <label>Gin</label> 
-              <input name="gin_number" class= 'form-control'></input>
-            <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
-
+          <form method='GET' class = 'form-inline'>          
+            <label>Operation</label> *            
+             <%= select_tag "operation_id",  options_from_collection_for_select( Operation.all, 'id', 'name',params[:operation_id] ) , {required: true,:prompt => "-- Choose --", :class => 'form-control data-parsley-required'} %>
+             <%= render 'shared/location_selector', name: 'woreda', requiredLevels:[], locationId: params[:woreda]%>
+             <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
+            <hr>
           </form>
+
+           <form method='GET' class = 'form-inline'>          
+          
+            <label>Gin</label> 
+              <input name="gin_number" class = 'form-control'></input>          
+            <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
+          </form>
+          
         </div>
 
-        <table class="table table-striped">
+        <table class="table table-striped cats-datatable">
           <thead>
             <tr>
                           <th>Receiving number</th> 
                           <th>FDP</th>
                           <th>Gin</th>
                           <th>Requisition number</th>
-                          <th>Received by</th>
-                          <th>Received date</th>
-                          <th>Status</th>
-                          <th>Operation</th>
+                          <th>Received date</th>                         
                           <th>Actions</th>
             </tr>
           </thead>
@@ -66,13 +59,10 @@
             <% @deliveries.each do |delivery| %>
             <tr>
               <td><%= delivery.receiving_number%></td>                          
-              <td><%= delivery.fdp_id%></td>
+              <td><%= Fdp.find(delivery.fdp_id).name%></td>
               <td><%= delivery.gin_number%></td>
               <td><%= delivery.requisition_number%></td>
-              <td><%= delivery.received_by%></td>
               <td><%= delivery.received_date%></td>
-              <td><%= delivery.status%></td>
-               <td><%= delivery.operation_id%></td>
                <td>
                <%if policy(Delivery).edit? %>
                 <%= link_to 'Edit', edit_delivery_path(delivery) %> &middot;

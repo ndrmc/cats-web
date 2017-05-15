@@ -39,21 +39,12 @@
                 <% end %>
               </select>
             </div>
-          </div>
-
-          <div class="col-md-9">
-            <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control">
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-sm btn-primary">
-                  Go!</button>
-              </span>
-            </div>
-          </div>
+          </div>         
         </div>
 
         <div class="project-list">
 
-          <table class="table table-hover">
+          <table class="table table-hover cats-datatable">
             <thead>
               <tr>
                 <th>Status</th>
@@ -119,7 +110,10 @@
 <script type="text/javascript">
     $(function() { 
         $("#status-filter").change( function() { 
-            window.location.href = '/hrds/?status=' + $(this).val();  
+            if($(this).val()=="")
+              window.location.href = '/hrds';
+            else
+              window.location.href = '/hrds/?status=' + $(this).val();  
         });
     }); 
 </script>

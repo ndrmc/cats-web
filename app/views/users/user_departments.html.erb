@@ -23,7 +23,13 @@
 
  <%= form_tag "/users/#{@user.id}/updateDepartments", method: :put do %>
 
-         <table class="table table-bordered">
+         <table class="table table-bordered cats-datatable">
+          <thead>
+          <tr>
+             <th></th>
+             <th>Name</th>
+          </tr>
+         </thead>
           <tbody>
             <% @all_departments.each do |department| %>
               <tr>

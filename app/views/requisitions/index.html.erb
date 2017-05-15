@@ -70,10 +70,10 @@
                 <%= requisition.status %>
               </td>
               <td>
-              <% if policy(RegionalRequest).edit? %>
+              <% if policy(Requisition).edit? %>
                 <%= link_to 'Edit', edit_requisition_path(requisition) %> &middot;
               <%end%>
-               <% if policy(RegionalRequest).destroy? %>
+               <% if policy(Requisition).destroy? %>
                 <%= link_to 'Delete', requisition, method: :delete, data: {confirm: 'Are you sure?'} %>
               <%end%>
               </td>
