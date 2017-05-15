@@ -64,18 +64,23 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% total = 0 %>
                             <% hrd_items.each do |item| %>
                                 <tr id="hrd-item-<%= item.id %>">
                                     <td><%= item.woreda.name  %></td>
                                     <td id="starting-month-<%= item.id %>"><%= Date::MONTHNAMES[item.starting_month] %></td>
                                     <td id="duration-<%= item.id %>"><%= item.duration %></td>
                                     <td id="beneficiary-<%= item.id %>"><%= item.beneficiary %></td>
+
                                     <td>
                                         <a href="#" data-toggle="modal" data-target="#edit-hrd-item" data-hrd-item-id="<%= item.id %>">edit</a>
                                         <a href="#" class="remove-hrd-item" data-confir="Are you sure?" data-hrd-item-id="<%= item.id %>">delete</a>
                                     </td>
                                 </tr>
+
+                                <% total = total + item.beneficiary %>
                             <% end %>
+                            <tr><td></td><td></td><td>Total beneficiaries</td><td><%= total %></td></tr>
                         </tbody>
 
                     </table>
