@@ -12,6 +12,7 @@ namespace :cats do
       failed_rows = ''
       GitImport.all.each do |gi|
           next if gi.imported?
+
         log.info "------------------#{gi.id}-------------------------"
 
            transporter_id = Transporter.find_by_name(gi.transporter) ? Transporter.find_by_name(gi.transporter).id : nil
@@ -61,16 +62,20 @@ namespace :cats do
            success += 1
            gi.imported = true
            gi.save!
+          
            log.info "git_import id  #{gi.id}  saved as gin #{ gin.id}"
            log.info "Updated #{success} gin record(s)"
+
          rescue Exception => e
            fail += 1
            failed_rows += ",#{gi.id}"
            gi.imported = false
            gi.save
+
            log.info "Exception while trying to save git_import, id: #{gi.id}"
            log.info 'Cause: '+ e.message
            log.info e.backtrace.join("\n")
+
          end
 
 

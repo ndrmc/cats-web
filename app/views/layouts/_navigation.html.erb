@@ -167,7 +167,12 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-     
+      <% if policy(RegionalRequest).index? %>
+
+        <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
+          <%= link_to "Monthly Requests", regional_requests_url %>
+        </li>
+      <%end%>
       <li>
         <a href="#"><%= t(:fdp_receipts)%></a>
       </li>
