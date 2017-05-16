@@ -37,7 +37,6 @@
 
 //= require data-confirm-modal
 //= require underscore-min
-//= require gmaps/google
 
 //= require_tree .
 

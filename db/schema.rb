@@ -210,8 +210,8 @@ ActiveRecord::Schema.define(version: 20170511150828) do
     t.datetime "deleted_at"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
-    t.string   "delivery_id_guid"
     t.string   "received_date_ec"
+    t.index ["gin_number"], name: "index_deliveries_on_gin_number", unique: true, using: :btree
     t.index ["receiving_number"], name: "index_deliveries_on_receiving_number", unique: true, using: :btree
   end
 
@@ -223,11 +223,10 @@ ActiveRecord::Schema.define(version: 20170511150828) do
     t.integer  "delivery_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",              default: false
+    t.boolean  "deleted",           default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "guid_ref_delivery_id"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "delivery_imports", force: :cascade do |t|
@@ -308,7 +307,6 @@ ActiveRecord::Schema.define(version: 20170511150828) do
     t.datetime "deleted_at"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
-    t.string   "guid_ref"
     t.index ["commodity_category_id"], name: "index_dispatch_items_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_dispatch_items_on_commodity_id", using: :btree
     t.index ["dispatch_id"], name: "index_dispatch_items_on_dispatch_id", using: :btree
@@ -316,7 +314,7 @@ ActiveRecord::Schema.define(version: 20170511150828) do
   end
 
   create_table "dispatches", force: :cascade do |t|
-    t.string   "gin_no",                                                  null: false
+    t.string   "gin_no",                                      null: false
     t.integer  "operation_id"
     t.string   "requisition_number"
     t.datetime "dispatch_date"
@@ -327,17 +325,15 @@ ActiveRecord::Schema.define(version: 20170511150828) do
     t.string   "trailer_plate_number"
     t.string   "drivers_name"
     t.text     "remark"
-    t.boolean  "draft",                                   default: false
+    t.boolean  "draft",                       default: false
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",                                 default: false
+    t.boolean  "deleted",                     default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.integer  "hub_id"
     t.integer  "warehouse_id"
-    t.string   "storekeeper_name",            limit: 200,                 null: false
-    t.string   "dispatch_id_guid"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
