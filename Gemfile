@@ -99,7 +99,7 @@ gem 'responders'
 
 gem 'data-confirm-modal'
 gem 'geocoder'
-gem 'gmaps4rails'
+# gem 'gmaps4rails'
 
 group :development do
     gem 'capistrano',         require: false
