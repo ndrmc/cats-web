@@ -87,7 +87,7 @@ class HrdsController < ApplicationController
             # Add error handling in case when HrdItem save fails 
 
             respond_to do |format|
-                    format.html { redirect_to hrds_url, notice: 'HRD was successfully created.' }
+                    format.html { redirect_to @hrd, notice: 'HRD was successfully created.' }
             end   
         else 
             respond_to do |format|
