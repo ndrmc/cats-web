@@ -43,6 +43,11 @@ class ReceiptsController < ApplicationController
 
     @receipt = Receipt.new( receipt_map )
     @receipt.created_by = current_user.id
+    @receipt.receiveid = "N/A" # to be removed: field included for data import purposes only
+    @receipt.receipt_lines.each do |rl|
+      rl.receive_id = "N/A" # to be removed: field included for data import purposes only
+      rl.receive_item_id = "N/A" # to be removed: field included for data import purposes only
+    end
     respond_to do |format|
       if @receipt.save
         format.html { redirect_to receipts_path, success: 'Receipt was successfully created.' }
@@ -95,7 +100,7 @@ class ReceiptsController < ApplicationController
 
   def receipt_params
     params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :hub_id, :warehouse_id, :commodity_source_id,
-                                     :weight_bridge_ticket_no, :transporter_id, :weight_before_unloading, :plate_no, :trailer_plate_no, :drivers_name, :remark,
+                                     :weight_bridge_ticket_no, :transporter_id, :weight_before_unloading,:weight_after_unloading, :plate_no, :trailer_plate_no, :drivers_name, :remark,
                                      :receipt_lines => [:id, :commodity_category_id, :commodity_id, :unit_of_measure_id,  :quantity, :project_id]
                                      )
 

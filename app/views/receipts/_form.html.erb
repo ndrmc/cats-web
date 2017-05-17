@@ -61,7 +61,7 @@
         </div>
 
         <div class="form-group">
-          <%= f.label :commodity_source_id, "Warehouse" %>
+          <%= f.label :commodity_source_id %>
           <span class="required">*</span>
           <%= f.collection_select :commodity_source_id,
                   CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
@@ -197,10 +197,10 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label for="weightAfterUnloading">Weight Before Unloading
+          <label for="weightAfterUnloading">Weight After Unloading
           </label>
           <div>
-            <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
+            <%= f.number_field :weight_after_unloading, :class => 'form-control' %>
           </div>
         </div>
         <div class="form-group col-md-6">
