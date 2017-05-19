@@ -40,7 +40,7 @@ class RegionalRequestsController < ApplicationController
         fdp_locations = []
 
         if hrd
-          woredas = hrd.hrd_items.map { |hrd_item| hrd_item.woreda  }
+         woredas = hrd.hrd_items.select{|hi| hi.region_id == @regional_request.region_id}.map { |hrd_item| hrd_item.woreda  }
           zone_ids = woredas.collect { |woreda| woreda.parent_id }
 
           fdp_locations = zone_ids + woredas.map { |w| w.id}
