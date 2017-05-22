@@ -43,7 +43,7 @@ class CommoditiesController < ApplicationController
   # PATCH/PUT /commodities/1.json
   def update
     respond_to do |format|
-      @commodity.updated_by = current_user.id
+      @commodity.modified_by = current_user.id
       if @commodity.update(commodity_params)
         format.html { redirect_to commodities_url, notice: 'Commodity was successfully updated.' }
         format.json { render :show, status: :ok, location: @commodity }
