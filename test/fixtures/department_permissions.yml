@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+
   department_id: 1 
   permission_id: 1 
 
@@ -8,3 +9,4 @@ two:
    department_id: 1 
    permission_id: 1 
  
+
