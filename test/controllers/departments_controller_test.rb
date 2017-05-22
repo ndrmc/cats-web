@@ -55,11 +55,12 @@ class DepartmentsControllerTest < ActionDispatch::IntegrationTest
   test "department name should be unique" do
     duplicate_name = @department.dup
     @department.save
-    assert_not !duplicate_name.valid?
+    assert_not duplicate_name.valid?
   end
 
   test "department name must be present" do 
-      assert @department.valid?
+     new_department = Department.new(name: "new_deparartment")
+      assert new_department.valid?
   end
 
   test "department name must not be blank" do 
