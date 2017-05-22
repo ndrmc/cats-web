@@ -27,4 +27,5 @@ class Commodity < ApplicationRecord
   belongs_to :uom_category
 
   validates :name , presence: true
+  validates :name, uniqueness: true 
 end
