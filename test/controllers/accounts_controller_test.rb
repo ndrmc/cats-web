@@ -29,6 +29,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   test "should show account" do
     get account_url('en',@account)
     assert_response :success
+
   end
 
 
@@ -51,5 +52,27 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to accounts_url
   end
+
+  test "account name must be unique" do
+    duplicate_account = @account.dup
+    @account.save
+    assert_not duplicate_account.valid?
+  end
+
+  test "account name must be present" do 
+    assert @account.valid?
+  end
+  
+  
+  test "account name must not be blank" do
+    new_account = Account.new(name: " ")
+    assert !new_account.valid?
+  end
+
+  test "account name must not be nil" do
+     new_account = Account.new(name: nil)
+    assert !new_account.valid?
+  end
+
 
 end

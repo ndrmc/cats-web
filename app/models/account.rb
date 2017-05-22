@@ -30,4 +30,5 @@ class Account < ApplicationRecord
     }
 
     validates :name, presence: {messege: " is required!"}
+    validates :name, uniqueness: true
 end
