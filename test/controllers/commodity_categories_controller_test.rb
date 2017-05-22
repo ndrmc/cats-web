@@ -52,4 +52,25 @@ class CommodityCategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to commodity_categories_url
   end
 
+
+  test "commodity_category name and code must be present" do
+    assert  @commodity_category.valid?
+  end
+
+  test "commodity_category name and code must be unique" do
+    duplicated_commodity_category = @commodity_category.dup
+    duplicated_commodity_category.save
+    assert_not duplicated_commodity_category.valid?
+  end
+  
+  test "commodity_category name and code must not be blank"  do
+    new_commodity_category = CommodityCategory.new(name: " ", code: " ")
+    assert !new_commodity_category.valid?
+  end
+  
+  test "commodity_category name and code must not be nil"  do
+    new_commodity_category = CommodityCategory.new(name: nil, code: nil)
+    assert !new_commodity_category.valid?
+  end
+
 end
