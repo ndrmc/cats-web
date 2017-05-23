@@ -49,4 +49,29 @@ class ProgramsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to programs_url
   end
+
+  test "Program name must be unique" do 
+    duplicated_program = @program.dup
+    @program.save
+    assert_not duplicated_program.valid?
+  end
+
+  test "Program name must be present" do 
+     new_program = Program.new(name: 'new program', code: 'new code')
+    assert @program.valid?
+  end
+
+  test "Program name and code must not be blank" do 
+    new_program = Program.new(name: '  ', code: 'new code')
+    assert !new_program.valid?
+  end
+
+  test "Program name and code must not be nil" do
+     new_program = Program.new(name: nil, code: nil)
+    assert !new_program.valid?
+  end
+  
+  
+  
+
 end
