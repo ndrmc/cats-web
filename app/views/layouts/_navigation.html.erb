@@ -61,7 +61,7 @@
       </li>
       <%end%>
       <% if policy(Requisition).index? %>
-      <li>
+      <li class="<%= 'active' if is_active_controller('requisitions')  %>">
         <%= link_to t(:request_allocation), requisitions_url %></a>
       </li>
       <%end%>
