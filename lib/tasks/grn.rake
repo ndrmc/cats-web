@@ -107,6 +107,49 @@ namespace :cats do
       log.info "Task finished at #{end_time} and lasted #{duration} minutes."
       log.close
     end
+   
+    desc "update received date field of imported receipts"
+    # This task is used to update received_date fields that were incorrectly imported from the grn_imports table. 
+    # The dates on grn_import table are in Ethiopian calendar and have different formats.
+    # This is to keep an additional string field for the imported date fields and later filter and update them 
+    # by converting to a Gregorian date.
+    task update_dates: :environment do
+      log = ActiveSupport::Logger.new('log/update_received_date.log')
+      start_time = Time.now
+      log.info "Started updating received dates in receipts at #{start_time}"
+     
+      success = 0
+      fail = 0
+      failed_rows = ''
+      
+        receipts_with_wrong_dates = Receipt.where(:grn_no => GrnImport.all.pluck(:grn))
+        receipts_with_wrong_dates.all.each do |r|
+
+          begin
+            grn_import = GrnImport.find_by_grn(r.grn_no)
+            r.received_date = DateTime.now
+            r.received_date_ec = grn_import.received_date
+            success += 1            
+            r.save!
+            log.info "updated #{success} grn_import records successfully."
+          rescue Exception => e
+            fail += 1
+            failed_rows += ",#{r.id}"
+            log.info 'Cause: '+ e.message
+            log.info e.backtrace.join("\n")
+          end
+
+      end
+      log.info "updated #{success} grn_import records successfully."
+      log.info "Failed records: #{fail}"
+      log.info "Failed rows \n #{ failed_rows }"
+
+      
+      end_time = Time.now
+      duration = (end_time - start_time ) / 1.minute
+      log.info "Task finished at #{end_time} and lasted #{duration} minutes."
+      log.close
+    end
   end
 end
 

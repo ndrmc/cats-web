@@ -23,7 +23,6 @@ insert into transporters(name,code,created_at,updated_at) values ('Bekelecha Tra
 insert into transporters(name,code,created_at,updated_at) values ('Biftu Transport','New','2017-01-20','2017-01-20');
 insert into transporters(name,code,created_at,updated_at) values ('Getas TransPort','New','2017-01-20','2017-01-20');
 insert into transporters(name,code,created_at,updated_at) values ('Genet Kebede','GK','2017-01-20','2017-01-20');
-
 insert into transporters(name,code,created_at,updated_at) values ('UNKNOWN','UNKNOWN','2017-01-20','2017-01-20');
 
 insert into operations(program_id,hrd_id,name,year,round,month,created_at,updated_at) values (1,4177,'2008 Round 9 Relief','2008',9,9,'2017-10-15','2017-10-15');
