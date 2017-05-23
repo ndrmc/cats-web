@@ -5,7 +5,12 @@ class OperationsController < ApplicationController
   # GET /operations
   # GET /operations.json
   def index
-    @operations = Operation.all
+     if params[:status]
+        @operations = Operation.where status: params[:status]
+     else
+        @operations = Operation.all 
+     end 
+   
   end
 
   # GET /operations/1

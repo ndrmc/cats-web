@@ -28,27 +28,18 @@
       <div class="ibox-content">
         <div class="row m-b-sm m-t-sm">
           <div class="col-md-1">
-            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm">
+            <a href="javascript:window.location.reload(true)" type="button" id="loading-example-btn" class="btn btn-white btn-sm">
               <i class="fa fa-refresh"></i>
-              Refresh</button>
+              Refresh</a>
           </div>
           <div class="col-md-2">
             <div class="input-group">
-              <select class="input-sm form-control">
-                <option value="notstarted">Not started yet</option>
-                <option value="ongoing" selected="true">On going</option>
-                <option value="complted">Completed</option>
-                <option value="archive">Archived</option>
+              <select class="input-sm form-control"  id="status-filter">
+                <option value="">All</option>
+                <% Operation.statuses.map { |s| s[0] }.each do |status|%>
+                    <option value="<%= status %>" <%= 'selected' if params[:status] == status %>><%= status.capitalize %></option>
+                <% end %>
               </select>
-            </div>
-          </div>
-
-          <div class="col-md-9">
-            <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control">
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-sm btn-primary">
-                  Go!</button>
-              </span>
             </div>
           </div>
         </div>
@@ -134,3 +125,14 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+    $(function() { 
+        $("#status-filter").change( function() { 
+            if($(this).val()=="")
+              window.location.href = '/operations';
+            else
+              window.location.href = '/operations/?status=' + $(this).val();  
+        });
+    }); 
+</script>
