@@ -1,5 +1,6 @@
 <%= form_for(receipt, :html=> {:id => 'receipt-form'} ) do |f| %>
-
+<% @projects = Project.all%>
+<% @uoms = UnitOfMeasure.all%>
 <div class="row">
   <div class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
@@ -65,8 +66,14 @@
           <span class="required">*</span>
           <%= f.collection_select :commodity_source_id,
                   CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
-        </div>
-
+        </div> 
+        <div class="form-group">
+          <%= f.label :donor_id %>
+          <span class="required">*</span>
+          <%= f.collection_select :donor_id,
+                  Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'donor_select', :required => true }%>
+        </div> 
+           
       </div>
     </div>
 
@@ -110,7 +117,7 @@
               </td>
               <td>
                 <select name="receipt[receipt_lines[][project_id]]" class="form-control" readonly>
-                  <option value="<%= receipt_line.project.id %>"><%= receipt_line.project.project_code %></option>
+                  <option value="<%= receipt_line.project&.id %>"><%= receipt_line&.project&.project_code %></option>
                 </select>
               </td>
               <td>
@@ -148,7 +155,8 @@
                 <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
               </td>
               <td>
-                <%= select_tag 'receipt[receipt_lines[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' %>
+                </select>
               </td>
               <td>
                 <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
@@ -243,20 +251,16 @@
   <script type="text/javascript">
 
     var allUnitOfMeasures = [];
-
+    
     var REMOVE_RECEIPTLINE_BTN = '<a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>';
 
     var EMPTY_OPTION = '<option value="">-- Choose --</option>';
 
     $(function () {
 
-      $.getJSON('/unit_of_measures', {}, function (data) {
-        allUnitOfMeasures = data;
-      });
-
       $("#commodity-select").change(function () {
         var categoryId = $(this).find('option:selected').data('uom-category-id');
-
+        var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
         if ('' === categoryId)
           return;
 
@@ -334,6 +338,26 @@
 
         $("#commodity-select > option:first").removeClass('hidden');
 
+      });
+     
+
+      $('#donor_select').change(function(){
+        var donor_id = $(this).val();
+        if (donor_id === '')
+          return;
+        var allProjects = <%= @projects.to_json.html_safe %>
+       
+        var projects_by_donor = $.grep(allProjects, function (elem) {
+          return elem.organization_id == donor_id
+        });
+
+        var proj_options = $.map(projects_by_donor, function (val) {
+          return '<option value="' + val.id + '">' + val.project_code + '</option>';
+        });
+
+        proj_options.unshift(EMPTY_OPTION);
+
+        $('.project_select').html(proj_options);
       });
 
     });

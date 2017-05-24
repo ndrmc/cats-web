@@ -99,7 +99,7 @@ class ReceiptsController < ApplicationController
   private
 
   def receipt_params
-    params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :hub_id, :warehouse_id, :commodity_source_id,
+    params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :hub_id, :warehouse_id, :commodity_source_id,:donor_id,
                                      :weight_bridge_ticket_no, :transporter_id, :weight_before_unloading,:weight_after_unloading, :plate_no, :trailer_plate_no, :drivers_name, :remark,
                                      :receipt_lines => [:id, :commodity_category_id, :commodity_id, :unit_of_measure_id,  :quantity, :project_id]
                                      )
