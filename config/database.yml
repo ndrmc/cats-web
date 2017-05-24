@@ -24,7 +24,7 @@ default: &default
 
 development:
   <<: *default
-  database: cats_development
+  database: cats_pro
   username: cats
   password: cats
 

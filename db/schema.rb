@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170523061219) do
+ActiveRecord::Schema.define(version: 20170524111751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -309,9 +309,11 @@ ActiveRecord::Schema.define(version: 20170523061219) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.string   "guid_ref"
+    t.integer  "organization_id"
     t.index ["commodity_category_id"], name: "index_dispatch_items_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_dispatch_items_on_commodity_id", using: :btree
     t.index ["dispatch_id"], name: "index_dispatch_items_on_dispatch_id", using: :btree
+    t.index ["organization_id"], name: "index_dispatch_items_on_organization_id", using: :btree
     t.index ["project_id"], name: "index_dispatch_items_on_project_id", using: :btree
   end
 
@@ -1295,6 +1297,7 @@ ActiveRecord::Schema.define(version: 20170523061219) do
   add_foreign_key "contributions", "hrds"
   add_foreign_key "department_permissions", "departments"
   add_foreign_key "department_permissions", "permissions"
+  add_foreign_key "dispatch_items", "organizations"
   add_foreign_key "dispatches", "hubs"
   add_foreign_key "dispatches", "warehouses"
   add_foreign_key "receipt_lines", "unit_of_measures"

@@ -71,6 +71,7 @@
                   <th>Commodity Category</th>
                   <th>Commodity</th>
                   <th>Quantity</th>
+                  <th>Donor</th>
                   <th>Project</th>
                   <th></th>
                 </tr>
@@ -95,6 +96,12 @@
                     <td>
                           <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" value="<%= dispatch_line.quantity %>" readonly/>
                     </td>
+                     <td>
+                      <select name="dispatch[dispatch_items[][organization_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line.organization.id %>"><%= dispatch_line.organization.name %></option>
+                      </select>
+                    </td>
+
                     <td>
                       <select name="dispatch[dispatch_items[][project_id]]" class="form-control" readonly>
                         <option value="<%= dispatch_line.project.id %>"><%= dispatch_line.project.project_code %></option>
@@ -121,6 +128,10 @@
                       <td>
                           <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" data-parsley-required/>
                       </td>
+                       <td>
+                       <%= select_tag 'dispatch[dispatch_items[][organization_id]]',  options_from_collection_for_select( Organization.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+                      </td>
+                      
                       <td>
                        <%= select_tag 'dispatch[dispatch_items[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
                       </td>
