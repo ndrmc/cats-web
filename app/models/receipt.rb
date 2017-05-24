@@ -42,6 +42,7 @@ class Receipt < ApplicationRecord
     belongs_to :project 
     belongs_to :hub
   
+    validates :donor_id, presence: {message: " is required!"}
     after_save :pre_post
     after_update :reverse
 end

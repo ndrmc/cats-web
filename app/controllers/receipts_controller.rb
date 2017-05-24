@@ -82,9 +82,14 @@ class ReceiptsController < ApplicationController
     end
 
     receipt_map = receipt_params.except(:receipt_lines)
-
+    receipt_map[:receiveid] = "N/A" # to be removed: field included for data import purposes only
+    receipt_lines.each do |rl|
+      rl.receive_id = "N/A" # to be removed: field included for data import purposes only
+      rl.receive_item_id = "N/A" # to be removed: field included for data import purposes only
+    end
     receipt_map[:receipt_lines] = receipt_lines
-
+   
+    
     if @receipt.update( receipt_map )
       respond_to do |format|
         format.html { redirect_to receipts_path, notice: 'Receipt was successfully updated.' }
@@ -99,7 +104,7 @@ class ReceiptsController < ApplicationController
   private
 
   def receipt_params
-    params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :hub_id, :warehouse_id, :commodity_source_id,
+    params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :hub_id, :warehouse_id, :commodity_source_id,:donor_id,
                                      :weight_bridge_ticket_no, :transporter_id, :weight_before_unloading,:weight_after_unloading, :plate_no, :trailer_plate_no, :drivers_name, :remark,
                                      :receipt_lines => [:id, :commodity_category_id, :commodity_id, :unit_of_measure_id,  :quantity, :project_id]
                                      )
