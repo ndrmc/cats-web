@@ -90,6 +90,51 @@ namespace :cats do
       log.info "Task finished at #{end_time} and lasted #{duration} minutes."
       log.close
     end
+
+    desc "update dispatch_date date field of imported dispatches"
+    # This task is used to update dispatch_date fields that were incorrectly imported from the gin_imports table. 
+    # The dates on gin_import table are in Ethiopian calendar and have different formats.
+    # This is to keep an additional string field for the imported date fields and later filter and update them 
+    # by converting to a Gregorian date.
+    task update_dates: :environment do
+      log = ActiveSupport::Logger.new('log/update_dispatched_date.log')
+      start_time = Time.now
+      log.info "Started updating dispatch_date in dispatches at #{start_time}"
+     
+      success = 0
+      fail = 0
+      failed_rows = ''
+     
+      receipts_with_wrong_dates = Dispatch.where(:gin_no => GitImport.all.pluck(:gin))
+      receipts_with_wrong_dates.all.each do |d|
+
+      begin
+          git_import = GitImport.find_by_gin(d.gin_no)
+          d.dispatch_date = DateTime.now
+          d.dispatched_date_ec = git_import.dispatch_date
+          success += 1            
+          d.save!        
+          log.info "updated #{success} gin_import records"
+      rescue Exception => e
+          
+          fail += 1
+          failed_rows += ",#{d.id}"
+            
+          log.info 'Cause: '+ e.message
+          log.info e.backtrace.join("\n")
+       end
+
+      end
+      log.info "updated #{success} grn_import records successfully."
+      log.info "Failed records: #{fail}"
+      log.info "Failed rows \n #{ failed_rows }"
+
+      
+      end_time = Time.now
+      duration = (end_time - start_time ) / 1.minute
+      log.info "Task finished at #{end_time} and lasted #{duration} minutes."
+      log.close
+    end
   end
 end
 
