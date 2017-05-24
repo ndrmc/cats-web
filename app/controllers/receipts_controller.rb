@@ -82,9 +82,14 @@ class ReceiptsController < ApplicationController
     end
 
     receipt_map = receipt_params.except(:receipt_lines)
-
+    receipt_map[:receiveid] = "N/A" # to be removed: field included for data import purposes only
+    receipt_lines.each do |rl|
+      rl.receive_id = "N/A" # to be removed: field included for data import purposes only
+      rl.receive_item_id = "N/A" # to be removed: field included for data import purposes only
+    end
     receipt_map[:receipt_lines] = receipt_lines
-
+   
+    
     if @receipt.update( receipt_map )
       respond_to do |format|
         format.html { redirect_to receipts_path, notice: 'Receipt was successfully updated.' }

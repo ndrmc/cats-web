@@ -339,10 +339,10 @@
         $("#commodity-select > option:first").removeClass('hidden');
 
       });
-     
 
-      $('#donor_select').change(function(){
-        var donor_id = $(this).val();
+      
+      updateProjects(<%=@receipt.donor_id%>);
+      function updateProjects(donor_id){        
         if (donor_id === '')
           return;
         var allProjects = <%= @projects.to_json.html_safe %>
@@ -358,6 +358,11 @@
         proj_options.unshift(EMPTY_OPTION);
 
         $('.project_select').html(proj_options);
+      }
+
+      $('#donor_select').change(function(){
+        var donor_id = $(this).val();
+        updateProjects(donor_id);
       });
 
     });
