@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170523061219) do
+ActiveRecord::Schema.define(version: 20170524075102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -929,6 +929,8 @@ ActiveRecord::Schema.define(version: 20170523061219) do
     t.datetime "updated_at",                                         null: false
     t.string   "receiveid",               limit: 36,                 null: false
     t.string   "received_date_ec"
+    t.integer  "donor_id"
+
     t.index ["commodity_source_id"], name: "index_receipts_on_commodity_source_id", using: :btree
     t.index ["hub_id"], name: "index_receipts_on_hub_id", using: :btree
     t.index ["program_id"], name: "index_receipts_on_program_id", using: :btree
