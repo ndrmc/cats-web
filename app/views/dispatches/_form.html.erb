@@ -226,7 +226,8 @@
 <script type="text/javascript">
 
               var REMOVE_dispatchLINE_BTN = '<a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>';
-            
+              var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+              
               $( function() { 
 
                   $('#req_no_input').keyup( $.debounce( 500, function() { 
@@ -344,6 +345,8 @@
         var proj_options = $.map(projects_by_donor, function (val) {
           return '<option value="' + val.id + '">' + val.project_code + '</option>';
         });
+
+        proj_options.unshift(EMPTY_OPTION);
 
    
         $('.project_select').html(proj_options);
