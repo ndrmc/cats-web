@@ -1,5 +1,6 @@
 <%= form_for(dispatch, :html=> {:id => 'dispatch-form'} ) do |f| %>
-
+<% @projects = Project.all%>
+<% @uoms = UnitOfMeasure.all%>
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
@@ -104,7 +105,7 @@
 
                     <td>
                       <select name="dispatch[dispatch_items[][project_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line.project.id %>"><%= dispatch_line.project.project_code %></option>
+                        <option value="<%= dispatch_line.project&.id %>"><%= dispatch_line&.project&.project_code %></option>
                       </select>
                     </td>
                     <td>
@@ -129,12 +130,13 @@
                           <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" data-parsley-required/>
                       </td>
                        <td>
-                       <%= select_tag 'dispatch[dispatch_items[][organization_id]]',  options_from_collection_for_select( Organization.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+                       <%= select_tag 'dispatch[dispatch_items[][organization_id]]',  options_from_collection_for_select( Organization.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control', :id => 'donor_select'} %>
                       </td>
                       
-                      <td>
-                       <%= select_tag 'dispatch[dispatch_items[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
-                      </td>
+                    <td>
+                        <select name='dispatch[dispatch_items[][project_id]]', class = 'form-control project_select' %>
+                        </select>
+                       </td>
                       <td>
                           <a href="#" class="btn btn-primary" id="add-dispatch-line">Add</a>
                       </td>
@@ -329,6 +331,28 @@
                   });
 
 
+
+      function updateProjects(donor_id){        
+        if (donor_id === '')
+          return;
+        var allProjects = <%= @projects.to_json.html_safe %>
+     
+        var projects_by_donor = $.grep(allProjects, function (elem) {
+          return elem.organization_id == donor_id
+        });
+
+        var proj_options = $.map(projects_by_donor, function (val) {
+          return '<option value="' + val.id + '">' + val.project_code + '</option>';
+        });
+
+   
+        $('.project_select').html(proj_options);
+      }
+
+      $('#donor_select').change(function(){
+        var donor_id = $(this).val();
+        updateProjects(donor_id);
+      });
 
 
               });

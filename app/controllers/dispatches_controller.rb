@@ -74,7 +74,7 @@ class DispatchesController < ApplicationController
 
         @dispatch = Dispatch.find(params[:id])
 
-        @dispatch.modified = current_user.id
+        @dispatch.modified_by = current_user.id
 
         dispatch_line_ids = @dispatch.dispatch_items.collect { |rl| rl.id }
 
