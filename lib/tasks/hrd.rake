@@ -1,6 +1,6 @@
 namespace :cats do
 	namespace :hrd do
-		desc "Migrates adminunit records from v1 database to refactored location hierarchy based on ancestry gem path-enumeration pattern"
+		desc "Migrates hrd records location hierarchy"
 		task location: :environment do
 			# Update region_id and zone_id fields for HRD items
 			updated = 0

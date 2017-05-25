@@ -32,3 +32,15 @@ And finally,
         run rails cats:gin_import:import
     -to import grn records,
         run rails cats:delivery_import:import
+
+--------------------------------------------------------------------------
+
+To update date fieldsfor receipt and dispatch run: 
+ - rails cats:grn_import:update_dates
+ - rails cats:gin_import:update_dates
+The ethiopian calendar dates are now in a separate column called received_date_ec and dispatched_date_ec
+For reporting purposes, since all the data in the import table is for 2016 you can run the following scripts on the db.
+ - update dispatches set dispatch_date = '2016-01-01' where dispatched_date_ec is not null;
+ - update receipts set received_date = '2016-01-01' where received_date_ec is not null;
+ 
+ *** The ethiopian dates should be filtered and converted to gregorian dates at a later stage for historical purposes
