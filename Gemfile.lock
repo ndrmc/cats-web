@@ -110,6 +110,7 @@ GEM
     email_validator (1.6.0)
       activemodel
     erubis (2.7.0)
+    ethiopic_calendar (0.1.7)
     execjs (2.7.0)
     ffi (1.9.18)
     ffi (1.9.18-x86-mingw32)
@@ -282,6 +283,7 @@ DEPENDENCIES
   data-confirm-modal
   devise (~> 4.2.0)
   email_validator
+  ethiopic_calendar
   font-awesome-rails (= 4.7.0.0)
   geocoder
   graphiql-rails
