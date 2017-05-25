@@ -18,13 +18,18 @@ class ReceiptsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-#   test "should create receipt" do
-#     assert_difference('Receipt.count') do
-#       post receipts_url, params: { receipt: { grn_no: '1234' } }
-#     end
+  test "should create receipt" do
+    assert_difference('Receipt.count') do
+      post receipts_url, params: { receipt: { grn_no: '12345' ,donor_id: '1',draft: true,commodity_source_id: 1,
+                                   receipt_lines: [
+                                     {commodity_category_id: 1,commodity_id: 1,quantity: 200,
+                                     project_id: 1,unit_of_measure_id: 1,receive_id:  'test',receive_item_id:  'test'}
+                                   ]}
+                                 }
+    end
 
-#     assert_redirected_to receipts_url
-#   end
+    assert_redirected_to receipts_url
+  end
 
 
 
@@ -34,36 +39,22 @@ class ReceiptsControllerTest < ActionDispatch::IntegrationTest
   end
 
 
-#   test "should update receipt" do
-#     patch receipt_url('en', @receipt), params: { receipt: { name: 'Updated Name' } }
-#     assert_redirected_to receipts_url
+  test "should update receipt" do
+    patch receipt_url('en', @receipt), params: { receipt: { received_date: '2017-01-01',
+                                                  receipt_lines: [{commodity_category_id: 1,commodity_id: 1,quantity: 200,
+                                                  project_id: 1,unit_of_measure_id: 1,receive_id:  'test',receive_item_id:  'test'}
+                                                ]}
+                                              }
+    assert_response :success
 
-#   end
+   end
 
-  test "should destroy receipt" do
-    assert_difference('Receipt.count', -1) do
-      delete receipt_url('en',@receipt)
-    end
 
-    assert_redirected_to receipts_url
+  test "receipt donor id must not be nil" do   
+     new_receipt = Receipt.new(grn_no: '12345',draft: true,commodity_source_id: 1)     
+     assert !new_receipt.valid?
+     assert_equal [" is required!"], new_receipt.errors.messages[:donor_id]
   end
-
- 
-  
-#   test "receipt name must be present" do 
-#     assert @receipt.valid?
-#   end
-  
-  
-#   test "receipt name must not be blank" do
-#     new_receipt = Receipt.new(name: " ")
-#     assert !new_receipt.valid?
-#   end
-
-#   test "receipt name must not be nil" do
-#      new_receipt = Receipt.new(name: nil)
-#     assert !new_receipt.valid?
-#   end
 
 
 
