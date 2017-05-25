@@ -16,7 +16,7 @@
           </li>
           <%end%>
           <%if policy(PsnpPlan).index? %>
-          <li>
+          <li class="<%= 'active' if is_active_controller('psnp_plans') %>">
             <%= link_to  t(:psnp_plan), psnp_plans_url %>
           </li>
           <%end%>
@@ -25,7 +25,7 @@
             <%= link_to  t(:receipt_plan) , projects_path %>
           </li>
           <%end%>
-          <li>
+          <li class="<%= 'active' if is_active_controller('bid_plans') %>">
             <a href="#"><%= t(:bid_plan) %></a>
           </li>
           <%if policy(Ration).index? %>
@@ -61,7 +61,7 @@
       </li>
       <%end%>
       <% if policy(Requisition).index? %>
-      <li>
+      <li class="<%= 'active' if is_active_controller('requisitions')  %>">
         <%= link_to t(:request_allocation), requisitions_url %></a>
       </li>
       <%end%>
