@@ -50,7 +50,15 @@ class ProjectsController < ApplicationController
     authorize Project
     respond_to do |format|
       @project.modified_by = current_user.id
-      if @project.update(project_params)
+      puts "------------------------------new #{project_params[:amount].to_d}--------#{@project.amount}"
+      if project_params[:amount].to_d < @project.amount
+        @project.errors[:amount] << 'can not be less than the previous amount.'
+       
+        format.html { render :edit }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      
+      
+      elsif @project.valid? && @project.update(project_params)
         format.html { redirect_to projects_path, notice: 'Project was successfully updated.' }
         format.json { render :show, status: :ok, location: @project }
       else
