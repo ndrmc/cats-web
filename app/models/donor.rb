@@ -16,4 +16,8 @@
 #
 
 class Donor < ApplicationRecord
+    validates :name, presence: true
+    validates :code, presence: true
+    validates :name, uniqueness: true
+    validates :code, uniqueness: true
 end
