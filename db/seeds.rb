@@ -131,9 +131,10 @@ if Program.count == 0
 end
 
 if Account.count == 0
-  Account.create(name: 'Borrowed', code: :borrowed, description: 'Resources which are borrowed, but have not yet been received at warehouses (Receipt Plan)')
-  Account.create(name: 'Purchased', code: :purchased, description: 'Resources which are purchased but have not yet been received at warehouses (Receipt Plan)')
-  Account.create(name: 'Pledged', code: :pledged, description: 'Resources which are donated but have not yet been received at warehouses (Receipt Plan)')
+  #Account.create(name: 'Borrowed', code: :borrowed, description: 'Resources which are borrowed, but have not yet been received at warehouses (Receipt Plan)')
+  #Account.create(name: 'Purchased', code: :purchased, description: 'Resources which are purchased but have not yet been received at warehouses (Receipt Plan)')
+  #Account.create(name: 'Pledged', code: :pledged, description: 'Resources which are donated but have not yet been received at warehouses (Receipt Plan)')
+  Account.create(name: 'Receivable', code: :receivable, description: 'Resources which are either donated,purchased or borrowed but have not yet been received at warehouses (Receipt Plan)')
   Account.create(name: 'Allocated', code: :allocated, description: 'Resources commited for dispatch through RRD. In CATS this indicates dispatch allocation')
   Account.create(name: 'Received', code: :received, description: 'Represents resources which are received at the hubs. This account represents Goods Receiving Note (GRN)')
   Account.create(name: 'Dispatched', code: :dispatched, description: 'Commodities which are dispatched from the warehouse to FDPs. This account represents Goods Issue Ticket (GIT) records.')
