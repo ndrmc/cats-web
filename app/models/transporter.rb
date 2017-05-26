@@ -27,5 +27,6 @@ class Transporter < ApplicationRecord
   has_many :transporter_addresses
 
   validates :name, presence: {message: "  is required!"}  
+  validates :name, uniqueness: true
 
 end
