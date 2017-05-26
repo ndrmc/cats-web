@@ -29,4 +29,7 @@ class Transporter < ApplicationRecord
   validates :name, presence: {message: "  is required!"}  
   validates :name, uniqueness: true
 
+  validates :code, presence: true
+  validates :code, uniqueness: true
+
 end
