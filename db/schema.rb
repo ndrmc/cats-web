@@ -800,6 +800,7 @@ ActiveRecord::Schema.define(version: 20170526013937) do
     t.string   "reference_no"
     t.integer  "si_id"
     t.text     "si_value"
+    t.boolean  "draft",              default: false
     t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
   end
 
@@ -951,7 +952,6 @@ ActiveRecord::Schema.define(version: 20170526013937) do
     t.string   "receiveid",               limit: 36,                 null: false
     t.string   "received_date_ec"
     t.integer  "donor_id"
-
     t.index ["commodity_source_id"], name: "index_receipts_on_commodity_source_id", using: :btree
     t.index ["hub_id"], name: "index_receipts_on_hub_id", using: :btree
     t.index ["program_id"], name: "index_receipts_on_program_id", using: :btree
