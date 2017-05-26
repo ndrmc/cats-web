@@ -26,7 +26,7 @@
         <div class="panel-heading">
             <form role="form" class="form-inline" action="/hrds/hrd_items" method="GET">
                 <input type="hidden" name="hrd_id" value="<%= @hrd.id %>">
-                <%= select_tag  :region_id,  options_from_collection_for_select( Location.where(location_type: 'region') , 'id', 'name', params[:region_id] ) , { :prompt => "Choose Region", :id => 'region-select', :class => 'form-control' }  %>
+                <%= select_tag  :region_id,  options_from_collection_for_select( Location.where(location_type: 'region') , 'id', 'name', params[:region_id] ) , { :prompt => "Choose Region", :id => 'sch', :class => 'form-control' }  %>
             </form>
 
         </div>
