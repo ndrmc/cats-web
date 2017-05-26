@@ -30,6 +30,7 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
      authorize Project
+     
     @project = Project.new(project_params)
     @project.created_by = current_user.id
     respond_to do |format|
@@ -46,7 +47,7 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update
-     authorize Project
+    authorize Project
     respond_to do |format|
       @project.modified_by = current_user.id
       if @project.update(project_params)
