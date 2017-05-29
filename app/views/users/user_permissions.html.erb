@@ -26,7 +26,7 @@
 
  <%= form_tag "/users/#{@user.id}/updatePermissions", method: :put do %>
 
-         <table class="table table-bordered cats-datatable">
+         <table class="table table-bordered cats-datatable" id="tbl">
          <thead>
           <tr>
              <th></th>
@@ -69,5 +69,30 @@ $('#selectAll').click(function() {
            this.checked = false;                        
        });
    } 
+});
+
+
+
+$("#tbl").dataTable().fnDestroy();
+var table = $('#tbl').DataTable();
+table.destroy();
+$("form").on('submit', function(e){
+   var $form = $(this);
+   // Iterate over all checkboxes in the table
+   table.$('input[type="checkbox"]').each(function(){
+      // If checkbox doesn't exist in DOM
+      if(!$.contains(document, this)){
+         // If checkbox is checked
+         if(this.checked){
+            // Create a hidden element 
+            $form.append(
+               $('<input>')
+                  .attr('type', 'hidden')
+                  .attr('name', this.name)
+                  .val(this.value)
+            );
+         }
+      } 
+   });          
 });
 </script>
