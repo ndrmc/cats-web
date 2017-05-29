@@ -70,7 +70,8 @@
               <thead>
                 <tr>
                   <th>Commodity Category</th>
-                  <th>Commodity</th>
+                  <th>Commodity</th>                 
+                  <th>Unit of Measure</th>
                   <th>Quantity</th>
                   <th>Donor</th>
                   <th>Project</th>
@@ -93,10 +94,15 @@
                       <select name="dispatch[dispatch_items[][commodity_id]]" class="form-control" readonly>
                         <option value="<%= dispatch_line.commodity.id %>"><%= dispatch_line.commodity.name %></option>
                       </select>
+                    </td>               
+                    <td>
+                      <select name="dispatch[dispatch_items[][unit_of_measure_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line.unit_of_measure.id %>"><%= dispatch_line.unit_of_measure.name %></option>
+                      </select>
                     </td>
                     <td>
                           <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" value="<%= dispatch_line.quantity %>" readonly/>
-                    </td>
+                    </td>                   
                      <td>
                       <select name="dispatch[dispatch_items[][organization_id]]" class="form-control" readonly>
                         <option value="<%= dispatch_line.organization.id %>"><%= dispatch_line.organization.name %></option>
@@ -122,8 +128,16 @@
                         <select name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
                           <option value="">-- Choose --</option>
                           <% Commodity.all.each do |commodity| %>
-                            <option value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden"><%= commodity.name %></option>
+                            <option data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden">
+                              <%= commodity.name %>
+                            </option>                         
                           <% end %>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="dispatch[dispatch_items[][unit_of_measure_id]]" id="uom-select" class="form-control" data-parsley-required>
+                          <option value="">-- Choose --</option>
+
                         </select>
                       </td>
                       <td>
@@ -357,7 +371,25 @@
         updateProjects(donor_id);
       });
 
+       $("#commodity-select").change(function () {
+        var categoryId = $(this).find('option:selected').data('uom-category-id');
+        var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
+        if ('' === categoryId)
+          return;
 
+        var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+          return elem.uom_category_id == categoryId
+        });
+
+        var options = $.map(unitOfMeasuresInCategory, function (val) {
+          return '<option value="' + val.id + '">' + val.name + '</option>';
+        });
+
+        options.unshift(EMPTY_OPTION);
+
+        $('#uom-select').html(options);
+
+      });
               });
             </script>
 

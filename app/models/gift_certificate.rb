@@ -45,4 +45,29 @@ class GiftCertificate < ApplicationRecord
   belongs_to :fund_source
   belongs_to :fund_type
   belongs_to :donor
+
+  validates :reference_no, uniqueness: true
+
+  validates :reference_no, presence: true
+  validates :gift_date, presence: true
+  validates :donor_id, presence: true
+  validates :program_id, presence: true
+  validates :fund_type_id, presence: true
+  validates :fund_source_id, presence: true
+  validates :commodity_id, presence: true
+  validates :mode_of_transport_id, presence: true
+  
+
+  before_destroy :check_for_status
+
+
+  private 
+  def check_for_status
+    if self.status != status[0] then
+         return false
+    end
+    
+  end
+  
+
 end

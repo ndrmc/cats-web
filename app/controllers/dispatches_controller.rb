@@ -121,7 +121,7 @@ class DispatchesController < ApplicationController
                 :storekeeper_name,
                 :drivers_name, 
                 :remark,
-                :dispatch_items => [:id, :commodity_category_id, :commodity_id, :quantity, :organization_id, :project_id]
+                :dispatch_items => [:id, :commodity_category_id, :commodity_id, :quantity,:unit_of_measure_id, :organization_id, :project_id]
             )
            
         end
