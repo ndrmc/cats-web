@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
   # GET /projects/new
   def new
      authorize Project
-    @project = Project.new
+    @project = Project.new(commodity_source: params[:source])
   end
 
   # GET /projects/1/edit
