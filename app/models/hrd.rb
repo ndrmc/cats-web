@@ -36,6 +36,5 @@ class Hrd < ApplicationRecord
   end
 
   validates :year_ec, :year_gc, :season_id, :ration_id, :duration, :month_from, :presence => true
-  validates :year_gc, uniqueness: {scope: :season_id}
-  validates :year_ec, uniqueness: {scope: :season_id}
+ 
 end

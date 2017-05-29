@@ -51,11 +51,7 @@ class HrdsControllerTest < ActionDispatch::IntegrationTest
       assert_redirected_to hrds_url
   end
 
-  test "name must be unique" do
-    duplicate_hrd = @hrd.dup
-    @hrd.save
-    assert_not duplicate_hrd.valid?
-  end
+ 
 
   test "fields must not be blank" do
     new_hrd = Hrd.new(year_ec: ' ', year_gc: '  ', ration_id: 2 )
