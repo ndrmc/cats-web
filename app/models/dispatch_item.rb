@@ -24,4 +24,5 @@ class DispatchItem < ApplicationRecord
     belongs_to :receipt 
     belongs_to :project     
     belongs_to :organization
+    belongs_to :unit_of_measure
 end

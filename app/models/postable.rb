@@ -11,7 +11,7 @@ module Postable
             receipt_journal = Journal.find_by({'code': :goods_received})
             posting_items = []
             self.receipt_lines.each do |receipt_line|
-                amount_in_ref = UnitOfMeasure.find(self.unit_of_measure_id).to_ref(self.quantity)
+                amount_in_ref = UnitOfMeasure.find(receipt_line.unit_of_measure_id).to_ref(receipt_line.quantity)
                 debit = PostingItem.new({
                     account_id: receivable_account.id,
                     journal_id: receipt_journal.id,
@@ -56,7 +56,7 @@ module Postable
             good_issue_journal = Journal.find_by({'code': :goods_issue})
             posting_items = []
             self.dispatch_items.each do |dispatch_line|
-                amount_in_ref = UnitOfMeasure.find(self.unit_of_measure_id).to_ref(self.quantity)
+                amount_in_ref = UnitOfMeasure.find(dispatch_line.unit_of_measure_id).to_ref(dispatch_line.quantity)
                 debit = PostingItem.new({
                     account_id: stock_account.id,
                     journal_id: good_issue_journal.id,
@@ -107,7 +107,7 @@ module Postable
                 delivery_journal = Journal.find_by({'code': :delivery})
                 posting_items = []
                 self.delivery_details.each do |delivery_detail|
-                    amount_in_ref = UnitOfMeasure.find(self.unit_of_measure_id).to_ref(self.received_quantity)
+                    amount_in_ref = UnitOfMeasure.find(delivery_detail.uom_id).to_ref(delivery_detail.received_quantity)
                     debit = PostingItem.new({
                         account_id: dispatched_account.id,
                         journal_id: delivery_journal.id,
