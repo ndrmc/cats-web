@@ -15,18 +15,16 @@
 
 class Account < ApplicationRecord
     enum code: {
-        borrowed: 0,
-        purchased: 1,
-        pledged: 2,
-        allocated: 3,
-        received: 4,
-        dispatched: 5,
-        delivered: 6,
-        lost: 7,
-        stock: 8,
-        distributed: 9,
-        repaid: 10,
-        statistics: 11
+        receivable: 1,
+        allocated: 2,
+        received: 3,
+        dispatched: 4,
+        delivered: 5,
+        lost: 6,
+        stock: 7,
+        distributed: 8,
+        repaid: 9,
+        statistics: 10
     }
 
     validates :name, presence: {messege: " is required!"}
