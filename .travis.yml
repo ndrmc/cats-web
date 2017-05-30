@@ -7,5 +7,4 @@ services:
 
 before_script:
   - cp config/database.yml.travis config/database.yml
-  - psql -c 'create database cats_travis_test;' -U postgres
-  - "rake db:migrate RAILS_ENV=test"
+  - psql -c 'create database cats_travis_test;' -U postgres  

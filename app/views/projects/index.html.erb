@@ -47,7 +47,7 @@
             <tr>
               <td><%= link_to project.project_code, edit_project_path(project) %></td>
               <td><%= project.commodity.name %></td>
-              <td><%= project.commodity_source.name %></td>
+              <td><%= project.commodity_source&.name %></td>
               <td><%= project.organization.name %></td>
               <td class="text-right"><%= project.amount%></td>
               <td><%= project.unit_of_measure.name %></td>
