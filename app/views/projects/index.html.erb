@@ -42,7 +42,7 @@
             <tr>
               <td><%= link_to project.project_code, edit_project_path(project) %></td>
               <td><%= Commodity.find(project.commodity_id).name%></td>
-              <td><%= project.commodity_source%></td>
+             
               <td><%= Organization.find(project.organization_id).name%></td>
               <td class="text-right"><%= project.amount%></td>
               <td><%= UnitOfMeasure.find(project.unit_of_measure_id).name%></td>
@@ -57,7 +57,7 @@
                 <%end%>
 
                   <% if !project.archived  %>
-                    <%= link_to 'projects/archive/' + project.id.to_s , :class => "btn btn-white btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                    <%= link_to "projects/#{project.id}/archive"  , method: :post, :class => "btn btn-white btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
                             <i class="fa fa-archive"></i>   
                         Archive     
                     <% end %>
