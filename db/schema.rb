@@ -310,7 +310,6 @@ ActiveRecord::Schema.define(version: 20170529081913) do
     t.datetime "updated_at",                            null: false
     t.string   "guid_ref"
     t.integer  "organization_id"
-    t.integer  "uom_id"
     t.integer  "unit_of_measure_id"
     t.index ["commodity_category_id"], name: "index_dispatch_items_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_dispatch_items_on_commodity_id", using: :btree
