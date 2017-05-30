@@ -13,7 +13,16 @@
   <div class="col-sm-8">
     <div class="title-action">
       <% if policy(Project).new? %>
-      <%= link_to 'New Project', new_project_path, :class => "btn btn-primary"%>
+      <% link_to 'New Project', new_project_path, :class => "btn btn-primary"%>
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">New Project <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <% CommoditySource.all.each do |source| %>
+           
+            <li><%= link_to "#{source.name}", new_project_path(source: source.id) %></li>
+          <% end %>        
+        </ul>
+       <div></div></div>
       <%end%>
     </div>
   </div>
@@ -37,22 +46,27 @@
             </tr>
           </thead>
 
+          <%
+            can_delete_project = policy(Project).new?
+            can_edit_project = policy(Project).edit?
+          %>
+
           <tbody>
             <% @projects.each do |project| %>
             <tr>
               <td><%= link_to project.project_code, edit_project_path(project) %></td>
-              <td><%= Commodity.find(project.commodity_id).name%></td>
-              <td><%= project.commodity_source%></td>
-              <td><%= Organization.find(project.organization_id).name%></td>
+              <td><%= project.commodity.name %></td>
+              <td><%= project.commodity_source&.name %></td>
+              <td><%= project.organization.name %></td>
               <td class="text-right"><%= project.amount%></td>
-              <td><%= UnitOfMeasure.find(project.unit_of_measure_id).name%></td>
+              <td><%= project.unit_of_measure.name %></td>
               <td><%= project&.publish_date&.strftime('%d-%b-%Y')%></td>
               <td>
-              <% if policy(project).edit? %>
+                <% if can_edit_project %>
                 <%= link_to 'Edit', edit_project_path(project) %>
                 &middot;
                 <%end%>
-                <% if policy(Project).new? %>
+                <% if can_delete_project %>
                 <%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' } %>
                 <%end%>
 

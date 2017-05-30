@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     authorize Project
-    @projects = Project.all
+    @projects = Project.all.includes([:commodity, :organization, :commodity_source, :unit_of_measure])    
   end
 
   # GET /projects/1
@@ -17,8 +17,8 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-     authorize Project
-    @project = Project.new
+    authorize Project
+    @project = Project.new(commodity_source_id: params[:source])
   end
 
   # GET /projects/1/edit
@@ -30,7 +30,7 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
      authorize Project
-     
+
     @project = Project.new(project_params)
     @project.created_by = current_user.id
     respond_to do |format|
@@ -50,13 +50,13 @@ class ProjectsController < ApplicationController
     authorize Project
     respond_to do |format|
       @project.modified_by = current_user.id
-     
+
       if project_params[:amount].to_d < @project.amount
-        @project.errors[:amount] << 'can not be less than the previous amount.'       
+        @project.errors[:amount] << 'can not be less than the previous amount.'
         format.html { render :edit }
         format.json { render json: @project.errors, status: :unprocessable_entity }
-      
-      
+
+
       elsif @project.valid? && @project.update(project_params)
         format.html { redirect_to projects_path, notice: 'Project was successfully updated.' }
         format.json { render :show, status: :ok, location: @project }
@@ -101,6 +101,6 @@ end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
-    params.require(:project).permit(:project_code, :commodity_id, :commodity_source, :organization_id, :amount, :unit_of_measure_id, :publish_date)
+    params.require(:project).permit(:project_code, :commodity_id, :commodity_source_id, :organization_id, :amount, :unit_of_measure_id, :publish_date)
   end
 end

@@ -19,7 +19,7 @@
         <% end %>
                <div class="form-group">
                   <%= f.label :commodity_source %>
-                  <%= f.collection_select :commodity_source,  CommoditySource.order(:name), :id, :name, {include_blank: true}, {class: 'form-control'} %>
+                  <%= f.collection_select :commodity_source_id,  CommoditySource.order(:name), :id, :name, {include_blank: true}, {class: 'form-control'} %>
                </div>
                <div class="form-group">
                   <%= f.label :organization_id %>

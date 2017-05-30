@@ -37,7 +37,7 @@ class TransporterAddressesController < ApplicationController
 
     respond_to do |format|
       if @transporter_address.save
-        format.html { redirect_to transporter_path(Transporter.find(@transporter_address.transporter_id)), notice: 'Transporter address was successfully created.' }        
+        format.html { redirect_to transporter_path(Transporter.find(@transporter_address.transporter_id)), notice: 'Transporter address was successfully created.' }
         format.json { render :show, status: :created, location: @transporter_address }
       else
         format.html { render :new }
