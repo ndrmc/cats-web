@@ -35,5 +35,6 @@ class Hrd < ApplicationRecord
     end
   end
 
-
+  validates :year_ec, :year_gc, :season_id, :ration_id, :duration, :month_from, :presence => true
+ 
 end
