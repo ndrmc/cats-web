@@ -67,6 +67,21 @@ class ProjectsController < ApplicationController
     end
   end
 
+ def archive
+     @project = Project.find params[:id] 
+
+            respond_to do |format|
+            if @project.update_columns(:archived => true) 
+                format.html { redirect_to projects_url, notice: 'Project was successfully archived.' }
+            else
+                format.html { 
+                    flash[:error] = "Save failed! Please check your input and try again shortly."
+                    redirect_to projects_url 
+                }
+            end
+        end
+end
+
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy

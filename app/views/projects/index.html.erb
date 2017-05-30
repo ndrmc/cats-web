@@ -55,6 +55,14 @@
                 <% if policy(Project).new? %>
                 <%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' } %>
                 <%end%>
+
+                  <% if !project.archived  %>
+                    <%= link_to 'projects/archive/' + project.id.to_s , :class => "btn btn-white btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                            <i class="fa fa-archive"></i>   
+                        Archive     
+                    <% end %>
+                  <% end %>
+
               </td>
             </tr>
             <% end %>
