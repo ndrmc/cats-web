@@ -15,14 +15,17 @@
       <% if policy(Project).new? %>
       <% link_to 'New Project', new_project_path, :class => "btn btn-primary"%>
       <div class="btn-group">
-        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">New Project <span class="caret"></span></button>
-        <ul class="dropdown-menu">
+        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">New Project
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
           <% CommoditySource.all.each do |source| %>
-           
-            <li><%= link_to "#{source.name}", new_project_path(source: source.id) %></li>
-          <% end %>        
+
+          <li><%= link_to "#{source.name}", new_project_path(source: source.id) %></li>
+          <% end %>
         </ul>
-       <div></div></div>
+        <div></div>
+      </div>
       <%end%>
     </div>
   </div>
