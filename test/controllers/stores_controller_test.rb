@@ -50,4 +50,22 @@ class StoresControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to warehouse_path(@warehouse)
   end
+
+  test "name and store keeper name must not be blank" do
+    new_store = Store.new(name: ' ', store_keeper_name: ' ')
+    assert !new_store.valid?
+  end
+
+  test "name and store keeper name must not be nil" do
+    new_store = Store.new(name: nil, store_keeper_name: nil)
+    assert !new_store.valid?
+  end
+
+  test "a store name must be unique under the same warehouse" do 
+    duplicated_store = @store.dup
+    @store.save
+    assert_not duplicated_store.valid?
+  end
+  
+  
 end
