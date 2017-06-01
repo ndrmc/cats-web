@@ -29,8 +29,9 @@ include Filterable
   #scope :fdp_id, ->(fdp_id) { where fdp_id: fdp_id }
   scope :operation_id, ->(operation_id) { where operation_id: operation_id }
   scope :woreda, ->(woreda) {where fdp_id: Fdp.find_by_location_id(woreda)? Fdp.find_by_location_id(woreda).id : nil}
-
+  
   has_many :delivery_details
+  belongs_to :fdp
   accepts_nested_attributes_for :delivery_details, reject_if: :all_blank
 
   validates :receiving_number, uniqueness: true

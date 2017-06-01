@@ -25,12 +25,12 @@ class OperationsController < ApplicationController
     end
 
     # Find all deliveries within current operation
-    @deliveries = Delivery.where(operation_id: params[:id])
+    @deliveries = Delivery.where(operation_id: params[:id]).includes(:delivery_details, :fdp)
     # group deliveries by region
    
    @delivery_commodites =[]
     if @deliveries
-      @deliveries_map = @deliveries.group_by { |d| Fdp.find(d.fdp_id).region}
+      @deliveries_map = @deliveries.group_by { |d| d.fdp.region}
       @deliveries.map(&:delivery_details).each do |d| 
          @delivery_commodites << d.map(&:commodity_id).first         
         end
@@ -54,10 +54,10 @@ class OperationsController < ApplicationController
     end
 
     # Find all dispatches within current operation
-    @dispatches = Dispatch.where(operation_id: params[:id])
+    @dispatches = Dispatch.where(operation_id: params[:id]).includes(:dispatch_items, :fdp)
     # group dispatches by region
     if @dispatches
-      @dispatches_map = @dispatches.group_by { |d| Fdp.find(d.fdp_id).region }
+      @dispatches_map = @dispatches.group_by { |d| d.fdp.region }
 
     end
 
