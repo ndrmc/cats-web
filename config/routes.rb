@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   
   
+ 
  scope "(:locale)", locale: /en|am/ do
   resources :case_teams
+   resources :permissions
   resources :departments
   resources :role_types
   resources :transporters
