@@ -48,4 +48,23 @@ class RationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to rations_url
   end
+
+  test "refeence # should be unique" do
+    duplicated_ration = @ration.dup
+    @ration.save
+    assert_not duplicated_ration.valid?
+  end
+
+  test "reference # must not be blank" do
+      new_ration = Ration.new(reference_no: ' ')
+      assert !new_ration.valid?
+  end
+
+  test "reference # should not be nil" do
+     new_ration = Ration.new(reference_no: nil)
+      assert !new_ration.valid?
+  end
+  
+
+  
 end
