@@ -15,14 +15,17 @@
       <% if policy(Project).new? %>
       <% link_to 'New Project', new_project_path, :class => "btn btn-primary"%>
       <div class="btn-group">
-        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">New Project <span class="caret"></span></button>
-        <ul class="dropdown-menu">
+        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">New Project
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
           <% CommoditySource.all.each do |source| %>
-           
-            <li><%= link_to "#{source.name}", new_project_path(source: source.id) %></li>
-          <% end %>        
+
+          <li><%= link_to "#{source.name}", new_project_path(source: source.id) %></li>
+          <% end %>
         </ul>
-       <div></div></div>
+        <div></div>
+      </div>
       <%end%>
     </div>
   </div>
@@ -58,6 +61,7 @@
               <td><%= project.commodity.name %></td>
               <td><%= project.commodity_source&.name %></td>
               <td><%= project.organization.name %></td>
+
               <td class="text-right"><%= project.amount%></td>
               <td><%= project.unit_of_measure.name %></td>
               <td><%= project&.publish_date&.strftime('%d-%b-%Y')%></td>
@@ -69,6 +73,14 @@
                 <% if can_delete_project %>
                 <%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' } %>
                 <%end%>
+
+                  <% if !project.archived  %>
+                    <%= link_to "projects/#{project.id}/archive"  , method: :post, :class => "btn btn-white btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                            <i class="fa fa-archive"></i>   
+                        Archive     
+                    <% end %>
+                  <% end %>
+
               </td>
             </tr>
             <% end %>
