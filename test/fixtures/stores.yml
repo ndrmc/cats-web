@@ -6,10 +6,10 @@
 #
 one: 
     name: 'store 1'
-    warehouse_id: 1
+    warehouse: warehouse1
     store_keeper_name: 'abebe' 
 #
 two:
     name: 'store 2'
-    warehouse_id: 2
+    warehouse: warehouse1
     store_keeper_name: 'abebe' 

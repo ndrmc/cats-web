@@ -6,7 +6,7 @@ class StoresControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
-    @warehouse = Warehouse.new(id: 1, name: 'warehouse 1')
+    @warehouse =warehouses(:warehouse1)
     @store = stores(:one)
   end
 
