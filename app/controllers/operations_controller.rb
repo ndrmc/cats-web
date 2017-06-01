@@ -93,17 +93,12 @@ class OperationsController < ApplicationController
     @requisitions_map.each do |region, requisition_list|
       @requisition_summary_region={}
       @commodities.each do |c|
-
-          req_by_commodity = requisition_list.select{|r| r.commodity_id == c.id }
-          sum = 0
-          req_by_commodity.each do |req|
-            if req.commodity_id == c.id
-               sum += req.requisition_items.sum(&:amount)
-            end           
-          end
+        sum = 0;
+        requisition_list.select{|r| r.commodity_id == c.id }.each do |req|
+          sum = req.requisition_items.sum(&:amount) 
+        end          
          
-          @requisition_summary_region[c.id] = @requisition_summary_region[c.id] ? @requisition_summary_region[c.id] + sum : sum
-        
+        @requisition_summary_region[c.id] = @requisition_summary_region[c.id] ? @requisition_summary_region[c.id] + sum : sum        
 
       end
       @requisitions_map[region] = @requisition_summary_region
