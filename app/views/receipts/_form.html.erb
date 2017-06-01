@@ -1,5 +1,5 @@
 <%= form_for(receipt, :html=> {:id => 'receipt-form'} ) do |f| %>
-<% @projects = Project.all%>
+<% @projects = Project.where('archived = ? OR archived IS NULL',false)%>
 <% @uoms = UnitOfMeasure.all%>
 <% @warehouses = Warehouse.all %>
 <div class="row">
@@ -348,7 +348,7 @@
         if (donor_id === '')
           return;
         var allProjects = <%= @projects.to_json.html_safe %>
-       
+      
         var projects_by_donor = $.grep(allProjects, function (elem) {
           return elem.organization_id == donor_id
         });
