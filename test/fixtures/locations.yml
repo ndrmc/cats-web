@@ -1,8 +1,8 @@
-one:
+location1:
     name: 'AFAR'
     location_type: :region
    
-two:
+location2:
     name: 'Oromia'
     location_type: :region
    
