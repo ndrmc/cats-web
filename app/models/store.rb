@@ -19,4 +19,9 @@ class Store < ApplicationRecord
   belongs_to :store_owner
   belongs_to :warehouse
 
+  validates :name, presence: true
+  validates :warehouse_id,  presence:true
+
+  validates :name, uniqueness: {scope: :warehouse_id }
+
 end

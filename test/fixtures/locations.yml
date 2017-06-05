@@ -5,5 +5,9 @@ one:
 two:
     name: 'Oromia'
     location_type: :region
+
+location1:
+    name: 'Amhara'
+    location_type: :region
    
     
