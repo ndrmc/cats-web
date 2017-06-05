@@ -120,7 +120,7 @@ class RegionalRequestsController < ApplicationController
       rrdi = RegionalRequestItem.new( regional_request: @regional_request, fdp: fdp, number_of_beneficiaries: number_of_beneficiaries)
 
       if rrdi.save
-        format.json { render json: {successful: true, zoneName: fdp.zone.name, woredaName: fdp.woreda ? fdp.woreda.name : '-', fdpName:  fdp.name, number_of_beneficiaries: number_of_beneficiaries, rrdi: rrdi } }
+        format.json { render json: {successful: true, zoneName: fdp.zone, woredaName: fdp.woreda , fdpName:  fdp.name, number_of_beneficiaries: number_of_beneficiaries, rrdi: rrdi } }
       else
         format.json { render json: {successful: false, errorMessage: "Save failed. Please try again shortly."} }
       end
