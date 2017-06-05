@@ -1,6 +1,11 @@
 fdp1:
-    name: 'fdp name'
+    name: 'fdp name 2'
     region: 'afar'
     zone: 'zone 1'
     woreda: 'Elidar'
+fdp2:
+    name: 'fdp name 3'
+    region: 'afar'
+    zone: 'zone 2'
+    woreda: 'woreda 3'
     
