@@ -6,6 +6,7 @@ class WarehousesControllerTest < ActionDispatch::IntegrationTest
 
   setup do
      sign_in users(:admin)
+    @hub = hubs(:hub1)
     @warehouse = warehouses(:one)
   end
 
@@ -14,10 +15,10 @@ class WarehousesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get new" do
-    get new_warehouse_url
-    assert_response :success
-  end
+#  test "should get new" do
+#    get new_warehouse_url
+#    assert_response :success
+#  end
 
   test "should create warehouse" do
     assert_difference('Warehouse.count') do
@@ -44,9 +45,26 @@ class WarehousesControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy warehouse" do
     assert_difference('Warehouse.count', -1) do
-      delete warehouse_url(@warehouse)
+      delete warehouse_url('en',@warehouse)
     end
 
-    assert_redirected_to warehouse_url(@hub)
+    assert_redirected_to hub_url(@hub)
   end
+
+  test "warehouse name must be nique under the same hub" do
+    duplicate_warehouse = @warehouse.dup
+    @warehouse.save
+    assert_not duplicate_warehouse.validate
+  end
+  
+  test "warehouse name must not be blank"  do
+    new_warehouse = Warehouse.new(name: ' ')
+    assert !new_warehouse.validate
+  end
+
+  test "warehouse name must not be nil"  do
+    new_warehouse = Warehouse.new(name: nil)
+    assert !new_warehouse.validate
+  end
+  
 end
