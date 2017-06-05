@@ -1,0 +1,4 @@
+warehouse1:
+    name: 'sample warehouse'
+    hub: hub1
+    location_id: 1
