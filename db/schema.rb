@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170530062714) do
+
+ActiveRecord::Schema.define(version: 20170530093653) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -470,7 +472,7 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.string   "reference_no",                                                null: false
     t.date     "gift_date"
     t.string   "vessel"
-    t.integer  "donor_id"
+    t.integer  "organization_id"
     t.date     "eta"
     t.integer  "program_id"
     t.integer  "mode_of_transport_id"
