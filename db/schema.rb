@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170530062714) do
+
+ActiveRecord::Schema.define(version: 20170530093653) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +101,13 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
+  end
+
+  create_table "case_units", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -210,8 +219,8 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.datetime "deleted_at"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
-    t.string   "delivery_id_guid"
     t.string   "received_date_ec"
+    t.index ["gin_number"], name: "index_deliveries_on_gin_number", unique: true, using: :btree
     t.index ["receiving_number"], name: "index_deliveries_on_receiving_number", unique: true, using: :btree
   end
 
@@ -223,11 +232,10 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.integer  "delivery_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",              default: false
+    t.boolean  "deleted",           default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "guid_ref_delivery_id"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "delivery_imports", force: :cascade do |t|
@@ -272,6 +280,7 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.boolean  "imported"
+    t.string   "received_date_ec"
   end
 
   create_table "department_permissions", force: :cascade do |t|
@@ -308,7 +317,6 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.datetime "deleted_at"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
-    t.string   "guid_ref"
     t.integer  "organization_id"
     t.integer  "unit_of_measure_id"
     t.index ["commodity_category_id"], name: "index_dispatch_items_on_commodity_category_id", using: :btree
@@ -340,7 +348,6 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.integer  "hub_id"
     t.integer  "warehouse_id"
     t.string   "storekeeper_name",            limit: 200,                 null: false
-    t.string   "dispatch_id_guid"
     t.string   "dispatched_date_ec"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
@@ -470,7 +477,7 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.string   "reference_no",                                                null: false
     t.date     "gift_date"
     t.string   "vessel"
-    t.integer  "donor_id"
+    t.integer  "organization_id"
     t.date     "eta"
     t.integer  "program_id"
     t.integer  "mode_of_transport_id"
@@ -611,6 +618,17 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.string   "address"
     t.index ["deleted_at"], name: "index_hubs_on_deleted_at", using: :btree
     t.index ["name"], name: "index_hubs_on_name", unique: true, using: :btree
+  end
+
+  create_table "idp_reasons", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "journals", force: :cascade do |t|
@@ -1010,6 +1028,17 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.index ["requisition_no"], name: "index_requisitions_on_requisition_no", unique: true, using: :btree
   end
 
+  create_table "role_types", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",     default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by"
@@ -1022,6 +1051,15 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.index ["deleted_at"], name: "index_roles_on_deleted_at", using: :btree
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
+  end
+
+  create_table "roles_departments", force: :cascade do |t|
+    t.integer  "roles_id"
+    t.integer  "departments_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["departments_id"], name: "index_roles_departments_on_departments_id", using: :btree
+    t.index ["roles_id"], name: "index_roles_departments_on_roles_id", using: :btree
   end
 
   create_table "seasons", force: :cascade do |t|
@@ -1060,6 +1098,10 @@ ActiveRecord::Schema.define(version: 20170530062714) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+  end
+
+  create_table "test", id: false, force: :cascade do |t|
+    t.bigint "id"
   end
 
   create_table "transport_order_items", force: :cascade do |t|
