@@ -4,10 +4,10 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
-    id: 1 
-    name: 'new organization'
+one: 
+    name: 'Yen'
+    symbol: 'C'
 #
 two:
-    id: 2
-    name: 'new organization 2'
+    name: 'Frank'
+    symbol: 'F'

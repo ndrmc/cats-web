@@ -76,6 +76,33 @@ class OperationsController < ApplicationController
       end
       @dispatches_map[region] = @dispatch_summary_region
     end
+
+     # Find all regioal requests within current operation
+    @regional_requests = RegionalRequest.where(operation_id: params[:id]).includes(:regional_request_items)
+
+     # Find all requisistions within current operation
+    @requisitions = Requisition.where(operation_id: params[:id]).includes(:requisition_items)
+    # group dispatches by region
+    if @requisitions
+      @requisitions_map = @requisitions.group_by { |d| d.region }
+    end
+
+    @requisition_summary_region = {}
+
+    # find sum total of amount by commodity within a region
+    @requisitions_map.each do |region, requisition_list|
+      @requisition_summary_region={}
+      @commodities.each do |c|
+        sum = 0;
+        requisition_list.select{|r| r.commodity_id == c.id }.each do |req|
+          sum = req.requisition_items.sum(&:amount) 
+        end          
+         
+        @requisition_summary_region[c.id] = @requisition_summary_region[c.id] ? @requisition_summary_region[c.id] + sum : sum        
+
+      end
+      @requisitions_map[region] = @requisition_summary_region
+    end
   end
 
   # GET /operations/new
