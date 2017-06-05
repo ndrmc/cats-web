@@ -43,7 +43,14 @@
            <div class="form-group">
             <%= f.label :hrd_id, :class => 'col-sm-2 control-label' %>
             <div class="col-sm-4">
-              <%= f.collection_select :hrd_id, Hrd.order(:year_ec), :id, :name,{include_blank: 'Select HRD'}, {:class => 'form-control'} %>
+              <%= f.collection_select :hrd_id, Hrd.order(:year_gc), :id, :name,{include_blank: 'Select HRD'}, {:class => 'form-control'} %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= f.label 'FSCD Plan', :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-4">
+              <%= f.collection_select :fscd_annual_plan_id, PsnpPlan.order(:year_gc), :id, :name,{include_blank: 'Select PSNP Plan'}, {:class => 'form-control'} %>
             </div>
           </div>
 
@@ -92,3 +99,33 @@
   </div>
 
 </div>
+
+<script>
+
+  $(function(){
+      set_selectors();
+      function set_selectors(){
+          if($('#operation_program_id option:selected').text() == 'IDPs')
+          {
+              $('#operation_fscd_annual_plan_id').prop('disabled',true);
+              $('#operation_hrd_id').prop('disabled',true);
+          }
+          if($('#operation_program_id option:selected').text() == 'PSNP')
+          {
+
+              $('#operation_hrd_id').prop('disabled',true);
+              $('#operation_fscd_annual_plan_id').prop('disabled',false);
+          }
+          if($('#operation_program_id option:selected').text() == 'Relief')
+          {
+              $('#operation_hrd_id').prop('disabled',false);
+              $('#operation_fscd_annual_plan_id').prop('disabled',true);
+          }
+      }
+      $('#operation_program_id').change(function(){
+
+         set_selectors();
+      })
+  });
+
+</script>

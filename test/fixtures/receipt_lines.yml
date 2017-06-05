@@ -1,0 +1,13 @@
+
+one:
+    receipt_id: 1
+    commodity_category_id: 1
+    commodity_id: 1
+    quantity: 200
+    project_id: 1         
+    unit_of_measure_id: 1
+    receive_id:  'test'        
+    receive_item_id:  'test'
+
+   
+

@@ -3,7 +3,7 @@
     <h2>HRDs</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <a href="#">Plan</a>
       </li>
       <li class="active">
         <strong>HRDs</strong>
@@ -39,21 +39,12 @@
                 <% end %>
               </select>
             </div>
-          </div>
-
-          <div class="col-md-9">
-            <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control">
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-sm btn-primary">
-                  Go!</button>
-              </span>
-            </div>
-          </div>
+          </div>         
         </div>
 
         <div class="project-list">
 
-          <table class="table table-hover">
+          <table class="table table-hover cats-datatable">
             <thead>
               <tr>
                 <th>Status</th>
@@ -83,12 +74,13 @@
                     <div style="width: 48%;" class="progress-bar"></div>
                   </div>
                 </td>
+                  <% if policy(@hrds).show? %>
                 <td class="project-actions">
                   <a href="<%= hrd_path(hrd)%>" class="btn btn-white btn-sm">
                     <i class="fa fa-folder"></i>
                     View
                   </a>
-                  
+                  <%end%>
                   <% if policy(@hrds).edit? %>
                   <a href="<%= edit_hrd_path(hrd)%>" class="btn btn-white btn-sm">
                     <i class="fa fa-pencil"></i>   
@@ -118,7 +110,10 @@
 <script type="text/javascript">
     $(function() { 
         $("#status-filter").change( function() { 
-            window.location.href = '/hrds/?status=' + $(this).val();  
+            if($(this).val()=="")
+              window.location.href = '/hrds';
+            else
+              window.location.href = '/hrds/?status=' + $(this).val();  
         });
     }); 
 </script>

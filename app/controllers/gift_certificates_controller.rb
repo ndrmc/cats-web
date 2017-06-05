@@ -1,15 +1,18 @@
 class GiftCertificatesController < ApplicationController
   before_action :set_gift_certificate, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+
 
   # GET /gift_certificates
   # GET /gift_certificates.json
   def index
-    @gift_certificates = GiftCertificate.filter(params.slice(:donor_id, :status))
+    @gift_certificates = GiftCertificate.filter(params.slice(:organization_id, :status)).includes([:organization, :commodity, :mode_of_transport])
   end
 
   # GET /gift_certificates/1
   # GET /gift_certificates/1.json
   def show
+
   end
 
   # GET /gift_certificates/new
@@ -19,7 +22,6 @@ class GiftCertificatesController < ApplicationController
 
   # GET /gift_certificates/1/edit
   def edit
-   
   end
 
   # POST /gift_certificates
@@ -70,11 +72,8 @@ class GiftCertificatesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def gift_certificate_params
-      params.require(:gift_certificate).permit(:reference_no, :gift_date, :vessel, :donor_id, :eta, :program_id, :mode_of_transport_id, 
+      params.require(:gift_certificate).permit(:reference_no, :gift_date, :vessel, :organization_id, :eta, :program_id, :mode_of_transport_id,
       :port_name, :status, :customs_declaration_no,:purchase_year,:expiry_date,:fund_type_id,:account_no, :bill_of_loading, :amount,
       :estimated_price, :estimated_tax, :fund_source_id, :currency_id, :commodity_id)
     end
 end
-  
-    
-   

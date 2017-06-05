@@ -1,0 +1,9 @@
+one:
+    name: 'AFAR'
+    location_type: :region
+   
+two:
+    name: 'Oromia'
+    location_type: :region
+   
+    

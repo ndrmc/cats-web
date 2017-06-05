@@ -1,6 +1,6 @@
 class TransportersController < ApplicationController
   before_action :set_transporter, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
   # GET /transporters
   # GET /transporters.json
   def index
@@ -25,7 +25,7 @@ class TransportersController < ApplicationController
   # POST /transporters.json
   def create
     @transporter = Transporter.new(transporter_params)
-
+    @transporter.created_by = current_user.id
     respond_to do |format|
       if @transporter.save
         format.html { redirect_to transporters_path, notice: 'Transporter was successfully created.' }
@@ -41,6 +41,7 @@ class TransportersController < ApplicationController
   # PATCH/PUT /transporters/1.json
   def update
     respond_to do |format|
+      @transporter.modified_by = current_user.id
       if @transporter.update(transporter_params)
         format.html { redirect_to transporter_path @transporter, notice: 'Transporter was successfully updated.' }
         format.json { render :show, status: :ok, location: @transporter }
@@ -62,13 +63,13 @@ class TransportersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_transporter
-      @transporter = Transporter.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_transporter
+    @transporter = Transporter.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def transporter_params
-      params.require(:transporter).permit(:name, :code, :ownership_type_id, :vehicle_count, :lift_capacity, :capital, :employees, :contact, :contact_phone, :remark, :status)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def transporter_params
+    params.require(:transporter).permit(:name, :code, :ownership_type_id, :vehicle_count, :lift_capacity, :capital, :employees, :contact, :contact_phone, :remark, :status)
+  end
 end

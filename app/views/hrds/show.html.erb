@@ -69,12 +69,8 @@
                             <tr>
                                 <td><%= Location.find(aggregate.region_id).name %></td>
 
-                                <td><%= aggregate.total_beneficiaries %></td>
-                               <% if policy(Hrd).edit? %>
-                               
-
                                 <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter aggregate.total_beneficiaries %></td>
-
+                              <% if policy(Hrd).edit? %>
                                 <td><a href="/hrds/hrd_items?hrd_id=<%= @hrd.id %>&region_id=<%= aggregate.region_id %>"> <i class="fa fa-edit"></i> Edit</a></td>
                                 <%end%>
                             </tr>

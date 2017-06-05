@@ -26,7 +26,8 @@ class Posting < ApplicationRecord
     enum document_type: {
         receipt: 0,
         dispatch: 1,
-        delivery: 2
+        delivery: 2,
+        project: 3
     }   
 
     has_many :posting_items

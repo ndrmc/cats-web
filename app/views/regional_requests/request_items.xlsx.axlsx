@@ -8,6 +8,6 @@ sheet.add_row [ "", "Zone", "Woreda", "FDP", "Number of Beneficiaries" ]
 
 @regional_request.regional_request_items.each do |rri|
   woreda = rri.fdp.woreda
-  sheet.add_row [ rri.fdp.id, rri.fdp.zone.name, woreda ? woreda.name : '', rri.fdp.name, rri.number_of_beneficiaries ], :style => [nil, nil, nil, nil, unlocked]
+  sheet.add_row [ rri.fdp.id, rri.fdp.zone, woreda ? woreda : '', rri.fdp.name, rri.number_of_beneficiaries ], :style => [nil, nil, nil, nil, unlocked]
 end
 

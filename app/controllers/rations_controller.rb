@@ -1,6 +1,6 @@
 class RationsController < ApplicationController
   before_action :set_ration, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
   # GET /rations
   # GET /rations.json
   def index
@@ -25,7 +25,7 @@ class RationsController < ApplicationController
   # POST /rations.json
   def create
     @ration = Ration.new(ration_params)
-
+    @ration.created_by = current_user.id
     respond_to do |format|
       if @ration.save
         format.html { redirect_to @ration, notice: 'Ration was successfully created.' }
@@ -40,7 +40,9 @@ class RationsController < ApplicationController
   # PATCH/PUT /rations/1
   # PATCH/PUT /rations/1.json
   def update
+
     respond_to do |format|
+      @ration.modified_by = current_user.id
       if @ration.update(ration_params)
         format.html { redirect_to @ration, notice: 'Ration was successfully updated.' }
         format.json { render :show, status: :ok, location: @ration }
@@ -62,13 +64,13 @@ class RationsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_ration
-      @ration = Ration.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_ration
+    @ration = Ration.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def ration_params
-      params.require(:ration).permit(:reference_no, :description)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def ration_params
+    params.require(:ration).permit(:reference_no, :description)
+  end
 end

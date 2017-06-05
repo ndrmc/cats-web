@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
 
   layout 'admin'
   before_action :set_location, only: [ :edit, :update, :destroy]
-
+  include Administrated
   # GET /locations
   def index
     redirect_to action: :show, id: 0

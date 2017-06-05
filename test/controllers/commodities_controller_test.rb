@@ -52,4 +52,24 @@ class CommoditiesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to commodities_url
   end
 
+  test "commodity name should be unique" do 
+    duplicate_commodity = @commodity.dup
+    @commodity.save
+    assert_not duplicate_commodity.valid?
+  end
+
+
+  test "commodity name must be present" do
+    assert @commodity.valid?
+  end
+
+  test "commmodity name must not be blank" do
+    new_commodity = Commodity.new(name: " ")
+    assert !new_commodity.valid?
+  end
+
+  test "commmodity name must not be nil" do
+    new_commodity = Commodity.new(name: nil)
+    assert !new_commodity.valid?
+  end
 end

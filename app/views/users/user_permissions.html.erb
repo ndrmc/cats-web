@@ -20,10 +20,20 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
+<div>
+  <input type="checkbox" id="selectAll" value="selectAll"> Select / Deselect All<br/><br/>
+</div>
 
  <%= form_tag "/users/#{@user.id}/updatePermissions", method: :put do %>
 
-         <table class="table table-bordered">
+         <table class="table table-bordered cats-datatable" id="tbl">
+         <thead>
+          <tr>
+             <th></th>
+             <th>Name</th>
+          </tr>
+         </thead>
+        
           <tbody>
             <% @all_permissions.each do |permission| %>
               <tr>
@@ -48,3 +58,41 @@
 </div>
 
 
+<script>
+$('#selectAll').click(function() {
+   if (this.checked) {
+       $(':checkbox').each(function() {
+           this.checked = true;                        
+       });
+   } else {
+      $(':checkbox').each(function() {
+           this.checked = false;                        
+       });
+   } 
+});
+
+
+
+$("#tbl").dataTable().fnDestroy();
+var table = $('#tbl').DataTable();
+table.destroy();
+$("form").on('submit', function(e){
+   var $form = $(this);
+   // Iterate over all checkboxes in the table
+   table.$('input[type="checkbox"]').each(function(){
+      // If checkbox doesn't exist in DOM
+      if(!$.contains(document, this)){
+         // If checkbox is checked
+         if(this.checked){
+            // Create a hidden element 
+            $form.append(
+               $('<input>')
+                  .attr('type', 'hidden')
+                  .attr('name', this.name)
+                  .val(this.value)
+            );
+         }
+      } 
+   });          
+});
+</script>

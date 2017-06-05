@@ -16,4 +16,7 @@
 class Currency < ApplicationRecord
   validates :name, presence: true
   validates :symbol, presence: true
+
+  validates :name, uniqueness: true
+  validates :symbol, uniqueness: true
 end

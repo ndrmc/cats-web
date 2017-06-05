@@ -115,7 +115,7 @@
 </div>
 <div class="form-group"> 
   <label for="fdpSelect-<%= uuid %>">FDP</label> <% if  required %> <span class="required">*</span> <% end %>
-  <select name="<%= name %>" id="fdpSelect-<%= uuid %>" class="form-control"
+  <select name="<%= name %>" id="fdpSelect-<%= uuid %>" class="form-control data-parsley-required"
     data-value="<%= fdpId %>" <%= required ? 'required' : ''%>
   >
     <option value="">Choose</option>

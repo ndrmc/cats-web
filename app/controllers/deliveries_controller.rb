@@ -4,6 +4,7 @@ class DeliveriesController < ApplicationController
   # GET /deliveries
   # GET /deliveries.json
   def index
+    authorize Delivery
     # @deliveries = Delivery.all
 
     #  if params[:search]
@@ -12,7 +13,14 @@ class DeliveriesController < ApplicationController
     #   @deliveries = Post.all.order('created_at DESC')
     #  end
 
-     @deliveries = Delivery.filter(params.slice(:region_id, :fdp_id, :operation_id, :gin_number))
+    if(params[:gin_number] && !params[:gin_number].empty?)
+      @deliveries = Delivery.where(gin_number: params[:gin_number])
+    elsif(params[:operation_id]&&!params[:operation_id].empty? && params[:woreda])
+      @deliveries = Delivery.filter(params.slice(:woreda,:operation_id))
+    else      
+      @deliveries = []
+       
+    end
 
   end
 
@@ -20,11 +28,13 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/1
   # GET /deliveries/1.json
   def show
+    authorize Delivery
   end
 
   # GET /deliveries/new
   def new
-   
+   authorize Delivery
+
     @delivery = Delivery.new
     @gin = Dispatch.find_by({'gin_no': params[:gin_number]})
     if(@gin)
@@ -71,7 +81,10 @@ class DeliveriesController < ApplicationController
   # POST /deliveries.json
   def create
 
+    authorize Delivery
+
     @delivery = Delivery.new(delivery_params)
+    @delivery.created_by = current_user.id
 
     respond_to do |format|
       if @delivery.save
@@ -88,9 +101,11 @@ class DeliveriesController < ApplicationController
   # PATCH/PUT /deliveries/1.json
   def update
 
+    authorize Delivery
+
     @delivery = Delivery.find(params[:id]);
     @delivery.delivery_details.destroy_all
-
+    @delivery.modified_by = current_user.id
 
     respond_to do |format|
       if @delivery.update(delivery_params)
@@ -106,6 +121,7 @@ class DeliveriesController < ApplicationController
   # DELETE /deliveries/1
   # DELETE /deliveries/1.json
   def destroy
+    authorize Delivery
     @delivery.destroy
     respond_to do |format|
       format.html { redirect_to deliveries_url, notice: 'Delivery was successfully destroyed.' }

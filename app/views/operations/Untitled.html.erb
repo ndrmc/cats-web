@@ -11,9 +11,11 @@
     </ol>
   </div>
   <div class="col-sm-8">
+    <% if policy(Operation).new? %>
     <div class="title-action">
       <%= link_to 'New Operation', new_operation_path, :class => "btn btn-primary"%>
     </div>
+    <%end%>
   </div>
 </div>
 
@@ -47,9 +49,13 @@
             <td><%= operation.status
               %></td>
             <td>
+            <% if policy(Operation).edit? %>
               <%= link_to 'Edit', edit_operation_path(operation) %>
+              <%end%>
               &middot;
+              <% if policy(Operation).destroy? %>
               <%= link_to 'Delete', operation, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%end%>
             </td>
           </tr>
           <% end %>

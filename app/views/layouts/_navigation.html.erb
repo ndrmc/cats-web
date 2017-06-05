@@ -15,20 +15,28 @@
             <%= link_to t(:hrd_plan), hrds_url %>            
           </li>
           <%end%>
-          <li>
+          <%if policy(PsnpPlan).index? %>
+          <li class="<%= 'active' if is_active_controller('psnp_plans') %>">
             <%= link_to  t(:psnp_plan), psnp_plans_url %>
           </li>
+          <%end%>
+          <% if policy(Project).index? %>
           <li class="<%= 'active' if is_active_controller('projects')  %>">
             <%= link_to  t(:receipt_plan) , projects_path %>
           </li>
-          <li>
+          <%end%>
+          <li class="<%= 'active' if is_active_controller('bid_plans') %>">
             <a href="#"><%= t(:bid_plan) %></a>
           </li>
+          <%if policy(Ration).index? %>
           <li class="<%= 'active' if is_active_controller('rations') || is_active_controller('ration_items')  %>">
             <%= link_to t(:ration), rations_path %>
           </li>
+          <%end%>
           <li class="<%= 'active' if is_active_controller('gift_certificates')  %>">
+          <% if policy(GiftCertificate).index? %>
               <%= link_to t(:gift_certificate), gift_certificates_url %>
+          <% end %>
           </li>        
       </li>
     </ul>
@@ -41,15 +49,22 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
+      <%if policy(Operation).index?%>
       <li class="<%= 'active' if is_active_controller('operations')  %>">
         <%= link_to t(:operations), operations_url %>
       </li>
+      <%end%>
+      <% if policy(RegionalRequest).index? %>
+
       <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
         <%= link_to t(:regional_request), regional_requests_url %>
       </li>
-      <li>
+      <%end%>
+      <% if policy(Requisition).index? %>
+      <li class="<%= 'active' if is_active_controller('requisitions')  %>">
         <%= link_to t(:request_allocation), requisitions_url %></a>
       </li>
+      <%end%>
       <li>
         <a href="#"><%= t(:dispatch_allocation)%></a>
       </li>
@@ -67,14 +82,20 @@
     <% end %>
     <ul class="nav nav-second-level collapse">
       <li class="<%= 'active' if is_active_controller('receipts')  %>">
+      <% if policy(Receipt).index? %>
             <%= link_to t(:receiving), receipts_path %>
+      <%end%>
       </li>
+       <% if policy(Dispatch).index? %>
       <li class="<%= 'active' if is_active_controller('dispatches')  %>">
             <%= link_to t(:dispatch), dispatches_path %>
       </li>
+      <%end%>
+      <%if policy(Delivery).index? %>
       <li class="<%= 'active' if is_active_controller('deliveries')  %>">
         <%= link_to t(:delivery), deliveries_url %>
       </li>
+      <%end%>
       <li>
         <a href="#"><%= t(:transfer)%></a>
       </li>
@@ -109,9 +130,11 @@
       <li>
         <a href="#"><%= t(:bid_evaluation)%></a>
       </li>
+      <% if policy(Transporter).index? %>
       <li class="<%= 'active' if is_active_controller('transporters')  %>">
         <%= link_to 'Transporters', transporters_path %>
       </li>
+      <%end%>
     </ul>
   </li>
 
@@ -144,9 +167,12 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-      <li class="<%= 'active' if is_active_controller('regional_request')  %>">
-        <%= link_to t(:regional_requests), regional_requests_url%>              
-      </li>
+      <% if policy(RegionalRequest).index? %>
+
+        <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
+          <%= link_to "Monthly Requests", regional_requests_url %>
+        </li>
+      <%end%>
       <li>
         <a href="#"><%= t(:fdp_receipts)%></a>
       </li>
@@ -158,14 +184,17 @@
       </li>
     </ul>
   </li>
+<%if policy(:admin).admin?%>
 
-  <li class="<%= 'active' if current_page?(setting_index_url) %>">
-    <%= link_to setting_index_url do %>
-    <i class="fa fa-cog"></i>
-    <span class="nav-label"><%= t(:setting) %> </span>
+  <li class="<%= 'active' if current_page?('/home/minor') %>">
+    <%= link_to "/home/minor" do %>
+        <i class="fa fa-cog"></i>
+        <span class="nav-label"><%= t(:setting) %> </span>
+        <span class="fa arrow"></span>
     <% end %>
+    <%= render 'layouts/settingnav' %>
   </li>
-
+<%end%>
 </ul>
 
 </div>

@@ -3,7 +3,7 @@
     <h2>Receipts</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <a href="#">Stock</a>
       </li>
       <li class="active">
         <strong>Receipts</strong>
@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Receipt).new? %>
       <%= link_to 'New Receipt', new_receipt_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -25,14 +27,14 @@
           <%= label_tag :project, "Project", { :class => ' control-label', :required => true } %>
 
           <div class="">
-            <%= select_tag  :project,  options_from_collection_for_select( Project.all, 'id', 'project_code', params[:project] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+            <%= select_tag  :project,  options_from_collection_for_select( Project.all, 'id', 'project_code', params[:project] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
           </div>
         </div>
         <div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
 
           <div class="">
-            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , { :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
           </div>
         </div>
         <div class="form-group">
@@ -88,8 +90,6 @@
       <thead>
       <tr>
             <th>GRN Number</th>
-            <th>Hub</th>
-            <th>Projects</th>
             <th>Received Date</th>
             <th>Status</th>
             <th>Remark</th>
@@ -98,17 +98,20 @@
       </thead>
 
       <tbody>
+
+      <% can_edit = policy(Receipt).edit? %>
+      
         <% @receipts.each do |receipt| %>
             <tr>
                 <td><%= receipt.grn_no %></td>
-                <td><%= receipt.hub ? receipt.hub.name : '-' %></td>
-                <td><%= receipt.receipt_lines.collect { |rl| rl.project.project_code}.uniq.join( ', ') %></td>
                 <td><%= receipt.received_date ? receipt.received_date.strftime('%d/%m/%Y') : '-' %></td>
                 <td><%= receipt.draft ? "Draft" : "Posted" %></td>
                 <td><%= receipt.remark ? receipt.remark : '-' %></td>
                 <td>
+                <% if can_edit %>
                     <%= link_to 'Edit', edit_receipt_path(receipt) %> &middot;
                     <%= link_to 'Delete', receipt, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <%end%>                
                 </td>
             </tr>
         <% end %>

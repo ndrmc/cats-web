@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 
   get 'users/:id/user_permissions', to: 'users#user_permissions'
 
+  put 'users/:id/updateDepartmentPermission', to: 'users#updateDepartmentPermission'
+
   resources :currencies
   resources :donors
   resources :programs
@@ -62,6 +64,7 @@ Rails.application.routes.draw do
 
   resources :organizations
   resources :projects
+  post '/projects/:id/archive', to: 'projects#archive'
   resources :deliveries
 
   resources :rations
@@ -72,14 +75,15 @@ Rails.application.routes.draw do
   resources :receipts
   resources :dispatches
 
-  resources :requisitions
-  resources :gift_certificates
-  
   get '/requisitions/get_requisiton_by_number'
   get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
-  get '/requisitions/summary/:region_id/:operation_id', to: 'requisitions#summary'
-  get '/requisitions/add_requisition/:request_id/:zone_id/:commodity_id', to: 'requisitions#add_requisition'
+  get '/requisitions/summary', to: 'requisitions#summary'
+  get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
+
+  resources :requisitions
+  resources :gift_certificates
+  
 
   resources :regional_requests
   post '/regional_requests/add_fdp_to_request'

@@ -1,7 +1,7 @@
 class CommodityCategoriesController < ApplicationController
   layout 'admin'
   before_action :set_commodity_category, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /commodity_categories
   # GET /commodity_categories.json
   def index
@@ -26,6 +26,7 @@ class CommodityCategoriesController < ApplicationController
   # POST /commodity_categories.json
   def create
     @commodity_category = CommodityCategory.new(commodity_category_params)
+    @commodity_category.created_by = current_user.id
 
     respond_to do |format|
       if @commodity_category.save
@@ -42,6 +43,7 @@ class CommodityCategoriesController < ApplicationController
   # PATCH/PUT /commodity_categories/1.json
   def update
     respond_to do |format|
+      @commodity_category.modified_by = current_user.id
       if @commodity_category.update(commodity_category_params)
         format.html { redirect_to commodity_categories_path, notice: 'Commodity category was successfully updated.' }
         format.json { render :show, status: :ok, location: @commodity_category }
