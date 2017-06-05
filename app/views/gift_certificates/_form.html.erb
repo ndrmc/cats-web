@@ -1,25 +1,26 @@
 <div class="wrapper wrapper-content">
- <div class="ibox float-e-margins">
-  <div class="ibox-content">
-   <%= form_for(gift_certificate, builder: CustomFormBuilder, :html => {:class => 'form-horizontal'}) do |f| %>
-    <% if gift_certificate.errors.any? %>
-     <div class="panel panel-danger">
-      <div class="panel-heading">
-       <%= pluralize(gift_certificate.errors.count, "error") %> prohibited this gift_certificate from being saved.
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(gift_certificate, builder: CustomFormBuilder, :html => {:class => 'form-horizontal'}) do |f| %>
+      <% if gift_certificate.errors.any? %>
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <%= pluralize(gift_certificate.errors.count, "error") %>
+          prohibited this gift_certificate from being saved.
+        </div>
+        <div class="panel-body">
+          <ul>
+            <% gift_certificate.errors.full_messages.each do |message| %>
+            <li>
+              <%= message %>
+            </li>
+            <% end %>
+          </ul>
+        </div>
       </div>
-      <div class="panel-body">
-       <ul>
-        <% gift_certificate.errors.full_messages.each do |message| %>
-         <li>
-          <%= message %>
-         </li>
-         <% end %>
-       </ul>
-      </div>
-     </div>
-     <% end %>   
+      <% end %>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
-       <%= f.label :reference_no,  :class=>"control-label" %><span class="required"/>*
+        <%= f.label :reference_no,  :class=>"control-label" %><span class="required"/>*
         <%= f.text_field :reference_no,  :class => 'form-control', :required => true %>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -28,127 +29,131 @@
 
       </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :gift_date %><span class="required"/>*
-         <%= f.date_field :gift_date, params[:locale], current_user, :class => 'form-control', :required => true %>
-       </div>
+        <div class="col-md-10">
+          <%= f.label :gift_date %><span class="required"/>*
+          <%= f.date_field :gift_date, params[:locale], current_user, :class => 'form-control', :required => true %>
+        </div>
       </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label 'Expected arrival date' %>
-         <%= f.text_field :eta, :class => 'form-control datepicker' %>
-       </div> 
+        <div class="col-md-10">
+          <%= f.label 'Expected arrival date' %>
+          <%= f.text_field :eta, :class => 'form-control datepicker' %>
+        </div>
       </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :program_id %><span class="required">*
-         <%= f.collection_select :program_id, Program.all, :id, :name, {:include_blank => ' -- Select -- '}, {:required => true,:class => 'form-control'} %>
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :donor_id %><span class="required">*
-         <%= f.collection_select :donor_id, Organization.all, :id, :name, {:prompt => ' -- Select -- '} ,{:class => 'form-control',:required => true} %>
-       </div>
-      </div>
-       <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :fund_source_id %><span class="required">*
-         <%= f.collection_select :fund_source_id, FundSource.all, :id, :name, {:prompt => ' -- Select -- '} ,{:class => 'form-control'} %>
-       </div>
-      </div>
-       <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :fund_type_id %><span class="required">*
-         <%= f.collection_select :fund_type_id, FundType.all, :id, :name, {:prompt => ' -- Select -- '} ,{:class => 'form-control'} %>
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :mode_of_transport_id %>
-         <%= f.collection_select :mode_of_transport_id, ModeOfTransport.all, :id, :name,  {:prompt => ' -- Select -- '}, {:class => 'form-control'} %>
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :vessel %>
-         <%= f.text_field :vessel, :class => 'form-control' %>
-       </div>
-      </div>
-     
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :port_name %>
-         <%= f.text_field :port_name, :class => 'form-control' %>
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :customs_declaration_no %>
-         <%= f.text_field :customs_declaration_no, :class => 'form-control' %>
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :bill_of_loading %>
-         <%= f.text_field :bill_of_loading, :class => 'form-control' %>
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :amount %>
-         <%= f.text_field :amount, :class => 'form-control' %>
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :estimated_price %>
-         <%= f.text_field :estimated_price, :class => 'form-control' %>
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :estimated_tax %>
-         <%= f.text_field :estimated_tax, :class => 'form-control' %>
-       </div>
-      </div>
-       <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :currency_id %>
-         <%= f.collection_select :currency_id, Currency.all, :id, :name,  {:prompt => ' -- Select -- '}, {:class => 'form-control'} %>
-       </div>
-      </div>
-       <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :account_no %>
-         <%= f.text_field :account_no, :class => 'form-control' %>
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :purchase_year %>
-        <%=f.select :purchase_year,(Time.zone.now.year-10 )..(Time.zone.now.year), {prompt: 'Choose year'}, {class: 'form-control'}%> 
-        
-       </div>
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-       <div class="col-md-10">
-        <%= f.label :expiry_date %>
-         <%= f.text_field :expiry_date, :class => 'form-control datepicker' %>
-       </div>
-      </div>
-      
-      <div class="form-group col-md-6 col-sm-6 col-xs-12 hidden">
-       <div class="col-md-10">
-        <%= f.label :status %>
-         <%= f.collection_select :status, GiftCertificate.statuses, :first,:first,{prompt: true},{class: 'form-control'} %>
-       </div>
-      </div>
-     
-      <div class="actions ">
-       <%= f.submit :class => 'btn btn-primary' %>
-      </div>
-      <% end %>
-  </div>
- </div>
-</div>
+        <div class="col-md-10">
+          <%= f.label :program_id %>
+          <span class="required">*
+            <%= f.collection_select :program_id, Program.all, :id, :name, {:include_blank => ' -- Select -- '}, {:required => true,:class => 'form-control'} %>
+          </div>
+        </div>
+        <div class="form-group col-md-6 col-sm-6 col-xs-12">
+          <div class="col-md-10">
+            <%= f.label :organization_id %>
+            <span class="required">*
+              <%= f.collection_select :organization_id, Organization.all, :id, :name, {:prompt => ' -- Select -- '} ,{:class => 'form-control',:required => true} %>
+            </div>
+          </div>
+          <div class="form-group col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-10">
+              <%= f.label :fund_source_id %>
+              <span class="required">*
+                <%= f.collection_select :fund_source_id, FundSource.all, :id, :name, {:prompt => ' -- Select -- '} ,{:class => 'form-control'} %>
+              </div>
+            </div>
+            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+              <div class="col-md-10">
+                <%= f.label :fund_type_id %>
+                <span class="required">*
+                  <%= f.collection_select :fund_type_id, FundType.all, :id, :name, {:prompt => ' -- Select -- '} ,{:class => 'form-control'} %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :mode_of_transport_id %>
+                  <%= f.collection_select :mode_of_transport_id, ModeOfTransport.all, :id, :name,  {:prompt => ' -- Select -- '}, {:class => 'form-control'} %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :vessel %>
+                  <%= f.text_field :vessel, :class => 'form-control' %>
+                </div>
+              </div>
+
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :port_name %>
+                  <%= f.text_field :port_name, :class => 'form-control' %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :customs_declaration_no %>
+                  <%= f.text_field :customs_declaration_no, :class => 'form-control' %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :bill_of_loading %>
+                  <%= f.text_field :bill_of_loading, :class => 'form-control' %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :amount %>
+                  <%= f.text_field :amount, :class => 'form-control' %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :estimated_price %>
+                  <%= f.text_field :estimated_price, :class => 'form-control' %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :estimated_tax %>
+                  <%= f.text_field :estimated_tax, :class => 'form-control' %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :currency_id %>
+                  <%= f.collection_select :currency_id, Currency.all, :id, :name,  {:prompt => ' -- Select -- '}, {:class => 'form-control'} %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :account_no %>
+                  <%= f.text_field :account_no, :class => 'form-control' %>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :purchase_year %>
+                  <%=f.select :purchase_year,(Time.zone.now.year-10 )..(Time.zone.now.year), {prompt: 'Choose year'}, {class: 'form-control'}%>
+
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10">
+                  <%= f.label :expiry_date %>
+                  <%= f.text_field :expiry_date, :class => 'form-control datepicker' %>
+                </div>
+              </div>
+
+              <div class="form-group col-md-6 col-sm-6 col-xs-12 hidden">
+                <div class="col-md-10">
+                  <%= f.label :status %>
+                  <%= f.collection_select :status, GiftCertificate.statuses, :first,:first,{prompt: true},{class: 'form-control'} %>
+                </div>
+              </div>
+
+              <div class="actions ">
+                <%= f.submit :class => 'btn btn-primary' %>
+              </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
