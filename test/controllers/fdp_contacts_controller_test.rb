@@ -5,7 +5,7 @@ class FdpContactsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
-    @fdp = Fdp.first
+    @fdp = fdps(:fdp1)
     @fdp_contact = fdp_contacts(:one)
   end
 
