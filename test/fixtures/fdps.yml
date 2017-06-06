@@ -4,10 +4,17 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
-    id: 1 
-    name: 'new organization'
+fdp1:
+    name: 'sample fdp'
+    woreda: 'Adhere'
+    zone: 'zone 1'
+    region: 'Afar'
+    location: location1
+# column: value
 #
-two:
-    id: 2
-    name: 'new organization 2'
+fdp2:
+    name: 'sample fdp 2'
+    woreda: 'Adhere'
+    zone: 'zone 1'
+    region: 'Afar'
+    location: location1

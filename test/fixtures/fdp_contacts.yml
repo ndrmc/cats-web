@@ -5,9 +5,13 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
-    id: 1 
-    name: 'new organization'
+    full_name: 'mola'
+    email: 'dawit@gmail.com'
+    mobile: '0912876567'
+    fdp: fdp1
 #
-two:
-    id: 2
-    name: 'new organization 2'
+two: 
+    full_name: 'dawit'
+    email: 'dawit@yahoo.com'
+    mobile: '0912876567'
+    fdp: fdp1
