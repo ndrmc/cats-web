@@ -9,5 +9,12 @@ request_items = @regional_request.regional_request_items.sort_by{|ri| [ri.fdp.zo
 request_items.each do |rri|
   woreda = rri.fdp.woreda
   sheet.add_row [ rri.fdp.id, rri.fdp.zone, woreda ? woreda : '', rri.fdp.name, rri.number_of_beneficiaries ], :style => [nil, nil, nil, nil, unlocked]
+  
+ 
 end
+zones = @regional_request.regional_request_items.map{|ri| ri.fdp.zone}.uniq!
+zones.each do |zone|
+  sheet.add_row [zone, "=SUMIF(B2:B#{@regional_request.regional_request_items.length + 1},\"#{zone}\",E2:E#{@regional_request.regional_request_items.length + 1})"]
+end
+sheet.add_row ['Total', "=SUM(E2:E#{@regional_request.regional_request_items.length + 1})"]
 
