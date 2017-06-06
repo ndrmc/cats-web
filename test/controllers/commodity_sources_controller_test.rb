@@ -20,7 +20,7 @@ class CommoditySourcesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create commodity_source" do
     assert_difference('CommoditySource.count') do
-      post commodity_sources_url, params: { commodity_source: { name: 'Donation'} }
+      post commodity_sources_url, params: { commodity_source: { name: 'Loan'} }
     end
 
     assert_redirected_to commodity_sources_url
@@ -52,4 +52,22 @@ class CommoditySourcesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to commodity_sources_url
   end
 
+  test "name should be unique" do
+    duplicated_commodity_source = @commodity_source.dup
+    @commodity_source.save
+    assert_not duplicated_commodity_source.valid?
+  end
+
+  test "name must not be blank" do
+    new_commodity_source = CommoditySource.new(name: '  ')
+    assert !new_commodity_source.valid?
+  end
+
+  test "name must not be nil" do
+      new_commodity_source = CommoditySource.new(name: nil)
+     assert !new_commodity_source.valid?
+  end
+  
+  
+  
 end
