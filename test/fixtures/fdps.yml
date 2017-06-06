@@ -1,0 +1,20 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+fdp1:
+    name: 'sample fdp'
+    woreda: 'Adhere'
+    zone: 'zone 1'
+    region: 'Afar'
+    location: location1
+# column: value
+#
+fdp2:
+    name: 'sample fdp 2'
+    woreda: 'Adhere'
+    zone: 'zone 1'
+    region: 'Afar'
+    location: location1

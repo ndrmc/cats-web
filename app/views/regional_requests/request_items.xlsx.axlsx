@@ -5,8 +5,8 @@ sheet = wb.add_worksheet(:name => 'Request Items') { |ws| ws.sheet_protection.pa
 unlocked = sheet.styles.add_style(:locked => false )
 
 sheet.add_row [ "", "Zone", "Woreda", "FDP", "Number of Beneficiaries" ]
-
-@regional_request.regional_request_items.each do |rri|
+request_items = @regional_request.regional_request_items.sort_by{|ri| [ri.fdp.zone,ri.fdp.woreda,ri.fdp.name]}
+request_items.each do |rri|
   woreda = rri.fdp.woreda
   sheet.add_row [ rri.fdp.id, rri.fdp.zone, woreda ? woreda : '', rri.fdp.name, rri.number_of_beneficiaries ], :style => [nil, nil, nil, nil, unlocked]
 end

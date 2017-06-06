@@ -94,9 +94,9 @@ class LocationsController < ApplicationController
   def children
 
     if params[:parentId] == '0'
-      @children = Location.where location_type: :region
+      @children = (Location.where location_type: :region).sort_by{|l| l.name}
     else
-      @children = Location.find(params[:parentId]).children
+      @children = (Location.find(params[:parentId]).children).sort_by{|l| l.name}
     end
     respond_to do |format|
       format.json { render json:  @children.collect { |c| {id: c.id, name: c.name}}.to_json  }
