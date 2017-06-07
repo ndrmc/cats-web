@@ -20,4 +20,7 @@ class RationTest < ActiveSupport::TestCase
     ration = Ration.new
     assert_not ration.save, "Saved ration without a title"
   end
+
+  
+
 end

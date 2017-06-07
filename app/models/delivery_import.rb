@@ -1,0 +1,2 @@
+class DeliveryImport < ApplicationRecord
+end

@@ -34,7 +34,40 @@ class GiftCertificate < ApplicationRecord
   include Filterable
 
   scope :status, ->(status) { where status: status }
-  scope :donor_id, ->(donor_id) { where donor_id: donor_id }
+  scope :organization_id, ->(organization_id) { where organization_id: organization_id }
 
   enum status: [:draft, :approved, :canceled, :closed, :archived]
+
+  belongs_to :program
+  belongs_to :commodity
+  belongs_to :currency
+  belongs_to :mode_of_transport
+  belongs_to :fund_source
+  belongs_to :fund_type
+  belongs_to :organization
+
+  validates :reference_no, uniqueness: true
+
+  validates :reference_no, presence: true
+  validates :gift_date, presence: true
+  validates :organization_id, presence: true
+  validates :program_id, presence: true
+  validates :fund_type_id, presence: true
+  validates :fund_source_id, presence: true
+  validates :commodity_id, presence: true
+  validates :mode_of_transport_id, presence: true
+
+
+  before_destroy :check_for_status
+
+
+  private
+  def check_for_status
+    if self.status != status[0] then
+         return false
+    end
+
+  end
+
+
 end

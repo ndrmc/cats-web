@@ -1,6 +1,6 @@
 class CommoditySourcesController < ApplicationController
   before_action :set_commodity_source, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /commodity_sources
   # GET /commodity_sources.json
   def index
@@ -25,7 +25,8 @@ class CommoditySourcesController < ApplicationController
   # POST /commodity_sources.json
   def create
     @commodity_source = CommoditySource.new(commodity_source_params)
-
+    @commodity_source.created_by = current_user.id
+  
     respond_to do |format|
       if @commodity_source.save
         format.html { redirect_to commodity_sources_path, notice: 'Commodity source was successfully created.' }
@@ -40,6 +41,8 @@ class CommoditySourcesController < ApplicationController
   # PATCH/PUT /commodity_sources/1
   # PATCH/PUT /commodity_sources/1.json
   def update
+    @commodity_source.modified_by = current_user.id
+   
     respond_to do |format|
       if @commodity_source.update(commodity_source_params)
         format.html { redirect_to commodity_sources_path, notice: 'Commodity source was successfully updated.' }

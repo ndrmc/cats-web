@@ -3,7 +3,7 @@
     <h2>PSNP Plans</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <a href="#">Plan</a>
       </li>
       <li class="active">
         <strong>PSNP Plans</strong>
@@ -11,9 +11,11 @@
     </ol>
   </div>
   <div class="col-sm-8">
+  <% if policy(PsnpPlan).new? %>
     <div class="title-action">
       <%= link_to 'New PSNP Plan', new_psnp_plan_path, :class => "btn btn-primary" %>
     </div>
+    <% end %>
   </div>
 </div>
 
@@ -86,15 +88,19 @@
                     <i class="fa fa-folder"></i>
                     View
                   </a>
+                  <% if policy(PsnpPlan).edit? %>
                   <a href="<%= edit_psnp_plan_path(psnp_plan)%>" class="btn btn-white btn-sm">
                     <i class="fa fa-pencil"></i>   
                     Edit                   
                   </a>
+                  <% end %>
+                  <% if policy(PsnpPlan).archive? %>
                   <% if psnp_plan.status != "archived" %>
                     <%= link_to 'psnp_plans/archive/' + psnp_plan.id.to_s , :class => "btn btn-white btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
                             <i class="fa fa-archive"></i>   
                         Archive     
                     <% end %>
+                  <% end %>
                   <% end %>
 
                 </td>

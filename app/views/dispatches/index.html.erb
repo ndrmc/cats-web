@@ -2,7 +2,9 @@
   <div class="col-sm-4">
     <h2>Dispatches</h2>
     <ol class="breadcrumb">
-      
+      <li>
+        <a href="#">Stock</a>
+      </li>
       <li class="active">
         <strong>Dispatches</strong>
       </li>
@@ -10,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+     <% if policy(Dispatch).new? %>
       <%= link_to 'New Dispatch', new_dispatch_path, :class => "btn btn-primary"%>
+    <%end%>
     </div>
   </div>
 </div>
@@ -23,7 +27,7 @@
         <div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
           <div class="">
-            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+            <%= select_tag  :hub, options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
           </div>
         </div>
 
@@ -117,8 +121,12 @@
                 <td><%= dispatch.draft ? "Draft" : "Posted" %></td>
                 <td><%= dispatch.remark %></td>
                 <td>
+                   <% if policy(Dispatch).edit? %>
                     <%= link_to 'Edit', edit_dispatch_path(dispatch) %> &middot;
+                    <%end%>
+                     <% if policy(Dispatch).edit? %>
                     <%= link_to 'Delete', dispatch, method: :delete, data: { confirm: 'Are you sure?' } %>
+                    <%end%>
                 </td>
             </tr>
         <% end %>

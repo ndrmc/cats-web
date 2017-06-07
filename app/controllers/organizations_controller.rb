@@ -1,7 +1,7 @@
 class OrganizationsController < ApplicationController
   layout 'admin'
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /organizations
   # GET /organizations.json
   def index
@@ -26,7 +26,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations.json
   def create
     @organization = Organization.new(organization_params)
-
+    @organization.created_by = current_user.id
     respond_to do |format|
       if @organization.save
         format.html { redirect_to organizations_path, notice: 'Organization was successfully created.' }
@@ -41,6 +41,7 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1
   # PATCH/PUT /organizations/1.json
   def update
+    @organization.modified_by = current_user.id
     respond_to do |format|
       if @organization.update(organization_params)
         format.html { redirect_to organizations_path, notice: 'Organization was successfully updated.' }

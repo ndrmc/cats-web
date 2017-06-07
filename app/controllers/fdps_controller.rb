@@ -1,6 +1,8 @@
 class FdpsController < ApplicationController
   before_action :set_fdp, only: [:show, :edit, :update, :destroy]
 
+   include Administrated
+   
   layout 'admin'
 
   # GET /fdps
@@ -27,7 +29,7 @@ class FdpsController < ApplicationController
   # POST /fdps.json
   def create
     @fdp = Fdp.new(fdp_params)
-
+    @fdp.created_by = current_user.id
     respond_to do |format|
       if @fdp.save
         format.html { redirect_to fdps_path, notice: 'Fdp was successfully created.' }
@@ -42,6 +44,7 @@ class FdpsController < ApplicationController
   # PATCH/PUT /fdps/1
   # PATCH/PUT /fdps/1.json
   def update
+    @fdp.modified_by = current_user.id
     respond_to do |format|
       if @fdp.update(fdp_params)
         format.html { redirect_to @fdp, notice: 'Fdp was successfully updated.' }

@@ -1,7 +1,7 @@
 class DepartmentsController < ApplicationController
   layout 'admin'
   before_action :set_department, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /departments
   # GET /departments.json
   def index
@@ -11,6 +11,7 @@ class DepartmentsController < ApplicationController
   # GET /departments/1
   # GET /departments/1.json
   def show
+    @all_permissions = Permission.all
   end
 
   # GET /departments/new
@@ -26,10 +27,10 @@ class DepartmentsController < ApplicationController
   # POST /departments.json
   def create
     @department = Department.new(department_params)
-
+    @department.created_by = current_user.id
     respond_to do |format|
       if @department.save
-        format.html { redirect_to departments_path, notice: 'Department was successfully created.' }
+        format.html { redirect_to @department, notice: 'Department was successfully created.' }
         format.json { render :show, status: :created, location: @department }
       else
         format.html { render :new }
@@ -41,9 +42,10 @@ class DepartmentsController < ApplicationController
   # PATCH/PUT /departments/1
   # PATCH/PUT /departments/1.json
   def update
+    @department.modified_by = current_user.id
     respond_to do |format|
       if @department.update(department_params)
-        format.html { redirect_to departments_path, notice: 'Department was successfully updated.' }
+        format.html { redirect_to @department, notice: 'Department was successfully updated.' }
         format.json { render :show, status: :ok, location: @department }
       else
         format.html { render :edit }
@@ -55,7 +57,42 @@ class DepartmentsController < ApplicationController
   # DELETE /departments/1
   # DELETE /departments/1.json
   def destroy
-    @department.destroy
+   
+    users = UsersDepartment.where(department_id: @department.id)
+    user_departments = UsersDepartment.where.not(department_id: @department.id)
+     
+     if user_departments.count < 1 then
+        users.each do |d|
+        UsersPermission.where(user_id: d.user_id).delete_all
+        DepartmentPermission.where(department_id: d.department_id).delete_all
+         end
+    
+    else
+
+      user_departments.each do |d|
+        UsersPermission.where(user_id: d.user_id).delete_all
+        DepartmentPermission.where(department_id: d.id).delete_all
+     end
+
+   user_departments.each do |d|
+   
+   departmentPermissions = DepartmentPermission.where(department_id: d.department_id).all
+        departmentPermissions.each do |departmentPermission|
+         
+         if !UsersPermission.exists? user_id: d.user_id , permission_id: departmentPermission.permission_id then
+            dep =  UsersPermission.new({
+            permission_id: departmentPermission.permission_id,
+            user_id: d.user_id
+            })
+            dep.save
+        end
+
+        end
+     
+
+     end
+end
+ @department.destroy
     respond_to do |format|
       format.html { redirect_to departments_url, notice: 'Department was successfully destroyed.' }
       format.json { head :no_content }

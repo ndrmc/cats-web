@@ -22,20 +22,20 @@
 #
 
 class Delivery < ApplicationRecord
-
-  include Filterable
+include Filterable
   include Postable
 
-  scope :gin_number, ->(gin_number) { where gin_number: gin_number }
-  scope :fdp_id, ->(fdp_id) { where fdp_id: fdp_id }
+  
+  #scope :fdp_id, ->(fdp_id) { where fdp_id: fdp_id }
   scope :operation_id, ->(operation_id) { where operation_id: operation_id }
-  scope :region_id, ->(region_id) {where Location.find(region_id).children.exists?(self)}
-
+  scope :woreda, ->(woreda) {where fdp_id: Fdp.find_by_location_id(woreda)? Fdp.find_by_location_id(woreda).id : nil}
+  
   has_many :delivery_details
+  belongs_to :fdp
   accepts_nested_attributes_for :delivery_details, reject_if: :all_blank
 
   validates :receiving_number, uniqueness: true
-  validates :gin_number, uniqueness: true
+  #validates :gin_number, uniqueness: true
 
   after_save :pre_post
 

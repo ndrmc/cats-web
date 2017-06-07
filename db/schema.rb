@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330104338) do
+
+ActiveRecord::Schema.define(version: 20170530093653) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -210,7 +212,8 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.datetime "deleted_at"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
-    t.index ["gin_number"], name: "index_deliveries_on_gin_number", unique: true, using: :btree
+    t.string   "delivery_id_guid"
+    t.string   "received_date_ec"
     t.index ["receiving_number"], name: "index_deliveries_on_receiving_number", unique: true, using: :btree
   end
 
@@ -222,10 +225,67 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.integer  "delivery_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",           default: false
+    t.boolean  "deleted",              default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "guid_ref_delivery_id"
+  end
+
+  create_table "delivery_imports", force: :cascade do |t|
+    t.string   "transporter_ref_no"
+    t.string   "grn"
+    t.string   "requisition_no"
+    t.string   "received_by"
+    t.string   "received_date"
+    t.string   "delivery_date"
+    t.string   "quantity_received_qtl"
+    t.string   "prepared_date"
+    t.string   "prepared_by"
+    t.string   "gin"
+    t.string   "dispatch_date"
+    t.string   "region"
+    t.string   "origin_warehouse"
+    t.string   "zone"
+    t.string   "woreda"
+    t.string   "destination"
+    t.string   "allocation_month"
+    t.string   "allocation_year"
+    t.string   "round"
+    t.string   "program"
+    t.string   "commodity_type"
+    t.string   "sub_commodity"
+    t.string   "unit_type"
+    t.string   "allocation_quantity"
+    t.string   "dispatch_quantity"
+    t.string   "donor"
+    t.string   "si_number"
+    t.string   "transporter_name"
+    t.string   "plate_no"
+    t.string   "trailer_no"
+    t.string   "driver_license"
+    t.string   "hub_storekeeper"
+    t.string   "project_code"
+    t.string   "ltcd_no"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",               default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.boolean  "imported"
+  end
+
+  create_table "department_permissions", force: :cascade do |t|
+    t.integer  "department_id"
+    t.integer  "permission_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["department_id"], name: "index_department_permissions_on_department_id", using: :btree
+    t.index ["permission_id"], name: "index_department_permissions_on_permission_id", using: :btree
   end
 
   create_table "departments", force: :cascade do |t|
@@ -250,14 +310,18 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.datetime "deleted_at"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
+    t.string   "guid_ref"
+    t.integer  "organization_id"
+    t.integer  "unit_of_measure_id"
     t.index ["commodity_category_id"], name: "index_dispatch_items_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_dispatch_items_on_commodity_id", using: :btree
     t.index ["dispatch_id"], name: "index_dispatch_items_on_dispatch_id", using: :btree
+    t.index ["organization_id"], name: "index_dispatch_items_on_organization_id", using: :btree
     t.index ["project_id"], name: "index_dispatch_items_on_project_id", using: :btree
   end
 
   create_table "dispatches", force: :cascade do |t|
-    t.string   "gin_no",                                      null: false
+    t.string   "gin_no",                                                  null: false
     t.integer  "operation_id"
     t.string   "requisition_number"
     t.datetime "dispatch_date"
@@ -268,15 +332,18 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.string   "trailer_plate_number"
     t.string   "drivers_name"
     t.text     "remark"
-    t.boolean  "draft",                       default: false
+    t.boolean  "draft",                                   default: false
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",                     default: false
+    t.boolean  "deleted",                                 default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.integer  "hub_id"
     t.integer  "warehouse_id"
+    t.string   "storekeeper_name",            limit: 200,                 null: false
+    t.string   "dispatch_id_guid"
+    t.string   "dispatched_date_ec"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
@@ -405,7 +472,7 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.string   "reference_no",                                                null: false
     t.date     "gift_date"
     t.string   "vessel"
-    t.integer  "donor_id"
+    t.integer  "organization_id"
     t.date     "eta"
     t.integer  "program_id"
     t.integer  "mode_of_transport_id"
@@ -430,6 +497,73 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.integer  "commodity_id"
     t.index ["deleted_at"], name: "index_gift_certificates_on_deleted_at", using: :btree
     t.index ["reference_no"], name: "index_gift_certificates_on_reference_no", unique: true, using: :btree
+  end
+
+  create_table "git_imports", force: :cascade do |t|
+    t.string   "gin"
+    t.string   "hub"
+    t.string   "requisition_no"
+    t.string   "round"
+    t.string   "region"
+    t.string   "zone"
+    t.string   "woreda"
+    t.string   "fdp"
+    t.string   "transporter"
+    t.string   "driver"
+    t.string   "plat_no"
+    t.string   "trailer_no"
+    t.string   "dispatch_date"
+    t.string   "project_code"
+    t.string   "commodity_class"
+    t.string   "commodity_type"
+    t.string   "rounded_allocation_mt"
+    t.string   "total_units_dispatched"
+    t.string   "quintals_dispatched"
+    t.string   "mt_dispatched"
+    t.string   "allocation_period"
+    t.string   "storekeeper"
+    t.string   "store_no"
+    t.string   "remark"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",                default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "imported"
+  end
+
+  create_table "grn_imports", force: :cascade do |t|
+    t.string   "hub"
+    t.string   "warehouse"
+    t.string   "storekeeper"
+    t.string   "received_date"
+    t.string   "donor"
+    t.string   "supplier"
+    t.string   "origin"
+    t.string   "si_donor"
+    t.string   "project_code"
+    t.string   "grn"
+    t.string   "waybill_no"
+    t.string   "commodity_class"
+    t.string   "commodity_type"
+    t.string   "total_units_received"
+    t.string   "unit_weight"
+    t.string   "sent_mt"
+    t.string   "received_in_bag"
+    t.string   "received_in_mt"
+    t.string   "vessel_name"
+    t.string   "transporter_name"
+    t.string   "plat_no"
+    t.string   "trailer_no"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",              default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "commodity_source"
+    t.boolean  "imported"
   end
 
   create_table "hrd_items", force: :cascade do |t|
@@ -636,7 +770,7 @@ ActiveRecord::Schema.define(version: 20170330104338) do
   create_table "projects", force: :cascade do |t|
     t.string   "project_code"
     t.integer  "commodity_id"
-    t.integer  "commodity_source"
+    t.integer  "commodity_source_id"
     t.integer  "organization_id"
     t.decimal  "amount"
     t.integer  "unit_of_measure_id"
@@ -647,6 +781,11 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "old_id"
+    t.string   "reference_no"
+    t.integer  "si_id"
+    t.text     "si_value"
+    t.boolean  "draft",               default: false
+    t.boolean  "archived"
     t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
   end
 
@@ -732,11 +871,13 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",               default: false
+    t.boolean  "deleted",                          default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.integer  "unit_of_measure_id"
+    t.string   "receive_id",            limit: 36,                 null: false
+    t.string   "receive_item_id",       limit: 36,                 null: false
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
@@ -744,8 +885,27 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.index ["unit_of_measure_id"], name: "index_receipt_lines_on_unit_of_measure_id", using: :btree
   end
 
+  create_table "receipt_lines_temp", id: :integer, force: :cascade do |t|
+    t.integer  "receipt_id"
+    t.integer  "commodity_category_id"
+    t.integer  "commodity_id"
+    t.decimal  "quantity"
+    t.integer  "project_id"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",                          default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.integer  "unit_of_measure_id"
+    t.string   "receive_id",            limit: 36,                 null: false
+    t.string   "receive_item_id",       limit: 36,                 null: false
+    t.string   "project_name"
+    t.string   "si_value"
+  end
+
   create_table "receipts", force: :cascade do |t|
-    t.string   "grn_no",                                  null: false
+    t.string   "grn_no",                                             null: false
     t.datetime "received_date"
     t.integer  "hub_id"
     t.integer  "warehouse_id"
@@ -767,13 +927,16 @@ ActiveRecord::Schema.define(version: 20170330104338) do
     t.integer  "store_id"
     t.string   "drivers_name"
     t.text     "remark"
-    t.boolean  "draft",                   default: false
+    t.boolean  "draft",                              default: false
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",                 default: false
+    t.boolean  "deleted",                            default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.string   "receiveid",               limit: 36,                 null: false
+    t.string   "received_date_ec"
+    t.integer  "donor_id"
     t.index ["commodity_source_id"], name: "index_receipts_on_commodity_source_id", using: :btree
     t.index ["hub_id"], name: "index_receipts_on_hub_id", using: :btree
     t.index ["program_id"], name: "index_receipts_on_program_id", using: :btree
@@ -1138,6 +1301,9 @@ ActiveRecord::Schema.define(version: 20170330104338) do
   add_foreign_key "commodity_categories", "uom_categories"
   add_foreign_key "contributions", "donors"
   add_foreign_key "contributions", "hrds"
+  add_foreign_key "department_permissions", "departments"
+  add_foreign_key "department_permissions", "permissions"
+  add_foreign_key "dispatch_items", "organizations"
   add_foreign_key "dispatches", "hubs"
   add_foreign_key "dispatches", "warehouses"
   add_foreign_key "receipt_lines", "unit_of_measures"

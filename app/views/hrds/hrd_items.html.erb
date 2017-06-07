@@ -26,7 +26,7 @@
         <div class="panel-heading">
             <form role="form" class="form-inline" action="/hrds/hrd_items" method="GET">
                 <input type="hidden" name="hrd_id" value="<%= @hrd.id %>">
-                <%= select_tag  :region_id,  options_from_collection_for_select( Location.where(location_type: 'region') , 'id', 'name', params[:region_id] ) , { :prompt => "Choose Region", :id => 'region-select', :class => 'form-control' }  %>
+                <%= select_tag  :region_id,  options_from_collection_for_select( Location.where(location_type: 'region') , 'id', 'name', params[:region_id] ) , { :prompt => "Choose Region", :id => 'sch', :class => 'form-control' }  %>
             </form>
 
         </div>
@@ -64,18 +64,23 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% total = 0 %>
                             <% hrd_items.each do |item| %>
                                 <tr id="hrd-item-<%= item.id %>">
-                                    <td><%= item.woreda.name  %></td>
+                                    <td><%= item&.woreda&.name  %></td>
                                     <td id="starting-month-<%= item.id %>"><%= Date::MONTHNAMES[item.starting_month] %></td>
                                     <td id="duration-<%= item.id %>"><%= item.duration %></td>
                                     <td id="beneficiary-<%= item.id %>"><%= item.beneficiary %></td>
+
                                     <td>
                                         <a href="#" data-toggle="modal" data-target="#edit-hrd-item" data-hrd-item-id="<%= item.id %>">edit</a>
                                         <a href="#" class="remove-hrd-item" data-confir="Are you sure?" data-hrd-item-id="<%= item.id %>">delete</a>
                                     </td>
                                 </tr>
+
+                                <% total = total + item.beneficiary %>
                             <% end %>
+                            <tr><td></td><td></td><td>Total beneficiaries</td><td><%= total %></td></tr>
                         </tbody>
 
                     </table>

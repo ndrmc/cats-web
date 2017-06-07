@@ -25,7 +25,7 @@ class PermissionsController < ApplicationController
   # POST /permissions.json
   def create
     @permission = Permission.new(permission_params)
-
+    @permission.created_by = current_user.id
     respond_to do |format|
       if @permission.save
         format.html { redirect_to @permission, notice: 'Permission was successfully created.' }
@@ -40,6 +40,7 @@ class PermissionsController < ApplicationController
   # PATCH/PUT /permissions/1
   # PATCH/PUT /permissions/1.json
   def update
+    @permission.modified_by = current_user.id
     respond_to do |format|
       if @permission.update(permission_params)
         format.html { redirect_to @permission, notice: 'Permission was successfully updated.' }

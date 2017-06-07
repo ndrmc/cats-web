@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 warehouse1:
         name: warehouse1
         description: warehouse in adama
@@ -5,3 +6,16 @@ warehouse1:
         lon: 0
         hub: hub1
      
+=======
+ one:
+    name: warehouse1
+    description: warehouse in adama
+    lat: 0
+    lon: 0
+    hub: hub1
+        
+warehouse1:
+    name: 'sample warehouse'
+    hub: hub1
+    location_id: 1
+>>>>>>> 4f823515ef14a8ff8867605a092cc4ace4f9db3e

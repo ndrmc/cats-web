@@ -75,91 +75,6 @@ end
 
 # Commodities
 
-#FOOD ITEMS
-uom_category = UomCategory.find_by(name: 'weight')
-
-cereal = CommodityCategory.find_by(code: 'cereal')
-commodities = Commodity.where(:name => ['Cereal','Grain','Maize ','Rice','Sorghum','Wheat'])
-commodities.each do |c|
-  c.commodity_category_id = cereal.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-pulse = CommodityCategory.find_by(code: 'pulse')
-commodities = Commodity.where(:name => ['Pulse','Red Haricot Beans','White Haricot Beans','Beans','Lentils','Split Lentils','Peas','Yellow Split Peas'])
-commodities.each do |c|
-  c.commodity_category_id = pulse.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-blendedfood = CommodityCategory.find_by(code: 'bf')
-commodities = Commodity.where(:name => ['Blended food','CSB','CSB+','CSB++','FAMIX','Fafa Relief'])
-commodities.each do |c|
-  c.commodity_category_id = blendedfood.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-oil = CommodityCategory.find_by(code: 'oil')
-commodities = Commodity.where(:name => ['Oil','Vegitable Oil','Palm Oil','Olive Oil'])
-commodities.each do |c|
-  c.commodity_category_id = oil.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-foodsupplement = CommodityCategory.find_by(code: 'sf')
-commodities = Commodity.where(:name => ['Sup. Food','Biscuit','Dates','Wheat Flour', 'Milk'])
-commodities.each do |c|
-  c.commodity_category_id = foodsupplement.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-food = CommodityCategory.find_by(code: 'food')
-commodities = Commodity.where(:name => ['Other Foods'])
-commodities.each do |c|
-  c.commodity_category_id = food.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-# NON FOOD ITEMS
-
-uom_category = UomCategory.find_by(name: 'unit')
-
-cloth = CommodityCategory.find_by(code: 'clothing')
-commodities = Commodity.where(:name => ['Clothing','Blanket','Bed Sheet','Black Blanket'])
-commodities.each do |c|
-  c.commodity_category_id = cloth.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-non_food = CommodityCategory.find_by(code: 'nonfood')
-commodities = Commodity.where(:name => ['Other Non-Food'])
-commodities.each do |c|
-  c.commodity_category_id = non_food.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-house_equipments = CommodityCategory.find_by(code: 'equipment')
-commodities = Commodity.where(:name => ['House Equipment','Cooking Pots','Ladle','Spoon','Fork','Knife','Tray','Plastic Plate','Plastic Cup','Plastic Tea Cup','Plastic Jug','Plastic Bucket','Plastic Jerry Can','Plastic Sheet','Tent'])
-commodities.each do |c|
-  c.commodity_category_id = house_equipments.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
-
-commodities = Commodity.where(:name => ['Pump'])
-commodities.each do |c|
-  c.commodity_category_id = machine.id
-  c.uom_category_id = uom_category.id
-  c.save!
-end
 
 
 puts "Created seed data for Commodity records"
@@ -216,9 +131,10 @@ if Program.count == 0
 end
 
 if Account.count == 0
-  Account.create(name: 'Borrowed', code: :borrowed, description: 'Resources which are borrowed, but have not yet been received at warehouses (Receipt Plan)')
-  Account.create(name: 'Purchased', code: :purchased, description: 'Resources which are purchased but have not yet been received at warehouses (Receipt Plan)')
-  Account.create(name: 'Pledged', code: :pledged, description: 'Resources which are donated but have not yet been received at warehouses (Receipt Plan)')
+  #Account.create(name: 'Borrowed', code: :borrowed, description: 'Resources which are borrowed, but have not yet been received at warehouses (Receipt Plan)')
+  #Account.create(name: 'Purchased', code: :purchased, description: 'Resources which are purchased but have not yet been received at warehouses (Receipt Plan)')
+  #Account.create(name: 'Pledged', code: :pledged, description: 'Resources which are donated but have not yet been received at warehouses (Receipt Plan)')
+  Account.create(name: 'Receivable', code: :receivable, description: 'Resources which are either donated,purchased or borrowed but have not yet been received at warehouses (Receipt Plan)')
   Account.create(name: 'Allocated', code: :allocated, description: 'Resources commited for dispatch through RRD. In CATS this indicates dispatch allocation')
   Account.create(name: 'Received', code: :received, description: 'Represents resources which are received at the hubs. This account represents Goods Receiving Note (GRN)')
   Account.create(name: 'Dispatched', code: :dispatched, description: 'Commodities which are dispatched from the warehouse to FDPs. This account represents Goods Issue Ticket (GIT) records.')
@@ -253,7 +169,7 @@ end
 
 
 if User.count == 0
-  User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password')
+  User.create(first_name: 'Administrator', email: 'admin@cats.org', password: 'password', user_types: User.user_types[:admin] )
   puts "Created default user account 'admin@cats.org' with password 'password'"
 end
 
@@ -283,9 +199,12 @@ if OwnershipType.count == 0
 end
 
 if Permission.count == 0 
+  
   Permission.create(name: 'HRD', description: '')
   Permission.create(name: 'Gift Certificate', description: '')
   Permission.create(name: 'Receipts', description: '')
+  Permission.create(name: 'Receipt Plan', description: '')
+  Permission.create(name: 'Bid Plan', description: '')
   Permission.create(name: 'Project', description: '')
   Permission.create(name: 'Ration', description: '')
 
@@ -307,5 +226,76 @@ if Permission.count == 0
   Permission.create(name: 'locations', description: '')
   Permission.create(name: 'Programs', description: '')
 
+  Permission.create(name: 'Regional Requests', description: '')
+  Permission.create(name: 'Requisition', description: '')
+  Permission.create(name: 'Settings', description: '')
+  Permission.create(name: 'Transporters', description: '')
+
+  puts "Permissions created"
+
 end
+
+if Department.count == 0
+  Department.create(name: 'Early warning')
+  Department.create(name: 'FSCD')
+  Department.create(name: 'Logistics')
+  Department.create(name: 'Procurement')
+  Department.create(name: 'Finance')
+  Department.create(name: 'Hub')
+  Department.create(name: 'Regional')
+
+  puts "Created seed data for departments"
+end
+
+if UsersPermission.count == 0 
+  users  = User.find_by(first_name: 'Administrator')
+  permissions = Permission.all
+
+  permissions.each do |p|
+    user_permission =  UsersPermission.new({
+      user_id: users.id,
+      permission_id: p.id
+    })
+    user_permission.save!
+  end
+  puts "Default permissisons for administrator created"
+end
+
+if Supplier.count == 0
+  Supplier.create(name: 'Abay International PLC')
+  Supplier.create(name: 'Addis Zemen ')
+  Supplier.create(name: 'Admas PLC  ')
+  Supplier.create(name: 'Ambasel ')
+  Supplier.create(name: 'Ambo')
+  Supplier.create(name: 'Asayita')
+  Supplier.create(name: 'Damot / Union')
+  Supplier.create(name: 'Debre Birhan')
+  Supplier.create(name: 'Debre Markos')
+  Supplier.create(name: 'Dire Dawa NDRMC')
+  Supplier.create(name: 'EFSRA')
+  Supplier.create(name: 'Ethio.Agri. CEFT PLC.')
+  Supplier.create(name: 'Ethiopian Ehel Nigde Derjit')
+  Supplier.create(name: 'FAFA Food ')
+  Supplier.create(name: 'Government purchase')
+  Supplier.create(name: 'Gozamen F Union')
+  Supplier.create(name: 'Mota')
+  Supplier.create(name: 'Mota G/H/S/M')
+  Supplier.create(name: 'Nazreth C/Wh')
+  Supplier.create(name: 'Nazreth NDRMC')
+  Supplier.create(name: 'NDRMC')
+  Supplier.create(name: 'Noriva PLC')
+  Supplier.create(name: 'Nur Hussen Adem')
+  Supplier.create(name: 'Soreti Int. Trading')
+  Supplier.create(name: 'Tena migib Amrach')
+  Supplier.create(name: 'Woreta')
+  Supplier.create(name: 'Woreta EFSRA')
+end
+
+o1 = Organization.find_or_initialize_by(name: "EGTE")
+o1.long_name = "Ethiopian Grain Trade Enterprise"
+o1.save!
+
+o2 = Organization.find_or_initialize_by(name: "Saudi Government")
+o2.long_name = "Government of Saudi Arabia"
+o2.save!
 

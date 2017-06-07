@@ -79,6 +79,11 @@
           <div class="col-lg-12">
             <div class="panel blank-panel">
               <div class="panel-heading">
+               
+                        <div class="title-action">
+                          <%= link_to 'New Warehouse', new_hub_warehouse_path(@hub), :class => "btn btn-primary"%>
+                        </div>
+                      
                 <div class="panel-options">
                   <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> Warehouses </a></li>
@@ -123,11 +128,7 @@
                           </tbody>
                         </table>
                       </div>
-                      <div class="col-sm-8">
-                        <div class="title-action">
-                          <%= link_to 'New Warehouse', new_hub_warehouse_path(@hub), :class => "btn btn-primary"%>
-                        </div>
-                      </div>
+                     
                     </div>
                   </div>
                   <div id="tab-2" class="tab-pane">

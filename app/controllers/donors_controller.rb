@@ -1,6 +1,6 @@
 class DonorsController < ApplicationController
   before_action :set_donor, only: [:show, :edit, :update, :destroy]
-
+  include Administrated
   # GET /donors
   # GET /donors.json
   def index
@@ -25,6 +25,7 @@ class DonorsController < ApplicationController
   # POST /donors.json
   def create
     @donor = Donor.new(donor_params)
+    @donor.created_by = current_user.id
 
     respond_to do |format|
       if @donor.save
@@ -40,6 +41,7 @@ class DonorsController < ApplicationController
   # PATCH/PUT /donors/1
   # PATCH/PUT /donors/1.json
   def update
+    @donor.modified_by = current_user.id
     respond_to do |format|
       if @donor.update(donor_params)
         format.html { redirect_to donors_url, notice: 'Donor was successfully updated.' }

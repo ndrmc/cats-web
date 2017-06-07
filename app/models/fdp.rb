@@ -25,8 +25,8 @@ class Fdp < ApplicationRecord
   reverse_geocoded_by :lat , :lon
 
   after_validation :reverse_geocode
-
-  attr_reader :zone, :woreda, :region
+  validates :name, :zone, :region, presence: true
+  #attr_reader :zone, :woreda, :region
 
 =begin
   after_find do |fdp|

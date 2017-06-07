@@ -1,15 +1,9 @@
-<nav class="navbar-default navbar-static-side" role="navigation">
-  <div class="sidebar-collapse">
-    <ul class="nav metismenu" id="side-menu">
-
-      <%= render 'layouts/logoheader' %>
-
+<ul class="nav nav-second-level">
       <li class="<%= 'active' if current_page?('/home/minor') %>">
         <%=link_to "plan#index" do %>
-        <i class="fa fa-bookmark-o"></i>
         <span class="nav-label"><%= t(:general_settings)%></span>
         <span class="fa arrow"></span><% end %>
-        <ul class="nav nav-second-level collapse">
+        <ul class="nav nav-third-level collapse">
           <li class="<%= 'active' if is_active_controller('programs') %>">
             <%= link_to t(:programs), programs_path %>
           </li>
@@ -30,11 +24,10 @@
 
   <li>
     <%= link_to "#" do %>
-    <i class="fa fa-globe"></i>
     <span class="nav-label"><%= t(:geography)%></span>
     <span class="fa arrow"></span>
     <% end %>
-    <ul class="nav nav-second-level collapse">
+    <ul class="nav nav-third-level collapse">
       <li class="<%= 'active' if is_active_controller('locations') %>">
         <%= link_to t(:locations), locations_path %>
       </li>
@@ -50,11 +43,10 @@
 
 <li>
   <%= link_to "#" do %>
-  <i class="fa fa-bank"></i>
   <span class="nav-label"><%= t(:warehouses_and_stores)%></span>
   <span class="fa arrow"></span>
   <% end %>
-  <ul class="nav nav-second-level collapse">
+  <ul class="nav nav-third-level collapse">
     <li class="<%= 'active' if is_active_controller('hubs') %>">
         <%= link_to t(:hubs), hubs_path %>
     </li>
@@ -66,11 +58,10 @@
 
  <li>
   <%= link_to "#" do %>
-  <i class="fa fa-cube"></i>
   <span class="nav-label"><%= t(:commodity)%></span>
   <span class="fa arrow"></span>
   <% end %>
-  <ul class="nav nav-second-level collapse">
+  <ul class="nav nav-third-level collapse">
     <li class="<%= 'active' if is_active_controller('commodities') %>" >
       <%= link_to t(:commodities), commodities_path %>
     </li>
@@ -80,7 +71,7 @@
     <li>
       <li class="<%= 'active' if is_active_controller('commodity_sources') %>" >
       <%= link_to t(:commodity_sources), commodity_sources_path %>
-      
+
       </li>
     </li>
     <li class="<%= 'active' if is_active_controller('unit_of_measures') %>" >
@@ -91,11 +82,10 @@
 
 <li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "#" do %>
-  <i class="fa fa-cube"></i>
   <span class="nav-label"><%= t(:accounting)%></span>
   <span class="fa arrow"></span>
   <% end %>
-  <ul class="nav nav-second-level collapse">
+  <ul class="nav nav-third-level collapse">
     <li class="<%= 'active' if is_active_controller('accounts') %>" >
       <%= link_to t(:accounts), accounts_path %>
     </li>
@@ -105,36 +95,28 @@
   </ul>
 </li>
 
-<li>
-  <%= link_to "/home/minor" do %>
-  <i class="fa fa-users"></i>
+<li class="<%= 'active' if current_page?('/home/minor') %>">
+  <%= link_to "#" do %>
   <span class="nav-label"><%= t(:users_and_accounts)%></span>
   <span class="fa arrow"></span>
   <% end %>
-<!--
-<% if policy(User).index? %>
-
-    <li class="<%= 'active' if is_active_controller('users') %>">
-      <a href="#"><%= link_to t(:user_accounts), users_path %></a>
+  <ul class="nav nav-third-level collapse">
+    <% if policy(User).index? %>
+    <li class="<%= 'active' if is_active_controller('users') %>" >
+      <%= link_to t(:user_accounts), users_path %>
+    </li>    
+    <li class="<%= 'active' if is_active_controller('departments') %>" >
+      <%= link_to t(:departments), departments_path %>
     </li>
-  <% end %> -->
-
-  <ul class="nav nav-second-level collapse">
-      <li class="<%= 'active' if is_active_controller('departments') %>">
-      <a href="#"><%= link_to t(:departments), departments_path %></a>
+    <li class="<%= 'active' if is_active_controller('roles') %>" >
+      <%= link_to t(:roles), roles_path %>
     </li>
-    <li class="<%= 'active' if is_active_controller('users') %>">
-      <a href="#"><%= link_to t(:user_accounts), users_path %></a>
-    </li>
-    <li class="<%= 'active' if is_active_controller('roles') %>">
-      <a href="#"><%= link_to t(:roles), roles_path %></a>
-    </li>
+    <% end %>    
   </ul>
 </li>
 
 <li class="<%= 'active' if current_page?('/home/minor') %>">
   <%= link_to "/home/minor" do %>
-  <i class="fa fa-power-off"></i>
   <span class="nav-label"><%= t(:system)%></span>
   <span class="fa arrow"></span>
   <% end %>
@@ -150,5 +132,3 @@
 
 </ul>
 
-</div>
-</nav>

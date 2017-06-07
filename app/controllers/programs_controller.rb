@@ -2,6 +2,7 @@ class ProgramsController < ApplicationController
   layout 'admin'
   before_action :set_program, only: [:show, :edit, :update, :destroy]
 
+  include Administrated
   # GET /programs
   # GET /programs.json
   def index
@@ -26,7 +27,7 @@ class ProgramsController < ApplicationController
   # POST /programs.json
   def create
     @program = Program.new(program_params)
-
+    @program.created_by = current_user.id
     respond_to do |format|
       if @program.save
         format.html { redirect_to programs_url, notice: 'Program was successfully created.' }
@@ -41,6 +42,7 @@ class ProgramsController < ApplicationController
   # PATCH/PUT /programs/1
   # PATCH/PUT /programs/1.json
   def update
+    @program.modified_by = current_user.id
     respond_to do |format|
       if @program.update(program_params)
         format.html { redirect_to @program, notice: 'Program was successfully updated.' }

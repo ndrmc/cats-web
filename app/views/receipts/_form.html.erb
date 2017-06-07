@@ -1,5 +1,7 @@
 <%= form_for(receipt, :html=> {:id => 'receipt-form'} ) do |f| %>
-
+<% @projects = Project.where('archived = ? OR archived IS NULL',false)%>
+<% @uoms = UnitOfMeasure.all%>
+<% @warehouses = Warehouse.all %>
 <div class="row">
   <div class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
@@ -32,14 +34,15 @@
           <%= f.label :hub_id, "Hub" %>
           <span class="required">*</span>
           <%= f.collection_select :hub_id,
-                  Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+          Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:id => 'hub_select' ,:class => 'form-control', :required => true }%>
         </div>
 
         <div class="form-group">
           <%= f.label :warehouse_id, "Warehouse" %>
           <span class="required">*</span>
           <%= f.collection_select :warehouse_id,
-                  Warehouse.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
+                  @warehouses.select{|w| w.hub_id == @receipt.hub_id}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'warehouse_select',:class => 'form-control', :required => true }%>
+          
         </div>
 
         <div class="form-group">
@@ -61,12 +64,18 @@
         </div>
 
         <div class="form-group">
-          <%= f.label :commodity_source_id, "Warehouse" %>
+          <%= f.label :commodity_source_id %>
           <span class="required">*</span>
           <%= f.collection_select :commodity_source_id,
                   CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
-        </div>
-
+        </div> 
+        <div class="form-group">
+          <%= f.label :donor_id %>
+          <span class="required">*</span>
+          <%= f.collection_select :donor_id,
+                  Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'donor_select', :required => true }%>
+        </div> 
+           
       </div>
     </div>
 
@@ -110,7 +119,7 @@
               </td>
               <td>
                 <select name="receipt[receipt_lines[][project_id]]" class="form-control" readonly>
-                  <option value="<%= receipt_line.project.id %>"><%= receipt_line.project.project_code %></option>
+                  <option value="<%= receipt_line.project&.id %>"><%= receipt_line&.project&.project_code %></option>
                 </select>
               </td>
               <td>
@@ -148,7 +157,8 @@
                 <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
               </td>
               <td>
-                <%= select_tag 'receipt[receipt_lines[][project_id]]',  options_from_collection_for_select( Project.all, 'id', 'project_code' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control'} %>
+                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' %>
+                </select>
               </td>
               <td>
                 <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
@@ -197,10 +207,10 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label for="weightAfterUnloading">Weight Before Unloading
+          <label for="weightAfterUnloading">Weight After Unloading
           </label>
           <div>
-            <%= f.number_field :weight_before_unloading, :class => 'form-control' %>
+            <%= f.number_field :weight_after_unloading, :class => 'form-control' %>
           </div>
         </div>
         <div class="form-group col-md-6">
@@ -243,20 +253,16 @@
   <script type="text/javascript">
 
     var allUnitOfMeasures = [];
-
+    
     var REMOVE_RECEIPTLINE_BTN = '<a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>';
 
     var EMPTY_OPTION = '<option value="">-- Choose --</option>';
 
     $(function () {
 
-      $.getJSON('/unit_of_measures', {}, function (data) {
-        allUnitOfMeasures = data;
-      });
-
       $("#commodity-select").change(function () {
         var categoryId = $(this).find('option:selected').data('uom-category-id');
-
+        var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
         if ('' === categoryId)
           return;
 
@@ -333,6 +339,52 @@
         $("#commodity-select > option.cc-" + val).removeClass('hidden');
 
         $("#commodity-select > option:first").removeClass('hidden');
+
+      });
+
+      
+      updateProjects(<%=@receipt.donor_id%>);
+      function updateProjects(donor_id){        
+        if (donor_id === '')
+          return;
+        var allProjects = <%= @projects.to_json.html_safe %>
+      
+        var projects_by_donor = $.grep(allProjects, function (elem) {
+          return elem.organization_id == donor_id
+        });
+
+        var proj_options = $.map(projects_by_donor, function (val) {
+          return '<option value="' + val.id + '">' + val.project_code + '</option>';
+        });
+
+        proj_options.unshift(EMPTY_OPTION);
+
+        $('.project_select').html(proj_options);
+      }
+
+      $('#donor_select').change(function(){
+        var donor_id = $(this).val();
+        updateProjects(donor_id);
+      });
+
+      $('#hub_select').change(function(){
+       
+        var hub_id = $(this).val();
+       
+        var warehouses = <%= @warehouses.to_json.html_safe %>
+       
+        var warehouses_in_hub = $.grep(warehouses, function (elem) {
+          return elem.hub_id == hub_id
+        });
+     
+
+        var warehouse_options = $.map(warehouses_in_hub, function (val) {
+          return '<option value="' + val.id + '">' + val.name + '</option>';
+        });
+
+        warehouse_options.unshift(EMPTY_OPTION);
+
+        $('#warehouse_select').html(warehouse_options);
 
       });
 

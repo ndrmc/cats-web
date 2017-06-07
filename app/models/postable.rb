@@ -1,24 +1,17 @@
 module Postable
   
     def pre_post  
-        return if self.draft 
+        return if self.draft
         if(self.is_a?(Receipt))
              
-                stock_account = Account.find_by({'code': :stock})
-                receivable_account = nil 
-                    if(self.commodity_source_id == 1)
-                        receivable_account = Account.find_by({'code': :pledged})
-                    elsif (self.commodity_source_id == 2)
-                        receivable_account = Account.find_by({'code': :purchased})
-                    elsif (self.commodity_source_id == 3)
-                        receivable_account = Account.find_by({'code': :borrowed})
-                    else
-                        raise Exception('Commodity source unknown')
-                    end
+            stock_account = Account.find_by({'code': :stock})
+            receivable_account = Account.find_by({'code': :receivable}) 
+                   
 
             receipt_journal = Journal.find_by({'code': :goods_received})
             posting_items = []
             self.receipt_lines.each do |receipt_line|
+                amount_in_ref = UnitOfMeasure.find(receipt_line.unit_of_measure_id).to_ref(receipt_line.quantity)
                 debit = PostingItem.new({
                     account_id: receivable_account.id,
                     journal_id: receipt_journal.id,
@@ -30,7 +23,7 @@ module Postable
                     program_id: self.program_id,
                     commodity_id: receipt_line.commodity_id,
                     commodity_category_id: receipt_line.commodity_category_id,
-                    quantity: -receipt_line.quantity
+                    quantity: -amount_in_ref
 
                 })
 
@@ -46,7 +39,7 @@ module Postable
                         program_id: self.program_id,
                         commodity_id: receipt_line.commodity_id,
                         commodity_category_id: receipt_line.commodity_category_id,
-                        quantity: receipt_line.quantity
+                        quantity: amount_in_ref
                 })
                 posting_items << credit
             end 
@@ -63,19 +56,21 @@ module Postable
             good_issue_journal = Journal.find_by({'code': :goods_issue})
             posting_items = []
             self.dispatch_items.each do |dispatch_line|
+                amount_in_ref = UnitOfMeasure.find(dispatch_line.unit_of_measure_id).to_ref(dispatch_line.quantity)
                 debit = PostingItem.new({
                     account_id: stock_account.id,
                     journal_id: good_issue_journal.id,
                     hub_id: 1,
                     fdp_id: self.fdp_id,                    
                     warehouse_id: 1,
+                    donor_id: dispatch_line.organization_id,
                     project_id: dispatch_line.project_id,
                     batch_id: 1,
                     program_id: Operation.find(self.operation_id).program_id,
                     operation_id: self.operation_id,
                     commodity_id: dispatch_line.commodity_id,
                     commodity_category_id: dispatch_line.commodity_category_id,
-                    quantity: -dispatch_line.quantity
+                    quantity: -amount_in_ref
 
                 })
 
@@ -86,13 +81,14 @@ module Postable
                         hub_id: 1,
                         fdp_id: self.fdp_id,                    
                         warehouse_id: 1,
+                        donor_id: dispatch_line.organization_id,
                         project_id: dispatch_line.project_id,
                         batch_id: 1,
                         program_id: Operation.find(self.operation_id).program_id,
                         operation_id: self.operation_id,
                         commodity_id: dispatch_line.commodity_id,
                         commodity_category_id: dispatch_line.commodity_category_id,
-                        quantity: dispatch_line.quantity
+                        quantity: amount_in_ref
                 })
                 posting_items << credit
             end 
@@ -111,6 +107,7 @@ module Postable
                 delivery_journal = Journal.find_by({'code': :delivery})
                 posting_items = []
                 self.delivery_details.each do |delivery_detail|
+                    amount_in_ref = UnitOfMeasure.find(delivery_detail.uom_id).to_ref(delivery_detail.received_quantity)
                     debit = PostingItem.new({
                         account_id: dispatched_account.id,
                         journal_id: delivery_journal.id,
@@ -120,7 +117,7 @@ module Postable
                         operation_id: self.operation_id,
                         commodity_id: delivery_detail.commodity_id,
                         commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
-                        quantity: -delivery_detail.received_quantity
+                        quantity: -amount_in_ref
 
                     })
 
@@ -134,7 +131,7 @@ module Postable
                         operation_id: self.operation_id,
                         commodity_id: delivery_detail.commodity_id,
                         commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
-                        quantity: delivery_detail.received_quantity
+                        quantity: amount_in_ref
                     })
                     posting_items << credit
                 end 
@@ -142,6 +139,53 @@ module Postable
 
 
                 post( Posting.document_types[:delivery], self.id, Posting.posting_types[:normal], posting_items)
+ 
+    
+        elsif(self.is_a?(Project))
+                statistics_account = Account.find_by({'code': :statistics})
+                receivable_account = Account.find_by({'code': :receivable})
+
+                receivable_journal = nil      
+                if(self.commodity_source == CommoditySource.find_by_name('Donation').id)
+                    receivable_journal = Journal.find_by({'code': :donation})
+                elsif (self.commodity_source == CommoditySource.find_by_name('Local Purchase').id)
+                    receivable_journal = Journal.find_by({'code': :purchase})
+                elsif (self.commodity_source == CommoditySource.find_by_name('Loan').id)
+                    receivable_journal = Journal.find_by({'code': :loan})
+                elsif (self.commodity_source == CommoditySource.find_by_name('Swap').id)
+                    receivable_journal = Journal.find_by({'code': :transfer})
+                else
+                    raise Exception('Commodity source unknown')
+                end
+
+               
+                posting_items = []
+                amount_in_ref = UnitOfMeasure.find(self.unit_of_measure_id).to_ref(self.amount)
+                    debit = PostingItem.new({
+                        account_id: statistics_account.id,
+                        journal_id: receivable_journal.id,
+                        commodity_id: self.commodity_id,
+                        commodity_category_id: Commodity.find(self.commodity_id).commodity_category_id,
+                        quantity: -amount_in_ref,
+                        donor_id: self.organization_id                                                
+
+                    })
+
+                    posting_items << debit
+                    credit = PostingItem.new({
+                        account_id: receivable_account.id,
+                        journal_id: receivable_journal.id,
+                        commodity_id: self.commodity_id,
+                        commodity_category_id: Commodity.find(self.commodity_id).commodity_category_id,
+                        quantity: amount_in_ref,
+                        donor_id: self.organization_id,
+                    })
+                    posting_items << credit
+              
+
+
+
+                post( Posting.document_types[:project], self.id, Posting.posting_types[:normal], posting_items)
             
             
             end
@@ -166,7 +210,8 @@ module Postable
     end
 
     def reverse
-        
+
+        return if self.draft
         original_posting = Posting.find_by({'document_id': self.id})
         original_posting.posting_type = Posting.posting_types[:reversed]
        

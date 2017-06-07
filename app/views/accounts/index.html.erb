@@ -3,7 +3,10 @@
     <h2>Accounts</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <a href="#">Settings</a>
+      </li>
+      <li>
+        <a href="#">Accounting</a>
       </li>
       <li class="active">
         <strong>Accounts</strong>
@@ -23,13 +26,12 @@
     <div class="ibox float-e-margins">
       <div class="ibox-content">
 
-        <table id="accounts-table" class="table table-striped table-hover cats-datatable">
+        <table id="accounts-table" class="table table-hover cats-datatable">
           <thead>
             <tr>
-              <th><%t(:name)%></th>
-              <th><%t(:code)%></th>
-              <th><%t(:description)%></th>
-              <th></th>
+              <th><%=t(:name)%></th>
+              <th><%=t(:code)%></th>
+              <th><%=t(:description)%></th>
             </tr>
           </thead>
 
@@ -39,16 +41,8 @@
               <td>
                 <%= link_to account.name, edit_account_path(account) %>
               </td>
-              <td><%= account.code
-              %></td>
-              <td><%= account.description
-              %></td>
-              <!--
-              <td>
-                <%= link_to 'Edit', edit_account_path(account) %>
-                &middot;
-                <%= link_to 'Delete', account, method: :delete, data: { confirm: 'Are you sure?' } %>
-              </td> -->
+              <td><%= account.code %></td>
+              <td><%= account.description %></td>            
             </tr>
             <% end %>
           </tbody>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  hub: MyString
+  warehouse: MyString
+  storekeeper: MyString
+
+two:
+  hub: MyString
+  warehouse: MyString
+  storekeeper: MyString
