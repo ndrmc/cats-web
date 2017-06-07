@@ -49,14 +49,14 @@ class FdpsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to fdps_url
   end
 
-  test "fdp name , zone and region must not be blank" do
-    new_fdp=Fdp.new(name: ' ', zone: ' ', region: ' ')
+  test "fdp name  must not be blank" do
+    new_fdp=Fdp.new(name: ' ')
     assert !new_fdp.valid?
 
   end
   
-  test "fdp name , zone and region must not be nil" do
-    new_fdp=Fdp.new(name: nil, zone: nil, region: nil)
+  test "fdp name must not be nil" do
+    new_fdp=Fdp.new(name: nil)
     assert !new_fdp.valid?
 
   end
