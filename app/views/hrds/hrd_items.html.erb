@@ -67,7 +67,7 @@
                             <% total = 0 %>
                             <% hrd_items.each do |item| %>
                                 <tr id="hrd-item-<%= item.id %>">
-                                    <td><%= item.woreda.name  %></td>
+                                    <td><%= item&.woreda&.name  %></td>
                                     <td id="starting-month-<%= item.id %>"><%= Date::MONTHNAMES[item.starting_month] %></td>
                                     <td id="duration-<%= item.id %>"><%= item.duration %></td>
                                     <td id="beneficiary-<%= item.id %>"><%= item.beneficiary %></td>
