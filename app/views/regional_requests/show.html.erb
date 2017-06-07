@@ -91,8 +91,10 @@
               <a href="#" class="edit-rrdi" data-rrdi-id="<%= request_item.id %>"
               data-rrdi-zone="<%=  request_item.fdp[:zone]  %> "
               data-rrdi-woreda="<%= request_item.fdp[:woreda] %> "
-              data-rrdi-fdp="<%= request_item.fdp.name %>"
-              data-rrdi-ben = "<%=request_item.number_of_beneficiaries %>">Edit</edit> &middot; <% if policy(RegionalRequest).destroy? %> <a href="#"  class="delete-rrdi" data-rrdi-id="<%= request_item.id %>">Delete</a><%end%>
+              data-rrdi-fdp="<%= request_item.fdp.name %>"              
+              data-rrdi-ben = "<%=request_item.number_of_beneficiaries %>">Edit</edit> &middot; <% if policy(RegionalRequest).destroy? %> 
+
+              <a href="#"  class="delete-rrdi" data-rrdi-id="<%= request_item.id %>" data-rrdi-fdp-id="<%= request_item.fdp.id %>">Delete</a><%end%>
             <%end%>
             </td>
           </tr>
@@ -125,7 +127,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="add-fdp">Add</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-fdp">Add</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -261,7 +263,7 @@
     e.preventDefault(); 
 
     var rrdiId = $(this).data('rrdi-id'); 
-
+    var fdpId = $(this).data('rrdi-fdp-id');
     var self = this; 
 
     swal({
@@ -276,9 +278,9 @@
           url: "/regional_requests/destroy_regional_request_item/" + rrdiId ,
           method: 'DELETE',
           dataType: 'json'
-        }).done(function () {
+        }).done(function () {         
 
-          alreadyAddedFdpIds.splice( $.inArray(rrdiId, alreadyAddedFdpIds), 1 );
+          alreadyAddedFdpIds.splice( $.inArray(fdpId, alreadyAddedFdpIds), 1 );
 
           var oTable = $("#fdps_table").dataTable();
 
