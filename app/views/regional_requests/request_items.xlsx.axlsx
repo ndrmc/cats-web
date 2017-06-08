@@ -1,13 +1,44 @@
 wb = xlsx_package.workbook
+wb.styles do |style|
 
-sheet = wb.add_worksheet(:name => 'Request Items') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
+  title_cell = style.add_style(bg_color: "24d567")
+  total_cell = style.add_style(bg_color: "d74a48")
 
-unlocked = sheet.styles.add_style(:locked => false )
+  sheet = wb.add_worksheet(:name => 'Request Items') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
 
-sheet.add_row [ "", "Zone", "Woreda", "FDP", "Number of Beneficiaries" ]
-request_items = @regional_request.regional_request_items.sort_by{|ri| [ri.fdp.zone,ri.fdp.woreda,ri.fdp.name]}
-request_items.each do |rri|
-  woreda = rri.fdp.woreda
-  sheet.add_row [ rri.fdp.id, rri.fdp.zone, woreda ? woreda : '', rri.fdp.name, rri.number_of_beneficiaries ], :style => [nil, nil, nil, nil, unlocked]
+  unlocked = sheet.styles.add_style(:locked => false )
+
+  sheet.add_row [ "", "Zone", "Woreda", "FDP", "Beneficiaries","","","","" ],style: [title_cell, title_cell,title_cell,title_cell,title_cell]
+  request_items = @regional_request.regional_request_items.sort_by{|ri| [ri.fdp.zone,ri.fdp.woreda,ri.fdp.name]}
+  request_items.each do |rri|
+    woreda = rri.fdp.woreda
+    sheet.add_row [ rri.fdp.id, rri.fdp.zone, woreda ? woreda : '', rri.fdp.name, rri.number_of_beneficiaries,"","","","" ], :style => [nil, nil, nil, nil, unlocked]
+    
+  
+  end
+  zones = @regional_request.regional_request_items.map{|ri| ri.fdp.zone}.uniq!
+  row = 5
+  request_items_count = @regional_request.regional_request_items.length + 1
+  sheet.rows[2].cells[7].value = "Summary" 
+  sheet.rows[2].cells[8].value = ""
+  sheet.rows[4].cells[7].value = "Zone"
+  sheet.rows[4].cells[8].value = "Beneficiaries"
+
+  # sheet.rows[2].cells[7].style = title_cell
+  # sheet.rows[2].cells[8].style = title_cell
+  sheet.rows[4].cells[7].style = title_cell
+  sheet.rows[4].cells[8].style = title_cell
+
+
+  zones.each do |zone|
+
+    sheet.rows[row].cells[7].value = "#{zone}"
+    sheet.rows[row].cells[8].value = "=SUMIF(B2:B#{request_items_count},\"#{zone}\",E2:E#{request_items_count})"
+    row+=1
+  end
+   sheet.rows[row].cells[7].value = 'Total'
+   sheet.rows[row].cells[7].style = total_cell
+   sheet.rows[row].cells[8].value = "=SUM(E2:E#{request_items_count})"
+   sheet.rows[row].cells[8].style = total_cell
+   sheet.column_widths 8,20,20,20,15,8,8,20,15
 end
-
