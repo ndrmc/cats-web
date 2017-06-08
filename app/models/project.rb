@@ -19,6 +19,12 @@
 
 class Project < ApplicationRecord
   include Postable
+   include Filterable
+
+  scope :status, ->(status) { where archived:  status == 'Archived' ? true : [nil,false]}
+  scope :organization_id, ->(organization_id) { where organization_id: organization_id }
+
+  STATUSES = ["Active", "Archived"]
 
   validates :project_code, presence: true
   validates :commodity_id, presence: true

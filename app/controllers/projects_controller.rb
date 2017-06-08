@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     authorize Project
-    @projects = Project.all.includes([:commodity, :organization, :commodity_source, :unit_of_measure])    
+    @projects = Project.filter(params.slice(:organization_id, :status)).includes([:commodity, :organization, :commodity_source, :unit_of_measure])   
   end
 
   # GET /projects/1
@@ -75,7 +75,22 @@ class ProjectsController < ApplicationController
                 format.html { redirect_to projects_url, notice: 'Project was successfully archived.' }
             else
                 format.html { 
-                    flash[:error] = "Save failed! Please check your input and try again shortly."
+                    flash[:error] = "Operation failed! Please try again shortly."
+                    redirect_to projects_url 
+                }
+            end
+        end
+end
+
+ def unarchive
+     @project = Project.find params[:id] 
+
+            respond_to do |format|
+            if @project.update_columns(:archived => false) 
+                format.html { redirect_to projects_url, notice: 'Project was successfully activated.' }
+            else
+                format.html { 
+                    flash[:error] = "Operation failed! Please try again shortly."
                     redirect_to projects_url 
                 }
             end
