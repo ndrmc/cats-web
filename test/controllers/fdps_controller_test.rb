@@ -38,7 +38,7 @@ class FdpsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update fdp" do
     patch fdp_url('en',@fdp), params: { fdp: { name: @fdp.name, zone: @fdp.zone, region: @region, location: @fdp.location  } }
-    assert_response :success
+    assert_redirected_to fdp_url(@fdp)
   end
 
   test "should destroy fdp" do
