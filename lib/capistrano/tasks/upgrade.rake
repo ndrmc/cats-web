@@ -27,7 +27,7 @@ namespace :upgrade do
     on roles(:app) do
       within "#{current_path}" do
         with rails_env: :production do
-          execute :rake, "cats:fdp"
+          execute :rake, "cats:fdp:update_locations"
         end
       end
     end
