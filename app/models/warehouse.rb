@@ -25,5 +25,10 @@ class Warehouse < ApplicationRecord
 
     reverse_geocoded_by :lat , :lon
     after_validation :reverse_geocode
+
+    validates :name, presence: true
+   
+
+    validates :name, uniqueness: {scope: :hub_id}
 end
 
