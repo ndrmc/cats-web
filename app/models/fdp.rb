@@ -50,7 +50,7 @@ class Fdp < ApplicationRecord
   end
 =end
 
-  before_save do
+  before_validation do
 
     location = Location.find(location_id)
     if location
