@@ -1,4 +1,4 @@
-one:
+unit_of_measure_1:
     id: 1
     name:  mt     
     description: 'Meteric Ton'

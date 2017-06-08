@@ -4,7 +4,7 @@ class TransportersControllerTest < ActionDispatch::IntegrationTest
    include Devise::Test::IntegrationHelpers
   setup do
     sign_in users(:admin)
-    @transporter = transporters(:one)
+    @transporter = transporters(:transporter_1)
   end
 
   test "should get index" do

@@ -1,0 +1,17 @@
+project1:
+    project_code: '0001'
+    commodity_id: commodity_1
+    commodity_source: commodity_source_1
+    organization: org1
+    amount: 40
+    unit_of_measure: unit_of_measure_1
+    publish_date: '2/2/2019'
+
+project2:
+    project_code: '0002'
+    commodity_id: commodity_1
+    commodity_source: commodity_source_1
+    organization: org1
+    amount: 40
+    unit_of_measure: unit_of_measure_1
+    publish_date: '2/2/2019'
