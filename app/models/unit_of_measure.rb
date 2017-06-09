@@ -79,4 +79,6 @@ class UnitOfMeasure < ApplicationRecord
   validates :uom_type, presence: true
   validates :ratio, presence: true
   validates :uom_category_id, presence: true
+
+  validates :code, uniqueness: true
 end
