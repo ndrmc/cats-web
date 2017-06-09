@@ -174,7 +174,9 @@
                             <% total_benficiaries += regional_benficiaries %>
                             <tr>
                               <td>                             
-                                <%= link_to request.region.name, regional_requests_path(request) %>
+                                <%= link_to '/regional_requests/' + request.id.to_s  do %>
+                                    <%= request.region.name %>     
+                                <% end %>
                               </td>
                               <td>
                                 Status
