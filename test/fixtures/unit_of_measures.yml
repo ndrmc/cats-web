@@ -1,8 +1,8 @@
-one:
+unit_of_measure_1:
     id: 1
     name:  mt     
     description: 'Meteric Ton'
-    code:   'MT'       
-    uom_type:   1  
+    code: 'MT'       
+    uom_type: 1  
     ratio: 1       
-    uom_category_id: 1
+    uom_category: uom_category_1
