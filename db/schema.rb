@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20170530093653) do
-
+ActiveRecord::Schema.define(version: 20170609060605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -784,8 +782,10 @@ ActiveRecord::Schema.define(version: 20170530093653) do
     t.string   "reference_no"
     t.integer  "si_id"
     t.text     "si_value"
-    t.boolean  "draft",               default: false
+    t.boolean  "draft",                   default: false
     t.boolean  "archived"
+    t.integer  "commodity_categories_id"
+    t.index ["commodity_categories_id"], name: "index_projects_on_commodity_categories_id", using: :btree
     t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
   end
 
@@ -1306,6 +1306,7 @@ ActiveRecord::Schema.define(version: 20170530093653) do
   add_foreign_key "dispatch_items", "organizations"
   add_foreign_key "dispatches", "hubs"
   add_foreign_key "dispatches", "warehouses"
+  add_foreign_key "projects", "commodity_categories", column: "commodity_categories_id"
   add_foreign_key "receipt_lines", "unit_of_measures"
   add_foreign_key "regional_request_items", "fdps"
   add_foreign_key "regional_request_items", "regional_requests"
