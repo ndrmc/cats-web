@@ -39,6 +39,7 @@
           <thead>
             <tr>
               <th>Project code</th>
+              <th>Commodity category </th>
               <th>Commodity</th>
               <th>Commodity source</th>
               <th>Organization</th>
@@ -58,6 +59,7 @@
             <% @projects.each do |project| %>
             <tr>
               <td><%= link_to project.project_code, edit_project_path(project) %></td>
+              <td><%= project&.commodity&.commodity_category&.name %></td>
               <td><%= project.commodity.name %></td>
               <td><%= project.commodity_source&.name %></td>
               <td><%= project.organization.name %></td>

@@ -70,13 +70,34 @@
 <script type="text/javascript">
 var EMPTY_OPTION = '<option value="">-- Choose --</option>';
 
+$( document ).ready(function() {
+
+  var id=document.getElementById("project_commodity_categories_id").value;
+  var c_id=$( "select#project_commodity_id" ).val();
+ 
+
+var url = '/projects/get_commodities/' + id
+ 
+  $.get(url, function(data) {
+      $("#project_commodity_id").html("");
+      $.each( data, function( index, value ) {
+      $("#project_commodity_id").append( "<option value='" + value[1] + "'>" + value[0] + "</option>" );
+      });
+     $("#project_commodity_id > [value=" + c_id + "]").attr("selected", "true");
+  });
+
+
+});
+
+
+
+
   $("#project_commodity_categories_id").change(function(){
   var url = '/projects/get_commodities/' + $(this).val()
  
   $.get(url, function(data) {
       $("#project_commodity_id").html("");
       $("#project_commodity_id").append( EMPTY_OPTION );
-      // Loop over the json and populate the Responses options:
       $.each( data, function( index, value ) {
        
         $("#project_commodity_id").append( "<option value='" + value[1] + "'>" + value[0] + "</option>" );

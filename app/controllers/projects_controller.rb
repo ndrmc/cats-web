@@ -112,6 +112,6 @@ end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
-    params.require(:project).permit(:project_code, :commodity_id, :commodity_source_id, :organization_id, :amount, :unit_of_measure_id, :publish_date, :commodity_category_id)
+    params.require(:project).permit(:project_code, :commodity_id, :commodity_source_id, :organization_id, :amount, :unit_of_measure_id, :publish_date, :commodity_categories_id)
   end
 end
