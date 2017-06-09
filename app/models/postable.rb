@@ -102,12 +102,15 @@ module Postable
         elsif(self.is_a?(Delivery))
                 delivery_account = Account.find_by({'code': :delivered})
                 dispatched_account = Account.find_by({'code': :dispatched})
+                lost_account = Account.find_by({'code': :lost})
+                stock_account = Account.find_by({'code': :stock})
                         
 
                 delivery_journal = Journal.find_by({'code': :delivery})
                 posting_items = []
                 self.delivery_details.each do |delivery_detail|
-                    amount_in_ref = UnitOfMeasure.find(delivery_detail.uom_id).to_ref(delivery_detail.received_quantity)
+                    received_amount_in_ref = UnitOfMeasure.find(delivery_detail.uom_id).to_ref(delivery_detail.received_quantity)
+                    sent_amount_in_ref = UnitOfMeasure.find(delivery_detail.uom_id).to_ref(delivery_detail.sent_quantity)
                     debit = PostingItem.new({
                         account_id: dispatched_account.id,
                         journal_id: delivery_journal.id,
@@ -117,7 +120,7 @@ module Postable
                         operation_id: self.operation_id,
                         commodity_id: delivery_detail.commodity_id,
                         commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
-                        quantity: -amount_in_ref
+                        quantity: -received_amount_in_ref
 
                     })
 
@@ -131,15 +134,47 @@ module Postable
                         operation_id: self.operation_id,
                         commodity_id: delivery_detail.commodity_id,
                         commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
-                        quantity: amount_in_ref
+                        quantity: received_amount_in_ref
                     })
                     posting_items << credit
+
+                    # do loss accounting if received quantity not equal to sent quantity (three legged posting)
+                    if received_amount_in_ref > sent_amount_in_ref #stock gain
+                        gain_credit =PostingItem.new({
+                            account_id: stock_account.id,
+                            journal_id: delivery_journal.id,
+                            fdp_id: self.fdp_id, 
+                            batch_id: 1,
+                            program_id: Operation.find(self.operation_id).program_id,
+                            operation_id: self.operation_id,
+                            commodity_id: delivery_detail.commodity_id,
+                            commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
+                            quantity: received_amount_in_ref - sent_amount_in_ref
+                        })
+                        posting_items << gain_credit
+
+                    elsif received_amount_in_ref < sent_amount_in_ref #loss
+                         loss_credit =PostingItem.new({
+                            account_id: lost_account.id,
+                            journal_id: delivery_journal.id,
+                            fdp_id: self.fdp_id, 
+                            batch_id: 1,
+                            program_id: Operation.find(self.operation_id).program_id,
+                            operation_id: self.operation_id,
+                            commodity_id: delivery_detail.commodity_id,
+                            commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
+                            quantity: sent_amount_in_ref - received_amount_in_ref 
+                        })
+                        posting_items << loss_credit
+                    end
+                    
                 end 
 
 
 
                 post( Posting.document_types[:delivery], self.id, Posting.posting_types[:normal], posting_items)
  
+                
     
         elsif(self.is_a?(Project))
                 statistics_account = Account.find_by({'code': :statistics})
