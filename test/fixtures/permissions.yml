@@ -9,3 +9,6 @@ one:
 #
 two:
     name: 'permission 2'
+
+three:
+    name: 'Dispatch'
