@@ -34,7 +34,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
        } }
     end
 
-    assert_redirected_to project_url(Project.last)
+    assert_redirected_to projects_url
   end
 
   test "should show project" do
@@ -60,7 +60,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
         commodity_categories_id: 1
 
      } }
-    assert_redirected_to project_url(@project)
+    assert_redirected_to projects_url
   end
 
   test "should destroy project" do

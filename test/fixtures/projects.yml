@@ -5,6 +5,7 @@
 # below each fixture, per the syntax in the comments below
 #
 project1:
+        id: 01
         project_code: 'pc-0020'
         commodity: commodity_1
         commodity_source: commodity_source_1
@@ -14,6 +15,7 @@ project1:
         publish_date: '1/1/2000'
 
 project2: 
+        id: 02
         project_code: 'pc-0030'
         commodity: commodity_1
         commodity_source: commodity_source_1
