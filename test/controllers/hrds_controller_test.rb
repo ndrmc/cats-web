@@ -5,7 +5,7 @@ class HrdsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
-    @hrd = hrds(:one)
+    @hrd = hrds(:hrd1)
   end
 
 #  test "should get index" do

@@ -6,7 +6,7 @@ class ProgramsControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:admin)
 
-    @program = programs(:one)
+    @program = programs(:program1)
   end
 
   test "should get index" do
