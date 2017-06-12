@@ -68,6 +68,8 @@ Rails.application.routes.draw do
   resources :projects
   post '/projects/:id/archive', to: 'projects#archive'
   post '/projects/:id/unarchive', to: 'projects#unarchive'
+  get '/projects/get_commodities/:id', to: 'projects#get_commodities'
+
   resources :deliveries
 
   resources :rations
