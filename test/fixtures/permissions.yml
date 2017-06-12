@@ -9,5 +9,7 @@ permission1:
 #
 permission2:
     name: 'permission 2'
+
 project:
     name: 'Project'
+
