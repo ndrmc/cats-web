@@ -46,7 +46,7 @@
             <td><%= unit_of_measure.code%></td>
             <td><%= unit_of_measure.uom_type%></td>
             <td><%= unit_of_measure.ratio%></td>
-            <td><%= unit_of_measure.uom_category.name%></td>
+            <td><%= unit_of_measure&.uom_category&.name%></td>
             <td>
               <%= link_to 'Edit', edit_unit_of_measure_path(unit_of_measure) %> &middot;
               <%= link_to 'Delete', unit_of_measure, method: :delete, data: { confirm: 'Are you sure?' } %>
