@@ -6,6 +6,7 @@ class FdpsControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:admin)
     @fdp = fdps(:fdp1)
+    @location = locations(:location1)
   end
 
   test "should get index" do
@@ -38,7 +39,7 @@ class FdpsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update fdp" do
     patch fdp_url('en',@fdp), params: { fdp: { name: @fdp.name, zone: @fdp.zone, region: @region, location: @fdp.location  } }
-    assert_response :success
+    assert_redirected_to fdp_url(@fdp)
   end
 
   test "should destroy fdp" do
@@ -50,13 +51,13 @@ class FdpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "fdp name  must not be blank" do
-    new_fdp=Fdp.new(name: ' ')
+    new_fdp=Fdp.new(location: @location, name: ' ')
     assert !new_fdp.valid?
 
   end
   
   test "fdp name must not be nil" do
-    new_fdp=Fdp.new(name: nil)
+    new_fdp=Fdp.new(location: @location,name: nil)
     assert !new_fdp.valid?
 
   end

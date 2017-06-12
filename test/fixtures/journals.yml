@@ -1,0 +1,36 @@
+    journal1:
+            name: 'Beginning Inventory'
+            code: 1
+    journal2: 
+             name: 'Donation'
+             code: 2
+    journal3:
+            name: 'Goods Received'
+            code: 3
+    journal4:
+            name: 'Purchase'
+            code: 4
+    journal5: 
+            name: 'Dispatch allocation'
+            code: 5
+    journal6:
+            name: 'Good Issue'
+            code: 6
+    journal7:
+            name: 'Loan'
+            code: 7
+    journal8:
+            name: 'Repayment'
+            code: 8
+    journal9:
+            name: 'Transfer'
+            code: 9
+   journal1_1: 
+            name: 'Annual Inventory'
+            code: 10
+   journal_2:
+            name: 'Delivery'
+            code: 11
+   journal_3:
+            name: 'Distribution'
+            code: 12

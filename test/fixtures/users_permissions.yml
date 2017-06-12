@@ -1,0 +1,3 @@
+users_permissions:
+        user: admin
+        permission: project

@@ -1,4 +1,5 @@
 namespace :upgrade do
+
   desc "Upgrade location hierarchies "
   task :location do
     on roles(:app) do
@@ -16,6 +17,17 @@ namespace :upgrade do
       within "#{current_path}" do
         with rails_env: :production do
           execute :rake, "cats:hrd:location"
+        end
+      end
+    end
+  end
+
+  desc "Update FDP values"
+  task :fdp do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "cats:fdp:update_locations"
         end
       end
     end
