@@ -47,7 +47,7 @@ namespace :cats do
 
       posting = Posting.new({
                               document_id: 0,
-                              document_type: :stoke_take,
+                              document_type: :stock_take,
                               posting_type: :inventory,
                               posting_items: posting_items
       })
