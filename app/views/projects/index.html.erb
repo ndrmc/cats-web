@@ -35,6 +35,23 @@
   <div class="wrapper wrapper-content">
     <div class="ibox float-e-margins">
       <div class="ibox-content">
+      <div>
+      <form role="form" class="form-inline">
+            <div class="form-group">
+              <label>Donor/Organization</label>
+              <%= select_tag "organization_id", options_from_collection_for_select(Organization.all, :id, :name,:selected=>params[:organization_id]),
+                { :prompt => ' Please Select ',class: 'form-control'}%>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+             
+              <%= select_tag("status", options_for_select(Project::STATUSES,:selected=>params[:status]) ,
+                { :prompt => ' All ',class: 'form-control'})%>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              <span class="fa fa-search"></span>Search</button>
+          </form>
+        </div>
         <table class="table table-striped cats-datatable">
           <thead>
             <tr>
@@ -68,21 +85,24 @@
               <td><%= project&.unit_of_measure&.name %></td>
               <td><%= project&.publish_date&.strftime('%d-%b-%Y')%></td>
               <td>
-                <% if can_edit_project %>
-                <%= link_to 'Edit', edit_project_path(project) %>
-                &middot;
-                <%end%>
-                <% if can_delete_project %>
-                <%= link_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' } %>
-                <%end%>
+                <% if can_edit_project %>                           
 
                   <% if !project.archived  %>
-                    <%= link_to "projects/#{project.id}/archive"  , method: :post, :class => "btn btn-white btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                     <%= link_to 'Edit', edit_project_path(project) %>
+                         
+                    <%= link_to "projects/#{project.id}/archive"  , method: :post, :class => "btn btn-danger btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
                             <i class="fa fa-archive"></i>   
                         Archive     
                     <% end %>
+                  <%else%>
+                     <%= link_to "projects/#{project.id}/unarchive"  , method: :post, :class => "btn btn-warning btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                            <i class="fa fa-thumbs-o-up"></i>   
+                        Activate     
+                    <% end %>
                   <% end %>
 
+                 <%end%>  
+                
               </td>
             </tr>
             <% end %>
