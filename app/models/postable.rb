@@ -146,13 +146,13 @@ module Postable
                 receivable_account = Account.find_by({'code': :receivable})
 
                 receivable_journal = nil      
-                if(self.commodity_source == CommoditySource.find_by_name('Donation').id)
+                if(self.commodity_source_id == CommoditySource.find_by_name('Donation').id)
                     receivable_journal = Journal.find_by({'code': :donation})
-                elsif (self.commodity_source == CommoditySource.find_by_name('Local Purchase').id)
+                elsif (self.commodity_source_id == CommoditySource.find_by_name('Local Purchase').id)
                     receivable_journal = Journal.find_by({'code': :purchase})
-                elsif (self.commodity_source == CommoditySource.find_by_name('Loan').id)
+                elsif (self.commodity_source_id == CommoditySource.find_by_name('Loan').id)
                     receivable_journal = Journal.find_by({'code': :loan})
-                elsif (self.commodity_source == CommoditySource.find_by_name('Swap').id)
+                elsif (self.commodity_source_id == CommoditySource.find_by_name('Swap').id)
                     receivable_journal = Journal.find_by({'code': :transfer})
                 else
                     raise Exception('Commodity source unknown')

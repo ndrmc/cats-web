@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+project1:
+        id: 01
+        project_code: 'pc-0020'
+        commodity: commodity_1
+        commodity_source: commodity_source_1
+        organization: org1
+        amount: 50
+        unit_of_measure: unit_of_measure_1
+        publish_date: '1/1/2000'
+
+project2: 
+        id: 02
+        project_code: 'pc-0030'
+        commodity: commodity_1
+        commodity_source: commodity_source_1
+        organization: org1
+        amount: 50
+        unit_of_measure: unit_of_measure_1
+        publish_date: '1/1/2000'
