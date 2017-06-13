@@ -4,9 +4,9 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: 
+transporter_1: 
     name: ethiopian transporters association
     code: eta
-two: 
+transporter_2: 
     name: DRMFSS
     code: drm
