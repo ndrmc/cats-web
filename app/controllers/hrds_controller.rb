@@ -40,10 +40,17 @@ class HrdsController < ApplicationController
     end 
 
     def remove_hrd_id 
-        hrd_item = HrdItem.find params[:id]
-        hrd_item.destroy
+        @hrd_item = HrdItem.find params[:id]
         respond_to do |format|
-            format.json { head :no_content }
+            # Check if the deletion of the HRD item is successful and redirect to the referrer
+            if @hrd_item.destroy
+                format.html { redirect_to request.referrer, notice: 'HRD item was successfully deleted.' }
+            else
+                format.html { 
+                    flash[:error] = "Delete failed! Please try again shortly."
+                    redirect_to request.referrer 
+                }
+            end
         end
     end
     
