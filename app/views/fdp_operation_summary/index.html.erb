@@ -1,0 +1,149 @@
+<div class="row">
+  <div class="wrapper wrapper-content">
+          
+    <div class="ibox float-e-margins">
+      <div class="ibox-title"> FDP Operation Summary </div>
+      <div class="ibox-content">
+      	<div class="row m-b-sm m-t-sm">              
+        	
+        	<div class="form-group col-md-4 col-sm-6 col-xs-12">
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :region, "Region", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'region', @fdp.region, :disabled => true %> 
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :zone, "Zone", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'zone', @fdp.zone, :disabled => true %> 
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :woreda, "Woreda", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'woreda', @fdp.woreda, :disabled => true %> 
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-6 col-xs-12">
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :fdp, "FDP", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'fdp', @fdp.name, :disabled => true %> 
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :operation, "Operation", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'operation', @operation.name, :disabled => true %> 
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :progam, "Program", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'progam', @program.name, :disabled => true %> 
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-6 col-xs-12">
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :dispatchedQty, "Total Dispatched Qty.", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'dispatchedQty', @dispatchedQty, :disabled => true %>
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :deliveredQty, "Total Delivered Qty.", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'deliveredQty', @deliveredQty, :disabled => true %>
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :requisitionNos, "Requisitions", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'requisitionNos', @requisitionNumbers.inspect, :disabled => true %>
+					</div>
+				</div>
+			</div>
+			
+      </div>
+    </div>
+  
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        FDP Dispatch Operations</div>
+      <div class="ibox-content">
+        <table class="table table-striped cats-datatable">
+          <thead>
+            <tr>
+              <th>GIN</th>
+              <th>Requisition No.</th>
+              <th>Dispatch Date</th>
+              <th>Status</th>
+              <th>Remarks</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+          	<% @dispatches.each do |di| %>
+            
+
+            <tr>
+              <td>             
+                <%= di. %>
+              </td>
+              <td>              
+                <%= Location.find(Fdp.find(ri.fdp_id).location_id).ancestors.find { |a| a.location_type == 'zone' }.name %>
+              </td>
+              <td>              
+                <%= Location.find(Fdp.find(ri.fdp_id).location_id).name %>
+              </td>
+              <td>     
+              <%= link_to '/fdp_operation_summary/index?fdp_id=' + ri.fdp_id.to_s + '&operation_id=' + requisition.operation_id.to_s + '&requisition_id=' + requisition.id.to_s do %>
+                <%= Fdp.find(ri.fdp_id).name.to_s %>     
+              <% end %>
+              </td>
+              <td>                
+                <%= ri.beneficiary_no %>        
+              </td>
+              <td>
+                <%= ri.amount%>
+              </td>
+              <td>
+                <%= ri.contingency %>
+              </td>
+            
+            </tr>
+            <% end %>
+            <%end%>  
+
+          </tbody>
+
+        </table>
+
+      </div>
+  
+
+      
+  </div>
+</div>
