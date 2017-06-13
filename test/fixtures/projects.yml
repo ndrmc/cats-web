@@ -1,3 +1,4 @@
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 # This model initially had no columns defined. If you add columns to the
@@ -23,3 +24,4 @@ project2:
         amount: 50
         unit_of_measure: unit_of_measure_1
         publish_date: '1/1/2000'
+

@@ -5,7 +5,7 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
-    @organization = organizations(:one)
+    @organization = organizations(:org1)
   end
 
   test "should get index" do
