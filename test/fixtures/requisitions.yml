@@ -8,9 +8,8 @@ requisition1:
        requisition_no: '002'
        operation: operation1
        commodity_id: 1
-       region_id: 1
-       zone_id: 1
        ration_id: 1
        requested_by: 'abebe'
        requested_on: '1/1/2009'
-       status: 1
+       status: 1,
+       request_id: 1

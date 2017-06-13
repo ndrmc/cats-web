@@ -1,8 +1,12 @@
 require 'test_helper'
 
 class RequisitionsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   setup do
-    @requisition = requisitions(:one)
+    sign_in users(:admin)
+    @operation = operations(:operation1)
+    @requisition = requisitions(:requisition1)
   end
 
   test "should get index" do
@@ -15,32 +19,38 @@ class RequisitionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create requisition" do
-    assert_difference('Requisition.count') do
-      post requisitions_url, params: { requisition: {  } }
-    end
-
-    assert_redirected_to requisition_url(Requisition.last)
-  end
 
   test "should show requisition" do
-    get requisition_url(@requisition)
+    get requisition_url('en',@requisition)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_requisition_url(@requisition)
+    get edit_requisition_url('en',@requisition)
     assert_response :success
   end
 
   test "should update requisition" do
-    patch requisition_url(@requisition), params: { requisition: {  } }
-    assert_redirected_to requisition_url(@requisition)
+    patch requisition_url('en',@requisition), params: { requisition: { 
+
+
+       requisition_no: '002',
+       operation_id: 1,
+       commodity_id: 1,
+       region_id: 1,
+       zone_id: 1,
+       ration_id: 1,
+       requested_by: 'abebe',
+       requested_on: '1/1/2009',
+       status: :draft
+
+     } }
+    assert_redirected_to edit_requisition_url(@requisition)
   end
 
   test "should destroy requisition" do
     assert_difference('Requisition.count', -1) do
-      delete requisition_url(@requisition)
+      delete requisition_url('en',@requisition)
     end
 
     assert_redirected_to requisitions_url

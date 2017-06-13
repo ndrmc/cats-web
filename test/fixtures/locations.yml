@@ -6,7 +6,7 @@ location2:
     name: 'Oromia'
     location_type: :region
 
-location1:
+location3:
     name: 'Amhara'
     location_type: :region
    
