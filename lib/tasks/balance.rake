@@ -31,7 +31,7 @@ namespace :cats do
         posting_items << credit
 
         debit = PostingItem.new({
-                                  account_id: stock_account.id,
+                                  account_id: statistics_account.id,
                                   journal_id: begining_inventory.id,
                                   donor_id: row[0].to_i,
                                   hub_id: row[1].to_i,
