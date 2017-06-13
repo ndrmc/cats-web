@@ -5,7 +5,7 @@
 # below each fixture, per the syntax in the comments below
 #
 operation1:      
-    program: program1
+    program: program2
     hrd: hrd1
     fscd_annual_plan_id:
     name: 'Meher 2009'
