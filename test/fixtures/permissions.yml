@@ -15,3 +15,6 @@ project:
     name: 'Project'
 Requisition:
     name: 'Requisition'
+delivery:
+    name: 'Delivery'
+
