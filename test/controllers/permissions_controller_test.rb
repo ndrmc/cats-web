@@ -5,7 +5,7 @@ class PermissionsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
-    @permission = permissions(:one)
+    @permission = permissions(:permission1)
   end
 
   test "should get index" do
