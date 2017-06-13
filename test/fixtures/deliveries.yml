@@ -7,7 +7,7 @@
 delivery1:
   receiving_number: '001'
   transporter_id: 1
-  fdp: fpd1
+  fdp: fdp1
   gin_number: '0001'
   requisition_number: '002'
   received_by: 'Mola'
@@ -19,7 +19,7 @@ delivery1:
 delivery2:
   receiving_number: '002'
   transporter_id: 1
-  fdp: fpd1
+  fdp: fdp1
   gin_number: '0002'
   requisition_number: '002'
   received_by: 'Mola'
