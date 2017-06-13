@@ -1,13 +1,12 @@
 location1:
     name: 'AFAR'
+    code: 'AF'
     location_type: :region
    
 location2:
     name: 'Oromia'
     location_type: :region
-
 location3:
     name: 'Amhara'
     location_type: :region
-   
     
