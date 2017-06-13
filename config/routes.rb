@@ -116,6 +116,9 @@ Rails.application.routes.draw do
   delete '/psnp_plans/remove_psnp_plan_id/:id', to: 'psnp_plans#remove_psnp_plan_id'
   resources :psnp_plans
 
+  resources :stock_takes
+  resources :stock_take_items
+
   
   root to: 'dashboard#index'
   # GraphQL configuration

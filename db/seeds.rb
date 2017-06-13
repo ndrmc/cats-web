@@ -230,6 +230,7 @@ if Permission.count == 0
   Permission.create(name: 'Requisition', description: '')
   Permission.create(name: 'Settings', description: '')
   Permission.create(name: 'Transporters', description: '')
+  Permission.create(name: 'StockTakes', description: '')
 
   puts "Permissions created"
 

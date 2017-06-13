@@ -1,0 +1,63 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <p>
+        <strong>Hub:</strong>
+        <%= @stock_take.hub_id %>
+      </p>
+      <p>
+        <strong>Warehouse:</strong>
+        <%= @stock_take.warehouse_id %>
+      </p>
+      <p>
+        <strong>Store no:</strong>
+        <%= @stock_take.store_no %>
+      </p>
+      <p>
+        <strong>Donor:</strong>
+        <%= @stock_take.donor_id %>
+      </p>
+      <p>
+        <strong>Date:</strong>
+        <%= @stock_take.date %>
+      </p>
+      <div class="clients-list">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"><i class="fa fa-user"></i> Stock Take Items</a></li>
+          <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false"><i class="fa fa-briefcase"></i> Adjustments</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="tab-1" class="tab-pane active">
+            <div class="">
+            <br/>
+              <%= link_to 'Add Item', new_stock_take_item_url(stock_take_id: @stock_take.id) , class: 'btn btn-primary pull-right'%>
+            </div>
+            <table class="table table-striped table-bordered table-hover " id="editable" >
+            <thead>
+            <tr>
+                <th>Commodity Category</th>
+                <th>Commodity</th>
+                <th>Theoretical Amount</th>
+                <th>Actual Amount</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+           <% @stock_take.stock_take_items.each do |item| %>              
+             <%= render 'stock_take_item', stock_take_item: item %>         
+          <%end%>
+      
+            </tbody>
+           
+            </table>
+
+             
+          </div>
+          <div id="tab-2" class="tab-pane">
+          
+		  </div>
+	   </div>
+        
+    </div>
+  </div>
+ </div>
