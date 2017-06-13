@@ -1,0 +1,8 @@
+dispatch_item1:
+                 dispatch_id: 001
+                 commodity_category: commodity_category_1
+                 commodity: commodity_1
+                 quantity: 40
+                 unit_of_measure: unit_of_measure_1 
+                 organization_id: org1
+                 project: project_1
