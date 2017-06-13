@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     authorize Project
-    @projects = Project.all.includes([:commodity, :organization, :commodity_source, :unit_of_measure])    
+    @projects = Project.filter(params.slice(:organization_id, :status)).includes([:commodity, :organization, :commodity_source, :unit_of_measure])   
   end
 
   # GET /projects/1
@@ -75,7 +75,22 @@ class ProjectsController < ApplicationController
                 format.html { redirect_to projects_url, notice: 'Project was successfully archived.' }
             else
                 format.html { 
-                    flash[:error] = "Save failed! Please check your input and try again shortly."
+                    flash[:error] = "Operation failed! Please try again shortly."
+                    redirect_to projects_url 
+                }
+            end
+        end
+end
+
+ def unarchive
+     @project = Project.find params[:id] 
+
+            respond_to do |format|
+            if @project.update_columns(:archived => false) 
+                format.html { redirect_to projects_url, notice: 'Project was successfully activated.' }
+            else
+                format.html { 
+                    flash[:error] = "Operation failed! Please try again shortly."
                     redirect_to projects_url 
                 }
             end
@@ -93,6 +108,17 @@ end
     end
   end
 
+
+def get_commodities
+  val = params[:id]
+  @commodities = Commodity.find_by commodity_category_id: params[:id]
+  @commodities =  Commodity.where(commodity_category_id: params[:id]).map{ |r| [r.name, r.id]} 
+
+ respond_to do |format|
+      format.json { render json: @commodities }
+    end
+end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_project
@@ -101,6 +127,6 @@ end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
-    params.require(:project).permit(:project_code, :commodity_id, :commodity_source_id, :organization_id, :amount, :unit_of_measure_id, :publish_date)
+    params.require(:project).permit(:project_code, :commodity_id, :commodity_source_id, :organization_id, :amount, :unit_of_measure_id, :publish_date, :commodity_categories_id)
   end
 end

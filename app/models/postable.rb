@@ -181,13 +181,13 @@ module Postable
                 receivable_account = Account.find_by({'code': :receivable})
 
                 receivable_journal = nil      
-                if(self.commodity_source == CommoditySource.find_by_name('Donation').id)
+                if(self.commodity_source_id == CommoditySource.find_by_name('Donation').id)
                     receivable_journal = Journal.find_by({'code': :donation})
-                elsif (self.commodity_source == CommoditySource.find_by_name('Local Purchase').id)
+                elsif (self.commodity_source_id == CommoditySource.find_by_name('Local Purchase').id)
                     receivable_journal = Journal.find_by({'code': :purchase})
-                elsif (self.commodity_source == CommoditySource.find_by_name('Loan').id)
+                elsif (self.commodity_source_id == CommoditySource.find_by_name('Loan').id)
                     receivable_journal = Journal.find_by({'code': :loan})
-                elsif (self.commodity_source == CommoditySource.find_by_name('Swap').id)
+                elsif (self.commodity_source_id == CommoditySource.find_by_name('Swap').id)
                     receivable_journal = Journal.find_by({'code': :transfer})
                 else
                     raise Exception('Commodity source unknown')
@@ -215,16 +215,85 @@ module Postable
                         quantity: amount_in_ref,
                         donor_id: self.organization_id,
                     })
-                    posting_items << credit
-              
+                    posting_items << credit              
 
 
 
                 post( Posting.document_types[:project], self.id, Posting.posting_types[:normal], posting_items)
             
             
-            end
     
+    
+    
+        elsif(self.is_a?(StockTake))
+             statistics_account = Account.find_by({'code': :statistics})
+             stock_account = Account.find_by({'code': :stock})
+             lost_account = Account.find_by({'code': :lost})
+
+             stock_take_journal =  Journal.find_by({'code': :annual_inventory})  
+             posting_items = []     
+             self.adjustments.each do |adjustment|
+               puts "posting -----#{adjustment.adjustment_type}   #{Adjustment.adjustment_types[:loss]}"
+                if adjustment.loss? 
+                    
+                    debit = PostingItem.new({
+                            account_id: stock_account.id,
+                            journal_id: stock_take_journal.id,
+                            commodity_id: adjustment.commodity_id,
+                            commodity_category_id: adjustment.commodity_category_id,
+                            quantity: adjustment.amount,
+                            hub_id: adjustment.stock_take.hub_id,
+                            warehouse_id: adjustment.stock_take.warehouse_id,
+                            store_id: adjustment.stock_take.store_no,
+                            donor_id: adjustment.stock_take.donor_id                                                
+
+                        })
+
+                        posting_items << debit
+                        credit = PostingItem.new({
+                            account_id: stock_account.id,
+                            journal_id: stock_take_journal.id,
+                            commodity_id: adjustment.commodity_id,
+                            commodity_category_id: adjustment.commodity_category_id,
+                            quantity: -adjustment.amount,
+                            hub_id: adjustment.stock_take.hub_id,
+                            warehouse_id: adjustment.stock_take.warehouse_id,
+                            store_id: adjustment.stock_take.store_no,
+                            donor_id: adjustment.stock_take.donor_id  
+                        })
+                        posting_items << credit
+                elsif adjustment.gain?
+                    debit = PostingItem.new({
+                            account_id: statistics_account.id,
+                            journal_id: stock_take_journal.id,
+                            commodity_id: adjustment.commodity_id,
+                            commodity_category_id: adjustment.commodity_category_id,
+                            quantity: -adjustment.amount,
+                            hub_id: adjustment.stock_take.hub_id,
+                            warehouse_id: adjustment.stock_take.warehouse_id,
+                            store_id: adjustment.stock_take.store_no,
+                            donor_id: adjustment.stock_take.donor_id                                                
+
+                        })
+
+                        posting_items << debit
+                        credit = PostingItem.new({
+                            account_id: stock_account.id,
+                            journal_id: stock_take_journal.id,
+                             commodity_id: adjustment.commodity_id,
+                            commodity_category_id: adjustment.commodity_category_id,
+                            quantity: adjustment.amount,
+                            hub_id: adjustment.stock_take.hub_id,
+                            warehouse_id: adjustment.stock_take.warehouse_id,
+                            store_id: adjustment.stock_take.store_no,
+                            donor_id: adjustment.stock_take.donor_id  
+                        
+                        })
+                        posting_items << credit
+                end                
+            end
+            post( Posting.document_types[:stock_take], self.id, Posting.posting_types[:normal], posting_items)
+        end
     end
 
     def post(document_type, document_id, posting_type, posting_items) 

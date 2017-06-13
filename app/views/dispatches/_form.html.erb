@@ -1,5 +1,5 @@
 <%= form_for(dispatch, :html=> {:id => 'dispatch-form'} ) do |f| %>
-<% @projects = Project.all%>
+<% @projects = Project.where('archived = ? OR archived IS NULL',false)%>
 <% @uoms = UnitOfMeasure.all%>
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">

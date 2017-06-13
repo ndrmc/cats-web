@@ -4,8 +4,12 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
+permission1:
     name: 'permission 1'
 #
-two:
+permission2:
     name: 'permission 2'
+three:
+    name: 'Dispatch'
+project:
+    name: 'Project'

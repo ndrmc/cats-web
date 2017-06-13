@@ -67,6 +67,9 @@ Rails.application.routes.draw do
   resources :organizations
   resources :projects
   post '/projects/:id/archive', to: 'projects#archive'
+  post '/projects/:id/unarchive', to: 'projects#unarchive'
+  get '/projects/get_commodities/:id', to: 'projects#get_commodities'
+
   resources :deliveries
 
   resources :rations
@@ -116,8 +119,11 @@ Rails.application.routes.draw do
   delete '/psnp_plans/remove_psnp_plan_id/:id', to: 'psnp_plans#remove_psnp_plan_id'
   resources :psnp_plans
 
+  get 'stock_takes/:id/post', to: 'stock_takes#post_stock_take'
   resources :stock_takes
   resources :stock_take_items
+  resources :adjustments
+ 
 
   
   root to: 'dashboard#index'

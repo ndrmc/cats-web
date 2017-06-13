@@ -5,7 +5,7 @@ class ReceiptsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
-    @receipt = receipts(:one)
+    @receipt = receipts(:receipt1)
   end
 
   test "should get index" do

@@ -37,6 +37,20 @@ class StockTakesController < ApplicationController
     end
   end
 
+  def post_stock_take
+    @stock_take = StockTake.find(params[:id])    
+    @stock_take.draft = false
+     respond_to do |format|
+      if @stock_take.save
+        format.html { redirect_to @stock_take, notice: 'Stock take was successfully created.' }
+        format.json { render :show, status: :created, location: @stock_take }
+      else
+        format.html { render :new }
+        format.json { render json: @stock_take.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # PATCH/PUT /stock_takes/1
   # PATCH/PUT /stock_takes/1.json
   def update

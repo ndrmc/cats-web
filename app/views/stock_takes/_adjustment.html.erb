@@ -1,0 +1,10 @@
+<%= fields_for(adjustment)  do |f| %>
+<tr class="gradeX">
+                <td><%= CommodityCategory.find(adjustment.commodity_category_id).name%></td>
+                <td><%= Commodity.find(adjustment.commodity_id).name%></td>
+                <td><%=adjustment.amount%></td>
+                <td><%=adjustment.loss? ? 'Loss' : 'Gain' %></td>
+                <td><%=f.text_field :reason %></td>
+               
+</tr> 
+<% end %>

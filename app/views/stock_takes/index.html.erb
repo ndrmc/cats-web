@@ -43,22 +43,23 @@
           <% @stock_takes.each do |stock_take| %>
           <tr>
             
-            <td><%= stock_take.hub_id
+            <td><%= Hub.find(stock_take.hub_id).name
               %></td>
             
-            <td><%= stock_take.warehouse_id
+            <td><%=Warehouse.find(stock_take.warehouse_id).name
               %></td>
             
             <td><%= stock_take.store_no
               %></td>
             
-            <td><%= stock_take.donor_id
+            <td><%= Organization.find(stock_take.donor_id).name
               %></td>
             
             <td><%= stock_take.date
               %></td>
             
             <td>
+              <%= link_to 'Show', stock_take_path(stock_take) %> &middot;
               <%= link_to 'Edit', edit_stock_take_path(stock_take) %> &middot;
               <%= link_to 'Delete', stock_take, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
