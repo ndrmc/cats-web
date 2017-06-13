@@ -1,3 +1,6 @@
 users_permissions:
         user: admin
         permission: project
+user_permission_delivery:
+        user: admin
+        permission: delivery

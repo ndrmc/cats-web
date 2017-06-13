@@ -1,0 +1,6 @@
+delivery_detail_1:
+                delivery: delivery1
+                commodity_id: 1
+                uom_id: 1
+                sent_quantity: 100
+                received_quantity: 100
