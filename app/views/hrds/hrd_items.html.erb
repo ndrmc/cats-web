@@ -65,7 +65,7 @@
                         </thead>
                         <tbody>
                             <% total = 0 %>
-                            <% hrd_items.each do |item| %>
+                            <% hrd_items.sort_by{|n| n&.woreda&.name}.each do |item| %>
                                 <tr id="hrd-item-<%= item.id %>">
                                     <td><%= item&.woreda&.name  %></td>
                                     <td id="starting-month-<%= item.id %>"><%= Date::MONTHNAMES[item.starting_month] %></td>
