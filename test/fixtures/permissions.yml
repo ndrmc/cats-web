@@ -11,3 +11,5 @@ permission2:
     name: 'permission 2'
 project:
     name: 'Project'
+delivery:
+    name: 'Delivery'
