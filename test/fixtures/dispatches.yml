@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+dispatch1: 
+    gin_no: '001'
+    requisition_number: '017234'
+    operation_id: 1
+    dispatch_date: '1/1/2018'
+    hub_id:
+    warehouse_id: 
+    fdp_id: 
+    weight_bridge_ticket_number: '001'
+    transporter_id: 1
+    storekeeper_name: 'Abebe'
+
+dispatch2: 
+    gin_no: '002'
+    requisition_number: '017235'
+    operation_id: 2
+    dispatch_date: '1/1/2018'
+    hub: hub1
+    warehouse: warehouse1
+    fdp: fdp1
+    weight_bridge_ticket_number: '001'
+    transporter_id: 2 
+    storekeeper_name: 'mola'
