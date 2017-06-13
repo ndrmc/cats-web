@@ -13,3 +13,5 @@ three:
     name: 'Dispatch'
 project:
     name: 'Project'
+delivery:
+    name: 'Delivery'
