@@ -5,13 +5,9 @@ class HrdsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
-    @hrd = hrds(:one)
+    @hrd = hrds(:hrd1)
   end
 
-#  test "should get index" do
-#    get hrds_url
-#    assert_response :success
-#  end
 
   test "should get new" do
     get new_hrd_url
@@ -29,10 +25,7 @@ class HrdsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to hrd_url(Hrd.last)
   end
 
- # test "should show hrd" do
- #   get hrds_url
- #   assert_response :success
- # end
+
 
   test "should get edit" do
     get edit_hrd_url('en',@hrd)
