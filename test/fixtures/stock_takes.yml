@@ -1,11 +1,10 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one: 
+ id: 1
+ hub_id: 1   
+ warehouse_id: 1
+ store_no: 1
+ donor_id: 1    
+ date:  '2017-01-01'       
+ fiscal_period: 1  
+ draft:  true      
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
