@@ -1,3 +1,4 @@
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 # This model initially had no columns defined. If you add columns to the
@@ -19,4 +20,3 @@ operation1:
     actual_end: '2/1/2009'
     status: 1
     ration: ration_1
-
