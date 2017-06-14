@@ -3,14 +3,19 @@ class AdjustmentsController < ApplicationController
   layout 'admin'
   before_action :set_adjustment, only: [:update]
   
+  def edit
+    @adjustment = Adjustment.find(params[:id])
+  end
 
   # PATCH/PUT /adjustments/1
   # PATCH/PUT /adjustments/1.json
   def update
+    @adjustment = Adjustment.find(params[:id])
     respond_to do |format|
+      puts "----------------reason--#{@adjustment.reason}"
       @stock_take = StockTake.find(@adjustment.stock_take_id)
-      if @adjustment.update(account_params)
-        format.html { redirect_to stock_take_path(@stock_take), notice: 'Account was successfully updated.' }
+      if @adjustment.update(adjustment_params)
+        format.html { redirect_to stock_take_path(@stock_take), notice: 'Adjustment was successfully updated.' }
         format.json { render :show, status: :ok, location: @stock_take }
       else
         format.html { redirect_to stock_take_path(@stock_take) }
@@ -18,7 +23,6 @@ class AdjustmentsController < ApplicationController
       end
     end
   end
-
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -28,6 +32,6 @@ class AdjustmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def adjustment_params
-      params.require(:adjustment).permit(:stock_take_id, :stock_take_item_id,:commodity_id,:commodity_category_id,:reason)
+      params.require(:adjustment).permit(:reason)
     end
 end

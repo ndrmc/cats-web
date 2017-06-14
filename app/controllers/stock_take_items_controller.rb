@@ -88,7 +88,7 @@ class StockTakeItemsController < ApplicationController
           
           elsif @stock_take_item.theoretical_amount < @stock_take_item.actual_amount #loss
             @adjustment.amount = @stock_take_item.actual_amount - @stock_take_item.theoretical_amount
-            @adjustment = Adjustment.adjustment_types[:loss]
+            @adjustment.adjustment_type = Adjustment.adjustment_types[:loss]
             
           end
           @adjustment.save!

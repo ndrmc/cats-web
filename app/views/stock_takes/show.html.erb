@@ -3,6 +3,8 @@
     <div class="ibox-content">
     <% if @stock_take.draft %>
     <%= link_to 'Post Stock Take', "/stock_takes/#{@stock_take.id}/post" , class: 'btn btn-danger pull-right' , data: { confirm: 'Editing stock take values is not permitted after posting. Do you want to proceed?'}%>
+    <%else%>
+      <span class="badge badge-info pull-right">posted</span>
     <% end %>     
       <p>
         <strong>Hub:</strong>
@@ -26,14 +28,16 @@
       </p>
       <div class="clients-list">
         <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"><i class="fa fa-user"></i> Stock Take Items</a></li>
-          <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false"><i class="fa fa-briefcase"></i> Adjustments</a></li>
+          <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"><i class="fa fa-tags"></i> Stock Take Items</a></li>
+          <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false"><i class="fa fa-wrench"></i> Adjustments</a></li>
         </ul>
         <div class="tab-content">
           <div id="tab-1" class="tab-pane active">
             <div class="">
             <br/>
+              <% if @stock_take.draft %>
               <%= link_to 'Add Item', new_stock_take_item_url(stock_take_id: @stock_take.id) , class: 'btn btn-primary pull-right' %>
+              <% end %>
             </div>
             <table class="table table-striped table-bordered table-hover " id="editable" >
             <thead>
@@ -57,7 +61,7 @@
              
           </div>
           <div id="tab-2" class="tab-pane">
-             <table class="table table-striped table-bordered table-hover " id="editable" >
+             <table class="table table-striped table-bordered table-hover " >
                 <thead>
                 <tr>
                     <th>Commodity Category</th>
@@ -65,7 +69,7 @@
                     <th>Amount</th>
                     <th>Adjustment Type</th>
                     <th>Reason</th>
-                    <th></th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
