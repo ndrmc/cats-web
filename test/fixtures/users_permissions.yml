@@ -14,3 +14,4 @@ users_permissions_receipts:
 users_permissions_delivery:
         user: admin
         permission: delivery
+
