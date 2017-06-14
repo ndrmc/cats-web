@@ -4,7 +4,7 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
+hrd1:
     year_ec:  2009
     year_gc: 2019
     month_from: 'Jan'
@@ -13,7 +13,7 @@ one:
     duration: 6
 
 #
-two: 
+hrd2: 
     year_ec:  2010
     year_gc: 2018
     month_from: 'Jan'
