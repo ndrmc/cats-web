@@ -104,6 +104,8 @@ gem 'geocoder'
 # gem 'gmaps4rails'
 gem 'ethiopic_calendar'
 
+gem 'chart-js-rails'
+
 group :development do
     gem 'capistrano',         require: false
     gem 'capistrano-rbenv',     require: false
