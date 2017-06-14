@@ -2,6 +2,9 @@ class FdpOperationSummaryController < ApplicationController
 
   def index
   	if( params[:fdp_id].present? && params[:operation_id].present? )
+
+  		@backPath = request.referer
+  		
 		@operation = Operation.find(params[:operation_id])
 
 		@program = Program.find(@operation.program_id)
