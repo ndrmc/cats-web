@@ -15,3 +15,5 @@ project:
     name: 'Project'
 delivery:
     name: 'Delivery'
+Receipts: 
+    name: 'Receipts'
