@@ -12,7 +12,6 @@ class AdjustmentsController < ApplicationController
   def update
     @adjustment = Adjustment.find(params[:id])
     respond_to do |format|
-      puts "----------------reason--#{@adjustment.reason}"
       @stock_take = StockTake.find(@adjustment.stock_take_id)
       if @adjustment.update(adjustment_params)
         format.html { redirect_to stock_take_path(@stock_take), notice: 'Adjustment was successfully updated.' }
