@@ -1,0 +1,2 @@
+module StockTakesHelper
+end

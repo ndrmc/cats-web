@@ -1,0 +1,7 @@
+one:
+ id: 1
+ commodity_id:  1       
+ commodity_category_id: 1
+ theoretical_amount: 200  
+ actual_amount:  300      
+ stock_take_id: 1       
