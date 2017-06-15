@@ -1,4 +1,5 @@
 class StockTakesController < ApplicationController
+  
   before_action :set_stock_take, only: [:show, :edit, :update, :destroy]
 
   # GET /stock_takes

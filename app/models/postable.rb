@@ -233,7 +233,7 @@ module Postable
              stock_take_journal =  Journal.find_by({'code': :annual_inventory})  
              posting_items = []     
              self.adjustments.each do |adjustment|
-               puts "posting -----#{adjustment.adjustment_type}   #{Adjustment.adjustment_types[:loss]}"
+               Rails.logger.info "posting -----#{adjustment.adjustment_type}   #{Adjustment.adjustment_types[:loss]}"
                 if adjustment.loss? 
                     
                     debit = PostingItem.new({
@@ -241,7 +241,7 @@ module Postable
                             journal_id: stock_take_journal.id,
                             commodity_id: adjustment.commodity_id,
                             commodity_category_id: adjustment.commodity_category_id,
-                            quantity: adjustment.amount,
+                            quantity: -adjustment.amount,
                             hub_id: adjustment.stock_take.hub_id,
                             warehouse_id: adjustment.stock_take.warehouse_id,
                             store_id: adjustment.stock_take.store_no,
@@ -255,7 +255,7 @@ module Postable
                             journal_id: stock_take_journal.id,
                             commodity_id: adjustment.commodity_id,
                             commodity_category_id: adjustment.commodity_category_id,
-                            quantity: -adjustment.amount,
+                            quantity: adjustment.amount,
                             hub_id: adjustment.stock_take.hub_id,
                             warehouse_id: adjustment.stock_take.warehouse_id,
                             store_id: adjustment.stock_take.store_no,
