@@ -38,6 +38,8 @@
 //= require data-confirm-modal
 //= require underscore-min
 
+//= require Chart.min
+
 //= require_tree .
 
 $(document).ready(function() {
