@@ -190,7 +190,7 @@ module Postable
                 elsif (self.commodity_source_id == CommoditySource.find_by_name('Swap').id)
                     receivable_journal = Journal.find_by({'code': :transfer})
                 else
-                    raise Exception('Commodity source unknown')
+                    raise Exception,"Commodity source unknown"
                 end
 
                
@@ -299,7 +299,7 @@ module Postable
     def post(document_type, document_id, posting_type, posting_items) 
 
         if(!validate(posting_items))
-            raise Exception("Posting items did not pass validation.");
+            raise Exception, "Posting items did not pass validation."
         end
 
         posting = Posting.new({
