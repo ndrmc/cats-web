@@ -17,26 +17,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create user" do
-    assert_difference('User.count') do
-      post users_url, params: { user: {  
-            first_name: 'test',
-            last_name: '',
-            email: 'emails@cats.org',
-            is_active: true,
-            passowrd: 'password',
-            encrypted_password:  'password',
-            user_types: :manager,
-            hub_id: 1,
-            location_id: 1,
-            mobile_no: '09767898',
-            department_id: 1
-         } }
-    end
-
-    assert_redirected_to users_url
-  end
-
   test "should show user" do
     get users_url('en',@user)
     assert_response :success
