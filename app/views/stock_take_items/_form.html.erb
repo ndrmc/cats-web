@@ -1,0 +1,57 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(stock_take_item) do |f| %>
+        <% if stock_take_item.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(stock_take_item.errors.count, "error") %> prohibited this stock_take_item from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% stock_take_item.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+          <div class="form-group">
+            
+                <%= f.label :commodity_category_id %>
+                <%= f.collection_select :commodity_category_id,  CommodityCategory.order(:name), :id,:name, {:include_blank => '-- Please Choose --'},{:class => 'form-control'} %>
+            
+           </div>
+          <div class="form-group">
+            
+                <%= f.label :commodity_id %>
+                <%= f.collection_select :commodity_id,  Commodity.order(:name), :id,:name, {:include_blank => '-- Please Choose --'},{:class => 'form-control'} %>
+            
+           </div> 
+          
+         
+          <div class="form-group">
+            
+                <%= f.label :actual_amount %>
+                <%= f.text_field :actual_amount, :class => 'form-control' %>
+            
+            </div>
+
+      
+          
+            <%= f.number_field :stock_take_id, :class => 'form-control hidden' %>
+            
+            
+
+      
+
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>
