@@ -1,5 +1,7 @@
 <%= fields_for(stock_take_item)  do |f| %>
 <tr class="gradeX">
+                <td><%= Organization.find(stock_take_item.donor_id).name%></td>
+                <td><%= Project.find(stock_take_item.project_id).project_code%></td>                
                 <td><%= CommodityCategory.find(stock_take_item.commodity_category_id).name%></td>
                 <td><%= Commodity.find(stock_take_item.commodity_id).name%></td>
                 <td><%=stock_take_item.theoretical_amount%></td>

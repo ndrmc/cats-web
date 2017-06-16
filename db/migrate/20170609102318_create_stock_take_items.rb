@@ -1,6 +1,8 @@
 class CreateStockTakeItems < ActiveRecord::Migration[5.0]
   def change
     create_table :stock_take_items do |t|
+      t.integer :donor_id, null: false
+      t.integer :project_id, null: false
       t.integer :commodity_id, null: false
       t.integer :commodity_category_id, null: false
       t.decimal :theoretical_amount, null: false

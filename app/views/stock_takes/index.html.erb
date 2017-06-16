@@ -23,7 +23,8 @@
 
       <table class="table table-striped cats-datatable">
         <thead>
-          <tr>            
+          <tr>     
+            <th>Title</th>        
             <th>Hub</th>            
             <th>Warehouse</th>            
             <th>Store no</th>            
@@ -36,7 +37,8 @@
 
         <tbody>
           <% @stock_takes.each do |stock_take| %>
-          <tr>            
+          <tr>  
+            <td><%=stock_take.title%></td>                 
             <td><%= Hub.find(stock_take.hub_id).name%></td>            
             <td><%=Warehouse.find(stock_take.warehouse_id).name%></td>            
             <td><%= stock_take.store_no%></td>            

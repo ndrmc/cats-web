@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170613124910) do
+ActiveRecord::Schema.define(version: 20170613110106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,13 +34,13 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.integer  "commodity_id",          null: false
     t.integer  "commodity_category_id", null: false
     t.decimal  "amount",                null: false
-    t.integer  "adjustment_type",       null: false
     t.string   "reason"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.integer  "adjustment_type"
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -114,13 +114,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
-  end
-
-  create_table "case_units", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -294,7 +287,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.boolean  "imported"
-    t.string   "received_date_ec"
   end
 
   create_table "department_permissions", force: :cascade do |t|
@@ -634,17 +626,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.string   "address"
     t.index ["deleted_at"], name: "index_hubs_on_deleted_at", using: :btree
     t.index ["name"], name: "index_hubs_on_name", unique: true, using: :btree
-  end
-
-  create_table "idp_reasons", force: :cascade do |t|
-    t.string   "name"
-    t.text     "description"
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
   end
 
   create_table "journals", force: :cascade do |t|
@@ -1046,17 +1027,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.index ["requisition_no"], name: "index_requisitions_on_requisition_no", unique: true, using: :btree
   end
 
-  create_table "role_types", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by"
@@ -1069,15 +1039,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.index ["deleted_at"], name: "index_roles_on_deleted_at", using: :btree
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
-  end
-
-  create_table "roles_departments", force: :cascade do |t|
-    t.integer  "roles_id"
-    t.integer  "departments_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.index ["departments_id"], name: "index_roles_departments_on_departments_id", using: :btree
-    t.index ["roles_id"], name: "index_roles_departments_on_roles_id", using: :btree
   end
 
   create_table "seasons", force: :cascade do |t|
@@ -1095,6 +1056,8 @@ ActiveRecord::Schema.define(version: 20170613124910) do
   end
 
   create_table "stock_take_items", force: :cascade do |t|
+    t.integer  "donor_id",              null: false
+    t.integer  "project_id",            null: false
     t.integer  "commodity_id",          null: false
     t.integer  "commodity_category_id", null: false
     t.decimal  "theoretical_amount",    null: false
@@ -1108,18 +1071,18 @@ ActiveRecord::Schema.define(version: 20170613124910) do
   end
 
   create_table "stock_takes", force: :cascade do |t|
-    t.integer  "hub_id",                       null: false
-    t.integer  "warehouse_id",                 null: false
+    t.string   "title",         null: false
+    t.integer  "hub_id",        null: false
+    t.integer  "warehouse_id",  null: false
     t.integer  "store_no"
-    t.integer  "donor_id",                     null: false
-    t.date     "date",                         null: false
+    t.date     "date",          null: false
     t.integer  "fiscal_period"
+    t.boolean  "draft"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.boolean  "draft",         default: true
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "stores", force: :cascade do |t|
@@ -1144,10 +1107,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
-  end
-
-  create_table "test", id: false, force: :cascade do |t|
-    t.bigint "id"
   end
 
   create_table "transport_order_items", force: :cascade do |t|

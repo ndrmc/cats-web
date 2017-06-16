@@ -19,10 +19,6 @@
         <%= @stock_take.store_no %>
       </p>
       <p>
-        <strong>Donor:</strong>
-        <%= Organization.find(@stock_take.donor_id).name %>
-      </p>
-      <p>
         <strong>Date:</strong>
         <%= @stock_take.date %>
       </p>
@@ -39,9 +35,11 @@
               <%= link_to 'Add Item', new_stock_take_item_url(stock_take_id: @stock_take.id) , class: 'btn btn-primary pull-right' %>
               <% end %>
             </div>
-            <table class="table table-striped table-bordered table-hover " id="editable" >
+            <table class="table table-striped table-bordered table-hover " >
             <thead>
             <tr>
+                <th>Donor</th>
+                <th>Project</th>
                 <th>Commodity Category</th>
                 <th>Commodity</th>
                 <th>Theoretical Amount</th>

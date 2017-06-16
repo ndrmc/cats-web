@@ -31,7 +31,7 @@ class StockTakeItemsController < ApplicationController
     @stock_take = StockTake.find_by_id(@stock_take_item.stock_take_id)
     #to calculate theoretical amount take the positive sum of stock account by the specific commodity and donor
     @stock_take_item.theoretical_amount = (PostingItem
-      .where ({commodity_id: @stock_take_item.commodity_id, donor_id: @stock_take.donor_id, hub_id: @stock_take.hub_id}))
+      .where ({account_id:Account.find_by({'code': :stock}).id,commodity_id: @stock_take_item.commodity_id, donor_id: @stock_take_item.donor_id, hub_id: @stock_take.hub_id}))
       .sum(&:quantity)
     
      
@@ -43,22 +43,22 @@ class StockTakeItemsController < ApplicationController
             #do adjustment if theoretical and actual amounts do not match
         
            
-        if  @stock_take_item.theoretical_amount > @stock_take_item.actual_amount #stock_gain
+        if  @stock_take_item.theoretical_amount > @stock_take_item.actual_amount #loss
                @adjustment = Adjustment.new(stock_take_id:@stock_take_item.stock_take_id,
                                         stock_take_item_id: @stock_take_item.id,
                                         commodity_id: @stock_take_item.commodity_id,
                                         commodity_category_id:@stock_take_item.commodity_category_id,
                                         amount: @stock_take_item.theoretical_amount - @stock_take_item.actual_amount,
-                                        adjustment_type: Adjustment.adjustment_types[:gain] )
+                                        adjustment_type: Adjustment.adjustment_types[:loss] )
              
               @adjustment.save!
-        elsif @stock_take_item.theoretical_amount < @stock_take_item.actual_amount #loss
+        elsif @stock_take_item.theoretical_amount < @stock_take_item.actual_amount #gain
                @adjustment = Adjustment.new(stock_take_id:@stock_take_item.stock_take_id,
                                         stock_take_item_id: @stock_take_item.id,
                                         commodity_id: @stock_take_item.commodity_id,
                                         commodity_category_id:@stock_take_item.commodity_category_id,
                                         amount: @stock_take_item.actual_amount - @stock_take_item.theoretical_amount,
-                                        adjustment_type: Adjustment.adjustment_types[:loss] )
+                                        adjustment_type: Adjustment.adjustment_types[:gain] )
              
             
               @adjustment.save!
@@ -122,6 +122,6 @@ class StockTakeItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stock_take_item_params
-      params.require(:stock_take_item).permit(:commodity_id, :commodity_category_id, :actual_amount, :stock_take_id)
+      params.require(:stock_take_item).permit(:donor_id,:project_id,:commodity_id, :commodity_category_id, :actual_amount, :stock_take_id)
     end
 end
