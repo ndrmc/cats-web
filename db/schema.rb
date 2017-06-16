@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170613110106) do
+ActiveRecord::Schema.define(version: 20170616084718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,13 +34,13 @@ ActiveRecord::Schema.define(version: 20170613110106) do
     t.integer  "commodity_id",          null: false
     t.integer  "commodity_category_id", null: false
     t.decimal  "amount",                null: false
+    t.integer  "adjustment_type",       null: false
     t.string   "reason"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
-    t.integer  "adjustment_type"
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -1056,8 +1056,6 @@ ActiveRecord::Schema.define(version: 20170613110106) do
   end
 
   create_table "stock_take_items", force: :cascade do |t|
-    t.integer  "donor_id",              null: false
-    t.integer  "project_id",            null: false
     t.integer  "commodity_id",          null: false
     t.integer  "commodity_category_id", null: false
     t.decimal  "theoretical_amount",    null: false
@@ -1068,21 +1066,23 @@ ActiveRecord::Schema.define(version: 20170613110106) do
     t.datetime "deleted_at"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.integer  "donor_id",              null: false
+    t.integer  "project_id"
   end
 
   create_table "stock_takes", force: :cascade do |t|
-    t.string   "title",         null: false
-    t.integer  "hub_id",        null: false
-    t.integer  "warehouse_id",  null: false
+    t.integer  "hub_id",                       null: false
+    t.integer  "warehouse_id",                 null: false
     t.integer  "store_no"
-    t.date     "date",          null: false
+    t.date     "date",                         null: false
     t.integer  "fiscal_period"
-    t.boolean  "draft"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "draft",         default: true
+    t.string   "title",                        null: false
   end
 
   create_table "stores", force: :cascade do |t|

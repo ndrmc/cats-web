@@ -82,13 +82,13 @@ class StockTakeItemsController < ApplicationController
         @adjustment = Adjustment.find_by_stock_take_item_id(@stock_take_item.id) 
         if @adjustment        
        
-          if  @stock_take_item.theoretical_amount > @stock_take_item.actual_amount #stock_gain
+          if  @stock_take_item.theoretical_amount > @stock_take_item.actual_amount #loss
             @adjustment.amount = @stock_take_item.theoretical_amount - @stock_take_item.actual_amount
-            @adjustment.adjustment_type = Adjustment.adjustment_types[:gain]
-          
-          elsif @stock_take_item.theoretical_amount < @stock_take_item.actual_amount #loss
-            @adjustment.amount = @stock_take_item.actual_amount - @stock_take_item.theoretical_amount
             @adjustment.adjustment_type = Adjustment.adjustment_types[:loss]
+          
+          elsif @stock_take_item.theoretical_amount < @stock_take_item.actual_amount #gain
+            @adjustment.amount = @stock_take_item.actual_amount - @stock_take_item.theoretical_amount
+            @adjustment.adjustment_type = Adjustment.adjustment_types[:gain]
             
           end
           @adjustment.save!

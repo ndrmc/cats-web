@@ -1,11 +1,14 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
+    <div class = "form-inline pull-right"> 
     <% if @stock_take.draft %>
-    <%= link_to 'Post Stock Take', "/stock_takes/#{@stock_take.id}/post" , class: 'btn btn-danger pull-right' , data: { confirm: 'Editing stock take values is not permitted after posting. Do you want to proceed?'}%>
-    <%else%>
-      <span class="badge badge-info pull-right">posted</span>
-    <% end %>     
+    <%= link_to 'Post Stock Take', "/stock_takes/#{@stock_take.id}/post" , class: 'btn btn-danger' , data: { confirm: 'Editing stock take values is not permitted after posting. Do you want to proceed?'}%>
+    <%else%>    
+      <label class="badge badge-info">posted</label>
+    <% end %> 
+    <%= link_to 'Back', stock_takes_path , class: 'btn btn-primary'  %>   
+    </div> 
       <p>
         <strong>Hub:</strong>
         <%= Hub.find(@stock_take.hub_id).name %>

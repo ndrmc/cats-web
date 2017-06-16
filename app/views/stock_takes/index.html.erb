@@ -27,8 +27,7 @@
             <th>Title</th>        
             <th>Hub</th>            
             <th>Warehouse</th>            
-            <th>Store no</th>            
-            <th>Donor</th>            
+            <th>Store no</th>                        
             <th>Date</th>
             <th>Status</th>            
             <th>Actions</th>
@@ -41,8 +40,7 @@
             <td><%=stock_take.title%></td>                 
             <td><%= Hub.find(stock_take.hub_id).name%></td>            
             <td><%=Warehouse.find(stock_take.warehouse_id).name%></td>            
-            <td><%= stock_take.store_no%></td>            
-            <td><%= Organization.find(stock_take.donor_id).name%></td>            
+            <td><%= stock_take.store_no%></td>
             <td><%= stock_take.date%></td>
             <td><span class="badge badge-info"><%= stock_take.draft ? 'Draft' : 'Posted'%></span></td>
             <td>

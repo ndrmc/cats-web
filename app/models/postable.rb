@@ -252,7 +252,7 @@ module Postable
 
                         posting_items << debit
                         credit = PostingItem.new({
-                            account_id: loss_account.id,
+                            account_id: lost_account.id,
                             journal_id: stock_take_journal.id,
                             commodity_id: adjustment.commodity_id,
                             commodity_category_id: adjustment.commodity_category_id,
