@@ -8,10 +8,6 @@ class StockTakeItemsControllerTest < ActionDispatch::IntegrationTest
      @stock_take_item = stock_take_items(:one)
     end
 
-  test "should get index" do
-    get stock_take_items_url
-    assert_response :success
-  end
 
   test "should get new" do
     get new_stock_take_item_url(stock_take_id: 1)
@@ -24,11 +20,6 @@ class StockTakeItemsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to stock_take_url(StockTakeItem.last.stock_take)
-  end
-
-  test "should show stock_take_item" do
-    get stock_take_item_url('en',@stock_take_item)
-    assert_response :success
   end
 
   test "should get edit" do

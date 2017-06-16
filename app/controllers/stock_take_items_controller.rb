@@ -63,8 +63,8 @@ class StockTakeItemsController < ApplicationController
             
               @adjustment.save!
         end  
-        format.html { redirect_to stock_take_path(@stock_take), notice: 'Added item.' }
-        format.json { render :show, status: :created, location: @stock_take }
+        format.html { redirect_to stock_take_path(@stock_take_item.stock_take), notice: 'Added item.' }
+        format.json { render :show, status: :created, location: @stock_take_item.stock_take }
       else
         format.html { render :new }
         format.json { render json: @stock_take_item.errors, status: :unprocessable_entity }
