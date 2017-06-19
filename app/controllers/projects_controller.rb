@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-
+  before_action :authorize_project
   # GET /projects
   # GET /projects.json
   def index
@@ -120,6 +120,10 @@ def get_commodities
 end
 
   private
+  def authorize_project
+    authorize Project
+  end
+  
   # Use callbacks to share common setup or constraints between actions.
   def set_project
     @project = Project.find(params[:id])
