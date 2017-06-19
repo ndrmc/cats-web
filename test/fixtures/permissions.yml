@@ -19,4 +19,6 @@ delivery:
     name: 'Delivery'
 hrd:
     name: HRD
+Receipts: 
+    name: 'Receipts'
 
