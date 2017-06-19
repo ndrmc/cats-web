@@ -1,10 +1,10 @@
 class DeliveriesController < ApplicationController
   before_action :set_delivery, only: [:show, :edit, :update, :destroy]
-
+  before_action :authorize_delivery
   # GET /deliveries
   # GET /deliveries.json
   def index
-    authorize Delivery
+   
     # @deliveries = Delivery.all
 
     #  if params[:search]
@@ -28,12 +28,12 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/1
   # GET /deliveries/1.json
   def show
-    authorize Delivery
+    
   end
 
   # GET /deliveries/new
   def new
-   authorize Delivery
+   
 
     @delivery = Delivery.new
     @gin = Dispatch.find_by({'gin_no': params[:gin_number]})
@@ -81,7 +81,7 @@ class DeliveriesController < ApplicationController
   # POST /deliveries.json
   def create
 
-    authorize Delivery
+    
 
     @delivery = Delivery.new(delivery_params)
     @delivery.created_by = current_user.id
@@ -101,7 +101,7 @@ class DeliveriesController < ApplicationController
   # PATCH/PUT /deliveries/1.json
   def update
 
-    authorize Delivery
+  
 
     @delivery = Delivery.find(params[:id]);
     @delivery.delivery_details.destroy_all
@@ -121,7 +121,7 @@ class DeliveriesController < ApplicationController
   # DELETE /deliveries/1
   # DELETE /deliveries/1.json
   def destroy
-    authorize Delivery
+    
     @delivery.destroy
     respond_to do |format|
       format.html { redirect_to deliveries_url, notice: 'Delivery was successfully destroyed.' }
@@ -130,6 +130,10 @@ class DeliveriesController < ApplicationController
   end
 
   private
+  def authorize_delivery
+    authorize Delivery
+  end
+  
     # Use callbacks to share common setup or constraints between actions.
     def set_delivery
       @delivery = Delivery.find(params[:id])
