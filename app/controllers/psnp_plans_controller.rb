@@ -1,7 +1,7 @@
 class PsnpPlansController < ApplicationController
   before_action :set_psnp_plan, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-
+  before_action :authorize_annual_plan
   def index
     if params[:status]
       @psnp_plans = PsnpPlan.where status: params[:status]
@@ -137,6 +137,10 @@ class PsnpPlansController < ApplicationController
   end
 
   private
+  def authorize_annual_plan
+    authorize PsnpPlan
+  end
+  
   # Use callbacks to share common setup or constraints between actions.
   def set_psnp_plan
     @psnp_plan = PsnpPlan.find(params[:id])

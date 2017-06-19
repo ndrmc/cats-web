@@ -1,6 +1,7 @@
 class RegionalRequestsController < ApplicationController
   before_action :set_regional_request, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  before_action :authorize_regional_request
   # GET /regional_requests
   # GET /regional_requests.json
   def index
@@ -206,6 +207,10 @@ class RegionalRequestsController < ApplicationController
 
 
   private
+
+def authorize_regional_request
+  authorize RegionalRequestItem
+end
   # Use callbacks to share common setup or constraints between actions.
   def set_regional_request
     @regional_request = RegionalRequest.find(params[:id])
