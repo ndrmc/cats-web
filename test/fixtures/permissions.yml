@@ -25,4 +25,7 @@ psnp_plan:
     name: 'PSNP Annual Plan'
 ration:
     name: Ration
+Receipts: 
+    name: 'Receipts'
+
 
