@@ -1,7 +1,7 @@
 class RequisitionsController < ApplicationController
   before_action :set_requisition, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-
+  before_action :authorize_requisition
   # GET /requisitions
   # GET /requisitions.json
   def index
@@ -208,6 +208,10 @@ class RequisitionsController < ApplicationController
     end
   end
   private
+  def authorize_requisition
+    authorize Requisition
+  end
+  
   # Use callbacks to share common setup or constraints between actions.
   def set_requisition
     @requisition = Requisition.find(params[:id])
