@@ -95,8 +95,10 @@
               <td>              
                 <%= Location.find(Fdp.find(ri.fdp_id).location_id).name %>
               </td>
-              <td>              
-                <%= Fdp.find(ri.fdp_id).name %>
+              <td>     
+              <%= link_to '/fdp_operation_summary/index?fdp_id=' + ri.fdp_id.to_s + '&operation_id=' + requisition.operation_id.to_s + '&requisition_id=' + requisition.id.to_s do %>
+                <%= Fdp.find(ri.fdp_id).name.to_s %>     
+              <% end %>
               </td>
               <td>                
                 <%= ri.beneficiary_no %>        

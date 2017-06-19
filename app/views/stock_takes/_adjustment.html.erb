@@ -1,0 +1,11 @@
+
+<tr class="gradeX">
+            <%= fields_for(adjustment)  do |f| %>
+                <td><%= CommodityCategory.find(adjustment.commodity_category_id).name%></td>
+                <td><%= Commodity.find(adjustment.commodity_id).name%></td>
+                <td><%=adjustment.amount%></td>
+                <td><%=adjustment.loss? ? 'Loss' : 'Gain' %></td>
+                <td><%=adjustment.reason %></td>
+                <td><%= link_to 'Update' , edit_adjustment_path(adjustment)%></td>
+              <% end %> 
+</tr> 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170609060605) do
+ActiveRecord::Schema.define(version: 20170613124910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,21 @@ ActiveRecord::Schema.define(version: 20170609060605) do
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_accounts_on_deleted_at", using: :btree
     t.index ["name", "code"], name: "index_accounts_on_name_and_code", using: :btree
+  end
+
+  create_table "adjustments", force: :cascade do |t|
+    t.integer  "stock_take_id",         null: false
+    t.integer  "stock_take_item_id",    null: false
+    t.integer  "commodity_id",          null: false
+    t.integer  "commodity_category_id", null: false
+    t.decimal  "amount",                null: false
+    t.integer  "adjustment_type",       null: false
+    t.string   "reason"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -1038,6 +1053,34 @@ ActiveRecord::Schema.define(version: 20170609060605) do
     t.integer  "month_to"
     t.index ["deleted_at"], name: "index_seasons_on_deleted_at", using: :btree
     t.index ["name"], name: "index_seasons_on_name", unique: true, using: :btree
+  end
+
+  create_table "stock_take_items", force: :cascade do |t|
+    t.integer  "commodity_id",          null: false
+    t.integer  "commodity_category_id", null: false
+    t.decimal  "theoretical_amount",    null: false
+    t.decimal  "actual_amount",         null: false
+    t.integer  "stock_take_id",         null: false
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "stock_takes", force: :cascade do |t|
+    t.integer  "hub_id",                       null: false
+    t.integer  "warehouse_id",                 null: false
+    t.integer  "store_no"
+    t.integer  "donor_id",                     null: false
+    t.date     "date",                         null: false
+    t.integer  "fiscal_period"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "draft",         default: true
   end
 
   create_table "stores", force: :cascade do |t|

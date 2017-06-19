@@ -1,0 +1,27 @@
+
+    <p>
+      <strong>Commodity:</strong>
+      <%= @stock_take_item.commodity_id %>
+    </p>
+
+
+    <p>
+      <strong>Commodity category:</strong>
+      <%= @stock_take_item.commodity_category_id %>
+    </p>
+
+
+    <p>
+      <strong>Actual amount:</strong>
+      <%= @stock_take_item.actual_amount %>
+    </p>
+
+
+    <p>
+      <strong>Stock take:</strong>
+      <%= @stock_take_item.stock_take_id %>
+    </p>
+
+
+<%= link_to 'Edit', edit_stock_take_item_path(@stock_take_item) %> |
+<%= link_to 'Back', stock_take_items_path %>

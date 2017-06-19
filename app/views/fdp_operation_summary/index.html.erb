@@ -1,0 +1,209 @@
+<div class="row">
+  <div class="wrapper wrapper-content">
+          
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">       	
+		<%= link_to '<h2><i class="fa fa-chevron-left" aria-hidden="true"></i> FDP Operation Summary</h2>'.html_safe, @backPath %>
+	  </div>
+      <div class="ibox-content">
+      	<div class="row m-b-sm m-t-sm">              
+        	
+        	<div class="form-group col-md-4 col-sm-6 col-xs-12">
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :region, "Region", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'region', @fdp.region, :disabled => true %> 
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :zone, "Zone", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'zone', @fdp.zone, :disabled => true %> 
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :woreda, "Woreda", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'woreda', @fdp.woreda, :disabled => true %> 
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :fdp, "FDP", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'fdp', @fdp.name, :disabled => true %> 
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :operation, "Operation", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'operation', @operation.name, :disabled => true %> 
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-6 col-xs-12">		
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :progam, "Program", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'progam', @program.name, :disabled => true %> 
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :dispatchedQty, "Total Dispatched Qty.", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'dispatchedQty', @dispatchedQty, :disabled => true %>
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :deliveredQty, "Total Delivered Qty.", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= text_field_tag 'deliveredQty', @deliveredQty, :disabled => true %>
+					</div>
+				</div>
+				<div class="form-group col-md-12 col-sm-12 col-xs-12">
+					<div class="form-group col-md-4 col-sm-6 col-xs-6 text-right">
+						<%= label_tag :requisitionNos, "Requisitions", { :class => ' control-label', :required => true } %>
+					</div>
+					<div class="form-group col-md-8 col-sm-6 col-xs-6">
+						<%= raw @requisitionNumbers.map.to_json %>
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-6 col-xs-12">
+				<canvas id="requisitionSummary" width="400" height="200"></canvas>
+			</div>
+      </div>
+    </div>
+  
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        Dispatch Operations</div>
+      <div class="ibox-content">
+        <table class="table table-striped cats-datatable">
+          <thead>
+            <tr>
+              <th>GIN</th>
+              <th>Requisition No.</th>
+              <th>Dispatch Qty.</th>
+              <th>Dispatch Date</th>
+              <th>Status</th>
+              <th>Remarks</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          	<% @dispatches.each do |di| %>   
+            <tr>
+              <td>             
+                <%= di.gin_no %>
+              </td>
+        	  <td>             
+                <%= di.requisition_number %>
+              </td>
+              <td>             
+                <%= di.dispatched_qty %>
+              </td>
+              <td>             
+                <%= di.dispatch_date %>
+              </td>
+              <td>             
+                <%= di.draft %>
+              </td>
+              <td>             
+                <%= di.remark %>
+              </td>
+            </tr>
+            <%end%>  
+          </tbody>
+        </table>
+      </div>
+  	</div>
+  	<div class="ibox float-e-margins">
+      <div class="ibox-title">
+        Delivery Operations</div>
+      <div class="ibox-content">
+        <table class="table table-striped cats-datatable">
+          <thead>
+            <tr>
+              <th>GRN</th>
+              <th>GIN</th>
+              <th>Requisition No.</th>
+              <th>Received Qty.</th>
+              <th>Received Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          	<% @deliveries.each do |de| %>   
+            <tr>
+              <td>             
+                <%= de.receiving_number %>
+              </td>
+              <td>              
+                <%= de.gin_number %>
+              </td>
+              <td>              
+                <%= de.requisition_number %>
+              </td>
+              <td>     
+              	<%= de.delivered_qty %>
+              </td>
+              <td>     
+              	<%= de.received_date %>
+              </td>
+            </tr>
+            <%end%>  
+          </tbody>
+        </table>
+      </div>
+  	</div>
+</div>
+<script>
+    var ctx = document.getElementById("requisitionSummary").getContext('2d');
+	var myChart = new Chart(ctx, {
+		  type: 'bar',
+		  data: {
+		    labels: <%=  raw @requisitionNumbers.map.to_json %>,
+		    
+		    datasets: [{
+		      	label: 'Dispatched',
+		      	backgroundColor: "rgba(255,153,0,0.4)",
+	      		borderColor: "rgba(255,153,0,1)",      		
+		      	data: <%= raw @dispatchedAmountOfRequisitions.map.to_json %>
+		    }, {
+		      	label: 'Delivered',
+		      	backgroundColor: "rgba(153,255,51,0.4)",
+	      		borderColor: "rgba(153,255,51,1)",
+		      	data: <%= raw @deliveredAmountOfRequisitions.map.to_json %>
+		    }]
+		  },
+		  options: {
+	        legend: {
+	            display: true,
+	            labels: {
+	                fontColor: 'rgb(255, 99, 132)'
+	            }
+	        },
+	        title: {
+	            display: true,
+	            text: 'Dispatch and Delivery Summaries of FDP Requisitions'
+	        }
+		}
+	});
+
+</script>
