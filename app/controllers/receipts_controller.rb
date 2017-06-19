@@ -1,6 +1,7 @@
 class ReceiptsController < ApplicationController
   before_action :authenticate_user!
   def index
+    authorize Receipt
     if params[:find].present?
       @receipts = Receipt.where grn_no: params[:grn_no]
       return
@@ -28,12 +29,14 @@ class ReceiptsController < ApplicationController
 
 
   def new
+    authorize Receipt
     @receipt = Receipt.new
     @receipt.commodity_source_id = 1
   end
 
 
   def create
+    authorize Receipt
     recept_lines_hash = receipt_params[:receipt_lines][0...-1]
     receipt_lines = recept_lines_hash.collect { |h| ReceiptLine.new( h)}
 
@@ -58,11 +61,12 @@ class ReceiptsController < ApplicationController
   end
 
   def edit
+    authorize Receipt
     @receipt = Receipt.find(params[:id])
   end
 
   def update
-
+    authorize Receipt
     @receipt = Receipt.find(params[:id])
     @receipt.modified_by = current_user.id
     receipt_line_ids = @receipt.receipt_lines.collect { |rl| rl.id }
