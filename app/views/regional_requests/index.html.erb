@@ -96,7 +96,8 @@
                 <%end%>
                 &middot;
                 <% if policy(RegionalRequest).destroy? %>
-                  <%= link_to 'Delete', regional_request, method: :delete, data: { confirm: 'Are you sure?' } %>
+                  <% @confirmation_message = 'Are you sure you want delete the Regional Request with reference number [ ' + regional_request.reference_number + ' ] ?' %>
+                  <%= link_to 'Delete', regional_request, method: :delete, data: { confirm: @confirmation_message.to_s } %>
                 <%end%>
             </td>
           </tr>
