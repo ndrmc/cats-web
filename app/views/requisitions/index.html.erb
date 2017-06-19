@@ -74,7 +74,8 @@
                 <%= link_to 'Edit', edit_requisition_path(requisition) %> &middot;
               <%end%>
                <% if policy(Requisition).destroy? %>
-                <%= link_to 'Delete', requisition, method: :delete, data: {confirm: 'Are you sure?'} %>
+                  <% @confirmation_message = 'Are you sure you want delete the Requisition with reference number [ ' + requisition.requisition_no + ' ] ?' %>
+                  <%= link_to 'Delete', requisition, method: :delete, data: { confirm: @confirmation_message.to_s } %>
               <%end%>
               </td>
             </tr>
