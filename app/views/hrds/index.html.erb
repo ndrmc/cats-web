@@ -69,9 +69,11 @@
                   <span><%= hrd.year_ec %></span>
                 </td>
                 <td class="project-completion">
-                  <small>48% completed</small>
+                  <% task_completion = (hrd.allocated_woredas_in_hrd.to_f / hrd.all_woredas_in_hrd ) * 100 %>
+                  <small> <%= ((hrd.allocated_woredas_in_hrd.to_f / hrd.all_woredas_in_hrd ) * 100).round(2) %> </small> %
                   <div class="progress progress-mini">
-                    <div style="width: 48%;" class="progress-bar"></div>
+                    <div class="progress-bar " role="progressbar" aria-valuenow="<%= task_completion %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= task_completion.to_i %>%;">
+                     <%= task_completion %>%
                   </div>
                 </td>
                   <% if policy(@hrds).show? %>
