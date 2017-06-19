@@ -1,6 +1,7 @@
 class TransportersController < ApplicationController
   before_action :set_transporter, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+    include Administrated
   # GET /transporters
   # GET /transporters.json
   def index

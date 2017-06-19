@@ -1,7 +1,7 @@
 class RequisitionsController < ApplicationController
   before_action :set_requisition, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-  before_action :authorize_requisition
+  before_action :authorize_requisition, except: [:show]
   # GET /requisitions
   # GET /requisitions.json
   def index

@@ -19,4 +19,10 @@ delivery:
     name: 'Delivery'
 hrd:
     name: HRD
+gift_certificate:
+    name: 'Gift Certificate'
+psnp_plan:
+    name: 'PSNP Annual Plan'
+ration:
+    name: Ration
 
