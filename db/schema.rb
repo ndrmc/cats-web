@@ -116,13 +116,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
   end
 
-  create_table "case_units", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
   create_table "commodities", force: :cascade do |t|
     t.string   "name",                  null: false
     t.string   "name_am"
@@ -294,7 +287,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.boolean  "imported"
-    t.string   "received_date_ec"
   end
 
   create_table "department_permissions", force: :cascade do |t|
@@ -634,17 +626,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.string   "address"
     t.index ["deleted_at"], name: "index_hubs_on_deleted_at", using: :btree
     t.index ["name"], name: "index_hubs_on_name", unique: true, using: :btree
-  end
-
-  create_table "idp_reasons", force: :cascade do |t|
-    t.string   "name"
-    t.text     "description"
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
   end
 
   create_table "journals", force: :cascade do |t|
@@ -1046,17 +1027,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.index ["requisition_no"], name: "index_requisitions_on_requisition_no", unique: true, using: :btree
   end
 
-  create_table "role_types", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "created_by"
-    t.integer  "modified_by"
-    t.boolean  "deleted",     default: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "created_by"
@@ -1069,15 +1039,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.index ["deleted_at"], name: "index_roles_on_deleted_at", using: :btree
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
-  end
-
-  create_table "roles_departments", force: :cascade do |t|
-    t.integer  "roles_id"
-    t.integer  "departments_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.index ["departments_id"], name: "index_roles_departments_on_departments_id", using: :btree
-    t.index ["roles_id"], name: "index_roles_departments_on_roles_id", using: :btree
   end
 
   create_table "seasons", force: :cascade do |t|
@@ -1144,10 +1105,6 @@ ActiveRecord::Schema.define(version: 20170613124910) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
-  end
-
-  create_table "test", id: false, force: :cascade do |t|
-    t.bigint "id"
   end
 
   create_table "transport_order_items", force: :cascade do |t|
