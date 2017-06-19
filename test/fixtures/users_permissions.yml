@@ -14,3 +14,6 @@ user_permission_delivery:
         user: admin
         permission: delivery
 
+user_permission_hrd:
+        user: admin
+        permission: hrd

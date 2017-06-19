@@ -20,7 +20,7 @@ class PermissionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create permission" do
     assert_difference('Permission.count') do
-      post permissions_url, params: { permission: { name: 'HRD' } }
+      post permissions_url, params: { permission: { name: 'test HRD' } }
     end
 
     assert_redirected_to permission_url(Permission.last)
