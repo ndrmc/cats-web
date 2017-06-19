@@ -36,5 +36,15 @@ class Hrd < ApplicationRecord
   end
 
   validates :year_ec, :year_gc, :season_id, :ration_id, :duration, :month_from, :presence => true
- 
+
+ def allocated_woredas_in_hrd
+    Hrd.find_by_sql("select count(distinct hd.woreda_id) as allocated_woredas from hrds  h inner join hrd_items hd on h.id = hd.hrd_id
+                  where hd.beneficiary > 0 and h.id = '#{self.id}'").first.try(:allocated_woredas)
+ end
+
+def all_woredas_in_hrd
+  Hrd.find_by_sql("select count(distinct hd.woreda_id) as all_woredas from hrds  h inner join hrd_items hd on h.id = hd.hrd_id
+                  where h.id = '#{self.id}'").first.try(:all_woredas)
+end
+
 end
