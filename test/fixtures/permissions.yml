@@ -17,4 +17,6 @@ Requisition:
     name: 'Requisition'
 delivery:
     name: 'Delivery'
+Receipts: 
+    name: 'Receipts'
 
