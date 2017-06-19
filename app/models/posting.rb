@@ -29,7 +29,7 @@ class Posting < ApplicationRecord
         dispatch: 1,
         delivery: 2,
         project: 3,
-        stock_take:4
+        stock_take: 4
     }   
 
     has_many :posting_items

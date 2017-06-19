@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stock_take_id: 1
+  stock_take_item_id: 1
+  commodity_id: 1
+  commodity_category_id: 1
+  amount: 9.99
+  adjustment_type: MyString
+  reason: MyString
+
+two:
+  stock_take_id: 1
+  stock_take_item_id: 1
+  commodity_id: 1
+  commodity_category_id: 1
+  amount: 9.99
+  adjustment_type: MyString
+  reason: MyString

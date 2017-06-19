@@ -4,5 +4,13 @@ warehouse1:
         lat: 0
         lon: 0
         hub: hub1
+
+warehouse2:
+  id: 1
+  name: warehouse2
+  description: warehouse in addis
+  lat: 0
+  lon: 0
+  hub: hub1
      
 
