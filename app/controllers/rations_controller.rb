@@ -1,6 +1,7 @@
 class RationsController < ApplicationController
   before_action :set_ration, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  before_action :authorize_ration
   # GET /rations
   # GET /rations.json
   def index
@@ -64,6 +65,11 @@ class RationsController < ApplicationController
   end
 
   private
+
+  def authorize_ration
+    authorize Ration
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_ration
     @ration = Ration.find(params[:id])
