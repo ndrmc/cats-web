@@ -4,7 +4,9 @@ class UnitOfMeasuresControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   setup do
     sign_in users(:admin)
-    @unit_of_measure = unit_of_measures(:unit_of_measure_1)
+    @unit_of_measure_mt = unit_of_measures(:unit_of_measure_1)
+    @unit_of_measure_kg = unit_of_measures(:unit_of_measure_2)
+    @unit_of_measure_qtl = unit_of_measures(:unit_of_measure_3)
   end
 
   test "should get index" do
@@ -31,17 +33,17 @@ class UnitOfMeasuresControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show unit_of_measure" do
-    get unit_of_measure_url('en',@unit_of_measure)
+    get unit_of_measure_url('en',@unit_of_measure_mt)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_unit_of_measure_url('en',@unit_of_measure)
+    get edit_unit_of_measure_url('en',@unit_of_measure_mt)
     assert_response :success
   end
 
   test "should update unit_of_measure" do
-    patch unit_of_measure_url('en',@unit_of_measure), params: { unit_of_measure: { 
+    patch unit_of_measure_url('en',@unit_of_measure_mt), params: { unit_of_measure: { 
 
     name:  'mt',     
     description: 'Meteric Ton',
@@ -55,7 +57,7 @@ class UnitOfMeasuresControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy unit_of_measure" do
     assert_difference('UnitOfMeasure.count', -1) do
-      delete unit_of_measure_url('en',@unit_of_measure)
+      delete unit_of_measure_url('en',@unit_of_measure_mt)
     end
 
     assert_redirected_to unit_of_measures_url
@@ -72,8 +74,9 @@ test "name,code,uom type, ration and category unit id must not be nil" do
 end
 
 test "code must be unique" do
-  duplicate_unit_of_measure = @unit_of_measure.dup
-  @unit_of_measure.save
+  duplicate_unit_of_measure = @unit_of_measure_mt.dup
+  @unit_of_measure_mt.save
   assert_not duplicate_unit_of_measure.valid?
 end
+
 end

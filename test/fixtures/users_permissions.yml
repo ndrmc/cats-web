@@ -15,3 +15,15 @@ users_permissions_delivery:
         user: admin
         permission: delivery
 
+user_permission_hrd:
+        user: admin
+        permission: hrd
+user_permission_gift_certificate:
+        user: admin
+        permission: gift_certificate
+user_permission_psnp_plan:
+        user: admin
+        permission: psnp_plan
+user_permission_ration:
+        user: admin
+        permission: ration
