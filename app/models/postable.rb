@@ -1,28 +1,25 @@
 module Postable
 
   def pre_post
-    if self.draft
-      logger.info "Posting is disabled for draft records"
-      return
-    end
+    return if self.draft
 
-    case self.class
-    when Receipt
+    if (self.is_a?(Receipt))
       logger.info "Processing posting information for Receipt"
       post_receipt
-    when Dispatch
+    elsif(self.is_a?(Dispatch))
       logger.info "Processing posting information for Dispatch"
       post_dispatch
-    when Delivery
+    elsif(self.is_a?(Delivery))
       logger.info "Processing posting information for Delivery"
       post_delivery
-    when Project
+    elsif(self.is_a?(Project))
       logger.info "Processing posting information for Project"
       post_project
-    when StockTake
+    elsif(self.is_a?(StockTake))
       logger.info "Processing posting information for StockTake"
       post_stock_take
     end
+
   end
 
 
