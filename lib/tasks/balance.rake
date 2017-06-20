@@ -13,7 +13,7 @@ namespace :cats do
       statistics_account = Account.find_by({'code': :statistics})
       stock_account = Account.find_by({'code': :stock})
 
-      puts "Reading file #{Rails.root}/data/stock-balance.csv to import balance......"
+      puts "Reading file #{Rails.root}/db/stock-balance.csv to import balance......"
 
       CSV.foreach("#{Rails.root}/data/stock-balance.csv", :headers => true) do |row|
         credit = PostingItem.new({
