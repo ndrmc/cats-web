@@ -15,7 +15,7 @@ namespace :cats do
 
       puts "Reading file #{Rails.root}/db/stock-balance.csv to import balance......"
 
-      CSV.foreach("#{Rails.root}/data/stock-balance.csv", :headers => true) do |row|
+      CSV.foreach("#{Rails.root}/db/stock-balance.csv", :headers => true) do |row|
         credit = PostingItem.new({
                                    account_id: stock_account.id,
                                    journal_id: begining_inventory.id,
