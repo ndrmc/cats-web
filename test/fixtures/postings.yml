@@ -1,108 +1,24 @@
 #reversal
-posting_dispatch1:
-    id: 1
-    posting_code: '001'
-    document_type: :dispatch
-    document_id: 001
-    posted: true
-    reversed_posting_id: 12
-    posting_type: reversal
-
-posting_receipt2:
-    id: 2
-    posting_code: '001'
-    document_type: :receipt
-    document_id: receipt1
-    posted: true
-    reversed_posting_id: 11
-    posting_type: reversal
-
 posting_delivery3:
-    id: 3
-    posting_code: '001'
+    posting_code:
     document_type: :delivery
-    document_id: 003
+    document_id: delivery1
     posted: true
     reversed_posting_id: 10
-    posting_type: reversal
-
-posting_project4:
-    id: 4
-    posting_code: '001'
-    document_type: :project
-    document_id: project1
-    posted: true
-    reversed_posting_id: 9
-    posting_type: reversal
+    posting_type: :reversal
 #normal
-posting_dispatch5:
-    id: 5
-    posting_code: '001'
-    document_type: :dispatch
-    document_id: 005
-    posted: true
-    reversed_posting_id: 8
-    posting_type: normal
-
-posting_receipt6:
-    id: 6
-    posting_code: '001'
-    document_type: :receipt
-    document_id: receipt1
-    posted: true
-    reversed_posting_id: 7
-    posting_type: normal
-
 posting_delivery7:
-    id: 7
-    posting_code: '001'
+    posting_code:
     document_type: :delivery
-    document_id: 007
+    document_id: delivery1
     posted: true
     reversed_posting_id: 6
-    posting_type: normal
-
-posting_project8:
-    id: 8
-    posting_code: '001'
-    document_type: :project
-    document_id: project1
-    posted: true
-    reversed_posting_id: 5
-    posting_type: normal
+    posting_type: :normal
 #reversed
-posting_dispatch9:
-    id: 9
-    posting_code: '001'
-    document_type: :dispatch
-    document_id: 009
-    posted: true
-    reversed_posting_id: 4
-    posting_type: reversed
-
-posting_receipt10:
-    id: 10
-    posting_code: '001'
-    document_type: :receipt
-    document_id: receipt1
-    posted: true
-    reversed_posting_id: 3
-    posting_type: reversed
-
 posting_delivery11:
-    id: 11
-    posting_code: '001'
+    posting_code: 
     document_type: :delivery
-    document_id: 011
+    document_id: delivery1.id
     posted: true
     reversed_posting_id: 2
-    posting_type: reversed
-
-posting_project12:
-    id: 12
-    posting_code: '001'
-    document_type: :project
-    document_id: project1
-    posted: true
-    reversed_posting_id: 1
-    posting_type: reversed
+    posting_type: :reversed

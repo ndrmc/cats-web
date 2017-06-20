@@ -1,3 +1,16 @@
-users_permissions:
+
+users_permissions_project:
         user: admin
         permission: project
+
+users_permissions_requistion:
+        user: admin
+        permission: Requisition
+users_permissions_dispatch:
+        user: admin
+        permission: Dispatch
+
+user_permission_delivery:
+        user: admin
+        permission: delivery
+
