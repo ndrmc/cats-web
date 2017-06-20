@@ -209,8 +209,9 @@ class RegionalRequestsController < ApplicationController
   private
 
 def authorize_regional_request
-  # authorize RegionalRequestItem
+  authorize RegionalRequest
 end
+  
   # Use callbacks to share common setup or constraints between actions.
   def set_regional_request
     @regional_request = RegionalRequest.find(params[:id])
