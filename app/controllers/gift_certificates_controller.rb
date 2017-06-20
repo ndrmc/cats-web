@@ -1,7 +1,7 @@
 class GiftCertificatesController < ApplicationController
   before_action :set_gift_certificate, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-
+  before_action :authorize_gift_certificate
 
   # GET /gift_certificates
   # GET /gift_certificates.json
@@ -65,6 +65,10 @@ class GiftCertificatesController < ApplicationController
   end
 
   private
+  def authorize_gift_certificate
+    authorize GiftCertificate
+  end
+  
     # Use callbacks to share common setup or constraints between actions.
     def set_gift_certificate
       @gift_certificate = GiftCertificate.find(params[:id])

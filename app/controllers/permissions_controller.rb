@@ -1,6 +1,6 @@
 class PermissionsController < ApplicationController
   before_action :set_permission, only: [:show, :edit, :update, :destroy]
-
+ include Administrated
   # GET /permissions
   # GET /permissions.json
   def index

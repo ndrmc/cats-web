@@ -1,5 +1,6 @@
 class HrdsController < ApplicationController
     before_action :authenticate_user!
+    before_action :authorize_hrd
     def index 
         if params[:status]
             @hrds = Hrd.where status: params[:status]
@@ -143,6 +144,10 @@ class HrdsController < ApplicationController
     end
     
     private 
+def authorize_hrd
+    authorize Hrd
+end
+
     def hrd_params 
         params.require(:hrd).permit( :id, :year_ec, :year_gc, :month_from, :season_id, :ration_id, :duration )
     end

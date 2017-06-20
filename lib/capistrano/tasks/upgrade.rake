@@ -22,6 +22,17 @@ namespace :upgrade do
     end
   end
 
+  desc "Insert starting balance from file found in db/stock-balance.csv"
+  task :stock-balance do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "cats:stock:balance"
+        end
+      end
+    end
+  end
+
   desc "Update FDP values"
   task :fdp do
     on roles(:app) do
