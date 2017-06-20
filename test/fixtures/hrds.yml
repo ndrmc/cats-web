@@ -8,7 +8,7 @@ hrd1:
     year_ec:  2009
     year_gc: 2019
     month_from: 'Jan'
-    season_id: 1 
+    season: season_1
     ration_id: 1
     duration: 6
 
@@ -17,6 +17,6 @@ hrd2:
     year_ec:  2010
     year_gc: 2018
     month_from: 'Jan'
-    season_id: 1 
+    season: season_2
     ration_id: 1
     duration: 6
