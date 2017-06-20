@@ -209,7 +209,7 @@ class RegionalRequestsController < ApplicationController
   private
 
 def authorize_regional_request
-  authorize RegionalRequestItem
+  # authorize RegionalRequestItem
 end
   # Use callbacks to share common setup or constraints between actions.
   def set_regional_request
