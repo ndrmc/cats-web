@@ -1,0 +1,2 @@
+module StockStatusHelper
+end
