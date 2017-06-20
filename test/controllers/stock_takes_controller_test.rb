@@ -5,7 +5,7 @@ class StockTakesControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
-     @stock_take = stock_takes(:one)
+     @stock_take = stock_takes(:stock_take_1)
   end
   
 
