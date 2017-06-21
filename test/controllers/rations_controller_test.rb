@@ -5,7 +5,7 @@ class RationsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
      sign_in users(:admin)
-    @ration = rations(:one)
+    @ration = rations(:ration_1)
   end
 
   test "should get index" do

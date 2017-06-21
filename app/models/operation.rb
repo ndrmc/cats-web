@@ -28,6 +28,8 @@ class Operation < ApplicationRecord
   enum status: [:draft, :ongoing, :completed, :archived]
 
   belongs_to :hrd
+  belongs_to :ration
+  belongs_to :program
 
   has_many :requisitions
   has_many :transport_requisitions
