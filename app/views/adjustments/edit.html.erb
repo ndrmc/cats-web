@@ -1,0 +1,57 @@
+<div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <%= form_for(@adjustment) do |f| %>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="m-b-md">                                
+                                <h2>Adjustment Update</h2>
+                            </div>
+                            <dl class="dl-horizontal">
+                                <dt>Status:</dt>
+                                <dd><span class="label label-primary"><%=@adjustment.stock_take.draft ? 'Draft' : 'Posted'%></span></dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <dl class="dl-horizontal">
+                                <dt>Donor:</dt>
+                                <dd>  <%= Organization.find(@adjustment.stock_take.donor_id).name %> </dd>
+                                <dt>Hub:</dt>
+                                <dd> <%= Hub.find(@adjustment.stock_take.hub_id).name %></dd>
+                                <dt>Warehouse:</dt>
+                                <dd> <%= Warehouse.find(@adjustment.stock_take.warehouse_id).name %></dd>
+                                <dt>Store:</dt>
+                                <dd>  <%= @adjustment.stock_take.store_no %></dd>
+                                <dt>Date:</dt>
+                                <dd>  <%= @adjustment.stock_take.date %></dd>
+                                
+                            </dl>
+                        </div>
+                        <div class="col-lg-7" id="cluster_info">
+                            <dl class="dl-horizontal">
+                                <dt>Commodity Category:</dt>
+                                <dd><%= CommodityCategory.find(@adjustment.commodity_category_id).name%></dd>
+                                <dt>commodity:</dt>
+                                <dd> <%= Commodity.find(@adjustment.commodity_id).name%></dd>
+                                <dt>Amount:</dt>
+                                <dd> <%=@adjustment.amount%></dd>
+                                <dt>Adjustment Type:</dt>
+                                <dd> <%=@adjustment.loss? ? 'Loss' : 'Gain' %></dd>
+                                <dt>Reason:</dt>
+                                <dd> <%=f.text_field :reason%></dd>
+                                
+                            </dl>
+                        </div>
+                    </div>
+                   
+                    <p class='hidden'><%=f.number_field :id%></p>                
+                    <p>
+                        <%= f.submit 'Update Reason', :class=> 'btn btn-primary pull-right' %>
+                    </p>
+                    <% end %>
+                </div>
+        </div>
+    </div>

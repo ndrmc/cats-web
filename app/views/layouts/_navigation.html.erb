@@ -102,9 +102,11 @@
       <li>
         <a href="#"><%= t(:adjustment)%></a>
       </li>
-      <li>
-        <a href="#"><%= t(:stock_take)%></a>
+     <%if policy(StockTake).index? %>
+      <li class="<%= 'active' if is_active_controller('stock_takes')  %>">
+        <%= link_to t(:stock_take), stock_takes_url %>
       </li>
+      <%end%>
       <li>
         <a href="#"><%= t(:internal_move)%></a>
       </li>
