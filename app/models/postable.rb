@@ -248,13 +248,14 @@ module Postable
                                   hub_id: adjustment.stock_take.hub_id,
                                   warehouse_id: adjustment.stock_take.warehouse_id,
                                   store_id: adjustment.stock_take.store_no,
-                                  donor_id: adjustment.stock_take.donor_id
+                            donor_id: adjustment.stock_take_item.donor_id,
+                            project_id: adjustment.stock_take_item.project_id                                        
 
         })
 
         posting_items << debit
         credit = PostingItem.new({
-                                   account_id: stock_account.id,
+                            account_id: lost_account.id,
                                    journal_id: stock_take_journal.id,
                                    commodity_id: adjustment.commodity_id,
                                    commodity_category_id: adjustment.commodity_category_id,
@@ -262,7 +263,8 @@ module Postable
                                    hub_id: adjustment.stock_take.hub_id,
                                    warehouse_id: adjustment.stock_take.warehouse_id,
                                    store_id: adjustment.stock_take.store_no,
-                                   donor_id: adjustment.stock_take.donor_id
+                            donor_id: adjustment.stock_take_item.donor_id,
+                            project_id: adjustment.stock_take_item.project_id  
         })
         posting_items << credit
       elsif adjustment.gain?
@@ -275,7 +277,8 @@ module Postable
                                   hub_id: adjustment.stock_take.hub_id,
                                   warehouse_id: adjustment.stock_take.warehouse_id,
                                   store_id: adjustment.stock_take.store_no,
-                                  donor_id: adjustment.stock_take.donor_id
+                            donor_id: adjustment.stock_take_item.donor_id,
+                            project_id: adjustment.stock_take_item.project_id                                                
 
         })
 
@@ -289,7 +292,8 @@ module Postable
                                    hub_id: adjustment.stock_take.hub_id,
                                    warehouse_id: adjustment.stock_take.warehouse_id,
                                    store_id: adjustment.stock_take.store_no,
-                                   donor_id: adjustment.stock_take.donor_id
+                            donor_id: adjustment.stock_take_item.donor_id,
+                            project_id: adjustment.stock_take_item.project_id  
 
         })
         posting_items << credit

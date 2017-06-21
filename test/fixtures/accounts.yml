@@ -20,4 +20,10 @@ three:
   description: Resources which are borrowed, but have not yet been received at warehouses
     (Receipt Plan)
 
+four:
+  id: 4
+  name: stock
+  code: 'stock'
+  description: 
+
 

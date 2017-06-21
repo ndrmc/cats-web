@@ -5,7 +5,7 @@ class StockTakesControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
-     @stock_take = stock_takes(:one)
+     @stock_take = stock_takes(:stock_take_1)
   end
   
 
@@ -21,7 +21,7 @@ class StockTakesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create stock_take" do
     assert_difference('StockTake.count') do
-      post stock_takes_url, params: { stock_take: { date: @stock_take.date, donor_id: @stock_take.donor_id, hub_id: @stock_take.hub_id, store_no: @stock_take.store_no, warehouse_id: @stock_take.warehouse_id } }
+      post stock_takes_url, params: { stock_take: { title:'Title', date: @stock_take.date, hub_id: @stock_take.hub_id, store_no: @stock_take.store_no, warehouse_id: @stock_take.warehouse_id } }
     end
 
     assert_redirected_to stock_take_url(StockTake.last)
@@ -38,7 +38,7 @@ class StockTakesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update stock_take" do
-    patch stock_take_url('en',@stock_take), params: { stock_take: { date: @stock_take.date, donor_id: @stock_take.donor_id, hub_id: @stock_take.hub_id, store_no: @stock_take.store_no, warehouse_id: @stock_take.warehouse_id } }
+    patch stock_take_url('en',@stock_take), params: { stock_take: { date: @stock_take.date,  hub_id: @stock_take.hub_id, store_no: @stock_take.store_no, warehouse_id: @stock_take.warehouse_id } }
     assert_redirected_to stock_take_url(@stock_take)
   end
 
