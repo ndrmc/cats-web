@@ -5,13 +5,11 @@
 # below each fixture, per the syntax in the comments below
 #
 program1: 
-    name: PSNP
+    name: 'PSNP'
     code: FS
-#
 program2: 
-    name: Relief
+    name: 'Relief'
     code: RL
 program3: 
-    name: IDPs
+    name: 'IDPs'
     code: ID
-# column: value
