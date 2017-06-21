@@ -17,7 +17,16 @@
             </div>
           </div>
         <% end %>
-
+        <div class="form-group">
+            <%= f.label :donor_id  %> <span class="required">*</span>
+            <%= f.collection_select :donor_id,
+                    Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, { :class => 'form-control', :required => true }%>
+        </div>
+         <div class="form-group">
+             <%= f.label :project_id  %> <span class="required">*</span>
+             <%= f.collection_select :project_id,
+                    Project.order(:project_code), :id, :project_code, {include_blank: '-- Choose --'}, { :class => 'form-control', :required => true }%>
+          </div>
           <div class="form-group">
             
                 <%= f.label :commodity_category_id %>

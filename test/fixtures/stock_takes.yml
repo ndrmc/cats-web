@@ -1,10 +1,9 @@
-one: 
- id: 1
+stock_take_1: 
+ title: 'Title'
  hub_id: 1   
  warehouse_id: 1
- store_no: 1
- donor_id: 1    
- date:  '2017-01-01'       
+ store_no: 1 
+ date: '2017-01-01'       
  fiscal_period: 1  
- draft:  true      
+ draft: true      
 

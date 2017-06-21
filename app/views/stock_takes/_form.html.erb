@@ -18,8 +18,11 @@
           </div>
         <% end %>
 
-      
-           <div class="form-group">
+      <div class="form-group">
+        <%= f.label :title %> <span class="required">*</span>
+        <%= f.text_field :title, :class=> 'form-control',:required => true %>
+      </div>
+      <div class="form-group">
         <%= f.label :hub_id %> <span class="required">*</span>
         <%= f.collection_select :hub_id,
                   Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, { :class => 'form-control', :required => true }%>
@@ -37,13 +40,7 @@
                 <%= f.label :store_no %>
                 <%= f.number_field :store_no, :class => 'form-control' %>
             
-            </div>
-
-            <div class="form-group">
-                  <%= f.label :donor_id  %> <span class="required">*</span>
-                  <%= f.collection_select :donor_id,
-                          Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, { :class => 'form-control', :required => true }%>
-            </div>
+            </div>          
       
           <div class="form-group">            
                 <%= f.label :date %>
