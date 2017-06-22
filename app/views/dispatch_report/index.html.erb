@@ -1,0 +1,80 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Dispatch Report</h2>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+    </div>
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+  	<div class="ibox-content">
+      	<%= form_tag( "/dispatch_report/index" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>      	
+
+	        <% if( !(params[:woreda].present? || params[:zone].present? || params[:region].present?) ) %>
+
+		  		<div class="form-group">
+		          <%= label_tag :region, "Region", { :class => ' control-label', :required => true } %>
+
+		          <div class="">
+		            <%= select_tag  :region,  options_from_collection_for_select( Location.region, 'id', 'name', params[:region] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+		          </div>
+		        </div>
+
+		        <div class="form-group">
+		          <%= label_tag :operation, "Operation", { :class => ' control-label', :required => true } %>
+
+		          <div class="">
+		            <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+		          </div>
+		        </div>
+
+			<% end %>       
+	        
+	        <div class="form-group">
+	          <label for=""></label>
+	          <div>
+	              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+	          </div>
+	        </div>
+
+        <% end %>
+  	</div>
+</div>
+
+
+<div class="ibox float-e-margins" ng-app="dispatchReportApp" ng-controller="dispatchReportCtrl">
+  <div class="ibox-content">
+
+    <table class="table table-striped cats-datatable">
+		<thead>
+			<tr ng-repeat="col in column">
+				<th>{{ col.Name }}</td>
+			</tr>
+		</thead>
+
+		<tbody>      
+		<% @dispatch_report.each do |dispatch_summary| %>
+		    <tr>
+		        <td><%= dispatch_summary['location'] %></td>
+		        <td><%= dispatch_summary['requisition'] %></td>
+		        <td><%= dispatch_summary['commodity'] %></td>
+		        <td><%= dispatch_summary['allocated'] %></td>
+		        <td><%= dispatch_summary['dispatched'] %></td>
+		        <td><%= dispatch_summary['progress'] %></td>      
+		    </tr>
+		<% end %>
+		</tbody>
+    </table>        
+    
+  </div>
+</div> 
+
+<script>
+	var app = angular.module('myApp', []);
+	app.controller('customersCtrl', function($scope, $http) {
+	    $http.get("customers.php")
+	    .then(function (response) {$scope.names = response.data.records;});
+	});
+</script>
