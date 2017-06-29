@@ -21,6 +21,8 @@ class Fdp < ApplicationRecord
 
   belongs_to :location
   has_many :fdp_contacts
+  has_many :dispatch_summary_by_fdp
+
 
   reverse_geocoded_by :lat , :lon
 

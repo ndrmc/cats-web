@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   
  
   get 'dispatch_report/index'
+  get 'dispatch_report/dt_index'
+  match 'dispatch_report/dt_index' => "dt_index#dt_index", :via => :post
 
   get 'fdp_operation_summary/index'
 

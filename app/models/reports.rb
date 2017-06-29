@@ -89,159 +89,35 @@ class Reports
 
 	#### Dispatch Reports - Begin #######################################################
 		def dispatch_reports_by_region operation
-			@result = ActiveRecord::Base.connection
-				.exec_query('SELECT allo.region_id AS location_id, allo.region_name AS region_name, allo.allocated, disp.dispatched, 
-								operation_id
-							FROM
-							((SELECT ABS(SUM(amount)) AS allocated, operation_id, region.id AS region_id, region.name AS region_name
-							  FROM requisitions
-							LEFT JOIN requisition_items 
-							ON public.requisitions.id = requisition_items.requisition_id
-							LEFT JOIN locations zone
-							ON requisitions.zone_id = zone.id
-							LEFT JOIN locations region
-							ON zone.parent_node_id = region.id
-							GROUP BY operation_id, region.id, region.name) allo
-							LEFT JOIN
-							(SELECT ABS(SUM(d_items.quantity)) AS dispatched, region.id AS region_id
-							FROM dispatch_items d_items
-							LEFT JOIN dispatches
-							ON d_items.dispatch_id = dispatches.id
-							LEFT JOIN fdps
-							ON dispatches.fdp_id = fdps.id
-							LEFT JOIN locations woreda
-							ON fdps.location_id = woreda.id
-							LEFT JOIN locations zone
-							ON woreda.parent_node_id = zone.id
-							LEFT JOIN locations region
-							ON zone.parent_node_id = region.id
-							GROUP BY region.id) disp
-							ON allo.region_id = disp.region_id)
-							WHERE operation_id = ' + operation.to_s + '')
+			@result = DispatchSummaryByFdp.select("region_id AS location_id, region_name AS location, 
+				AllOpID AS operation, SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
+		    .group('region_id, region_name, AllOpID')
+		    .where('AllOpID = ' + operation.to_s)
+			
 		end
 
 		def dispatch_reports_by_zone operation, region
-			@result = ActiveRecord::Base.connection
-				.exec_query('SELECT zone.name AS location, allo.requisition_no AS requisition, commodity.name AS commodity, allo.allocated, 
-								disp.dispatched, operation_id, region_id, allo.zone_id AS location_id
-							FROM
-							((SELECT requisition_no, commodity_id, zone_id, ABS(SUM(amount)) AS allocated, operation_id, 
-								region.id AS region_id
-							  FROM requisitions
-							LEFT JOIN requisition_items 
-							ON public.requisitions.id = requisition_items.requisition_id
-							LEFT JOIN locations zone
-							ON requisitions.zone_id = zone.id
-							LEFT JOIN locations region
-							ON zone.parent_node_id = region.id
-							GROUP BY requisition_no, commodity_id, zone_id, operation_id, region.id) allo
-							LEFT JOIN
-							(SELECT woreda.parent_node_id AS zone_id, ABS(SUM(d_items.quantity)) AS dispatched, 
-								dispatches.requisition_number AS req_no 
-							FROM dispatch_items d_items
-							LEFT JOIN dispatches
-							ON d_items.dispatch_id = dispatches.id
-							LEFT JOIN fdps
-							ON dispatches.fdp_id = fdps.id
-							LEFT JOIN locations woreda
-							ON fdps.location_id = woreda.id
-							LEFT JOIN locations zone
-							ON woreda.parent_node_id = zone.id
-							LEFT JOIN locations region
-							ON zone.parent_node_id = region.id
-							GROUP BY zone_id, req_no) disp
-							ON allo.requisition_no = disp.req_no AND allo.zone_id = disp.zone_id)
-							LEFT JOIN locations zone
-							ON zone.id = allo.zone_id
-							LEFT JOIN commodities commodity
-							ON commodity.id = allo.commodity_id
-							WHERE region_id = ' + region.to_s + ' AND operation_id = ' + operation.to_s)
+			@result = DispatchSummaryByFdp.select("zone_id AS location_id, zone_name AS location, 
+				AllOpID AS operation_id, AlloReqNo as requisition, commodity_name AS commodity, 
+				SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
+		    .group('zone_id, zone_name, AllOpID, AlloReqNo, commodity_name')
+		    .where('AllOpID = ' + operation.to_s + ' AND region_id = ' + region.to_s)
 		end
 
 		def dispatch_reports_by_woreda operation, zone
-			@result = ActiveRecord::Base.connection
-			.exec_query('SELECT allo.zone_id AS zone_id, allo.zone_name AS zone_name, allo.requisition_no AS requisition, 
-							commodity.name AS commodity, 
-							allo.allocated, disp.dispatched, operation_id, region_id, allo.woreda_id AS location_id, allo.woreda_name AS location
-						FROM
-						((SELECT requisition_no, commodity_id, zone_id, zone.name AS zone_name, ABS(SUM(amount)) AS allocated, 
-							operation_id, region.id AS region_id, woreda.id AS woreda_id, woreda.name AS woreda_name
-						  FROM requisitions
-						LEFT JOIN requisition_items 
-						ON public.requisitions.id = requisition_items.requisition_id
-						LEFT JOIN fdps
-						On fdps.id = requisition_items.fdp_id
-						LEFT JOIN locations woreda
-						ON woreda.id = fdps.location_id
-						LEFT JOIN locations zone
-						ON requisitions.zone_id = zone.id
-						LEFT JOIN locations region
-						ON zone.parent_node_id = region.id
-						GROUP BY requisition_no, commodity_id, zone_id, operation_id, region.id, woreda.id, woreda_name, 
-							zone_name) allo
-						LEFT JOIN
-						(SELECT zone.id AS zone_id, woreda.id AS woreda_id, ABS(SUM(d_items.quantity)) AS dispatched, 
-							dispatches.requisition_number AS req_no 
-						FROM dispatch_items d_items
-						LEFT JOIN dispatches
-						ON d_items.dispatch_id = dispatches.id
-						LEFT JOIN fdps
-						ON dispatches.fdp_id = fdps.id
-						LEFT JOIN locations woreda
-						ON fdps.location_id = woreda.id
-						LEFT JOIN locations zone
-						ON woreda.parent_node_id = zone.id
-						LEFT JOIN locations region
-						ON zone.parent_node_id = region.id
-						GROUP BY woreda_id, zone_id, req_no, woreda.id) disp
-						ON allo.requisition_no = disp.req_no AND allo.zone_id = disp.zone_id)
-						LEFT JOIN commodities commodity
-						ON commodity.id = allo.commodity_id
-						WHERE allo.zone_id = ' + zone.to_s + ' AND operation_id = ' + operation.to_s)
+			@result = DispatchSummaryByFdp.select("woreda_id AS location_id, woreda_name AS location, 
+				AllOpID AS operation_id, AlloReqNo as requisition, commodity_name AS commodity, 
+				SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
+		    .group('woreda_id, woreda_name, AllOpID, AlloReqNo, commodity_name')
+		    .where('AllOpID = ' + operation.to_s + ' AND zone_id = ' + zone.to_s)
 		end	
 
 		def dispatch_reports_by_fdp operation, woreda
-			@result =ActiveRecord::Base.connection
-			.exec_query('SELECT allo.zone_id AS zone_id, allo.zone_name AS zone_name, allo.requisition_no AS requisition, 
-					commodity.name AS commodity, 
-				allo.allocated, disp.dispatched, operation_id, region_id, allo.woreda_id, allo.woreda_name, allo.fdp_id AS location_id, 
-					allo.fdp_name AS location
-			FROM
-			((SELECT requisition_no, commodity_id, zone_id, zone.name AS zone_name, ABS(SUM(amount)) AS allocated, operation_id, 
-				region.id AS region_id, woreda.id AS woreda_id, woreda.name AS woreda_name, fdps.id AS fdp_id, 
-					fdps.name AS fdp_name
-			  FROM requisitions
-			LEFT JOIN requisition_items 
-			ON public.requisitions.id = requisition_items.requisition_id
-			LEFT JOIN fdps
-			On fdps.id = requisition_items.fdp_id
-			LEFT JOIN locations woreda
-			ON woreda.id = fdps.location_id
-			LEFT JOIN locations zone
-			ON requisitions.zone_id = zone.id
-			LEFT JOIN locations region
-			ON zone.parent_node_id = region.id
-			GROUP BY requisition_no, commodity_id, zone_id, operation_id, region.id, woreda.id, woreda_name, zone_name, 
-			fdps.id, fdps.name) allo
-			LEFT JOIN
-			(SELECT zone.id AS zone_id, woreda.id AS woreda_id, ABS(SUM(d_items.quantity)) AS dispatched, 
-				dispatches.requisition_number AS req_no, fdps.id AS fdp_id, fdps.name AS fdp_name
-			FROM dispatch_items d_items
-			LEFT JOIN dispatches
-			ON d_items.dispatch_id = dispatches.id
-			LEFT JOIN fdps
-			ON dispatches.fdp_id = fdps.id
-			LEFT JOIN locations woreda
-			ON fdps.location_id = woreda.id
-			LEFT JOIN locations zone
-			ON woreda.parent_node_id = zone.id
-			LEFT JOIN locations region
-			ON zone.parent_node_id = region.id
-			GROUP BY woreda_id, zone_id, req_no, woreda.id, fdps.id, fdps.name) disp
-			ON allo.requisition_no = disp.req_no AND allo.zone_id = disp.zone_id)
-			LEFT JOIN commodities commodity
-			ON commodity.id = allo.commodity_id
-			WHERE allo.woreda_id = ' + woreda.to_s + ' AND operation_id = ' + operation.to_s)
+			@result = DispatchSummaryByFdp.select("AlloFdp AS location_id, fdp_name AS location, 
+				AllOpID AS operation_id, AlloReqNo as requisition, commodity_name AS commodity, 
+				SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
+		    .group('AlloFdp, fdp_name, AllOpID, AlloReqNo, commodity_name')
+		    .where('AllOpID = ' + operation.to_s + ' AND woreda_id = ' + woreda.to_s)
 
 		end		
 
