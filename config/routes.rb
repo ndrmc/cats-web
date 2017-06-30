@@ -2,10 +2,9 @@ Rails.application.routes.draw do
   
   
  
-  get 'dispatch_report/index'
-  get 'dispatch_report/dt_index'
-  match 'dispatch_report/dt_index' => "dt_index#dt_index", :via => :post
 
+  get 'dispatch_report/index'
+  get 'stock_status/index'
   get 'fdp_operation_summary/index'
 
  scope "(:locale)", locale: /en|am/ do

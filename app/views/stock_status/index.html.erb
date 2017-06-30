@@ -1,0 +1,94 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Stock Status</h2>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+    </div>
+  </div>
+</div>
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+      <%= form_tag( "/stock_status/index" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+
+      	<div class="form-group">
+          <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :program, "Program", { :class => ' control-label', :required => true } %>
+
+          <div class="">
+            <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= label_tag :commodity, "Commodity", { :class => ' control-label', :required => true } %>
+
+          <div class="">
+            <%= select_tag  :commodity,  options_from_collection_for_select( Commodity.all, 'id', 'name', params[:commodity] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= label_tag :operation, "Operation", { :class => ' control-label', :required => true } %>
+
+          <div class="">
+            <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+          </div>
+        </div>
+
+        <% end %>
+
+
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+
+    <table class="table table-striped cats-datatable">
+      <thead>
+      <tr>
+            <th>Hub</th>
+            <th>Commodity</th>
+            <th>Donor</th>
+            <th>Program</th>
+            <th>Expected</th>
+            <th>Received</th>
+            <th>Dispatched</th>            
+            <th>Delivered</th>
+            <th>Goods In Transit</th>
+      </tr>
+      </thead>
+
+      <tbody>      
+        <% @stock_status.each do |stock| %>
+            <tr>
+                <td><%= stock['hub'] %></td>
+                <td><%= stock['commodity'] %></td>
+                <td><%= stock['donor'] %></td>
+                <td><%= stock['program'] %></td>
+                <td><%= stock['expected'] %></td>
+                <td><%= stock['received'] %></td>
+                <td><%= stock['dispatched'] %></td>
+                <td><%= stock['delivered'] %></td>
+                <td><%= stock['git'] %></td>                
+            </tr>
+        <% end %>
+      </tbody>
+    </table>        
+    
+  </div>
+</div>
