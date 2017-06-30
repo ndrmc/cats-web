@@ -116,6 +116,9 @@
       <li class="<%= 'active' if is_active_controller('stock_takes')  %>">
         <%= link_to t(:stock_status), "/stock_status/index" %>
       </li>
+      <li class="<%= 'active' if is_active_controller('dispatches')  %>">
+            <%= link_to t(:dispatch_report), "/dispatch_report/index?operation=" + Operation.first.id.to_s %>
+      </li>
     </ul>
   </li>
 
