@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170616084718) do
+ActiveRecord::Schema.define(version: 20170701123954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -882,17 +882,17 @@ ActiveRecord::Schema.define(version: 20170616084718) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
-    t.decimal  "quantity"
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",                          default: false
+    t.boolean  "deleted",                                                   default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at",                                                                null: false
+    t.datetime "updated_at",                                                                null: false
     t.integer  "unit_of_measure_id"
-    t.string   "receive_id",            limit: 36,                 null: false
-    t.string   "receive_item_id",       limit: 36,                 null: false
+    t.string   "receive_id",            limit: 36,                                          null: false
+    t.string   "receive_item_id",       limit: 36,                                          null: false
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
