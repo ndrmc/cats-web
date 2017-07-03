@@ -114,7 +114,4 @@ group :development do
     gem 'capistrano3-puma',   require: false
 end
 
-gem 'jquery-datatables-rails'
-gem 'ajax-datatables-rails'
-
 
