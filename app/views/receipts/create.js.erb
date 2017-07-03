@@ -1,0 +1,21 @@
+
+
+
+$('#receipt_grn_no').val("");
+$('#receipt_received_date').val("");
+$('#receipt_storekeeper_name').val("");
+
+
+$('#receipt_weight_bridge_ticket_no').val("")
+$('#receipt_weight_before_unloading').val("")
+$('#receipt_plate_no').val("")
+$('#receipt_remark').val("")
+$('#receipt_trailer_plate_no').val("")
+$('#receipt_transporter_id').get(0).selectedIndex = 0;
+$('#warehouse_select').get(0).selectedIndex = 0;
+$('#donor_select').get(0).selectedIndex = 0;
+$(window).scrollTop(0);
+toastr.success("You have made a receipt");
+
+var table = document.getElementById("table_id");
+table.refresh();

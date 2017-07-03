@@ -1,4 +1,4 @@
-<%= form_for(receipt, :html=> {:id => 'receipt-form'} ) do |f| %>
+<%= form_for(receipt, :html=> {:id => 'receipt-form' , :remote => true }) do |f| %>
 <% @projects = Project.where('archived = ? OR archived IS NULL',false)%>
 <% @uoms = UnitOfMeasure.all%>
 <% @warehouses = Warehouse.all %>
@@ -23,6 +23,32 @@
           </div>
         </div>
         <% end %>
+        
+
+         <div class="panel panel-info id="prject_code_status">
+          <div class="panel-heading">
+            project code status
+          </div>
+
+          <div class="panel-body">
+            <li>
+              project code:
+            </li>
+            
+            <li>
+              Allocated:
+            </li>
+
+            <li>
+              Received:
+            </li>
+
+            <li>
+              Remaining:
+            </li>
+          </div>
+        </div>
+
 
         <div class="form-group">
           <%= f.label :grn_no, "GRN Number" %>
@@ -81,7 +107,7 @@
 
     <div class="ibox float-e-margins">
       <div class="ibox-content">
-        <table class="table">
+        <table class="table" id="table_id">
           <thead>
             <tr>
               <th>Commodity Category</th>
