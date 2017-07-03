@@ -61,18 +61,30 @@
     <table class="table table-striped cats-datatable">
       <thead>
       <tr>
+            <th>Hub</th>
             <th>Commodity</th>
+            <th>Donor</th>
+            <th>Program</th>
             <th>Expected</th>
             <th>Received</th>
+            <th>Dispatched</th>            
+            <th>Delivered</th>
+            <th>Goods In Transit</th>
       </tr>
       </thead>
 
       <tbody>      
         <% @stock_status.each do |stock| %>
             <tr>
+                <td><%= stock['hub'] %></td>
                 <td><%= stock['commodity'] %></td>
+                <td><%= stock['donor'] %></td>
+                <td><%= stock['program'] %></td>
                 <td><%= stock['expected'] %></td>
-                <td><%= stock['received'] %></td>        
+                <td><%= stock['received'] %></td>
+                <td><%= stock['dispatched'] %></td>
+                <td><%= stock['delivered'] %></td>
+                <td><%= stock['git'] %></td>                
             </tr>
         <% end %>
       </tbody>
