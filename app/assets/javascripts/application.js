@@ -56,6 +56,32 @@ $(document).ready(function() {
     stateSave: true
   });
 
+  $('.cats-grouped-datatable').DataTable({
+    info: false,
+    pageLength: 25,
+    stateSave: true,
+    columnDefs: [
+            { "visible": false, "targets": $(this).attr('data_group_col_no') }
+        ],
+    order: [[ $(this).attr('data_sort_col_no'), 'asc' ]],
+    displayLength: 25,
+    drawCallback: function ( settings ) {
+        var api = this.api();
+        var rows = api.rows( {page:'current'} ).nodes();
+        var last=null;
+
+        api.column($(this).attr('data_group_col_no'), {page:'current'} ).data().each( function ( group, i ) {
+            if ( last !== group ) {
+                $(rows).eq( i ).before(
+                    '<tr class="group" style="background-color:#ccc;color:#000"><td colspan="5">'+group+'</td></tr>'
+                );
+
+                last = group;
+            }
+        } );
+    }
+  });
+
   $('.datepicker').datepicker({
     format: 'dd/mm/yyyy'
   });
@@ -79,3 +105,4 @@ $(document).ready(function() {
     format: 'dd/mm/yyyy'
   });
 });
+
