@@ -1,4 +1,4 @@
-class CreateDispatchSummaryByFdps < ActiveRecord::Migration[5.0]
+class CreateDispatchSummaryByFdp < ActiveRecord::Migration[5.0]
   def up
     execute <<-SQL
       CREATE VIEW dispatch_summary_by_fdps AS
