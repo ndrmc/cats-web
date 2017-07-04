@@ -1,7 +1,7 @@
-class CreateDispatchSummaryByFdp < ActiveRecord::Migration[5.0]
+class CreateDispatchSummaryByFdps < ActiveRecord::Migration[5.0]
   def up
     execute <<-SQL
-      CREATE VIEW dispatch_summary_by_fdp AS
+      CREATE VIEW dispatch_summary_by_fdps AS
         SELECT allo.fdp_id AS AlloFDP, allo.operation_id AS AllOpID, allo.commodity_id AS AlloCommID, 
         	allo.commodity_name,
 				allo.allocated, allo.requisition_no AS AlloReqNo,
@@ -56,7 +56,6 @@ class CreateDispatchSummaryByFdp < ActiveRecord::Migration[5.0]
   end
 
   def down
-    execute "DROP VIEW dispatch_summary_by_fdp"
+    execute "DROP VIEW dispatch_summary_by_fdps"
   end
-
 end
