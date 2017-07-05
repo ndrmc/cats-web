@@ -27,25 +27,25 @@
 
          <div class="panel panel-info id="prject_code_status">
           <div class="panel-heading">
-            project code status
+            project code status for <b><div id="project_code"> </div></b>
           </div>
 
           <div class="panel-body">
-            <li>
-              project code:
-            </li>
-            
-            <li>
-              Allocated:
-            </li>
-
-            <li>
-              Received:
-            </li>
-
-            <li>
-              Remaining:
-            </li>
+              <table class="table">
+              <tr>
+                <td> Allocated: </td>
+                <td> <div id="allocated"> </div> </td>
+              </tr>
+              <tr> 
+                <td> Received: </td>
+                <td> <div id="received"> </div> </td>
+              </tr>
+              <tr>
+                <td> Remainig: </td>
+                <td>  <div id="remaining"> </div> </td>
+              </tr>
+              </table>         
+          
           </div>
         </div>
 
@@ -183,7 +183,7 @@
                 <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
               </td>
               <td>
-                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' %>
+                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' id="project_select"%>
                 </select>
               </td>
               <td>
@@ -268,8 +268,12 @@
         </div>
 
         <div class="actions">
-          <%= f.submit :class => 'btn btn-primary', :id => 'submit-receipt' %>
+            <%= f.submit "Create and new", :class => 'btn btn-primary', :id => 'submit-receipt-and-new',:name => 'submit_receipt_and_new'%>
+            <%= f.submit :class => 'btn btn-primary', :id => 'submit-receipt', :name => 'submit_receipt'  %>
         </div>
+
+         
+
       </div>
     </div>
 
@@ -277,12 +281,23 @@
   <% end %>
 
   <script type="text/javascript">
-
+    var current_project_id;
     var allUnitOfMeasures = [];
     
     var REMOVE_RECEIPTLINE_BTN = '<a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>';
 
     var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+
+
+    $(document).ready(function(){
+     
+      
+      $("#donor_select").val(<%= @organization_id %>);
+       $("#donor_select").val(1).trigger('change');
+     
+    
+      
+    });
 
     $(function () {
 
@@ -324,6 +339,9 @@
           return;
         }
 
+        current_project_id = $("#project_select").val();
+        
+
         var $newRow = $receiptLineForm.clone();
 
         $newRow.find('td').last().html(REMOVE_RECEIPTLINE_BTN);
@@ -335,6 +353,8 @@
         $newRow.insertBefore($receiptLineForm);
 
         $receiptLineForm.find(':input').val('');
+
+        
       });
 
       $('#receiptLinesTableBody').on('click', '.remove-receipt-line', function (e) {
@@ -343,17 +363,42 @@
         });
       });
 
-      $('#submit-receipt').click(function (e) {
+      $('#submit-receipt-and-new').click(function (e) {
 
         if ($('.receipt-line').length === 0) {
-          toastr.error("You need to atleast add one commodity.");
+          toastr.error("You need to at least add one commodity.");
 
           e.preventDefault();
           return;
         }
+       
+       
+        setTimeout(function() {
+     get_received_qty(current_project_id);
+   }, 3000);
 
+        
       });
 
+
+$('#submit-receipt').click(function (e) {
+
+        if ($('.receipt-line').length === 0) {
+          toastr.error("You need to at least add one commodity.");
+
+          e.preventDefault();
+          return;
+        }
+       
+       
+        setTimeout(function() {
+     get_received_qty(current_project_id);
+   }, 3000);
+
+        
+      });
+
+      
       $('#commodity-category-select').change(function () {
         var val = $(this).val();
 
@@ -392,6 +437,32 @@
         var donor_id = $(this).val();
         updateProjects(donor_id);
       });
+
+$('#project_select').change(function(){
+ project_id = $(this).val();
+ get_received_qty(project_id);
+ $(window).scrollTop(0);
+});
+
+function get_received_qty(id)
+    {
+      
+        $.ajax( { url: '/receipts/getProjectCodeStatus/' + id,cache: false, method: 'GET'})
+            .done( function(data) {
+
+          var id = document.getElementById("project_select");
+          var text = id.options[id.selectedIndex].text
+         
+           if ($("#project_select").val()!=""){
+              document.getElementById("project_code").innerHTML=text
+           } 
+            document.getElementById("allocated").innerHTML=data.allocated
+            document.getElementById("received").innerHTML=data.received
+            document.getElementById("remaining").innerHTML= data.allocated - data.received
+            
+            });
+    }
+
 
       $('#hub_select').change(function(){
        

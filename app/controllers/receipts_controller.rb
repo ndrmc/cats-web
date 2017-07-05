@@ -30,6 +30,12 @@ class ReceiptsController < ApplicationController
 
   def new
     authorize Receipt
+ 
+    if params[:id] 
+      @project_id = params[:id]
+      @organization_id = Project.where(:id => params[:id]).pluck(:organization_id)
+    end
+    
     @receipt = Receipt.new
     @receipt.commodity_source_id = 1
   end
@@ -51,14 +57,20 @@ class ReceiptsController < ApplicationController
       rl.receive_id = "N/A" # to be removed: field included for data import purposes only
       rl.receive_item_id = "N/A" # to be removed: field included for data import purposes only
     end
-    respond_to do |format|
+
+
+    
       if @receipt.save
-        format.html { redirect_to receipts_path, success: 'Receipt was successfully created.' }
-        format.js {}
+        if params[:submit_receipt_and_new]== "submit-receipt-and-new  "
+          format.js {}
+        elsif params[:submit_receipt] == "Create Receipt"
+           flash[:notice] = "Receipt was successfully created." 
+          render :js => "window.location = '#{receipts_path}'"
+        end
       else
         format.html { render :new }
       end
-    end
+    
   end
 
   def edit
@@ -106,6 +118,21 @@ class ReceiptsController < ApplicationController
     end
   end
 
+  def getProjectCodeStatus
+    project_quantity = Project.where(:id => params[:id]).pluck(:amount)
+    receipt_quantity = ReceiptLine.where(:project_id => params[:id]).sum(:quantity)
+
+    respond_to do |format| 
+    
+         format.json{
+          render :json => {
+        :allocated => project_quantity,
+        :received => receipt_quantity
+      }
+    }
+    end
+  end
+  
   private
 
   def receipt_params
