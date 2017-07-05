@@ -4,7 +4,7 @@
   </div>
   <div class="col-sm-12">
       <h2>
-      <%= link_to @operation_name, '/dispatch_summary_by_fdps/index?operation=' + @operation %>
+      <%= link_to @operation_name, '/operations/' + @operation %>
     <% if @region.present? %>
       >
       <%= link_to @region_name, '/dispatch_summary_by_fdps/index?operation=' + @operation +';region=' + @region %>
