@@ -45,4 +45,6 @@ class Receipt < ApplicationRecord
     validates :donor_id, presence: {message: " is required!"}
     after_save :pre_post
     after_update :reverse
+
+    validates :grn_no, uniqueness: true
 end
