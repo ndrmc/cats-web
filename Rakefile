@@ -6,13 +6,17 @@ require_relative 'config/application'
 Rails.application.load_tasks
 
 Rake::Task["db:migrate"].enhance do
-  if ActiveRecord::Base.schema_format == :sql
-    Rake::Task["db:schema:dump"].invoke
-  end
+	if (ENV['RAILS_ENV'] == "test")
+		if ActiveRecord::Base.schema_format == :sql
+			Rake::Task["db:schema:dump"].invoke
+		end
+	end	
 end
 
 Rake::Task["db:rollback"].enhance do
-  if ActiveRecord::Base.schema_format == :sql
-    Rake::Task["db:schema:dump"].invoke
-  end
+	if (ENV['RAILS_ENV'] == "test")
+		if ActiveRecord::Base.schema_format == :sql
+			Rake::Task["db:schema:dump"].invoke
+		end
+	end
 end
