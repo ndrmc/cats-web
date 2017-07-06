@@ -935,17 +935,17 @@ CREATE TABLE requisitions (
 --
 
 CREATE VIEW dispatch_summary_by_fdps AS
- SELECT allo.fdp_id AS allofdp,
-    allo.operation_id AS allopid,
-    allo.commodity_id AS allocommid,
+ SELECT allo.fdp_id AS allo_fdp,
+    allo.operation_id AS allo_op_id,
+    allo.commodity_id AS allo_comm_id,
     allo.commodity_name,
     allo.allocated,
-    allo.requisition_no AS alloreqno,
-    disp.fdp_id AS dispfdp,
-    disp.operation_id AS dispopid,
-    disp.commodity_id AS dispcommid,
+    allo.requisition_no AS allo_req_no,
+    disp.fdp_id AS disp_fdp,
+    disp.operation_id AS dis_op_id,
+    disp.commodity_id AS disp_comm_id,
     disp.dispatched,
-    disp.requisition_number AS dispreqno,
+    disp.requisition_number AS disp_req_no,
     allo.fdp_name,
     allo.woreda_id,
     allo.woreda_name,
@@ -5395,8 +5395,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170222183759'),
 ('20170222184133'),
 ('20170223053930'),
-('20170223125715'),
-('20170223170712'),
 ('20170226064916'),
 ('20170226153058'),
 ('20170301145258'),
@@ -5455,8 +5453,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170613124910'),
 ('20170616084451'),
 ('20170616084718'),
-('20170629113155'),
-('20170629125053'),
 ('20170704061342'),
 ('20170704130414');
 
