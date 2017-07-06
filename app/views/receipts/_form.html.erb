@@ -154,10 +154,10 @@
               </td>
 
               <td>
-                <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" data-parsley-required/>
+                <input name="receipt[receipt_lines[][quantity]]" type="number" step="any" class="form-control" data-parsley-required/>
               </td>
               <td>
-                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' %>
+                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' data-parsley-required %>
                 </select>
               </td>
               <td>
