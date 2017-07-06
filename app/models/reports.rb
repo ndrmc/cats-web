@@ -105,11 +105,14 @@ class Reports
 
     	if( hub.present?  )
 	  		@where_clause += ' AND hub_id = ' + hub.to_s 
-	  	elsif ( program.present? )  
+  		end
+	  	if ( program.present? )  
 	  		@where_clause += ' AND program_id = ' + program.to_s
-		elsif ( warehouse.present? )
+  		end
+		if ( warehouse.present? )
 			@where_clause += ' AND warehouse_id = ' + warehouse.to_s
-		elsif ( commodity.present? )
+		end
+		if ( commodity.present? )
 			@where_clause += ' AND commodity_id = ' + commodity.to_s
 		end
 
