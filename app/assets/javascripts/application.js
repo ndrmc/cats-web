@@ -43,39 +43,41 @@
 //= require_tree .
 
 $(document).ready(function() {
-  /**
-   * Activates parent menu items if children are active
-   */
-  var activeLi = $('li.active');
-  activeLi.parentsUntil('nav', 'li').addClass('active');
-  activeLi.parentsUntil('nav', 'ul').removeClass('collapse');
+    /**
+     * Activates parent menu items if children are active
+     */
+    var activeLi = $('li.active');
+    activeLi.parentsUntil('nav', 'li').addClass('active');
+    activeLi.parentsUntil('nav', 'ul').removeClass('collapse');
 
-  $('.cats-datatable').DataTable({
-    info: false,
-    pageLength: 25,
-    stateSave: true
-  });
+    $('.cats-datatable').DataTable({
+        info: false,
+        pageLength: 25,
+        stateSave: true,
+        dom: 'lfrtipB',
+        buttons: ['copy', 'csv', 'excel', 'print']
+    });
 
-  $('.datepicker').datepicker({
-    format: 'dd/mm/yyyy'
-  });
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
 
-  $('.custom_datepicker').calendarsPicker({
+    $('.custom_datepicker').calendarsPicker({
 
-    calendar: $.calendars.instance('ethiopian', 'am'),
-    format: 'dd/mm/yyyy',
+        calendar: $.calendars.instance('ethiopian', 'am'),
+        format: 'dd/mm/yyyy',
 
-    onSelect: function(dateText, inst) {
+        onSelect: function(dateText, inst) {
 
-      var dateAsObject = $(this).calendarsPicker('getDate');
-      var jd = dateAsObject[0].toJD();
-      var date_gc = $.calendars.instance('gregorian').fromJD(jd);
-      $(this).val(date_gc.formatDate('dd/mm/yyyy'));
+            var dateAsObject = $(this).calendarsPicker('getDate');
+            var jd = dateAsObject[0].toJD();
+            var date_gc = $.calendars.instance('gregorian').fromJD(jd);
+            $(this).val(date_gc.formatDate('dd/mm/yyyy'));
 
-    }
-  });
+        }
+    });
 
-  $('.cats-daterangepicker').daterangepicker({
-    format: 'dd/mm/yyyy'
-  });
+    $('.cats-daterangepicker').daterangepicker({
+        format: 'dd/mm/yyyy'
+    });
 });
