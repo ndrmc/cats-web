@@ -9,38 +9,45 @@
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-      <%= form_tag( "/stock_status/index" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/stock_status/index" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>        
 
-      	<div class="form-group">
+      	<div class="form-group" style="margin-left: 20px;">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
 
           <div class="">
-            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => false , :prompt => "-- Select Hub --", :class => 'form-control col-md-3' }  %>
           </div>
         </div>
-        <div class="form-group">
+
+        <div class="form-group" style="margin-left: 20px;">
+          <%= label_tag :warehouse, "Warehouse", { :class => ' control-label', :required => true } %>
+
+          <div class="">
+            <%= select_tag :warehouse, options_from_collection_for_select([], "id", "name", params[:warehouse]),
+              :required => false , :class => 'form-control col-md-3', :style => 'min-width: 80px',
+              "data-option-dependent" => true,
+              "data-option-observed" => "hub",
+              "data-option-url" => "/warehouses/#{:hub}.json",
+              "data-option-key-method" => :id,
+              "data-option-value-method" => :name %>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-left: 20px;">
           <%= label_tag :program, "Program", { :class => ' control-label', :required => true } %>
 
           <div class="">
-            <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => false, :prompt => "-- Choose --", :class => 'form-control col-md-3 ' }  %>
           </div>
         </div>
         
-        <div class="form-group">
+        <div class="form-group" style="margin-left: 20px;">
           <%= label_tag :commodity, "Commodity", { :class => ' control-label', :required => true } %>
 
           <div class="">
-            <%= select_tag  :commodity,  options_from_collection_for_select( Commodity.all, 'id', 'name', params[:commodity] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            <%= select_tag  :commodity,  options_from_collection_for_select( Commodity.all, 'id', 'name', params[:commodity] ) , { :required => false, :prompt => "-- Choose --", :class => 'form-control col-md-3 ' }  %>
           </div>
-        </div>
-
-        <div class="form-group">
-          <%= label_tag :operation, "Operation", { :class => ' control-label', :required => true } %>
-
-          <div class="">
-            <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
-          </div>
-        </div>
+        </div>        
         
         <div class="form-group">
           <label for=""></label>

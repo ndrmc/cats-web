@@ -11,6 +11,10 @@ class WarehousesController < ApplicationController
   # GET /warehouses/1
   # GET /warehouses/1.json
   def show
+    hub = Hub.find(params[:id])
+    respond_to do |format|
+      format.json { render :json => hub.warehouses }
+    end
   end
 
   # GET /warehouses/new
@@ -80,4 +84,5 @@ class WarehousesController < ApplicationController
   def warehouse_params
     params.require(:warehouse).permit(:name, :description, :hub_id, :location_id, :organization_id, :lat, :lon)
   end
+
 end

@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get 'fdp_operation_summary/index'
 
+  
+ 
  scope "(:locale)", locale: /en|am/ do
   resources :case_teams
    resources :permissions
