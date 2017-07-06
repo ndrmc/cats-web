@@ -25,7 +25,7 @@
         <% end %>
         
 
-         <div class="panel panel-info id="prject_code_status">
+         <div class="panel panel-info" id="prject_code_status" style="display: none">
           <div class="panel-heading">
             project code status for <b><div id="project_code"> </div></b>
           </div>
@@ -33,7 +33,7 @@
           <div class="panel-body">
               <table class="table">
               <tr>
-                <td> Allocated: </td>
+                <td> Total: </td>
                 <td> <div id="allocated"> </div> </td>
               </tr>
               <tr> 
@@ -268,7 +268,9 @@
         </div>
 
         <div class="actions">
-            <%= f.submit "Create and new", :class => 'btn btn-primary', :id => 'submit-receipt-and-new',:name => 'submit_receipt_and_new'%>
+          <% if !@edit %>
+            <%= f.submit "Create and add Another", :class => 'btn btn-primary', :id => 'submit-receipt-and-new',:name => 'submit_receipt_and_new'%> 
+          <%end%>
             <%= f.submit :class => 'btn btn-primary', :id => 'submit-receipt', :name => 'submit_receipt'  %>
         </div>
 
@@ -290,36 +292,28 @@
 
 
     $(document).ready(function(){
-     
-      
+
+      if (<%= !@project_id.blank? %>){
+      var element = document.getElementById("prject_code_status");
+      element.style.display = 'block';
       $("#donor_select").val(<%= @organization_id %>);
-       $("#donor_select").val(1).trigger('change');
+      $("#donor_select").change();
+      $("#project_select").val(<%= @project_id %>);
      
-    
+      $("#commodity-category-select").val(<%= @commodity_category_id %>);
+      $("#commodity-category-select").change();
+      $("#commodity-select").val(<%= @commodity_id %>);
+      $("#commodity-select").change();
+      $("#uom-select").val(<%= @unit_of_measure_id %>);
+      get_received_qty(<%= @project_id %>);
+      }     
+   
       
     });
 
     $(function () {
 
-      $("#commodity-select").change(function () {
-        var categoryId = $(this).find('option:selected').data('uom-category-id');
-        var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
-        if ('' === categoryId)
-          return;
-
-        var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
-          return elem.uom_category_id == categoryId
-        });
-
-        var options = $.map(unitOfMeasuresInCategory, function (val) {
-          return '<option value="' + val.id + '">' + val.name + '</option>';
-        });
-
-        options.unshift(EMPTY_OPTION);
-
-        $('#uom-select').html(options);
-
-      });
+     
 
       $("#add-receipt-line").click(function (e) {
         e.preventDefault();
@@ -396,73 +390,17 @@ $('#submit-receipt').click(function (e) {
    }, 3000);
 
         
-      });
+      });   
+     
 
-      
-      $('#commodity-category-select').change(function () {
-        var val = $(this).val();
-
-        if (val === '') {
-          return;
-        }
-
-        $("#commodity-select > option").addClass('hidden');
-        $("#commodity-select > option.cc-" + val).removeClass('hidden');
-
-        $("#commodity-select > option:first").removeClass('hidden');
-
-      });
-
-      
-      updateProjects(<%=@receipt.donor_id%>);
-      function updateProjects(donor_id){        
-        if (donor_id === '')
-          return;
-        var allProjects = <%= @projects.to_json.html_safe %>
-      
-        var projects_by_donor = $.grep(allProjects, function (elem) {
-          return elem.organization_id == donor_id
-        });
-
-        var proj_options = $.map(projects_by_donor, function (val) {
-          return '<option value="' + val.id + '">' + val.project_code + '</option>';
-        });
-
-        proj_options.unshift(EMPTY_OPTION);
-
-        $('.project_select').html(proj_options);
-      }
-
-      $('#donor_select').change(function(){
-        var donor_id = $(this).val();
-        updateProjects(donor_id);
-      });
+     
 
 $('#project_select').change(function(){
  project_id = $(this).val();
  get_received_qty(project_id);
- $(window).scrollTop(0);
+ var element = document.getElementById("prject_code_status");
+ element.style.display = 'block';
 });
-
-function get_received_qty(id)
-    {
-      
-        $.ajax( { url: '/receipts/getProjectCodeStatus/' + id,cache: false, method: 'GET'})
-            .done( function(data) {
-
-          var id = document.getElementById("project_select");
-          var text = id.options[id.selectedIndex].text
-         
-           if ($("#project_select").val()!=""){
-              document.getElementById("project_code").innerHTML=text
-           } 
-            document.getElementById("allocated").innerHTML=data.allocated
-            document.getElementById("received").innerHTML=data.received
-            document.getElementById("remaining").innerHTML= data.allocated - data.received
-            
-            });
-    }
-
 
       $('#hub_select').change(function(){
        
@@ -486,4 +424,82 @@ function get_received_qty(id)
       });
 
     });
+
+    function get_received_qty(id)
+    {
+
+        $.ajax( { url: '/receipts/getProjectCodeStatus/' + id,cache: false, method: 'GET'})
+            .done( function(data) {
+
+          var id = document.getElementById("project_select");
+          var text = id.options[id.selectedIndex].text
+         
+           if ($("#project_select").val()!=""){
+              document.getElementById("project_code").innerHTML=text
+           } 
+            document.getElementById("allocated").innerHTML=data.allocated
+            document.getElementById("received").innerHTML=data.received
+            document.getElementById("remaining").innerHTML= data.allocated - data.received
+            
+            });
+    }
+
+        $("#commodity-select").change(function () {
+        var categoryId = $(this).find('option:selected').data('uom-category-id');
+        var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
+        if ('' === categoryId)
+          return;
+
+        var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+          return elem.uom_category_id == categoryId
+        });
+
+        var options = $.map(unitOfMeasuresInCategory, function (val) {
+          return '<option value="' + val.id + '">' + val.name + '</option>';
+        });
+
+        options.unshift(EMPTY_OPTION);
+
+        $('#uom-select').html(options);
+
+      });
+      
+      $('#commodity-category-select').change(function () {
+        var val = $(this).val();
+
+        if (val === '') {
+          return;
+        }
+
+        $("#commodity-select > option").addClass('hidden');
+        $("#commodity-select > option.cc-" + val).removeClass('hidden');
+
+        $("#commodity-select > option:first").removeClass('hidden');
+
+      });
+     $('#donor_select').change(function(){
+        var donor_id = $(this).val();
+        updateProjects(donor_id);
+      });
+
+      updateProjects(<%=@receipt.donor_id%>);
+      function updateProjects(donor_id){        
+        if (donor_id === '')
+          return;
+        var allProjects = <%= @projects.to_json.html_safe %>
+      
+        var projects_by_donor = $.grep(allProjects, function (elem) {
+          return elem.organization_id == donor_id
+        });
+
+        var proj_options = $.map(projects_by_donor, function (val) {
+          return '<option value="' + val.id + '">' + val.project_code + '</option>';
+        });
+
+        proj_options.unshift(EMPTY_OPTION);
+
+        $('.project_select').html(proj_options);
+      }
+
+
   </script>

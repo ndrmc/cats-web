@@ -33,7 +33,11 @@ class ReceiptsController < ApplicationController
  
     if params[:id] 
       @project_id = params[:id]
-      @organization_id = Project.where(:id => params[:id]).pluck(:organization_id)
+      @organization = Project.where(:id => params[:id])
+      @organization_id = @organization.pluck(:organization_id)
+      @commodity_id =  @organization.pluck(:commodity_id)
+      @commodity_category_id = Commodity.where(:id => @commodity_id).pluck(:commodity_category_id)
+      @unit_of_measure_id =  @organization.pluck(:unit_of_measure_id)
     end
     
     @receipt = Receipt.new
@@ -76,6 +80,8 @@ class ReceiptsController < ApplicationController
   def edit
     authorize Receipt
     @receipt = Receipt.find(params[:id])
+    @project_id = @receipt.receipt_lines.pluck(:project_id)
+    @edit = true
   end
 
   def update
@@ -108,9 +114,8 @@ class ReceiptsController < ApplicationController
    
     
     if @receipt.update( receipt_map )
-      respond_to do |format|
-        format.html { redirect_to receipts_path, notice: 'Receipt was successfully updated.' }
-      end
+           flash[:notice] = "Receipt was successfully updated." 
+           render :js => "window.location = '#{receipts_path}'"
     else
       respond_to do |format|
         format.html { render :edit }
