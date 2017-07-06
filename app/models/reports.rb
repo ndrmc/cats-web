@@ -90,34 +90,34 @@ class Reports
 	#### Dispatch Reports - Begin #######################################################
 		def dispatch_reports_by_region operation
 			@result = DispatchSummaryByFdp.select("region_id AS location_id, region_name AS location, 
-				AllOpID AS operation, SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
-		    .group('region_id, region_name, AllOpID')
-		    .where('AllOpID = ' + operation.to_s)
+				allo_op_id AS operation, SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
+		    .group('region_id, region_name, allo_op_id')
+		    .where('allo_op_id = ' + operation.to_s)
 			
 		end
 
 		def dispatch_reports_by_zone operation, region
 			@result = DispatchSummaryByFdp.select("zone_id AS location_id, zone_name AS location, 
-				AllOpID AS operation_id, AlloReqNo as requisition, commodity_name AS commodity, 
+				allo_op_id AS operation_id, allo_req_no as requisition, commodity_name AS commodity, 
 				SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
-		    .group('zone_id, zone_name, AllOpID, AlloReqNo, commodity_name')
-		    .where('AllOpID = ' + operation.to_s + ' AND region_id = ' + region.to_s)
+		    .group('zone_id, zone_name, allo_op_id, allo_req_no, commodity_name')
+		    .where('allo_op_id = ' + operation.to_s + ' AND region_id = ' + region.to_s)
 		end
 
 		def dispatch_reports_by_woreda operation, zone
 			@result = DispatchSummaryByFdp.select("woreda_id AS location_id, woreda_name AS location, 
-				AllOpID AS operation_id, AlloReqNo as requisition, commodity_name AS commodity, 
+				allo_op_id AS operation_id, allo_req_no as requisition, commodity_name AS commodity, 
 				SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
-		    .group('woreda_id, woreda_name, AllOpID, AlloReqNo, commodity_name')
-		    .where('AllOpID = ' + operation.to_s + ' AND zone_id = ' + zone.to_s)
+		    .group('woreda_id, woreda_name, allo_op_id, allo_req_no, commodity_name')
+		    .where('allo_op_id = ' + operation.to_s + ' AND zone_id = ' + zone.to_s)
 		end	
 
 		def dispatch_reports_by_fdp operation, woreda
-			@result = DispatchSummaryByFdp.select("AlloFdp AS location_id, fdp_name AS location, 
-				AllOpID AS operation_id, AlloReqNo as requisition, commodity_name AS commodity, 
+			@result = DispatchSummaryByFdp.select("allo_fdp AS location_id, fdp_name AS location, 
+				allo_op_id AS operation_id, allo_req_no as requisition, commodity_name AS commodity, 
 				SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
-		    .group('AlloFdp, fdp_name, AllOpID, AlloReqNo, commodity_name')
-		    .where('AllOpID = ' + operation.to_s + ' AND woreda_id = ' + woreda.to_s)
+		    .group('allo_fdp, fdp_name, allo_op_id, allo_req_no, commodity_name')
+		    .where('allo_op_id = ' + operation.to_s + ' AND woreda_id = ' + woreda.to_s)
 
 		end		
 

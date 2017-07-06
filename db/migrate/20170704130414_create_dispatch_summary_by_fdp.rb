@@ -2,11 +2,11 @@ class CreateDispatchSummaryByFdp < ActiveRecord::Migration[5.0]
   def up
     execute <<-SQL
       CREATE VIEW dispatch_summary_by_fdps AS
-        SELECT allo.fdp_id AS AlloFDP, allo.operation_id AS AllOpID, allo.commodity_id AS AlloCommID, 
+        SELECT allo.fdp_id AS allo_fdp, allo.operation_id AS allo_op_id, allo.commodity_id AS allo_comm_id, 
         	allo.commodity_name,
-				allo.allocated, allo.requisition_no AS AlloReqNo,
-			disp.fdp_id AS DispFDP, disp.operation_id AS DispOpID, disp.commodity_id AS DispCommID, 
-				disp.dispatched, disp.requisition_number AS DispReqNo,
+				allo.allocated, allo.requisition_no AS allo_req_no,
+			disp.fdp_id AS disp_fdp, disp.operation_id AS dis_op_id, disp.commodity_id AS disp_comm_id, 
+				disp.dispatched, disp.requisition_number AS disp_req_no,
 			allo.fdp_name, allo.woreda_id, allo.woreda_name, allo.zone_id, allo.zone_name, allo.region_id, 
 			allo.region_name
 		FROM
