@@ -96,7 +96,7 @@ $(document).ready(function() {
     var observed = $('#' + observed_dom_id);
 
     if (!observer.val() && observed.size() > 1) {
-      observer.attr('disabled', true);
+      observer.attr('disabled', 'disabled');
     }
     observed.on('change', function () {
       observer.empty().append(prompt);

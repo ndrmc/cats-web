@@ -39,15 +39,7 @@
           <div class="">
             <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => false, :prompt => "-- Choose --", :class => 'form-control col-md-3 ' }  %>
           </div>
-        </div>
-        
-        <div class="form-group" style="margin-left: 20px;">
-          <%= label_tag :commodity, "Commodity", { :class => ' control-label', :required => true } %>
-
-          <div class="">
-            <%= select_tag  :commodity,  options_from_collection_for_select( Commodity.all, 'id', 'name', params[:commodity] ) , { :required => false, :prompt => "-- Choose --", :class => 'form-control col-md-3 ' }  %>
-          </div>
-        </div>        
+        </div>      
         
         <div class="form-group">
           <label for=""></label>
@@ -69,8 +61,8 @@
       <thead>
       <tr>
             <th>Commodity</th>
-            <th>Expected</th>
-            <th>Received</th>
+            <th>Expected (mt)</th>
+            <th>Received (mt)</th>
       </tr>
       </thead>
 
@@ -87,3 +79,41 @@
     
   </div>
 </div>
+
+<script>
+$(document).ready(function() {
+  var observer_dom_id = $('#warehouse').attr('id');
+  var observed_dom_id = $('#warehouse').data('option-observed');
+  var url_mask = $('#warehouse').data('option-url');
+  var key_method = $('#warehouse').data('option-key-method');
+  var value_method = $('#warehouse').data('option-value-method');
+
+  // var prompt = $(this).has('option[value=]').size() ? $(this).find('option[value=]') : 
+  //               $('<option value=\"\">').text('Select a specialization');
+
+  var prompt = $('<option value=\"\">').text('Select a warehouse');
+  var regexp = /:[0-9a-zA-Z_]+:/g;
+  var observer = $('select#' + observer_dom_id);
+  var observed = $('#' + observed_dom_id);
+
+  observer.empty().append(prompt);
+  if (observed.val()) {
+    //url = url_mask.replace(regexp, observed.val());
+    url = "/warehouses/" + observed.val() + ".json";
+    $.getJSON(url, function (data) {
+      $.each(data, function (i, object) {
+        if(object[key_method] == <%= params[:warehouse] %> )
+        {
+          observer.append($('<option>').attr('value', object[key_method]).attr('selected', 'selected')
+            .text(object[value_method]));
+        }
+        else
+        {
+          observer.append($('<option>').attr('value', object[key_method]).text(object[value_method]));
+        }
+        observer.removeAttr('disabled');
+      });
+    });
+  }
+});
+</script>
