@@ -20,7 +20,7 @@ class ReceiptsController < ApplicationController
         filter_map[:draft ] = params[:status ] == 'Draft'
       end
 
-      @receipts = Receipt.joins( :receipt_lines ).where( filter_map ).distinct
+      @receipts = Receipt.includes( receipt_lines: [:commodity, :unit_of_measure, :project] ).where( filter_map ).distinct
     else
       @receipts = []
     end

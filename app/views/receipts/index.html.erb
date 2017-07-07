@@ -115,6 +115,7 @@
                 </td>
             </tr>
             <tr>
+            <td colspan="4">
              <table class="table" style="margin-left: 40px;">
               <thead>
                 <tr>
@@ -122,6 +123,7 @@
                     <th>Quantity</th>
                     <th>unit</th>
                     <th>project code</th>
+                    <th></th>
                     
                </tr>
               </thead>
@@ -134,7 +136,9 @@
               <td><%=  receipt_line&.quantity %> </td>
               <td><%=  receipt_line&.unit_of_measure&.name %> </td>
               <td><%=  receipt_line&.project&.project_code %> </td>
+              </td>
             </tr>
+
             <% end %>
             </tbody>
             </table>
