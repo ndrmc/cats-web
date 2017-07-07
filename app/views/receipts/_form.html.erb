@@ -305,6 +305,7 @@
       $("#commodity-select").change();
       $("#uom-select").val(<%= @unit_of_measure_id %>);
       get_received_qty(<%= @project_id %>);
+      
       }     
    
       
@@ -314,92 +315,11 @@
 
      
 
-      $("#add-receipt-line").click(function (e) {
-        e.preventDefault();
-
-        var $this = $(this);
-
-        var $receiptLineForm = $this.closest('tr');
-
-        var valid = true;
-
-        $receiptLineForm.find(':input').each(function () {
-          $(this).parsley().validate();
-          valid = $(this).parsley().isValid() && valid;
-        });
-
-        if (!valid) {
-          return;
-        }
-
-        current_project_id = $("#project_select").val();
-        
-
-        var $newRow = $receiptLineForm.clone();
-
-        $newRow.find('td').last().html(REMOVE_RECEIPTLINE_BTN);
-
-        $newRow.find(':input').attr('readonly', true).removeAttr('id');
-
-        $newRow.addClass('receipt-line');
-
-        $newRow.insertBefore($receiptLineForm);
-
-        $receiptLineForm.find(':input').val('');
-
-        
-      });
-
-      $('#receiptLinesTableBody').on('click', '.remove-receipt-line', function (e) {
-        $(e.target).closest('tr').fadeOut('slow', function () {
-          $(this).remove();
-        });
-      });
-
-      $('#submit-receipt-and-new').click(function (e) {
-
-        if ($('.receipt-line').length === 0) {
-          toastr.error("You need to at least add one commodity.");
-
-          e.preventDefault();
-          return;
-        }
-       
-       
-        setTimeout(function() {
-     get_received_qty(current_project_id);
-   }, 3000);
-
-        
-      });
-
-
-$('#submit-receipt').click(function (e) {
-
-        if ($('.receipt-line').length === 0) {
-          toastr.error("You need to at least add one commodity.");
-
-          e.preventDefault();
-          return;
-        }
-       
-       
-        setTimeout(function() {
-     get_received_qty(current_project_id);
-   }, 3000);
-
-        
-      });   
      
 
      
 
-$('#project_select').change(function(){
- project_id = $(this).val();
- get_received_qty(project_id);
- var element = document.getElementById("prject_code_status");
- element.style.display = 'block';
-});
+
 
       $('#hub_select').change(function(){
        
@@ -424,26 +344,12 @@ $('#project_select').change(function(){
 
     });
 
-    function get_received_qty(id)
-    {
+      $('#donor_select').change(function(){
+        var donor_id = $(this).val();
+        updateProjects(donor_id);
+      });
 
-        $.ajax( { url: '/receipts/getProjectCodeStatus/' + id,cache: false, method: 'GET'})
-            .done( function(data) {
-
-          var id = document.getElementById("project_select");
-          var text = id.options[id.selectedIndex].text
-         
-           if ($("#project_select").val()!=""){
-              document.getElementById("project_code").innerHTML=text
-           } 
-            document.getElementById("allocated").innerHTML=data.allocated
-            document.getElementById("received").innerHTML=data.received
-            document.getElementById("remaining").innerHTML= data.allocated - data.received
-            
-            });
-    }
-
-        $("#commodity-select").change(function () {
+      $("#commodity-select").change(function () {
         var categoryId = $(this).find('option:selected').data('uom-category-id');
         var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
         if ('' === categoryId)
@@ -463,23 +369,7 @@ $('#project_select').change(function(){
 
       });
       
-      $('#commodity-category-select').change(function () {
-        var val = $(this).val();
-
-        if (val === '') {
-          return;
-        }
-
-        $("#commodity-select > option").addClass('hidden');
-        $("#commodity-select > option.cc-" + val).removeClass('hidden');
-
-        $("#commodity-select > option:first").removeClass('hidden');
-
-      });
-     $('#donor_select').change(function(){
-        var donor_id = $(this).val();
-        updateProjects(donor_id);
-      });
+     
 
       updateProjects(<%=@receipt.donor_id%>);
       function updateProjects(donor_id){        
