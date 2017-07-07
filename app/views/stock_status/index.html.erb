@@ -9,38 +9,37 @@
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-      <%= form_tag( "/stock_status/index" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/stock_status/index" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>        
 
-      	<div class="form-group">
+      	<div class="form-group" style="margin-left: 20px;">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
 
           <div class="">
-            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => false , :prompt => "-- Select a Hub --", :class => 'form-control col-md-3' }  %>
           </div>
         </div>
-        <div class="form-group">
+
+        <div class="form-group" style="margin-left: 20px;">
+          <%= label_tag :warehouse, "Warehouse", { :class => ' control-label', :required => true } %>
+
+          <div class="">
+            <%= select_tag :warehouse, options_from_collection_for_select([], "id", "name", params[:warehouse]),
+              :required => false , :class => 'form-control col-md-3', :style => 'min-width: 80px',
+              "data-option-dependent" => true,
+              "data-option-observed" => "hub",
+              "data-option-url" => "/warehouses/#{:hub}.json",
+              "data-option-key-method" => :id,
+              "data-option-value-method" => :name %>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-left: 20px;">
           <%= label_tag :program, "Program", { :class => ' control-label', :required => true } %>
 
           <div class="">
-            <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => false, :prompt => "-- Select a Program --", :class => 'form-control col-md-3 ' }  %>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <%= label_tag :commodity, "Commodity", { :class => ' control-label', :required => true } %>
-
-          <div class="">
-            <%= select_tag  :commodity,  options_from_collection_for_select( Commodity.all, 'id', 'name', params[:commodity] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <%= label_tag :operation, "Operation", { :class => ' control-label', :required => true } %>
-
-          <div class="">
-            <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
-          </div>
-        </div>
+        </div>      
         
         <div class="form-group">
           <label for=""></label>
@@ -61,30 +60,18 @@
     <table class="table table-striped cats-datatable">
       <thead>
       <tr>
-            <th>Hub</th>
             <th>Commodity</th>
-            <th>Donor</th>
-            <th>Program</th>
-            <th>Expected</th>
-            <th>Received</th>
-            <th>Dispatched</th>            
-            <th>Delivered</th>
-            <th>Goods In Transit</th>
+            <th>Expected (mt)</th>
+            <th>Received (mt)</th>
       </tr>
       </thead>
 
       <tbody>      
         <% @stock_status.each do |stock| %>
             <tr>
-                <td><%= stock['hub'] %></td>
                 <td><%= stock['commodity'] %></td>
-                <td><%= stock['donor'] %></td>
-                <td><%= stock['program'] %></td>
                 <td><%= stock['expected'] %></td>
-                <td><%= stock['received'] %></td>
-                <td><%= stock['dispatched'] %></td>
-                <td><%= stock['delivered'] %></td>
-                <td><%= stock['git'] %></td>                
+                <td><%= stock['received'] %></td>        
             </tr>
         <% end %>
       </tbody>
@@ -92,3 +79,45 @@
     
   </div>
 </div>
+
+<script>
+$(document).ready(function() {
+  var observer_dom_id = $('#warehouse').attr('id');
+  var observed_dom_id = $('#warehouse').data('option-observed');
+  var url_mask = $('#warehouse').data('option-url');
+  var key_method = $('#warehouse').data('option-key-method');
+  var value_method = $('#warehouse').data('option-value-method');
+
+  // var prompt = $(this).has('option[value=]').size() ? $(this).find('option[value=]') : 
+  //               $('<option value=\"\">').text('Select a specialization');
+
+  var prompt = $('<option value=\"\">').text('Select a warehouse');
+  var regexp = /:[0-9a-zA-Z_]+:/g;
+  var observer = $('select#' + observer_dom_id);
+  var observed = $('#' + observed_dom_id);
+
+  observer.empty().append(prompt);
+  if (observed.val()) {
+    //url = url_mask.replace(regexp, observed.val());
+    url = "/warehouses/" + observed.val() + ".json";
+    $.getJSON(url, function (data) {
+      $.each(data, function (i, object) {
+        <% if( params[:warehouse].present? ) %>
+          if(object[key_method] == <%= params[:warehouse] %> )
+          {
+            observer.append($('<option>').attr('value', object[key_method]).attr('selected', 'selected')
+              .text(object[value_method]));
+          }
+          else
+          {
+            observer.append($('<option>').attr('value', object[key_method]).text(object[value_method]));
+          }
+        <% else %>
+          observer.append($('<option>').attr('value', object[key_method]).text(object[value_method]));
+        <% end %>
+        observer.removeAttr('disabled');
+      });
+    });
+  }
+});
+</script>
