@@ -53,68 +53,39 @@
         <div class="ibox-content">
           <div>
             <h3 class="font-bold no-margins">
-              Stock Status
-                            </h3>
+              <%= link_to 'Stock Status', '/stock_status/index' %>
+            </h3>
             <small>Available and free stock.</small>
           </div>
           <div class="m-t-sm">
             <div class="row">
-              <div class="col-md-8">
-                <table class="table table-hover">
+              <div class="col-md-12">
+                <table class="table table-striped cats-datatable">
                   <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Commodity</th>
-                      <th>Available (mt)</th>
-                      <th>Free (mt)</th>
-                    </tr>
+                  <tr>
+                        <th>Commodity</th>
+                        <th>Expected (mt)</th>
+                        <th>Received (mt)</th>
+                  </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Wheat</td>
-                      <td>65,230</td>
-                      <td>60,200</td>                      
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>CSB</td>
-                      <td>5,400</td>
-                      <td>4,000</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Beans</td>
-                      <td>7,000</td>
-                      <td>7,000</td>
-                    </tr>
+
+                  <tbody>      
+                    <% @stock_status.each do |stock| %>
+                        <tr>
+                            <td><%= stock['commodity'] %></td>
+                            <td><%= stock['expected'] %></td>
+                            <td><%= stock['received'] %></td>        
+                        </tr>
+                    <% end %>
                   </tbody>
                 </table>
-              </div>
-              <div class="col-md-4">
-                <ul class="stat-list m-t-lg">
-                  <li>
-                    <h2 class="no-margins">2,346</h2>
-                    <small>Reserved stock</small>
-                    <div class="progress progress-mini">
-                      <div class="progress-bar" style="width: 48%;"></div>
-                    </div>
-                  </li>
-                  <li>
-                    <h2 class="no-margins ">4,422</h2>
-                    <small>Total allocated</small>
-                    <div class="progress progress-mini">
-                      <div class="progress-bar" style="width: 60%;"></div>
-                    </div>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
           <div class="m-t-md">
             <small class="pull-right">
               <i class="fa fa-clock-o"> </i>
-              Update on 16/05/2017
+              Update on <%= DateTime.now.strftime("%d/%m/%Y") %>
               </small>
             <small>
               <strong>Note:</strong> Shown values are based on status of captured data at the hubs.

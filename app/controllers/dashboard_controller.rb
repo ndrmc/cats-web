@@ -1,5 +1,6 @@
 class DashboardController < ApplicationController
   def index
-    # check the user's organization unit (EW/Logs/Finance/)
+    @stock_status = Reports.new.stock_status_reports(params[:hub], params[:warehouse], params[:program], params[:commodity])
+  	
   end
 end

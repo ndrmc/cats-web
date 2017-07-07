@@ -15,7 +15,7 @@
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
 
           <div class="">
-            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Select Hub --", :class => 'form-control col-md-3' }  %>
+            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => false , :prompt => "-- Select a Hub --", :class => 'form-control col-md-3' }  %>
           </div>
         </div>
 
@@ -37,7 +37,7 @@
           <%= label_tag :program, "Program", { :class => ' control-label', :required => true } %>
 
           <div class="">
-            <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => false, :prompt => "-- Choose --", :class => 'form-control col-md-3 ' }  %>
+            <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => false, :prompt => "-- Select a Program --", :class => 'form-control col-md-3 ' }  %>
           </div>
         </div>      
         
@@ -97,7 +97,6 @@ $(document).ready(function() {
   var observed = $('#' + observed_dom_id);
 
   observer.empty().append(prompt);
-  alert(observed.val());
   if (observed.val()) {
     //url = url_mask.replace(regexp, observed.val());
     url = "/warehouses/" + observed.val() + ".json";
