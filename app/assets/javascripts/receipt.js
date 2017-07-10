@@ -58,7 +58,7 @@
 
         if ($('.receipt-line').length === 0) {
           toastr.error("You are required to add at least one commodity.");
-
+alert("");
           e.preventDefault();
           return;
         }

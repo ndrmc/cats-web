@@ -4,6 +4,29 @@
 <% @warehouses = Warehouse.all %>
 <div class="row">
   <div class="wrapper wrapper-content">
+
+    <div class="ibox float-e-margins">
+    
+           <div class="ibox-content">
+            Project code status for <b><div id="project_code"> </div></b>
+        
+              <table class="table">
+              <thead>
+              <th>Total</th>
+              <th>Received</th>
+              <th>Remaining</th>
+              </thead>  
+              <tbody>
+              <tr><td> <div id="allocated"> </div> </td>
+              <td>  <div id="remaining"> </div> </td>
+              <td> <div id="received"> </div> </td>
+              <td>  <div id="remaining"> </div> </td></tr>
+
+              </table>         
+          
+          </div>
+        </div>
+
     <div class="ibox float-e-margins">
       <div class="ibox-content">
 
@@ -25,29 +48,7 @@
         <% end %>
         
 
-         <div class="panel panel-info" id="prject_code_status" style="display: none">
-          <div class="panel-heading">
-            project code status for <b><div id="project_code"> </div></b>
-          </div>
-
-          <div class="panel-body">
-              <table class="table">
-              <tr>
-                <td> Total: </td>
-                <td> <div id="allocated"> </div> </td>
-              </tr>
-              <tr> 
-                <td> Received: </td>
-                <td> <div id="received"> </div> </td>
-              </tr>
-              <tr>
-                <td> Remainig: </td>
-                <td>  <div id="remaining"> </div> </td>
-              </tr>
-              </table>         
-          
-          </div>
-        </div>
+      
 
 
         <div class="form-group">
@@ -184,7 +185,7 @@
               </td>
               <td>
 
-                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' data-parsley-required %>
+                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' id='project_select' data-parsley-required %>
 
                 </select>
               </td>
