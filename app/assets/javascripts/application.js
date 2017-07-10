@@ -43,66 +43,70 @@
 //= require_tree .
 
 $(document).ready(function() {
-  /**
-   * Activates parent menu items if children are active
-   */
-  var activeLi = $('li.active');
-  activeLi.parentsUntil('nav', 'li').addClass('active');
-  activeLi.parentsUntil('nav', 'ul').removeClass('collapse');
 
-  $('.cats-datatable').DataTable({
-    info: false,
-    pageLength: 25,
-    stateSave: true
-  });
+    /**
+     * Activates parent menu items if children are active
+     */
+    var activeLi = $('li.active');
+    activeLi.parentsUntil('nav', 'li').addClass('active');
+    activeLi.parentsUntil('nav', 'ul').removeClass('collapse');
 
-  $('.cats-grouped-datatable').DataTable({
-    info: false,
-    pageLength: 25,
-    stateSave: true,
-    columnDefs: [
-            { "visible": false, "targets": $(this).attr('data_group_col_no') }
-        ],
-    order: [[ $(this).attr('data_sort_col_no'), 'asc' ]],
-    displayLength: 25,
-    drawCallback: function ( settings ) {
-        var api = this.api();
-        var rows = api.rows( {page:'current'} ).nodes();
-        var last=null;
+    $('.cats-datatable').DataTable({
+        info: false,
+        pageLength: 25,
+        stateSave: true,
+        dom: 'lfrtipB',
+        buttons: ['copy', 'csv', 'excel', 'print']
+    });
 
-        api.column($(this).attr('data_group_col_no'), {page:'current'} ).data().each( function ( group, i ) {
-            if ( last !== group ) {
-                $(rows).eq( i ).before(
-                    '<tr class="group" style="background-color:#ccc;color:#000"><td colspan="5">'+group+'</td></tr>'
-                );
+    $('.cats-grouped-datatable').DataTable({
+      info: false,
+      pageLength: 25,
+      stateSave: true,
+      columnDefs: [
+              { "visible": false, "targets": $(this).attr('data_group_col_no') }
+          ],
+      order: [[ $(this).attr('data_sort_col_no'), 'asc' ]],
+      displayLength: 25,
+      drawCallback: function ( settings ) {
+          var api = this.api();
+          var rows = api.rows( {page:'current'} ).nodes();
+          var last=null;
 
-                last = group;
-            }
-        } );
-    }
-  });
+          api.column($(this).attr('data_group_col_no'), {page:'current'} ).data().each( function ( group, i ) {
+              if ( last !== group ) {
+                  $(rows).eq( i ).before(
+                      '<tr class="group" style="background-color:#ccc;color:#000"><td colspan="5">'+group+'</td></tr>'
+                  );
 
-  $('.datepicker').datepicker({
-    format: 'dd/mm/yyyy'
-  });
+                  last = group;
+              }
+          } );
+      }
+    });
 
-  $('.custom_datepicker').calendarsPicker({
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
 
-    calendar: $.calendars.instance('ethiopian', 'am'),
-    format: 'dd/mm/yyyy',
+    $('.custom_datepicker').calendarsPicker({
 
-    onSelect: function(dateText, inst) {
+        calendar: $.calendars.instance('ethiopian', 'am'),
+        format: 'dd/mm/yyyy',
 
-      var dateAsObject = $(this).calendarsPicker('getDate');
-      var jd = dateAsObject[0].toJD();
-      var date_gc = $.calendars.instance('gregorian').fromJD(jd);
-      $(this).val(date_gc.formatDate('dd/mm/yyyy'));
+        onSelect: function(dateText, inst) {
 
-    }
-  });
+            var dateAsObject = $(this).calendarsPicker('getDate');
+            var jd = dateAsObject[0].toJD();
+            var date_gc = $.calendars.instance('gregorian').fromJD(jd);
+            $(this).val(date_gc.formatDate('dd/mm/yyyy'));
 
-  $('.cats-daterangepicker').daterangepicker({
-    format: 'dd/mm/yyyy'
-  });
+        }
+    });
+
+    $('.cats-daterangepicker').daterangepicker({
+        format: 'dd/mm/yyyy'
+    });
+
 });
 
