@@ -7,7 +7,7 @@
 
     <div class="ibox float-e-margins">
     
-           <div class="ibox-content">
+           <div class="ibox-content" id="prject_code_status" style="display: none">
             Project code status for <b><div id="project_code"> </div></b>
         
               <table class="table">
@@ -21,7 +21,7 @@
               <td>  <div id="remaining"> </div> </td>
               <td> <div id="received"> </div> </td>
               <td>  <div id="remaining"> </div> </td></tr>
-
+              </tbody>
               </table>         
           
           </div>
@@ -286,6 +286,7 @@
 
   <script type="text/javascript">
     var current_project_id;
+    var current_hub_id;
     var allUnitOfMeasures = [];
     
     var REMOVE_RECEIPTLINE_BTN = '<a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>';
@@ -294,7 +295,7 @@
 
 
     $(document).ready(function(){
-
+     
       if (<%= !@project_id.blank? %>){
       var element = document.getElementById("prject_code_status");
       element.style.display = 'block';
@@ -307,7 +308,7 @@
       $("#commodity-select").val(<%= @commodity_id %>);
       $("#commodity-select").change();
       $("#uom-select").val(<%= @unit_of_measure_id %>);
-      get_received_qty(<%= @project_id %>);
+      get_received_qty( $("#project_select").val(), $('#hub_select').val());
       
       }     
    
@@ -343,6 +344,10 @@
 
         $('#warehouse_select').html(warehouse_options);
 
+        var hub_id = $(this).val();
+        var project_id = $('#project_select').val();
+        get_received_qty(project_id,hub_id);
+        
       });
 
     });

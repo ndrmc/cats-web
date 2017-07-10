@@ -30,7 +30,7 @@ class ReceiptsController < ApplicationController
 
   def new
     authorize Receipt
- 
+   
     if params[:id] 
       @project_id = params[:id]
       @organization = Project.where(:id => params[:id])
@@ -66,13 +66,19 @@ class ReceiptsController < ApplicationController
     
       if @receipt.save
         if params[:submit_receipt_and_new]== "submit-receipt-and-new  "
+      
           format.js {}
+         
         elsif params[:submit_receipt] == "Create Receipt"
+           
            flash[:notice] = "Receipt was successfully created." 
           render :js => "window.location = '#{receipts_path}'"
+          
         end
       else
-        format.html { render :new }
+         respond_to do |format|
+            format.html { render :new }
+        end
       end
     
   end
@@ -125,7 +131,11 @@ class ReceiptsController < ApplicationController
 
   def getProjectCodeStatus
     project_quantity = Project.where(:id => params[:id]).pluck(:amount)
-    receipt_quantity = ReceiptLine.where(:project_id => params[:id]).sum(:quantity)
+    if params[:hub_id].present?
+       receipt_quantity = ReceiptLine.where(:project_id => params[:id]).joins(:receipt).where('receipts.hub_id = ?',params[:hub_id]).sum(:quantity)
+    else
+       receipt_quantity = ReceiptLine.where(:project_id => params[:id]).sum(:quantity)
+    end
 
     respond_to do |format| 
     

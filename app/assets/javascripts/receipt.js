@@ -35,7 +35,7 @@
         }
 
         current_project_id = $("#project_select").val();
-        
+        current_hub_id = $("#hub_select").val();
 
         var $newRow = $receiptLineForm.clone();
 
@@ -65,7 +65,7 @@ alert("");
        
        
         setTimeout(function() {
-     get_received_qty(current_project_id);
+     get_received_qty(current_project_id,current_hub_id);
    }, 3000);
 
         
@@ -83,7 +83,7 @@ alert("");
        
        
         setTimeout(function() {
-     get_received_qty(current_project_id);
+     get_received_qty(current_project_id,current_hub_id);
    }, 3000);
 
         
@@ -92,7 +92,8 @@ alert("");
 
     $('#project_select').change(function(){
  project_id = $(this).val();
- get_received_qty(project_id);
+ hub_id = $('#hub_select').val();
+ get_received_qty(project_id,hub_id);
  var element = document.getElementById("prject_code_status");
  element.style.display = 'block';
 });
@@ -108,10 +109,10 @@ alert("");
  }); // main function end
 
 
-        function get_received_qty(id)
+        function get_received_qty(id,hub_id)
     {
         
-        $.ajax( { url: '/receipts/getProjectCodeStatus/' + id,cache: false, method: 'GET'})
+        $.ajax( { url: '/receipts/getProjectCodeStatus/' + id + '?hub_id=' + hub_id,cache: false, method: 'GET'})
             .done( function(data) {
             
           var id = document.getElementById("project_select");
