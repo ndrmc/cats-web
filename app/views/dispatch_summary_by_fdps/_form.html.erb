@@ -1,0 +1,29 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(dispatch_summary_by_fdp) do |f| %>
+        <% if dispatch_summary_by_fdp.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(dispatch_summary_by_fdp.errors.count, "error") %> prohibited this dispatch_summary_by_fdp from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% dispatch_summary_by_fdp.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

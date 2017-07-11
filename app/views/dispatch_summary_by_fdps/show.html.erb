@@ -1,0 +1,349 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Operation -
+      <%= @operation.name %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to "Home", root_path %>
+      </li>
+      <li>
+        <%= link_to "Operation", operations_path %>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', operations_path,  :class => "btn btn-default"%>
+      <% if policy(Operation).edit? %>
+        <%= link_to 'Edit', edit_operation_path(@operation), :class => "btn btn-default" %>
+      <%end%>
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+          <% if policy(Operation).edit? %>
+          <li>
+            <a href="#">Add region</a>
+          </li>
+          <%end%>
+          <% if policy(Operation).destroy? %>
+          <li>
+            <a href="#">Delete</a>
+          </li>
+          <%end%>
+          <li>
+            <%= link_to 'Close', operations_path %>
+          </li>
+          <li class="divider"></li>
+          <% if policy(Operation).edit? %>
+          <li>
+            <a href="#">Export</a>
+          </li>
+          <%end%>
+          <% if policy(Operation).edit? %>
+          <li>
+            <a href="#">Print</a>
+          </li>
+          <%end%>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox">
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-lg-12">
+            <dl class="dl-horizontal">
+              <dt>Status:</dt>
+              <dd>
+                <span class="label label-primary"><%= @operation.status %>  </span>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-5">
+            <dl class="dl-horizontal">
+
+              <dt>Program:</dt>
+              <dd><%=Program.find(@operation.program_id).name %></dd>
+              <dt>Year:</dt>
+              <dd><%=@operation.year%></dd>
+              <dt>Month/Round:</dt>
+              <%if @operation.month%>
+                <dd>
+                  <%= Date::MONTHNAMES[@operation.month] %>
+                </dd>
+              <%else%>
+                <dd>
+                  <%= @operation.round %>
+                </dd>
+              <%end%>
+            </dl>
+          </div>
+          <div class="col-lg-7" id="cluster_info">
+            <dl class="dl-horizontal">
+
+              <dt>Number of regions:</dt>
+              <dd>7</dd>
+              <dt>Total commodities:</dt>
+              <dd>
+                34,5590 mt
+              </dd>
+              <dt>Total beneficiaries:</dt>
+              <% if @operation.hrd_id %>
+                  <dd><%= Hrd.find(@operation.hrd_id).hrd_items.sum { |i| i.beneficiary } %></dd>
+              <% end %>
+              <% if @operation.fscd_annual_plan_id %>
+                  <dd><%= PsnpPlan.find(@operation.fscd_annual_plan_id).psnp_plan_items.sum { |i| i.beneficiary } %></dd>
+              <% end %>
+
+            </dl>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <dl class="dl-horizontal">
+              <dt>Progress:</dt>
+              <dd>
+                <div class="progress progress  m-b-sm">
+                  <div style="width: 60%;" class="progress-bar"></div>
+                </div>
+                <small>Operation progress is at
+                  <strong>60%</strong>.</small>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row m-t-sm">
+          <div class="col-lg-12">
+            <div class="panel blank-panel">
+              <div class="panel-heading">
+                <div class="panel-options">
+                  <ul class="nav nav-tabs">
+                    <li class="active">
+                      <a href="#tab-1" data-toggle="tab">Request</a>
+                    </li>
+                    <li class="">
+                      <a href="#tab-2" data-toggle="tab">Allocation</a>
+                    </li>
+                    <li class="">
+                      <a href="#tab-3" data-toggle="tab">Dispatch</a>
+                    </li>
+                    <li class="">
+                      <a href="#tab-4" data-toggle="tab">Delivery</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="panel-body">
+
+                <div class="tab-content">
+                  <div class="tab-pane active" id="tab-1">
+
+                    <div>
+                      <%if(@regional_requests.empty?)%>
+                        <h2>
+                            No Requests are made for this operation<br>
+                        </h2>
+                      <%else%>
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>Region</th>
+                              <th>Status</th>
+                              <th>No of Beneficiary</th>                           
+                              <th>Requested Date</th>
+                              <th>No. of Woreda</th>
+                              <th>No. of fdps</th>                           
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% total_benficiaries = 0 %>
+                            <% @regional_requests.each do |request| %>
+                            <% regional_benficiaries =  request.regional_request_items.sum (:number_of_beneficiaries) %>
+                            <% total_benficiaries += regional_benficiaries %>
+                            <tr>
+                              <td>                             
+                                <%= link_to '/regional_requests/' + request.id.to_s  do %>
+                                    <%= request.region.name %>     
+                                <% end %>
+                              </td>
+                              <td>
+                                Status
+                              </td>
+                              <td>
+                                <%=regional_benficiaries%>                                
+                              </td>
+                              <td> <%=request.requested_date&.strftime('%d-%b-%Y') %>  </td> 
+                              <td> <%=request.regional_request_items.count %>      </td> 
+                              <td> # </td>                              
+                              
+                            </tr>
+                            <% end %>
+                            <tr>
+                            <td>Total</td>
+                            <td></td>
+                            <td><%= total_benficiaries %></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      <%end%>
+                     
+                      
+                    </div>
+
+                  </div>
+                  <div class="tab-pane" id="tab-2">
+                    <div>
+                      <%if(@requisitions_map.empty?)%>
+                        <h2>
+                            No Allocations are made for this operation<br>
+                        </h2>
+                      <%else%>
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>Region</th>
+                              <th>Status</th>
+                              <th>Progress</th>
+                            <% @commodities.each do |commodity| %>
+                              <th><%= commodity.name %></th>
+                            <%end%>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% @requisitions_map.each do |region,requisitions| %>
+                            <tr>
+                              <td>                             
+                                <a href = "#"><%= region.name %></a>
+                              </td>
+                              <td>
+                              
+                              </td>
+                              <td>
+                                
+                              </td>
+                              <% @commodities.each do |commodity| %>
+                              <td><%= requisitions[commodity.id] %></td>
+                            <%end%>
+                              
+                            </tr>
+                            <% end %>
+                            <tr>
+                            <td>Total</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      <%end%>                   
+                      
+                    </div>
+
+                  </div>
+
+                  <div class="tab-pane" id="tab-3">          
+
+                    <div class="ibox float-e-margins">
+                      <div class="ibox-content">
+
+                        <table class="table table-striped cats-grouped-datatable" data_group_col_no='0' data_sort_col_no='0'>
+                        <thead>
+                          <tr>
+                          <% @dispatch_report_cols.each do |column| %>
+                              <th><%= column %></th>
+                            <% end %>
+                          </tr>
+                        </thead>
+
+                        <tbody>      
+                        <% @dispatch_report.each do |dispatch_summary| %>
+                            <tr>
+                              <td><%= link_to dispatch_summary['location'], '/dispatch_summary_by_fdps/index?operation=' + params[:id] +';region=' + dispatch_summary['location_id'].to_s %></td>
+                              <td><%= dispatch_summary['allocated'] %></td>
+                              <td><%= 
+                                if (dispatch_summary['dispatched'].present?) 
+                                  dispatch_summary['dispatched'].to_f.round(2) 
+                                else 
+                                   0.00 
+                                end %></td>
+                              <td><%= ((dispatch_summary['dispatched'].to_f / dispatch_summary['allocated'].to_f) * 100).to_f.round(2) %>%</td>    
+                            </tr>
+                        <% end %>
+                        </tbody>
+                        </table>      
+                      </div>
+                    </div> 
+
+                  </div>
+
+                  <div class="tab-pane" id="tab-4">
+                    <div>
+                      <%if(@deliveries_map.empty?)%>
+                        <h2>
+                            No Deliveries are made for this operation<br>
+                        </h2>
+                      <%else%>
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>Region</th>
+                              <th>Status</th>
+                              <th>Progress</th>
+                            <% @commodities.each do |commodity| %>
+                              <th><%= commodity.name %></th>
+                            <%end%>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% @deliveries_map.each do |region,deliveries| %>
+                            <tr>
+                              <td>
+                                <%= link_to region, deliveries_path(:region_id => region, :operation_id => @operation.id) %>
+                              </td>
+                              <td>
+                              
+                              </td>
+                              <td>
+                                
+                              </td>
+                              <% @commodities.each do |commodity| %>
+                              <th><%= deliveries[commodity.id] %></th>
+                            <%end%>
+                              
+                            </tr>
+                            <% end %>
+                            <tr>
+                            <td>Total</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      <%end%>
+                     
+                     
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
