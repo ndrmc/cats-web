@@ -6,7 +6,7 @@ one:
     quantity: 200
     project_id: 1         
     unit_of_measure_id: 1
-    receive_id:  1        
+    # receive_id:  'test'        
     # receive_item_id:  'test'
 
    
