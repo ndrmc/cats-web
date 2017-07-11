@@ -93,6 +93,7 @@ class Reports
 				allo_op_id AS operation, SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
 		    .group('region_id, region_name, allo_op_id')
 		    .where('allo_op_id = ' + operation.to_s)
+		    .order('region_name ASC')
 			
 		end
 
@@ -102,6 +103,7 @@ class Reports
 				SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
 		    .group('zone_id, zone_name, allo_op_id, allo_req_no, commodity_name')
 		    .where('allo_op_id = ' + operation.to_s + ' AND region_id = ' + region.to_s)
+		    .order('zone_name ASC')
 		end
 
 		def dispatch_reports_by_woreda operation, zone
@@ -110,6 +112,7 @@ class Reports
 				SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
 		    .group('woreda_id, woreda_name, allo_op_id, allo_req_no, commodity_name')
 		    .where('allo_op_id = ' + operation.to_s + ' AND zone_id = ' + zone.to_s)
+		    .order('woreda_name ASC')
 		end	
 
 		def dispatch_reports_by_fdp operation, woreda
@@ -118,6 +121,7 @@ class Reports
 				SUM(allocated) AS allocated, SUM(dispatched) AS dispatched")
 		    .group('allo_fdp, fdp_name, allo_op_id, allo_req_no, commodity_name')
 		    .where('allo_op_id = ' + operation.to_s + ' AND woreda_id = ' + woreda.to_s)
+		    .order('fdp_name ASC')
 
 		end		
 

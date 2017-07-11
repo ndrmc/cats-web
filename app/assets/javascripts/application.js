@@ -58,6 +58,9 @@ $(document).ready(function() {
         buttons: ['copy', 'csv', 'excel', 'print']
     });
 
+    
+
+
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy'
     });
