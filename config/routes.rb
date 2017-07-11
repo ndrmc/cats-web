@@ -2,8 +2,10 @@ Rails.application.routes.draw do
   
   
  
-  get 'stock_status/index'
 
+
+get '/dispatch_summary_by_fdps/index'
+  get 'stock_status/index'
   get 'fdp_operation_summary/index'
 
  scope "(:locale)", locale: /en|am/ do
@@ -134,5 +136,7 @@ Rails.application.routes.draw do
   # GraphQL configuration
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/queries"
   resources :queries
+
+  
 end
 end

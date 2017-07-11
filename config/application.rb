@@ -16,6 +16,7 @@ module Cats
     config.assets.paths << Rails.root.join('node_modules')
 
     config.generators.javascript_engine :js
+    
 
     def load_console(app = self)
       super
