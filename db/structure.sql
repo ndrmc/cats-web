@@ -567,6 +567,7 @@ CREATE TABLE deliveries (
     deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    delivery_id_guid character varying,
     received_date_ec character varying
 );
 
@@ -606,7 +607,8 @@ CREATE TABLE delivery_details (
     deleted boolean DEFAULT false,
     deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    guid_ref_delivery_id character varying
 );
 
 
@@ -785,6 +787,7 @@ CREATE TABLE dispatch_items (
     deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    guid_ref character varying,
     organization_id integer,
     unit_of_measure_id integer
 );
@@ -835,8 +838,9 @@ CREATE TABLE dispatches (
     updated_at timestamp without time zone NOT NULL,
     hub_id integer,
     warehouse_id integer,
-    dispatched_date_ec character varying,
-    storekeeper_name character varying NOT NULL
+    storekeeper_name character varying(200) NOT NULL,
+    dispatch_id_guid character varying,
+    dispatched_date_ec character varying
 );
 
 
@@ -1970,6 +1974,10 @@ CREATE TABLE projects (
     deleted_at timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
+    old_id integer,
+    reference_no character varying,
+    si_id integer,
+    si_value text,
     draft boolean DEFAULT false,
     archived boolean,
     commodity_categories_id integer
@@ -2206,7 +2214,9 @@ CREATE TABLE receipt_lines (
     deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    unit_of_measure_id integer
+    unit_of_measure_id integer,
+    receive_id character varying(36) NOT NULL,
+    receive_item_id character varying(36) NOT NULL
 );
 
 
@@ -2227,6 +2237,31 @@ CREATE SEQUENCE receipt_lines_id_seq
 --
 
 ALTER SEQUENCE receipt_lines_id_seq OWNED BY receipt_lines.id;
+
+
+--
+-- Name: receipt_lines_temp; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE receipt_lines_temp (
+    id integer NOT NULL,
+    receipt_id integer,
+    commodity_category_id integer,
+    commodity_id integer,
+    quantity numeric,
+    project_id integer,
+    created_by integer,
+    modified_by integer,
+    deleted boolean DEFAULT false,
+    deleted_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    unit_of_measure_id integer,
+    receive_id character varying(36) NOT NULL,
+    receive_item_id character varying(36) NOT NULL,
+    project_name character varying,
+    si_value character varying
+);
 
 
 --
@@ -2264,6 +2299,7 @@ CREATE TABLE receipts (
     deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    receiveid character varying(36) NOT NULL,
     received_date_ec character varying,
     donor_id integer
 );
@@ -4121,6 +4157,14 @@ ALTER TABLE ONLY receipt_lines
 
 
 --
+-- Name: receipt_lines_temp_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY receipt_lines_temp
+    ADD CONSTRAINT receipt_lines_temp_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: receipts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4447,13 +4491,6 @@ CREATE UNIQUE INDEX index_currencies_on_name ON currencies USING btree (name);
 
 
 --
--- Name: index_deliveries_on_gin_number; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_deliveries_on_gin_number ON deliveries USING btree (gin_number);
-
-
---
 -- Name: index_deliveries_on_receiving_number; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4647,6 +4684,13 @@ CREATE INDEX index_hrd_items_on_deleted_at ON hrd_items USING btree (deleted_at)
 --
 
 CREATE INDEX index_hrds_on_deleted_at ON hrds USING btree (deleted_at);
+
+
+--
+-- Name: index_hrds_on_year_gc_and_season_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_hrds_on_year_gc_and_season_id ON hrds USING btree (year_gc, season_id);
 
 
 --
@@ -5351,6 +5395,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170222183759'),
 ('20170222184133'),
 ('20170223053930'),
+('20170223125715'),
+('20170223170712'),
 ('20170226064916'),
 ('20170226153058'),
 ('20170301145258'),
@@ -5409,6 +5455,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170613124910'),
 ('20170616084451'),
 ('20170616084718'),
+('20170704130414'),
 ('20170705125617'),
 ('20170711001137');
 
