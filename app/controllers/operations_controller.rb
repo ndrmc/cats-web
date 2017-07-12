@@ -77,6 +77,10 @@ class OperationsController < ApplicationController
       @dispatches_map[region] = @dispatch_summary_region
     end
 
+    @operation_name = @operation.name
+    @dispatch_report_cols = [ 'Region', 'Allocated', 'Dispatched', 'Progress' ]
+    @dispatch_report = Reports.new.dispatch_reports_by_region @operation.id
+
      # Find all regioal requests within current operation
     @regional_requests = RegionalRequest.where(operation_id: params[:id]).includes(:regional_request_items)
 
