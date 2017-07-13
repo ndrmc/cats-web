@@ -130,17 +130,36 @@ class ReceiptsController < ApplicationController
   end
 
   def getProjectCodeStatus
-    project_quantity = Project.where(:id => params[:id]).pluck(:amount)
+        receipt_quantity = 0
+        project = Project.find(params[:id]);
+         if project.amount.blank?
+           project_quantity = 0
+         else
+           project_quantity = UnitOfMeasure.find(project.unit_of_measure_id).to_ref(project.amount)
+         end
     if params[:hub_id].present?
-       receipt_quantity = ReceiptLine.where(:project_id => params[:id]).joins(:receipt).where('receipts.hub_id = ?',params[:hub_id]).sum(:quantity)
+       receipt_lines = ReceiptLine.where(:project_id => params[:id]).joins(:receipt).where('receipts.hub_id = ?',params[:hub_id]);
+          receipt_lines.each do |receipt_line|
+            if !receipt_line.quantity.blank?
+               receipt_quantity  += UnitOfMeasure.find(receipt_line.unit_of_measure_id).to_ref(receipt_line.quantity)
+            end
+       end
     else
-       receipt_quantity = ReceiptLine.where(:project_id => params[:id]).sum(:quantity)
+       receipt_lines = ReceiptLine.where(:project_id => params[:id]);
+       receipt_lines.each do |receipt_line|
+    
+         if !receipt_line.quantity.blank?
+           receipt_quantity +=  UnitOfMeasure.find(receipt_line.unit_of_measure_id).to_ref(receipt_line.quantity)
+         end
+       end
+       
     end
-
+   
+    puts receipt_quantity
     respond_to do |format| 
     
          format.json{
-          render :json => {
+         render :json => {
         :allocated => project_quantity,
         :received => receipt_quantity
       }

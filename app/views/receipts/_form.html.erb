@@ -2,6 +2,7 @@
 <% @projects = Project.where('archived = ? OR archived IS NULL',false)%>
 <% @uoms = UnitOfMeasure.all%>
 <% @warehouses = Warehouse.all %>
+<%= @reference_unit =  UnitOfMeasure.find_by(:uom_type => UnitOfMeasure.uom_types[:ref]).name %>
 <div class="row">
   <div class="wrapper wrapper-content">
 
@@ -9,16 +10,16 @@
     
            <div class="ibox-content" id="prject_code_status" style="display: none">
             Project code status for <b><div id="project_code"> </div></b>
-        
+
               <table class="table">
               <thead>
-              <th>Total</th>
-              <th>Received</th>
-              <th>Remaining</th>
+              <th>Total in <%=@reference_unit%></th>
+              <th>Received in <%=@reference_unit%></th>
+              <th>Remaining in <%=@reference_unit%></th>
               </thead>  
               <tbody>
-              <tr><td> <div id="allocated"> </div> </td>
-              <td>  <div id="remaining"> </div> </td>
+              <tr>
+              <td> <div id="allocated"> </div> </td>
               <td> <div id="received"> </div> </td>
               <td>  <div id="remaining"> </div> </td></tr>
               </tbody>
