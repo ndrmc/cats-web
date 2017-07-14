@@ -415,8 +415,10 @@ ActiveRecord::Schema.define(version: 20170713083617) do
     t.decimal  "dispatched_in_mt"
     t.decimal  "delivered_in_mt"
     t.decimal  "distributed_in_mt"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.boolean  "deleted",           default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.index ["commodity_id"], name: "index_fdp_operations_logs_on_commodity_id", using: :btree
     t.index ["fdp_id"], name: "index_fdp_operations_logs_on_fdp_id", using: :btree
     t.index ["location_id"], name: "index_fdp_operations_logs_on_location_id", using: :btree
@@ -901,6 +903,7 @@ ActiveRecord::Schema.define(version: 20170713083617) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -911,7 +914,6 @@ ActiveRecord::Schema.define(version: 20170713083617) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
-    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
