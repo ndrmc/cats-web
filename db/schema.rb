@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170705125617) do
+ActiveRecord::Schema.define(version: 20170713083617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -403,6 +403,25 @@ ActiveRecord::Schema.define(version: 20170705125617) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_fdp_contacts_on_deleted_at", using: :btree
+  end
+
+  create_table "fdp_operations_logs", force: :cascade do |t|
+    t.integer  "operation_id"
+    t.integer  "fdp_id"
+    t.integer  "location_id"
+    t.integer  "requisition_id"
+    t.integer  "commodity_id"
+    t.decimal  "allocated_in_mt"
+    t.decimal  "dispatched_in_mt"
+    t.decimal  "delivered_in_mt"
+    t.decimal  "distributed_in_mt"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["commodity_id"], name: "index_fdp_operations_logs_on_commodity_id", using: :btree
+    t.index ["fdp_id"], name: "index_fdp_operations_logs_on_fdp_id", using: :btree
+    t.index ["location_id"], name: "index_fdp_operations_logs_on_location_id", using: :btree
+    t.index ["operation_id"], name: "index_fdp_operations_logs_on_operation_id", using: :btree
+    t.index ["requisition_id"], name: "index_fdp_operations_logs_on_requisition_id", using: :btree
   end
 
   create_table "fdps", force: :cascade do |t|
