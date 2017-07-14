@@ -20,7 +20,10 @@ class CreateFdpOperationsLogs < ActiveRecord::Migration[5.0]
 
     	t.decimal :distributed_in_mt
 
-      	t.timestamps
+      t.boolean :deleted, :default => false
+      t.datetime :deleted_at
+
+    	t.timestamps
     end
   end
 end
