@@ -2,7 +2,7 @@
 <% @projects = Project.where('archived = ? OR archived IS NULL',false)%>
 <% @uoms = UnitOfMeasure.all%>
 <% @warehouses = Warehouse.all %>
-<%= @reference_unit =  UnitOfMeasure.find_by(:uom_type => UnitOfMeasure.uom_types[:ref]).name %>
+<% @reference_unit =  UnitOfMeasure.find_by(:uom_type => UnitOfMeasure.uom_types[:ref]).name %>
 <div class="row">
   <div class="wrapper wrapper-content">
 
