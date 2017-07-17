@@ -83,12 +83,15 @@
   </div>
 </div>
 
+
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table class="table table-striped cats-datatable">
+    <table   id="example" class="table">
       <thead>
       <tr>
+            <th></th>
+            <th></th>
             <th>GRN Number</th>
             <th>Received Date</th>
             <th>Status</th>
@@ -102,7 +105,9 @@
       <% can_edit = policy(Receipt).edit? %>
       
         <% @receipts.each do |receipt| %>
-            <tr>
+            <tr id = <%= receipt.id %>">
+                <td class="details-control"></td>
+                <td> <%= receipt.id %></td>
                 <td><%= receipt.grn_no %></td>
                 <td><%= receipt.received_date ? receipt.received_date.strftime('%d/%m/%Y') : '-' %></td>
                 <td><%= receipt.draft ? "Draft" : "Posted" %></td>
@@ -114,40 +119,16 @@
                 <%end%>                
                 </td>
             </tr>
-            <tr>
-            <td colspan="4">
-             <table class="table" style="margin-left: 40px;">
-              <thead>
-                <tr>
-                    <th>Commodity</th>
-                    <th>Quantity</th>
-                    <th>unit</th>
-                    <th>project code</th>
-                    <th></th>
-                    
-               </tr>
-              </thead>
-              <tbody>
-            </tr>
-            <% receipt.receipt_lines.each do |receipt_line| %>
-            <tr>
-             
-              <td><%=  receipt_line&.commodity&.name %> </td>
-              <td><%=  receipt_line&.quantity %> </td>
-              <td><%=  receipt_line&.unit_of_measure&.name %> </td>
-              <td><%=  receipt_line&.project&.project_code %> </td>
-              </td>
-            </tr>
-
-            <% end %>
-            </tbody>
-            </table>
+          
         <% end %>
       </tbody>
     </table>        
     
   </div>
 </div>
+
+
+
 
 <script type="text/javascript">
   $( function() { 
@@ -164,5 +145,59 @@
       }
     ); 
   });
+
+$(document).ready(function () {
+    var table = $('#example').DataTable({
+      "columnDefs": [
+            {
+                "targets": [ 1 ],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+    });
+
+    // Add event listener for opening and closing details
+    $('#example').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+         var data = table.row( $(this).parents('tr') ).data();
+         
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        } else {
+            // Open this row
+             format(row.child,  data[1]);
+            tr.addClass('shown');
+        }
+    });
+
+    function format(callback, id) {
+        $.ajax({
+        type: 'GET',
+        url:'/receipts/return_receipt_detail/' + id,
+        dataType: "json",
+        success: function (data) {
+          
+                var thead = '',  tbody = '';
+                thead += '<thead><th>' + 'Commodity' + '</th>';
+                thead += '<th>' + 'Project code' + '</th>';
+                thead += '<th>' + 'Unit of Measurement' + '</th>';
+                thead += '<th>' + 'Quantity' + '</th></thead>';
+                $.each(data, function (i, d) {
+                    tbody += '<tbody><tr><td>' + d.commodity.name + '</td><td>' + d.project.project_code  + '</td>';
+                    tbody += '<td>' + d.unit_of_measure.name  + '</td><td>' + d.quantity + '</td></tr></tbody>';
+                });
+         
+            callback($('<table class="table">' + thead + tbody + '</table>')).show();
+        },
+        error: function () {
+            $('#output').html('there was an error!');
+        }
+    });
+    }
+});
 
 </script>
