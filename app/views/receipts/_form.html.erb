@@ -1,9 +1,33 @@
-<%= form_for(receipt, :html=> {:id => 'receipt-form'} ) do |f| %>
+<%= form_for(receipt, :html=> {:id => 'receipt-form' , :remote => true }) do |f| %>
 <% @projects = Project.where('archived = ? OR archived IS NULL',false)%>
 <% @uoms = UnitOfMeasure.all%>
 <% @warehouses = Warehouse.all %>
+<% @reference_unit =  UnitOfMeasure.find_by(:uom_type => UnitOfMeasure.uom_types[:ref]).name %>
 <div class="row">
   <div class="wrapper wrapper-content">
+
+    <div class="ibox float-e-margins">
+    
+           <div class="ibox-content" id="prject_code_status" style="display: none">
+            Project code status for <b><div id="project_code"> </div></b>
+
+              <table class="table">
+              <thead>
+              <th>Total in <%=@reference_unit%></th>
+              <th>Received in <%=@reference_unit%></th>
+              <th>Remaining in <%=@reference_unit%></th>
+              </thead>  
+              <tbody>
+              <tr>
+              <td> <div id="allocated"> </div> </td>
+              <td> <div id="received"> </div> </td>
+              <td>  <div id="remaining"> </div> </td></tr>
+              </tbody>
+              </table>         
+          
+          </div>
+        </div>
+
     <div class="ibox float-e-margins">
       <div class="ibox-content">
 
@@ -23,6 +47,10 @@
           </div>
         </div>
         <% end %>
+        
+
+      
+
 
         <div class="form-group">
           <%= f.label :grn_no, "GRN Number" %>
@@ -81,7 +109,7 @@
 
     <div class="ibox float-e-margins">
       <div class="ibox-content">
-        <table class="table">
+        <table class="table" id="table_id">
           <thead>
             <tr>
               <th>Commodity Category</th>
@@ -157,7 +185,9 @@
                 <input name="receipt[receipt_lines[][quantity]]" type="number" step="any" class="form-control" data-parsley-required/>
               </td>
               <td>
-                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' data-parsley-required %>
+
+                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' id='project_select' data-parsley-required %>
+
                 </select>
               </td>
               <td>
@@ -241,8 +271,14 @@
         </div>
 
         <div class="actions">
-          <%= f.submit :class => 'btn btn-primary', :id => 'submit-receipt' %>
+          <% if !@edit %>
+            <%= f.submit "Create and add Another", :class => 'btn btn-primary', :id => 'submit-receipt-and-new',:name => 'submit_receipt_and_new'%> 
+          <%end%>
+            <%= f.submit :class => 'btn btn-primary', :id => 'submit-receipt', :name => 'submit_receipt'  %>
         </div>
+
+         
+
       </div>
     </div>
 
@@ -250,121 +286,45 @@
   <% end %>
 
   <script type="text/javascript">
-
+    var current_project_id;
+    var current_hub_id;
     var allUnitOfMeasures = [];
     
     var REMOVE_RECEIPTLINE_BTN = '<a href="#" class="remove-receipt-line"><i class="fa fa-times"></i></a>';
 
     var EMPTY_OPTION = '<option value="">-- Choose --</option>';
 
+
+    $(document).ready(function(){
+     
+      if (<%= !@project_id.blank? %>){
+      var element = document.getElementById("prject_code_status");
+      element.style.display = 'block';
+      $("#donor_select").val(<%= @organization_id %>);
+      $("#donor_select").change();
+      $("#project_select").val(<%= @project_id %>);
+     
+      $("#commodity-category-select").val(<%= @commodity_category_id %>);
+      $("#commodity-category-select").change();
+      $("#commodity-select").val(<%= @commodity_id %>);
+      $("#commodity-select").change();
+      $("#uom-select").val(<%= @unit_of_measure_id %>);
+      get_received_qty( $("#project_select").val(), $('#hub_select').val());
+      
+      }     
+   
+      
+    });
+
     $(function () {
 
-      $("#commodity-select").change(function () {
-        var categoryId = $(this).find('option:selected').data('uom-category-id');
-        var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
-        if ('' === categoryId)
-          return;
+     
 
-        var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
-          return elem.uom_category_id == categoryId
-        });
+     
 
-        var options = $.map(unitOfMeasuresInCategory, function (val) {
-          return '<option value="' + val.id + '">' + val.name + '</option>';
-        });
+     
 
-        options.unshift(EMPTY_OPTION);
 
-        $('#uom-select').html(options);
-
-      });
-
-      $("#add-receipt-line").click(function (e) {
-        e.preventDefault();
-
-        var $this = $(this);
-
-        var $receiptLineForm = $this.closest('tr');
-
-        var valid = true;
-
-        $receiptLineForm.find(':input').each(function () {
-          $(this).parsley().validate();
-          valid = $(this).parsley().isValid() && valid;
-        });
-
-        if (!valid) {
-          return;
-        }
-
-        var $newRow = $receiptLineForm.clone();
-
-        $newRow.find('td').last().html(REMOVE_RECEIPTLINE_BTN);
-
-        $newRow.find(':input').attr('readonly', true).removeAttr('id');
-
-        $newRow.addClass('receipt-line');
-
-        $newRow.insertBefore($receiptLineForm);
-
-        $receiptLineForm.find(':input').val('');
-      });
-
-      $('#receiptLinesTableBody').on('click', '.remove-receipt-line', function (e) {
-        $(e.target).closest('tr').fadeOut('slow', function () {
-          $(this).remove();
-        });
-      });
-
-      $('#submit-receipt').click(function (e) {
-
-        if ($('.receipt-line').length === 0) {
-          toastr.error("You need to atleast add one commodity.");
-
-          e.preventDefault();
-          return;
-        }
-
-      });
-
-      $('#commodity-category-select').change(function () {
-        var val = $(this).val();
-
-        if (val === '') {
-          return;
-        }
-
-        $("#commodity-select > option").addClass('hidden');
-        $("#commodity-select > option.cc-" + val).removeClass('hidden');
-
-        $("#commodity-select > option:first").removeClass('hidden');
-
-      });
-
-      
-      updateProjects(<%=@receipt.donor_id%>);
-      function updateProjects(donor_id){        
-        if (donor_id === '')
-          return;
-        var allProjects = <%= @projects.to_json.html_safe %>
-      
-        var projects_by_donor = $.grep(allProjects, function (elem) {
-          return elem.organization_id == donor_id
-        });
-
-        var proj_options = $.map(projects_by_donor, function (val) {
-          return '<option value="' + val.id + '">' + val.project_code + '</option>';
-        });
-
-        proj_options.unshift(EMPTY_OPTION);
-
-        $('.project_select').html(proj_options);
-      }
-
-      $('#donor_select').change(function(){
-        var donor_id = $(this).val();
-        updateProjects(donor_id);
-      });
 
       $('#hub_select').change(function(){
        
@@ -385,7 +345,59 @@
 
         $('#warehouse_select').html(warehouse_options);
 
+        var hub_id = $(this).val();
+        var project_id = $('#project_select').val();
+        get_received_qty(project_id,hub_id);
+        
       });
 
     });
+
+      $('#donor_select').change(function(){
+        var donor_id = $(this).val();
+        updateProjects(donor_id);
+      });
+
+      $("#commodity-select").change(function () {
+        var categoryId = $(this).find('option:selected').data('uom-category-id');
+        var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
+        if ('' === categoryId)
+          return;
+
+        var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+          return elem.uom_category_id == categoryId
+        });
+
+        var options = $.map(unitOfMeasuresInCategory, function (val) {
+          return '<option value="' + val.id + '">' + val.name + '</option>';
+        });
+
+        options.unshift(EMPTY_OPTION);
+
+        $('#uom-select').html(options);
+
+      });
+      
+     
+
+      updateProjects(<%=@receipt.donor_id%>);
+      function updateProjects(donor_id){        
+        if (donor_id === '')
+          return;
+        var allProjects = <%= @projects.to_json.html_safe %>
+      
+        var projects_by_donor = $.grep(allProjects, function (elem) {
+          return elem.organization_id == donor_id
+        });
+
+        var proj_options = $.map(projects_by_donor, function (val) {
+          return '<option value="' + val.id + '">' + val.project_code + '</option>';
+        });
+
+        proj_options.unshift(EMPTY_OPTION);
+
+        $('.project_select').html(proj_options);
+      }
+
+
   </script>
