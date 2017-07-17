@@ -148,7 +148,12 @@
 
 $(document).ready(function () {
     var table = $('#example').DataTable({
-      "columnDefs": [
+      info: false,
+        pageLength: 25,
+        stateSave: true,
+        dom: 'lfrtipB',
+        buttons: ['copy', 'csv', 'excel', 'print'],
+              "columnDefs": [
             {
                 "targets": [ 1 ],
                 "visible": false,
