@@ -24,6 +24,7 @@
 class Delivery < ApplicationRecord
 include Filterable
   include Postable
+  include OperationLoggable
 
   
   #scope :fdp_id, ->(fdp_id) { where fdp_id: fdp_id }
@@ -37,7 +38,7 @@ include Filterable
   validates :receiving_number, uniqueness: true
   #validates :gin_number, uniqueness: true
 
-  after_save :pre_post
+  after_save :pre_post, :create_log_callback
 
   after_update :reverse
 

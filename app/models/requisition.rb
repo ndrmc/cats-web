@@ -22,6 +22,7 @@
 
 class Requisition < ApplicationRecord
    include Filterable
+   include OperationLoggable
  
   scope :operation, ->(operation) { where operation_id: operation }
   scope :status, ->(status) { where status: status }  
@@ -30,6 +31,8 @@ class Requisition < ApplicationRecord
   enum status: [:draft, :approved, :ongoing, :completed, :archived]
   belongs_to :operation
   has_many :requisition_items
+
+  after_save :create_log_callback
 
   def region
     Location.find_by id: self.region_id
