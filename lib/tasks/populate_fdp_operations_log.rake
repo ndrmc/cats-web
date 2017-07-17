@@ -44,10 +44,18 @@ namespace :cats do
 
 		puts "Populate FdpOperationsLog with dispatch data..."
 
-		Dispatch.joins("LEFT JOIN dispatch_items d_items ON d_items.dispatch_id = dispatches.id LEFT JOIN requisitions ON requisitions.requisition_no = dispatches.requisition_number LEFT JOIN commodities ON d_items.commodity_id = commodities.id LEFT JOIN fdps ON dispatches.fdp_id = fdps.id LEFT JOIN locations woreda ON fdps.location_id = woreda.id").select("dispatches.id, requisitions.id AS requisition_id, d_items.quantity AS dispatched, dispatches.fdp_id, dispatches.operation_id, d_items.commodity_id, commodities.name AS commodity_name, dispatches.requisition_number, d_items.id, d_items.unit_of_measure_id, woreda.id AS location_id")
+		Dispatch.joins("LEFT JOIN dispatch_items d_items ON d_items.dispatch_id = dispatches.id 
+			LEFT JOIN requisitions ON requisitions.requisition_no = dispatches.requisition_number 
+			LEFT JOIN commodities ON d_items.commodity_id = commodities.id LEFT JOIN fdps ON 
+			dispatches.fdp_id = fdps.id LEFT JOIN locations woreda ON fdps.location_id = woreda.id")
+		.select("dispatches.id, requisitions.id AS requisition_id, d_items.quantity AS dispatched, 
+			dispatches.fdp_id AS d_fdp_id, dispatches.operation_id AS d_op_id, d_items.commodity_id AS d_commodity_id, commodities.name AS commodity_name, 
+			dispatches.requisition_number, d_items.id, d_items.unit_of_measure_id, woreda.id AS location_id,
+			requisitions.operation_id AS req_op_id")
+		.where("dispatches.operation_id IS NOT NULL and requisitions.id IS NOT NULL")
 			.find_each do |dispatch_obj|
 				@amount_in_ref = UnitOfMeasure.find(dispatch_obj.unit_of_measure_id).to_ref(dispatch_obj.dispatched)
-		  		@disp_log = FdpOperationsLog.where("operation_id = ? AND fdp_id = ? AND requisition_id = ? AND commodity_id = ?", dispatch_obj.operation_id, dispatch_obj.fdp_id, dispatch_obj.requisition_id, dispatch_obj.commodity_id).first
+		  		@disp_log = FdpOperationsLog.where("operation_id = ? AND fdp_id = ? AND requisition_id = ? AND commodity_id = ?", dispatch_obj.d_op_id, dispatch_obj.d_fdp_id, dispatch_obj.requisition_id, dispatch_obj.d_commodity_id).first
 		  		if( @disp_log.present? )
 		  			if ( ! @disp_log.dispatched_in_mt.blank? )
 			  			@disp_log.dispatched_in_mt += @amount_in_ref
@@ -58,18 +66,14 @@ namespace :cats do
 			  		puts "Duplicate dispatch found. - NORMAL"
 		  		else
 	  				fdp_op_log = FdpOperationsLog.new
-	  				if( ! dispatch_obj.operation_id.blank? )
-	  					fdp_op_log.operation_id = dispatch_obj.operation_id
-	  				else
-	  					fdp_op_log.operation_id = 0
-	  				end
-	  				fdp_op_log.fdp_id = dispatch_obj.fdp_id
+	  				fdp_op_log.operation_id = dispatch_obj.d_op_id
+	  				fdp_op_log.fdp_id = dispatch_obj.d_fdp_id
 	  				fdp_op_log.location_id = dispatch_obj.location_id
 	  				fdp_op_log.requisition_id = dispatch_obj.requisition_id
-	  				fdp_op_log.commodity_id = dispatch_obj.commodity_id
+	  				fdp_op_log.commodity_id = dispatch_obj.d_commodity_id
 	  				fdp_op_log.dispatched_in_mt = @amount_in_ref
 	  				fdp_op_log.save
-	  				puts "Created Dispatch Log: operation_id: #{dispatch_obj.operation_id}, fdp_id: #{dispatch_obj.fdp_id}, commodity_id: #{dispatch_obj.commodity_id}, requisition_id: #{dispatch_obj.requisition_id}, dispatched: #{@amount_in_ref}"
+	  				puts "Created Dispatch Log: operation_id: #{dispatch_obj.d_op_id}, fdp_id: #{dispatch_obj.d_fdp_id}, commodity_id: #{dispatch_obj.d_commodity_id}, requisition_id: #{dispatch_obj.requisition_id}, dispatched: #{@amount_in_ref}"
 	  			end
 			end
 		puts "Populating dispatch data is now successfully completed."
@@ -104,7 +108,8 @@ namespace :cats do
 	  				puts "Created Delivery Log: operation_id: #{delivery.operation_id}, fdp_id: #{delivery.fdp_id}, commodity_id: #{delivery.commodity_id}, requisition_id: #{delivery.requisition_id}, delivered: #{@amount_in_ref}"
 	  			end
 			end
-		end
-		puts "Populating delivery data is now successfully completed."
+			puts "Populating delivery data is now successfully completed."
+		end		
 	end
 end
+
