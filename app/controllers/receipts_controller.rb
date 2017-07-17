@@ -30,6 +30,16 @@ class ReceiptsController < ApplicationController
 
   def new
     authorize Receipt
+   
+    if params[:id] 
+      @project_id = params[:id]
+      @organization = Project.where(:id => params[:id])
+      @organization_id = @organization.pluck(:organization_id)
+      @commodity_id =  @organization.pluck(:commodity_id)
+      @commodity_category_id = Commodity.where(:id => @commodity_id).pluck(:commodity_category_id)
+      @unit_of_measure_id =  @organization.pluck(:unit_of_measure_id)
+    end
+    
     @receipt = Receipt.new
     @receipt.commodity_source_id = 1
   end
@@ -51,18 +61,33 @@ class ReceiptsController < ApplicationController
       rl.receive_id = "N/A" # to be removed: field included for data import purposes only
       rl.receive_item_id = "N/A" # to be removed: field included for data import purposes only
     end
-    respond_to do |format|
+
+
+    
       if @receipt.save
-        format.html { redirect_to receipts_path, success: 'Receipt was successfully created.' }
+        if params[:submit_receipt_and_new]== "submit-receipt-and-new  "
+      
+          format.js {}
+         
+        elsif params[:submit_receipt] == "Create Receipt"
+           
+           flash[:notice] = "Receipt was successfully created." 
+          render :js => "window.location = '#{receipts_path}'"
+          
+        end
       else
-        format.html { render :new }
+         respond_to do |format|
+            format.html { render :new }
+        end
       end
-    end
+    
   end
 
   def edit
     authorize Receipt
     @receipt = Receipt.find(params[:id])
+    @project_id = @receipt.receipt_lines.pluck(:project_id)
+    @edit = true
   end
 
   def update
@@ -95,9 +120,8 @@ class ReceiptsController < ApplicationController
    
     
     if @receipt.update( receipt_map )
-      respond_to do |format|
-        format.html { redirect_to receipts_path, notice: 'Receipt was successfully updated.' }
-      end
+           flash[:notice] = "Receipt was successfully updated." 
+           render :js => "window.location = '#{receipts_path}'"
     else
       respond_to do |format|
         format.html { render :edit }
@@ -105,6 +129,44 @@ class ReceiptsController < ApplicationController
     end
   end
 
+  def getProjectCodeStatus
+        receipt_quantity = 0
+        project = Project.find(params[:id]);
+         if project.amount.blank?
+           project_quantity = 0
+         else
+           project_quantity = UnitOfMeasure.find(project.unit_of_measure_id).to_ref(project.amount)
+         end
+    if params[:hub_id].present?
+       receipt_lines = ReceiptLine.where(:project_id => params[:id]).joins(:receipt).where('receipts.hub_id = ?',params[:hub_id]);
+          receipt_lines.each do |receipt_line|
+            if !receipt_line.quantity.blank?
+               receipt_quantity  += UnitOfMeasure.find(receipt_line.unit_of_measure_id).to_ref(receipt_line.quantity)
+            end
+       end
+    else
+       receipt_lines = ReceiptLine.where(:project_id => params[:id]);
+       receipt_lines.each do |receipt_line|
+    
+         if !receipt_line.quantity.blank?
+           receipt_quantity +=  UnitOfMeasure.find(receipt_line.unit_of_measure_id).to_ref(receipt_line.quantity)
+         end
+       end
+       
+    end
+   
+    puts receipt_quantity
+    respond_to do |format| 
+    
+         format.json{
+         render :json => {
+        :allocated => project_quantity,
+        :received => receipt_quantity
+      }
+    }
+    end
+  end
+  
   private
 
   def receipt_params

@@ -89,7 +89,7 @@
 
                   <% if !project.archived  %>
                      <%= link_to 'Edit', edit_project_path(project) %>
-                         
+                     <%= link_to 'Receive',"receipts/new/#{project.id}"  %> 
                     <%= link_to "projects/#{project.id}/archive"  , method: :post, :class => "btn btn-danger btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
                             <i class="fa fa-archive"></i>   
                         Archive     
@@ -101,6 +101,7 @@
                     <% end %>
                   <% end %>
 
+                  
                  <%end%>  
                 
               </td>
