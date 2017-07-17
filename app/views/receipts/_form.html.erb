@@ -347,7 +347,9 @@
 
        
         var project_id = $('#project_select').val();
-      
+        if (hub_id && project_id){
+            get_received_qty(project_id, hub_id);
+        }
         
       });
 
