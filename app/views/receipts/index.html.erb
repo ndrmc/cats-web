@@ -87,7 +87,7 @@
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table   id="example" class="table">
+    <table   id="receipt_tbl" class="table">
       <thead>
       <tr>
             <th></th>
@@ -147,7 +147,7 @@
   });
 
 $(document).ready(function () {
-    var table = $('#example').DataTable({
+    var table = $('#receipt_tbl').DataTable({
       info: false,
         pageLength: 25,
         stateSave: true,
@@ -163,7 +163,7 @@ $(document).ready(function () {
     });
 
     // Add event listener for opening and closing details
-    $('#example').on('click', 'td.details-control', function () {
+    $('#receipt_tbl').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
          var data = table.row( $(this).parents('tr') ).data();
