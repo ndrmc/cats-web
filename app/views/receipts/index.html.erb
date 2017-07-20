@@ -87,10 +87,9 @@
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table   id="receipt_tbl" class="table">
+    <table   id="receipt_tbl" class="table cats-datatable">
       <thead>
       <tr>
-            <th></th>
             <th></th>
             <th>GRN Number</th>
             <th>Received Date</th>
@@ -105,9 +104,8 @@
       <% can_edit = policy(Receipt).edit? %>
       
         <% @receipts.each do |receipt| %>
-            <tr id = <%= receipt.id %>">
+            <tr id = "<%= receipt.id %>">
                 <td class="details-control"></td>
-                <td> <%= receipt.id %></td>
                 <td><%= receipt.grn_no %></td>
                 <td><%= receipt.received_date ? receipt.received_date.strftime('%d/%m/%Y') : '-' %></td>
                 <td><%= receipt.draft ? "Draft" : "Posted" %></td>
@@ -147,26 +145,14 @@
   });
 
 $(document).ready(function () {
-    var table = $('#receipt_tbl').DataTable({
-      info: false,
-        pageLength: 25,
-        stateSave: true,
-        dom: 'lfrtipB',
-        buttons: ['copy', 'csv', 'excel', 'print'],
-              "columnDefs": [
-            {
-                "targets": [ 1 ],
-                "visible": false,
-                "searchable": false
-            }
-        ]
-    });
+    var table = $('#receipt_tbl').DataTable();
 
     // Add event listener for opening and closing details
     $('#receipt_tbl').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
+        var id = $(this).closest('tr').attr('id')
         var row = table.row(tr);
-         var data = table.row( $(this).parents('tr') ).data();
+      
          
         if (row.child.isShown()) {
             // This row is already open - close it
@@ -174,7 +160,7 @@ $(document).ready(function () {
             tr.removeClass('shown');
         } else {
             // Open this row
-             format(row.child,  data[1]);
+             format(row.child,  id);
             tr.addClass('shown');
         }
     });
