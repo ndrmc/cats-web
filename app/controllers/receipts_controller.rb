@@ -1,5 +1,6 @@
 class ReceiptsController < ApplicationController
   before_action :authenticate_user!
+ 
   def index
     authorize Receipt
     if params[:find].present?
@@ -20,7 +21,7 @@ class ReceiptsController < ApplicationController
         filter_map[:draft ] = params[:status ] == 'Draft'
       end
 
-      @receipts = Receipt.joins( :receipt_lines ).where( filter_map ).distinct
+      @receipts = Receipt.includes(:receipt_lines).where( filter_map ).distinct
     else
       @receipts = []
     end
@@ -90,6 +91,17 @@ class ReceiptsController < ApplicationController
     @edit = true
   end
 
+   def return_receipt_detail
+     receipts = ReceiptLine.where(:receipt_id => params[:id])
+     respond_to do |format|
+       format.json do
+            render :json =>  receipts.to_json(:only => [:quantity],:include => {:commodity => {:only => :name}, :project => {:only => :project_code}, :unit_of_measure => {:only => :name}})
+         end
+    end
+  end
+
+ 
+  
   def update
     authorize Receipt
     @receipt = Receipt.find(params[:id])
