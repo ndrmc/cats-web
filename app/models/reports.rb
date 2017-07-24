@@ -86,4 +86,43 @@ class Reports
 				LEFT JOIN donors on donors.id =EPI.donor_id')
 		end
 	end 
+
+	#### Dispatch Reports - Begin #######################################################
+		def dispatch_reports_by_region operation
+			@result = FdpOperationsLog.select("region_id AS location_id, region_name AS location, 
+				operation_id AS operation, SUM(allocated_in_mt) AS allocated, SUM(dispatched_in_mt) AS dispatched")
+		    .group('region_id, region_name, operation_id')
+		    .where('operation_id = ' + operation.to_s)			
+		end
+
+		def dispatch_reports_by_zone operation, region
+			@result = FdpOperationsLog.select("zone_id AS location_id, zone_name AS location, 
+				operation_id, requisition_no as requisition, commodity_name AS commodity, 
+				SUM(allocated_in_mt) AS allocated, SUM(dispatched_in_mt) AS dispatched")
+		    .group('zone_id, zone_name, operation_id, requisition_no, commodity_name')
+		    .where('operation_id = ' + operation.to_s + ' AND region_id = ' + region.to_s)
+		end
+
+		def dispatch_reports_by_woreda operation, zone
+			@result = FdpOperationsLog.select("woreda_id AS location_id, woreda_name AS location, 
+				operation_id, requisition_no as requisition, commodity_name AS commodity, 
+				SUM(allocated_in_mt) AS allocated, SUM(dispatched_in_mt) AS dispatched")
+		    .group('woreda_id, woreda_name, operation_id, requisition_no, commodity_name')
+		    .where('operation_id = ' + operation.to_s + ' AND zone_id = ' + zone.to_s)
+		end	
+
+		def dispatch_reports_by_fdp operation, woreda
+			@result = FdpOperationsLog.select("fdp_id AS location_id, fdp_name AS location, 
+				operation_id, requisition_no as requisition, commodity_name AS commodity, 
+				SUM(allocated_in_mt) AS allocated, SUM(dispatched_in_mt) AS dispatched")
+		    .group('fdp_id, fdp_name, operation_id, requisition_no, commodity_name')
+		    .where('operation_id = ' + operation.to_s + ' AND woreda_id = ' + woreda.to_s)
+
+		end		
+
+		def dispatch_reports
+			@result = []
+		end
+
+	#### Dispatch Reports - End #########################################################
 end

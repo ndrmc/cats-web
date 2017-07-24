@@ -1,0 +1,2 @@
+module DispatchReportHelper
+end
