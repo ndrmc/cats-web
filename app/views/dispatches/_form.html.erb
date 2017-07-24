@@ -141,7 +141,7 @@
                         </select>
                       </td>
                       <td>
-                          <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" data-parsley-required/>
+                          <input name="dispatch[dispatch_items[][quantity]]" type="number" step="any"  class="form-control" data-parsley-required/>
                       </td>
                        <td>
                        <%= select_tag 'dispatch[dispatch_items[][organization_id]]',  options_from_collection_for_select( Organization.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control', :id => 'donor_select'} %>
