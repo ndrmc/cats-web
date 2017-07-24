@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   
   
- 
+  get '/dispatch_report/index'
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'
