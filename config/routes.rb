@@ -82,8 +82,12 @@ Rails.application.routes.draw do
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
   resources :receipts
+
+  get '/receipts/return_receipt_detail/:id', to: 'receipts#return_receipt_detail'
+
   get '/receipts/getProjectCodeStatus/:id', to: 'receipts#getProjectCodeStatus'
   get '/receipts/new/:id', to: 'receipts#new'
+
   resources :dispatches
 
   get '/requisitions/get_requisiton_by_number'
