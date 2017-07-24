@@ -255,46 +255,36 @@
 
                   <div class="tab-pane" id="tab-3">
                     <div>
-                      <%if(@dispatches_map.empty?)%>
-                        <h2>
-                            No Dispatches are made for this operation<br>
-                        </h2>
-                      <%else%>
-                        <table class="table table-hover">
+                      <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+
+                          <table class="table table-striped cats-grouped-datatable" data_group_col_no='0' data_sort_col_no='0'>
                           <thead>
                             <tr>
-                              <th>Region</th>
-                              <th>Status</th>
-                              <th>Progress</th>
-                            <% @commodities.each do |commodity| %>
-                              <th><%= commodity.name %></th>
-                            <%end%>
+                            <% @dispatch_report_cols.each do |column| %>
+                                <th><%= column %></th>
+                              <% end %>
                             </tr>
                           </thead>
-                          <tbody>
-                            <% @dispatches_map.each do |region,dispatches| %>
-                            <tr>
-                              <td>                             
-                                <%= link_to region, dispatches_path(:region => region, :operation => @operation.id) %>
-                              </td>
-                              <td>
-                              
-                              </td>
-                              <td>
-                                
-                              </td>
-                              <% @commodities.each do |commodity| %>
-                              <th><%= dispatches[commodity.id] %></th>
-                            <%end%>
-                              
-                            </tr>
-                            <% end %>
-                            <tr>
-                            <td>Total</td>
-                            </tr>
+
+                          <tbody>      
+                          <% @dispatch_report.each do |dispatch_summary| %>
+                              <tr>
+                                <td><%= link_to dispatch_summary['location'], '/dispatch_summary_by_fdps/index?operation=' + params[:id] +';region=' + dispatch_summary['location_id'].to_s %></td>
+                                <td><%= dispatch_summary['allocated'] %></td>
+                                <td><%= 
+                                  if (dispatch_summary['dispatched'].present?) 
+                                    dispatch_summary['dispatched'].to_f.round(2) 
+                                  else 
+                                     0.00 
+                                  end %></td>
+                                <td><%= ((dispatch_summary['dispatched'].to_f / dispatch_summary['allocated'].to_f) * 100).to_f.round(2) %>%</td>    
+                              </tr>
+                          <% end %>
                           </tbody>
-                        </table>
-                      <%end%>                   
+                          </table>      
+                        </div>
+                      </div>                  
                       
                     </div>
 
