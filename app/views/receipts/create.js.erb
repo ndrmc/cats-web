@@ -1,5 +1,8 @@
-
-
+<% if @receipt.errors.any? %>
+        toastr.error("GRN number is taken. Please put in a different GRN number");
+        $(window).scrollTop(0);
+        $('#receipt_grn_no').focus();
+<% else %>
 
 $('#receipt_grn_no').val("");
 $('#receipt_received_date').val("");
@@ -16,8 +19,10 @@ $('#warehouse_select').get(0).selectedIndex = 0;
 $('#receipt_waybill_no').val("");
 $(window).scrollTop(0);
 
-toastr.success("You have made a receipt");
+toastr.info("Receipt was successfully created");
+
+<% end %>
     
-       
+
           
 
