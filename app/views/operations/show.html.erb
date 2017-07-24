@@ -258,7 +258,7 @@
                       <div class="ibox float-e-margins">
                         <div class="ibox-content">
 
-                          <table class="table table-striped cats-grouped-datatable" data_group_col_no='0' data_sort_col_no='0'>
+                          <table class="table table-striped cats-grouped-datatable" style="width:100% !important;">
                           <thead>
                             <tr>
                             <% @dispatch_report_cols.each do |column| %>
@@ -270,7 +270,7 @@
                           <tbody>      
                           <% @dispatch_report.each do |dispatch_summary| %>
                               <tr>
-                                <td><%= link_to dispatch_summary['location'], '/dispatch_summary_by_fdps/index?operation=' + params[:id] +';region=' + dispatch_summary['location_id'].to_s %></td>
+                                <td><%= link_to dispatch_summary['location'], '/dispatch_report/index?operation=' + params[:id] +';region=' + dispatch_summary['location_id'].to_s %></td>
                                 <td><%= dispatch_summary['allocated'] %></td>
                                 <td><%= 
                                   if (dispatch_summary['dispatched'].present?) 

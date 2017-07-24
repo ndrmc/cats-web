@@ -1,7 +1,7 @@
 class DispatchReportController < ApplicationController
 
-	# GET /dispatch_summary_by_fdps
-	# GET /dispatch_summary_by_fdps.json
+	# GET /dispatch_report
+	# GET /dispatch_report.json
 	def index
 		@woreda = params[:woreda]
 		@zone = params[:zone]
