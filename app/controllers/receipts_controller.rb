@@ -79,6 +79,8 @@ class ReceiptsController < ApplicationController
       else
          respond_to do |format|
             format.html { render :new }
+              format.json { render json: @receipt.errors, status: :unprocessable_entity }
+              format.js
         end
       end
     
