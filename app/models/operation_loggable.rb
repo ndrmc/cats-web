@@ -40,7 +40,7 @@ module OperationLoggable
   				fdp_op_log.region_id = region.id
   				fdp_op_log.region_name = region.name
   				fdp_op_log.requisition_id = self.id
-  				fdp_op_log.requisition_no = self.requested_on
+  				fdp_op_log.requisition_no = self.requisition_no
   				fdp_op_log.commodity_id = commodity.id
   				fdp_op_log.commodity_name = commodity.name
   				fdp_op_log.allocated_in_mt = requisition_item.amount
