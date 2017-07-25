@@ -19,14 +19,14 @@ module OperationLoggable
 	def create_log_requisition
 		self.requisition_items.each do |requisition_item|
 			existing_operation_log = FdpOperationsLog.where(operation_id: self.operation_id, fdp_id: requisition_item.fdp_id, requisition_id: self.id, commodity_id: self.commodity_id).first
-			
-			if( ! existing_operation_log.present? )
-				operation = Operation.find_by_id(self.operation_id)
-				fdp = Fdp.find_by_id(requisition_item.fdp_id)
-				woreda = Location.find_by_id(fdp.location_id)
-				zone = Location.find_by_id(woreda.parent_node_id)
-				region = Location.find_by_id(zone.parent_node_id)
-				commodity = Commodity.find_by_id(self.commodity_id)
+			operation = Operation.find_by_id(self.operation_id)
+			fdp = Fdp.find_by_id(requisition_item.fdp_id)
+			woreda = Location.find_by_id(fdp.location_id)
+			zone = Location.find_by_id(woreda.parent_node_id)
+			region = Location.find_by_id(zone.parent_node_id)
+			commodity = Commodity.find_by_id(self.commodity_id)
+
+			if( ! existing_operation_log.present? )	
 
 				fdp_op_log = FdpOperationsLog.new
 		  		fdp_op_log.operation_id = operation.id
@@ -50,7 +50,14 @@ module OperationLoggable
 					existing_operation_log.allocated_in_mt = requisition_item.amount
 				else
 					existing_operation_log.allocated_in_mt += requisition_item.amount
-				end					
+				end		
+				existing_operation_log.operation_name = operation.name
+  				existing_operation_log.fdp_name = fdp.name
+  				existing_operation_log.woreda_name = woreda.name
+  				existing_operation_log.zone_name = zone.name
+  				existing_operation_log.region_name = region.name
+  				existing_operation_log.requisition_no = self.requisition_no
+  				existing_operation_log.commodity_name = commodity.name			
 				existing_operation_log.save
 			end
   		end  		
@@ -91,7 +98,14 @@ module OperationLoggable
 					existing_operation_log.dispatched_in_mt = @amount_in_ref
 				else
 					existing_operation_log.dispatched_in_mt += @amount_in_ref
-				end				
+				end	
+				existing_operation_log.operation_name = operation.name
+  				existing_operation_log.fdp_name = fdp.name
+  				existing_operation_log.woreda_name = woreda.name
+  				existing_operation_log.zone_name = zone.name
+  				existing_operation_log.region_name = region.name
+  				existing_operation_log.requisition_no = @requisition_obj.requisition_no
+  				existing_operation_log.commodity_name = commodity.name				
 				existing_operation_log.save
 			end
   		end
@@ -132,6 +146,13 @@ module OperationLoggable
 				else
 					existing_operation_log.delivered_in_mt += @amount_in_ref
 				end
+				existing_operation_log.operation_name = operation.name
+  				existing_operation_log.fdp_name = fdp.name
+  				existing_operation_log.woreda_name = woreda.name
+  				existing_operation_log.zone_name = zone.name
+  				existing_operation_log.region_name = region.name
+  				existing_operation_log.requisition_no = @requisition_obj.requisition_no
+  				existing_operation_log.commodity_name = commodity.name
 				existing_operation_log.save
 			end
   		end
