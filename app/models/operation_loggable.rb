@@ -68,13 +68,14 @@ module OperationLoggable
 			@requisition_obj = Requisition.where(:requisition_no => self.requisition_number).first
 			existing_operation_log = FdpOperationsLog.where(operation_id: self.operation_id, fdp_id: self.fdp_id, requisition_id: @requisition_obj.id, commodity_id: dispatch_item.commodity_id).first
 			@amount_in_ref = UnitOfMeasure.find(dispatch_item.unit_of_measure_id).to_ref(dispatch_item.quantity)		
-			if( ! existing_operation_log.present? )
-				operation = Operation.find_by_id(self.operation_id)
-				fdp = Fdp.find_by_id(self.fdp_id)
-				woreda = Location.find_by_id(fdp.location_id)
-				zone = Location.find_by_id(woreda.parent_node_id)
-				region = Location.find_by_id(zone.parent_node_id)
-				commodity = Commodity.find_by_id(dispatch_item.commodity_id)
+			operation = Operation.find_by_id(self.operation_id)
+			fdp = Fdp.find_by_id(self.fdp_id)
+			woreda = Location.find_by_id(fdp.location_id)
+			zone = Location.find_by_id(woreda.parent_node_id)
+			region = Location.find_by_id(zone.parent_node_id)
+			commodity = Commodity.find_by_id(dispatch_item.commodity_id)
+			
+			if( ! existing_operation_log.present? )				
 
 				fdp_op_log = FdpOperationsLog.new
   				fdp_op_log.operation_id = self.operation_id
@@ -116,13 +117,14 @@ module OperationLoggable
 			@requisition_obj = Requisition.where(:requisition_no => self.requisition_number).first
 			existing_operation_log = FdpOperationsLog.where(operation_id: self.operation_id, fdp_id: self.fdp_id, requisition_id: @requisition_obj.id, commodity_id: delivery_detail.commodity_id).first
 			@amount_in_ref = UnitOfMeasure.find(delivery_detail.uom_id).to_ref(delivery_detail.received_quantity)		  		
-			if( ! existing_operation_log.present? )
-				operation = Operation.find_by_id(self.operation_id)
-				fdp = Fdp.find_by_id(self.fdp_id)
-				woreda = Location.find_by_id(fdp.location_id)
-				zone = Location.find_by_id(woreda.parent_node_id)
-				region = Location.find_by_id(zone.parent_node_id)
-				commodity = Commodity.find_by_id(delivery_detail.commodity_id)
+			operation = Operation.find_by_id(self.operation_id)
+			fdp = Fdp.find_by_id(self.fdp_id)
+			woreda = Location.find_by_id(fdp.location_id)
+			zone = Location.find_by_id(woreda.parent_node_id)
+			region = Location.find_by_id(zone.parent_node_id)
+			commodity = Commodity.find_by_id(delivery_detail.commodity_id)
+
+			if( ! existing_operation_log.present? )				
 
 				fdp_op_log = FdpOperationsLog.new
   				fdp_op_log.operation_id = self.operation_id
