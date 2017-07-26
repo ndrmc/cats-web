@@ -13,7 +13,7 @@
 #  created_by     :integer
 #  modified_by    :integer
 #  deleted_at     :datetime
-#
+#  unit_of_measure_id	:integer	
 
 class RequisitionItem < ApplicationRecord
   belongs_to :requisition

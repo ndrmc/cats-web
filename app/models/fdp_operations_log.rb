@@ -17,4 +17,9 @@
 #
 
 class FdpOperationsLog < ApplicationRecord
+	has_one :operation
+	has_one :fdp
+	has_one :location
+	has_one :requisition
+	has_one :commodity
 end
