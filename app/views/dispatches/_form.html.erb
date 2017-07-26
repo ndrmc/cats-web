@@ -87,17 +87,17 @@
                     <td>
                       <input type="hidden" name="dispatch[dispatch_items[][id]]" value="<%= dispatch_line.id %>" />
                       <select name="dispatch[dispatch_items[][commodity_category_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line.commodity_category.id %>"><%= dispatch_line.commodity_category.name %></option>
+                        <option value="<%= dispatch_line&.commodity_category&.id %>"><%= dispatch_line&.commodity_category&.name %></option>
                       </select>
                     </td>
                     <td>
                       <select name="dispatch[dispatch_items[][commodity_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line.commodity.id %>"><%= dispatch_line.commodity.name %></option>
+                        <option value="<%= dispatch_line&.commodity&.id %>"><%= dispatch_line&.commodity&.name %></option>
                       </select>
                     </td>               
                     <td>
                       <select name="dispatch[dispatch_items[][unit_of_measure_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line.unit_of_measure.id %>"><%= dispatch_line.unit_of_measure.name %></option>
+                        <option value="<%= dispatch_line&.unit_of_measure&.id %>"><%= dispatch_line&.unit_of_measure&.name %></option>
                       </select>
                     </td>
                     <td>
@@ -105,13 +105,13 @@
                     </td>                   
                      <td>
                       <select name="dispatch[dispatch_items[][organization_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line.organization.id %>"><%= dispatch_line.organization.name %></option>
+                        <option value="<%= dispatch_line&.organization&.id %>"><%= dispatch_line&.organization&.name %></option>
                       </select>
                     </td>
 
                     <td>
                       <select name="dispatch[dispatch_items[][project_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line.project&.id %>"><%= dispatch_line&.project&.project_code %></option>
+                        <option value="<%= dispatch_line&.project&.id %>"><%= dispatch_line&.project&.project_code %></option>
                       </select>
                     </td>
                     <td>
