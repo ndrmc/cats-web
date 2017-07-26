@@ -25,7 +25,7 @@ module OperationLoggable
 			zone = Location.find_by_id(woreda.parent_node_id)
 			region = Location.find_by_id(zone.parent_node_id)
 			commodity = Commodity.find_by_id(self.commodity_id)
-
+			@amount_in_ref = UnitOfMeasure.find(requisition_item.unit_of_measure_id).to_ref(requisition_item.amount)
 			if( ! existing_operation_log.present? )	
 
 				fdp_op_log = FdpOperationsLog.new
@@ -43,13 +43,13 @@ module OperationLoggable
   				fdp_op_log.requisition_no = self.requisition_no
   				fdp_op_log.commodity_id = commodity.id
   				fdp_op_log.commodity_name = commodity.name
-  				fdp_op_log.allocated_in_mt = requisition_item.amount
+  				fdp_op_log.allocated_in_mt = @amount_in_ref
   				fdp_op_log.save
 			else
 				if(existing_operation_log.allocated_in_mt.blank?)
-					existing_operation_log.allocated_in_mt = requisition_item.amount
+					existing_operation_log.allocated_in_mt = @amount_in_ref
 				else
-					existing_operation_log.allocated_in_mt += requisition_item.amount
+					existing_operation_log.allocated_in_mt += @amount_in_ref
 				end		
 				existing_operation_log.operation_name = operation.name
   				existing_operation_log.fdp_name = fdp.name

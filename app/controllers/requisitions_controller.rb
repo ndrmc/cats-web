@@ -94,7 +94,8 @@ class RequisitionsController < ApplicationController
             requisition_item = RequisitionItem.new({
                                                      fdp_id: request_item[:fdp_id],
                                                      beneficiary_no: request_item[:number_of_beneficiaries],
-                                                     amount: @ration_items.select { |hash| hash[:commodity_id] == Integer(commodity_id) }.first.amount*request_item[:number_of_beneficiaries]
+                                                     amount: @ration_items.select { |hash| hash[:commodity_id] == Integer(commodity_id) }.first.amount*request_item[:number_of_beneficiaries],
+                                                     unit_of_measure_id: @ration_items.select { |hash| hash[:commodity_id] == Integer(commodity_id) }.first.unit_of_measure_id
             })
             @requisition_items << requisition_item
 
