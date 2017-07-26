@@ -45,19 +45,15 @@ module OperationLoggable
   				fdp_op_log.commodity_name = commodity.name
   				fdp_op_log.allocated_in_mt = @amount_in_ref
   				fdp_op_log.save
-			else
-				if(existing_operation_log.allocated_in_mt.blank?)
-					existing_operation_log.allocated_in_mt = @amount_in_ref
-				else
-					existing_operation_log.allocated_in_mt += @amount_in_ref
-				end		
+			else	
 				existing_operation_log.operation_name = operation.name
   				existing_operation_log.fdp_name = fdp.name
   				existing_operation_log.woreda_name = woreda.name
   				existing_operation_log.zone_name = zone.name
   				existing_operation_log.region_name = region.name
   				existing_operation_log.requisition_no = self.requisition_no
-  				existing_operation_log.commodity_name = commodity.name			
+  				existing_operation_log.commodity_name = commodity.name		
+  				existing_operation_log.allocated_in_mt = @amount_in_ref	
 				existing_operation_log.save
 			end
   		end  		
