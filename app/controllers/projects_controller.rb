@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
     for i in 1..4-max_length # append zeros
       zeros = zeros + '0'
     end
-    
+
     sequence_number =  zeros + sequence_number.to_s
 
     if Date.today.year < saved_year.to_i   # reset year
@@ -46,13 +46,13 @@ class ProjectsController < ApplicationController
   end
     
     if(params[:source].to_i == CommoditySource.find_by_name('Donation').id)
-       project_code = 'DN/' + sequence_number.to_s + '/' + Date.today.year.to_s
+       project_code = CommoditySource.find_by_name('Donation').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
     elsif (params[:source].to_i == CommoditySource.find_by_name('Local Purchase').id)
-       project_code = 'LP/' + sequence_number.to_s + '/' + Date.today.year.to_s
+       project_code = CommoditySource.find_by_name('Local Purchase').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
     elsif (params[:source].to_i == CommoditySource.find_by_name('Loan').id)
-         project_code = 'LN/' + sequence_number.to_s + '/' + Date.today.year.to_s
+         project_code = CommoditySource.find_by_name('Loan').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
     elsif (params[:source].to_i == CommoditySource.find_by_name('Swap').id)
-       project_code = 'SW/' + sequence_number.to_s + '/' + Date.today.year.to_s
+       project_code = CommoditySource.find_by_name('Swap').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
     else
       
     end
