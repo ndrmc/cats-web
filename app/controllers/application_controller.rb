@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  def is_numeric? string
+    return true if Float(string) rescue false
+  end
+  
 private
 
 def user_not_authorized
