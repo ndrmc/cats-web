@@ -163,6 +163,14 @@ def get_commodities
     end
 end
 
+  def get_commodity_source_code
+    commodity_source_id = params[:id]
+    result = CommoditySource.find_by_id(commodity_source_id)
+    respond_to do |format|
+      format.json { render json: result }
+    end
+  end
+
   private
   def authorize_project
     authorize Project
