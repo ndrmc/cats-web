@@ -80,4 +80,9 @@ $(document).ready(function() {
     $('.cats-daterangepicker').daterangepicker({
         format: 'dd/mm/yyyy'
     });
+
+   
 });
+ function printpage(){
+        window.print()
+    }
