@@ -66,6 +66,7 @@
                     </thead>
                     <tbody>
                         <% @beneficiaries_by_region.each  do |aggregate| %>
+                         <% if !aggregate.region_id.blank? %>
                             <tr>
                                 <td><%= Location.find(aggregate.region_id).name %></td>
 
@@ -74,6 +75,7 @@
                                 <td><a href="/hrds/hrd_items?hrd_id=<%= @hrd.id %>&region_id=<%= aggregate.region_id %>"> <i class="fa fa-edit"></i> Edit</a></td>
                                 <%end%>
                             </tr>
+                          <% end %>
                         <% end %>
                     </tbody>
                 
@@ -96,6 +98,7 @@
                     </thead>
                     <tbody>
                         <% @beneficiaries_by_region.each  do |aggregate| %>
+                         <% if !aggregate.region_id.blank? %>
                             <tr>
                                 <td><%= Location.find(aggregate.region_id).name %></td>
                                 <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter aggregate.total_beneficiaries %></td>
@@ -104,6 +107,7 @@
                                 <% end %>
                                 <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter(@hrd.ration.ration_items.inject(0) { |result, ration_item| result + ration_item.amount } * aggregate.total_beneficiaries)  %></td>
                             </tr>
+                          <% end %>
                         <% end %>
                     </tbody>
                 
