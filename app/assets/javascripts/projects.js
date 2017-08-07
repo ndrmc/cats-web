@@ -16,15 +16,7 @@ function get_update_project_code()
         $.ajax( { url: '/projects/get_commodity_source_code/' + selected_commodity_source_id,
         	cache: false, method: 'GET'}).done( function(data) 
         {        
-        	if(data['code'] == 'TR')
-            {
-
-                $("#project_code_box").show();
-                $("#project_project_code").val('');
-                
-                $("#project_project_code").removeAttr("readonly");
-            }
-            else if(data['code'] == '' || data['code'] == null) 
+        	if(data['code'] == '' || data['code'] == null) 
         	{
         		$("#project_code_box").hide();
         	}             

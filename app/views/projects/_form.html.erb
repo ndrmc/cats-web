@@ -19,7 +19,6 @@
                 <div class="panel-heading">
                   <%= pluralize(project.errors.count, "error") %> prohibited this project from being saved.
                 </div>
-
                 <div class="panel-body">
                   <ul>
                     <% project.errors.full_messages.each do |message| %>
@@ -31,7 +30,7 @@
             <% end %>
            <div class="form-group">
               <%= f.label :commodity_source %>
-              <%= f.collection_select :commodity_source_id,  CommoditySource.order(:name), :id, :name, {include_blank: true}, {class: 'form-control', :required => true, :onChange=>"javascript: get_update_project_code();" } %>
+              <%= f.collection_select :commodity_source_id,  CommoditySource.where.not(code: ["TR","RP", "OT", "RT"]).order(:name), :id, :name, {include_blank: true}, {class: 'form-control', :required => true, :onChange=>"javascript: get_update_project_code();" } %>
            </div>
            <div class="form-group">
               <%= f.label :organization_id %>

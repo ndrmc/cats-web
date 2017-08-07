@@ -43,12 +43,7 @@ class ProjectsController < ApplicationController
         sequence_number ='0001'
       end
       
-    end
-    @is_transfer = false
-    if(params[:source].to_i == CommoditySource.find_by_name("Transfer").id)
-      @is_transfer = true
-      project_code = ''
-    end
+    end    
     
     if(params[:source].to_i == CommoditySource.find_by_name('Donation').id)
        project_code = CommoditySource.find_by_name('Donation').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
