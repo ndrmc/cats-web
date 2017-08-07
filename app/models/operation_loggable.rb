@@ -146,4 +146,6 @@ module OperationLoggable
 	def update_callback
 
 	end
+
 end
+

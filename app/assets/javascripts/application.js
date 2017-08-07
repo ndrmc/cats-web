@@ -58,6 +58,34 @@ $(document).ready(function() {
         buttons: ['copy', 'csv', 'excel', 'print']
     });
 
+    $('.cats-grouped-datatable').DataTable({
+        info: false,
+        pageLength: 25,
+        stateSave: true,
+        dom: 'lfrtipB',
+        buttons: ['copy', 'csv', 'excel', 'print'],
+        "columnDefs": [
+            { "visible": false, "targets": 0 }
+        ],
+        "order": [[ 0, 'asc' ]],
+        "displayLength": 25,
+        "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(0, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group" style="background-color:#ccc;"><td colspan="5">'+group+'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        }
+    } );
+
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy'
     });
