@@ -2,3 +2,19 @@
 commodity_source_1:
   id: 1
   name: Donation
+  code: 'DN'
+commodity_source_2:
+  id: 2
+  name: Loan
+  code: 'DN'
+commodity_source_3:
+  id: 3
+  name: "Local Purchase"
+  code: 'DN'
+commodity_source_4:
+  id: 4
+  name: Swap
+  code: 'DN'
+
+  
+
