@@ -20,7 +20,7 @@ class CommoditySourcesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create commodity_source" do
     assert_difference('CommoditySource.count') do
-      post commodity_sources_url, params: { commodity_source: { name: 'Loan'} }
+      post commodity_sources_url, params: { commodity_source: { name: 'sample commodity source'} }
     end
 
     assert_redirected_to commodity_sources_url
