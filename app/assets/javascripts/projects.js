@@ -25,7 +25,7 @@ function get_update_project_code()
                 var res = window.curr_proj_code.split("/");
         		$("#project_code_box").show();
         		$("#project_project_code").val(data['code'] + '/' + res[1] + '/' + res[2]); 
-                $("#project_project_code").attr("readonly", "readonly")	  
+                $("#project_project_code").attr("disabled", "disabled");
                 window.curr_proj_code = $("#project_project_code").val();      
         	}
         });	
