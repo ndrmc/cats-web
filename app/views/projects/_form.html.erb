@@ -1,8 +1,14 @@
 <%= form_for(project) do |f| %>      
       <div class="ibox-content" id="project_code_box">
-        <div class="form-group">
+        <div class="">
             <%= f.label :project_code %>
-            <%= f.text_field :project_code, :class => 'form-control' , :required => true , :readonly => true %>
+            <%= 
+              if(@is_transfer)
+                f.text_field :project_code, :class => 'form-control' , :required => true , :readonly => false 
+              else
+                f.text_field :project_code, :class => 'big-text-field form-control' , :required => true , :readonly => true
+              end
+            %>
         </div>
       </div>
       <div class="wrapper wrapper-content">

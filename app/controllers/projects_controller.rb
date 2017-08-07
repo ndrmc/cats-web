@@ -28,22 +28,27 @@ class ProjectsController < ApplicationController
        sequence_number = '0001'
     else
 
-    sequence_number = sequence_number.to_i + 1 # increment number by one
-    zeros = ""
-    i=1
-    max_length = sequence_number.to_s.length
-   
-    for i in 1..4-max_length # append zeros
-      zeros = zeros + '0'
-    end
+      sequence_number = sequence_number.to_i + 1 # increment number by one
+      zeros = ""
+      i=1
+      max_length = sequence_number.to_s.length
+     
+      for i in 1..4-max_length # append zeros
+        zeros = zeros + '0'
+      end
 
-    sequence_number =  zeros + sequence_number.to_s
+      sequence_number =  zeros + sequence_number.to_s
 
-    if Date.today.year < saved_year.to_i   # reset year
-      sequence_number ='0001'
+      if Date.today.year < saved_year.to_i   # reset year
+        sequence_number ='0001'
+      end
+      
     end
-    
-  end
+    @is_transfer = false
+    if(params[:source].to_i == CommoditySource.find_by_name("Transfer").id)
+      @is_transfer = true
+      project_code = ''
+    end
     
     if(params[:source].to_i == CommoditySource.find_by_name('Donation').id)
        project_code = CommoditySource.find_by_name('Donation').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s

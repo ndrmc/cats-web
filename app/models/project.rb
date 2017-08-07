@@ -10,7 +10,7 @@
 #  amount             :decimal(, )
 #  unit_of_measure_id :integer
 #  publish_date       :date
-#  created_by         :integer
+#  created_by         :integer                          
 #  modified_by        :integer
 #  deleted_at         :datetime
 #  created_at         :datetime
@@ -39,17 +39,8 @@ class Project < ApplicationRecord
   belongs_to :organization
   belongs_to :unit_of_measure
 
-  before_validation :default_project_code
   after_save :pre_post
   after_update :reverse
 
-  def default_project_code
-    if(self.project_code.nil? || self.project_code.empty?)
-      donor = Organization.find(self.organization_id).name.upcase
-      amount = self.amount
-      month = self.publish_date.month
-      year = self.publish_date.year
-      self.project_code = "#{donor}/#{amount}/#{month}/#{year}"
-    end
-  end
+
 end
