@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170721075445) do
+
+ActiveRecord::Schema.define(version: 20170804071337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,6 +165,7 @@ ActiveRecord::Schema.define(version: 20170721075445) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.string   "code"
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -825,7 +827,9 @@ ActiveRecord::Schema.define(version: 20170721075445) do
     t.boolean  "draft",                   default: false
     t.boolean  "archived"
     t.integer  "commodity_categories_id"
+    t.integer  "program_id"
     t.index ["commodity_categories_id"], name: "index_projects_on_commodity_categories_id", using: :btree
+    t.index ["program_id"], name: "index_projects_on_program_id", using: :btree
     t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
   end
 
@@ -1378,6 +1382,7 @@ ActiveRecord::Schema.define(version: 20170721075445) do
   add_foreign_key "dispatches", "hubs"
   add_foreign_key "dispatches", "warehouses"
   add_foreign_key "projects", "commodity_categories", column: "commodity_categories_id"
+  add_foreign_key "projects", "programs"
   add_foreign_key "receipt_lines", "unit_of_measures"
   add_foreign_key "regional_request_items", "fdps"
   add_foreign_key "regional_request_items", "regional_requests"
