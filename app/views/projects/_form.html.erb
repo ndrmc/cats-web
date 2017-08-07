@@ -3,11 +3,7 @@
         <div class="">
             <%= f.label :project_code %>
             <%= 
-              if(@is_transfer)
-                f.text_field :project_code, :class => 'form-control' , :required => true , :readonly => false 
-              else
-                f.text_field :project_code, :class => 'big-text-field form-control' , :required => true , :readonly => true
-              end
+              f.text_field :project_code, :class => 'big-text-field form-control' , :required => true , :readonly => true
             %>
         </div>
       </div>
@@ -37,6 +33,12 @@
               <%= f.collection_select :organization_id,
                 Organization.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true } %>
            </div>
+
+           <div class="form-group">
+              <%= f.label :program_id %>
+              <%= f.collection_select :program_id,
+                Program.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true  } %>
+            </div> 
 
             <div class="form-group">
               <%= f.label :commodity_categories_id %>
