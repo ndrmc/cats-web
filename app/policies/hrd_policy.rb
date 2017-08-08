@@ -37,5 +37,25 @@ class HrdPolicy < ApplicationPolicy
       @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
 
+     def edit_hrd_form?
+       @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end 
+
+    def new_hrd_item?
+       @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end 
+
+    def save_hrd_item?
+        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end 
+
+    def remove_hrd_id?
+        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+
+    def download_hrd_items?
+        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end 
+
 end
 
