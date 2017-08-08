@@ -450,6 +450,20 @@ ActiveRecord::Schema.define(version: 20170808061810) do
     t.index ["deleted_at"], name: "index_fdps_on_deleted_at", using: :btree
   end
 
+  create_table "framework_tenders", force: :cascade do |t|
+    t.string   "year"
+    t.string   "half_year"
+    t.integer  "starting_month"
+    t.integer  "ending_month"
+    t.text     "remark"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted"
+    t.datetime "deleted_at"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
   create_table "fscd_annual_plans", force: :cascade do |t|
     t.string   "name",                    null: false
     t.string   "code"
