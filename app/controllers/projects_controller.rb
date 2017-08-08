@@ -113,8 +113,7 @@ end
 
 
 def get_commodities
-  val = params[:id]
-  @commodities = Commodity.find_by commodity_category_id: params[:id]
+
   @commodities =  Commodity.where(commodity_category_id: params[:id]).map{ |r| [r.name, r.id]} 
 
  respond_to do |format|

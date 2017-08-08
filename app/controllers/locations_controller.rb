@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
 
   layout 'admin'
   before_action :set_location, only: [ :edit, :update, :destroy]
-  include Administrated
+  before_action :authorize_location
   # GET /locations
   def index
     redirect_to action: :show, id: 0
@@ -104,6 +104,10 @@ class LocationsController < ApplicationController
   end
 
   private
+
+    def authorize_location
+        authorize Location
+    end
 
     def set_location
       @location = Location.find params[:id]

@@ -27,5 +27,7 @@ ration:
     name: Ration
 Receipts: 
     name: 'Receipts'
+Location:
+    name: 'locations'
 
 
