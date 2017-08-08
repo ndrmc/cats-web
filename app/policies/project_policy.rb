@@ -45,5 +45,9 @@ class ProjectPolicy < ApplicationPolicy
         @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
 
+    def get_commodities?
+      @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+
 end
 
