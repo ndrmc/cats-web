@@ -36,6 +36,7 @@ class Hrd < ApplicationRecord
   end
 
   validates :year_ec, :year_gc, :season_id, :ration_id, :duration, :month_from, :presence => true
+  validates :season, uniqueness: {message: " and year are aready been used to create HRD", scope: :year_gc}
 
  def allocated_woredas_in_hrd
     Hrd.find_by_sql("select count(distinct hd.woreda_id) as allocated_woredas from hrds  h inner join hrd_items hd on h.id = hd.hrd_id
