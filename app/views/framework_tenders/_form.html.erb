@@ -1,0 +1,59 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(framework_tender) do |f| %>
+        <% if framework_tender.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(framework_tender.errors.count, "error") %> prohibited this framework_tender from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% framework_tender.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :year %>
+                <%= f.number_field :year, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :half_year %>
+                <%= f.number_field :half_year, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :starting_month %>
+                <%= f.number_field :starting_month, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :ending_month %>
+                <%= f.number_field :ending_month, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :status %>
+                <%= f.text_field :status, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :remark %>
+                <%= f.text_area :remark, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

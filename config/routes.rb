@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   
   
  
+  resources :framework_tenders
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'

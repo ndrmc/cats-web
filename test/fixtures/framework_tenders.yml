@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  year: 1
+  half_year: 1
+  starting_month: 1
+  ending_month: 1
+  status: 
+  remark: MyText
+
+two:
+  year: 1
+  half_year: 1
+  starting_month: 1
+  ending_month: 1
+  status: 
+  remark: MyText
