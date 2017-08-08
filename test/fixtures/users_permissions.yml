@@ -27,3 +27,6 @@ user_permission_psnp_plan:
 user_permission_ration:
         user: admin
         permission: ration
+user_permission_location:
+        user: admin
+        permission: Location
