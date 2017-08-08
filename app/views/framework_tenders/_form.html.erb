@@ -28,21 +28,17 @@
                 <%= f.number_field :half_year, :class => 'form-control' %>
                         </div>
 
-                <div class="form-group">
-                            <%= f.label :starting_month %>
-                <%= f.number_field :starting_month, :class => 'form-control' %>
-                        </div>
+               <div class="form-group">
+                    <%= f.label :starting_month %>
+                    <span class="required">*</span>
+                    <%= f.select :starting_month,  options_for_select( Date::MONTHNAMES[1..-1].map.with_index { |e, i | [e, i + 1] }, @framework_tender.starting_month ) , {}, { :required => true, :prompt => "-- Choose --", :class => 'form-control' }  %>
+                </div>
 
-                <div class="form-group">
-                            <%= f.label :ending_month %>
-                <%= f.number_field :ending_month, :class => 'form-control' %>
-                        </div>
-
-                <div class="form-group">
-                            <%= f.label :status %>
-                <%= f.text_field :status, :class => 'form-control' %>
-                        </div>
-
+                 <div class="form-group">
+                    <%= f.label :ending_month %>
+                    <span class="required">*</span>
+                    <%= f.select :ending_month,  options_for_select( Date::MONTHNAMES[1..-1].map.with_index { |e, i | [e, i + 1] }, @framework_tender.ending_month ) , {}, { :required => true, :prompt => "-- Choose --", :class => 'form-control' }  %>
+                </div>
                 <div class="form-group">
                             <%= f.label :remark %>
                 <%= f.text_area :remark, :class => 'form-control' %>

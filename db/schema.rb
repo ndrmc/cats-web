@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170804071337) do
+ActiveRecord::Schema.define(version: 20170808063110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,6 +448,20 @@ ActiveRecord::Schema.define(version: 20170804071337) do
     t.string   "zone"
     t.string   "region"
     t.index ["deleted_at"], name: "index_fdps_on_deleted_at", using: :btree
+  end
+
+  create_table "framework_tenders", force: :cascade do |t|
+    t.integer  "year"
+    t.integer  "half_year"
+    t.integer  "starting_month"
+    t.integer  "ending_month"
+    t.integer  "status"
+    t.text     "remark"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "fscd_annual_plans", force: :cascade do |t|
@@ -910,7 +924,6 @@ ActiveRecord::Schema.define(version: 20170804071337) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
-    t.decimal  "quantity",                         precision: 15, scale: 2
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -921,6 +934,7 @@ ActiveRecord::Schema.define(version: 20170804071337) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
