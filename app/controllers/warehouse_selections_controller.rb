@@ -1,5 +1,5 @@
 class WarehouseSelectionsController < ApplicationController
-  before_action :set_warehouse_selection, only: [:show, :edit, :update, :destroy]
+  before_action :set_warehouse_selection, only: [:edit, :update, :destroy]
 
   # GET /warehouse_selections
   # GET /warehouse_selections.json
@@ -10,6 +10,9 @@ class WarehouseSelectionsController < ApplicationController
   # GET /warehouse_selections/1
   # GET /warehouse_selections/1.json
   def show
+    # @framework_tender = FrameworkTender.find(params[:id])
+    # @ft_name = @framework_tender.year + '/' + @framework_tender.year_half
+    @warehouse_selections = WarehouseSelection.joins(:location, warehouse: :hub).select(:id, 'warehouses.name AS warehouse_name', :'warehouses.location_id', 'locations.name AS woreda_name', 'hubs.name AS hub_name', :estimated_qty).where(:framework_tender_id => params[:id])
   end
 
   # GET /warehouse_selections/new
@@ -69,6 +72,6 @@ class WarehouseSelectionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_selection_params
-      params.require(:warehouse_selection).permit(:framework_tender_id, :woreda_id, :warehouse_id, :estimated_qty, :created_by, :modified_by, :deleted, :deleted_at)
+      params.require(:warehouse_selection).permit(:ft_id, :framework_tender_id, :woreda_id, :warehouse_id, :estimated_qty, :created_by, :modified_by, :deleted, :deleted_at)
     end
 end
