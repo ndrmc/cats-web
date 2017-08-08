@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   
   
  
+  
+
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'
@@ -19,6 +21,9 @@ Rails.application.routes.draw do
   get "home/index"
   get "home/minor"
   get "home/other"
+
+resources :warehouse_selections
+  
 
   #get 'locations(/:parent_id)', to: 'locations#index', as: :locations
   #post 'locations', to: 'locations#create', as: :locations
