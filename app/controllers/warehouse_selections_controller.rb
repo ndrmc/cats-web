@@ -64,6 +64,10 @@ class WarehouseSelectionsController < ApplicationController
     end
   end
 
+  def get_by_region
+    @warehouse_selections = WarehouseSelection.filter_by_region(params[:region])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_warehouse_selection
@@ -72,6 +76,6 @@ class WarehouseSelectionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_selection_params
-      params.require(:warehouse_selection).permit(:ft_id, :framework_tender_id, :woreda_id, :warehouse_id, :estimated_qty, :created_by, :modified_by, :deleted, :deleted_at)
+      params.require(:warehouse_selection).permit(:ft_id, :framework_tender_id, :woreda_id, :warehouse_id, :estimated_qty, :created_by, :modified_by, :deleted, :deleted_at, :region)
     end
 end

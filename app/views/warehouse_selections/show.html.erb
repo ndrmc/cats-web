@@ -98,7 +98,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
     <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
       <div class="col-md-6 col-sm-6 col-xs-6">
         <label class='control-label'>Region</label>
-        <%= select_tag :region, options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region]), {:required => true,:prompt => "-- Select Region --",:class=> 'data-parsley-required width-300px'} %>
+        <%= select_tag :region, options_from_collection_for_select(Location.where({location_type: 'region'}).order(:name), 'id', 'name', params[:region]), {:required => true,:class=> 'data-parsley-required width-300px'} %>
       </div>
       <div class="col-md-6 col-sm-6 col-xs-6 text-right">
         <a class="btn btn-primary" data-ft-id="<%= @framework_tender_id %>" data-target="#add-warehouse-assignment" data-toggle="modal">
@@ -108,7 +108,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
     </div>
     <div class="ibox-content">     
 
-      <table class="table table-striped cats-grouped-datatable">
+      <table id="ws_datatable" class="table table-striped cats-grouped-datatable">
         <thead>
           <tr>
             <th>Zone</th>
@@ -154,30 +154,30 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
           <div class="col-md-6 col-sm-6 col-xs-6">
             <label class='control-label'>Zone</label> <br>
-            <%= select_tag :zone, options_from_collection_for_select(Location.where({location_type: 'zone'}), 'id', 'name', params[:region]), {:required => true,:prompt => "-- Select Zone --",:class=> 'data-parsley-required'} %>
+            <%= select_tag :zone, options_from_collection_for_select(Location.where({location_type: 'zone'}), 'id', 'name', params[:region]), {:required => true,:prompt => "-- Select Zone --",:class=> 'data-parsley-required width-100per'} %>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-6">
             <label class='control-label'>Woreda</label> <br>
-            <%= select_tag :woreda, options_from_collection_for_select(Location.where({location_type: 'woreda'}), 'id', 'name', params[:zone]), {:required => true,:prompt => "-- Select Woreda --",:class=> 'data-parsley-required'} %>
+            <%= select_tag :woreda, options_from_collection_for_select(Location.where({location_type: 'woreda'}), 'id', 'name', params[:zone]), {:required => true,:prompt => "-- Select Woreda --",:class=> 'data-parsley-required width-100per'} %>
           </div>
         </div>
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
           <div class="col-md-6 col-sm-6 col-xs-6">
             <label class='control-label'>Hub</label> <br>
-            <%= select_tag :hub, options_from_collection_for_select(Hub.all, 'id', 'name', params[:hub]), {:required => true,:prompt => "-- Select Hub --",:class=> 'data-parsley-required'} %>
+            <%= select_tag :hub, options_from_collection_for_select(Hub.all, 'id', 'name', params[:hub]), {:required => true,:prompt => "-- Select Hub --",:class=> 'data-parsley-required width-100per'} %>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-6">
             <label class='control-label'>Warehouse</label> <br>
-            <%= select_tag :warehouse, options_from_collection_for_select(Warehouse.all, 'id', 'name', params[:warehouse]), {:required => true,:prompt => "-- Select Warehouse --",:class=> 'data-parsley-required'} %>
+            <%= select_tag :warehouse, options_from_collection_for_select(Warehouse.all, 'id', 'name', params[:warehouse]), {:required => true,:prompt => "-- Select Warehouse --",:class=> 'data-parsley-required width-100per'} %>
           </div>
         </div>
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <label class='control-label'>Est. Quantity</label> <br>
-            <%= number_field :estimated_qty, :class => 'form-control' %>
+            <%= number_field :estimated_qty, :class => 'data-parsley-required width-100per' %>
           </div>
         </div>
-        <div class="spinner" visible="false">
+        <div class="spinner" style="visibility: hidden;">
             Loading...
         </div>
       </div>
