@@ -197,6 +197,8 @@ module Postable
       receivable_journal = Journal.find_by({'code': :loan})
     elsif (self.commodity_source_id == CommoditySource.find_by_name('Swap').id)
       receivable_journal = Journal.find_by({'code': :transfer})
+    elsif (self.commodity_source_id == CommoditySource.find_by_name('International Purchase').id)
+      receivable_journal = Journal.find_by({'code': :purchase})
     else
       raise Exception,"Commodity source unknown"
     end

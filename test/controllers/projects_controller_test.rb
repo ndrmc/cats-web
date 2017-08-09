@@ -6,6 +6,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:admin)
     @project = projects(:project1)
+    @commodity_source = commodity_sources(:commodity_source_5, :commodity_source_2, :commodity_source_3)
   end
 
   test "should get index" do
