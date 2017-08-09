@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  framework_tender_id: 1
+  location: location1
+  bid_number: MyString
+  bid_bond_amount: 
+  start_date: 2017-08-09 15:47:05
+  closing_date: 
+  opening_date: 2017-08-09 15:47:05
+  status: 1
+  remark: MyText
+
+two:
+  framework_tender_id: 1
+  location: location1
+  bid_number: MyString
+  bid_bond_amount: 
+  start_date: 2017-08-09 15:47:05
+  closing_date: 
+  opening_date: 2017-08-09 15:47:05
+  status: 1
+  remark: MyText

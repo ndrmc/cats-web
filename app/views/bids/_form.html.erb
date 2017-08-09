@@ -1,0 +1,71 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(bid) do |f| %>
+        <% if bid.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(bid.errors.count, "error") %> prohibited this bid from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% bid.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :framework_tender_id %>
+                <%= f.number_field :framework_tender_id, :class => 'form-control' %>
+                        </div>
+
+                 <div class="form-group">
+                 <%= f.label :region_id %> <span class="required">*</span>
+                 <%= f.collection_select :region_id,
+                  Location.order(:name).where(:location_type => 1), :id, :name, {include_blank: '-- Choose --'}, { :class => 'form-control', :required => true }%>
+                 </div>
+
+
+                <div class="form-group">
+                            <%= f.label :bid_number %>
+                <%= f.text_field :bid_number, :class => 'form-control' , :required => true %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :bid_bond_amount %>
+                <%= f.number_field :bid_bond_amount, :class => 'form-control' , :required => true%>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :start_date %>
+                <%= f.text_field :start_date, :class => 'form-control datepicker', :required => true %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :closing_date %>
+                <%= f.text_field :closing_date, :class => 'form-control datepicker', :required => true %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :opening_date %>
+                <%= f.text_field :opening_date, :class => 'form-control datepicker', :required => true %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :remark %>
+                <%= f.text_area :remark, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>
