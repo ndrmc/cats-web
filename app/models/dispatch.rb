@@ -27,7 +27,6 @@
 
 class Dispatch < ApplicationRecord
     include Postable
-    include OperationLoggable
 
     acts_as_paranoid 
 
@@ -37,7 +36,7 @@ class Dispatch < ApplicationRecord
     
     has_many :dispatch_items
 
-    after_save :pre_post, :create_log_callback
+    after_save :pre_post
 
     after_update :reverse
 end
