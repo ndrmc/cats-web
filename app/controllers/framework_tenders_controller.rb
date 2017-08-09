@@ -61,6 +61,25 @@ class FrameworkTendersController < ApplicationController
     end
   end
 
+  def update_status
+     @framework_tender = FrameworkTender.find params[:id]
+     puts "-------------------"
+     puts  FrameworkTender.get_index(params[:status])
+     puts "-------------------"
+     @framework_tender.status =  FrameworkTender.get_index(params[:status])
+ 
+        respond_to do |format|
+            if @framework_tender.save
+                format.html { redirect_to framework_tenders_url, notice: 'Framework tender status was successfully updated.' }
+            else
+                format.html { 
+                    flash[:error] = "Save failed! Please check your input and try again shortly."
+                    redirect_to framework_tenders_url 
+                }
+            end
+        end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_framework_tender
