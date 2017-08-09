@@ -49,7 +49,7 @@
               <%if policy(Transporter).show? %>
                   <td><%= link_to transporter.name, transporter_path(transporter) %></td>
               <%else%>
-                  <td><%= transporter_path(transporter) %></td>
+                   <td><%= transporter.name %></td>
               <% end %>
               <td><%= transporter.code %></td>
               <td><%= transporter.vehicle_count %></td>
