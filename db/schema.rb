@@ -98,20 +98,22 @@ ActiveRecord::Schema.define(version: 20170810072205) do
   end
 
   create_table "bids", force: :cascade do |t|
-    t.integer  "framework_tender_id"
-    t.integer  "region_id"
-    t.string   "bid_number"
-    t.decimal  "bid_bond_amount",     precision: 15, scale: 3
+    t.string   "bid_no",                         null: false
     t.date     "start_date"
-    t.date     "closing_date"
+    t.date     "end_date"
+    t.text     "description"
     t.date     "opening_date"
-    t.integer  "status"
-    t.text     "remark"
+    t.integer  "status",             default: 0, null: false
+    t.integer  "bid_plan_id"
+    t.integer  "region_id"
+    t.decimal  "document_price"
+    t.decimal  "cpo_deposit_amount"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -1365,7 +1367,7 @@ ActiveRecord::Schema.define(version: 20170810072205) do
 
   create_table "warehouse_selections", force: :cascade do |t|
     t.integer  "framework_tender_id"
-    t.integer  "woreda_id"
+    t.integer  "location_id"
     t.integer  "warehouse_id"
     t.decimal  "estimated_qty"
     t.integer  "created_by"
