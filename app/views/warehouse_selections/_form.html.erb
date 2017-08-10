@@ -1,0 +1,69 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(warehouse_selection) do |f| %>
+        <% if warehouse_selection.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(warehouse_selection.errors.count, "error") %> prohibited this warehouse_selection from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% warehouse_selection.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :framework_tender_id %>
+                <%= f.number_field :framework_tender_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :woreda_id %>
+                <%= f.number_field :woreda_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :warehouse_id %>
+                <%= f.number_field :warehouse_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :estimated_qty %>
+                <%= f.text_field :estimated_qty, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :created_by %>
+                <%= f.number_field :created_by, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :modified_by %>
+                <%= f.number_field :modified_by, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :deleted %>
+                <%= f.check_box :deleted, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :deleted_at %>
+                <%= f.datetime_select :deleted_at, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>
