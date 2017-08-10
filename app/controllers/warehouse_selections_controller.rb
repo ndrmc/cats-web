@@ -12,7 +12,20 @@ class WarehouseSelectionsController < ApplicationController
   def show
     # @framework_tender = FrameworkTender.find(params[:id])
     # @ft_name = @framework_tender.year + '/' + @framework_tender.year_half
-    @warehouse_selections = WarehouseSelection.joins(:location, warehouse: :hub).select(:id, 'warehouses.name AS warehouse_name', :'warehouses.location_id', 'locations.name AS woreda_name', 'hubs.name AS hub_name', :estimated_qty).where(:framework_tender_id => params[:id])
+    @warehouse_selections = []
+    @param_id = 0
+    if (params[:region].to_s == '' || params[:region].to_s == nil)
+      @param_id = Location.where({location_type: 'region'}).first.id
+    else
+      @param_id = params[:region]
+    end
+     WarehouseSelection.joins(:location, warehouse: :hub).where(:framework_tender_id => params[:id]).select(:id, 'warehouses.name AS warehouse_name', :'warehouse_selections.location_id', 'locations.name AS woreda_name', 'hubs.name AS hub_name', :estimated_qty)
+      .find_each do |warehouse_selection|
+        @region_id = Location.find(warehouse_selection.location_id).parent.parent_node_id
+        if(@region_id.to_s == @param_id.to_s)
+          @warehouse_selections << warehouse_selection
+        end        
+      end
   end
 
   # GET /warehouse_selections/new
@@ -65,7 +78,16 @@ class WarehouseSelectionsController < ApplicationController
   end
 
   def get_by_region
-    @warehouse_selections = WarehouseSelection.filter_by_region(params[:region])
+    # @warehouse_selections = WarehouseSelectionsHelper.filter_by_region(params[:region])
+    @results = []
+    @warehouse_selections = WarehouseSelection.joins(:location, warehouse: :hub).select(:id, 'warehouses.name AS warehouse_name', :'warehouse_selections.location_id', 'locations.name AS woreda_name', 'hubs.name AS hub_name', :estimated_qty)
+      .find_each do |warehouse_selection|
+        @region_id = Location.find(warehouse_selection.location_id).parent.parent_node_id
+        if(@region_id.to_s == params[:region].to_s)
+          @results << warehouse_selection
+        end        
+      end
+    render json: @results
   end
 
   private

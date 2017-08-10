@@ -98,7 +98,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
     <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
       <div class="col-md-6 col-sm-6 col-xs-6">
         <label class='control-label'>Region</label>
-        <%= select_tag :region, options_from_collection_for_select(Location.where({location_type: 'region'}).order(:name), 'id', 'name', params[:region]), {:required => true,:class=> 'data-parsley-required width-300px'} %>
+        <%= select_tag :region, options_from_collection_for_select(Location.where({location_type: 'region'}).order(:name), 'id', 'name', params[:region]), {:required => true,:class=> 'data-parsley-required width-300px', "data-ftid" => params[:id]} %>
       </div>
       <div class="col-md-6 col-sm-6 col-xs-6 text-right">
         <a class="btn btn-primary" data-ft-id="<%= @framework_tender_id %>" data-target="#add-warehouse-assignment" data-toggle="modal">
@@ -151,25 +151,51 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
         <h4 class="modal-title">Add Warehouse Assignment</h4>
       </div>
       <div class="modal-body col-md-12 col-sm-12 col-xs-12">
-        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
           <div class="col-md-6 col-sm-6 col-xs-6">
-            <label class='control-label'>Zone</label> <br>
-            <%= select_tag :zone, options_from_collection_for_select(Location.where({location_type: 'zone'}), 'id', 'name', params[:region]), {:required => true,:prompt => "-- Select Zone --",:class=> 'data-parsley-required width-100per'} %>
-          </div>
-          <div class="col-md-6 col-sm-6 col-xs-6">
-            <label class='control-label'>Woreda</label> <br>
-            <%= select_tag :woreda, options_from_collection_for_select(Location.where({location_type: 'woreda'}), 'id', 'name', params[:zone]), {:required => true,:prompt => "-- Select Woreda --",:class=> 'data-parsley-required width-100per'} %>
-          </div>
+            <%= label_tag :zone, "Zone", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :zone,  options_from_collection_for_select(Location.where({location_type: 'zone', parent_node_id: params[:region]}), 'id', 'name', params[:zone] ) , {:required => false , :prompt => "-- Select a Zone --", :class => 'form-control width-100per' }  %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :woreda, "Woreda", { :class => ' control-label', :required => true } %>
+
+              <div class="">
+                <%= select_tag :woreda, options_from_collection_for_select([], "id", "name", params[:woreda]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "woreda",
+                  "data-option-url" => "/locations/#{:zone}/children",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              </div>
+            </div>
         </div>
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
           <div class="col-md-6 col-sm-6 col-xs-6">
-            <label class='control-label'>Hub</label> <br>
-            <%= select_tag :hub, options_from_collection_for_select(Hub.all, 'id', 'name', params[:hub]), {:required => true,:prompt => "-- Select Hub --",:class=> 'data-parsley-required width-100per'} %>
-          </div>
-          <div class="col-md-6 col-sm-6 col-xs-6">
-            <label class='control-label'>Warehouse</label> <br>
-            <%= select_tag :warehouse, options_from_collection_for_select(Warehouse.all, 'id', 'name', params[:warehouse]), {:required => true,:prompt => "-- Select Warehouse --",:class=> 'data-parsley-required width-100per'} %>
-          </div>
+            <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Select a Hub --", :class => 'form-control width-100per' }  %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :warehouse, "Warehouse", { :class => ' control-label', :required => true } %>
+
+              <div class="">
+                <%= select_tag :warehouse, options_from_collection_for_select([], "id", "name", params[:warehouse]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "hub",
+                  "data-option-url" => "/warehouses/#{:hub}.json",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              </div>
+            </div>
         </div>
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
           <div class="col-md-12 col-sm-12 col-xs-12">
@@ -190,21 +216,5 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
 </div>
 
 <script type="text/javascript">
-    $( function() {         
 
-        $('#add-warehouse-assignment').on('shown.bs.modal', function (e) {
-            e.preventDefault(); 
-
-            var hrd_id = $( e.relatedTarget ).data('hrd-id'); 
-            var zone_id = $( e.relatedTarget ).data('zone-id'); 
-
-            $('#add-warehouse-assignment .spinner').show(); 
-            $('#add-warehouse-assignment .form-container').hide(); 
-
-            $("#add-warehouse-assignment .form-container").load( '/hrds/new_hrd_item/' + hrd_id + '?zone_id=' + zone_id, function() { 
-                $('#add-warehouse-assignment .spinner').hide(); 
-                $('#add-warehouse-assignment .form-container').show(); 
-            }); 
-        });
-    });
 </script>
