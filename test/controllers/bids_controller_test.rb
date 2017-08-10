@@ -23,7 +23,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
       post bids_url, params: { bid: { bid_bond_amount: @bid.bid_bond_amount, bid_number: @bid.bid_number, closing_date: @bid.closing_date, framework_tender_id: @bid.framework_tender_id, opening_date: @bid.opening_date, region_id: @bid.region_id, remark: @bid.remark, start_date: @bid.start_date, status: @bid.status } }
     end
 
-    assert_redirected_to bid_url(Bid.last)
+    assert_redirected_to bids_url
   end
 
   test "should show bid" do
@@ -38,7 +38,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update bid" do
     patch bid_url('en',@bid), params: { bid: { bid_bond_amount: @bid.bid_bond_amount, bid_number: @bid.bid_number, closing_date: @bid.closing_date, framework_tender_id: @bid.framework_tender_id, opening_date: @bid.opening_date, region_id: @bid.region_id, remark: @bid.remark, start_date: @bid.start_date, status: @bid.status } }
-    assert_redirected_to bid_url(@bid)
+    assert_redirected_to bids_url
   end
 
   test "should destroy bid" do
