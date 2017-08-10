@@ -1,0 +1,2 @@
+class WarehouseSelection < ApplicationRecord
+end

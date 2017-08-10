@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170804071337) do
+
+ActiveRecord::Schema.define(version: 20170810072205) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,22 +100,20 @@ ActiveRecord::Schema.define(version: 20170804071337) do
   end
 
   create_table "bids", force: :cascade do |t|
-    t.string   "bid_no",                         null: false
-    t.date     "start_date"
-    t.date     "end_date"
-    t.text     "description"
-    t.date     "opening_date"
-    t.integer  "status",             default: 0, null: false
-    t.integer  "bid_plan_id"
+    t.integer  "framework_tender_id"
     t.integer  "region_id"
-    t.decimal  "document_price"
-    t.decimal  "cpo_deposit_amount"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.string   "bid_number"
+    t.decimal  "bid_bond_amount",     precision: 15, scale: 3
+    t.date     "start_date"
+    t.date     "closing_date"
+    t.date     "opening_date"
+    t.integer  "status"
+    t.text     "remark"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -444,6 +444,21 @@ ActiveRecord::Schema.define(version: 20170804071337) do
     t.string   "zone"
     t.string   "region"
     t.index ["deleted_at"], name: "index_fdps_on_deleted_at", using: :btree
+  end
+
+  create_table "framework_tenders", force: :cascade do |t|
+    t.integer  "year"
+    t.integer  "half_year"
+    t.integer  "starting_month"
+    t.integer  "ending_month"
+    t.integer  "status"
+    t.text     "remark"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "certified_by"
   end
 
   create_table "fscd_annual_plans", force: :cascade do |t|
@@ -906,7 +921,6 @@ ActiveRecord::Schema.define(version: 20170804071337) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
-    t.decimal  "quantity",                         precision: 15, scale: 2
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -917,6 +931,7 @@ ActiveRecord::Schema.define(version: 20170804071337) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
@@ -1348,6 +1363,19 @@ ActiveRecord::Schema.define(version: 20170804071337) do
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_users_roles_on_deleted_at", using: :btree
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+  end
+
+  create_table "warehouse_selections", force: :cascade do |t|
+    t.integer  "framework_tender_id"
+    t.integer  "woreda_id"
+    t.integer  "warehouse_id"
+    t.decimal  "estimated_qty"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted"
+    t.datetime "deleted_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "warehouses", force: :cascade do |t|

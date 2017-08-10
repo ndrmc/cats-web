@@ -1,0 +1,2 @@
+module FrameworkTendersHelper
+end
