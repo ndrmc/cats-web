@@ -15,6 +15,14 @@ commodity_source_4:
   id: 4
   name: Swap
   code: 'DN'
+commodity_source_5:
+  id: 5
+  name: Transfer
+  code: 'TR'
+commodity_source_6:
+  id: 6
+  name: International Purchase
+  code: 'IP'
 
   
 
