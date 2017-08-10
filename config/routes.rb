@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   
  
   
+
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'
@@ -10,7 +11,10 @@ Rails.application.routes.draw do
  scope "(:locale)", locale: /en|am/ do
 
    resources :bids
-  resources :case_teams
+   resources :framework_tenders
+   get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'
+   resources :case_teams
+
    resources :permissions
   resources :departments
   resources :role_types
@@ -22,6 +26,9 @@ Rails.application.routes.draw do
   get "home/index"
   get "home/minor"
   get "home/other"
+
+resources :warehouse_selections
+  
 
   #get 'locations(/:parent_id)', to: 'locations#index', as: :locations
   #post 'locations', to: 'locations#create', as: :locations

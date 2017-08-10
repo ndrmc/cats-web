@@ -1,0 +1,32 @@
+    <p>
+      <strong>Year:</strong>
+      <%= @framework_tender.year %>
+    </p>
+
+    <p>
+      <strong>Half year:</strong>
+      <%= @framework_tender.half_year %>
+    </p>
+
+    <p>
+      <strong>Starting month:</strong>
+      <%= @framework_tender.starting_month %>
+    </p>
+
+    <p>
+      <strong>Ending month:</strong>
+      <%= @framework_tender.ending_month %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @framework_tender.status %>
+    </p>
+
+    <p>
+      <strong>Remark:</strong>
+      <%= @framework_tender.remark %>
+    </p>
+
+<%= link_to 'Edit', edit_framework_tender_path(@framework_tender) %> |
+<%= link_to 'Back', framework_tenders_path %>
