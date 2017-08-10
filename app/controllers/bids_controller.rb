@@ -61,6 +61,23 @@ class BidsController < ApplicationController
     end
   end
 
+
+  def update_status
+     @bid = Bid.find params[:id]
+     @bid.status =  Bid.get_index(params[:status])
+   
+        respond_to do |format|
+            if @bid.save
+                format.html { redirect_to bids_url, notice: 'Bid status was successfully updated.' }
+            else
+                format.html { 
+                    flash[:error] = "Save failed! Please check your input and try again shortly."
+                    redirect_to bids_url 
+                }
+            end
+        end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bid

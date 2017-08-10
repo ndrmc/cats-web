@@ -125,6 +125,31 @@
                         <td>
               <%= link_to 'Edit', edit_bid_path(bid) %> &middot;
               <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %>
+
+               <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li>
+                       <%= link_to 'Approve', 'bids/update_status/' + bid.id.to_s + "/" +  "approved" %> 
+                      </li>
+                     
+                      <li>
+                       <%= link_to 'Cancel', 'bids/update_status/' + bid.id.to_s + "/" +  "canceled" %> 
+                      </li>
+
+                       <li>
+                       <%= link_to 'Close', 'bids/update_status/' + bid.id.to_s + "/" +  "closed" %> 
+                      </li>
+
+                       <li>
+                       <%= link_to 'Archive', 'bids/update_status/' + bid.id.to_s + "/" +  "archived" %> 
+                      </li>
+                    </ul>
+                  </div>
+
+
             </td>
           </tr>
           <% end %>
