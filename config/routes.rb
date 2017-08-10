@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   get 'fdp_operation_summary/index'
 
  scope "(:locale)", locale: /en|am/ do
-  resources :case_teams
+   resources :framework_tenders
+   get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'
+   resources :case_teams
    resources :permissions
   resources :departments
   resources :role_types
@@ -78,7 +80,8 @@ resources :warehouse_selections
   post '/projects/:id/archive', to: 'projects#archive'
   post '/projects/:id/unarchive', to: 'projects#unarchive'
   get '/projects/get_commodities/:id', to: 'projects#get_commodities'
-
+  get '/projects/get_commodity_source_code/:id', to: 'projects#get_commodity_source_code'
+  
   resources :deliveries
 
   resources :rations
