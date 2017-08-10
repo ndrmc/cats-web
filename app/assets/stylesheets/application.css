@@ -26,3 +26,9 @@
  .form-horizontal .control-label.text-left{
      text-align: left;
  }
+
+ .big-text-field {
+ 	font-size: 40px !important;
+	height: 50px !important;
+	background-color: #fff !important;
+ }
