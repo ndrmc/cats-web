@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170809124705) do
+
+ActiveRecord::Schema.define(version: 20170810072205) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -460,6 +462,8 @@ ActiveRecord::Schema.define(version: 20170809124705) do
     t.datetime "deleted_at"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "certified_by"
+
   end
 
   create_table "fscd_annual_plans", force: :cascade do |t|
@@ -1365,6 +1369,19 @@ ActiveRecord::Schema.define(version: 20170809124705) do
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_users_roles_on_deleted_at", using: :btree
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+  end
+
+  create_table "warehouse_selections", force: :cascade do |t|
+    t.integer  "framework_tender_id"
+    t.integer  "woreda_id"
+    t.integer  "warehouse_id"
+    t.decimal  "estimated_qty"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted"
+    t.datetime "deleted_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "warehouses", force: :cascade do |t|
