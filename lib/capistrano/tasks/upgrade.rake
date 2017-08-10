@@ -1,5 +1,16 @@
 namespace :upgrade do
 
+  desc "Update commodity source for automatic project code generation "
+  task :populate_comm_source_code do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "cats:receipt:populate_comm_source_code"
+        end
+      end
+    end
+  end 
+
   desc "Upgrade location hierarchies "
   task :location do
     on roles(:app) do

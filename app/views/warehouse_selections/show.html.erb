@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Framework Tender: 2017/2 </h2>
+    <h2>Framework Tender: <%= @ft_name %> </h2>
     <ol class="breadcrumb">
       <li>
         <a href="#">Framework Tenders</a>
@@ -18,7 +18,17 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
   </div>
   <div class="ibox-content">
     <div class="col-sm-2">
-      <span class="label label-warning">Ongoing</span>
+      <% if (@framework_tender&.status == 'approved') %>
+        <span class="label label-primary"><%= @framework_tender&.status %></span>
+      <% elsif (@framework_tender&.status == 'canceled') %>
+        <span class="label label-danger"><%= @framework_tender&.status %></span>
+      <% elsif (@framework_tender&.status == 'closed') %>
+        <span class="label label-success"><%= @framework_tender&.status %></span>
+      <% elsif (@framework_tender&.status == 'archived') %>
+        <span class="label label-default"><%= @framework_tender&.status %></span>
+      <% else %>
+        <span class="label label-warning"><%= @framework_tender&.status %></span>
+      <% end %>
     </div>
     <div class="col-sm-5">
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -26,7 +36,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           Year:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          2017
+          <%= @framework_tender&.year %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -34,7 +44,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           Half-year:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          2
+          <%= @framework_tender&.half_year %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -42,7 +52,9 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           Starting Month:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          July
+        <% if (!(@framework_tender.blank?)) %>
+          <%=  Date::MONTHNAMES[@framework_tender&.starting_month] %>
+        <% end %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -50,7 +62,9 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           End Month:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          Dec
+        <% if (!(@framework_tender.blank?)) %>
+          <%= Date::MONTHNAMES[@framework_tender&.ending_month] %>
+        <% end %>
         </div>
       </div>
     </div>
@@ -60,7 +74,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           Total Destinations:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          ###
+          <%= @total_destinations %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -68,7 +82,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           Total commodity:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          ### mt
+          <%= @total_amount %> mt
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -76,7 +90,9 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           Created date:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          ##/##/####
+        <% if (!(@framework_tender.blank?)) %>
+          <%= @framework_tender&.created_at.to_formatted_s(:long_ordinal)  %>
+        <% end %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -84,7 +100,9 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           Certified by:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          User
+        <% if (!(@framework_tender.blank?)) %>
+          <%= @user&.first_name.to_s + " " + @user&.last_name.to_s %>
+        <% end %>
         </div>
       </div>
     </div>

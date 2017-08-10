@@ -19,8 +19,7 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu pull-right">
-          <% CommoditySource.all.each do |source| %>
-
+          <% CommoditySource.where.not(code: ["TR","RP", "OT", "RT"]).order(:name).each do |source| %>
           <li><%= link_to "#{source.name}", new_project_path(source: source.id) %></li>
           <% end %>
         </ul>

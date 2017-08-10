@@ -38,7 +38,7 @@ include Filterable
   validates :receiving_number, uniqueness: true
   #validates :gin_number, uniqueness: true
 
-  after_save :pre_post, :create_log_callback
+  after_save :pre_post
 
   after_update :reverse
 
