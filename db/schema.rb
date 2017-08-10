@@ -408,19 +408,10 @@ ActiveRecord::Schema.define(version: 20170810072205) do
 
   create_table "fdp_operations_logs", force: :cascade do |t|
     t.integer  "operation_id"
-    t.string   "operation_name"
     t.integer  "fdp_id"
-    t.string   "fdp_name"
-    t.integer  "woreda_id"
-    t.string   "woreda_name"
-    t.integer  "zone_id"
-    t.string   "zone_name"
-    t.integer  "region_id"
-    t.string   "region_name"
+    t.integer  "location_id"
     t.integer  "requisition_id"
-    t.string   "requisition_no"
     t.integer  "commodity_id"
-    t.string   "commodity_name"
     t.decimal  "allocated_in_mt"
     t.decimal  "dispatched_in_mt"
     t.decimal  "delivered_in_mt"
@@ -429,6 +420,11 @@ ActiveRecord::Schema.define(version: 20170810072205) do
     t.datetime "deleted_at"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.index ["commodity_id"], name: "index_fdp_operations_logs_on_commodity_id", using: :btree
+    t.index ["fdp_id"], name: "index_fdp_operations_logs_on_fdp_id", using: :btree
+    t.index ["location_id"], name: "index_fdp_operations_logs_on_location_id", using: :btree
+    t.index ["operation_id"], name: "index_fdp_operations_logs_on_operation_id", using: :btree
+    t.index ["requisition_id"], name: "index_fdp_operations_logs_on_requisition_id", using: :btree
   end
 
   create_table "fdps", force: :cascade do |t|
@@ -925,7 +921,6 @@ ActiveRecord::Schema.define(version: 20170810072205) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
-    t.decimal  "quantity",                         precision: 15, scale: 2
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -936,6 +931,7 @@ ActiveRecord::Schema.define(version: 20170810072205) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
@@ -1039,15 +1035,14 @@ ActiveRecord::Schema.define(version: 20170810072205) do
   create_table "requisition_items", force: :cascade do |t|
     t.integer  "requisition_id"
     t.integer  "fdp_id"
-    t.integer  "beneficiary_no",     null: false
-    t.decimal  "amount",             null: false
+    t.integer  "beneficiary_no", null: false
+    t.decimal  "amount",         null: false
     t.decimal  "contingency"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.integer  "unit_of_measure_id"
     t.index ["deleted_at"], name: "index_requisition_items_on_deleted_at", using: :btree
   end
 
