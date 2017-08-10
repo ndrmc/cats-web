@@ -10,8 +10,11 @@ class WarehouseSelectionsController < ApplicationController
   # GET /warehouse_selections/1
   # GET /warehouse_selections/1.json
   def show
-    # @framework_tender = FrameworkTender.find(params[:id])
-    # @ft_name = @framework_tender.year + '/' + @framework_tender.year_half
+    @framework_tender = FrameworkTender.find_by_id(params[:id])
+    @ft_name = @framework_tender&.year.to_s + '/' + @framework_tender&.half_year.to_s
+    @total_destinations = WarehouseSelection.where(:framework_tender_id => params[:id]).count
+    @total_amount = WarehouseSelection.where(:framework_tender_id => params[:id]).sum(:estimated_qty)
+    @user = User.find_by_id(@framework_tender&.certified_by)
     @warehouse_selections = []
     @param_id = 0
     if (params[:region].to_s == '' || params[:region].to_s == nil)
@@ -26,6 +29,7 @@ class WarehouseSelectionsController < ApplicationController
           @warehouse_selections << warehouse_selection
         end        
       end
+
   end
 
   # GET /warehouse_selections/new
