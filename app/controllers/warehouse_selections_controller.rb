@@ -12,7 +12,7 @@ class WarehouseSelectionsController < ApplicationController
   def show
     # @framework_tender = FrameworkTender.find(params[:id])
     # @ft_name = @framework_tender.year + '/' + @framework_tender.year_half
-    @warehouse_selections = WarehouseSelection.joins(:location, warehouse: :hub).select(:id, 'warehouses.name AS warehouse_name', :'warehouses.location_id', 'locations.name AS woreda_name', 'hubs.name AS hub_name', :estimated_qty).where(:framework_tender_id => params[:id])
+    @warehouse_selections = WarehouseSelection.joins(:location, warehouse: :hub).select(:id, 'warehouses.name AS warehouse_name', :'warehouse_selections.location_id', 'locations.name AS woreda_name', 'hubs.name AS hub_name', :estimated_qty).where(:framework_tender_id => params[:id])
   end
 
   # GET /warehouse_selections/new
