@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170808063110) do
+ActiveRecord::Schema.define(version: 20170810072205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,22 +98,20 @@ ActiveRecord::Schema.define(version: 20170808063110) do
   end
 
   create_table "bids", force: :cascade do |t|
-    t.string   "bid_no",                         null: false
-    t.date     "start_date"
-    t.date     "end_date"
-    t.text     "description"
-    t.date     "opening_date"
-    t.integer  "status",             default: 0, null: false
-    t.integer  "bid_plan_id"
+    t.integer  "framework_tender_id"
     t.integer  "region_id"
-    t.decimal  "document_price"
-    t.decimal  "cpo_deposit_amount"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.string   "bid_number"
+    t.decimal  "bid_bond_amount",     precision: 15, scale: 3
+    t.date     "start_date"
+    t.date     "closing_date"
+    t.date     "opening_date"
+    t.integer  "status"
+    t.text     "remark"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -458,6 +456,7 @@ ActiveRecord::Schema.define(version: 20170808063110) do
     t.datetime "deleted_at"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "certified_by"
   end
 
   create_table "fscd_annual_plans", force: :cascade do |t|

@@ -63,11 +63,8 @@ class FrameworkTendersController < ApplicationController
 
   def update_status
      @framework_tender = FrameworkTender.find params[:id]
-     puts "-------------------"
-     puts  FrameworkTender.get_index(params[:status])
-     puts "-------------------"
      @framework_tender.status =  FrameworkTender.get_index(params[:status])
- 
+     @framework_tender.certified_by = current_user.id
         respond_to do |format|
             if @framework_tender.save
                 format.html { redirect_to framework_tenders_url, notice: 'Framework tender status was successfully updated.' }
