@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  framework_tender_id: 1
+  framework_tender: framework_tenders_1
   location: location1
   bid_number: MyString
   bid_bond_amount: 
@@ -12,7 +12,7 @@ one:
   remark: MyText
 
 two:
-  framework_tender_id: 1
+  framework_tender: framework_tenders_2
   location: location1
   bid_number: MyString
   bid_bond_amount: 

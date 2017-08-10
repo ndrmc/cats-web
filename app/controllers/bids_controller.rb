@@ -4,7 +4,10 @@ class BidsController < ApplicationController
   # GET /bids
   # GET /bids.json
   def index
-    @bids = Bid.all
+    @framework_tender = FrameworkTender.find params[:framework_tender_id]
+    $framework_tender_id = params[:framework_tender_id]
+    $framework_tender_no =  @framework_tender.year.to_s + '/' +  @framework_tender.half_year.to_s
+    @bids = Bid.where(framework_tender_id: params[:framework_tender_id])
   end
 
   # GET /bids/1
@@ -14,11 +17,13 @@ class BidsController < ApplicationController
 
   # GET /bids/new
   def new
-    @bid = Bid.new
+  @framework_tender_no =  $framework_tender_no
+  @bid = Bid.new(framework_tender_id: $framework_tender_id)
   end
 
   # GET /bids/1/edit
   def edit
+      @framework_tender_no =  $framework_tender_no
   end
 
   # POST /bids
@@ -28,7 +33,7 @@ class BidsController < ApplicationController
 
     respond_to do |format|
       if @bid.save
-        format.html { redirect_to bids_url, notice: 'Bid was successfully created.' }
+        format.html { redirect_to bids_url(:framework_tender_id => $framework_tender.id ), notice: 'Bid was successfully created.' }
         format.json { render :show, status: :created, location: @bid }
       else
         format.html { render :new }
@@ -42,7 +47,7 @@ class BidsController < ApplicationController
   def update
     respond_to do |format|
       if @bid.update(bid_params)
-        format.html { redirect_to bids_url, notice: 'Bid was successfully updated.' }
+        format.html { redirect_to bids_url(:framework_tender_id => $framework_tender.id ), notice: 'Bid was successfully updated.' }
         format.json { render :show, status: :ok, location: @bid }
       else
         format.html { render :edit }
@@ -68,7 +73,7 @@ class BidsController < ApplicationController
    
         respond_to do |format|
             if @bid.save
-                format.html { redirect_to bids_url, notice: 'Bid status was successfully updated.' }
+                format.html { redirect_to bids_url(:framework_tender_id => $framework_tender.id ), notice: 'Bid status was successfully updated.' }
             else
                 format.html { 
                     flash[:error] = "Save failed! Please check your input and try again shortly."

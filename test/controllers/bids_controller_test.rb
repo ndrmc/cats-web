@@ -6,10 +6,12 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:admin)
     @bid = bids(:one)
+    @framework_tender = framework_tenders(:framework_tenders_1)
+    $framework_tender = framework_tenders(:framework_tenders_1)
   end
 
   test "should get index" do
-    get bids_url
+    get bids_url(:framework_tender_id => @framework_tender.id)
     assert_response :success
   end
 
@@ -23,7 +25,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
       post bids_url, params: { bid: { bid_bond_amount: @bid.bid_bond_amount, bid_number: @bid.bid_number, closing_date: @bid.closing_date, framework_tender_id: @bid.framework_tender_id, opening_date: @bid.opening_date, region_id: @bid.region_id, remark: @bid.remark, start_date: @bid.start_date, status: @bid.status } }
     end
 
-    assert_redirected_to bids_url
+    assert_redirected_to bids_url(:framework_tender_id => @framework_tender.id)
   end
 
   test "should show bid" do
@@ -38,7 +40,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update bid" do
     patch bid_url('en',@bid), params: { bid: { bid_bond_amount: @bid.bid_bond_amount, bid_number: @bid.bid_number, closing_date: @bid.closing_date, framework_tender_id: @bid.framework_tender_id, opening_date: @bid.opening_date, region_id: @bid.region_id, remark: @bid.remark, start_date: @bid.start_date, status: @bid.status } }
-    assert_redirected_to bids_url
+    assert_redirected_to bids_url(:framework_tender_id => @framework_tender.id)
   end
 
   test "should destroy bid" do

@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+framework_tenders_1:
   year: 1
   half_year: 1
   starting_month: 1
@@ -8,7 +8,7 @@ one:
   status: 1
   remark: MyText
 
-two:
+framework_tenders_2:
   year: 1
   half_year: 1
   starting_month: 1

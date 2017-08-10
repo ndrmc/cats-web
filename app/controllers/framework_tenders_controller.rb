@@ -28,7 +28,7 @@ class FrameworkTendersController < ApplicationController
 
     respond_to do |format|
       if @framework_tender.save
-        format.html { redirect_to framework_tenders_path, notice: 'Framework tender was successfully created.' }
+        format.html { redirect_to bids_path(:framework_tender_id => @framework_tender.id ), notice: 'Framework tender was successfully created.' }
         format.json { render :show, status: :created, location: @framework_tender }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class FrameworkTendersController < ApplicationController
   def update
     respond_to do |format|
       if @framework_tender.update(framework_tender_params)
-        format.html { redirect_to framework_tenders_path, notice: 'Framework tender was successfully updated.' }
+        format.html { redirect_to bids_path(:framework_tender_id => @framework_tender.id) , notice: 'Framework tender was successfully updated.' }
         format.json { render :show, status: :ok, location: @framework_tender }
       else
         format.html { render :edit }
