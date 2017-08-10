@@ -1,0 +1,85 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Framework Tenders</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Framework Tenders</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Framework Tender', new_framework_tender_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+                        <th>Year</th>
+                        <th>Half year</th>
+                        <th>Starting month</th>
+                        <th>Ending month</th>
+                        <th>Status</th>
+                        <th>Remark</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @framework_tenders.each do |framework_tender| %>
+          <tr>
+                        <td><%= framework_tender.year
+              %></td>
+                        <td><%= framework_tender.half_year
+              %></td>
+                       <td><%= Date::MONTHNAMES[framework_tender.starting_month]
+              %></td>
+                        <td><%= Date::MONTHNAMES[framework_tender.ending_month]
+              %></td>
+                        <td><%= framework_tender.status
+              %></td>
+                        <td><%= framework_tender.remark
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_framework_tender_path(framework_tender) %> &middot;
+              <%= link_to 'Delete', framework_tender, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li>
+                       <%= link_to 'Approve', 'framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "approved" %> 
+                      </li>
+                     
+                      <li>
+                       <%= link_to 'Cancel', 'framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "canceled" %> 
+                      </li>
+
+                       <li>
+                       <%= link_to 'Close', 'framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "closed" %> 
+                      </li>
+
+                       <li>
+                       <%= link_to 'Archive', 'framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "archived" %> 
+                      </li>
+                    </ul>
+                  </div>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

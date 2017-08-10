@@ -2,12 +2,15 @@ Rails.application.routes.draw do
   
   
  
+  
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'
 
  scope "(:locale)", locale: /en|am/ do
-  resources :case_teams
+   resources :framework_tenders
+   get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'
+   resources :case_teams
    resources :permissions
   resources :departments
   resources :role_types
