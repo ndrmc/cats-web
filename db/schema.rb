@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20170810072205) do
-
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,20 +98,22 @@ ActiveRecord::Schema.define(version: 20170810072205) do
   end
 
   create_table "bids", force: :cascade do |t|
-    t.integer  "framework_tender_id"
-    t.integer  "region_id"
-    t.string   "bid_number"
-    t.decimal  "bid_bond_amount",     precision: 15, scale: 3
+    t.string   "bid_no",                         null: false
     t.date     "start_date"
-    t.date     "closing_date"
+    t.date     "end_date"
+    t.text     "description"
     t.date     "opening_date"
-    t.integer  "status"
-    t.text     "remark"
+    t.integer  "status",             default: 0, null: false
+    t.integer  "bid_plan_id"
+    t.integer  "region_id"
+    t.decimal  "document_price"
+    t.decimal  "cpo_deposit_amount"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -921,6 +921,7 @@ ActiveRecord::Schema.define(version: 20170810072205) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -931,7 +932,6 @@ ActiveRecord::Schema.define(version: 20170810072205) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
-    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
