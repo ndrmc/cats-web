@@ -14,6 +14,7 @@ class WarehouseSelectionsController < ApplicationController
     @ft_name = @framework_tender&.year.to_s + '/' + @framework_tender&.half_year.to_s
     @total_destinations = WarehouseSelection.where(:framework_tender_id => params[:id]).count
     @total_amount = WarehouseSelection.where(:framework_tender_id => params[:id]).sum(:estimated_qty)
+    @user = User.find_by_id(@framework_tender&.certified_by)
     @warehouse_selections = WarehouseSelection.joins(:location, warehouse: :hub).select(:id, 'warehouses.name AS warehouse_name', :'warehouse_selections.location_id', 'locations.name AS woreda_name', 'hubs.name AS hub_name', :estimated_qty).where(:framework_tender_id => params[:id])
   end
 

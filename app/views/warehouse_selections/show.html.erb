@@ -100,7 +100,9 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           Certified by:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          User
+        <% if (!(@framework_tender.blank?)) %>
+          <%= @user&.first_name.to_s + " " + @user&.last_name.to_s %>
+        <% end %>
         </div>
       </div>
     </div>
