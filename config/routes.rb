@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   
  
   
+
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'
@@ -11,6 +12,7 @@ Rails.application.routes.draw do
 
    resources :bids
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
+
    resources :framework_tenders
    get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'
    resources :case_teams
@@ -26,6 +28,9 @@ Rails.application.routes.draw do
   get "home/index"
   get "home/minor"
   get "home/other"
+
+resources :warehouse_selections
+  
 
   #get 'locations(/:parent_id)', to: 'locations#index', as: :locations
   #post 'locations', to: 'locations#create', as: :locations
