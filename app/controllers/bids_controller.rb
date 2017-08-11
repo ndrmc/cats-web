@@ -30,10 +30,10 @@ class BidsController < ApplicationController
   # POST /bids.json
   def create
     @bid = Bid.new(bid_params)
-
+    @bid.status = Bid.statuses[:draft]
     respond_to do |format|
       if @bid.save
-        format.html { redirect_to bids_url(:framework_tender_id => $framework_tender.id ), notice: 'Bid was successfully created.' }
+        format.html { redirect_to bids_url(:framework_tender_id => bid_params[:framework_tender_id] ), notice: 'Bid was successfully created.' }
         format.json { render :show, status: :created, location: @bid }
       else
         format.html { render :new }
@@ -47,7 +47,7 @@ class BidsController < ApplicationController
   def update
     respond_to do |format|
       if @bid.update(bid_params)
-        format.html { redirect_to bids_url(:framework_tender_id => $framework_tender.id ), notice: 'Bid was successfully updated.' }
+        format.html { redirect_to bids_url(:framework_tender_id => bid_params[:framework_tender_id] ), notice: 'Bid was successfully updated.' }
         format.json { render :show, status: :ok, location: @bid }
       else
         format.html { render :edit }
@@ -73,7 +73,7 @@ class BidsController < ApplicationController
    
         respond_to do |format|
             if @bid.save
-                format.html { redirect_to bids_url(:framework_tender_id => $framework_tender.id ), notice: 'Bid status was successfully updated.' }
+                format.html { redirect_to bids_url(:framework_tender_id => @bid.framework_tender_id ), notice: 'Bid status was successfully updated.' }
             else
                 format.html { 
                     flash[:error] = "Save failed! Please check your input and try again shortly."
