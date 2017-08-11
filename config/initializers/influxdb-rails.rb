@@ -2,7 +2,7 @@ InfluxDB::Rails.configure do |config|
   config.influxdb_database = "cats_log"
   config.influxdb_username = ENV["INFLUX_USER"]
   config.influxdb_password = ENV["INFLUX_PASSWORD"]
-  config.influxdb_hosts    = ENV["INFLUX_CATS_SERVER"]
+  config.influxdb_hosts    = ["10.11.157.105"]
   config.influxdb_port     = 8086
 
   config.series_name_for_controller_runtimes = "rails.controller"
