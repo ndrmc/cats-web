@@ -119,9 +119,11 @@ Done'.html_safe, "/en/framework_tenders", :class => "btn btn-primary"%>
         <%= select_tag :region, options_from_collection_for_select(Location.where({location_type: 'region'}).order(:name), 'id', 'name', params[:region]), {:required => true,:class=> 'data-parsley-required width-300px', "data-ftid" => params[:id]} %>
       </div>
       <div class="col-md-6 col-sm-6 col-xs-6 text-right">
-        <a class="btn btn-primary" data-ft-id="<%= @framework_tender_id %>" data-target="#add-warehouse-assignment" data-toggle="modal">
-            <i class="fa fa-plus"></i> Add Warehouse Assignment
-        </a>
+        <% if (@framework_tender&.status == 'draft') %>
+          <a class="btn btn-primary" data-ft-id="<%= @framework_tender_id %>" data-target="#add-warehouse-assignment" data-toggle="modal">
+              <i class="fa fa-plus"></i> Add Warehouse Assignment
+          </a>
+        <% end %>
       </div>
     </div>
     <div class="ibox-content">     
@@ -147,7 +149,9 @@ Done'.html_safe, "/en/framework_tenders", :class => "btn btn-primary"%>
             <td><%= warehouse_selection.warehouse_name %></td>
             <td><%= warehouse_selection.estimated_qty %></td>
             <td>
-              <%= link_to 'Remove', warehouse_selection, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if (@framework_tender&.status == 'draft') %>
+                <%= link_to 'Remove', warehouse_selection, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>
