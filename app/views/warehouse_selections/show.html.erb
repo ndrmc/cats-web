@@ -13,11 +13,11 @@
   <div class="col-sm-8">
     <div class="title-action">
       <%= link_to '<i class="fa fa-check-square" aria-hidden="true"></i>
-Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
+Done'.html_safe, "/en/framework_tenders", :class => "btn btn-primary"%>
     </div>
   </div>
   <div class="ibox-content">
-    <div class="col-sm-2">
+    <div class="col-sm-1">
       <% if (@framework_tender&.status == 'approved') %>
         <span class="label label-primary"><%= @framework_tender&.status %></span>
       <% elsif (@framework_tender&.status == 'canceled') %>
@@ -30,7 +30,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
         <span class="label label-warning"><%= @framework_tender&.status %></span>
       <% end %>
     </div>
-    <div class="col-sm-5">
+    <div class="col-sm-4">
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
         <div class="col-md-6 col-sm-6 col-xs-6 text-right">
           Year:
@@ -68,38 +68,38 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
         </div>
       </div>
     </div>
-    <div class="col-sm-5">
+    <div class="col-sm-7">
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
-        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
           Total Destinations:
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="col-md-8 col-sm-8 col-xs-8">
           <%= @total_destinations %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
-        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
           Total commodity:
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="col-md-8 col-sm-8 col-xs-8">
           <%= @total_amount %> mt
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
-        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
           Created date:
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="col-md-8 col-sm-8 col-xs-8">
         <% if (!(@framework_tender.blank?)) %>
           <%= @framework_tender&.created_at.to_formatted_s(:long_ordinal)  %>
         <% end %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
-        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
           Certified by:
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="col-md-8 col-sm-8 col-xs-8">
         <% if (!(@framework_tender.blank?)) %>
           <%= @user&.first_name.to_s + " " + @user&.last_name.to_s %>
         <% end %>
@@ -166,7 +166,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
           <span aria-hidden="true">&times;</span>
           <span class="sr-only">Close</span>
         </button>
-        <h4 class="modal-title">Add Warehouse Assignment</h4>
+        <h4 id='modal-title' class="modal-title">Add Warehouse Assignment</h4>
       </div>
       <div class="modal-body col-md-12 col-sm-12 col-xs-12">
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
@@ -174,7 +174,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
             <%= label_tag :zone, "Zone", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :zone,  options_from_collection_for_select(Location.where({location_type: 'zone', parent_node_id: params[:region]}), 'id', 'name', params[:zone] ) , {:required => false , :prompt => "-- Select a Zone --", :class => 'form-control width-100per' }  %>
+              <%= select_tag  :zone,  options_from_collection_for_select(Location.where({location_type: 'zone', parent_node_id: @param_id}), 'id', 'name', params[:zone] ) , {:required => false , :prompt => "-- Select a Zone --", :class => 'form-control width-100per' }  %>
             </div>
            </div>
 
@@ -185,7 +185,7 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
                 <%= select_tag :woreda, options_from_collection_for_select([], "id", "name", params[:woreda]),
                   :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
                   "data-option-dependent" => true,
-                  "data-option-observed" => "woreda",
+                  "data-option-observed" => "zone",
                   "data-option-url" => "/locations/#{:zone}/children",
                   "data-option-key-method" => :id,
                   "data-option-value-method" => :name %>
@@ -218,16 +218,24 @@ Done'.html_safe, new_warehouse_selection_path, :class => "btn btn-primary"%>
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <label class='control-label'>Est. Quantity</label> <br>
-            <%= number_field :estimated_qty, :class => 'data-parsley-required width-100per' %>
+            <%= number_field_tag :estimated_qty, '', min: 0, max: 9999999999999999, :step => 'any', class: "number", placeholder: '0.00' %>
           </div>
         </div>
-        <div class="spinner" style="visibility: hidden;">
-            Loading...
+        <div class="spinner col-md-12 col-sm-12 col-xs-12">
+            
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="save-hrd-item-btn">Save</button>
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <div class="pll-right" style="width:inherit;"> 
+            Continue adding
+            <%= check_box_tag 'keep_creating', false %>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="save-ws-btn" data-ftid=<%= params[:id] %>>Save</button>
+        </div>
       </div>
     </div>
   </div>

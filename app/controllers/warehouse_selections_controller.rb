@@ -45,11 +45,18 @@ class WarehouseSelectionsController < ApplicationController
   # POST /warehouse_selections.json
   def create
     @warehouse_selection = WarehouseSelection.new(warehouse_selection_params)
-
+    @warehouse_selection.created_by = current_user.id
+    @warehouse_selection.modified_by = current_user.id
+    @existing_ws = WarehouseSelection.where(:warehouse_id => @warehouse_selection.warehouse_id, :location_id => @warehouse_selection.location_id).count
     respond_to do |format|
-      if @warehouse_selection.save
-        format.html { redirect_to @warehouse_selection, notice: 'Warehouse selection was successfully created.' }
-        format.json { render :show, status: :created, location: @warehouse_selection }
+      if @existing_ws == 0
+        if @warehouse_selection.save
+          format.html { redirect_to @warehouse_selection, notice: 'Warehouse selection was successfully created.' }
+          format.json { render :show, status: :created, location: @warehouse_selection }
+        else
+          format.html { render :new }
+          format.json { render json: @warehouse_selection.errors, status: :unprocessable_entity }
+        end
       else
         format.html { render :new }
         format.json { render json: @warehouse_selection.errors, status: :unprocessable_entity }
@@ -75,8 +82,13 @@ class WarehouseSelectionsController < ApplicationController
   # DELETE /warehouse_selections/1.json
   def destroy
     @warehouse_selection.destroy
+    @woreda = Location.find_by_id(@warehouse_selection.location_id)
     respond_to do |format|
-      format.html { redirect_to warehouse_selections_url, notice: 'Warehouse selection was successfully destroyed.' }
+      if (@woreda.present?)
+        format.html { redirect_to '/en/warehouse_selections/' + @warehouse_selection&.framework_tender_id&.to_s + '?region=' + @woreda.parent.parent.id.to_s , notice: 'Warehouse selection was successfully destroyed.' }
+      else
+        format.html { redirect_to '/en/warehouse_selections/' + @warehouse_selection&.framework_tender_id&.to_s, notice: 'Warehouse selection was successfully destroyed.' }
+      end
       format.json { head :no_content }
     end
   end
@@ -102,6 +114,6 @@ class WarehouseSelectionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_selection_params
-      params.require(:warehouse_selection).permit(:ft_id, :framework_tender_id, :woreda_id, :warehouse_id, :estimated_qty, :created_by, :modified_by, :deleted, :deleted_at, :region)
+      params.require(:warehouse_selection).permit(:ft_id, :framework_tender_id, :location_id, :warehouse_id, :estimated_qty, :created_by, :modified_by, :deleted, :deleted_at, :region)
     end
 end

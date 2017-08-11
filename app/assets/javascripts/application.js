@@ -120,7 +120,7 @@ $(document).ready(function() {
         // var prompt = $(this).has('option[value=]').size() ? $(this).find('option[value=]') : 
         //               $('<option value=\"\">').text('Select a specialization');
 
-        var prompt = $('<option value=\"\">').text('Select a warehouse');
+        var prompt = $('<option value=\"\">').text('-- Select --');
         var regexp = /:[0-9a-zA-Z_]+:/g;
         var observer = $('select#' + observer_dom_id);
         var observed = $('#' + observed_dom_id);
@@ -129,10 +129,19 @@ $(document).ready(function() {
           observer.attr('disabled', 'disabled');
         }
         observed.on('change', function () {
+
           observer.empty().append(prompt);
           if (observed.val()) {
-            //url = url_mask.replace(regexp, observed.val());
-            url = "/warehouses/" + observed.val() + ".json";
+            // url = url_mask.replace(regexp, observed.val());            
+            if(observed_dom_id == 'hub')
+            {
+                url = "/warehouses/" + observed.val() + ".json";
+            }
+            else if (observed_dom_id == 'zone') 
+            {
+                url = "/locations/" + observed.val() + "/children";
+            }
+            // url = "/warehouses/" + observed.val() + ".json";
             $.getJSON(url, function (data) {
               $.each(data, function (i, object) {
                 observer.append($('<option>').attr('value', object[key_method]).text(object[value_method]));
