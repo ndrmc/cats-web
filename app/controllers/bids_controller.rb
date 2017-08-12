@@ -83,6 +83,20 @@ class BidsController < ApplicationController
         end
   end
 
+ def request_for_quotations
+
+    set_bid
+    @bid
+    @warehouse_allocation = WarehouseSelection.where(framework_tender_id: @bid.framework_tender_id)
+    file_name = "Frmework Tender RFQ for " +  @warehouse_allocation.first.framework_tender&.year.to_s + '-' +  @warehouse_allocation.first.framework_tender&.half_year.to_s
+    respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{file_name}.xlsx\""
+      }
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bid
