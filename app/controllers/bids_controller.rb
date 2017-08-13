@@ -86,15 +86,64 @@ class BidsController < ApplicationController
  def request_for_quotations
 
     set_bid
-    @bid
     @warehouse_allocation = WarehouseSelection.where(framework_tender_id: @bid.framework_tender_id)
+    if @warehouse_allocation.count < 1
+         flash[:error] = "Bid does not have warehouse allocation."
+         redirect_to bids_url(:framework_tender_id => @bid.framework_tender_id) 
+    else
     file_name = "Frmework Tender RFQ for " +  @warehouse_allocation.first.framework_tender&.year.to_s + '-' +  @warehouse_allocation.first.framework_tender&.half_year.to_s
     respond_to do |format|
       format.xlsx {
         response.headers['Content-Disposition'] = "attachment; filename=\"#{file_name}.xlsx\""
       }
     end
+    end
+  end
 
+ def upload_rfq
+
+    file = params[:file]
+    set_bid
+    file_not_supported=false
+    case File.extname(file.original_filename)
+    when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
+    when '.xlsx' then spreadsheet = Roo::Excelx.new(file.path, nil, :ignore)
+    else file_not_supported=true
+    end
+
+    
+    if !file_not_supported
+    number_of_skipped_rows = 0
+
+    (13..spreadsheet.last_row).each do |i|
+      row =  spreadsheet.row(i)
+      warehouse_selection = WarehouseSelection.where(id: row[0]).first
+      if warehouse_selection
+        if row[5].is_a?( Numeric) && row[5] >= 0
+          warehouse_selection.estimated_qty = row[5]
+          warehouse_selection.save
+        else
+          number_of_skipped_rows += 1
+        end
+      else
+        Rails.logger.info("No Warehouse allocation was found for the worda id: #{row[1]}. Skipping...")
+      end
+    end
+
+    respond_to do |format|
+      if number_of_skipped_rows > 0
+        flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
+      end
+
+      format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , notice: "Excel imported successfully."  }
+    end
+
+  else
+    respond_to do |format|
+        format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , alert: "The file is not supported."  }
+    end
+  end
+  
   end
 
   private
