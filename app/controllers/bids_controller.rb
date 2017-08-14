@@ -103,6 +103,8 @@ class BidsController < ApplicationController
  def upload_rfq
 
     file = params[:file]
+    transporter_id = params[:transporter]
+   
     set_bid
     file_not_supported=false
     case File.extname(file.original_filename)
