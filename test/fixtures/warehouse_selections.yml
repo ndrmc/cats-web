@@ -3,7 +3,7 @@
 warehouse_selection_1:
   id: 1
   framework_tender_id: 1
-  woreda_id: 1
+  location_id: 1
   warehouse_id: 1
   estimated_qty: 9.99
   created_by: 1
@@ -13,8 +13,8 @@ warehouse_selection_1:
 warehouse_selection_2:
   id: 2
   framework_tender_id: 1
-  woreda_id: 1
-  warehouse_id: 1
+  location_id: 2
+  warehouse_id: 2
   estimated_qty: 9.99
   created_by: 1
   modified_by: 1

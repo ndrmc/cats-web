@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get 'fdp_operation_summary/index'
 
+  
+
  scope "(:locale)", locale: /en|am/ do
 
    resources :bids
@@ -31,7 +33,8 @@ Rails.application.routes.draw do
   get "home/minor"
   get "home/other"
 
-resources :warehouse_selections
+  get 'warehouse_selections/get_by_region'
+  resources :warehouse_selections
   
 
   #get 'locations(/:parent_id)', to: 'locations#index', as: :locations

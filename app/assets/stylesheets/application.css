@@ -27,6 +27,10 @@
      text-align: left;
  }
 
+.width-100per{
+	width: 100% !important;
+}
+
  .big-text-field {
  	font-size: 40px !important;
 	height: 50px !important;

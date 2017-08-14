@@ -12,6 +12,9 @@ class WarehouseSelection < ApplicationRecord
 
       def framework_tender
         FrameworkTender.find framework_tender_id
-      end
-      
+      end      
+
+	belongs_to :location
+	belongs_to :warehouse	
+
 end
