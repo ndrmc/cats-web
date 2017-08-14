@@ -130,7 +130,7 @@
               <%= link_to 'Edit', edit_bid_path(bid) %> &middot;
               <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
               <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx"> Download RFQ </a> &middot;
-              <a href="#"  data-toggle="modal" id="<%= bid.id %>" data-target="#rfq-modal">Upload RFQ</a> 
+              <a href="#"  data-toggle="modal" data-id="<%= bid.id %>" class="rfq-modal" data-target="#rfq-modal">Upload RFQ</a> 
     
                <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
@@ -193,6 +193,7 @@
         <label for="transporter">File </label>
         <span class="required">*</span>
         <div>
+            <input  type="hidden" name="bid_id" id="bid_id" value="" />
             <input type="file" name="file" class="form-control" required />
             <input type="submit" class="btn btn-primary" value="Upload Request Items" />
         </div>
@@ -210,8 +211,8 @@
 </div><!-- /.modal -->
 
 <script>
-$('#rfq-modal').on('show.sb.modal',function(e){
-  bid_id = e.relatedTarget.id;
-  alert(bid_id);
-})
+$(document).on("click", ".rfq-modal",function(){
+  var bid_id = $(this).data('id');
+  $(".form-group #bid_id").val(bid_id);
+});
 </script>

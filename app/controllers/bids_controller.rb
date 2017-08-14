@@ -104,8 +104,9 @@ class BidsController < ApplicationController
 
     file = params[:file]
     transporter_id = params[:transporter]
-   
-    set_bid
+    bid_id =params[:bid_id]
+
+    @bid = Bid.find(bid_id)
     file_not_supported=false
     case File.extname(file.original_filename)
     when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
@@ -115,20 +116,45 @@ class BidsController < ApplicationController
 
     
     if !file_not_supported
+
     number_of_skipped_rows = 0
 
     (13..spreadsheet.last_row).each do |i|
       row =  spreadsheet.row(i)
-      warehouse_selection = WarehouseSelection.where(id: row[0]).first
-      if warehouse_selection
-        if row[5].is_a?( Numeric) && row[5] >= 0
-          warehouse_selection.estimated_qty = row[5]
-          warehouse_selection.save
+      bid_quotation_in_db = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
+      if !bid_quotation_in_db.nil?
+          bid_quotation_in_db = BidQuotationDetail.where(bid_quotation_id: bid_quotation_in_db.id, location_id: row[1], warehouse_id: row[0]).first
+      end
+
+
+      if bid_quotation_in_db
+        if row[5].is_a?( Numeric) &&  row[5] >= 0 && !row[0].nil? && !row[1].nil?
+          bid_quotation_in_db.tariff=row[5]
+          bid_quotation_in_db.save
         else
           number_of_skipped_rows += 1
         end
       else
-        Rails.logger.info("No Warehouse allocation was found for the worda id: #{row[1]}. Skipping...")
+
+         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !row[0].nil? && !row[1].nil?
+             bid_quotation = BidQuotation.create ({
+             bid_id: @bid.id,
+             bid_quotation_date: Date.today,
+             transporter_id: transporter_id
+               })
+
+           bid_quotation.bid_quotation_detail.create!(
+                warehouse_id: row[0],
+                location_id: row[1],
+                tariff: row[5]
+         )
+
+         bid_quotation.save
+        else
+          number_of_skipped_rows += 1
+        end
+
+        
       end
     end
 
