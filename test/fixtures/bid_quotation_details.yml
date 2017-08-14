@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bid_quotation: one
+  warehouse: one
+  location: one
+  tariff: 9.99
+  remark: MyText
+
+two:
+  bid_quotation: two
+  warehouse: two
+  location: two
+  tariff: 9.99
+  remark: MyText
