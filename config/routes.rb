@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
    resources :bids
    get '/bids/request_for_quotations/:id', to: 'bids#request_for_quotations'
-   post 'bids/upload_rfq/:id', to: 'bids#upload_rfq'
+   post 'bids/upload_rfq', to: 'bids#upload_rfq'
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
 
    resources :framework_tenders
