@@ -127,11 +127,29 @@
                         <td><%= bid.remark
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_bid_path(bid) %> &middot;
-              <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
-              <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx"> Download RFQ </a> &middot;
-              <a href="#"  data-toggle="modal" id="<%= bid.id %>" data-target="#rfq-modal">Upload RFQ</a> 
-    
+               
+              <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li>
+                    <%= link_to 'Edit', edit_bid_path(bid) %>
+                  </li>
+                  <li>
+                    <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %>
+                  </li>
+                  <li>
+                    <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx"> Download RFQ </a>
+                  </li>
+                  <li>
+                    <a href="#"  data-toggle="modal" id="<%= bid.id %>" data-target="#rfq-modal">Upload RFQ</a>
+                  </li>
+                  <li>
+                    <%= link_to 'Generate Bid Winners', '/bids/' + bid.id.to_s + '/generate_winners', method: :post, data: { confirm: 'This action will close the bid. Are you sure you want to generate winners?' } %>
+                  </li>
+                </ul>
+              </div>
                <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
                       <span class="caret"></span>
@@ -145,11 +163,11 @@
                        <%= link_to 'Cancel', 'bids/update_status/' + bid.id.to_s + "/" +  "canceled" %> 
                       </li>
 
-                       <li>
+                      <li>
                        <%= link_to 'Close', 'bids/update_status/' + bid.id.to_s + "/" +  "closed" %> 
                       </li>
 
-                       <li>
+                      <li>
                        <%= link_to 'Archive', 'bids/update_status/' + bid.id.to_s + "/" +  "archived" %> 
                       </li>
                     </ul>

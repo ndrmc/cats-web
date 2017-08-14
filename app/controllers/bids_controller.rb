@@ -1,5 +1,5 @@
 class BidsController < ApplicationController
-  before_action :set_bid, only: [:show, :edit, :update, :destroy]
+  before_action :set_bid, only: [:show, :edit, :update, :destroy, :generate_winners]
 
   # GET /bids
   # GET /bids.json
@@ -115,37 +115,95 @@ class BidsController < ApplicationController
 
     
     if !file_not_supported
-    number_of_skipped_rows = 0
+      number_of_skipped_rows = 0
 
-    (13..spreadsheet.last_row).each do |i|
-      row =  spreadsheet.row(i)
-      warehouse_selection = WarehouseSelection.where(id: row[0]).first
-      if warehouse_selection
-        if row[5].is_a?( Numeric) && row[5] >= 0
-          warehouse_selection.estimated_qty = row[5]
-          warehouse_selection.save
+      (13..spreadsheet.last_row).each do |i|
+        row =  spreadsheet.row(i)
+        warehouse_selection = WarehouseSelection.where(id: row[0]).first
+        if warehouse_selection
+          if row[5].is_a?( Numeric) && row[5] >= 0
+            warehouse_selection.estimated_qty = row[5]
+            warehouse_selection.save
+          else
+            number_of_skipped_rows += 1
+          end
         else
-          number_of_skipped_rows += 1
+          Rails.logger.info("No Warehouse allocation was found for the worda id: #{row[1]}. Skipping...")
         end
-      else
-        Rails.logger.info("No Warehouse allocation was found for the worda id: #{row[1]}. Skipping...")
-      end
-    end
-
-    respond_to do |format|
-      if number_of_skipped_rows > 0
-        flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
       end
 
-      format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , notice: "Excel imported successfully."  }
-    end
+      respond_to do |format|
+        if number_of_skipped_rows > 0
+          flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
+        end
 
-  else
-    respond_to do |format|
-        format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , alert: "The file is not supported."  }
+        format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , notice: "Excel imported successfully."  }
+      end
+
+    else
+      respond_to do |format|
+          format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , alert: "The file is not supported."  }
+      end
     end
-  end
   
+  end
+
+  def generate_winners
+    current_rank = 1
+    current_tariff = -1
+    current_location_id = -1
+    current_warehouse_id = -1
+    result = false
+    BidQuotation.joins(:bid_quotation_details).where(:bid_id => 1).select(:transporter_id, :bid_id, 'bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff').order('bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff')
+      .find_each do |bid_quotation_detail|
+        if (current_tariff < 0 && current_location_id < 0 && current_warehouse_id < 0)
+
+          bid_quotation_detail.rank = current_rank
+          current_tariff = bid_quotation_detail.tariff
+          current_location_id = bid_quotation_detail.location_id
+          current_warehouse_id = bid_quotation_detail.warehouse_id
+
+        elsif (bid_quotation_detail.tariff == current_tariff && bid_quotation_detail.location_id == current_location_id && bid_quotation_detail.warehouse_id == current_warehouse_id)
+
+          bid_quotation_detail.rank = current_rank
+
+        elsif (bid_quotation_detail.tariff > current_tariff && bid_quotation_detail.location_id == current_location_id && bid_quotation_detail.warehouse_id == current_warehouse_id)
+
+          current_rank = current_rank + 1
+          bid_quotation_detail.rank = current_rank
+
+        elsif (bid_quotation_detail.location_id != current_location_id || bid_quotation_detail.warehouse_id != current_warehouse_id)
+
+          current_rank = 1
+          bid_quotation_detail.rank = current_rank
+          current_tariff = bid_quotation_detail.tariff
+          current_location_id = bid_quotation_detail.location_id
+          current_warehouse_id = bid_quotation_detail.warehouse_id
+
+        else
+
+          current_rank = current_rank + 1
+          bid_quotation_detail.rank = current_rank
+          current_tariff = bid_quotation_detail.tariff
+          current_location_id = bid_quotation_detail.location_id
+          current_warehouse_id = bid_quotation_detail.warehouse_id
+
+        end
+        if (bid_quotation_detail.save)
+            result = true
+        end  
+      end
+    # return result
+    respond_to do |format|
+      if result
+        format.html { redirect_to bids_url(:framework_tender_id => @bid.framework_tender_id), notice: 'Bid winners were successfully generated.' }
+        format.html { redirect_to bids_url, notice: 'Bid winners were successfully generated.' }
+        format.json { render :show, status: :ok, location: @bid } 
+      else
+        format.html { render :edit }
+        format.json { render json: @bid.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   private
