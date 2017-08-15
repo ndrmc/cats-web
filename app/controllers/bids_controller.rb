@@ -1,5 +1,5 @@
 class BidsController < ApplicationController
-  before_action :set_bid, only: [:show, :edit, :update, :destroy]
+  before_action :set_bid, only: [:show, :edit, :update, :destroy, :transporter_quotes]
 
   # GET /bids
   # GET /bids.json
@@ -158,6 +158,15 @@ class BidsController < ApplicationController
       end
     end
 
+    def transporter_quotes
+
+      @transporters = BidQuotation.joins(:bid_quotation_detail).select(
+      'bid_quotation.trnsporter_id, count(bid_quotation_details.location_id as destination_count').group(
+      'bid_quotation.trnsporter_id').order('destination_count desc').where(['bid_quotation.bid_id = ?', @bid.id ])
+      
+     
+    end
+    
     respond_to do |format|
       if number_of_skipped_rows > 0
         flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
