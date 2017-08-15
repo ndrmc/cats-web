@@ -104,8 +104,9 @@ class BidsController < ApplicationController
 
     file = params[:file]
     transporter_id = params[:transporter]
-   
-    set_bid
+    bid_id =params[:bid_id]
+
+    @bid = Bid.find(bid_id)
     file_not_supported=false
     case File.extname(file.original_filename)
     when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
@@ -115,20 +116,46 @@ class BidsController < ApplicationController
 
     
     if !file_not_supported
-      number_of_skipped_rows = 0
 
-      (13..spreadsheet.last_row).each do |i|
-        row =  spreadsheet.row(i)
-        warehouse_selection = WarehouseSelection.where(id: row[0]).first
-        if warehouse_selection
-          if row[5].is_a?( Numeric) && row[5] >= 0
-            warehouse_selection.estimated_qty = row[5]
-            warehouse_selection.save
-          else
-            number_of_skipped_rows += 1
-          end
+
+    number_of_skipped_rows = 0
+
+    (13..spreadsheet.last_row).each do |i|
+      row =  spreadsheet.row(i)
+      bid_quotation_in_db = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
+      if !bid_quotation_in_db.nil?
+          bid_quotation_in_db = BidQuotationDetail.where(bid_quotation_id: bid_quotation_in_db.id, location_id: row[1], warehouse_id: row[0]).first
+      end
+
+
+      if bid_quotation_in_db
+        if row[6].is_a?( Numeric) &&  row[6] >= 0 && !row[0].nil? && !row[1].nil?
+          bid_quotation_in_db.tariff=row[6]
+          bid_quotation_in_db.save
         else
           Rails.logger.info("No Warehouse allocation was found for the worda id: #{row[1]}. Skipping...")
+        end
+
+      else
+
+         if row[6].is_a?( Numeric) &&  row[6] >= 0 && !row[0].nil? && !row[1].nil?
+             bid_quotation = BidQuotation.create ({
+             bid_id: @bid.id,
+             bid_quotation_date: Date.today,
+             transporter_id: transporter_id
+               })
+
+           bid_quotation.bid_quotation_details.create!(
+                warehouse_id: row[0],
+                location_id: row[1],
+                tariff: row[6]
+         )
+
+         bid_quotation.save
+        else
+          number_of_skipped_rows += 1
+        end
+
         end
       end
 
@@ -149,53 +176,110 @@ class BidsController < ApplicationController
   end
 
   def generate_winners
-    current_rank = 1
-    current_tariff = -1
-    current_location_id = -1
-    current_warehouse_id = -1
-    result = false
-    BidQuotation.joins(:bid_quotation_details).where(:bid_id => 1).select(:transporter_id, :bid_id, 'bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff').order('bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff')
-      .find_each do |bid_quotation_detail|
-        if (current_tariff < 0 && current_location_id < 0 && current_warehouse_id < 0)
+    @current_rank = 1
+    @current_tariff = -1
+    @current_location_id = -1
+    @current_warehouse_id = -1
+    @result = false
 
-          bid_quotation_detail.rank = current_rank
-          current_tariff = bid_quotation_detail.tariff
-          current_location_id = bid_quotation_detail.location_id
-          current_warehouse_id = bid_quotation_detail.warehouse_id
 
-        elsif (bid_quotation_detail.tariff == current_tariff && bid_quotation_detail.location_id == current_location_id && bid_quotation_detail.warehouse_id == current_warehouse_id)
+    i = 0
+    record_count = BidQuotation.joins(:bid_quotation_details).where(:bid_id => params[:id]).count
+    records = BidQuotation.joins(:bid_quotation_details).where(:bid_id => params[:id]).select(:id, 'bid_quotation_details.id AS bid_quotation_detail_id', :transporter_id, :bid_id, 'bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff').order('bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff')
+    while i < record_count
+      i = i + 1
+      records.each do |bid_quotation_detail|
+        bid_quo_det_obj = BidQuotationDetail.find(bid_quotation_detail.bid_quotation_detail_id)
+        if (@current_tariff < 0 && @current_location_id < 0 && @current_warehouse_id < 0)
 
-          bid_quotation_detail.rank = current_rank
+          bid_quo_det_obj.rank = @current_rank
+          @current_tariff = bid_quo_det_obj.tariff
+          @current_location_id = bid_quo_det_obj.location_id
+          @current_warehouse_id = bid_quo_det_obj.warehouse_id
+          puts "Case 1: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}, CurrentTariff: #{@current_tariff}, Bid_Tariff: #{bid_quo_det_obj.tariff}"
+        elsif (bid_quo_det_obj.tariff == @current_tariff && bid_quo_det_obj.location_id == @current_location_id && bid_quo_det_obj.warehouse_id == @current_warehouse_id)
 
-        elsif (bid_quotation_detail.tariff > current_tariff && bid_quotation_detail.location_id == current_location_id && bid_quotation_detail.warehouse_id == current_warehouse_id)
+          @current_tariff = bid_quo_det_obj.tariff
+          @current_location_id = bid_quo_det_obj.location_id
+          @current_warehouse_id = bid_quo_det_obj.warehouse_id
+          bid_quo_det_obj.rank = @current_rank
+          puts "Case 2: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}, CurrentTariff: #{@current_tariff}, Bid_Tariff: #{bid_quo_det_obj.tariff}"
+        elsif (bid_quo_det_obj.tariff > @current_tariff && bid_quo_det_obj.location_id == @current_location_id && bid_quo_det_obj.warehouse_id == @current_warehouse_id)
 
-          current_rank = current_rank + 1
-          bid_quotation_detail.rank = current_rank
+          @current_rank = @current_rank + 1
+          @current_tariff = bid_quo_det_obj.tariff
+          @current_location_id = bid_quo_det_obj.location_id
+          @current_warehouse_id = bid_quo_det_obj.warehouse_id
+          bid_quo_det_obj.rank = @current_rank
+          puts "Case 3: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}, CurrentTariff: #{@current_tariff}, Bid_Tariff: #{bid_quo_det_obj.tariff}"
+        elsif (bid_quo_det_obj.location_id != @current_location_id || bid_quo_det_obj.warehouse_id != @current_warehouse_id)
 
-        elsif (bid_quotation_detail.location_id != current_location_id || bid_quotation_detail.warehouse_id != current_warehouse_id)
-
-          current_rank = 1
-          bid_quotation_detail.rank = current_rank
-          current_tariff = bid_quotation_detail.tariff
-          current_location_id = bid_quotation_detail.location_id
-          current_warehouse_id = bid_quotation_detail.warehouse_id
-
+          @current_rank = 1
+          bid_quo_det_obj.rank = @current_rank
+          @current_tariff = bid_quo_det_obj.tariff
+          @current_location_id = bid_quo_det_obj.location_id
+          @current_warehouse_id = bid_quo_det_obj.warehouse_id
+          puts "Case 4: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}, CurrentTariff: #{@current_tariff}, Bid_Tariff: #{bid_quo_det_obj.tariff}"
         else
 
-          current_rank = current_rank + 1
-          bid_quotation_detail.rank = current_rank
-          current_tariff = bid_quotation_detail.tariff
-          current_location_id = bid_quotation_detail.location_id
-          current_warehouse_id = bid_quotation_detail.warehouse_id
-
+          @current_rank = @current_rank + 1
+          bid_quo_det_obj.rank = @current_rank
+          @current_tariff = bid_quo_det_obj.tariff
+          @current_location_id = bid_quo_det_obj.location_id
+          @current_warehouse_id = bid_quo_det_obj.warehouse_id
+          puts "Case 5: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}, CurrentTariff: #{@current_tariff}, Bid_Tariff: #{bid_quo_det_obj.tariff}"
         end
-        if (bid_quotation_detail.save)
-            result = true
+        if (bid_quo_det_obj.save)
+            @result = true
         end  
       end
-    # return result
+      records = BidQuotation.joins(:bid_quotation_details).where(:bid_id => params[:id]).select(:id, 'bid_quotation_details.id AS bid_quotation_detail_id', :transporter_id, :bid_id, 'bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff').order('bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff')
+    end
+
+
+    # BidQuotation.joins(:bid_quotation_details).where(:bid_id => params[:id]).select(:id, 'bid_quotation_details.id AS bid_quotation_detail_id', :transporter_id, :bid_id, 'bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff').order('bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff')
+    #   .find_each do |bid_quotation_detail|
+    #     bid_quo_det_obj = BidQuotationDetail.find(bid_quotation_detail.bid_quotation_detail_id)
+    #     if (@current_tariff < 0 && @current_location_id < 0 && @current_warehouse_id < 0)
+
+    #       bid_quo_det_obj.rank = @current_rank
+    #       @current_tariff = bid_quo_det_obj.tariff
+    #       @current_location_id = bid_quo_det_obj.location_id
+    #       @current_warehouse_id = bid_quo_det_obj.warehouse_id
+    #       puts "Case 1: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}"
+    #     elsif (bid_quo_det_obj.tariff == @current_tariff && bid_quo_det_obj.location_id == @current_location_id && bid_quo_det_obj.warehouse_id == @current_warehouse_id)
+
+    #       bid_quo_det_obj.rank = @current_rank
+    #       puts "Case 2: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}"
+    #     elsif (bid_quo_det_obj.tariff > @current_tariff && bid_quo_det_obj.location_id == @current_location_id && bid_quo_det_obj.warehouse_id == @current_warehouse_id)
+
+    #       @current_rank = @current_rank + 1
+    #       bid_quo_det_obj.rank = @current_rank
+    #       puts "Case 3: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}"
+    #     elsif (bid_quo_det_obj.location_id != @current_location_id || bid_quo_det_obj.warehouse_id != @current_warehouse_id)
+
+    #       @current_rank = 1
+    #       bid_quo_det_obj.rank = @current_rank
+    #       @current_tariff = bid_quo_det_obj.tariff
+    #       @current_location_id = bid_quo_det_obj.location_id
+    #       @current_warehouse_id = bid_quo_det_obj.warehouse_id
+    #       puts "Case 4: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}"
+    #     else
+
+    #       @current_rank = @current_rank + 1
+    #       bid_quo_det_obj.rank = @current_rank
+    #       @current_tariff = bid_quo_det_obj.tariff
+    #       @current_location_id = bid_quo_det_obj.location_id
+    #       @current_warehouse_id = bid_quo_det_obj.warehouse_id
+    #       puts "Case 5: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}"
+    #     end
+    #     if (bid_quo_det_obj.save)
+    #         @result = true
+    #     end  
+    #   end
+    # return @result
     respond_to do |format|
-      if result
+      if @result
         format.html { redirect_to bids_url(:framework_tender_id => @bid.framework_tender_id), notice: 'Bid winners were successfully generated.' }
         format.html { redirect_to bids_url, notice: 'Bid winners were successfully generated.' }
         format.json { render :show, status: :ok, location: @bid } 
