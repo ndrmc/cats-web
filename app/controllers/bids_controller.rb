@@ -86,15 +86,92 @@ class BidsController < ApplicationController
  def request_for_quotations
 
     set_bid
-    @bid
     @warehouse_allocation = WarehouseSelection.where(framework_tender_id: @bid.framework_tender_id)
+    if @warehouse_allocation.count < 1
+         flash[:error] = "Bid does not have warehouse allocation."
+         redirect_to bids_url(:framework_tender_id => @bid.framework_tender_id) 
+    else
     file_name = "Frmework Tender RFQ for " +  @warehouse_allocation.first.framework_tender&.year.to_s + '-' +  @warehouse_allocation.first.framework_tender&.half_year.to_s
     respond_to do |format|
       format.xlsx {
         response.headers['Content-Disposition'] = "attachment; filename=\"#{file_name}.xlsx\""
       }
     end
+    end
+  end
 
+ def upload_rfq
+
+    file = params[:file]
+    transporter_id = params[:transporter]
+    bid_id =params[:bid_id]
+
+    @bid = Bid.find(bid_id)
+    file_not_supported=false
+    case File.extname(file.original_filename)
+    when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
+    when '.xlsx' then spreadsheet = Roo::Excelx.new(file.path, nil, :ignore)
+    else file_not_supported=true
+    end
+
+    
+    if !file_not_supported
+
+    number_of_skipped_rows = 0
+
+    (13..spreadsheet.last_row).each do |i|
+      row =  spreadsheet.row(i)
+      bid_quotation_in_db = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
+      if !bid_quotation_in_db.nil?
+          bid_quotation_in_db = BidQuotationDetail.where(bid_quotation_id: bid_quotation_in_db.id, location_id: row[1], warehouse_id: row[0]).first
+      end
+
+
+      if bid_quotation_in_db
+        if row[5].is_a?( Numeric) &&  row[5] >= 0 && !row[0].nil? && !row[1].nil?
+          bid_quotation_in_db.tariff=row[5]
+          bid_quotation_in_db.save
+        else
+          number_of_skipped_rows += 1
+        end
+      else
+
+         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !row[0].nil? && !row[1].nil?
+             bid_quotation = BidQuotation.create ({
+             bid_id: @bid.id,
+             bid_quotation_date: Date.today,
+             transporter_id: transporter_id
+               })
+
+           bid_quotation.bid_quotation_detail.create!(
+                warehouse_id: row[0],
+                location_id: row[1],
+                tariff: row[5]
+         )
+
+         bid_quotation.save
+        else
+          number_of_skipped_rows += 1
+        end
+
+        
+      end
+    end
+
+    respond_to do |format|
+      if number_of_skipped_rows > 0
+        flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
+      end
+
+      format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , notice: "Excel imported successfully."  }
+    end
+
+  else
+    respond_to do |format|
+        format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , alert: "The file is not supported."  }
+    end
+  end
+  
   end
 
   private
