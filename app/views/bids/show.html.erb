@@ -1,0 +1,47 @@
+    <p>
+      <strong>Framework tender:</strong>
+      <%= @bid.framework_tender_id %>
+    </p>
+
+    <p>
+      <strong>Region:</strong>
+      <%= @bid.region_id %>
+    </p>
+
+    <p>
+      <strong>Bid number:</strong>
+      <%= @bid.bid_number %>
+    </p>
+
+    <p>
+      <strong>Bid bond amount:</strong>
+      <%= @bid.bid_bond_amount %>
+    </p>
+
+    <p>
+      <strong>Start date:</strong>
+      <%= @bid.start_date %>
+    </p>
+
+    <p>
+      <strong>Closing date:</strong>
+      <%= @bid.closing_date %>
+    </p>
+
+    <p>
+      <strong>Opening date:</strong>
+      <%= @bid.opening_date %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @bid.status %>
+    </p>
+
+    <p>
+      <strong>Remark:</strong>
+      <%= @bid.remark %>
+    </p>
+
+<%= link_to 'Edit', edit_bid_path(@bid) %> |
+<%= link_to 'Back', bids_path %>
