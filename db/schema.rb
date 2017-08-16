@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170814062638) do
+ActiveRecord::Schema.define(version: 20170814112557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20170814062638) do
     t.datetime "deleted_at"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.integer  "rank"
     t.index ["bid_quotation_id"], name: "index_bid_quotation_details_on_bid_quotation_id", using: :btree
     t.index ["location_id"], name: "index_bid_quotation_details_on_location_id", using: :btree
     t.index ["warehouse_id"], name: "index_bid_quotation_details_on_warehouse_id", using: :btree
@@ -952,6 +953,7 @@ ActiveRecord::Schema.define(version: 20170814062638) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -962,7 +964,6 @@ ActiveRecord::Schema.define(version: 20170814062638) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
-    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree

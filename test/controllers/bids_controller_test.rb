@@ -25,7 +25,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
       post bids_url, params: { bid: { bid_bond_amount: @bid.bid_bond_amount, bid_number: @bid.bid_number, closing_date: @bid.closing_date, framework_tender_id: @bid.framework_tender_id, opening_date: @bid.opening_date, region_id: @bid.region_id, remark: @bid.remark, start_date: @bid.start_date, status: @bid.status } }
     end
 
-    assert_redirected_to bids_url(:framework_tender_id => @framework_tender.id)
+    assert_redirected_to '/en/framework_tenders/' + @framework_tender.id.to_s
   end
 
   test "should show bid" do
@@ -40,7 +40,7 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update bid" do
     patch bid_url('en',@bid), params: { bid: { bid_bond_amount: @bid.bid_bond_amount, bid_number: @bid.bid_number, closing_date: @bid.closing_date, framework_tender_id: @bid.framework_tender_id, opening_date: @bid.opening_date, region_id: @bid.region_id, remark: @bid.remark, start_date: @bid.start_date, status: @bid.status } }
-    assert_redirected_to bids_url(:framework_tender_id => @framework_tender.id)
+    assert_redirected_to '/en/framework_tenders/' + @framework_tender.id.to_s
   end
 
   test "should destroy bid" do
@@ -48,6 +48,6 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
       delete bid_url('en',@bid)
     end
 
-    assert_redirected_to '/en/bids?framework_tender_id=' + @framework_tender.id.to_s
+    assert_redirected_to '/en/framework_tenders/' + @framework_tender.id.to_s
   end
 end

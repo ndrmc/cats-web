@@ -17,4 +17,6 @@ class Bid < ApplicationRecord
             return :draft
         end
     end
+
+    
 end

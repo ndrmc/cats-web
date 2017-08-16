@@ -47,7 +47,7 @@ class WarehouseSelectionsController < ApplicationController
     @warehouse_selection = WarehouseSelection.new(warehouse_selection_params)
     @warehouse_selection.created_by = current_user.id
     @warehouse_selection.modified_by = current_user.id
-    @existing_ws = WarehouseSelection.where(:warehouse_id => @warehouse_selection.warehouse_id, :location_id => @warehouse_selection.location_id).count
+    @existing_ws = WarehouseSelection.where(:framework_tender_id => @warehouse_selection.framework_tender_id, :warehouse_id => @warehouse_selection.warehouse_id, :location_id => @warehouse_selection.location_id).count
     respond_to do |format|
       if @existing_ws == 0
         if @warehouse_selection.save
