@@ -1,0 +1,54 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Donors</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Donors</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Donor', new_donor_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Responsible</th>
+                    <th>Source</th>
+                    <th>Description</th>
+                <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @donors.each do |donor| %>
+      <tr>
+                    <td><%= donor.name %></td>
+                    <td><%= donor.code %></td>
+                    <td><%= donor.responsible %></td>
+                    <td><%= donor.source %></td>
+                    <td><%= donor.description %></td>
+                <td>
+          <%= link_to 'Edit', edit_donor_path(donor) %> &middot;
+          <%= link_to 'Delete', donor, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= render 'layouts/headcontent' %>
+
+    <%= render 'layouts/layout_common_js' %>
+  </head>
+  <body>
+
+    <!-- Wrapper-->
+    <div id="wrapper">
+
+      <% if user_signed_in? %>
+      <!-- Navigation -->
+      <%= render 'layouts/navigation' %>
+      <% end %>
+      <!-- Page wraper -->
+      <div id="page-wrapper" class="gray-bg">
+
+        <!-- Page wrapper -->
+        <%= render 'layouts/topnavbar' %>
+
+        <!-- Main view  -->
+        <%= yield %>
+
+        <!-- Footer -->
+        <%= render 'layouts/footer' %>
+
+      </div>
+      <!-- End page wrapper-->
+
+    </div>
+    <!-- End wrapper-->
+
+
+  </body>
+</html>

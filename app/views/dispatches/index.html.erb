@@ -1,0 +1,155 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Dispatches</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Stock</a>
+      </li>
+      <li class="active">
+        <strong>Dispatches</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+     <% if policy(Dispatch).new? %>
+      <%= link_to 'New Dispatch', new_dispatch_path, :class => "btn btn-primary"%>
+    <%end%>
+    </div>
+  </div>
+</div>
+
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+      <%= form_tag( dispatches_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+
+        <div class="form-group">
+          <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  :hub, options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= label_tag :region, "Region", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :region,  options_from_collection_for_select( Location.where(location_type: 'region'), 'id', 'name', params[:region] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= label_tag :dispatch_date, "Dispatch Date", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :dispatch_date, params[:dispatch_date], { id: 'dispatch-datepicker',class: 'form-control', required: true }  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= label_tag :status, "Status", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :status,  options_for_select( ["Draft", "Posted"], params[:status]) , { :prompt => "All", :class => 'form-control col-md-3' }  %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+          </div>
+        </div>
+
+        <% end %>
+
+
+        <%= form_tag( dispatches_path ,{ class: 'form-inline pull-right', style: 'display: inline-block;',role: 'form', method: 'GET'}) do %>
+        <div class="form-group">
+          <%= label_tag :gin_no, "GIN", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :gin_no, params[:gin_no], { class: 'form-control'}  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+              <input type="submit" name="find" value="Go" class="btn btn-sm btn-primary" />
+          </div>
+        </div>
+
+
+      <% end %>
+  </div>
+</div>
+
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+
+    <table class="table table-striped cats-datatable">
+      <thead>
+      <tr>
+            <th>GIN Number</th>
+            <th>Requisition Number</th>
+            <th>Dispatch Date</th>
+            <th>FDP</th>
+            <th>Status</th>
+            <th>Remark</th>
+            <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+        <% @dispatches.each do |dispatch| %>
+            <tr>
+                <td><%= dispatch.gin_no %></td>
+                <td><%= dispatch.requisition_number %></td>
+                <td><%= dispatch.dispatch_date.strftime('%d/%m/%Y') %></td>
+                <td><%= dispatch.fdp.name  %></td>
+                <td><%= dispatch.draft ? "Draft" : "Posted" %></td>
+                <td><%= dispatch.remark %></td>
+                <td>
+                   <% if policy(Dispatch).edit? %>
+                    <%= link_to 'Edit', edit_dispatch_path(dispatch) %> &middot;
+                    <%end%>
+                     <% if policy(Dispatch).edit? %>
+                    <%= link_to 'Delete', dispatch, method: :delete, data: { confirm: 'Are you sure?' } %>
+                    <%end%>
+                </td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $( function() { 
+    $('#dispatch-datepicker').daterangepicker(
+      {
+          locale: {
+            format: 'DD/MM/YYYY'
+          },
+          maxDate: '0', 
+          autoUpdateInput: false
+      }, 
+      function( start, end  ) { 
+        $('#dispatch-datepicker').val( start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY')); 
+      }
+    ); 
+  });
+
+</script>

@@ -1,0 +1,28 @@
+<% if @receipt.errors.any? %>
+        toastr.error("GRN number is taken. Please put in a different GRN number");
+        $(window).scrollTop(0);
+        $('#receipt_grn_no').focus();
+<% else %>
+
+$('#receipt_grn_no').val("");
+$('#receipt_received_date').val("");
+
+$('table tr.receipt-line').remove();
+
+$('#receipt_weight_bridge_ticket_no').val("")
+$('#receipt_weight_before_unloading').val("")
+$('#receipt_plate_no').val("")
+$('#receipt_remark').val("")
+$('#receipt_trailer_plate_no').val("")
+$('#receipt_transporter_id').get(0).selectedIndex = 0;
+$('#warehouse_select').get(0).selectedIndex = 0;
+$('#receipt_waybill_no').val("");
+$(window).scrollTop(0);
+
+toastr.info("Receipt was successfully created");
+
+<% end %>
+    
+
+          
+

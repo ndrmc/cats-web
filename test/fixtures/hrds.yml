@@ -1,0 +1,22 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+hrd1:
+    year_ec:  2009
+    year_gc: 2019
+    month_from: 'Jan'
+    season: season_1
+    ration_id: 1
+    duration: 6
+
+#
+hrd2: 
+    year_ec:  2010
+    year_gc: 2018
+    month_from: 'Jan'
+    season: season_2
+    ration_id: 1
+    duration: 6

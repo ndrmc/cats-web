@@ -1,0 +1,1 @@
+json.array! @commodity_sources, partial: 'commodity_sources/commodity_source', as: :commodity_source

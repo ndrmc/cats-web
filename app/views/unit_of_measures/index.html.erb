@@ -1,0 +1,62 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Unit Of Measures</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Settings</a>
+      </li>
+      <li>
+        <a href="#">Commodity</a>
+      </li>
+      <li class="active">
+        <strong>Unit Of Measures</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Unit Of Measure', new_unit_of_measure_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Code</th>
+            <th>Uom type</th>
+            <th>Ratio</th>
+            <th>Uom category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @unit_of_measures.each do |unit_of_measure| %>
+          <tr>
+            <td><%= unit_of_measure.name%></td>
+            <td><%= unit_of_measure.description%></td>
+            <td><%= unit_of_measure.code%></td>
+            <td><%= unit_of_measure.uom_type%></td>
+            <td><%= unit_of_measure.ratio%></td>
+            <td><%= unit_of_measure&.uom_category&.name%></td>
+            <td>
+              <%= link_to 'Edit', edit_unit_of_measure_path(unit_of_measure) %> &middot;
+              <%= link_to 'Delete', unit_of_measure, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  </div>
+</div>

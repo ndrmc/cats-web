@@ -1,0 +1,24 @@
+#reversal
+posting_delivery3:
+    posting_code:
+    document_type: :delivery
+    document_id: delivery1
+    posted: true
+    reversed_posting_id: 10
+    posting_type: :reversal
+#normal
+posting_delivery7:
+    posting_code:
+    document_type: :delivery
+    document_id: delivery1
+    posted: true
+    reversed_posting_id: 6
+    posting_type: :normal
+#reversed
+posting_delivery11:
+    posting_code: 
+    document_type: :delivery
+    document_id: delivery1.id
+    posted: true
+    reversed_posting_id: 2
+    posting_type: :reversed

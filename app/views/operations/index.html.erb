@@ -1,0 +1,138 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Operations</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Operation</a>
+      </li>
+      <li class="active">
+        <strong>Operations</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <% if policy(Operation).new? %>
+    <div class="title-action">
+      <%= link_to 'New Operation', new_operation_path, :class => "btn btn-primary"%>
+    </div>
+  <%end%>
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="wrapper wrapper-content">
+
+    <div class="ibox">
+
+      <div class="ibox-content">
+        <div class="row m-b-sm m-t-sm">
+          <div class="col-md-1">
+            <a href="javascript:window.location.reload(true)" type="button" id="loading-example-btn" class="btn btn-white btn-sm">
+              <i class="fa fa-refresh"></i>
+              Refresh</a>
+          </div>
+          <div class="col-md-2">
+            <div class="input-group">
+              <select class="input-sm form-control"  id="status-filter">
+                <option value="">All</option>
+                <% Operation.statuses.map { |s| s[0] }.each do |status|%>
+                    <option value="<%= status %>" <%= 'selected' if params[:status] == status %>><%= status.capitalize %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-list">
+
+          <table class="table table-hover cats-datatable">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Operation name</th>
+                <th>Year</th>
+                <th>Progress</th>
+                <th>Program</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @operations.each do |operation| %>
+              <tr>
+                <td class="project-status">
+                  <span class="label label-primary">In progress</span>
+                </td>
+                <td class="project-title">
+                  <%= link_to operation.name, operation_path(operation) %>
+                  <br/>
+                  <small>Created 14/08/2014</small>
+                </td>
+                <td class="project-status">
+                  <span><%= operation.year %></span>
+                </td>
+                <td class="project-completion">
+                  <small>48% completed</small>
+                  <div class="progress progress-mini">
+                    <div style="width: 48%;" class="progress-bar"></div>
+                  </div>
+                </td>
+                <td class="project-status">
+                  <span>Relief</span>
+                </td>
+                <td class="project-actions">
+                  <a href="<%= operation_path(operation)%>" class="btn btn-white btn-sm">
+                    <i class="fa fa-folder"></i>
+                    View
+                  </a>
+                  <% if policy(Operation).edit? %>
+                  <a href="<%= edit_operation_path(operation)%>" class="btn btn-white btn-sm">
+                    <i class="fa fa-pencil"></i>   
+                    Edit                   
+                  </a>
+                  <%end%>
+                  <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li>
+                        <a href="#">Allocations</a>
+                      </li>
+                      <li>
+                        <a href="#">Dispatches</a>
+                      </li>
+                      <li>
+                        <a href="#">Delivery</a>
+                      </li>
+                      <li class="divider"></li>
+                      <li>
+                        <a href="#">Close</a>
+                      </li>
+                      <li>
+                        <a href="#">Archive</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <% end %>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(function() { 
+        $("#status-filter").change( function() { 
+            if($(this).val()=="")
+              window.location.href = '/operations';
+            else
+              window.location.href = '/operations/?status=' + $(this).val();  
+        });
+    }); 
+</script>

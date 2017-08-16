@@ -1,0 +1,8 @@
+hub1:
+  name: 'adama' 
+  location_id: 1
+
+hub2:
+  id: 1
+  name: 'addis ababa' 
+  location_id: 2

@@ -1,0 +1,15 @@
+class StockTake < ApplicationRecord
+    include Postable 
+    has_many :stock_take_items
+    has_many :adjustments , through: :stock_take_items
+
+    after_save :pre_post
+
+  
+    validates :title, presence: {messege: " is required!"}
+    validates :hub_id, presence: {messege: " is required!"}
+    validates :warehouse_id, presence: {messege: " is required!"}
+    validates :date, presence: {messege: " is required!"}
+    
+end
+

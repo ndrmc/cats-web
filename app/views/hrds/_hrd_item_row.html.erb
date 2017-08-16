@@ -1,0 +1,11 @@
+<tr id="hrd-item-<%= @hrd_item.id %>">
+    <td><%= @hrd_item.woreda.name  %></td>
+    <td id="starting-month-<%= @hrd_item.id %>"><%= Date::MONTHNAMES[@hrd_item.starting_month] %></td>
+    <td id="duration-<%= @hrd_item.id %>"><%= @hrd_item.duration %></td>
+    <td id="beneficiary-<%= @hrd_item.id %>"><%= @hrd_item.beneficiary %></td>
+    <td>
+      <a href="#" data-toggle="modal" data-target="#edit-hrd-item" data-hrd-item-id="<%= @hrd_item.id %>">edit</a>
+      <a onclick="remove_hrd_item(<%= @hrd_item.id %>);" data-confir="Are you sure?" >delete</a>
+
+    </td>
+</tr>

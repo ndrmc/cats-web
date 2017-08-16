@@ -1,0 +1,66 @@
+<div class="wrapper wrapper-content">
+  <div>
+    <%= form_for(ration_item, :html=> {:class => 'form-horizontal'})  do |f| %>
+    <% if ration_item.errors.any? %>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <%= pluralize(ration_item.errors.count, "error") %>
+        prohibited this ration item from being saved.
+      </div>
+
+      <div class="panel-body">
+        <ul>
+          <% ration_item.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    <% end %>
+    <div>
+      <div class="ibox">
+        <div class="ibox-title">
+          <h5>Basic information</h5>
+        </div>
+
+        <div class="ibox-content">
+
+          <%= f.hidden_field :ration_id, :value => ration_item.ration_id %>
+
+          <div class="form-group">
+            <%= f.label :commodity_id, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-6">
+              <%= f.collection_select :commodity_id, Commodity.order(:name), :id, :name,{include_blank: 'Select Commodity'}, {:class => 'form-control'} %>
+            </div>
+          </div>
+
+          <div class="form-group form-group">
+            <%= f.label :amount, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-6">
+              <%= f.text_field :amount, :class => 'form-control' %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :unit_of_measure_id, :class => 'col-sm-2 control-label' %>
+            <div class="col-sm-6">
+              <%= f.collection_select :unit_of_measure_id, UnitOfMeasure.order(:name), :id, :name,{include_blank: 'Select Unit of Measure'}, {:class => 'form-control'} %>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+        <%= link_to 'Cancel', ration_path(@ration_item.ration),  :class => "btn btn-default"%>
+      </div>
+
+    </div>
+
+    <% end %>
+
+  </div>
+
+</div>

@@ -1,0 +1,70 @@
+<div class="row border-bottom">
+  <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+      <a class="navbar-minimalize minimalize-styl-2 btn btn-default " href="#">
+        <i class="fa fa-bars"></i>
+      </a>
+
+      <ul class="nav navbar-top-links navbar-right">
+        <li>
+          <%= link_to 'Commodity & Allocation Tracking System', root_path %>
+        </li>
+      </ul>
+
+    </div>
+
+    <% if user_signed_in? %>
+
+    <ul class="nav navbar-top-links navbar-right">
+      <li>
+        <a href="<%= setting_index_url %>" title="Settings & Configurations">
+          <i class="fa fa-lg fa-cog"></i>
+        </a>
+      </li>
+
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Help">
+          <i class="fa fa-lg fa-question-circle"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#">
+              <i class="fa fa-lg fa-question-circle"></i>
+              <span>User manual</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">Quick command list</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="#">
+              <i class="fa fa-lg fa-bug"></i>
+              Report bug</a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="User Profile">
+          <i class="fa fa-lg fa-user"></i>
+          <%= current_user.name %>
+        </a>
+
+        <ul class="dropdown-menu">
+        <!--  <li>
+            <%= link_to 'Profile', edit_user_registration_path %>
+          </li>
+          <li>-->
+            <%= link_to 'Change password', edit_user_registration_path %>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <%= link_to 'Log out', destroy_user_session_path, :method => :delete %>
+          </li>
+        </ul>
+      </li>
+      <% end %>
+    </ul>
+  </nav>
+</div>

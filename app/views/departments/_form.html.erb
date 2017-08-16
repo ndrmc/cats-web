@@ -1,0 +1,39 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(department) do |f| %>
+        <% if department.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(department.errors.count, "error") %> prohibited this department from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% department.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :name %>
+                <%= f.text_field :name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :description %>
+                <%= f.text_field :description, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

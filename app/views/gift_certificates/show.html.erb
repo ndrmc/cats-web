@@ -1,0 +1,82 @@
+<p>
+  <strong>Reference no:</strong>
+  <%= @gift_certificate.reference_no %>
+</p>
+
+<p>
+  <strong>Gift date:</strong>
+  <%= @gift_certificate.gift_date %>
+</p>
+
+<p>
+  <strong>Vessel:</strong>
+  <%= @gift_certificate.vessel %>
+</p>
+
+<p>
+  <strong>Donor:</strong>
+  <%= @gift_certificate.organization_id %>
+</p>
+
+<p>
+  <strong>Eta:</strong>
+  <%= @gift_certificate.eta %>
+</p>
+
+<p>
+  <strong>Program:</strong>
+  <%= @gift_certificate.program_id %>
+</p>
+
+<p>
+  <strong>Mode of transport:</strong>
+  <%= @gift_certificate.mode_of_transport_id %>
+</p>
+
+<p>
+  <strong>Port name:</strong>
+  <%= @gift_certificate.port_name %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @gift_certificate.status %>
+</p>
+
+<p>
+  <strong>Customs declaration no:</strong>
+  <%= @gift_certificate.customs_declaration_no %>
+</p>
+
+<p>
+  <strong>Bill of loading:</strong>
+  <%= @gift_certificate.bill_of_loading %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @gift_certificate.amount %>
+</p>
+
+<p>
+  <strong>Estimated price:</strong>
+  <%= @gift_certificate.estimated_price %>
+</p>
+
+<p>
+  <strong>Estimated tax:</strong>
+  <%= @gift_certificate.estimated_tax %>
+</p>
+
+<p>
+  <strong>Expiry date:</strong>
+  <%= @gift_certificate.expiry_date %>
+</p>
+
+<% if policy(GiftCertificate).new? %>
+<%= link_to 'Edit', edit_gift_certificate_path(@gift_certificate) %>
+<%end%>
+|
+<% if policy(GiftCertificate).destroy? %>
+<%= link_to 'Back', gift_certificates_path %>
+<%end%>

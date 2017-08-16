@@ -1,0 +1,17 @@
+    <p>
+      <strong>Region:</strong>
+      <%= @transporter_address.region_id %>
+    </p>
+
+    <p>
+      <strong>Phone:</strong>
+      <%= @transporter_address.phone %>
+    </p>
+
+    <p>
+      <strong>Email:</strong>
+      <%= @transporter_address.email %>
+    </p>
+
+<%= link_to 'Edit', edit_transporter_address_path(@transporter_address) %> |
+<%= link_to 'Back', transporter_addresses_path %>

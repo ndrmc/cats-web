@@ -1,0 +1,83 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(user) do |f| %>
+        <% if user.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(user.errors.count, "error") %> prohibited this user from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :first_name %>
+                <%= f.text_field :first_name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :last_name %>
+                <%= f.text_field :last_name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :email %>
+                <%= f.text_field :email, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :'Mobile No' %>
+                <%= f.text_field :mobile_no, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :is_active %>
+                <%= f.check_box :is_active, :class => 'form-control' %>
+                        </div>
+                
+                                
+                       
+                             
+                 <div class="form-group" id="div-caseTeam">
+                            <%= f.label :'User Type' %>
+                <%=f.select(:user_types, User.user_types.keys ,{}, {:class => 'form-control'}) %>
+                </div>
+
+                 <div class="form-group" id="div-caseTeam">
+                            <%= f.label :Department %>
+                <%= f.select :department_id,options_for_select(@department, :selected => f.object.department_id, :include_blank => true),{}, {:class => 'form-control'} %>
+                </div>
+
+                 
+
+                 <div class="form-group" id="div-hub">
+                            <%= f.label :Hub %>
+                <%= f.select :hub_id,options_for_select(@hubs, :selected => f.object.hub_id),{}, {:class => 'form-control'} %>
+                </div>
+
+
+                <div class="form-group" id="div-region">
+                            <%= f.label :Region %>
+                <%= f.select :location_id,options_for_select(@region, :selected => f.object.location_id),{}, {:class => 'form-control'} %>
+                </div>
+                  
+              
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>
+
+

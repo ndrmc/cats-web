@@ -1,0 +1,42 @@
+    <p>
+      <strong>Framework tender:</strong>
+      <%= @warehouse_selection.framework_tender_id %>
+    </p>
+
+    <p>
+      <strong>Woreda:</strong>
+      <%= @warehouse_selection.woreda_id %>
+    </p>
+
+    <p>
+      <strong>Warehouse:</strong>
+      <%= @warehouse_selection.warehouse_id %>
+    </p>
+
+    <p>
+      <strong>Estimated qty:</strong>
+      <%= @warehouse_selection.estimated_qty %>
+    </p>
+
+    <p>
+      <strong>Created by:</strong>
+      <%= @warehouse_selection.created_by %>
+    </p>
+
+    <p>
+      <strong>Modified by:</strong>
+      <%= @warehouse_selection.modified_by %>
+    </p>
+
+    <p>
+      <strong>Deleted:</strong>
+      <%= @warehouse_selection.deleted %>
+    </p>
+
+    <p>
+      <strong>Deleted at:</strong>
+      <%= @warehouse_selection.deleted_at %>
+    </p>
+
+<%= link_to 'Edit', edit_warehouse_selection_path(@warehouse_selection) %> |
+<%= link_to 'Back', warehouse_selections_path %>

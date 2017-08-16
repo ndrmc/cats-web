@@ -1,0 +1,63 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Fdp Contacts</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Settings</a>
+      </li>
+      <li>
+        <a href="#">General Settings</a>
+      </li>
+      <li class="active">
+        <strong>Fdp Contacts</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Fdp Contact', new_fdp_contact_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>FDP</th>
+                      
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @fdp_contacts.each do |fdp_contact| %>
+          <tr>
+                        <td><%= fdp_contact.full_name
+              %></td>
+                        <td><%= fdp_contact.mobile
+              %></td>
+                        <td><%= fdp_contact.email
+              %></td>
+                        <td><%= fdp_contact.fdp.name
+              %></td>
+                        
+                       
+                        <td>
+              <%= link_to 'Edit', edit_fdp_contact_path(fdp_contact) %> &middot;
+              <%= link_to 'Delete', fdp_contact, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+stock_take_items_1:
+ donor_id: 1
+ project_id: 1
+ commodity_id: 1       
+ commodity_category_id: 1
+ theoretical_amount: 200  
+ actual_amount: 300      
+ stock_take: stock_take_1

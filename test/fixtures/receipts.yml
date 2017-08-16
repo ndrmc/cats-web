@@ -1,0 +1,32 @@
+
+receipt1:
+    id: 1
+    grn_no:  '23423'
+    received_date:
+    hub_id:
+    warehouse_id:
+    delivered_by:
+    supplier_id:
+    transporter_id:
+    plate_no:
+    trailer_plate_no:
+    weight_bridge_ticket_no:
+    weight_before_unloading:
+    weight_after_unloading:
+    storekeeper_name:
+    waybill_no:
+    purchase_request_no:
+    purchase_order_no:
+    invoice_no:
+    commodity_source_id:
+    program_id:
+    store_id:
+    drivers_name:
+    remark:
+    draft:
+    receiveid: 1
+    received_date_ec:
+    donor_id: 
+
+   
+

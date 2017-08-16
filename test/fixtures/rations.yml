@@ -1,0 +1,6 @@
+ration_1:
+    reference_no: 001
+    description: 'correct ration'
+ration_2:
+   reference_no: 002
+   description: 'another ration record'

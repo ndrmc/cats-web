@@ -1,0 +1,261 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2><%= @psnp_plan.name %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">HRD</a>
+      </li>
+      <li class="active">
+        <strong>Show</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+    <% if policy(PsnpPlan).edit? %>
+      <%= link_to  edit_psnp_plan_path(@psnp_plan),  :class => "btn btn-default"  do %>
+        <i class="fa fa-edit"></i> 
+        Edit
+      <% end %>
+
+      <%  end %>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <table class="table">
+            <thead>
+                <tr><th>Ration</th></tr>
+            </thead>
+            <tbody>
+                <% @psnp_plan.ration.ration_items.each do |ration_item|  %>
+                    <tr>
+                        <td><%= ration_item.commodity.name %></td>
+                        <td><%= ration_item.amount.to_s + ration_item.unit_of_measure.name %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="form-group">
+    <div class="tabs-container">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">Regions</a></li>
+        <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">Commodities</a></li>
+        <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">Contributions</a></li>
+      </ul>
+      <div class="tab-content">
+
+        <div id="tab-1" class="tab-pane active">
+          <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Region</td>
+                            <td>Number of Beneficiaries</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @beneficiaries_by_region.each  do |aggregate| %>
+                            <tr>
+                                <td><%= Location.find(aggregate.region_id).name %></td>
+                                <td><%= aggregate.total_beneficiaries %></td>
+                                <% if policy(PsnpPlan).edit? %>
+                                <% if policy(PsnpPlan).edit? %>
+                                <td><a href="/psnp_plans/psnp_plan_items?psnp_plan_id=<%= @psnp_plan.id %>&region_id=<%= aggregate.region_id %>"> <i class="fa fa-edit"></i> Edit</a></td>
+                                <%end%>
+                                <% end %>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                
+                </table>
+          </div>
+        </div>
+
+        <div id="tab-2" class="tab-pane">
+          <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Region</td>
+                            <td>Number of Beneficiaries</td>
+                            <% @psnp_plan.ration.ration_items.each do |item| %>
+                              <td><%= item.commodity.name %></td>
+                            <% end %>
+                            <td>Total</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @beneficiaries_by_region.each  do |aggregate| %>
+                            <tr>
+                                <td><%= Location.find(aggregate.region_id).name %></td>
+                                <td><%= aggregate.total_beneficiaries %></td>
+                                <% @psnp_plan.ration.ration_items.each do |item| %>
+                                  <td><%= item.amount * aggregate.total_beneficiaries %></td>
+                                <% end %>
+                                <td><%= @psnp_plan.ration.ration_items.inject(0) { |result, ration_item| result + ration_item.amount } * aggregate.total_beneficiaries  %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                
+                </table>
+          </div>
+        </div>
+
+        <div id="tab-3" class="tab-pane">
+          <div class="panel">
+            <div class="panel-heading">
+            <% if policy(PsnpPlan).new? %>
+              <div class="pull-right">
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#contribution-modal">Add Contribution</a>
+              </div>
+              <%end%>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="panel-body">
+                <table class="table" id="contributions-table">
+                  <thead>
+                    <tr>
+                      <th>Donor</th>
+                      <th>Contribution Type</th>
+                      <th>Pledged Date</th>
+                      <th>Amount</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%= render partial: 'contributions/contrib_row', collection: @contributions, as: 'contribution'%>
+                  </tbody>
+                </table> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  </div>
+</div>
+
+
+<div class="modal inmodal" id="contribution-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Contribution</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-container">
+        </div>
+        <div class="spinner">
+            Loading...
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="save-contrib-btn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $( function() { 
+        $('#contribution-modal').on('shown.bs.modal', function (e) {
+          e.preventDefault(); 
+
+          
+
+          $('#contribution-modal .spinner').show(); 
+          $('#contribution-modal .form-container').hide(); 
+
+          var contribution_id = $( e.relatedTarget ).data('contribution-id'); 
+
+          var onFormLoaded =  function() { 
+              $('#contribution-modal .spinner').hide(); 
+              $('#contribution-modal .form-container').show(); 
+          }; 
+
+          if( contribution_id ) { 
+              $("#contribution-modal .form-container").load( '/contributions/' + contribution_id +  '/edit/?psnp_plan_id=' + <%= @psnp_plan.id %>, onFormLoaded);
+          }
+          else { 
+              $("#contribution-modal .form-container").load( '/contributions/new/?psnp_plan_id=' + <%= @psnp_plan.id %>, onFormLoaded);
+          }
+
+      });
+
+      $('#save-contrib-btn').click( function(e) {
+
+            e.preventDefault(); 
+
+            var contribution = {};
+
+            $('#contribution-modal .contrib-form-field').each( function() { 
+                contribution[$(this).attr('name')] = $(this).val(); 
+            });
+
+            console.log("Contribution", contribution);  
+
+            $.post( '/contributions', contribution)
+            .done( function(data) { 
+                toastr.success('Saved!'); 
+
+                if( contribution.id ) { //update
+                  $('#contrib-' + contribution.id).remove(); 
+                }
+
+                $("#contributions-table").append(data); 
+                
+                $('#contribution-modal').modal('hide'); 
+            })
+            .fail( function() { 
+                toastr.error("Save failed. Please check your values and try again."); 
+            }); 
+        }); 
+
+        $('#contributions-table').on( 'click', 'a.delete-contribution', function(e) { 
+            e.preventDefault(); 
+
+            var contrib_id = $(this).data('contribution-id');
+
+
+            swal({
+              title: "Are you sure?",
+              text: "You will not be able to undo this!",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Yes, delete it!"
+            }).then(function () {
+              $.ajax({
+                url: "<%= url_for controller: 'contributions', action: 'index' %>/" + contrib_id,
+                method: 'DELETE',
+                dataType: 'json'
+              }).done(function (data) {
+                  $("#contrib-" + contrib_id).fadeOut();
+
+                  toastr.success("Deleted!");
+              });
+
+            });
+        });
+
+
+  }); 
+</script>

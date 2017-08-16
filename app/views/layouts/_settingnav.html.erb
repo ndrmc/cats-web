@@ -1,0 +1,131 @@
+<ul class="nav nav-second-level">
+      <li class="<%= 'active' if current_page?('/home/minor') %>">
+        <%=link_to "plan#index" do %>
+        <span class="nav-label"><%= t(:general_settings)%></span>
+        <span class="fa arrow"></span><% end %>
+        <ul class="nav nav-third-level collapse">
+          <li class="<%= 'active' if is_active_controller('programs') %>">
+            <%= link_to t(:programs), programs_path %>
+          </li>
+          <li class="<%= 'active' if is_active_controller('currencies') %>">
+            <%= link_to t(:currencies), currencies_path %>
+          </li>
+           <li class="<%= 'active' if is_active_controller('organizations') %>">
+              <%= link_to t(:organizations), organizations_path %>
+          </li>
+        </span>
+      </a>
+    </li>
+  </ul>
+</li>
+
+  <li>
+    <%= link_to "#" do %>
+    <span class="nav-label"><%= t(:geography)%></span>
+    <span class="fa arrow"></span>
+    <% end %>
+    <ul class="nav nav-third-level collapse">
+      <li class="<%= 'active' if is_active_controller('locations') %>">
+        <%= link_to t(:locations), locations_path %>
+      </li>
+
+      <li class="<%= 'active' if is_active_controller('fdps') %>">
+        <%= link_to t(:fdps), fdps_path %>
+      </li>
+      <li class="<%= 'active' if is_active_controller('fdp_contact') %>">
+        <%= link_to t(:fdp_contacts), fdp_contacts_path %>
+      </li>
+    </ul>
+  </li>
+
+<li>
+  <%= link_to "#" do %>
+  <span class="nav-label"><%= t(:warehouses_and_stores)%></span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-third-level collapse">
+    <li class="<%= 'active' if is_active_controller('hubs') %>">
+        <%= link_to t(:hubs), hubs_path %>
+    </li>
+    <li class="<%= 'active' if is_active_controller('warehouses') %>">
+      <%= link_to t(:warehouses), warehouses_path %>
+    </li>
+  </ul>
+</li>
+
+ <li>
+  <%= link_to "#" do %>
+  <span class="nav-label"><%= t(:commodity)%></span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-third-level collapse">
+    <li class="<%= 'active' if is_active_controller('commodities') %>" >
+      <%= link_to t(:commodities), commodities_path %>
+    </li>
+    <li class="<%= 'active' if is_active_controller('commodity_categories') %>" >
+      <%= link_to t(:commodity_types), commodity_categories_path %>
+    </li>
+    <li>
+      <li class="<%= 'active' if is_active_controller('commodity_sources') %>" >
+      <%= link_to t(:commodity_sources), commodity_sources_path %>
+
+      </li>
+    </li>
+    <li class="<%= 'active' if is_active_controller('unit_of_measures') %>" >
+      <%= link_to t(:measurement_units), unit_of_measures_path %>
+    </li>
+  </ul>
+</li>
+
+<li class="<%= 'active' if current_page?('/home/minor') %>">
+  <%= link_to "#" do %>
+  <span class="nav-label"><%= t(:accounting)%></span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-third-level collapse">
+    <li class="<%= 'active' if is_active_controller('accounts') %>" >
+      <%= link_to t(:accounts), accounts_path %>
+    </li>
+    <li class="<%= 'active' if is_active_controller('journals') %>" >
+      <%= link_to t(:journals), journals_path %>
+    </li>
+  </ul>
+</li>
+
+<li class="<%= 'active' if current_page?('/home/minor') %>">
+  <%= link_to "#" do %>
+  <span class="nav-label"><%= t(:users_and_accounts)%></span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-third-level collapse">
+    <% if policy(User).index? %>
+    <li class="<%= 'active' if is_active_controller('users') %>" >
+      <%= link_to t(:user_accounts), users_path %>
+    </li>    
+    <li class="<%= 'active' if is_active_controller('departments') %>" >
+      <%= link_to t(:departments), departments_path %>
+    </li>
+    <li class="<%= 'active' if is_active_controller('roles') %>" >
+      <%= link_to t(:roles), roles_path %>
+    </li>
+    <% end %>    
+  </ul>
+</li>
+
+<li class="<%= 'active' if current_page?('/home/minor') %>">
+  <%= link_to "/home/minor" do %>
+  <span class="nav-label"><%= t(:system)%></span>
+  <span class="fa arrow"></span>
+  <% end %>
+  <ul class="nav nav-second-level collapse">
+    <li>
+      <a href="#"><%t(:error_logs)%></a>
+    </li>
+    <li>
+      <a href="#"><%t(:user_activity)%></a>
+    </li>
+  </ul>
+</li>
+
+</ul>
+

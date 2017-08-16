@@ -1,0 +1,124 @@
+<%
+   uuid = uuid || SecureRandom.uuid
+   locationId ||= nil
+   fdpId ||= nil
+   location_vals = []
+%>
+
+<%
+
+  if  fdpId 
+    fdp = Fdp.find(fdpId)
+
+    if fdp
+        location = fdp ? fdp.location : nil 
+
+        if location
+            location_vals = location.ancestor_ids + [location.id]
+        end
+    end
+  elsif locationId #this will dictate which location selects will come preselected 
+       
+      location_vals = Location.find(locationId).ancestor_ids + [locationId]
+  end
+%>
+
+
+<script type="text/javascript">
+
+
+  function getAndPopulateChildren(parentId, childrenType ) {
+
+    var uri = childrenType == 'fdp' ? ( '/fdps/location/' + parentId) : ( '/locations/' + parentId + '/children' ); 
+
+    $.getJSON( uri, function(data) {
+      var items = ['<option value="">Choose</option>'];
+      $.each( data, function( key, val ) {
+        items.push( "<option value='" + val.id + "'>" + val.name + "</option>" );
+      });
+
+      var $selectElemToPopulate = $( "#" + childrenType + 'Select-<%= uuid %>');
+
+      $selectElemToPopulate.empty().append(items.join( "" ));
+
+      if( $selectElemToPopulate.data('value')) {
+        $selectElemToPopulate.val($selectElemToPopulate.data('value'));
+        $selectElemToPopulate.trigger('change');
+        $selectElemToPopulate.removeAttr('data-value');
+      }
+    });
+  }
+
+  function clearSelects(entityTypes) {
+    $.each(entityTypes, function(idx, entityType) {
+      $( "#" + entityType + 'Select-<%= uuid %>').empty().append('<option value="">Choose</option>');
+    });
+  }
+
+  $(function() {
+
+    getAndPopulateChildren( 0 , 'region' );
+
+    var entityTypes = ['region', 'zone', 'woreda', 'fdp'];
+
+    $.each(entityTypes, function(idx, entityType) {
+
+      if( entityType == 'fdp') return;
+
+      var entity = $('#' + entityType + 'Select-<%= uuid %>');
+
+      entity.change( function() {
+        var value = $(this).val();
+
+        $('#location-id-hidden-<%= uuid %>').val(value);
+
+        clearSelects( entityTypes.slice( entityTypes.indexOf(entityType) + 1));
+
+        if( value ) {
+          getAndPopulateChildren( value , entityTypes[ entityTypes.indexOf(entityType) + 1] );
+
+          if( entityType == 'zone')  { 
+            getAndPopulateChildren( value , 'fdp' );
+          }
+        }
+      });
+    });
+
+  });
+</script>
+
+
+
+<div class="form-group">
+  <label for="regionSelect-<%= uuid %>">Region</label>
+  <select name="region" id="regionSelect-<%= uuid %>" class="form-control"
+          data-value="<%= location_vals.shift %>"
+  >
+    <option value="">Choose</option>
+  </select>
+</div>
+<div class="form-group">
+  <label for="zoneSelect-<%= uuid %>">Zone</label>
+  <select name="zone" id="zoneSelect-<%= uuid %>" class="form-control"
+          data-value="<%= location_vals.shift %>"
+    >
+    <option value="">Choose</option>
+  </select>
+</div>
+<div class="form-group">
+  <label for="woredaSelect-<%= uuid %>">Woreda</label>
+  <select name="woreda" id="woredaSelect-<%= uuid %>" class="form-control"
+          data-value="<%= location_vals.shift %>"
+    >
+    <option value="">Choose</option>
+  </select>
+</div>
+<div class="form-group"> 
+  <label for="fdpSelect-<%= uuid %>">FDP</label> <% if  required %> <span class="required">*</span> <% end %>
+  <select name="<%= name %>" id="fdpSelect-<%= uuid %>" class="form-control data-parsley-required"
+    data-value="<%= fdpId %>" <%= required ? 'required' : ''%>
+  >
+    <option value="">Choose</option>
+</select>
+</div>
+

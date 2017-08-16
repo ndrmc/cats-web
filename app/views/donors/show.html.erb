@@ -1,0 +1,27 @@
+    <p>
+      <strong>Name:</strong>
+      <%= @donor.name %>
+    </p>
+
+    <p>
+      <strong>Code:</strong>
+      <%= @donor.code %>
+    </p>
+
+    <p>
+      <strong>Responsible:</strong>
+      <%= @donor.responsible %>
+    </p>
+
+    <p>
+      <strong>Source:</strong>
+      <%= @donor.source %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @donor.description %>
+    </p>
+
+<%= link_to 'Edit', edit_donor_path(@donor) %> |
+<%= link_to 'Back', donors_path %>

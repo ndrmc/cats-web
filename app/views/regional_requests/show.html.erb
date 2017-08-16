@@ -1,0 +1,303 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Regional Request (<%=  @regional_request.reference_number %>)</h2>
+    <blockquote>
+
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>Region</td>
+            <td><%= @regional_request.region.name %></td>
+          </tr>
+          <tr>
+            <td>Program</td>
+            <td><%= @regional_request.program.name %></td>
+          </tr>
+          <tr>
+            <td>Operation</td>
+            <td><%= @regional_request.operation.name %></td>
+          </tr>
+        
+          <tr>
+            <td>Remark</td>
+            <td><%= @regional_request.remark %></td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </blockquote>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#"><%= link_to 'Regional Requests',  regional_requests_path %></a>
+      </li>
+      <li class="active">
+        <a href="#"><%=  @regional_request.reference_number %></a>
+      </li>
+
+    </ol>
+  </div>
+
+ <% if policy(RegionalRequest).new? %>
+  <div class="col-sm-8">
+  
+    <div class="title-action">
+      <a href="/regional_requests/request_items/<%= @regional_request.id %>.xlsx" target="_blank" class="btn btn-primary"><i class="fa fa-download"></i> Download Request Items for Excel</a>
+      <a href="#" class="btn btn-primary" data-toggle="modal"  data-target="#request-item-modal"><i class="fa fa-plus"></i> Add Request Item</a>
+    </div>
+
+    <form role="form" method="POST" enctype="multipart/form-data" action="/regional_requests/upload_requests/<%= @regional_request.id %>" class="form-inline pull-right" style="display: inline;margin-top: 15px">
+      
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <div class="form-group">
+        <input type="file" name="file" class="form-control" required />
+      </div>
+
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Upload Request Items" />
+      </div>
+        
+      </form>
+  </div>
+<%end%>
+
+
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable" id="fdps_table">
+        <thead>
+          <tr>
+            <th>Zone</th>
+            <th>Woreda</th>
+            <th>FDP</th>
+            <th>Number of Beneficiaries</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @regional_request.regional_request_items.each do |request_item| %>
+          <tr>
+            <td><%= request_item.fdp[:zone] %></td>
+            <td><%= request_item.fdp[:woreda] %></td>
+            <td><%= request_item.fdp.name %></td>
+            <td id = "<%=request_item.id%>" class="beneficiaries_number_cell"><%= request_item.number_of_beneficiaries %></td>
+            <td>
+            <% if policy(RegionalRequest).edit? %>
+              <a href="#" class="edit-rrdi" data-rrdi-id="<%= request_item.id %>"
+              data-rrdi-zone="<%=  request_item.fdp[:zone]  %> "
+              data-rrdi-woreda="<%= request_item.fdp[:woreda] %> "
+              data-rrdi-fdp="<%= request_item.fdp.name %>"              
+              data-rrdi-ben = "<%=request_item.number_of_beneficiaries %>">Edit</edit> &middot; <% if policy(RegionalRequest).destroy? %> 
+
+              <a href="#"  class="delete-rrdi" data-rrdi-id="<%= request_item.id %>" data-rrdi-fdp-id="<%= request_item.fdp.id %>">Delete</a><%end%>
+            <%end%>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="request-item-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add FDP to Request</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" role="form">
+          <%= render 'shared/fdp_selector', name: 'fdp_id', required: true, locationId: @regional_request.region.id, uuid: "fdp-request-modal"  %>
+
+         <div class="form-group">
+            <label for="number_of_beneficiaries">Number of Beneficiaries</label>
+            <span class="required">*</span>
+            <input type="number" name="number_of_beneficiaries" id="number_of_beneficiaries"  class="form-control" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="add-fdp">Add</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="no_of_beneficiary_modal" role="dialog">
+    <div class="modal-dialog">      
+      <!-- Modal content-->
+      <div class="modal-content">
+
+        <div class="modal-header">
+        <span class = 'label' id="zone" ></span> /
+        <span class = 'label'  id="woreda" ></span>  /
+        <span class = 'label'  id="fdp" ></span>
+         
+        </div>
+        <div class="modal-body" >
+          <form role="form" id="update_beneficiary_num">
+            <div class="form-group">
+              <label>No Of Beneficiary</label>
+              <input type='text' class="form-control" id="beneficiary_num" >
+               <input type="hidden" id="request_id"/>
+            </div>
+          
+          
+             
+          </form>
+        </div>
+       
+      </div>
+      
+    </div>
+  </div> 
+
+<script type="text/javascript">
+
+  function isNumber(n) {
+    return !isNaN(parseInt(n, 10)) && isFinite(n);
+  }
+
+
+   $('#update_beneficiary_num').submit(function(e) {
+    
+    var num = $('#beneficiary_num').val();
+    var req_id = $('#request_id').val();   
+  
+    $('#no_of_beneficiary_modal').modal('hide');
+     if( !isNumber(num)) { 
+     
+      toastr.error("Only numbers are accepted!"); 
+      return; 
+    }
+
+      $.post('/regional_requests/update_regional_request_item', 
+      
+        {id: req_id, new_beneficiaries_value: num}, function(response) {
+           
+           var req_id = this.data.split('&')[0].split('=')[1];
+           var oTable = $("#fdps_table").DataTable();
+           var beneficiaries_number_cell = $("#" + req_id).closest('tr').find('td:nth-child(4)')[0];          
+           oTable.cell(beneficiaries_number_cell).data(num); 
+           toastr.success('Updated!');
+    
+    }, 'json').fail(function() { 
+      toastr.error("Update failed. Please try again shortly.")
+    });   
+
+  
+
+  });
+  
+  var alreadyAddedFdpIds = <%= @fdp_ids_with_a_request %>; 
+
+  $("#add-fdp").click( function() { 
+    var fdp_id = $('select[name=fdp_id]').val(); 
+    var number_of_beneficiaries = $('#number_of_beneficiaries').val(); 
+
+    if( !fdp_id || !number_of_beneficiaries) { 
+      toastr.error("Both 'FDP' and 'Number of Beneficiaries' are required."); 
+      return; 
+    }
+
+    if( alreadyAddedFdpIds.indexOf( parseInt(fdp_id, 10 )) != -1 ) { 
+      toastr.error("This FDP has already been added."); 
+      return; 
+    }
+
+    $.post('/regional_requests/add_fdp_to_request', {id: <%= @regional_request.id %>, fdp_id: fdp_id, number_of_beneficiaries: number_of_beneficiaries}, function(response) {
+        if( response.successful ) {
+
+          alreadyAddedFdpIds.push( parseInt( fdp_id, 10));
+
+          $('select[name=fdp_id]').val('').focus(); 
+          $('#number_of_beneficiaries').val(''); 
+          
+          toastr.success( "Added!"); 
+
+          var dTable = $("#fdps_table").DataTable().row.add([
+              response.zoneName, 
+              response.woredaName, 
+              response.fdpName,
+              response.number_of_beneficiaries,
+              '<a href="#" class="edit-rrdi" data-rrdi-id="' + response.rrdi.id + '">Edit</edit> &middot;<a href="#"  class="delete-rrdi" data-rrdi-id="' + response.rrdi.id + '">Delete</a>'
+          ]).draw();
+
+        }
+        else  { 
+
+        }
+    }, 'json');
+  }); 
+
+  $('#fdps_table').on( 'click', '.edit-rrdi', function(e) { 
+  
+    e.preventDefault(); //new_beneficiaries_value
+
+    var rrdiId = $(this).data('rrdi-id'); 
+    var zone = $(this).data('rrdi-zone'); 
+    var woreda = $(this).data('rrdi-woreda'); 
+    var fdp = $(this).data('rrdi-fdp'); 
+    var curr_num = $(this).data('rrdi-ben');
+    $(".modal-header #zone").text( zone);
+    $(".modal-header #woreda").text( woreda );
+    $(".modal-header #fdp").text( fdp );
+    $(".modal-body #beneficiary_num").val( curr_num );
+    $(".modal-body #request_id").val( rrdiId );    
+    
+    $('#no_of_beneficiary_modal').modal();
+    
+  }); 
+
+  $('#fdps_table').on( 'click', '.delete-rrdi', function(e) { 
+    e.preventDefault(); 
+
+    var rrdiId = $(this).data('rrdi-id'); 
+    var fdpId = $(this).data('rrdi-fdp-id');
+    var self = this; 
+
+    swal({
+        title: "Are you sure?",
+        text: "You will not be able to undo this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function () {
+        $.ajax({
+          url: "/regional_requests/destroy_regional_request_item/" + rrdiId ,
+          method: 'DELETE',
+          dataType: 'json'
+        }).done(function () {         
+
+          alreadyAddedFdpIds.splice( $.inArray(fdpId, alreadyAddedFdpIds), 1 );
+
+          var oTable = $("#fdps_table").dataTable();
+
+          var target_row = $(self).closest("tr").get(0); // this line did the trick
+          var aPos = oTable.fnGetPosition(target_row); 
+
+          oTable.fnDeleteRow(aPos);
+
+          toastr.success("Deleted!");
+        }).fail(function() { 
+          toastr.error("Delete failed! Please try again shortly.");
+        });
+
+      });
+  }); 
+
+  $( function() { 
+    $( "#regionSelect-fdp-request-modal").attr("readonly", true ); 
+  }); 
+</script>

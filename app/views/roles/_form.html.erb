@@ -1,0 +1,38 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(role) do |f| %>
+        <% if role.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(role.errors.count, "error") %> prohibited this role from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% role.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= f.label :name %>
+          <%= f.text_field :name,
+                           :class => 'form-control', :pattern => '[A-Za-z0-9]+',
+                           :oninvalid => "setCustomValidity('Only letters and numbers allowed. E.g. admin, Admin2')",
+                           :onchange => "try{setCustomValidity('')}catch(e){}"
+          %>
+        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

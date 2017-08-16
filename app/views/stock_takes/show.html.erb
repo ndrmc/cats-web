@@ -1,0 +1,89 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+    <div class = "form-inline pull-right"> 
+    <% if @stock_take.draft %>
+    <%= link_to 'Post Stock Take', "/stock_takes/#{@stock_take.id}/post" , class: 'btn btn-danger' , data: { confirm: 'Editing stock take values is not permitted after posting. Do you want to proceed?'}%>
+    <%else%>    
+      <label class="badge badge-info">posted</label>
+    <% end %> 
+    <%= link_to 'Back', stock_takes_path , class: 'btn btn-primary'  %>   
+    </div> 
+      <p>
+        <strong>Hub:</strong>
+        <%= Hub.find(@stock_take.hub_id).name %>
+      </p>
+      <p>
+        <strong>Warehouse:</strong>
+        <%= Warehouse.find(@stock_take.warehouse_id).name %>
+      </p>
+      <p>
+        <strong>Store no:</strong>
+        <%= @stock_take.store_no %>
+      </p>
+      <p>
+        <strong>Date:</strong>
+        <%= @stock_take.date %>
+      </p>
+      <div class="clients-list">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"><i class="fa fa-tags"></i> Stock Take Items</a></li>
+          <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false"><i class="fa fa-wrench"></i> Adjustments</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="tab-1" class="tab-pane active">
+            <div class="">
+            <br/>
+              <% if @stock_take.draft %>
+              <%= link_to 'Add Item', new_stock_take_item_url(stock_take_id: @stock_take.id) , class: 'btn btn-primary pull-right' %>
+              <% end %>
+            </div>
+            <table class="table table-striped table-bordered table-hover " >
+            <thead>
+            <tr>
+                <th>Donor</th>
+                <th>Project</th>
+                <th>Commodity Category</th>
+                <th>Commodity</th>
+                <th>Theoretical Amount</th>
+                <th>Actual Amount</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+           <% @stock_take.stock_take_items.each do |item| %>              
+             <%= render 'stock_take_item', stock_take_item: item %>         
+          <%end%>
+      
+            </tbody>
+           
+            </table>
+
+             
+          </div>
+          <div id="tab-2" class="tab-pane">
+             <table class="table table-striped table-bordered table-hover " >
+                <thead>
+                <tr>
+                    <th>Commodity Category</th>
+                    <th>Commodity</th>
+                    <th>Amount</th>
+                    <th>Adjustment Type</th>
+                    <th>Reason</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <% @stock_take.adjustments.each do |adjustment| %>              
+                    <%= render 'adjustment', adjustment: adjustment %>         
+                  <%end%>          
+                </tbody>
+           
+             </table>
+		      
+          </div>
+	   </div>
+        
+    </div>
+  </div>
+ </div>

@@ -48,7 +48,20 @@ bower.json
 .byebug_history
 
 
-# Intellij Files 
+# Intellij Files
 
 .idea/
 *.iml
+
+
+# Temporary files
+*~
+
+# MacOS files
+**/.DS_Store
+
+node_modules/
+typings
+
+# Excel data imports
+/data

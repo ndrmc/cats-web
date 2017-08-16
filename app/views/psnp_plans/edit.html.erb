@@ -1,0 +1,20 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Edit PSNP Plan</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">PSNP Plan</a>
+      </li>
+      <li class="active">
+        <strong>Edit</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', psnp_plans_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<%= render 'form', psnp_plan: @psnp_plan %>

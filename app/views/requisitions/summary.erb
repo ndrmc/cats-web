@@ -1,0 +1,45 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+     <div class="ibox-title">
+                        <h4><%=@operation.name%> <span class='badge badge-info'><%= Location.find(@request.region_id).name%></span></h4>
+                       
+     </div>
+    <div class="ibox-content">         
+       
+              
+        <table class ="table table-striped"> 
+           <thead>
+          <tr>
+                        <th>Zone</th>
+                        <%@commodities.each do |c|%>
+                          <th><%= c.name %> </th>
+                        <% end %>
+          </tr>
+        </thead>
+
+        <tbody>
+         
+          <%@request_zones.each do |zone,index|%>
+          <tr>
+              <td><%= zone.name %></td>
+             <%@commodities.each do |c|%>
+                <% if @requisitions.find_by({zone_id: zone.id,commodity_id: c.id}) %>
+                <% requisition = @requisitions.find_by({zone_id: zone.id,commodity_id: c.id}) %>
+                <td><%= link_to  requisition.requisition_no , edit_requisition_path(requisition) %></td>
+                <% else %>
+
+                   <% if policy(Requisition).add_requisition? %>
+                   <td> <a href='/requisitions/add_requisition?request=<%=@request.id%>&zone=<%=zone.id%>&commodity=<%=c.id%>' class='btn btn-primary' >Create</a> </td>
+                   <%end%>
+
+                <% end %>
+            <% end %>
+          </tr>
+         <% end %>
+        </tbody>
+        </table>
+
+    </div>
+  </div>
+</div>
+

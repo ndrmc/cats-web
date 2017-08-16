@@ -1,0 +1,87 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Requisitions</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Operation</a>
+      </li>
+      <li class="active">
+        <strong>Requisitions</strong>
+      </li>
+    </ol>
+  </div>
+
+</div>
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <div class="form-group">
+        <%= form_tag(requisitions_path, {class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+            <div class='form-group '>
+              <label class='control-label'>Operation</label>
+              <%= select_tag :operation, options_from_collection_for_select(Operation.all, 'id', 'name', params[:operation]), { :required => true,:prompt => "-- Select --",:class=> 'data-parsley-required'} %>
+            </div>
+            <div class='form-group'>
+              <label class='control-label'>Region</label>
+              <%= select_tag :region, options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region]), {:required => true,:prompt => "-- Select --",:class=> 'data-parsley-required'} %>
+            </div>
+            <div class='form-group'>
+              <label class='control-label'>Status</label>
+              <%= select_tag :status, options_from_collection_for_select(Requisition.statuses, :first, :first, params[:status]), {:prompt => "-- Select --"} %>
+            </div>
+            <div class='form-group'>
+              <button class='btn btn-sm btn-primary' type='submit'><i class="fa fa-search"></i> Search</button>
+            </div>
+        <% end %>
+      </div>
+      <table class="table table-striped cats-datatable">
+        <thead>
+        <tr>
+          <th>Requisition no</th>
+          <th>Operation</th>
+          <th>Commodity</th>
+          <th>Zone</th>
+          <th>Requested on</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @requisitions.each do |requisition| %>
+            <tr>
+              <td>
+                <%= requisition.requisition_no %>
+              </td>
+              <td>
+                <%= Operation.find(requisition.operation_id).name %>
+              </td>
+              <td>
+                <%= Commodity.find(requisition.commodity_id).name %>
+
+              </td>
+              <td>
+                <%= Location.find(requisition.zone_id).name %>
+              </td>
+              <td>
+                <%= requisition.requested_on %>
+              </td>
+              <td>
+                <%= requisition.status %>
+              </td>
+              <td>
+              <% if policy(Requisition).edit? %>
+                <%= link_to 'Edit', edit_requisition_path(requisition) %> &middot;
+              <%end%>
+               <% if policy(Requisition).destroy? %>
+                  <% @confirmation_message = 'Are you sure you want delete the Requisition with reference number [ ' + requisition.requisition_no + ' ] ?' %>
+                  <%= link_to 'Delete', requisition, method: :delete, data: { confirm: @confirmation_message.to_s } %>
+              <%end%>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

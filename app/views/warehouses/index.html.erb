@@ -1,0 +1,67 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Warehouses</h2>
+    <ol class="breadcrumb">
+     <li>
+        <a href="#">Settings</a>
+      </li>
+      <li>
+        <a href="#">Warehouses & hubs</a>
+      </li>
+      <li class="active">
+        <strong>Warehouses</strong>
+      </li>
+    </ol>
+  </div>
+ <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Warehouse',  new_hub_warehouse_path(0), :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="row">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Hub</th>
+            <th>Owner</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @warehouses.each do |warehouse| %>
+          <tr>
+              <td><%= warehouse.name %></td>
+              <td><%= warehouse.description%></td>
+              <td>
+                <% if warehouse.hub_id%>
+                  <%=Hub.find(warehouse.hub_id).name%>
+                <% end %>
+              </td>
+              <td>
+                <% if warehouse.organization_id%>
+                  <%=warehouse.organization.name%>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to 'View', warehouse_path(warehouse) %> &middot;
+                <%= link_to 'Edit', edit_warehouse_path(warehouse) %> &middot;
+                <%= link_to 'Delete', warehouse, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+</div>

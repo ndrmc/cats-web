@@ -1,0 +1,77 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transporters</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Settings</a>
+      </li>
+       <li>
+        <a href="#">General Settings</a>
+      </li>
+      <li class="active">        
+        <strong>
+          <a href="#">Transporters</a>
+        </strong>
+      </li>
+    </ol>
+  </div>
+  <% if policy(Transporter).new? %>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Transporter', new_transporter_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+  <% end %>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+
+        <table class="table table-striped cats-datatable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Code</th>
+              <th>Total number of vehicles</th>
+              <th>Employees</th>
+              <th>Lift capacity</th>
+              <th>Contact Person</th>
+              <th>Phone</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @transporters.each do |transporter| %>
+            <tr>
+              <%if policy(Transporter).show? %>
+                  <td><%= link_to transporter.name, transporter_path(transporter) %></td>
+              <%else%>
+                   <td><%= transporter.name %></td>
+              <% end %>
+              <td><%= transporter.code %></td>
+              <td><%= transporter.vehicle_count %></td>
+              <td><%= transporter.employees %></td>
+              <td><%= transporter.lift_capacity %></td>
+              <td><%= transporter.contact %></td>
+              <td><%= transporter.contact_phone %></td>
+              <td>
+                <%if policy(Transporter).edit? %>
+                <%= link_to 'Edit', edit_transporter_path(transporter) %>
+                <% end %>
+                &middot;
+                 <%if policy(Transporter).destroy? %>
+                <%= link_to 'Delete', transporter, method: :delete, data: { confirm: "Are you sure you want to delete transporter: #{transporter.name}?" } %>
+                <% end %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

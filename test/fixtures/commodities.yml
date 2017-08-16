@@ -1,0 +1,9 @@
+
+commodity_1:
+  id: 1
+  name: Cereal
+  name_am: 
+  long_name: 
+  code: CER
+  uom_category_id: 1
+  commodity_category_id: 1

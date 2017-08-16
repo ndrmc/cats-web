@@ -1,0 +1,12 @@
+location1:
+    name: 'AFAR'
+    code: 'AF'
+    location_type: :region
+location2:
+    name: 'zone 1'
+    location_type: :zone
+location3:
+    name: 'Adhar'
+    location_type: :woreda
+
+    

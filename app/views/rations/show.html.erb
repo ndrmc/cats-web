@@ -1,0 +1,27 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Ration [<%= @ration.reference_no %>]</h2>
+    <ol class="breadcrumb">
+      <li>
+        Plan
+      </li>
+      <li>
+        <%= link_to 'Rations', rations_path %>
+      </li>
+      <li class="active">
+        <strong><%= @ration.reference_no %></strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Back', rations_path,  :class => "btn btn-default"%>
+      <%if policy(Ration).destroy? %>
+      <%= link_to 'Delete', @ration, method: :delete, :class => "btn btn-danger", data: { title: 'Delete Ration', confirm: 'Are you sure you want to delete this ration? This will affect all associated records which depend on this ration.', commit: 'Yes
+      delete!' } %>
+      <%end%>
+    </div>
+  </div>
+</div>
+
+<%= render 'ration_view', ration: @ration %>

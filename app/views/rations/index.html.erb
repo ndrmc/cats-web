@@ -1,0 +1,63 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Rations</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Plan</a>
+      </li>
+      <li class="active">
+        <strong>Rations</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+  <% if policy(Ration).new? %>
+    <div class="title-action">
+      <%= link_to 'New Ration', new_ration_path, :class => "btn btn-primary"%>
+    </div>
+  <%end%>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Reference no</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @rations.each do |ration| %>
+            <tr>
+              <td>
+                <%= link_to ration.reference_no, ration_path(ration)%>
+              </td>
+              <td><%= ration.description
+              %></td>
+              
+              <td>
+              <% if policy(Ration).edit? %>
+                <%= link_to 'Edit', edit_ration_path(ration) %>
+              <%end%>
+                &middot;
+              <%if policy(Ration).destroy? %>
+                <%= link_to 'Delete', ration, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%end%>
+              </td>
+              
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

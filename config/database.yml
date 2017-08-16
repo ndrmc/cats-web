@@ -17,6 +17,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  host: 127.0.0.1
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -24,6 +25,12 @@ default: &default
 development:
   <<: *default
   database: cats_development
+  username: cats
+  password: cats
+
+import:
+  <<: *default
+  database: cats_import
   username: cats
   password: cats
   # The specified database role being used to connect to postgres.
@@ -59,6 +66,8 @@ development:
 test:
   <<: *default
   database: cats_test
+  username: cats
+  password: cats
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -79,8 +88,18 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-production:
-  <<: *default
-  database: cats_production
-  username: cats
-  password: <%= ENV['CATS_DATABASE_PASSWORD'] %>
+#production:
+#  <<: *default
+#  host: 197.156.65.234
+#  port: 5444
+#  database: cats_production
+#  username: cats_prod
+#  password: <%= ENV['CATS_DATABASE_PASSWORD'] %>
+
+#stage:
+#  <<: *default
+#  host: 10.11.156.20
+#  port: 5444
+#  database: cats_stage
+#  username: postgres
+#  password: cats

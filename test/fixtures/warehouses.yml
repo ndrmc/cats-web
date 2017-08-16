@@ -1,0 +1,16 @@
+warehouse1:
+        name: warehouse1
+        description: warehouse in adama
+        lat: 0
+        lon: 0
+        hub: hub1
+
+warehouse2:
+  id: 1
+  name: warehouse2
+  description: warehouse in addis
+  lat: 0
+  lon: 0
+  hub: hub1
+     
+

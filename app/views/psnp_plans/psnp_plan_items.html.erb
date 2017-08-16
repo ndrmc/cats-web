@@ -1,0 +1,287 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2><%= @psnp_plan.name %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="/psnp_plans/<%= @psnp_plan.id %>">HRD</a>
+      </li>
+      <li class="active">
+        <strong>Items</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+
+    <div class="panel">
+        <div class="panel-heading">
+            <form role="form" class="form-inline" action="/psnp_plans/psnp_plan_items" method="GET">
+                <input type="hidden" name="psnp_plan_id" value="<%= @psnp_plan.id %>">
+                <%= select_tag  :region_id,  options_from_collection_for_select( Location.where(location_type: 'region') , 'id', 'name', params[:region_id] ) , { :prompt => "Choose Region", :id => 'region-select', :class => 'form-control' }  %>
+            </form>
+
+        </div>
+    </div>
+
+   
+
+    <div class="wrapper wrapper-content">
+
+     <% @psnp_plan_items_by_zone.each do |zone_id, psnp_plan_items| %>
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5><%= Location.find(zone_id).name %></span></h5>
+                <div class="ibox-tools">
+                    <a class="btn btn-white btn-sm" data-psnp_plan-id="<%= @psnp_plan.id %>" data-zone-id="<%= zone_id %>" data-target="#new-psnp_plan-item" data-toggle="modal">
+                        <i class="fa fa-plus"></i> Add woreda
+                    </a>
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="ibox-content">
+                <div>
+                    <table class="table" id="zone-<%= zone_id %>">
+                        <thead>
+                            <tr> 
+                                <th>Woreda</th>
+                                <th>Starting Month</th>
+                                <th>Duration</th>
+                                <th>Number of Beneficiaries</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% psnp_plan_items.each do |item| %>
+                                <tr id="psnp_plan-item-<%= item.id %>">
+                                    <td><%= item.woreda.name  %></td>
+                                    <td id="starting-month-<%= item.id %>"><%= Date::MONTHNAMES[item.starting_month] %></td>
+                                    <td id="duration-<%= item.id %>"><%= item.duration %></td>
+                                    <td id="beneficiary-<%= item.id %>"><%= item.beneficiary %></td>
+                                    <td>
+                                        <a href="#" data-toggle="modal" data-target="#edit-psnp_plan-item" data-psnp_plan-item-id="<%= item.id %>">edit</a>
+                                        <a href="#" class="remove-psnp_plan-item" data-confir="Are you sure?" data-psnp_plan-item-id="<%= item.id %>">delete</a>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+
+                    </table>
+
+                
+                </div>
+            </div>
+    </div>
+
+    <% end %>
+
+
+    <% @zones_with_no_psnp_plan_item.each do |zone_id| %>
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5><%= Location.find(zone_id).name %></span></h5>
+                <div class="ibox-tools">
+                    <a class="btn btn-white btn-sm" data-psnp_plan-id="<%= @psnp_plan.id %>" data-zone-id="<%= zone_id %>" data-target="#new-psnp_plan-item" data-toggle="modal">
+                        <i class="fa fa-plus"></i> Add woreda
+                    </a>
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="ibox-content">
+                <div>
+                    <table class="table" id="zone-<%= zone_id %>">
+                        <thead>
+                            <tr> 
+                                <th>Woreda</th>
+                                <th>Starting Month</th>
+                                <th>Duration</th>
+                                <th>Number of Beneficiaries</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+
+                    </table>
+
+                
+                </div>
+            </div>
+    </div>
+
+    <% end %>
+
+    
+  </div>
+</div>  
+
+<div class="modal inmodal" id="edit-psnp_plan-item" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Edit</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-container">
+        </div>
+        <div class="spinner">
+            Loading...
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="save-psnp_plan-item-btn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal inmodal" id="new-psnp_plan-item" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Add Woreda</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-container">
+        </div>
+        <div class="spinner">
+            Loading...
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="save-psnp_plan-item-btn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    var MONTHNAMES = [null].concat( <%= raw( Date::MONTHNAMES[1..-1]) %>);
+    $( function() { 
+        $('#region-select').change( function() { 
+            if( !$(this).val() ) return; 
+
+            $(this).closest('form').submit(); 
+        }); 
+
+        $('#edit-psnp_plan-item').on('shown.bs.modal', function (e) {
+            e.preventDefault(); 
+
+            var psnp_plan_item_id = $( e.relatedTarget ).data('psnp_plan-item-id'); 
+
+            $('#edit-psnp_plan-item .spinner').show(); 
+            $('#edit-psnp_plan-item .form-container').hide(); 
+
+            $("#edit-psnp_plan-item .form-container").load( '/psnp_plans/edit_psnp_plan_form/' + psnp_plan_item_id, function() { 
+                $('#edit-psnp_plan-item .spinner').hide(); 
+                $('#edit-psnp_plan-item .form-container').show(); 
+            }); 
+        });
+
+        $('#new-psnp_plan-item').on('shown.bs.modal', function (e) {
+            e.preventDefault(); 
+
+            var psnp_plan_id = $( e.relatedTarget ).data('psnp_plan-id'); 
+            var zone_id = $( e.relatedTarget ).data('zone-id'); 
+
+            $('#new-psnp_plan-item .spinner').show(); 
+            $('#new-psnp_plan-item .form-container').hide(); 
+
+            $("#new-psnp_plan-item .form-container").load( '/psnp_plans/new_psnp_plan_item/' + psnp_plan_id + '?zone_id=' + zone_id, function() { 
+                $('#new-psnp_plan-item .spinner').hide(); 
+                $('#new-psnp_plan-item .form-container').show(); 
+            }); 
+        });
+
+        $('#edit-psnp_plan-item #save-psnp_plan-item-btn').click( function() { 
+            var psnp_plan_item = {};
+
+            $('#edit-psnp_plan-item .psnp_plan-item-form-field').each( function() { 
+                psnp_plan_item[$(this).attr('name')] = $(this).val(); 
+            }); 
+
+            $.getJSON( '/psnp_plans/update_psnp_plan_item', psnp_plan_item, function(data) { 
+                if( data.successful ) { 
+                    toastr.success('Updated!'); 
+
+                    $('#duration-' + psnp_plan_item.id ).text( psnp_plan_item['duration']);
+                    $('#starting-month-' + psnp_plan_item.id ).text( MONTHNAMES[psnp_plan_item['starting_month']]);
+                    $('#beneficiary-' + psnp_plan_item.id ).text( psnp_plan_item['beneficiary']);
+
+                    $('#edit-psnp_plan-item').modal('hide'); 
+                }
+                else {
+                    toastr.error("Update failed. "+data.messages);
+                }
+            }); 
+        }); 
+
+        $('#new-psnp_plan-item #save-psnp_plan-item-btn').click( function() { 
+            var psnp_plan_item = {};
+
+            $('#new-psnp_plan-item .psnp_plan-item-form-field').each( function() { 
+                psnp_plan_item[$(this).attr('name')] = $(this).val(); 
+            });
+
+            $.post( "/psnp_plans/save_psnp_plan_item", psnp_plan_item)
+            .done( function( data ) {
+                $('#new-psnp_plan-item').modal('hide');
+                $(data).appendTo('table#zone-' + psnp_plan_item.zone_id); 
+            })
+            .fail(function() { 
+                toastr.error("Save failed. Please check your values and try again.")
+            }); 
+        }); 
+
+        $('.remove-psnp_plan-item').click(function(e) {
+            e.preventDefault();
+
+            var psnp_plan_item_id = $(this).data('psnp_plan-item-id');
+
+            remove_psnp_item(psnp_plan_item_id);
+
+        });
+
+
+
+
+    });
+
+    function remove_psnp_item( id)
+    {
+        $.ajax( { url: '/psnp_plans/remove_psnp_plan_id/' + id, method: 'DELETE'})
+            .done( function() {
+
+                toastr.success("Removed!");
+
+                $('tr#psnp_plan-item-' + id ).fadeOut('slow', function() { $(this).remove(); });
+            });
+    }
+</script>

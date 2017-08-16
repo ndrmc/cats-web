@@ -1,0 +1,51 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Commodity Sources</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Settings</a>
+      </li>
+      <li>
+        <a href="#">Commodity</a>
+      </li>
+      <li class="active">
+        <strong>Commodity Sources</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Commodity Source', new_commodity_source_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Name</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @commodity_sources.each do |commodity_source| %>
+          <tr>
+                        <td><%= commodity_source.name
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_commodity_source_path(commodity_source) %> &middot;
+              <%= link_to 'Delete', commodity_source, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

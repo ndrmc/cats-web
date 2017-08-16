@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+permission1:
+    name: 'permission 1'
+#
+permission2:
+    name: 'permission 2'
+Dispatch:
+    name: 'Dispatch'
+project:
+    name: 'Project'
+Requisition:
+    name: 'Requisition'
+delivery:
+    name: 'Delivery'
+hrd:
+    name: HRD
+gift_certificate:
+    name: 'Gift Certificate'
+psnp_plan:
+    name: 'PSNP Annual Plan'
+ration:
+    name: Ration
+Receipts: 
+    name: 'Receipts'
+Location:
+    name: 'locations'
+
+

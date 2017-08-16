@@ -1,0 +1,117 @@
+<%= form_for(project) do |f| %>      
+      <div class="ibox-content" id="project_code_box">
+        <div class="">
+            <%= f.label :project_code %>
+            <%= 
+              f.text_field :project_code, :class => 'big-text-field form-control' , :required => true , :readonly => true
+            %>
+        </div>
+      </div>
+      <div class="wrapper wrapper-content">
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">
+            <% if project.errors.any? %>
+              <div class="panel panel-danger">
+                <div class="panel-heading">
+                  <%= pluralize(project.errors.count, "error") %> prohibited this project from being saved.
+                </div>
+                <div class="panel-body">
+                  <ul>
+                    <% project.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            <% end %>
+           <div class="form-group">
+              <%= f.label :commodity_source %>
+              <%= f.collection_select :commodity_source_id,  CommoditySource.where.not(code: ["TR","RP", "OT", "RT"]).order(:name), :id, :name, {include_blank: true}, {class: 'form-control', :required => true, :onChange=>"javascript: get_update_project_code();" } %>
+           </div>
+           <div class="form-group">
+              <%= f.label :organization_id %>
+              <%= f.collection_select :organization_id,
+                Organization.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true } %>
+           </div>
+
+           <div class="form-group">
+              <%= f.label :program_id %>
+              <%= f.collection_select :program_id,
+                Program.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true  } %>
+            </div> 
+
+            <div class="form-group">
+              <%= f.label :commodity_categories_id %>
+              <%= f.collection_select :commodity_categories_id,
+                CommodityCategory.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true  } %>
+            </div>  
+
+          <div class="form-group">
+              <%= f.label :commodity_id %>
+              <%= f.collection_select :commodity_id,
+                Commodity.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true } %>
+            </div>              
+
+          <div class="form-group">
+              <%= f.label :amount %>
+              <%= f.text_field :amount, :class => 'form-control', :required => true  %>
+          </div>
+          <div class="form-group">
+              <%= f.label :unit_of_measure_id %>
+              <%= f.collection_select :unit_of_measure_id,
+                UnitOfMeasure.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true } %>
+          </div>
+            
+          
+          <div class="form-group">
+              <%= f.label :date %>
+              <%= f.text_field :publish_date, :class => 'form-control datepicker' , :required => true  %>
+          </div>
+
+        <div class="actions">
+          <%= f.submit :class => 'btn btn-primary' %>
+        </div>
+    <% end %>
+
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+
+$( document ).ready(function() {
+
+  var id=document.getElementById("project_commodity_categories_id").value;
+  var c_id=$( "select#project_commodity_id" ).val();
+ 
+
+var url = '/projects/get_commodities/' + id
+ 
+  $.get(url, function(data) {
+      $("#project_commodity_id").html("");
+      $.each( data, function( index, value ) {
+      $("#project_commodity_id").append( "<option value='" + value[1] + "'>" + value[0] + "</option>" );
+      });
+     $("#project_commodity_id > [value=" + c_id + "]").attr("selected", "true");
+  });
+
+
+});
+
+
+
+
+  $("#project_commodity_categories_id").change(function(){
+  var url = '/projects/get_commodities/' + $(this).val()
+ 
+  $.get(url, function(data) {
+      $("#project_commodity_id").html("");
+      $("#project_commodity_id").append( EMPTY_OPTION );
+      $.each( data, function( index, value ) {
+       
+        $("#project_commodity_id").append( "<option value='" + value[1] + "'>" + value[0] + "</option>" );
+      });
+  });
+});
+</script>

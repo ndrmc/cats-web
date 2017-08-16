@@ -1,0 +1,10 @@
+requisition1:
+    requisition_no: '001'
+    operation: operation1
+    commodity_id: 1
+    ration_id: 1
+    requested_by: ''
+    requested_on: '01/01/2009'
+    status: 1
+    request_id: 1
+

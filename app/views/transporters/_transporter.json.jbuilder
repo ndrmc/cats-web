@@ -1,0 +1,2 @@
+json.extract! transporter, :id, :name, :code, :ownership, :vehicleCount, :lift_capacity, :capital, :employees, :contact, :contact_phone, :remark, :status, :created_at, :updated_at
+json.url transporter_url(transporter, format: :json)

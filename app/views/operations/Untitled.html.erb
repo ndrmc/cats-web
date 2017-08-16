@@ -1,0 +1,67 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Operations</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Operations</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <% if policy(Operation).new? %>
+    <div class="title-action">
+      <%= link_to 'New Operation', new_operation_path, :class => "btn btn-primary"%>
+    </div>
+    <%end%>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Year</th>
+            <th>Month</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @operations.each do |operation| %>
+          <tr>
+            <td><%= operation.name
+              %></td>
+            <td><%= operation.program_id
+              %></td>
+            <td><%= operation.year
+              %></td>
+            <td><%= operation.month
+              %></td>
+            <td><%= operation.status
+              %></td>
+            <td>
+            <% if policy(Operation).edit? %>
+              <%= link_to 'Edit', edit_operation_path(operation) %>
+              <%end%>
+              &middot;
+              <% if policy(Operation).destroy? %>
+              <%= link_to 'Delete', operation, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%end%>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

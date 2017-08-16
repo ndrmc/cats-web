@@ -1,0 +1,103 @@
+<%
+   uuid = SecureRandom.uuid
+   requiredLevels ||= []
+   locationId ||= nil
+   location_vals = []
+%>
+
+<%
+  if locationId
+    location_vals = Location.find(locationId).ancestor_ids + [locationId]
+  end
+%>
+
+
+<script type="text/javascript">
+
+  var requiredLevels = [<%=  requiredLevels.collect {|l| "'#{l}'"}.join(',').html_safe %>];
+
+  function getAndPopulateChildren(parentId, childrenType ) {
+    $.getJSON('/locations/' + parentId + '/children', function(data) {
+      var items = ['<option value="">Choose</option>'];
+      $.each( data, function( key, val ) {
+        items.push( "<option value='" + val.id + "'>" + val.name + "</option>" );
+      });
+
+      var $selectElemToPopulate = $( "#" + childrenType + 'Select-<%= uuid %>');
+
+      $selectElemToPopulate.empty().append(items.join( "" ));
+
+      if( $selectElemToPopulate.data('value')) {
+        $selectElemToPopulate.val($selectElemToPopulate.data('value'));
+        $selectElemToPopulate.trigger('change');
+        $selectElemToPopulate.removeAttr('data-value');
+      }
+    });
+  }
+
+  function clearSelects(entityTypes) {
+    $.each(entityTypes, function(idx, entityType) {
+      $( "#" + entityType + 'Select-<%= uuid %>').empty().append('<option value="">Choose</option>');
+    });
+  }
+
+  $(function() {
+
+    getAndPopulateChildren( 0 , 'region' );
+
+    var entityTypes = ['region', 'zone', 'woreda', 'kebele'];
+
+    $.each(entityTypes, function(idx, entityType) {
+
+      if( entityType == 'kebele') return;
+
+      var entity = $('#' + entityType + 'Select-<%= uuid %>');
+
+      entity.change( function() {
+        var value = $(this).val();
+
+        $('#location-id-hidden-<%= uuid %>').val(value);
+
+        clearSelects( entityTypes.slice( entityTypes.indexOf(entityType) + 1));
+
+        if( value ) {
+          getAndPopulateChildren( value , entityTypes[ entityTypes.indexOf(entityType) + 1] );
+        }
+      });
+    });
+
+  });
+</script>
+
+
+<input id="location-id-hidden-<%= uuid %>" type="hidden" name="<%= name || 'location_id' %>" value="<%= locationId %>" />
+
+<div class="form-group">
+  <label for="regionSelect-<%= uuid %>">Region <%= '*' if requiredLevels.include? 'region' %></label>
+  <select name="region" id="regionSelect-<%= uuid %>" class="form-control"
+          <%= 'required' if requiredLevels.include? 'region' %>
+          data-value="<%= location_vals.shift %>"
+  >
+    <option value="">Choose</option>
+  </select>
+</div>
+<div class="form-group">
+  <label for="zoneSelect-<%= uuid %>">Zone <%= '*' if requiredLevels.include? 'zone' %></label>
+  <select name="zone" id="zoneSelect-<%= uuid %>" class="form-control"
+          <%= 'required' if requiredLevels.include? 'zone' %>
+          data-value="<%= location_vals.shift %>"
+    >
+    <option value="">Choose</option>
+  </select>
+</div>
+<div class="form-group">
+  <label for="woredaSelect-<%= uuid %>">Woreda <%= '*' if requiredLevels.include? 'woreda' %></label>
+  <select name="woreda" id="woredaSelect-<%= uuid %>" class="form-control"
+          <%= 'required' if requiredLevels.include? 'woreda' %>
+          data-value="<%= location_vals.shift %>"
+    >
+    <option value="">Choose</option>
+  </select>
+</div>
+
+

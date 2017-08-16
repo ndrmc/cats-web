@@ -1,0 +1,29 @@
+
+one:
+  id: 1
+  name: Borrowed
+  code: br
+  description: Resources which are borrowed, but have not yet been received at warehouses
+    (Receipt Plan)
+
+two:
+  id: 2
+  name: statistics
+  code: 'statistics'
+  description: Resources which are borrowed, but have not yet been received at warehouses
+    (Receipt Plan)
+
+three:
+  id: 3
+  name: receivable
+  code: 'receivable'
+  description: Resources which are borrowed, but have not yet been received at warehouses
+    (Receipt Plan)
+
+four:
+  id: 4
+  name: stock
+  code: 'stock'
+  description: 
+
+

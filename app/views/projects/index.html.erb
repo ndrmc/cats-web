@@ -1,0 +1,115 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Projects</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Plan</a>
+      </li>
+      <li class="active">
+        <strong>Projects</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <% if policy(Project).new? %>
+      <% link_to 'New Project', new_project_path, :class => "btn btn-primary"%>
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">New Project
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+          <% CommoditySource.where.not(code: ["TR","RP", "OT", "RT"]).order(:name).each do |source| %>
+          <li><%= link_to "#{source.name}", new_project_path(source: source.id) %></li>
+          <% end %>
+        </ul>
+        <div></div>
+      </div>
+      <%end%>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins">
+      <div class="ibox-content">
+      <div>
+      <form role="form" class="form-inline">
+            <div class="form-group">
+              <label>Donor/Organization</label>
+              <%= select_tag "organization_id", options_from_collection_for_select(Organization.all, :id, :name,:selected=>params[:organization_id]),
+                { :prompt => ' Please Select ',class: 'form-control'}%>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+             
+              <%= select_tag("status", options_for_select(Project::STATUSES,:selected=>params[:status]) ,
+                { :prompt => ' All ',class: 'form-control'})%>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              <span class="fa fa-search"></span>Search</button>
+          </form>
+        </div>
+        <table class="table table-striped cats-datatable">
+          <thead>
+            <tr>
+              <th>Project code</th>
+              <th>Commodity category </th>
+              <th>Commodity</th>
+              <th>Commodity source</th>
+              <th>Organization</th>
+              <th>Amount</th>
+              <th>Unit of measure</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <%
+            can_delete_project = policy(Project).new?
+            can_edit_project = policy(Project).edit?
+          %>
+
+          <tbody>
+            <% @projects.each do |project| %>
+            <tr>
+              <td><%= link_to project.project_code, edit_project_path(project) %></td>
+              <td><%= project&.commodity&.commodity_category&.name %></td>
+              <td><%= project&.commodity&.name %></td>
+              <td><%= project.commodity_source&.name %></td>
+              <td><%= project&.organization&.name %></td>
+
+              <td class="text-right"><%= project.amount%></td>
+              <td><%= project&.unit_of_measure&.name %></td>
+              <td><%= project&.publish_date&.strftime('%d-%b-%Y')%></td>
+              <td>
+                <% if can_edit_project %>                           
+
+                  <% if !project.archived  %>
+                     <%= link_to 'Edit', edit_project_path(project) %>
+                     <%= link_to 'Receive',"receipts/new/#{project.id}"  %> 
+                    <%= link_to "projects/#{project.id}/archive"  , method: :post, :class => "btn btn-danger btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                            <i class="fa fa-archive"></i>   
+                        Archive     
+                    <% end %>
+                  <%else%>
+                     <%= link_to "projects/#{project.id}/unarchive"  , method: :post, :class => "btn btn-warning btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                            <i class="fa fa-thumbs-o-up"></i>   
+                        Activate     
+                    <% end %>
+                  <% end %>
+
+                  
+                 <%end%>  
+                
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

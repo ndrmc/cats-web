@@ -1,0 +1,1 @@
+json.array! @regional_requests, partial: 'regional_requests/regional_request', as: :regional_request

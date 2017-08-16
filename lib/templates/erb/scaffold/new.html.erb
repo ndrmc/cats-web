@@ -1,0 +1,21 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>New <%= singular_table_name.titleize %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#"><%= singular_table_name.titleize %></a>
+      </li>
+      <li class="active">
+        <strong>New</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%%= link_to 'Cancel', <%= index_helper %>_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<%%= render 'form', <%= singular_table_name %>: @<%= singular_table_name %> %>
+

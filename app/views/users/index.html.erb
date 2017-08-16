@@ -1,0 +1,65 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Users</h2>
+    <ol class="breadcrumb">
+       <li>
+        <a href="#">Settings</a>
+      </li>
+      <li>
+        <a href="#">Users & Accounts</a>
+      </li>
+      <li class="active">
+        <strong>Users</strong>
+      </li>
+    </ol>
+  </div>
+<!--  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New User', new_user_path, :class => "btn btn-primary"%>
+    </div>
+  </div> -->
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Email</th>
+              <th>Roles</th>
+              <th>User type</th>
+              <th>Is active</th>
+            
+              <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @users.each do |user| %>
+          <tr>
+           
+            <td> <%= link_to user.first_name, "/users/#{user.id} "%> </td>
+            <td><%= user.last_name  %></td>
+            <td><%= user.email %></td>
+            <td><%= user.user_types %> </td>
+            <td><%= user.roles.map {|r| r.name}.join ', ' %></td>
+            <td><%= user.is_active%></td>
+           
+            <td>
+              
+             
+              <%= link_to 'Edit', edit_user_path(user) %> &middot;
+              <%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

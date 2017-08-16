@@ -1,0 +1,70 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>New Hub</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Hub</a>
+      </li>
+      <li class="active">
+        <strong>New</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', hubs_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(@hub) do |f| %>
+        <% if @hub.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(@hub.errors.count, "error") %> prohibited this hub from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% @hub.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :name %>
+                <%= f.text_field :name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :description %>
+                <%= f.text_field :description, :class => 'form-control' %>
+                        </div>
+
+                <%= render 'shared/location_selector', name: 'hub[location_id]', requiredLevels:['region', 'zone'], locationId: @hub.location_id %>
+
+                <div class="form-group">
+                  <%= f.label :lat %>
+                  <%= f.text_field :lat, :class => 'form-control' %>
+                </div>
+                <div class="form-group">
+                  <%= f.label :lon %>
+                  <%= f.text_field :lon, :class => 'form-control' %>
+                </div>
+
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+      <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>

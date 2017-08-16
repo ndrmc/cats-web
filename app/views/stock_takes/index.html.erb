@@ -1,0 +1,61 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Stock Takes</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Stock Takes</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Stock Take', new_stock_take_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>     
+            <th>Title</th>        
+            <th>Hub</th>            
+            <th>Warehouse</th>            
+            <th>Store no</th>                        
+            <th>Date</th>
+            <th>Status</th>            
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @stock_takes.each do |stock_take| %>
+          <tr>  
+            <td><%=stock_take.title%></td>                 
+            <td><%= Hub.find(stock_take.hub_id).name%></td>            
+            <td><%=Warehouse.find(stock_take.warehouse_id).name%></td>            
+            <td><%= stock_take.store_no%></td>
+            <td><%= stock_take.date%></td>
+            <td><span class="badge badge-info"><%= stock_take.draft ? 'Draft' : 'Posted'%></span></td>
+            <td>
+              <%= link_to 'Show', stock_take_path(stock_take) %>
+              <% if stock_take.draft %>
+                &middot;
+                <%= link_to 'Edit', edit_stock_take_path(stock_take) %> &middot;
+                  <%= link_to 'Delete', stock_take, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <% end %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
