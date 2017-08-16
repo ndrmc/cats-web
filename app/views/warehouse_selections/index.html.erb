@@ -1,9 +1,9 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Warehouse Selections</h2>
+    <h2>Framework Tender: <%=  %></h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <a href="#">Framework Tenders</a>
       </li>
       <li class="active">
         <strong>Warehouse Selections</strong>
@@ -15,6 +15,14 @@
       <%= link_to 'New Warehouse Selection', new_warehouse_selection_path, :class => "btn btn-primary"%>
     </div>
   </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+    </div>
+  </div>  
 </div>
 
 <div class="wrapper wrapper-content">
@@ -41,7 +49,7 @@
           <tr>
                         <td><%= warehouse_selection.framework_tender_id
               %></td>
-                        <td><%= warehouse_selection.woreda_id
+                        <td><%= warehouse_selection.location_id
               %></td>
                         <td><%= warehouse_selection.warehouse_id
               %></td>
