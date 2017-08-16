@@ -3,10 +3,10 @@
 $(document).ready(function() {
 	$('#add-warehouse-assignment .spinner').hide();
 
-	$("#region").change(function(){	
+	$("#ws_region_filter").change(function(){	
 		
 		var ftid = $(this).attr("data-ftid");
-		var query_string = $.param({"region" : $('#region').val()});
+		var query_string = $.param({"region" : $('#ws_region_filter').val()});
 		window.location.href = "/en/warehouse_selections/" + ftid + "?" + query_string;
 	}); 
 
