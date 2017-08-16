@@ -5,7 +5,7 @@ include Devise::Test::IntegrationHelpers
 
   setup do
     sign_in users(:admin)
-    @framework_tender = framework_tenders(:one)
+    @framework_tender = framework_tenders(:framework_tenders_1)
   end
 
   test "should get index" do
@@ -24,7 +24,7 @@ include Devise::Test::IntegrationHelpers
       status: :approved, year: 2012 } }
     end
 
-    assert_redirected_to framework_tenders_url
+    assert_redirected_to framework_tenders_path
   end
 
   test "should show framework_tender" do

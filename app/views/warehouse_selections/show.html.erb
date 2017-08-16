@@ -1,42 +1,249 @@
-    <p>
-      <strong>Framework tender:</strong>
-      <%= @warehouse_selection.framework_tender_id %>
-    </p>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Framework Tender: <%= @ft_name %> </h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Framework Tenders</a>
+      </li>
+      <li class="active">
+        <strong>Warehouse Selections</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Done', "/en/framework_tenders", :class => "btn btn-primary"%>
+    </div>
+  </div>
+  <div class="ibox-content">
+    <div class="col-sm-1">
+      <% if (@framework_tender&.status == 'approved') %>
+        <span class="label label-primary"><%= @framework_tender&.status %></span>
+      <% elsif (@framework_tender&.status == 'canceled') %>
+        <span class="label label-danger"><%= @framework_tender&.status %></span>
+      <% elsif (@framework_tender&.status == 'closed') %>
+        <span class="label label-success"><%= @framework_tender&.status %></span>
+      <% elsif (@framework_tender&.status == 'archived') %>
+        <span class="label label-default"><%= @framework_tender&.status %></span>
+      <% else %>
+        <span class="label label-warning"><%= @framework_tender&.status %></span>
+      <% end %>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Year:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @framework_tender&.year %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Half-year:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @framework_tender&.half_year %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Starting Month:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+        <% if (!(@framework_tender.blank?)) %>
+          <%=  Date::MONTHNAMES[@framework_tender&.starting_month] %>
+        <% end %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          End Month:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+        <% if (!(@framework_tender.blank?)) %>
+          <%= Date::MONTHNAMES[@framework_tender&.ending_month] %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-7">
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Total Destinations:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+          <%= @total_destinations %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Total commodity:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+          <%= @total_amount %> mt
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Created date:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+        <% if (!(@framework_tender.blank?)) %>
+          <%= @framework_tender&.created_at.to_formatted_s(:long_ordinal)  %>
+        <% end %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Certified by:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+        <% if (!(@framework_tender.blank?)) %>
+          <%= @user&.first_name.to_s + " " + @user&.last_name.to_s %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <p>
-      <strong>Woreda:</strong>
-      <%= @warehouse_selection.woreda_id %>
-    </p>
 
-    <p>
-      <strong>Warehouse:</strong>
-      <%= @warehouse_selection.warehouse_id %>
-    </p>
 
-    <p>
-      <strong>Estimated qty:</strong>
-      <%= @warehouse_selection.estimated_qty %>
-    </p>
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
+      <div class="col-md-6 col-sm-6 col-xs-6">
+        <label class='control-label'>Region</label>
+        <%= select_tag :region, options_from_collection_for_select(Location.where({location_type: 'region'}).order(:name), 'id', 'name', params[:region]), {:required => true,:class=> 'data-parsley-required width-300px', :id => 'ws_region_filter', "data-ftid" => params[:id]} %>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+        <% if (@framework_tender&.status == 'draft') %>
+          <a class="btn btn-primary" data-ft-id="<%= @framework_tender_id %>" data-target="#add-warehouse-assignment" data-toggle="modal">
+              Add Warehouse Assignment
+          </a>
+        <% end %>
+      </div>
+    </div>
+    <div class="ibox-content">     
 
-    <p>
-      <strong>Created by:</strong>
-      <%= @warehouse_selection.created_by %>
-    </p>
+      <table id="ws_datatable" class="table table-striped cats-grouped-datatable">
+        <thead>
+          <tr>
+            <th>Zone</th>
+            <th>Woreda</th>
+            <th>Source Hub</th>
+            <th>Source Warehouse</th>
+            <th>Estimated Qty.</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
 
-    <p>
-      <strong>Modified by:</strong>
-      <%= @warehouse_selection.modified_by %>
-    </p>
+        <tbody>
+          <% @warehouse_selections.each do |warehouse_selection| %>
+          <tr>
+            <td><%= Location.find(warehouse_selection.location_id).parent.name %></td>
+            <td><%= warehouse_selection.woreda_name %></td>
+            <td><%= warehouse_selection.hub_name %></td>
+            <td><%= warehouse_selection.warehouse_name %></td>
+            <td><%= warehouse_selection.estimated_qty %></td>
+            <td>
+              <% if (@framework_tender&.status == 'draft') %>
+                <%= link_to 'Remove', warehouse_selection, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
 
-    <p>
-      <strong>Deleted:</strong>
-      <%= @warehouse_selection.deleted %>
-    </p>
+    </div>
+  </div>
+</div>
 
-    <p>
-      <strong>Deleted at:</strong>
-      <%= @warehouse_selection.deleted_at %>
-    </p>
+<div class="modal inmodal" id="add-warehouse-assignment" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">Add Warehouse Assignment</h4>
+      </div>
+      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :zone, "Zone", { :class => ' control-label'} %>
 
-<%= link_to 'Edit', edit_warehouse_selection_path(@warehouse_selection) %> |
-<%= link_to 'Back', warehouse_selections_path %>
+            <div class="">
+              <%= select_tag  :zone,  options_from_collection_for_select(Location.where({location_type: 'zone', parent_node_id: @param_id}), 'id', 'name', params[:zone] ) , {:required => false , :prompt => "-- Select a Zone --", :class => 'form-control width-100per' }  %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :woreda, "Woreda", { :class => ' control-label', :required => true } %>
+
+              <div class="">
+                <%= select_tag :woreda, options_from_collection_for_select([], "id", "name", params[:woreda]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "zone",
+                  "data-option-url" => "/locations/#{:zone}/children",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              </div>
+            </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Select a Hub --", :class => 'form-control width-100per' }  %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :warehouse, "Warehouse", { :class => ' control-label', :required => true } %>
+
+              <div class="">
+                <%= select_tag :warehouse, options_from_collection_for_select([], "id", "name", params[:warehouse]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "hub",
+                  "data-option-url" => "/warehouses/#{:hub}.json",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              </div>
+            </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <label class='control-label'>Est. Quantity</label> <br>
+            <%= number_field_tag :estimated_qty, '', min: 0, max: 9999999999999999, :step => 'any', class: "number", placeholder: '0.00' %>
+          </div>
+        </div>
+        <div class="spinner col-md-12 col-sm-12 col-xs-12">
+            
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <div class="pll-right" style="width:inherit;"> 
+            Continue adding
+            <%= check_box_tag 'keep_creating', false %>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="save-ws-btn" data-ftid=<%= params[:id] %>>Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+</script>

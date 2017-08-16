@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170810072205) do
+ActiveRecord::Schema.define(version: 20170814112557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,36 @@ ActiveRecord::Schema.define(version: 20170810072205) do
     t.index ["deleted_at"], name: "index_bid_plans_on_deleted_at", using: :btree
   end
 
+  create_table "bid_quotation_details", force: :cascade do |t|
+    t.integer  "bid_quotation_id"
+    t.integer  "warehouse_id"
+    t.integer  "location_id"
+    t.decimal  "tariff"
+    t.text     "remark"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "rank"
+    t.index ["bid_quotation_id"], name: "index_bid_quotation_details_on_bid_quotation_id", using: :btree
+    t.index ["location_id"], name: "index_bid_quotation_details_on_location_id", using: :btree
+    t.index ["warehouse_id"], name: "index_bid_quotation_details_on_warehouse_id", using: :btree
+  end
+
+  create_table "bid_quotations", force: :cascade do |t|
+    t.integer  "bid_id"
+    t.integer  "transporter_id"
+    t.date     "bid_quotation_date"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["bid_id"], name: "index_bid_quotations_on_bid_id", using: :btree
+    t.index ["transporter_id"], name: "index_bid_quotations_on_transporter_id", using: :btree
+  end
+
   create_table "bid_submissions", force: :cascade do |t|
     t.integer  "bid_id"
     t.integer  "transporter_id"
@@ -98,22 +128,20 @@ ActiveRecord::Schema.define(version: 20170810072205) do
   end
 
   create_table "bids", force: :cascade do |t|
-    t.string   "bid_no",                         null: false
-    t.date     "start_date"
-    t.date     "end_date"
-    t.text     "description"
-    t.date     "opening_date"
-    t.integer  "status",             default: 0, null: false
-    t.integer  "bid_plan_id"
+    t.integer  "framework_tender_id"
     t.integer  "region_id"
-    t.decimal  "document_price"
-    t.decimal  "cpo_deposit_amount"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.string   "bid_number"
+    t.decimal  "bid_bond_amount",     precision: 15, scale: 3
+    t.date     "start_date"
+    t.date     "closing_date"
+    t.date     "opening_date"
+    t.integer  "status"
+    t.text     "remark"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_bids_on_deleted_at", using: :btree
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
 
   create_table "commodities", force: :cascade do |t|
@@ -408,10 +436,19 @@ ActiveRecord::Schema.define(version: 20170810072205) do
 
   create_table "fdp_operations_logs", force: :cascade do |t|
     t.integer  "operation_id"
+    t.string   "operation_name"
     t.integer  "fdp_id"
-    t.integer  "location_id"
+    t.string   "fdp_name"
+    t.integer  "woreda_id"
+    t.string   "woreda_name"
+    t.integer  "zone_id"
+    t.string   "zone_name"
+    t.integer  "region_id"
+    t.string   "region_name"
     t.integer  "requisition_id"
+    t.string   "requisition_no"
     t.integer  "commodity_id"
+    t.string   "commodity_name"
     t.decimal  "allocated_in_mt"
     t.decimal  "dispatched_in_mt"
     t.decimal  "delivered_in_mt"
@@ -420,11 +457,6 @@ ActiveRecord::Schema.define(version: 20170810072205) do
     t.datetime "deleted_at"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
-    t.index ["commodity_id"], name: "index_fdp_operations_logs_on_commodity_id", using: :btree
-    t.index ["fdp_id"], name: "index_fdp_operations_logs_on_fdp_id", using: :btree
-    t.index ["location_id"], name: "index_fdp_operations_logs_on_location_id", using: :btree
-    t.index ["operation_id"], name: "index_fdp_operations_logs_on_operation_id", using: :btree
-    t.index ["requisition_id"], name: "index_fdp_operations_logs_on_requisition_id", using: :btree
   end
 
   create_table "fdps", force: :cascade do |t|
@@ -1035,14 +1067,15 @@ ActiveRecord::Schema.define(version: 20170810072205) do
   create_table "requisition_items", force: :cascade do |t|
     t.integer  "requisition_id"
     t.integer  "fdp_id"
-    t.integer  "beneficiary_no", null: false
-    t.decimal  "amount",         null: false
+    t.integer  "beneficiary_no",     null: false
+    t.decimal  "amount",             null: false
     t.decimal  "contingency"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "unit_of_measure_id"
     t.index ["deleted_at"], name: "index_requisition_items_on_deleted_at", using: :btree
   end
 
@@ -1367,7 +1400,7 @@ ActiveRecord::Schema.define(version: 20170810072205) do
 
   create_table "warehouse_selections", force: :cascade do |t|
     t.integer  "framework_tender_id"
-    t.integer  "woreda_id"
+    t.integer  "location_id"
     t.integer  "warehouse_id"
     t.decimal  "estimated_qty"
     t.integer  "created_by"
@@ -1395,6 +1428,11 @@ ActiveRecord::Schema.define(version: 20170810072205) do
     t.index ["deleted_at"], name: "index_warehouses_on_deleted_at", using: :btree
   end
 
+  add_foreign_key "bid_quotation_details", "bid_quotations"
+  add_foreign_key "bid_quotation_details", "locations"
+  add_foreign_key "bid_quotation_details", "warehouses"
+  add_foreign_key "bid_quotations", "bids"
+  add_foreign_key "bid_quotations", "transporters"
   add_foreign_key "commodity_categories", "uom_categories"
   add_foreign_key "contributions", "donors"
   add_foreign_key "contributions", "hrds"
