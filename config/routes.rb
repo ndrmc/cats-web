@@ -14,7 +14,7 @@ Rails.application.routes.draw do
    get '/bids/request_for_quotations/:id', to: 'bids#request_for_quotations'
    post 'bids/upload_rfq', to: 'bids#upload_rfq'
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
-   get 'bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
+   get '/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
 
    resources :framework_tenders
    get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'

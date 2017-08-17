@@ -132,7 +132,12 @@ class BidsController < ApplicationController
           bid_quotation_in_db.tariff=row[5]
           bid_quotation_in_db.save
         else
-          number_of_skipped_rows += 1
+          bid_quotation_in_db.create!(
+                warehouse_id: row[0],
+                location_id: row[1],
+                tariff: row[5]
+         )
+         bid_quotation_in_db.save
         end
       else
 
@@ -158,14 +163,6 @@ class BidsController < ApplicationController
       end
     end
 
-    def transporter_quotes
-
-      @transporters = BidQuotation.joins(:bid_quotation_detail).select(
-      'bid_quotation.trnsporter_id, count(bid_quotation_details.location_id as destination_count').group(
-      'bid_quotation.trnsporter_id').order('destination_count desc').where(['bid_quotation.bid_id = ?', @bid.id ])
-      
-     
-    end
     
     respond_to do |format|
       if number_of_skipped_rows > 0
@@ -182,6 +179,15 @@ class BidsController < ApplicationController
   end
   
   end
+
+    def transporter_quotes
+
+      @transporters = BidQuotation.joins(:bid_quotation_detail, :transporter).references(:bid_quotation_details).select(
+      'bid_quotations.bid_id','bid_quotations.transporter_id,count(bid_quotation_details.location_id) as destination_count').group(
+      'bid_quotations.transporter_id,bid_quotations.bid_id').order('destination_count desc').where("bid_quotations.bid_id = ?", @bid.id )
+      @framework_tender = FrameworkTender.find(@bid.framework_tender_id)
+    end
+    
 
   private
     # Use callbacks to share common setup or constraints between actions.
