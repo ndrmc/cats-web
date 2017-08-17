@@ -17,11 +17,13 @@ Rails.application.routes.draw do
    post 'bids/upload_rfq', to: 'bids#upload_rfq'
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
    get '/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
+   delete '/bids/remove_bid_quotation/:id', to: 'bids#remove_bid_quotation'
    post '/bids/:id/generate_winners', to: 'bids#generate_winners'
 
 
    resources :framework_tenders
    get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'
+   get 'framework_tenders/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
    resources :case_teams
 
    resources :permissions
