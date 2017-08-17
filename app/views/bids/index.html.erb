@@ -128,8 +128,10 @@
               %></td>
                         <td>
               <%= link_to 'Edit', edit_bid_path(bid) %> &middot;
-              <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %>
-
+              <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
+               <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx" target="_blank"> Download RFQ for Excel </a>
+  
+    
                <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
                       <span class="caret"></span>

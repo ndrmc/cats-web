@@ -13,6 +13,7 @@ Rails.application.routes.draw do
  scope "(:locale)", locale: /en|am/ do
 
    resources :bids
+   get '/bids/request_for_quotations/:id', to: 'bids#request_for_quotations'
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
 
    resources :framework_tenders

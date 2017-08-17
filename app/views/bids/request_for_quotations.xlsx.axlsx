@@ -1,0 +1,30 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+
+  title_cell = style.add_style alignment: {horizontal: :center}, b: true, Sz: 20, bg_color: "000000", fg_color: "FF"
+  title_cell_table = style.add_style alignment: {horizontal: :center}, b: true, Sz: 10, bg_color: "000000", fg_color: "FF"
+  total_cell = style.add_style(bg_color: "d74a48")
+  data = style.add_style alignment: {wrap_text: true}
+
+  sheet = wb.add_worksheet(:name => 'Request for Quotation') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
+  sheet.merge_cells("A1:D1")
+  unlocked = sheet.styles.add_style(:locked => false )
+  sheet.add_row ["Request for Quotation"],style: [title_cell]
+  sheet.add_row [""]
+  sheet.add_row [""]
+
+  sheet.add_row ["Region" , @bid.location.name]
+  sheet.add_row ["Bid Reference Number", @bid.bid_number]
+  sheet.add_row ["Bid Opening Date", @bid.opening_date]
+  sheet.add_row ["Bid Bond Amount", @bid.bid_bond_amount]
+  sheet.add_row ["Bid Submission Date"]
+  sheet.add_row ["Transporter Name"]
+  sheet.add_row ["Total Amount"]
+  sheet.add_row [""]
+  sheet.add_row [ "", "Source warehouse", "Zone", "Woreda",  "Total Quintal", "Tariff","","","","" ],style: [title_cell_table, title_cell_table,title_cell_table,title_cell_table,title_cell_table, title_cell_table]
+  rfq = @warehouse_allocation.sort_by{|ri| [ri.woreda.name]}
+  rfq.each do |r|
+    sheet.add_row [ r.id, r.hub.name,"-", r.woreda.name, r.estimated_qty,"","","","" ], :style => [nil,nil, nil, data,unlocked]
+  end
+ 
+end
