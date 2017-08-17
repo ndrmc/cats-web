@@ -55,6 +55,7 @@
                         <td><%= framework_tender.remark
               %></td>
                         <td>
+              <%= link_to 'Warehouse Selection', '/en/warehouse_selections/' + framework_tender.id.to_s %> &middot;
               <%= link_to 'Edit', edit_framework_tender_path(framework_tender) %> &middot;
               <%= link_to 'Delete', framework_tender, method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
               <% if framework_tender.status != 'archived' %>
