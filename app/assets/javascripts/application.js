@@ -58,6 +58,34 @@ $(document).ready(function() {
         buttons: ['copy', 'csv', 'excel', 'print']
     });
 
+    $('.cats-grouped-datatable').DataTable({
+        info: false,
+        pageLength: 25,
+        stateSave: true,
+        dom: 'lfrtipB',
+        buttons: ['copy', 'csv', 'excel', 'print'],
+        "columnDefs": [
+            { "visible": false, "targets": 0 }
+        ],
+        "order": [[ 0, 'asc' ]],
+        "displayLength": 25,
+        "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(0, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group" style="background-color:#ccc;"><td colspan="5">'+group+'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        }
+    });
+
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy'
     });
@@ -79,5 +107,48 @@ $(document).ready(function() {
 
     $('.cats-daterangepicker').daterangepicker({
         format: 'dd/mm/yyyy'
+    });
+
+    $('select[data-option-dependent=true]').each(function (i) {
+
+        var observer_dom_id = $(this).attr('id');
+        var observed_dom_id = $(this).data('option-observed');
+        var url_mask = $(this).data('option-url');
+        var key_method = $(this).data('option-key-method');
+        var value_method = $(this).data('option-value-method');
+
+        // var prompt = $(this).has('option[value=]').size() ? $(this).find('option[value=]') : 
+        //               $('<option value=\"\">').text('Select a specialization');
+
+        var prompt = $('<option value=\"\">').text('-- Select --');
+        var regexp = /:[0-9a-zA-Z_]+:/g;
+        var observer = $('select#' + observer_dom_id);
+        var observed = $('#' + observed_dom_id);
+
+        if (!observer.val() && observed.size() > 1) {
+          observer.attr('disabled', 'disabled');
+        }
+        observed.on('change', function () {
+
+          observer.empty().append(prompt);
+          if (observed.val()) {
+            // url = url_mask.replace(regexp, observed.val());            
+            if(observed_dom_id == 'hub')
+            {
+                url = "/warehouses/" + observed.val() + ".json";
+            }
+            else if (observed_dom_id == 'zone') 
+            {
+                url = "/locations/" + observed.val() + "/children";
+            }
+            // url = "/warehouses/" + observed.val() + ".json";
+            $.getJSON(url, function (data) {
+              $.each(data, function (i, object) {
+                observer.append($('<option>').attr('value', object[key_method]).text(object[value_method]));
+                observer.attr('disabled', false);
+              });
+            });
+          }
+        });
     });
 });
