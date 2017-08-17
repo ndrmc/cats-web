@@ -1,4 +1,5 @@
 class WarehouseSelection < ApplicationRecord
+
      
       belongs_to :framework_tender, foreign_key: 'framework_tender_id'
 
@@ -14,4 +15,8 @@ class WarehouseSelection < ApplicationRecord
         FrameworkTender.find framework_tender_id
       end
       
+
+	belongs_to :location
+	belongs_to :warehouse
+
 end

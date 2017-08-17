@@ -61,7 +61,7 @@ class BidsController < ApplicationController
   def destroy
     @bid.destroy
     respond_to do |format|
-      format.html { redirect_to bids_url, notice: 'Bid was successfully destroyed.' }
+      format.html { redirect_to '/en/bids?framework_tender_id=' + @bid.framework_tender_id.to_s, notice: 'Bid was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
