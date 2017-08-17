@@ -48,6 +48,6 @@ class BidsControllerTest < ActionDispatch::IntegrationTest
       delete bid_url('en',@bid)
     end
 
-    assert_redirected_to bids_url
+    assert_redirected_to '/en/bids?framework_tender_id=' + @framework_tender.id.to_s
   end
 end

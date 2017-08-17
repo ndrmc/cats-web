@@ -15,6 +15,7 @@ class WarehouseSelectionsController < ApplicationController
     @total_destinations = WarehouseSelection.where(:framework_tender_id => params[:id]).count
     @total_amount = WarehouseSelection.where(:framework_tender_id => params[:id]).sum(:estimated_qty)
     @user = User.find_by_id(@framework_tender&.certified_by)
+
     @warehouse_selections = []
     @param_id = 0
     if (params[:region].to_s == '' || params[:region].to_s == nil)
