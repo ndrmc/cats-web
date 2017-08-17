@@ -21,10 +21,10 @@ wb.styles do |style|
   sheet.add_row ["Transporter Name"]
   sheet.add_row ["Total Amount"]
   sheet.add_row [""]
-  sheet.add_row [ "s.warehouse.id","woreda.id", "Source warehouse", "Zone", "Woreda",  "Total Quintal", "Tariff","","","","" ],style: [title_cell_table, title_cell_table,title_cell_table,title_cell_table,title_cell_table, title_cell_table]
+  sheet.add_row [ "ID #", "Source warehouse", "Zone", "Woreda",  "Total Quintal", "Tariff" ],style: [title_cell_table, title_cell_table,title_cell_table,title_cell_table,title_cell_table, title_cell_table]
   rfq = @warehouse_allocation.sort_by{|ri| [ri.woreda.name]}
   rfq.each do |r|
-    sheet.add_row [ r.id, r.location_id, r.hub.name,"-", r.woreda.name, r.estimated_qty,"","","","" ], :style => [nil,nil, nil,nil, data,unlocked]
+    sheet.add_row [ r.id, r.hub.name,Location.find(r.location_id).parent.name, r.woreda.name, r.estimated_qty,"","","","" ], :style => [nil,nil, nil,nil, data,unlocked]
   end
  
 end

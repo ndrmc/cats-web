@@ -8,9 +8,13 @@ class WarehousesController < ApplicationController
     @warehouses = Warehouse.all
   end
 
-  # GET /warehouses/1
+    # GET /warehouses/1
   # GET /warehouses/1.json
   def show
+    hub = Hub.find(params[:id])
+    respond_to do |format|
+      format.json { render :json => hub.warehouses }
+    end
   end
 
   # GET /warehouses/new

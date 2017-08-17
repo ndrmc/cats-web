@@ -1,5 +1,7 @@
 class BidsController < ApplicationController
-  before_action :set_bid, only: [:show, :edit, :update, :destroy, :transporter_quotes]
+
+  before_action :set_bid, only: [:show, :edit, :update, :destroy, :transporter_quotes, :generate_winners]
+  include BidsHelper
 
   # GET /bids
   # GET /bids.json
@@ -8,6 +10,10 @@ class BidsController < ApplicationController
     $framework_tender_id = params[:framework_tender_id]
     $framework_tender_no =  @framework_tender.year.to_s + '/' +  @framework_tender.half_year.to_s
     @bids = Bid.where(framework_tender_id: params[:framework_tender_id])
+    @ft_name = @framework_tender&.year.to_s + '/' + @framework_tender&.half_year.to_s
+    @total_destinations = WarehouseSelection.where(:framework_tender_id => params[:id]).count
+    @total_amount = WarehouseSelection.where(:framework_tender_id => params[:id]).sum(:estimated_qty)
+    @user = User.find_by_id(@framework_tender&.certified_by)
   end
 
   # GET /bids/1
@@ -33,7 +39,7 @@ class BidsController < ApplicationController
     @bid.status = Bid.statuses[:draft]
     respond_to do |format|
       if @bid.save
-        format.html { redirect_to bids_url(:framework_tender_id => bid_params[:framework_tender_id] ), notice: 'Bid was successfully created.' }
+        format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid was successfully created.' }
         format.json { render :show, status: :created, location: @bid }
       else
         format.html { render :new }
@@ -47,7 +53,7 @@ class BidsController < ApplicationController
   def update
     respond_to do |format|
       if @bid.update(bid_params)
-        format.html { redirect_to bids_url(:framework_tender_id => bid_params[:framework_tender_id] ), notice: 'Bid was successfully updated.' }
+        format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid was successfully updated.' }
         format.json { render :show, status: :ok, location: @bid }
       else
         format.html { render :edit }
@@ -61,7 +67,7 @@ class BidsController < ApplicationController
   def destroy
     @bid.destroy
     respond_to do |format|
-      format.html { redirect_to bids_url, notice: 'Bid was successfully destroyed.' }
+      format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -73,11 +79,11 @@ class BidsController < ApplicationController
    
         respond_to do |format|
             if @bid.save
-                format.html { redirect_to bids_url(:framework_tender_id => @bid.framework_tender_id ), notice: 'Bid status was successfully updated.' }
+                format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid status was successfully updated.' }
             else
                 format.html { 
                     flash[:error] = "Save failed! Please check your input and try again shortly."
-                    redirect_to bids_url 
+                    redirect_to framework_tender_path(@bid.framework_tender_id) 
                 }
             end
         end
@@ -89,9 +95,9 @@ class BidsController < ApplicationController
     @warehouse_allocation = WarehouseSelection.where(framework_tender_id: @bid.framework_tender_id)
     if @warehouse_allocation.count < 1
          flash[:error] = "Bid does not have warehouse allocation."
-         redirect_to bids_url(:framework_tender_id => @bid.framework_tender_id) 
+         redirect_to framework_tender_path(@bid.framework_tender_id) 
     else
-    file_name = "Frmework Tender RFQ for " +  @warehouse_allocation.first.framework_tender&.year.to_s + '-' +  @warehouse_allocation.first.framework_tender&.half_year.to_s
+    file_name = "Frmework Tender RFQ for " +  @warehouse_allocation.first.framework_tender&.year.to_s + '-' +  @warehouse_allocation.first.framework_tender&.half_year.to_s + '-' + Location.find(@bid.region_id)&.name + '-' + @bid.bid_number
     respond_to do |format|
       format.xlsx {
         response.headers['Content-Disposition'] = "attachment; filename=\"#{file_name}.xlsx\""
@@ -117,40 +123,45 @@ class BidsController < ApplicationController
     
     if !file_not_supported
 
+
     number_of_skipped_rows = 0
 
     (13..spreadsheet.last_row).each do |i|
       row =  spreadsheet.row(i)
+      warehouse_selection = WarehouseSelection.find(row[0])
       bid_quotation_in_db = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
       if !bid_quotation_in_db.nil?
-          bid_quotation_in_db = BidQuotationDetail.where(bid_quotation_id: bid_quotation_in_db.id, location_id: row[1], warehouse_id: row[0]).first
+          bid_quotation_in_db = BidQuotationDetail.where(bid_quotation_id: bid_quotation_in_db.id, location_id: warehouse_selection.location_id, warehouse_id: warehouse_selection.warehouse_id).first
       end
 
 
       if bid_quotation_in_db
-        if row[5].is_a?( Numeric) &&  row[5] >= 0 && !row[0].nil? && !row[1].nil?
+        if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil?
           bid_quotation_in_db.tariff=row[5]
           bid_quotation_in_db.save
         else
+
           bid_quotation_in_db.create!(
                 warehouse_id: row[0],
                 location_id: row[1],
                 tariff: row[5]
          )
          bid_quotation_in_db.save
+
         end
+
       else
 
-         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !row[0].nil? && !row[1].nil?
+         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil? 
              bid_quotation = BidQuotation.create ({
              bid_id: @bid.id,
              bid_quotation_date: Date.today,
              transporter_id: transporter_id
                })
 
-           bid_quotation.bid_quotation_detail.create!(
-                warehouse_id: row[0],
-                location_id: row[1],
+           bid_quotation.bid_quotation_details.create!(
+                warehouse_id: warehouse_selection.warehouse_id,
+                location_id: warehouse_selection.location_id,
                 tariff: row[5]
          )
 
@@ -159,25 +170,39 @@ class BidsController < ApplicationController
           number_of_skipped_rows += 1
         end
 
-        
-      end
-    end
-
-    
-    respond_to do |format|
-      if number_of_skipped_rows > 0
-        flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
+        end
       end
 
-      format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , notice: "Excel imported successfully."  }
-    end
 
-  else
-    respond_to do |format|
-        format.html { redirect_to bids_path(:framework_tender_id => @bid.framework_tender_id) , alert: "The file is not supported."  }
+      respond_to do |format|
+        if number_of_skipped_rows > 0
+          flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
+        end
+
+        format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: "Excel imported successfully."  }
+
+      end
+
+    else
+      respond_to do |format|
+          format.html { redirect_to framework_tender_path(@bid.framework_tender_id), alert: "The file is not supported."  }
+      end
     end
-  end
   
+  end
+
+  def generate_winners
+    @result = generate_bid_winners(params[:id])
+
+    respond_to do |format|
+      if @result
+        format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid winners were successfully generated.' }
+        format.json { render :show, status: :ok, location: @bid } 
+      else
+        format.html { render :edit }
+        format.json { render json: @bid.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
     def transporter_quotes
