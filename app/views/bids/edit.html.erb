@@ -1,0 +1,21 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Edit Bid for <strong> <%= @framework_tender_no %> </strong></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Bid</a>
+      </li>
+      <li class="active">
+        <strong>Edit</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', bids_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<%= render 'form', bid: @bid %>
+
