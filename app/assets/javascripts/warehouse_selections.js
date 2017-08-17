@@ -63,12 +63,12 @@ $(document).ready(function() {
 		        	if ( $('#keep_creating').is(':checked') )
 			        {
 			        	// $('#add-warehouse-assignment .spinner').hide();
-			        	$('#zone').val('');
-			        	$('#woreda').val('');
-			        	$('#hub').val('');
-			        	$('#warehouse').val('');
+			        	// $('#zone').val('');
+			        	// $('#woreda').val('');
+			        	// $('#hub').val('');
+			        	// $('#warehouse').val('');
 			        	$('#estimated_qty').val('');
-		            	$('#add-warehouse-assignment .spinner').attr('style', 'color:#18a689').html('Warehouse selection was created successfully!');
+		            	$('#add-warehouse-assignment .spinner').attr('style', 'color:#18a689').html('Warehouse selection was created successfully!');		            	
 			        }
 				    else
 				    {
@@ -84,7 +84,7 @@ $(document).ready(function() {
         	$('#add-warehouse-assignment .spinner').show(); 
         	$('#add-warehouse-assignment .spinner').attr('style', 'color:#f00').html("Error: please fill all fields and try again!");
         }
-		
+		$('#add-warehouse-assignment .spinner').delay(3000).fadeOut();
     });
 });
 

@@ -12,9 +12,7 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to '<i class="fa fa-check-square" aria-hidden="true"></i>
-
-Done'.html_safe, "/en/framework_tenders", :class => "btn btn-primary"%>
+      <%= link_to 'Done', "/en/framework_tenders", :class => "btn btn-primary"%>
     </div>
   </div>
   <div class="ibox-content">
@@ -122,7 +120,7 @@ Done'.html_safe, "/en/framework_tenders", :class => "btn btn-primary"%>
       <div class="col-md-6 col-sm-6 col-xs-6 text-right">
         <% if (@framework_tender&.status == 'draft') %>
           <a class="btn btn-primary" data-ft-id="<%= @framework_tender_id %>" data-target="#add-warehouse-assignment" data-toggle="modal">
-              <i class="fa fa-plus"></i> Add Warehouse Assignment
+              Add Warehouse Assignment
           </a>
         <% end %>
       </div>

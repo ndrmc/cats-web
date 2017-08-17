@@ -24,7 +24,7 @@ include Devise::Test::IntegrationHelpers
       status: :approved, year: 2012 } }
     end
 
-    assert_redirected_to bids_url(:framework_tender_id => FrameworkTender.last)
+    assert_redirected_to framework_tenders_path
   end
 
   test "should show framework_tender" do

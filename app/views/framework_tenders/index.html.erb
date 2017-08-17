@@ -39,7 +39,7 @@
           <tr>
                         <td>
                          <% if framework_tender.status != 'archived' %>
-                           <%= link_to framework_tender.year, bids_path(:framework_tender_id => framework_tender.id) %>
+                           <%= link_to framework_tender.year, framework_tender_path(framework_tender.id) %>
                         <% else %>
                            <%=  framework_tender.year %>
                         <% end %>
