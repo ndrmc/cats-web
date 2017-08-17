@@ -1,4 +1,5 @@
 class WarehouseSelection < ApplicationRecord
+
      
   belongs_to :framework_tender, foreign_key: 'framework_tender_id'
 
