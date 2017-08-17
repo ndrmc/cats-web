@@ -129,8 +129,8 @@
                         <td>
               <%= link_to 'Edit', edit_bid_path(bid) %> &middot;
               <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
-               <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx" target="_blank"> Download RFQ for Excel </a>
-  
+              <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx"> Download RFQ </a> &middot;
+              <a href="#"  data-toggle="modal" data-id="<%= bid.id %>" class="rfq-modal" data-target="#rfq-modal">Upload RFQ</a> 
     
                <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
@@ -165,3 +165,54 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="rfq-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Upload RFQ</h4>
+      </div>
+      <div class="modal-body">
+    
+
+     <form role="form" method="POST" enctype="multipart/form-data" action="/bids/upload_rfq" class="form-inline" style="display: inline;margin-top: 15px"">
+      
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  
+      <div class="form-group">
+          <label for="transporter">Transporter
+            <span class="required">*</span>
+          </label>
+          <div>
+            <%= select("transporter", "transporter_id", Transporter.all.collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:class => 'form-control', :required => true, :name => 'transporter' }) %>
+          </div>
+        </div>
+
+      <div class="form-group">
+        <label for="transporter">File </label>
+        <span class="required">*</span>
+        <div>
+            <input  type="hidden" name="bid_id" id="bid_id" value="" />
+            <input type="file" name="file" class="form-control" required />
+            <input type="submit" class="btn btn-primary" value="Upload Request Items" />
+        </div>
+      </div>
+
+   
+        
+      </form>
+
+
+      </div>
+    
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+$(document).on("click", ".rfq-modal",function(){
+  var bid_id = $(this).data('id');
+  $(".form-group #bid_id").val(bid_id);
+});
+</script>

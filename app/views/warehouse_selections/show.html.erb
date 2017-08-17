@@ -117,7 +117,6 @@ Done'.html_safe, "/en/framework_tenders", :class => "btn btn-primary"%>
     <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
       <div class="col-md-6 col-sm-6 col-xs-6">
         <label class='control-label'>Region</label>
-
         <%= select_tag :region, options_from_collection_for_select(Location.where({location_type: 'region'}).order(:name), 'id', 'name', params[:region]), {:required => true,:class=> 'data-parsley-required width-300px', "data-ftid" => params[:id]} %>
       </div>
       <div class="col-md-6 col-sm-6 col-xs-6 text-right">
@@ -151,7 +150,6 @@ Done'.html_safe, "/en/framework_tenders", :class => "btn btn-primary"%>
             <td><%= warehouse_selection.warehouse_name %></td>
             <td><%= warehouse_selection.estimated_qty %></td>
             <td>
-
               <% if (@framework_tender&.status == 'draft') %>
                 <%= link_to 'Remove', warehouse_selection, method: :delete, data: { confirm: 'Are you sure?' } %>
               <% end %>
@@ -173,7 +171,6 @@ Done'.html_safe, "/en/framework_tenders", :class => "btn btn-primary"%>
           <span aria-hidden="true">&times;</span>
           <span class="sr-only">Close</span>
         </button>
-
         <h4 id='modal-title' class="modal-title">Add Warehouse Assignment</h4>
       </div>
       <div class="modal-body col-md-12 col-sm-12 col-xs-12">
