@@ -126,7 +126,7 @@ class BidsController < ApplicationController
 
     number_of_skipped_rows = 0
     bid_quotation_for_transporter = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
-    if !bid_quotation_for_transporter
+    if bid_quotation_for_transporter.nil?
       bid_quotation = BidQuotation.create ({
              bid_id: @bid.id,
              bid_quotation_date: Date.today,
@@ -147,26 +147,30 @@ class BidsController < ApplicationController
         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil?
           bid_quotation_in_db.tariff=row[5]
           bid_quotation_in_db.save
-        else
-          bid_quotation_in_db.create!(
-                warehouse_id: row[0],
-                location_id: row[1],
-                tariff: row[5]
-         )
-         bid_quotation_in_db.save
+        
 
         end
 
       else
 
-         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil?             
-           bid_quotation.bid_quotation_details.create!(
-                warehouse_id: warehouse_selection.warehouse_id,
-                location_id: warehouse_selection.location_id,
-                tariff: row[5]
-         )
+         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil?  
+                      
+                 if !bid_quotation.nil?
+                    bid_quotation.bid_quotation_details.create!(
+                    warehouse_id: warehouse_selection.warehouse_id,
+                    location_id: warehouse_selection.location_id,
+                    tariff: row[5])
 
-         bid_quotation.save
+                    bid_quotation.save
+                elsif !bid_quotation_for_transporter.nil?
+                    bid_quotation_for_transporter.bid_quotation_details.create!(
+                    warehouse_id: warehouse_selection.warehouse_id,
+                    location_id: warehouse_selection.location_id,
+                    tariff: row[5])
+
+                    bid_quotation_for_transporter.save
+           end
+
         else
           number_of_skipped_rows += 1
         end
