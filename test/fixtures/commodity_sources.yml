@@ -6,15 +6,15 @@ commodity_source_1:
 commodity_source_2:
   id: 2
   name: Loan
-  code: 'DN'
+  code: 'LN'
 commodity_source_3:
   id: 3
   name: "Local Purchase"
-  code: 'DN'
+  code: 'LP'
 commodity_source_4:
   id: 4
   name: Swap
-  code: 'DN'
+  code: 'SP'
 commodity_source_5:
   id: 5
   name: Transfer
