@@ -90,7 +90,14 @@ class BidsController < ApplicationController
  def request_for_quotations
 
     set_bid
-    @warehouse_allocation = WarehouseSelection.where(framework_tender_id: @bid.framework_tender_id)
+    @warehouse_allocation = []
+    WarehouseSelection.where(framework_tender_id: @bid.framework_tender_id)
+      .find_each do |ws|
+        region_id = Location.find(ws.location_id).parent.parent_node_id
+        if region_id == @bid.region_id
+          @warehouse_allocation << ws
+        end
+      end
     if @warehouse_allocation.count < 1
          flash[:error] = "Bid does not have warehouse allocation."
          redirect_to framework_tender_path(@bid.framework_tender_id) 
