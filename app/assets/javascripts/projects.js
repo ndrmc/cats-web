@@ -6,6 +6,7 @@ $(document).ready(function() {
 function get_update_project_code()
 { 	
 	var selected_commodity_source_id = $("#project_commodity_source_id").val();
+
     if(selected_commodity_source_id == '' || selected_commodity_source_id == null)
     {
         $("#project_project_code").val('');
@@ -13,21 +14,23 @@ function get_update_project_code()
     }
     else 
     {        
+
         $.ajax( { url: '/projects/get_commodity_source_code/' + selected_commodity_source_id,
         	cache: false, method: 'GET'}).done( function(data) 
         {        
+            $("#project_project_code").val(data['code'].toString()); 
         	if(data['code'] == '' || data['code'] == null) 
-        	{
+        	{                
         		$("#project_code_box").hide();
         	}             
         	else   	    	
         	{
-                var res = window.curr_proj_code.split("/");
-        		$("#project_code_box").show();
-        		$("#project_project_code").val(data['code'] + '/' + res[1] + '/' + res[2]); 
+                $("#project_code_box").show();
+        		$("#project_project_code").val(data['code']); 
                 $("#project_project_code").attr("readonly", "readonly");
                 window.curr_proj_code = $("#project_project_code").val();      
         	}
         });	
+            
     }
 }
