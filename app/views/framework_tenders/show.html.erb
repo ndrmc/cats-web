@@ -11,9 +11,20 @@
     </ol>
   </div>
   <div class="col-sm-8">
-    <div class="title-action">
-      <%= link_to 'New Bid', new_bid_path, :class => "btn btn-primary"%>
-    </div>
+    <% if @framework_tender.status == 'open' %>
+      <div class="col-sm-12">
+        <div class="title-action">        
+            <%= link_to 'New Bid', new_bid_path, :class => "btn btn-primary"%>    
+            <%= link_to 'Close', '/framework_tenders/update_status/' + @framework_tender.id.to_s + "/" +  "closed", :class => "btn btn-default" %>    
+        </div>
+      </div>
+    <% else %>
+      <div class="col-sm-12">
+        <div class="title-action"> 
+          <%= link_to 'Re-open', '/framework_tenders/update_status/' + @framework_tender.id.to_s + "/" +  "open", :class => "btn btn-default" %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
 
@@ -165,7 +176,7 @@
               %></td>
                         <td>
 
-               
+              <% if @framework_tender.status == 'open' %> 
               <div class="btn-group">
                 <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
                   <span class="caret"></span>
@@ -210,7 +221,7 @@
                       </li>
                     </ul>
                   </div>
-
+                <% end %>
 
             </td>
           </tr>
