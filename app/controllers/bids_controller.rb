@@ -201,6 +201,21 @@ class BidsController < ApplicationController
     end
   end
 
+  def view_bid_winners
+    @bid = Bid.find params[:id]
+    if (!params[:hub].blank? && !params[:warehouse].blank?)
+      puts 'hub and warehouse selected'
+      @bid_winners = BidQuotationDetail.joins(:bid_quotation, :location, warehouse: :hub).where('bid_quotations.bid_id' => params[:id], 'hubs.id' => params[:hub], :warehouse_id => params[:warehouse]).select(:id, :transporter_id, :bid_id, :location_id, :warehouse_id, :tariff, :rank, :parent_node_id, 'hubs.id AS hub_id').order(:location_id, :warehouse_id, :tariff)
+    elsif (!params[:hub].blank?)
+      puts 'hub selected'
+      @bid_winners = BidQuotationDetail.joins(:bid_quotation, :location, warehouse: :hub).where('bid_quotations.bid_id' => params[:id], 'hubs.id' => params[:hub]).select(:id, :transporter_id, :bid_id, :location_id, :warehouse_id, :tariff, :rank, :parent_node_id, 'hubs.id AS hub_id').order(:location_id, :warehouse_id, :tariff)
+    else
+      puts 'nothing selected'
+      @bid_winners = BidQuotationDetail.joins(:bid_quotation, :location, warehouse: :hub).where('bid_quotations.bid_id' => params[:id]).select(:id, :transporter_id, :bid_id, :location_id, :warehouse_id, :tariff, :rank, :parent_node_id, 'hubs.id AS hub_id').order(:location_id, :warehouse_id, :tariff)
+    end  
+    
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bid
@@ -209,6 +224,6 @@ class BidsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bid_params
-      params.require(:bid).permit(:framework_tender_id, :region_id, :bid_number, :bid_bond_amount, :start_date, :closing_date, :opening_date, :status, :remark)
+      params.require(:bid).permit(:framework_tender_id, :region_id, :bid_number, :bid_bond_amount, :start_date, :closing_date, :opening_date, :status, :remark, :hub, :warehouse, :zone, :woreda)
     end
 end
