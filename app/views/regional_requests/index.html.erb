@@ -88,8 +88,8 @@
                   <% end %>
                 <%else%>
                   <% if policy(Requisition).summary? %>
-                    <a class="btn btn-info" href="/requisitions/summary?region=<%=regional_request.region_id%>&operation=<%=regional_request.operation_id%>">RRD Detail</a> &middot;
-                  <%end%>
+                    <a class="btn btn-info" href="/requisitions/summary/<%=regional_request.id%>">RRD Detail</a> &middot;
+                  <%end%>                
                 <%end%>
                 <% if policy(RegionalRequest).edit? %>
                   <%= link_to 'Edit', edit_regional_request_path(regional_request) %> 
