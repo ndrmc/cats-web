@@ -4,7 +4,7 @@ Rails.application.routes.draw do
  
   
 
-  resources :transport_requisitions
+  
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'
@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
  scope "(:locale)", locale: /en|am/ do
 
+  resources :transport_requisitions
+  
    resources :bids
    get '/bids/request_for_quotations/:id', to: 'bids#request_for_quotations'
    post 'bids/upload_rfq', to: 'bids#upload_rfq'

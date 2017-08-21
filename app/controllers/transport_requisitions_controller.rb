@@ -28,7 +28,7 @@ class TransportRequisitionsController < ApplicationController
 
     respond_to do |format|
       if @transport_requisition.save
-        format.html { redirect_to @transport_requisition, notice: 'Transport requisition was successfully created.' }
+        format.html { redirect_to transport_requisitions_url('en',@transport_requisition), notice: 'Transport requisition was successfully created.' }
         format.json { render :show, status: :created, location: @transport_requisition }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class TransportRequisitionsController < ApplicationController
   def update
     respond_to do |format|
       if @transport_requisition.update(transport_requisition_params)
-        format.html { redirect_to @transport_requisition, notice: 'Transport requisition was successfully updated.' }
+        format.html { redirect_to transport_requisitions_url('en',@transport_requisition), notice: 'Transport requisition was successfully updated.' }
         format.json { render :show, status: :ok, location: @transport_requisition }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class TransportRequisitionsController < ApplicationController
   def destroy
     @transport_requisition.destroy
     respond_to do |format|
-      format.html { redirect_to transport_requisitions_url, notice: 'Transport requisition was successfully destroyed.' }
+      format.html { redirect_to transport_requisitions_url('en'), notice: 'Transport requisition was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -69,6 +69,6 @@ class TransportRequisitionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transport_requisition_params
-      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :remark, :status, :deleted_by, :deleted_at)
+      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at)
     end
 end
