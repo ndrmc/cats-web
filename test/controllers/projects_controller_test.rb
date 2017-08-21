@@ -15,7 +15,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get new_project_url
+    get new_project_url(source: @commodity_source[0].id)
     assert_response :success
   end
 
