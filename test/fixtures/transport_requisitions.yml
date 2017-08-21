@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+transport_requisition1:
+  id: 1
+  reference_number: MyString
+  location_id: 1
+  operation_id: 1
+  certified_by: 1
+  certified_date: MyString
+  description: MyString
+  status: 1
+
+transport_requisition2:
+  id: 2
+  reference_number: MyString
+  location_id: 1
+  operation_id: 1
+  certified_by: 1
+  certified_date: MyString
+  description: MyString
+  status: 1
