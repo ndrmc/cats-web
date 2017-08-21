@@ -4,6 +4,7 @@ Rails.application.routes.draw do
  
   
 
+  resources :transport_requisitions
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'

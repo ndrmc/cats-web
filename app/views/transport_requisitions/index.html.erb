@@ -1,0 +1,72 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transport Requisitions</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Transport Requisitions</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Transport Requisition', new_transport_requisition_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Reference number</th>
+                        <th>Location</th>
+                        <th>Operation</th>
+                        <th>Certified by</th>
+                        <th>Certified date</th>
+                        <th>Remark</th>
+                        <th>Status</th>
+                        <th>Deleted by</th>
+                        <th>Deleted at</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transport_requisitions.each do |transport_requisition| %>
+          <tr>
+                        <td><%= transport_requisition.reference_number
+              %></td>
+                        <td><%= transport_requisition.location_id
+              %></td>
+                        <td><%= transport_requisition.operation_id
+              %></td>
+                        <td><%= transport_requisition.certified_by
+              %></td>
+                        <td><%= transport_requisition.certified_date
+              %></td>
+                        <td><%= transport_requisition.remark
+              %></td>
+                        <td><%= transport_requisition.status
+              %></td>
+                        <td><%= transport_requisition.deleted_by
+              %></td>
+                        <td><%= transport_requisition.deleted_at
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_transport_requisition_path(transport_requisition) %> &middot;
+              <%= link_to 'Delete', transport_requisition, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

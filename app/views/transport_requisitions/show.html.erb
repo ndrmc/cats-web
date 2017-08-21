@@ -1,0 +1,47 @@
+    <p>
+      <strong>Reference number:</strong>
+      <%= @transport_requisition.reference_number %>
+    </p>
+
+    <p>
+      <strong>Location:</strong>
+      <%= @transport_requisition.location_id %>
+    </p>
+
+    <p>
+      <strong>Operation:</strong>
+      <%= @transport_requisition.operation_id %>
+    </p>
+
+    <p>
+      <strong>Certified by:</strong>
+      <%= @transport_requisition.certified_by %>
+    </p>
+
+    <p>
+      <strong>Certified date:</strong>
+      <%= @transport_requisition.certified_date %>
+    </p>
+
+    <p>
+      <strong>Remark:</strong>
+      <%= @transport_requisition.remark %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @transport_requisition.status %>
+    </p>
+
+    <p>
+      <strong>Deleted by:</strong>
+      <%= @transport_requisition.deleted_by %>
+    </p>
+
+    <p>
+      <strong>Deleted at:</strong>
+      <%= @transport_requisition.deleted_at %>
+    </p>
+
+<%= link_to 'Edit', edit_transport_requisition_path(@transport_requisition) %> |
+<%= link_to 'Back', transport_requisitions_path %>

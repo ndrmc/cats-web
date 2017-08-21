@@ -1,0 +1,74 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(transport_requisition) do |f| %>
+        <% if transport_requisition.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(transport_requisition.errors.count, "error") %> prohibited this transport_requisition from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% transport_requisition.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :reference_number %>
+                <%= f.text_field :reference_number, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :location_id %>
+                <%= f.number_field :location_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :operation_id %>
+                <%= f.number_field :operation_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :certified_by %>
+                <%= f.number_field :certified_by, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :certified_date %>
+                <%= f.text_field :certified_date, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :remark %>
+                <%= f.text_field :remark, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :status %>
+                <%= f.number_field :status, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :deleted_by %>
+                <%= f.number_field :deleted_by, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :deleted_at %>
+                <%= f.datetime_select :deleted_at, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>
