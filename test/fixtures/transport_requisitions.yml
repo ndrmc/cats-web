@@ -3,7 +3,7 @@
 transport_requisition1:
   id: 1
   reference_number: MyString
-  location_id: 1
+  location_id: 4
   operation_id: 1
   certified_by: 1
   certified_date: MyString
@@ -13,7 +13,7 @@ transport_requisition1:
 transport_requisition2:
   id: 2
   reference_number: MyString
-  location_id: 1
+  location_id: 4
   operation_id: 1
   certified_by: 1
   certified_date: MyString

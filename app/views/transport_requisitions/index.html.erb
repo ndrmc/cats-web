@@ -38,8 +38,8 @@
             <tr>
               <td><%= transport_requisition.reference_number %></td>
               <td><%= Location.find(transport_requisition.location_id).name %></td>
-              <td><%= {no_of_destinations} %></td>
-              <td><%= {total_qty} %></td>
+              <td><%= transport_requisition.reference_number %></td>
+              <td><%= transport_requisition.reference_number  %></td>
               <td><%= transport_requisition.certified_date %></td>
               <td><%= transport_requisition.status %></td>
             </tr>

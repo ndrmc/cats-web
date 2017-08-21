@@ -1,0 +1,2 @@
+class TransportRequisitionDetail < ApplicationRecord
+end

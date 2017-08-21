@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  transport_requisition_id: 1
+  requisition_id: 1
+  deleted_at: 2017-08-21 15:28:59
+
+two:
+  transport_requisition_id: 1
+  requisition_id: 1
+  deleted_at: 2017-08-21 15:28:59
