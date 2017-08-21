@@ -3,7 +3,7 @@
 $(document).ready(function() {
 	$('#add-warehouse-assignment .spinner').hide();
 
-	$("#region").change(function(){	
+	$("#ws-region-filter #region").change(function(){	
 		
 		var ftid = $(this).attr("data-ftid");
 		var query_string = $.param({"region" : $('#region').val()});
