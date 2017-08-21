@@ -50,7 +50,9 @@
                         <td><%= Date::MONTHNAMES[framework_tender.ending_month]
               %></td>
                         <td><%= framework_tender.status
+
               %></td>                        
+
                         <td>
               <%= link_to 'Warehouse Selection', '/en/warehouse_selections/' + framework_tender.id.to_s %> &middot;
               <%= link_to 'Edit', edit_framework_tender_path(framework_tender) %> &middot;

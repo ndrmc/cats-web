@@ -1,0 +1,88 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Bid Number: <%= @bid.bid_number %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="/en/bids?framework_tender_id=<%= @bid.framework_tender_id.to_s %>">Bid</a>
+      </li>
+      <li class="active">
+        <strong>View Bid Winners</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
+      <%= form_tag('/bids/view_bid_winners/' + @bid.id.to_s, {class: 'form-inline', style: '', role: 'form', method: 'GET'}) do %>
+       <div class="col-md-5 col-sm-5 col-xs-5">
+        <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+        <div class="">
+          <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => false , :prompt => "Select a Hub", :class => 'form-control width-100per' }  %>
+        </div>
+       </div>
+
+       <div class="col-md-5 col-sm-5 col-xs-5">
+          <%= label_tag :warehouse, "Warehouse", { :class => ' control-label', :required => true } %>
+
+          <div class="">
+            <%= select_tag :warehouse, options_from_collection_for_select([], "id", "name", params[:warehouse]),
+              :required => false , :class => 'form-control width-100per', :style => 'min-width: 80px',
+              "data-option-dependent" => true,
+              "data-option-observed" => "hub",
+              "data-option-url" => "/warehouses/#{:hub}.json",
+              "data-option-key-method" => :id,
+              "data-option-value-method" => :name %>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-2 col-xs-2">
+          <%= label_tag :id, "", { :class => ' control-label', :required => false } %>
+          <div class="">
+            <button type="submit" class="btn btn-primary">Search</button>        
+          </div>        
+        </div>
+      <% end %>
+    </div>
+  </div>
+ </div>
+
+
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>                       
+            <th>Zone</th>
+            <th>Woreda</th>
+            <th>Warehouse</th>
+            <th>Transporter</th>
+            <th>Tariff/Quintal</th>
+            <th>Rank</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @bid_winners.each do |bid_winner| %>
+          <tr>                        
+              <td><%= Location.find(bid_winner.location_id).parent.name %></td>
+              <td><%= Location.find(bid_winner.location_id).name %></td>
+              <td><%= Warehouse.find(bid_winner.warehouse_id).name %></td>
+              <td><%= Transporter.find(bid_winner.transporter_id).name %></td>
+              <td><%= bid_winner.tariff %></td>
+              <td><%= bid_winner.rank %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
