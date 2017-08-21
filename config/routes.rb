@@ -20,6 +20,7 @@ Rails.application.routes.draw do
    post 'bids/upload_rfq', to: 'bids#upload_rfq'
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
    post '/bids/:id/generate_winners', to: 'bids#generate_winners'
+   get 'bids/view_bid_winners/:id', to: 'bids#view_bid_winners'
 
    resources :framework_tenders
    get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'
@@ -115,7 +116,7 @@ Rails.application.routes.draw do
   get '/requisitions/get_requisiton_by_number'
   get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
-  get '/requisitions/summary', to: 'requisitions#summary'
+  get '/requisitions/summary/:request_id', to: 'requisitions#summary'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
 
   resources :requisitions
