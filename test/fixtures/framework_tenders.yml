@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+framework_tenders_1:
+  year: 1
+  half_year: 1
+  starting_month: 1
+  ending_month: 1
+  status: 1
+  remark: MyText
+
+framework_tenders_2:
+  year: 1
+  half_year: 1
+  starting_month: 1
+  ending_month: 1
+  status: 1
+  remark: MyText

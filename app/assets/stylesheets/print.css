@@ -1,5 +1,5 @@
 @media print {
-   div#project_edit_breadcrumb,div#project_new_breadcrumb, div#sidebar-collapse,div#project_edit_cancel,div#project_cancel,#project_submit, div#project_print{
+   div#print-project-code,div#project_edit_breadcrumb,div#project_new_breadcrumb, div#sidebar-collapse,div#project_edit_cancel,div#project_cancel,#project_submit, div#project_print{
         display:none;
     }
 }

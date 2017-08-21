@@ -17,49 +17,8 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    authorize Project
-
-    project_code = Project.pluck(:project_code).last # get last record of project code
-    sequence_number = project_code.split('/')[1] # get number
-    saved_year = project_code.split('/')[2] # get year
-
-   
-    if ! is_numeric?(sequence_number)
-       sequence_number = '0001'
-    else
-
-    sequence_number = sequence_number.to_i + 1 # increment number by one
-    zeros = ""
-    i=1
-    max_length = sequence_number.to_s.length
-   
-    for i in 1..4-max_length # append zeros
-      zeros = zeros + '0'
-    end
-
-    sequence_number =  zeros + sequence_number.to_s
-
-    if Date.today.year < saved_year.to_i   # reset year
-      sequence_number ='0001'
-    end
-    
-  end
-    
-    if(params[:source].to_i == CommoditySource.find_by_name('Donation').id)
-       project_code = CommoditySource.find_by_name('Donation').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
-    elsif (params[:source].to_i == CommoditySource.find_by_name('Local Purchase').id)
-       project_code = CommoditySource.find_by_name('Local Purchase').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
-    elsif (params[:source].to_i == CommoditySource.find_by_name('Loan').id)
-         project_code = CommoditySource.find_by_name('Loan').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
-    elsif (params[:source].to_i == CommoditySource.find_by_name('Swap').id)
-       project_code = CommoditySource.find_by_name('Swap').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
-    else
-      
-    end
-
-   
-   
-
+    authorize Project 
+    project_code = Project.get_project(params[:source])
     @project = Project.new(commodity_source_id: params[:source], project_code: project_code)
 
   
@@ -154,8 +113,7 @@ end
 
 
 def get_commodities
-  val = params[:id]
-  @commodities = Commodity.find_by commodity_category_id: params[:id]
+
   @commodities =  Commodity.where(commodity_category_id: params[:id]).map{ |r| [r.name, r.id]} 
 
  respond_to do |format|
@@ -165,9 +123,9 @@ end
 
   def get_commodity_source_code
     commodity_source_id = params[:id]
-    result = CommoditySource.find_by_id(commodity_source_id)
+    result = Project.get_project(commodity_source_id).to_s
     respond_to do |format|
-      format.json { render json: result }
+      format.json { render json: {'code': result} }
     end
   end
 
@@ -183,6 +141,6 @@ end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
-    params.require(:project).permit(:project_code, :commodity_id, :commodity_source_id, :organization_id, :amount, :unit_of_measure_id, :publish_date, :commodity_categories_id)
+    params.require(:project).permit(:project_code, :commodity_id, :commodity_source_id, :organization_id, :amount, :unit_of_measure_id, :publish_date, :commodity_categories_id, :program_id)
   end
 end

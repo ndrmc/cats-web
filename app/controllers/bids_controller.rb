@@ -1,0 +1,229 @@
+class BidsController < ApplicationController
+  before_action :set_bid, only: [:show, :edit, :update, :destroy, :generate_winners]
+  include BidsHelper
+  # GET /bids
+  # GET /bids.json
+  def index
+    @framework_tender = FrameworkTender.find params[:framework_tender_id]
+    $framework_tender_id = params[:framework_tender_id]
+    $framework_tender_no =  @framework_tender.year.to_s + '/' +  @framework_tender.half_year.to_s
+    @bids = Bid.where(framework_tender_id: params[:framework_tender_id])
+    @ft_name = @framework_tender&.year.to_s + '/' + @framework_tender&.half_year.to_s
+    @total_destinations = WarehouseSelection.where(:framework_tender_id => params[:id]).count
+    @total_amount = WarehouseSelection.where(:framework_tender_id => params[:id]).sum(:estimated_qty)
+    @user = User.find_by_id(@framework_tender&.certified_by)
+  end
+
+  # GET /bids/1
+  # GET /bids/1.json
+  def show
+  end
+
+  # GET /bids/new
+  def new
+  @framework_tender_no =  $framework_tender_no
+  @bid = Bid.new(framework_tender_id: $framework_tender_id)
+  end
+
+  # GET /bids/1/edit
+  def edit
+      @framework_tender_no =  $framework_tender_no
+  end
+
+  # POST /bids
+  # POST /bids.json
+  def create
+    @bid = Bid.new(bid_params)
+    @bid.status = Bid.statuses[:draft]
+    respond_to do |format|
+      if @bid.save
+        format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid was successfully created.' }
+        format.json { render :show, status: :created, location: @bid }
+      else
+        format.html { render :new }
+        format.json { render json: @bid.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /bids/1
+  # PATCH/PUT /bids/1.json
+  def update
+    respond_to do |format|
+      if @bid.update(bid_params)
+        format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid was successfully updated.' }
+        format.json { render :show, status: :ok, location: @bid }
+      else
+        format.html { render :edit }
+        format.json { render json: @bid.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /bids/1
+  # DELETE /bids/1.json
+  def destroy
+    @bid.destroy
+    respond_to do |format|
+      format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+
+  def update_status
+     @bid = Bid.find params[:id]
+     @bid.status =  Bid.get_index(params[:status])
+   
+        respond_to do |format|
+            if @bid.save
+                format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid status was successfully updated.' }
+            else
+                format.html { 
+                    flash[:error] = "Save failed! Please check your input and try again shortly."
+                    redirect_to framework_tender_path(@bid.framework_tender_id) 
+                }
+            end
+        end
+  end
+
+ def request_for_quotations
+
+    set_bid
+    @warehouse_allocation = []
+    WarehouseSelection.where(framework_tender_id: @bid.framework_tender_id)
+      .find_each do |ws|
+        region_id = Location.find(ws.location_id).parent.parent_node_id
+        if region_id == @bid.region_id
+          @warehouse_allocation << ws
+        end
+      end
+    if @warehouse_allocation.count < 1
+         flash[:error] = "Bid does not have warehouse allocation."
+         redirect_to framework_tender_path(@bid.framework_tender_id) 
+    else
+    file_name = "Frmework Tender RFQ for " +  @warehouse_allocation.first.framework_tender&.year.to_s + '-' +  @warehouse_allocation.first.framework_tender&.half_year.to_s + '-' + Location.find(@bid.region_id)&.name + '-' + @bid.bid_number
+    respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{file_name}.xlsx\""
+      }
+    end
+    end
+  end
+
+ def upload_rfq
+
+    file = params[:file]
+    transporter_id = params[:transporter]
+    bid_id =params[:bid_id]
+
+    @bid = Bid.find(bid_id)
+    file_not_supported=false
+    case File.extname(file.original_filename)
+    when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
+    when '.xlsx' then spreadsheet = Roo::Excelx.new(file.path, nil, :ignore)
+    else file_not_supported=true
+    end
+
+    
+    if !file_not_supported
+
+
+    number_of_skipped_rows = 0
+
+    (13..spreadsheet.last_row).each do |i|
+      row =  spreadsheet.row(i)
+      warehouse_selection = WarehouseSelection.find(row[0])
+      bid_quotation_in_db = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
+      if !bid_quotation_in_db.nil?
+          bid_quotation_in_db = BidQuotationDetail.where(bid_quotation_id: bid_quotation_in_db.id, location_id: warehouse_selection.location_id, warehouse_id: warehouse_selection.warehouse_id).first
+      end
+
+
+      if bid_quotation_in_db
+        if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil?
+          bid_quotation_in_db.tariff=row[5]
+          bid_quotation_in_db.save
+        else
+          Rails.logger.info("No Warehouse allocation was found for the worda id: #{warehouse_selection.location_id}. Skipping...")
+        end
+
+      else
+
+         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil? 
+             bid_quotation = BidQuotation.create ({
+             bid_id: @bid.id,
+             bid_quotation_date: Date.today,
+             transporter_id: transporter_id
+               })
+
+           bid_quotation.bid_quotation_details.create!(
+                warehouse_id: warehouse_selection.warehouse_id,
+                location_id: warehouse_selection.location_id,
+                tariff: row[5]
+         )
+
+         bid_quotation.save
+        else
+          number_of_skipped_rows += 1
+        end
+
+        end
+      end
+
+      respond_to do |format|
+        if number_of_skipped_rows > 0
+          flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
+        end
+
+        format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: "Excel imported successfully."  }
+      end
+
+    else
+      respond_to do |format|
+          format.html { redirect_to framework_tender_path(@bid.framework_tender_id), alert: "The file is not supported."  }
+      end
+    end
+  
+  end
+
+  def generate_winners
+    @result = generate_bid_winners(params[:id])
+
+    respond_to do |format|
+      if @result
+        format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid winners were successfully generated.' }
+        format.json { render :show, status: :ok, location: @bid } 
+      else
+        format.html { render :edit }
+        format.json { render json: @bid.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def view_bid_winners
+    @bid = Bid.find params[:id]
+    if (!params[:hub].blank? && !params[:warehouse].blank?)
+      puts 'hub and warehouse selected'
+      @bid_winners = BidQuotationDetail.joins(:bid_quotation, :location, warehouse: :hub).where('bid_quotations.bid_id' => params[:id], 'hubs.id' => params[:hub], :warehouse_id => params[:warehouse]).select(:id, :transporter_id, :bid_id, :location_id, :warehouse_id, :tariff, :rank, :parent_node_id, 'hubs.id AS hub_id').order(:location_id, :warehouse_id, :tariff)
+    elsif (!params[:hub].blank?)
+      puts 'hub selected'
+      @bid_winners = BidQuotationDetail.joins(:bid_quotation, :location, warehouse: :hub).where('bid_quotations.bid_id' => params[:id], 'hubs.id' => params[:hub]).select(:id, :transporter_id, :bid_id, :location_id, :warehouse_id, :tariff, :rank, :parent_node_id, 'hubs.id AS hub_id').order(:location_id, :warehouse_id, :tariff)
+    else
+      puts 'nothing selected'
+      @bid_winners = BidQuotationDetail.joins(:bid_quotation, :location, warehouse: :hub).where('bid_quotations.bid_id' => params[:id]).select(:id, :transporter_id, :bid_id, :location_id, :warehouse_id, :tariff, :rank, :parent_node_id, 'hubs.id AS hub_id').order(:location_id, :warehouse_id, :tariff)
+    end  
+    
+  end
+  
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_bid
+      @bid = Bid.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def bid_params
+      params.require(:bid).permit(:framework_tender_id, :region_id, :bid_number, :bid_bond_amount, :start_date, :closing_date, :opening_date, :status, :remark, :hub, :warehouse, :zone, :woreda)
+    end
+end

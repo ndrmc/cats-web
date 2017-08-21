@@ -114,4 +114,5 @@ group :development do
     gem 'capistrano3-puma',   require: false
 end
 
+gem 'influxdb-rails'
 

@@ -1,19 +1,15 @@
-
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-  <div class="ibox-title">
-    <h3>Print</h3>
-  </div>
-    <div class="ibox-content">
-      <div id="project_print">
-        <%= link_to "Click here to Print the form", '#',  onclick: "printpage()" %>
-        </div>
-    </div>
-  </div>
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
       <%= form_for(project) do |f| %>
+      
+        <div class="">
+            <%= f.label :project_code %>
+            <%= 
+              f.text_field :project_code, :class => 'big-text-field form-control' , :required => true , :readonly => false
+            %>
+        </div>
+      
         <% if project.errors.any? %>
           <div class="panel panel-danger">
             <div class="panel-heading">
@@ -31,57 +27,23 @@
         <% end %>
         
         
-               <div class="form-group">
-                  <%= f.label :commodity_source %>
-                  <%= f.collection_select :commodity_source_id,  CommoditySource.order(:name), :id, :name, {include_blank: true}, {class: 'form-control', :required => true } %>
-               </div>
-               <div class="form-group">
-                  <%= f.label :organization_id %>
-                  <%= f.collection_select :organization_id,
-                    Organization.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true } %>
-               </div>
-
-                <div class="form-group">
-                  <%= f.label :commodity_categories_id %>
-                  <%= f.collection_select :commodity_categories_id,
-                    CommodityCategory.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true  } %>
-                </div>  
-
-              <div class="form-group">
-                  <%= f.label :commodity_id %>
-                  <%= f.collection_select :commodity_id,
-                    Commodity.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true } %>
-                </div>              
-
-              <div class="form-group">
-                  <%= f.label :amount %>
-                  <%= f.text_field :amount, :class => 'form-control', :required => true  %>
-              </div>
-              <div class="form-group">
-                  <%= f.label :unit_of_measure_id %>
-                  <%= f.collection_select :unit_of_measure_id,
-                    UnitOfMeasure.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true } %>
-              </div>
-              <div class="form-group">
-                  <%= f.label :project_code %>
-                  <%= f.text_field :project_code, :class => 'form-control' , :required => true , :readonly => true %>
-              </div>  
-              
-              <div class="form-group">
-                  <%= f.label :date %>
-                  <%= f.text_field :publish_date, :class => 'form-control datepicker' , :required => true  %>
-
-              </div>
-            <% end %>
+          
+         
            <div class="form-group">
               <%= f.label :commodity_source %>
-              <%= f.collection_select :commodity_source_id,  CommoditySource.order(:name), :id, :name, {include_blank: true}, {class: 'form-control', :required => true, :onChange=>"javascript: get_update_project_code();" } %>
+              <%= f.collection_select :commodity_source_id,  CommoditySource.where.not(code: ["TR","RP", "OT", "RT"]).order(:name), :id, :name, {include_blank: true}, {class: 'form-control', :required => true, :onChange=>"javascript: get_update_project_code();" } %>
            </div>
            <div class="form-group">
               <%= f.label :organization_id %>
               <%= f.collection_select :organization_id,
                 Organization.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true } %>
            </div>
+
+           <div class="form-group">
+              <%= f.label :program_id %>
+              <%= f.collection_select :program_id,
+                Program.order(:name),:id,:name, {include_blank: true}, {class: 'form-control', :required => true  } %>
+            </div> 
 
             <div class="form-group">
               <%= f.label :commodity_categories_id %>

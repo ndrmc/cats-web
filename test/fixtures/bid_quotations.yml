@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bid: one
+  transporter: one
+  bid_quotation_date: 2017-08-14
+
+two:
+  bid: two
+  transporter: two
+  bid_quotation_date: 2017-08-14
