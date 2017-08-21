@@ -33,7 +33,7 @@ class FrameworkTendersController < ApplicationController
   # POST /framework_tenders.json
   def create
     @framework_tender = FrameworkTender.new(framework_tender_params)
-    @framework_tender.status = :draft
+    @framework_tender.status = :open
     respond_to do |format|
       if @framework_tender.save
         format.html { redirect_to framework_tenders_path, notice: 'Framework tender was successfully created.' }
