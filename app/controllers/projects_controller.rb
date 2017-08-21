@@ -123,9 +123,9 @@ end
 
   def get_commodity_source_code
     commodity_source_id = params[:id]
-    result = CommoditySource.find_by_id(commodity_source_id)
+    result = Project.get_project(commodity_source_id).to_s
     respond_to do |format|
-      format.json { render json: result }
+      format.json { render json: {'code': result} }
     end
   end
 

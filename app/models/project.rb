@@ -45,31 +45,37 @@ class Project < ApplicationRecord
 
  def self.get_project(commodity_source_id)
 
-    project_code = Project.pluck(:project_code).last # get last record of project code
-    sequence_number = project_code.split('/')[1] # get number
-    saved_year = project_code.split('/')[2] # get year
 
-   
-    if !sequence_number.to_i.to_s
-       sequence_number = '0001'
-    else
-
-      sequence_number = sequence_number.to_i + 1 # increment number by one
-      zeros = ""
-      i=1
-      max_length = sequence_number.to_s.length
+    commodity_source_code = CommoditySource.find(commodity_source_id).code
+    project_code = Project.order('id desc').where("project_code LIKE :prefix", prefix: "#{commodity_source_code}%").pluck(:project_code).first # get last record of project code
+    
+    if !project_code.nil? 
+        sequence_number = project_code.split('/')[1] # get number
+        saved_year = project_code.split('/')[2] # get year
+  
+        if !sequence_number.to_i.to_s
+          sequence_number = '0001'
+        else
+          sequence_number = sequence_number.to_i + 1 # increment number by one
+          zeros = ""
+          i=1
+          max_length = sequence_number.to_s.length
      
-      for i in 1..4-max_length # append zeros
-        zeros = zeros + '0'
-      end
+        for i in 1..4-max_length # append zeros
+          zeros = zeros + '0'
+        end
 
-      sequence_number =  zeros + sequence_number.to_s
+        sequence_number =  zeros + sequence_number.to_s
+     end  
 
-      if Date.today.year < saved_year.to_i   # reset year
-        sequence_number ='0001'
-      end
+    else
+      sequence_number = "0001"
     end
   
+    if Date.today.year < saved_year.to_i   # reset year
+        sequence_number ='0001'
+    end
+
     if(commodity_source_id.to_i == CommoditySource.find_by_name('Donation').id)
        project_code = CommoditySource.find_by_name('Donation').code + '/' + sequence_number.to_s + '/' + Date.today.year.to_s
     elsif (commodity_source_id.to_i == CommoditySource.find_by_name('Local Purchase').id)
