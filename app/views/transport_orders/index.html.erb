@@ -1,0 +1,45 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transport Orders</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Transport Orders</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Transport Order', new_transport_order_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transport_orders.each do |transport_order| %>
+          <tr>
+                        <td>
+              <%= link_to 'Edit', edit_transport_order_path(transport_order) %> &middot;
+              <%= link_to 'Delete', transport_order, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
