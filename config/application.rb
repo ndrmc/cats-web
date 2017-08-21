@@ -24,5 +24,14 @@ module Cats
       load(project_specific_irbrc) if File.exists?(project_specific_irbrc)
     end
 
+    # Get applicaiton version from git tag
+    if Rails.env.development?
+      File.open('config/VERSION', 'w') do |file|
+        file.write `git describe --tags --always`
+      end
+    end
+
+    config.version = File.read('config/VERSION')
+
   end
 end
