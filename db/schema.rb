@@ -11,7 +11,8 @@
 # It's strongly recommended that you check this file into your version control system.
 
 
-ActiveRecord::Schema.define(version: 20170821070509) do
+ActiveRecord::Schema.define(version: 20170810072205) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -437,19 +438,10 @@ ActiveRecord::Schema.define(version: 20170821070509) do
 
   create_table "fdp_operations_logs", force: :cascade do |t|
     t.integer  "operation_id"
-    t.string   "operation_name"
     t.integer  "fdp_id"
-    t.string   "fdp_name"
-    t.integer  "woreda_id"
-    t.string   "woreda_name"
-    t.integer  "zone_id"
-    t.string   "zone_name"
-    t.integer  "region_id"
-    t.string   "region_name"
+    t.integer  "location_id"
     t.integer  "requisition_id"
-    t.string   "requisition_no"
     t.integer  "commodity_id"
-    t.string   "commodity_name"
     t.decimal  "allocated_in_mt"
     t.decimal  "dispatched_in_mt"
     t.decimal  "delivered_in_mt"
@@ -458,6 +450,11 @@ ActiveRecord::Schema.define(version: 20170821070509) do
     t.datetime "deleted_at"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.index ["commodity_id"], name: "index_fdp_operations_logs_on_commodity_id", using: :btree
+    t.index ["fdp_id"], name: "index_fdp_operations_logs_on_fdp_id", using: :btree
+    t.index ["location_id"], name: "index_fdp_operations_logs_on_location_id", using: :btree
+    t.index ["operation_id"], name: "index_fdp_operations_logs_on_operation_id", using: :btree
+    t.index ["requisition_id"], name: "index_fdp_operations_logs_on_requisition_id", using: :btree
   end
 
   create_table "fdps", force: :cascade do |t|
@@ -1068,15 +1065,14 @@ ActiveRecord::Schema.define(version: 20170821070509) do
   create_table "requisition_items", force: :cascade do |t|
     t.integer  "requisition_id"
     t.integer  "fdp_id"
-    t.integer  "beneficiary_no",     null: false
-    t.decimal  "amount",             null: false
+    t.integer  "beneficiary_no", null: false
+    t.decimal  "amount",         null: false
     t.decimal  "contingency"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.integer  "unit_of_measure_id"
     t.index ["deleted_at"], name: "index_requisition_items_on_deleted_at", using: :btree
   end
 

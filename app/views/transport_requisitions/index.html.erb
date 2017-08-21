@@ -3,7 +3,7 @@
     <h2>Transport Requisitions</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <%= link_to 'Home', '/' %>
       </li>
       <li class="active">
         <strong>Transport Requisitions</strong>
@@ -12,7 +12,7 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'New Transport Requisition', new_transport_requisition_path, :class => "btn btn-primary"%>
+      <%= link_to 'New', new_transport_requisition_path, :class => "btn btn-primary"%>
     </div>
   </div>
 </div>
@@ -24,43 +24,25 @@
       <table class="table table-striped">
         <thead>
           <tr>
-                        <th>Reference number</th>
-                        <th>Location</th>
-                        <th>Operation</th>
-                        <th>Certified by</th>
-                        <th>Certified date</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Deleted at</th>
-                        <th>Actions</th>
+            <th>Reference number</th>
+            <th>Region</th>
+            <th>No of Destinations</th>
+            <th>Total Qty.</th>
+            <th>Created date</th>
+            <th>Status</th>
           </tr>
         </thead>
 
         <tbody>
           <% @transport_requisitions.each do |transport_requisition| %>
-          <tr>
-                        <td><%= transport_requisition.reference_number
-              %></td>
-                        <td><%= transport_requisition.location_id
-              %></td>
-                        <td><%= transport_requisition.operation_id
-              %></td>
-                        <td><%= transport_requisition.certified_by
-              %></td>
-                        <td><%= transport_requisition.certified_date
-              %></td>
-                        <td><%= transport_requisition.description
-              %></td>
-                        <td><%= transport_requisition.status
-              %></td>
-
-                        <td><%= transport_requisition.deleted_at
-              %></td>
-                        <td>
-              <%= link_to 'Edit', edit_transport_requisition_path(transport_requisition) %> &middot;
-              <%= link_to 'Delete', transport_requisition, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
-          </tr>
+            <tr>
+              <td><%= transport_requisition.reference_number %></td>
+              <td><%= Location.find(transport_requisition.location_id).name %></td>
+              <td><%= {no_of_destinations} %></td>
+              <td><%= {total_qty} %></td>
+              <td><%= transport_requisition.certified_date %></td>
+              <td><%= transport_requisition.status %></td>
+            </tr>
           <% end %>
         </tbody>
       </table>
