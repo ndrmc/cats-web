@@ -4,7 +4,12 @@ class TransportOrdersController < ApplicationController
   # GET /transport_orders
   # GET /transport_orders.json
   def index
-    @transport_orders = TransportOrder.all
+    if params[:transporter].present? && params[:operation].present? && params[:order_no].present?
+      filter_map = {transporter_id: params[:transporter], operation_id: params[:operation], order_no: params[:order_no]}
+      @transport_orders = RegionalRequest.where( filter_map )
+    else
+      @transport_orders = []
+    end
   end
 
   # GET /transport_orders/1
