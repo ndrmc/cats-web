@@ -131,7 +131,7 @@ class BidsController < ApplicationController
 
     number_of_skipped_rows = 0
 
-    (13..spreadsheet.last_row).each do |i|
+    (17..spreadsheet.last_row).each do |i|
       row =  spreadsheet.row(i)
       warehouse_selection = WarehouseSelection.find(row[0])
       bid_quotation_in_db = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
