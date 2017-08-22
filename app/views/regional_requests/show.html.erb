@@ -1,8 +1,34 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Regional Request (<%=  @regional_request.reference_number %>)</h2>
-    <blockquote>
+    <h2>Regional Request</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Operation</a>
+      </li>
+      <li>
+        <a href="#"><%= link_to 'Regional Requests',  regional_requests_path %></a>
+      </li>
+      <li class="active">
+        <a href="#"><%=  @regional_request.reference_number %></a>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">      
+      <% if policy(RegionalRequest).new? %>
+      <a href="#" class="btn btn-default" data-toggle="modal"  data-target="#request-item-modal"><i class="fa fa-plus"></i> Add Item</a>
 
+      <a href="/regional_requests/request_items/<%= @regional_request.id %>.xlsx" target="_blank" class="btn btn-default" title="Download items in Excel file format"><i class="fa fa-download"></i> Download Excel</a>      
+
+      <% end %>
+      <%= link_to 'Cancel', requisitions_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+<div class="ibox float-e-margins">
+   <div class="ibox-content">  
       <table class="table">
         <tbody>
           <tr>
@@ -24,50 +50,29 @@
           </tr>
         </tbody>
       </table>
-      
-    </blockquote>
-    <ol class="breadcrumb">
-      <li>
-        <a href="#"><%= link_to 'Regional Requests',  regional_requests_path %></a>
-      </li>
-      <li class="active">
-        <a href="#"><%=  @regional_request.reference_number %></a>
-      </li>
 
-    </ol>
-  </div>
-
- <% if policy(RegionalRequest).new? %>
-  <div class="col-sm-8">
-  
-    <div class="title-action">
-      <a href="/regional_requests/request_items/<%= @regional_request.id %>.xlsx" target="_blank" class="btn btn-primary"><i class="fa fa-download"></i> Download Request Items for Excel</a>
-      <a href="#" class="btn btn-primary" data-toggle="modal"  data-target="#request-item-modal"><i class="fa fa-plus"></i> Add Request Item</a>
-    </div>
-
-    <form role="form" method="POST" enctype="multipart/form-data" action="/regional_requests/upload_requests/<%= @regional_request.id %>" class="form-inline pull-right" style="display: inline;margin-top: 15px">
-      
-      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-
-      <div class="form-group">
-        <input type="file" name="file" class="form-control" required />
-      </div>
-
-      <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Upload Request Items" />
-      </div>
+    <% if policy(RegionalRequest).new? %>
+      <div class="">
+        <form role="form" method="POST" enctype="multipart/form-data" action="/regional_requests/upload_requests/<%= @regional_request.id %>" class="form-inline" style="display: inline;margin-top: 15px">
         
-      </form>
-  </div>
-<%end%>
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 
+          <div class="form-group">
+            <input type="file" name="file" class="form-control" required />
+          </div>
 
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Upload Request Items" />
+          </div>
+        
+        </form>
+      </div>
+    <%end%>
+  </div> 
 </div>
 
-<div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
-    <div class="ibox-content">
-
+    <div class="ibox-content">    
       <table class="table table-striped cats-datatable" id="fdps_table">
         <thead>
           <tr>
@@ -104,6 +109,7 @@
 
     </div>
   </div>
+
 </div>
 
 

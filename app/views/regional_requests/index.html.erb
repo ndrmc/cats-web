@@ -21,28 +21,20 @@
 
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
+  <div class="row">
     <div class="ibox-content">
 
       <%= form_tag( regional_requests_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
-          <div class="form-group">
-            <%= label_tag :program, "Program", { :class => ' control-label', :required => true } %>
+          <div class="form-group">            
 
             <div class="">
-              <%= select_tag  :program,  options_from_collection_for_select( Program.all, 'id', 'name', params[:program] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Select Operation --", :class => 'form-control col-md-6 data-parsley-required' }  %>
             </div>
           </div>
-          <div class="form-group">
-            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+          <div class="form-group">            
 
             <div class="">
-              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
-            </div>
-          </div>
-          <div class="form-group">
-            <%= label_tag :region, "Region", { :class => ' control-label'} %>
-
-            <div class="">
-              <%= select_tag  :region,  options_from_collection_for_select( Location.where(location_type:'region'), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+              <%= select_tag  :region,  options_from_collection_for_select( Location.where(location_type:'region'), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Select Region --", :class => 'form-control col-md-6 data-parsley-required' }  %>
             </div>
           </div>
 
@@ -56,7 +48,10 @@
       <% end %>
 
     </div>
+    </div>
   </div>
+
+  <div class="row">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
       <table class="table table-striped  cats-datatable">
@@ -108,4 +103,5 @@
 
     </div>
   </div>
+</div>
 </div>
