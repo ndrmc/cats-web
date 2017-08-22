@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :departments
   resources :role_types
   resources :transporters
+  resources :transport_orders
   resources :transporter_addresses  
   get 'setting/index'
   devise_for :users

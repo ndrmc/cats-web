@@ -23,7 +23,13 @@
 
       <table class="table table-striped">
         <thead>
-          <tr>
+          <tr>       
+                        <th>Transport Order No</th>
+                        <th>Transporter</th>
+                        <th>Region</th>
+                        <th>Number of Destinations</th>
+                        <th>Total Quantity</th>
+                        <th>Status</th>
                         <th>Actions</th>
           </tr>
         </thead>
@@ -31,6 +37,12 @@
         <tbody>
           <% @transport_orders.each do |transport_order| %>
           <tr>
+                    <td> transport_order.order_no </td>
+                    <td> transport_order&.transporter&.name</td>
+                    <td> transport_order.region </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> status </td>
                         <td>
               <%= link_to 'Edit', edit_transport_order_path(transport_order) %> &middot;
               <%= link_to 'Delete', transport_order, method: :delete, data: { confirm: 'Are you sure?' } %>
