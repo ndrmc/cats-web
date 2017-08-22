@@ -1,4 +1,4 @@
-<div class="row wrapper border-bottom white-bg page-heading">
+<div class="row wrapper border-bottom white-bg page-heading" id="project_edit_breadcrumb">
   <div class="col-sm-4">
     <h2>Edit Project</h2>
     <ol class="breadcrumb">
@@ -10,9 +10,10 @@
       </li>
     </ol>
   </div>
-  <div class="col-sm-8">
+  <div class="col-sm-8" id="project_edit_cancel">
     <div class="title-action">
       <%= link_to 'Cancel', projects_path,  :class => "btn btn-default"%>
+      <%= link_to "Print", '#',  onclick: "printpage()", :class => "btn btn-default"%>
     </div>
   </div>
 </div>
