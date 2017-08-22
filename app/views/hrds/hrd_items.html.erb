@@ -26,7 +26,7 @@
         <div class="panel-heading">
             <form role="form" class="form-inline" action="/hrds/hrd_items" method="GET">
                 <input type="hidden" name="hrd_id" value="<%= @hrd.id %>">
-                <%= select_tag  :region_id,  options_from_collection_for_select( Location.where(location_type: 'region') , 'id', 'name', params[:region_id] ) , { :prompt => "Choose Region", :id => 'sch', :class => 'form-control' }  %>
+                <%= select_tag  :region_id,  options_from_collection_for_select( Location.where(location_type: 'region') , 'id', 'name', params[:region_id] ) , { :prompt => "Choose Region", :id => 'region-select', :class => 'form-control' }  %>
             </form>
 
         </div>
@@ -73,9 +73,8 @@
                                     <td id="beneficiary-<%= item.id %>"><%= item.beneficiary %></td>
 
                                     <td>
-                                        <a href="#" data-toggle="modal" data-target="#edit-hrd-item" data-hrd-item-id="<%= item.id %>">edit</a>
+                                        <a href="#" data-toggle="modal" data-target="#edit-hrd-item" data-hrd-item-id="<%= item.id %>" class="btn btn-default">Edit</a>
                                         <%= link_to '/hrds/remove_hrd_id/' + item.id.to_s, :method => :delete, :class => "btn btn-danger btn-sm", :data=> { :confirm => "Are you sure you want to delete this item?" }  do %>
-                                                <i class="fa fa-times" aria-hidden="true"></i>   
                                             Delete     
                                         <% end %>
                                     </td>
@@ -193,9 +192,9 @@
 <script type="text/javascript">
     var MONTHNAMES = [null].concat( <%= raw( Date::MONTHNAMES[1..-1]) %>);
     $( function() { 
+
         $('#region-select').change( function() { 
             if( !$(this).val() ) return; 
-
             $(this).closest('form').submit(); 
         }); 
 
