@@ -15,11 +15,22 @@
 #
 
 class TransportRequisition < ApplicationRecord
+  enum status: [:open, :closed]
   has_many :transport_requisition_items
   belongs_to :operation
 
   def region
     Location.find_by(id: self.region_id)
+  end
+
+  def self.get_index(status)
+	if status == 'open'
+		return :open
+	elsif status == 'closed'
+		return :closed
+	else
+		return :open
+	end
   end
   
 end

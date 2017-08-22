@@ -1,10 +1,16 @@
 class TransportRequisitionsController < ApplicationController
+  include TransportRequisitionsHelper
   before_action :set_transport_requisition, only: [:show, :edit, :update, :destroy]
 
   # GET /transport_requisitions
   # GET /transport_requisitions.json
   def index
-    @transport_requisitions = TransportRequisition.all
+    if (params[:operation_id].to_s == '' || params[:operation_id].to_s == nil)
+      @operation_id = Operation.all.order(:name).first.id
+    else
+      @operation_id = params[:operation_id]
+    end
+    @transport_requisitions = TransportRequisition.where(:operation_id => @operation_id)
   end
 
   # GET /transport_requisitions/1
@@ -24,10 +30,10 @@ class TransportRequisitionsController < ApplicationController
   # POST /transport_requisitions
   # POST /transport_requisitions.json
   def create
-    @transport_requisition = TransportRequisition.new(transport_requisition_params)
+    result = generate_tr(transport_requisition_params)
 
     respond_to do |format|
-      if @transport_requisition.save
+      if result
         format.html { redirect_to transport_requisitions_url('en',@transport_requisition), notice: 'Transport requisition was successfully created.' }
         format.json { render :show, status: :created, location: @transport_requisition }
       else
