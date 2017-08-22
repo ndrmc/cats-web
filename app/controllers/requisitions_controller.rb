@@ -182,8 +182,7 @@ class RequisitionsController < ApplicationController
 
   def summary
 
-    @request = RegionalRequest.find_by({operation_id: params[:operation],
-                                        region_id: params[:region]})
+    @request = RegionalRequest.find(params[:request_id])
 
     @operation = Operation.find(@request.operation_id)
 
