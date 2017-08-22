@@ -109,6 +109,7 @@ $(document).ready(function() {
         format: 'dd/mm/yyyy'
     });
 
+
     $('select[data-option-dependent=true]').each(function (i) {
 
         var observer_dom_id = $(this).attr('id');
@@ -151,4 +152,8 @@ $(document).ready(function() {
           }
         });
     });
+
 });
+ function printpage(){
+        window.print()
+    }
