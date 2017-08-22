@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170818063437) do
+ActiveRecord::Schema.define(version: 20170821123929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1216,15 +1216,23 @@ ActiveRecord::Schema.define(version: 20170818063437) do
     t.index ["deleted_at"], name: "index_transport_orders_on_deleted_at", using: :btree
   end
 
+  create_table "transport_requisition_details", force: :cascade do |t|
+    t.integer  "transport_requisition_id"
+    t.integer  "requisition_id"
+    t.datetime "deleted_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
   create_table "transport_requisition_items", force: :cascade do |t|
-    t.integer  "transport_requisition_item_id"
-    t.string   "requisition_no"
+    t.integer  "transport_requisition_id"
+    t.string   "requisition_id"
     t.integer  "fdp_id"
     t.integer  "commodity_id"
     t.decimal  "quantity"
     t.boolean  "has_transport_order"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
@@ -1232,15 +1240,19 @@ ActiveRecord::Schema.define(version: 20170818063437) do
   end
 
   create_table "transport_requisitions", force: :cascade do |t|
-    t.integer  "region_id"
+    t.integer  "location_id"
     t.integer  "operation_id"
     t.date     "created_date"
     t.text     "description"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.string   "reference_number"
+    t.integer  "certified_by"
+    t.string   "certified_date"
+    t.integer  "status"
     t.index ["deleted_at"], name: "index_transport_requisitions_on_deleted_at", using: :btree
   end
 
