@@ -18,6 +18,46 @@
 </div>
 
 <div class="wrapper wrapper-content">
+
+   <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <%= form_tag( transport_orders_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+          <div class="form-group">
+            <%= label_tag :transporter, "Transporter", { :class => ' control-label', :required => true } %>
+
+            <div class="">
+              <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+          
+          <div class="form-group">
+          <%= label_tag :order_no, "Order No", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :order_no, params[:order_no], { class: 'form-control'}  %>
+          </div>
+        </div>
+
+          <div class="form-group">
+            <label for=""></label>
+            <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+            </div>
+          </div>
+
+      <% end %>
+
+    </div>
+
+
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
