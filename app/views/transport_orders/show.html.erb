@@ -1,2 +1,152 @@
-<%= link_to 'Edit', edit_transport_order_path(@transport_order) %> |
-<%= link_to 'Back', transport_orders_path %>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transport Order: <%= @transport_order&.order_no %> </h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Transport Orders</a>
+      </li>
+      <li class="active">
+        <strong>Transport Order items</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+     <div class="title-action">
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">Tasks
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+         
+          <li><%= link_to "Revert TO", '' %></li>
+          <li><%= link_to "Delete", '' %></li>
+          <li><%= link_to "Print", '' %></li>
+        </ul>
+        <div></div>
+      </div>
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+ 
+    <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
+    <div class="col-sm-1">
+      <% if (@transport_order&.status == 'approved') %>
+        <span class="label label-primary"><%= @transport_order&.status %></span>
+      <% elsif (@transport_order&.status == 'canceled') %>
+        <span class="label label-danger"><%= @transport_order&.status %></span>
+      <% elsif (@transport_order&.status == 'closed') %>
+        <span class="label label-success"><%= @transport_order&.status %></span>
+      <% elsif (@transport_order&.status == 'archived') %>
+        <span class="label label-default"><%= @transport_order&.status %></span>
+      <% else %>
+        <span class="label label-warning"><%= @transport_order&.status %></span>
+      <% end %>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Transporter:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @transport_order&.transporter&.name %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Contract:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @transport_order&.contract&.contract_no %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Bid Ref No:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%=  @transport_order&.bid&.bid_number %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Created date:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+      
+          <%= @transport_order&.created_date %>
+       
+        </div>
+      </div>
+
+        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Region:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+      
+          <%= @transport_order&.region&.name %>
+       
+        </div>
+      </div>
+        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Expiry date:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @transport_order&.end_date %>
+        </div>
+      </div>
+
+
+    </div>
+   
+  
+     
+   
+
+
+
+
+</div>
+
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>       
+                        <th>Requiistion Number</th>
+                        <th>Woreda</th>
+                        <th>Source Warehouse</th>
+                        <th>Destinations FDP</th>
+                        <th>Commodity</th>
+                        <th>Quantity</th>
+                        <th>Tariff/Qtl</th>
+                        <th>Total Amount</th>
+                       
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transport_order_items.each do |transport_order_item| %>
+          <tr>
+                    <td> <%= transport_order_item&.requisition_no %></td>
+                    <td> <%= Location.find_by(id: transport_order_item&.fdp.location_id).name %></td>
+                    <td> <%= Warehouse.find_by(id: transport_order_item&.store&.warehouse_id)&.name  %></td>
+                    <td> <%= transport_order_item&.fdp&.name %> </td>
+                    <td> <%= transport_order_item&.commodity&.name %> </td>
+                    <td> <%= number_with_delimiter(transport_order_item&.quantity) %> </td>
+                    <td> <%= transport_order_item&.tariff %> </td>
+                    
+                    <td> <%= number_with_delimiter(transport_order_item&.tariff * transport_order_item&.quantity)  %> </td>
+                        
+             
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      </div>
+    </div>

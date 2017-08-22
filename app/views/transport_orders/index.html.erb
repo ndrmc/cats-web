@@ -10,11 +10,7 @@
       </li>
     </ol>
   </div>
-  <div class="col-sm-8">
-    <div class="title-action">
-      <%= link_to 'New Transport Order', new_transport_order_path, :class => "btn btn-primary"%>
-    </div>
-  </div>
+  
 </div>
 
 <div class="wrapper wrapper-content">
@@ -76,13 +72,13 @@
 
         <tbody>
           <% @transport_orders.each do |transport_order| %>
-          <tr>
-                    <td> transport_order.order_no </td>
-                    <td> transport_order&.transporter&.name</td>
-                    <td> transport_order.region </td>
-                    <td> </td>
-                    <td> </td>
-                    <td> status </td>
+          <tr>      
+                    <td>    <%= link_to transport_order.order_no, transport_order_path(transport_order.id) %>
+                    <td> <%= transport_order&.transporter&.name %></td>
+                    <td> <%= transport_order&.region&.name  %></td>
+                    <td> <%= transport_order&.transport_order_items.count(:fdp_id) %> </td>
+                    <td> <%= number_with_delimiter(transport_order&.transport_order_items.sum(:quantity)) %></td>
+                    <td> <%= transport_order.status %> </td>
                         <td>
               <%= link_to 'Edit', edit_transport_order_path(transport_order) %> &middot;
               <%= link_to 'Delete', transport_order, method: :delete, data: { confirm: 'Are you sure?' } %>
