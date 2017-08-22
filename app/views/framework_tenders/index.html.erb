@@ -29,7 +29,6 @@
                         <th>Starting month</th>
                         <th>Ending month</th>
                         <th>Status</th>
-                        <th>Remark</th>
                         <th>Actions</th>
           </tr>
         </thead>
@@ -37,8 +36,13 @@
         <tbody>
           <% @framework_tenders.each do |framework_tender| %>
           <tr>
-                        <td><%= framework_tender.year
-              %></td>
+                        <td>
+                         <% if framework_tender.status != 'archived' %>
+                           <%= link_to framework_tender.year, framework_tender_path(framework_tender.id) %>
+                        <% else %>
+                           <%=  framework_tender.year %>
+                        <% end %>
+              </td>
                         <td><%= framework_tender.half_year
               %></td>
                        <td><%= Date::MONTHNAMES[framework_tender.starting_month]
@@ -47,11 +51,14 @@
               %></td>
                         <td><%= framework_tender.status
               %></td>
-                        <td><%= framework_tender.remark
-              %></td>
+                       
                         <td>
+              <%= link_to 'Warehouse Selection', '/en/warehouse_selections/' + framework_tender.id.to_s %> &middot;
               <%= link_to 'Edit', edit_framework_tender_path(framework_tender) %> &middot;
-              <%= link_to 'Delete', framework_tender, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <%= link_to 'Delete', framework_tender, method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
+              <% if framework_tender.status != 'archived' %>
+                <%= link_to 'Bids', bids_path(:framework_tender_id => framework_tender.id) %>
+              <% end %>
               <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
                       <span class="caret"></span>

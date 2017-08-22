@@ -10,6 +10,14 @@ class FrameworkTendersController < ApplicationController
   # GET /framework_tenders/1
   # GET /framework_tenders/1.json
   def show
+    @framework_tender = FrameworkTender.find params[:id]
+    $framework_tender_id = params[:id]
+    $framework_tender_no =  @framework_tender.year.to_s + '/' +  @framework_tender.half_year.to_s
+    @bids = Bid.where(framework_tender_id: params[:id])
+    @ft_name = @framework_tender&.year.to_s + '/' + @framework_tender&.half_year.to_s
+    @total_destinations = WarehouseSelection.where(:framework_tender_id => params[:id]).count
+    @total_amount = WarehouseSelection.where(:framework_tender_id => params[:id]).sum(:estimated_qty)
+    @user = User.find_by_id(@framework_tender&.certified_by)
   end
 
   # GET /framework_tenders/new
@@ -25,7 +33,7 @@ class FrameworkTendersController < ApplicationController
   # POST /framework_tenders.json
   def create
     @framework_tender = FrameworkTender.new(framework_tender_params)
-
+    @framework_tender.status = :draft
     respond_to do |format|
       if @framework_tender.save
         format.html { redirect_to framework_tenders_path, notice: 'Framework tender was successfully created.' }
@@ -42,7 +50,7 @@ class FrameworkTendersController < ApplicationController
   def update
     respond_to do |format|
       if @framework_tender.update(framework_tender_params)
-        format.html { redirect_to framework_tenders_path, notice: 'Framework tender was successfully updated.' }
+        format.html { redirect_to framework_tenders_path(:framework_tender_id => @framework_tender.id) , notice: 'Framework tender was successfully updated.' }
         format.json { render :show, status: :ok, location: @framework_tender }
       else
         format.html { render :edit }

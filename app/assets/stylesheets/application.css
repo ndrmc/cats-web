@@ -20,12 +20,17 @@
  *= require chosen/chosen.css
  *= require jquery.calendars/jquery.calendars.picker.css
  *= require receipt_search_result
+ *= require print.css
  */
 
 
  .form-horizontal .control-label.text-left{
      text-align: left;
  }
+
+.width-100per{
+	width: 100% !important;
+}
 
  .big-text-field {
  	font-size: 40px !important;
