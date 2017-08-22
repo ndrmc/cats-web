@@ -80,7 +80,7 @@ class TransportOrdersController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def transport_order_params
-      params.fetch(:transport_order, {})
+     def transport_order_params
+      params.require(:transport_order).permit(:order_no, :transporter_id, :contract_id, :bid_id, :operation_id, :region_id, :order_date, :created_date, :start_date, :end_date, :performance_bond_receipt, :performance_bond_amount, :printed_copies, :status)
     end
 end

@@ -4,12 +4,12 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: 
+store_1: 
     name: 'store 1'
     warehouse: warehouse1
     store_keeper_name: 'abebe' 
 #
-two:
+store_2:
     name: 'store 2'
     warehouse: warehouse1
     store_keeper_name: 'abebe' 
