@@ -20,3 +20,20 @@ operation1:
     actual_end: '2/1/2009'
     status: 1
     ration: ration_1
+
+operation2:
+    id: 1      
+    program: program2
+    hrd: hrd1
+    fscd_annual_plan_id:
+    name: 'Meher 2009'
+    descripiton: ''
+    year: 2009
+    round: 1
+    month:
+    expected_start: '1/1/2009'
+    expected_end: '2/1/2009'
+    actual_start: '1/1/2009'
+    actual_end: '2/1/2009'
+    status: 1
+    ration: ration_1

@@ -72,7 +72,11 @@
             Created by:
           </div>
           <div class="col-md-8 col-sm-8 col-xs-8">
-            <%= User.find(@transport_requisition.created_by).name %>
+            <% if @transport_requisition.created_by.present? %>
+              <%= User.find(@transport_requisition.created_by).name %>
+            <% else %>
+              { N/A }
+            <% end %>
           </div>
         </div>
         <div class="form-group col-md-12 col-sm-12 col-xs-12">
