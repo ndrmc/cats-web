@@ -20,7 +20,7 @@
   </div>
 </div>
 
-<div class="wrapper wrapper-content col-sm-12">
+<div class="wrapper wrapper-content row">
   <div class="ibox col-sm-12">
     <div class="ibox-content col-sm-12">
       <div class="col-sm-1">
@@ -115,8 +115,8 @@
     </div>
   </div>
 
-  <div class="ibox col-sm-12">
-    <div class="ibox-content col-sm-12">
+  <div class="ibox col-sm-12" >
+    <div class="ibox-content col-sm-12" style="height:1100px">
       <div class="panel blank-panel">
         <div class="panel-heading">
           <div class="panel-options">
@@ -134,10 +134,10 @@
           </div>
         </div>
 
-        <div class="panel-body col-sm-12">
+        <div class="panel-body col-sm-12" style="height:1100px">
 
           <div class="tab-content">
-            <div class="tab-pane active col-sm-12" id="tab-1">
+            <div class="tab-pane active col-sm-12 row" id="tab-1">
               <%if(!@transport_requisition.present?)%>
                 <h2>
                     No requisitions are found under this transport requisition<br>
@@ -183,7 +183,7 @@
               <%end%> 
             </div>
 
-            <div class="tab-pane col-sm-12" id="tab-2">
+            <div class="tab-pane col-sm-12 row" id="tab-2">
               <%if(!@transport_requisition.transport_requisition_items.present?)%>
                 <h2>
                     No requisition details are found under this transport requisition<br>
@@ -233,7 +233,7 @@
               <%end%>
             </div>
 
-            <div class="tab-pane col-sm-12" id="tab-3">
+            <div class="tab-pane col-sm-12 row" id="tab-3">
               
 
             </div>
