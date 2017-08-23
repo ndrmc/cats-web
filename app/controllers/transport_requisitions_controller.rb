@@ -16,6 +16,7 @@ class TransportRequisitionsController < ApplicationController
   # GET /transport_requisitions/1
   # GET /transport_requisitions/1.json
   def show
+    @transport_requisition = TransportRequisition.find(params[:id])
   end
 
   # GET /transport_requisitions/new
