@@ -163,7 +163,7 @@
                     <% @req_obj = Requisition.find(req_id) %>
                     <tr>
                       <td>                             
-                        <%= link_to @req_obj&.requisition_no, requisitions_url(req_id) %>
+                        <%= link_to @req_obj&.requisition_no, '/en/requisitions/' + req_id + '/edit' %>
                       </td>
                       <td>
                         <%= Commodity.find(@req_obj&.commodity_id).name %>
