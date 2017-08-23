@@ -50,7 +50,8 @@
         <tbody>
           <% @transport_requisitions.each do |transport_requisition| %>
             <tr>
-              <td><%= transport_requisition.reference_number %></td>
+              <td>
+              <%= link_to transport_requisition.reference_number, transport_requisition_url('en',transport_requisition) %>
               <td><%= Location.find(transport_requisition&.location_id)&.name %></td>
               <td><%= TransportRequisitionItem.where(:transport_requisition_id => transport_requisition.id).count %></td>
               <td><%= TransportRequisitionItem.where(:transport_requisition_id => transport_requisition.id).sum(:quantity)  %></td>
