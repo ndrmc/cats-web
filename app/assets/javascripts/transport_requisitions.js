@@ -38,30 +38,38 @@ $(document).ready(function() {
 			            description: desc
 		        	}	            
 		        },
-		        before: function() {
-		        	$('#new-transport-requisition .spinner').show(); 
-		        	$('#new-transport-requisition .spinner').attr('style', 'color:#ff0').html('Loading...'); 
+		        beforeSend: function() {
+		        	$('#save-tr-btn').prop('disabled', true);
+		        	$('#new-transport-requisition .spinner').html('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>'); 
+		        	$('#new-transport-requisition .spinner').fadeIn();
 		        },
 		        success:function(data){
 		        	if ( $('#keep_creating').is(':checked') )
 			        {
 			        	$('#estimated_qty').val('');
-		            	$('#new-transport-requisition .spinner').attr('style', 'color:#18a689').html('Transport Requisition was created successfully!');	            	
+		            	$('#new-transport-requisition .spinner').attr('style', 'color:#18a689').html('Transport Requisition was created successfully!');
+		            	$('#new-transport-requisition .spinner').fadeIn();
+		            	$('#new-transport-requisition .spinner').delay(3000).fadeOut();
+		            	$('#save-tr-btn').prop('disabled', false);		            	
 			        }
 				    else
 				    {
 			        	$("#new-transport-requisition .close").click();						
-				    }	        			             
+				    }
+				            			             
 		        },
 		        error:function(data){
 		            $('#new-transport-requisition .spinner').attr('style', 'color:#f00').html("Error: No approved requisition was found under the selected operation to create Transport Requisition.");
+		            $('#new-transport-requisition .spinner').fadeIn();
+		            $('#new-transport-requisition .spinner').delay(3000).fadeOut();
+		            $('#save-tr-btn').prop('disabled', false);
 		        }
 		    });
         }
-        else{
-        	$('#new-transport-requisition .spinner').show(); 
+        else{        	 
         	$('#new-transport-requisition .spinner').attr('style', 'color:#f00').html("Error: please fill all fields and try again!");
-        }
-		$('#new-transport-requisition .spinner').delay(3000).fadeOut();
+        	$('#new-transport-requisition .spinner').fadeIn();
+        	$('#new-transport-requisition .spinner').delay(3000).fadeOut();
+        }		
     });
 }); 
