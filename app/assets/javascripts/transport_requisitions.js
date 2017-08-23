@@ -40,7 +40,7 @@ $(document).ready(function() {
 		        },
 		        beforeSend: function() {
 		        	$('#save-tr-btn').prop('disabled', true);
-		        	$('#new-transport-requisition .spinner').html('<img alt="loading..." class="menu_icon" src="/assets/loading-gif-15.gif" width="80" height="50">'); 
+		        	$('#new-transport-requisition .spinner').html('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>'); 
 		        	$('#new-transport-requisition .spinner').fadeIn();
 		        },
 		        success:function(data){
