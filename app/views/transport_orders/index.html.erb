@@ -1,0 +1,93 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transport Orders</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Transport Orders</strong>
+      </li>
+    </ol>
+  </div>
+  
+</div>
+
+<div class="wrapper wrapper-content">
+
+   <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <%= form_tag( transport_orders_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+          <div class="form-group">
+            <%= label_tag :transporter, "Transporter", { :class => ' control-label', :required => true } %>
+
+            <div class="">
+              <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+          
+          <div class="form-group">
+          <%= label_tag :order_no, "Order No", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :order_no, params[:order_no], { class: 'form-control'}  %>
+          </div>
+        </div>
+
+          <div class="form-group">
+            <label for=""></label>
+            <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+            </div>
+          </div>
+
+      <% end %>
+
+    </div>
+
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>       
+                        <th>Transport Order No</th>
+                        <th>Transporter</th>
+                        <th>Region</th>
+                        <th>Number of Destinations</th>
+                        <th>Total Quantity</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transport_orders.each do |transport_order| %>
+          <tr>      
+                    <td>    <%= link_to transport_order.order_no, transport_order_path(transport_order.id) %>
+                    <td> <%= transport_order&.transporter&.name %></td>
+                    <td> <%= transport_order&.region&.name  %></td>
+                    <td> <%= transport_order&.transport_order_items.count(:fdp_id) %> </td>
+                    <td> <%= number_with_delimiter(transport_order&.transport_order_items.sum(:quantity)) %></td>
+                    <td> <%= transport_order.status %> </td>
+                        <td>
+              <%= link_to 'Edit', edit_transport_order_path(transport_order) %> &middot;
+              <%= link_to 'Delete', transport_order, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

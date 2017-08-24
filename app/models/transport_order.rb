@@ -29,7 +29,7 @@ class TransportOrder < ApplicationRecord
   belongs_to :operation
   belongs_to :transporter
   belongs_to :contract
-
+  has_many :transport_order_items
   def bid
     Bid.find_by(id: self.bid_id)
   end
