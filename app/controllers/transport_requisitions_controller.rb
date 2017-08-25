@@ -1,5 +1,6 @@
 class TransportRequisitionsController < ApplicationController
   include TransportRequisitionsHelper
+  include TransportOrdersHelper
   before_action :set_transport_requisition, only: [:show, :edit, :update, :destroy]
 
   # GET /transport_requisitions
@@ -17,6 +18,7 @@ class TransportRequisitionsController < ApplicationController
   # GET /transport_requisitions/1.json
   def show
     @transport_requisition = TransportRequisition.find(params[:id])
+    @transport_orders = TransportOrder.where(:transport_requisition_id => @transport_requisition.id)
   end
 
   # GET /transport_requisitions/new
@@ -31,10 +33,13 @@ class TransportRequisitionsController < ApplicationController
   # POST /transport_requisitions
   # POST /transport_requisitions.json
   def create
+    @result = false
     result = generate_tr(transport_requisition_params)
-
+    if (result.present?)
+      @result = generate_transport_order(result.id, transport_requisition_params['bid_id'])
+    end
     respond_to do |format|
-      if result
+      if @result
         format.html { redirect_to transport_requisitions_url('en',@transport_requisition), notice: 'Transport requisition was successfully created.' }
         format.json { render :show, status: :created, location: @transport_requisition }
       else
@@ -76,6 +81,6 @@ class TransportRequisitionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transport_requisition_params
-      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at)
+      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at, :bid_id)
     end
 end
