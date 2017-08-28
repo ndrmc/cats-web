@@ -1,5 +1,7 @@
 class DashboardController < ApplicationController
   def index
-    # check the user's organization unit (EW/Logs/Finance/)
+  	@hrd = Hrd.current_hrd
+  	@total_stock = StockSummary.total_stock[0].sum_quantity
+  	@category_balance = StockSummary.category_balance	
   end
 end

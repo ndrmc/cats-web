@@ -13,8 +13,8 @@
           <h5>Benficiaries</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins">7,386,200</h1>
-          <small>Relief program</small>
+          <h1 class="no-margins"><%= ActiveSupport::NumberHelper.number_to_delimited(@hrd.total_beneficiaries)%></h1>
+          <small><%= @hrd.name %> Relief program</small>
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@
           <h5>PSNP/FSCD beneficiareis</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins">1,610,200</h1>
+          <h1 class="no-margins"> NO DATA AVAILABLE </h1>
           <small>FSCD program</small>
         </div>
       </div>
@@ -39,8 +39,8 @@
         <div class="ibox-content">
           <div class="row">
             <div class="col-md-6">
-              <h1 class="no-margins">406,42mt</h1>
-              <small>Stock at NDRMC warehouse</small>
+              <h1 class="no-margins"><%= ActiveSupport::NumberHelper.number_to_delimited(@total_stock) %>mt</h1>
+              <small>Stock at all NDRMC warehouse</small>
             </div>
           </div>
         </div>
@@ -65,29 +65,17 @@
                     <tr>
                       <th>#</th>
                       <th>Commodity</th>
-                      <th>Available (mt)</th>
-                      <th>Free (mt)</th>
+                      <th>Stock amount (mt)</th>                      
                     </tr>
                   </thead>
                   <tbody>
+                  <% @category_balance.each do |balance| %>
                     <tr>
-                      <td>1</td>
-                      <td>Wheat</td>
-                      <td>65,230</td>
-                      <td>60,200</td>                      
+                      <td><%= balance.id %></td>
+                      <td><%= balance.commodity_category_name %></td>
+                      <td align="right"><%= ActiveSupport::NumberHelper.number_to_delimited(balance.category_sum) %></td>                      
                     </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>CSB</td>
-                      <td>5,400</td>
-                      <td>4,000</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Beans</td>
-                      <td>7,000</td>
-                      <td>7,000</td>
-                    </tr>
+                  <% end %>                    
                   </tbody>
                 </table>
               </div>
