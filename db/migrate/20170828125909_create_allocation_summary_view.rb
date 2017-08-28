@@ -1,7 +1,7 @@
 class CreateAllocationSummaryView < ActiveRecord::Migration[5.0]
   def up
   	execute <<-SQL
-	  	CREATE VIEW allocation_summary AS
+	  	CREATE VIEW allocation_summaries AS
 	  	select row_number() over () as row_id,
 	  		   r.operation_id,
 	  		   o.name as operation_name,
@@ -19,6 +19,6 @@ class CreateAllocationSummaryView < ActiveRecord::Migration[5.0]
   end
 
   def down
-  	execute 'DROP VIEW allocation_summary'
+  	execute 'DROP VIEW allocation_summaries'
   end
 end
