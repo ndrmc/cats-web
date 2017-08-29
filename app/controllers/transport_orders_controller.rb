@@ -13,7 +13,7 @@ class TransportOrdersController < ApplicationController
       filter_map = {transporter_id: params[:transporter], operation_id: params[:operation]}
       @transport_orders = TransportOrder.where( filter_map )
     else
-      @transport_orders = []
+      @transport_orders = TransportOrder.all
     end
   end
 

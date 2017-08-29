@@ -19,6 +19,8 @@ class TransportRequisitionsController < ApplicationController
   def show
     @transport_requisition = TransportRequisition.find(params[:id])
     @transport_orders = TransportOrder.where(:transport_requisition_id => @transport_requisition.id)
+    @woredas_wo_winner = TransportRequisitionItem.joins(fdp: :location).where(:transport_requisition_id => @transport_requisition.id, :has_transport_order => false).group(:'locations.id AS id', :'locations.name AS name').sum(:quantity)
+    puts 'Without Winner: ' + @woredas_wo_winner.inspect
   end
 
   # GET /transport_requisitions/new
@@ -73,6 +75,34 @@ class TransportRequisitionsController < ApplicationController
     end
   end
 
+  def get_fdps_list
+    puts 'ID: ' + params[:id]
+    puts 'Location ID: ' + params[:location_id]
+    @fdps = TransportRequisitionItem.joins(fdp: :location).where(:transport_requisition_id => params[:id], :'locations.id' => params[:location_id], :has_transport_order => false).select(:'fdps.id AS id', :'fdps.name AS name')
+    respond_to do |format|
+      format.html { redirect_to transport_requisitions_url('en'), notice: 'Transport requisition was successfully destroyed.' }
+      format.json { render json: @fdps, status: :ok  }
+    end
+  end
+
+  def create_to_for_exceptions
+    puts 'TR_ID: ' + transport_requisition_params[:tr_id].to_s
+    puts 'Woreda_ID: ' + transport_requisition_params[:location_id].to_s
+    puts 'Transporter_ID: ' + transport_requisition_params[:transporter_id].to_s
+    puts 'Tariff: ' + transport_requisition_params[:tariff].to_s
+    @result = to_for_exception(transport_requisition_params[:tr_id], transport_requisition_params[:location_id], transport_requisition_params[:transporter_id], transport_requisition_params[:tariff])
+
+    respond_to do |format|
+      if @result
+        format.html { redirect_to transport_requisitions_url('en',@result), notice: 'Transport order was successfully created.' }
+        format.json { render json: @result, status: :ok }
+      else
+        format.html { render :edit }
+        format.json { render json: 'Create transport order for exception transport requisitions failed!', status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_transport_requisition
@@ -81,6 +111,6 @@ class TransportRequisitionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transport_requisition_params
-      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at, :bid_id)
+      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at, :bid_id, :tr_id, :transporter_id, :tariff)
     end
 end
