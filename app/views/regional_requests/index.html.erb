@@ -19,6 +19,8 @@
   </div>
 </div>
 
+<div class="row">
+
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
@@ -36,7 +38,7 @@
             <%= label_tag :region, "Region", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :region,  options_from_collection_for_select( Location.where(location_type:'region'), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+              <%= select_tag  :region,  options_from_collection_for_select( Location.where(location_type:'region').order('name ASC'), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
             </div>
           </div>
 
@@ -102,4 +104,6 @@
 
     </div>
   </div>
+</div>
+
 </div>
