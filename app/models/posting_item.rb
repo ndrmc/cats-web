@@ -32,9 +32,5 @@
 
 class PostingItem < ApplicationRecord
     belongs_to :posting
-    belongs_to :commodity_category
-
-    def stock_balance
-    	PostingItem.sum(:quantity).where(account_id: 7).group(:commodity_category_id)
-    end
+    
 end

@@ -48,7 +48,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-6">
       <div class="ibox float-e-margins">
         <div class="ibox-content">
           <div>
@@ -82,17 +82,17 @@
               <div class="col-md-4">
                 <ul class="stat-list m-t-lg">
                   <li>
-                    <h2 class="no-margins">2,346</h2>
+                    <h2 class="no-margins">0,000</h2>
                     <small>Reserved stock</small>
                     <div class="progress progress-mini">
-                      <div class="progress-bar" style="width: 48%;"></div>
+                      <div class="progress-bar" style="width: 0%;"></div>
                     </div>
                   </li>
                   <li>
-                    <h2 class="no-margins ">4,422</h2>
+                    <h2 class="no-margins ">0,000</h2>
                     <small>Total allocated</small>
                     <div class="progress progress-mini">
-                      <div class="progress-bar" style="width: 60%;"></div>
+                      <div class="progress-bar" style="width: 0%;"></div>
                     </div>
                   </li>
                 </ul>
@@ -111,60 +111,34 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-primary pull-right">Top three</span>
+          <span class="label label-primary pull-right">Year: <%= DateTime.now.year - 8 %></span>
           <h5>Operation Status</h5>
         </div>
-        <div class="ibox-content">
+        <% @operations.each do |operation| %>
+          <div class="ibox-content">
           <div class="row">
-            <div class="col-xs-4">
-              <small class="stats-label">Round/Month</small>
-              <h4>RELIEF 2017 R-1</h4>
+            <div class="col-xs-3">
+              <small class="stats-label">Round/Month</small>              
+              <h4><%= link_to operation[:name], operation_path(operation[:id])%></h4>
             </div>
-            <div class="col-xs-4">
-              <small class="stats-label">% Status</small>
-              <h4>46.11%</h4>
+            <div class="col-xs-3">
+              <small class="stats-label">Allocated(mt)</small>
+              <h4><%= ActiveSupport::NumberHelper.number_to_delimited(operation[:allocated]) %></h4>
             </div>
-            <div class="col-xs-4">
-              <small class="stats-label">Remaining mt</small>
-              <h4>432.11</h4>
+            <div class="col-xs-3">
+              <small class="stats-label">Dispatched(mt)</small>
+              <h4><%= ActiveSupport::NumberHelper.number_to_delimited(operation[:dispatched])%></h4>
+            </div>
+            <div class="col-xs-3">
+              <small class="stats-label">Progress</small>
+              <h4><%= number_to_percentage(operation[:dispatched]&.to_f/operation[:allocated]&.to_f * 100, precision: 1)%></h4>
             </div>
           </div>
         </div>
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-xs-4">
-              <small class="stats-label">Round/Month</small>
-              <h4>RELIEF 2017 R-2</h4>
-            </div>
-            <div class="col-xs-4">
-              <small class="stats-label">% Status</small>
-              <h4>92.43%</h4>
-            </div>
-            <div class="col-xs-4">
-              <small class="stats-label">Remaining mt</small>
-              <h4>54.554</h4>
-            </div>
-          </div>
-        </div>
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-xs-4">
-              <small class="stats-label">Round/Month</small>
-              <h4>RELIEF 2017 R-3</h4>
-            </div>
-            <div class="col-xs-4">
-              <small class="stats-label">% Status</small>
-              <h4>15.23%</h4>
-            </div>
-            <div class="col-xs-4">
-              <small class="stats-label">Remaining mt</small>
-              <h4>124.99</h4>
-            </div>
-          </div>
-        </div>
+        <% end %>        
       </div>
     </div>
   </div>

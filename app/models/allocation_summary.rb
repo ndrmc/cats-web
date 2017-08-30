@@ -23,4 +23,15 @@ class AllocationSummary < ActiveRecord::Base
 		AllocationSummary.where(operation_id: operation_id)
 	end
 
+	def self.yearly(year)
+		ops = Operation.where(year: year)
+		allocations = []
+		ops.each do | operation|
+			alloc_total = AllocationSummary.total(operation.id)
+			allocations << {id: operation.id, operation: operation.name, allocation_total: alloc_total}
+		end
+		return allocations
+	end
+
+
 end
