@@ -1,0 +1,49 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Bid Number: <%= @bid.bid_number.to_s %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <%= link_to 'Bids', bids_path(:framework_tender_id => @framework_tender.id) %>
+      </li>
+      <li class="active">
+        <strong>Transporters Contracts</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>                       
+            <th>Transporter</th>
+            <th>Destinations</th>
+            <th>Contract No.</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transporters.each do |transporter| %>
+          <tr>                        
+              <td><%= link_to Transporter.find(transporter[0]).name, transporter_path(transporter[0]) %></td>
+              <td><%= transporter[1] %></td>
+              <td><%= 'LTCD/' + @bid.id.to_s + '/' + Time.current.year.to_s + '/' + Transporter.find(transporter[0]).name.to_s %></td>
+              <td><%= link_to 'Print Contract', '/en/bids/download_contract?bid_id=' + @bid.id.to_s + '&transporter_id=' + transporter[0].to_s %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

@@ -187,6 +187,9 @@
                     <a href="/bids/view_bid_winners/<%= bid.id %>"> View Bid Winners </a>
                   </li>
                   <li>
+                    <%= link_to 'Contracts', '/en/bids/contracts/' + @framework_tender.id.to_s + '?bid_id=' + bid.id.to_s%>
+                  </li>
+                  <li>
                     <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %>
                   </li>
                 </ul>

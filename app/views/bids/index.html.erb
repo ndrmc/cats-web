@@ -13,6 +13,8 @@
   <div class="col-sm-8">
     <div class="title-action">
       <%= link_to 'New Bid', new_bid_path, :class => "btn btn-primary"%>
+      &middot;
+      <%= link_to 'Contracts', '/en/framework_tenders/contracts/' + @framework_tender.id.to_s, :class => "btn btn-info"%>
     </div>
   </div>
 </div>

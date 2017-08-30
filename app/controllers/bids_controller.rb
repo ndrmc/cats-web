@@ -215,7 +215,17 @@ class BidsController < ApplicationController
     end  
     
   end
-  
+
+  def contracts
+    @framework_tender = FrameworkTender.find(params[:id])
+    @bid = Bid.find(params[:bid_id])
+    @transporters = BidQuotationDetail.joins(bid_quotation: {bid: :framework_tender}).where(:rank => 1, :'framework_tenders.id' => params[:id], :'bid_quotations.bid_id' => params[:bid_id]).group(:'bid_quotations.transporter_id').count(:location_id).to_a
+  end
+
+  def download_contract
+    
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bid

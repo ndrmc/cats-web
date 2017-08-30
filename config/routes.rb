@@ -23,9 +23,11 @@ Rails.application.routes.draw do
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
    post '/bids/:id/generate_winners', to: 'bids#generate_winners'
    get 'bids/view_bid_winners/:id', to: 'bids#view_bid_winners'
+   get 'bids/contracts/:id', to: 'bids#contracts'
+   get 'bids/download_contract/:id', to: 'bids#download_contract'
 
    resources :framework_tenders
-   get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'
+   get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'   
    resources :case_teams
 
    resources :permissions
