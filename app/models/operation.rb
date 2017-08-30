@@ -88,6 +88,8 @@ class Operation < ApplicationRecord
   end
 
   def progress
-    (self.dispatched / self.allocated) * 100
+    unless self.dispatched.nil? || self.allocated.nil? || self.allocated == 0
+      (self.dispatched / self.allocated) * 100
+    end
   end
 end

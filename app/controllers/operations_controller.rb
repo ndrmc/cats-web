@@ -6,9 +6,9 @@ class OperationsController < ApplicationController
   # GET /operations.json
   def index
      if params[:status]
-        @operations = Operation.where status: params[:status]
+        @operations = Operation.where(status: params[:status]).order(id: :desc)
      else
-        @operations = Operation.all 
+        @operations = Operation.all.order(id: :desc)
      end 
    
   end
