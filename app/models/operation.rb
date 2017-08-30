@@ -57,4 +57,37 @@ class Operation < ApplicationRecord
       self.hrd_id = nil
     end
   end
+
+  def regional_request_in_operation
+    query = <<-SQL
+      select count(rr.id), rr.region_id, o.id as operation
+      from regional_requests rr
+      inner join operations o on rr.operation_id = o.id
+      where o.id = #{self.id}
+      group by region_id, o.id
+      order by o.id
+    SQL
+
+    ActiveRecord::Base.connection.execute(query).values.length    
+  end
+
+  def allocated
+    AllocationSummary.total self.id
+  end
+
+  def dispatched
+    DispatchSummary.operation(self.id)[0]&.sum&.to_f
+  end
+
+  def total_benficiaries         
+    if self.hrd_id
+      Hrd.find(self.hrd_id).hrd_items.sum { |i| i.beneficiary }
+    elsif self.fscd_annual_plan_id
+      PsnpPlan.find(self.fscd_annual_plan_id).psnp_plan_items.sum { |i| i.beneficiary }
+    end      
+  end
+
+  def progress
+    (self.dispatched / self.allocated) * 100
+  end
 end

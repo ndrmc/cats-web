@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: allocation_summaries
+#
+#  row_id           :integer          primary key
+#  operation_id     :integer
+#  operation_name   :string
+#  program_id       :integer
+#  commodity_id     :integer
+#  commodity_name   :string
+#  total_allocation :decimal(, )
+#
+
 class AllocationSummary < ActiveRecord::Base
 	self.primary_key = "row_id"
 

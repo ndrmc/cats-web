@@ -18,8 +18,9 @@ class OperationsController < ApplicationController
   def show
     @operation = Operation.find(params[:id])
     # find the ration for current operation
-    @ration = Ration.find(@operation.ration_id)
+    @ration = Ration.find(@operation.ration_id)    
     @commodities = []
+
     @ration.ration_items.each do |ration_item|
       @commodities << Commodity.find(ration_item.commodity_id)
     end
@@ -58,8 +59,8 @@ class OperationsController < ApplicationController
     # group dispatches by region
     if @dispatches
       @dispatches_map = @dispatches.group_by { |d| d.fdp.region }
-
     end
+
 
     @dispatch_summary_region = {}
 
