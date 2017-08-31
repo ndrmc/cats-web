@@ -58,7 +58,7 @@ class OperationsController < ApplicationController
     @dispatches = Dispatch.where(operation_id: params[:id]).includes(:dispatch_items, :fdp)
     # group dispatches by region
     if @dispatches
-      @dispatches_map = @dispatches.group_by { |d| d.fdp.region }
+      @dispatches_map = @dispatches.group_by { |d| d.fdp&.region }
     end
 
 
