@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: rations
+#
+#  id           :integer          not null, primary key
+#  reference_no :string           not null
+#  description  :string
+#  current      :boolean
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  created_by   :integer
+#  modified_by  :integer
+#  deleted_at   :datetime
+#
+
 ration_1:
     reference_no: 001
     description: 'correct ration'

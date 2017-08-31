@@ -23,6 +23,9 @@
 #  updated_at                  :datetime         not null
 #  hub_id                      :integer
 #  warehouse_id                :integer
+#  storekeeper_name            :string(200)      not null
+#  dispatch_id_guid            :string
+#  dispatched_date_ec          :string
 #
 
 class Dispatch < ApplicationRecord
