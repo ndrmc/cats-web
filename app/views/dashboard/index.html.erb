@@ -13,8 +13,8 @@
           <h5>Benficiaries</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins">7,386,200</h1>
-          <small>Relief program</small>
+          <h1 class="no-margins"><%= ActiveSupport::NumberHelper.number_to_delimited(@hrd.total_beneficiaries)%></h1>
+          <small><%= @hrd.name %> Relief program</small>
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@
           <h5>PSNP/FSCD beneficiareis</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins">1,610,200</h1>
+          <h1 class="no-margins"> NO DATA AVAILABLE </h1>
           <small>FSCD program</small>
         </div>
       </div>
@@ -39,8 +39,8 @@
         <div class="ibox-content">
           <div class="row">
             <div class="col-md-6">
-              <h1 class="no-margins">406,42mt</h1>
-              <small>Stock at NDRMC warehouse</small>
+              <h1 class="no-margins"><%= ActiveSupport::NumberHelper.number_to_delimited(@total_stock) %>mt</h1>
+              <small>Stock at all NDRMC warehouse</small>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-6">
       <div class="ibox float-e-margins">
         <div class="ibox-content">
           <div>
@@ -65,46 +65,34 @@
                     <tr>
                       <th>#</th>
                       <th>Commodity</th>
-                      <th>Available (mt)</th>
-                      <th>Free (mt)</th>
+                      <th>Stock amount (mt)</th>                      
                     </tr>
                   </thead>
                   <tbody>
+                  <% @category_balance.each do |balance| %>
                     <tr>
-                      <td>1</td>
-                      <td>Wheat</td>
-                      <td>65,230</td>
-                      <td>60,200</td>                      
+                      <td><%= balance.id %></td>
+                      <td><%= balance.commodity_category_name %></td>
+                      <td align="right"><%= ActiveSupport::NumberHelper.number_to_delimited(balance.category_sum) %></td>                      
                     </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>CSB</td>
-                      <td>5,400</td>
-                      <td>4,000</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Beans</td>
-                      <td>7,000</td>
-                      <td>7,000</td>
-                    </tr>
+                  <% end %>                    
                   </tbody>
                 </table>
               </div>
               <div class="col-md-4">
                 <ul class="stat-list m-t-lg">
                   <li>
-                    <h2 class="no-margins">2,346</h2>
+                    <h2 class="no-margins">0,000</h2>
                     <small>Reserved stock</small>
                     <div class="progress progress-mini">
-                      <div class="progress-bar" style="width: 48%;"></div>
+                      <div class="progress-bar" style="width: 0%;"></div>
                     </div>
                   </li>
                   <li>
-                    <h2 class="no-margins ">4,422</h2>
+                    <h2 class="no-margins ">0,000</h2>
                     <small>Total allocated</small>
                     <div class="progress progress-mini">
-                      <div class="progress-bar" style="width: 60%;"></div>
+                      <div class="progress-bar" style="width: 0%;"></div>
                     </div>
                   </li>
                 </ul>
@@ -114,7 +102,7 @@
           <div class="m-t-md">
             <small class="pull-right">
               <i class="fa fa-clock-o"> </i>
-              Update on 16/05/2017
+              Update on <%= DateTime.now.to_s(:long) %>
               </small>
             <small>
               <strong>Note:</strong> Shown values are based on status of captured data at the hubs.
@@ -123,60 +111,34 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <span class="label label-primary pull-right">Top three</span>
+          <span class="label label-primary pull-right">Year: <%= DateTime.now.year - 8 %></span>
           <h5>Operation Status</h5>
         </div>
-        <div class="ibox-content">
+        <% @operations.each do |operation| %>
+          <div class="ibox-content">
           <div class="row">
-            <div class="col-xs-4">
-              <small class="stats-label">Round/Month</small>
-              <h4>RELIEF 2017 R-1</h4>
+            <div class="col-xs-3">
+              <small class="stats-label">Round/Month</small>              
+              <h4><%= link_to operation[:name], operation_path(operation[:id])%></h4>
             </div>
-            <div class="col-xs-4">
-              <small class="stats-label">% Status</small>
-              <h4>46.11%</h4>
+            <div class="col-xs-3">
+              <small class="stats-label">Allocated(mt)</small>
+              <h4><%= ActiveSupport::NumberHelper.number_to_delimited(operation[:allocated]) %></h4>
             </div>
-            <div class="col-xs-4">
-              <small class="stats-label">Remaining mt</small>
-              <h4>432.11</h4>
+            <div class="col-xs-3">
+              <small class="stats-label">Dispatched(mt)</small>
+              <h4><%= ActiveSupport::NumberHelper.number_to_delimited(operation[:dispatched])%></h4>
+            </div>
+            <div class="col-xs-3">
+              <small class="stats-label">Progress</small>
+              <h4><%= number_to_percentage(operation[:dispatched]&.to_f/operation[:allocated]&.to_f * 100, precision: 1)%></h4>
             </div>
           </div>
         </div>
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-xs-4">
-              <small class="stats-label">Round/Month</small>
-              <h4>RELIEF 2017 R-2</h4>
-            </div>
-            <div class="col-xs-4">
-              <small class="stats-label">% Status</small>
-              <h4>92.43%</h4>
-            </div>
-            <div class="col-xs-4">
-              <small class="stats-label">Remaining mt</small>
-              <h4>54.554</h4>
-            </div>
-          </div>
-        </div>
-        <div class="ibox-content">
-          <div class="row">
-            <div class="col-xs-4">
-              <small class="stats-label">Round/Month</small>
-              <h4>RELIEF 2017 R-3</h4>
-            </div>
-            <div class="col-xs-4">
-              <small class="stats-label">% Status</small>
-              <h4>15.23%</h4>
-            </div>
-            <div class="col-xs-4">
-              <small class="stats-label">Remaining mt</small>
-              <h4>124.99</h4>
-            </div>
-          </div>
-        </div>
+        <% end %>        
       </div>
     </div>
   </div>
