@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: postings
+#
+#  id                  :integer          not null, primary key
+#  posting_code        :uuid
+#  document_type       :integer
+#  document_id         :integer
+#  posted              :boolean
+#  reversed_posting_id :integer
+#  posting_type        :integer
+#  created_by          :integer
+#  modified_by         :integer
+#  deleted             :boolean          default(FALSE)
+#  deleted_at          :datetime
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
+
 #reversal
 posting_delivery3:
     posting_code:

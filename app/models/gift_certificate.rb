@@ -6,7 +6,7 @@
 #  reference_no           :string           not null
 #  gift_date              :date
 #  vessel                 :string
-#  donor_id               :integer
+#  organization_id        :integer
 #  eta                    :date
 #  program_id             :integer
 #  mode_of_transport_id   :integer
@@ -28,6 +28,7 @@
 #  estimated_tax          :decimal(15, 2)
 #  fund_source_id         :integer
 #  currency_id            :integer
+#  commodity_id           :integer
 #
 
 class GiftCertificate < ApplicationRecord

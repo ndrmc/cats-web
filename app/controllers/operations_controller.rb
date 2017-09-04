@@ -6,9 +6,9 @@ class OperationsController < ApplicationController
   # GET /operations.json
   def index
      if params[:status]
-        @operations = Operation.where status: params[:status]
+        @operations = Operation.where(status: params[:status]).order(id: :desc)
      else
-        @operations = Operation.all 
+        @operations = Operation.all.order(id: :desc)
      end 
    
   end
@@ -18,8 +18,9 @@ class OperationsController < ApplicationController
   def show
     @operation = Operation.find(params[:id])
     # find the ration for current operation
-    @ration = Ration.find(@operation.ration_id)
+    @ration = Ration.find(@operation.ration_id)    
     @commodities = []
+
     @ration.ration_items.each do |ration_item|
       @commodities << Commodity.find(ration_item.commodity_id)
     end
@@ -57,9 +58,9 @@ class OperationsController < ApplicationController
     @dispatches = Dispatch.where(operation_id: params[:id]).includes(:dispatch_items, :fdp)
     # group dispatches by region
     if @dispatches
-      @dispatches_map = @dispatches.group_by { |d| d.fdp.region }
-
+      @dispatches_map = @dispatches.group_by { |d| d.fdp&.region }
     end
+
 
     @dispatch_summary_region = {}
 
