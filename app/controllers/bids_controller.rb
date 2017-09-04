@@ -246,7 +246,7 @@ class BidsController < ApplicationController
         @no = @no + 1
       end
     respond_to do |format|
-      format.docx { headers["Content-Disposition"] = "attachment; filename=\" " + @transporter.name + "-" + @bid.bid_number.to_s + "\"" }
+      format.docx { headers["Content-Disposition"] = "attachment; filename=\" " + @transporter.name + "-" + @bid.bid_number.to_s + ".docx\"" }
     end
   end
 
