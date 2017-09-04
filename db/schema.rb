@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20170830081915) do
+ActiveRecord::Schema.define(version: 20170904082911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -197,15 +196,18 @@ ActiveRecord::Schema.define(version: 20170830081915) do
   end
 
   create_table "contracts", force: :cascade do |t|
-    t.string   "contract_no",         null: false
-    t.integer  "transport_id"
+    t.string   "contract_no",     null: false
+    t.integer  "transporter_id"
     t.text     "description"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.integer  "framework_tender_id"
+    t.integer  "bid_id"
+    t.boolean  "signed"
+    t.datetime "last_printed_at"
+    t.integer  "printed_copies"
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
   end
 
