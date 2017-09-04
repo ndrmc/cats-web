@@ -6,7 +6,7 @@
         <a href="/">Home</a>
       </li>
       <li>
-        <%= link_to 'Bids', bids_path(:framework_tender_id => @framework_tender.id) %>
+        <%= link_to 'Bids', bids_path(:framework_tender_id => @bid.framework_tender_id) %>
       </li>
       <li class="active">
         <strong>Transporters Contracts</strong>
@@ -38,7 +38,7 @@
               <td><%= link_to Transporter.find(transporter[0]).name, transporter_path(transporter[0]) %></td>
               <td><%= transporter[1] %></td>
               <td><%= 'LTCD/' + @bid.id.to_s + '/' + Time.current.year.to_s + '/' + Transporter.find(transporter[0]).name.to_s %></td>
-              <td><%= link_to 'Print Contract', '/en/bids/download_contract?bid_id=' + @bid.id.to_s + '&transporter_id=' + transporter[0].to_s %></td>
+              <td><%= link_to 'Print Contract', '/en/bids/download_contract/' + @bid.id.to_s + '?transporter_id=' + transporter[0].to_s %></td>
           </tr>
           <% end %>
         </tbody>
