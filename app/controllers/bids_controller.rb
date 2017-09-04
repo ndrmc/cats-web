@@ -265,12 +265,14 @@ class BidsController < ApplicationController
     @post_print_update = BidQuotationDetail.joins(:bid_quotation).where(:'bid_quotations.bid_id' => params[:id]).where("bid_quotations.updated_at > ? OR bid_quotation_details.updated_at > ?", @contract.last_printed_at, @contract.last_printed_at).first
     respond_to do |format|
       if (@post_print_update.present?)
-        format.html { redirect_to '/en/bids/contracts/'+params[:id], notice: 'Contract has not been signed as related data was updated after the contract\'s last print date.' }
-        format.json { render :show, status: :ok, contract: @contract } 
+        format.html {
+          flash[:error] = "Contract has not been signed as related data was updated after the contract\'s last print date."
+          redirect_to request.referrer 
+        }
       elsif (@contract.present?)
         @contract.signed = true
         if (@contract.save)        
-          format.html { redirect_to '/en/bids/contracts/'+params[:id], error: 'Contract has been successfully signed.' }
+          format.html { redirect_to '/en/bids/contracts/'+params[:id], notice: 'Contract has been successfully signed.' }
           format.json { render :show, status: :ok, contract: @contract } 
         else
           format.html { render :contracts }
