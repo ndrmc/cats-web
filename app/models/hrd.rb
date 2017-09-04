@@ -47,4 +47,12 @@ def all_woredas_in_hrd
                   where h.id = '#{self.id}'").first.try(:all_woredas)
 end
 
+def total_beneficiaries
+  self.hrd_items.sum(:beneficiary)
+end
+
+def self.current_hrd
+  Hrd.where(status: :published).last
+end
+
 end
