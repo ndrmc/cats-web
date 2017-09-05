@@ -32,6 +32,9 @@
 #  deleted_at              :datetime
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  receiveid               :string(36)       not null
+#  received_date_ec        :string
+#  donor_id                :integer
 #
 
 class Receipt < ApplicationRecord

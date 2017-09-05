@@ -8,9 +8,7 @@
 #  keyboard               :string
 #  calendar               :string
 #  default_uom            :string
-#  region                 :string
 #  organization_unit      :string
-#  hub                    :string
 #  encrypted_password     :string           default(""), not null
 #  reset_password_token   :string
 #  reset_password_sent_at :datetime
@@ -32,8 +30,10 @@
 #  mobile_no              :string
 #  number_of_logins       :integer
 #  region_user            :boolean
-#  hub_user               :boolean
-#  user_type_id           :integer
+#  user_types             :integer
+#  location_id            :integer
+#  hub_id                 :integer
+#  department_id          :integer
 #
 
 require 'test_helper'

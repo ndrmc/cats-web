@@ -63,9 +63,8 @@
 
           <div class="form-group">
             <%= f.label :year, :class=>'col-sm-2 control-label' %>
-            <div class="col-sm-4">
-             
-               <%= select_year(@operation.year.to_i, {prompt: 'Select year'}, {name: 'operation[year]' , :class => 'form-control' }) %>
+            <div class="col-sm-4">             
+               <%= f.text_field :year, :class=> 'form-control' %>
             </div>
           </div>
 
