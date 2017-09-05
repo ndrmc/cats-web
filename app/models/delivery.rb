@@ -13,12 +13,15 @@
 #  status             :integer
 #  operation_id       :integer
 #  remark             :text
+#  draft              :boolean
 #  created_by         :integer
 #  modified_by        :integer
 #  deleted            :boolean          default(FALSE)
 #  deleted_at         :datetime
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  delivery_id_guid   :string
+#  received_date_ec   :string
 #
 
 class Delivery < ApplicationRecord

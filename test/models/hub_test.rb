@@ -13,6 +13,7 @@
 #  created_by  :integer
 #  modified_by :integer
 #  deleted_at  :datetime
+#  address     :string
 #
 
 require 'test_helper'
