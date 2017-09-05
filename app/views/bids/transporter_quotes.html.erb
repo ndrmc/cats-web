@@ -1,25 +1,26 @@
+
+
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Framework Tender: <%= @ft_name %> </h2>
+    <h3> <strong> Framework Tender: <%= @framework_tender.year.to_s + '/' + @framework_tender.half_year.to_s %> </strong> </h3>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Framework Tenders</a>
+        <a href="#">Bid</a>
       </li>
       <li class="active">
-        <strong>Bids</strong>
+        <strong>Transport quotes</strong>
       </li>
     </ol>
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'New Bid', new_bid_path, :class => "btn btn-primary"%>
+      <%= link_to 'Cancel', bids_path(:framework_tender_id => @bid.framework_tender_id),  :class => "btn btn-default"%>
     </div>
   </div>
 </div>
 
 <div class="ibox float-e-margins">
- <div class="ibox-title">
-   <h3> <strong> Framework Tender: <%= @framework_tender.year.to_s + '/' + @framework_tender.half_year.to_s %> </strong> </h3></div>
+
   <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
  
 
@@ -123,98 +124,30 @@
 </div>
 
 
-
+<div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
       <table class="table table-striped">
         <thead>
           <tr>
-                        <th>Bid number</th>
-                        <th>Region</th>
-                        <th>Bid bond amount</th>
-                        <th>Start date</th>
-                        <th>Closing date</th>
-                        <th>Opening date</th>
-                        <th>Status</th>
-                        <th>Remark</th>
-                        <th>Actions</th>
+                       
+                        <th>Transporter</th>
+                        <th>Total number of Destinations</th>
+                        <th>Tasks</th>
           </tr>
         </thead>
 
         <tbody>
-          <% @bids.each do |bid| %>
+          <% @transporters.each do |transporter| %>
           <tr>
                         
-                        <td><%= link_to bid.bid_number, 'bids/transporter_quotes/' + bid.id.to_s 
-              %></td>
-                        <td><%= bid.location.name
-               %></td>
-
-                        <td><%= bid.bid_bond_amount
-              %></td>
-                        <td><%= bid.start_date
-              %></td>
-                        <td><%= bid.closing_date
-              %></td>
-                        <td><%= bid.opening_date
-              %></td>
-                        <td><%= bid.status
-              %></td>
-                        <td><%= bid.remark
-              %></td>
-                        <td>
-
-               
-              <div class="btn-group">
-                <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu pull-right">
-                  <li>
-                    <%= link_to 'Edit', edit_bid_path(bid) %>
-                  </li>
-                  <li>
-                    <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx"> Download RFQ </a>
-                  </li>
-                  <li>
-                    <a href="#" class='rfq-modal' data-toggle="modal" data-id="<%= bid.id %>" data-target="#rfq-modal">Upload RFQ</a>
-                  </li>
-                  <li>
-                    <%= link_to 'Generate Bid Winners', '/bids/' + bid.id.to_s + '/generate_winners', method: :post, data: { confirm: 'This action will close the bid. Are you sure you want to generate winners?' } %>
-                  </li>
-                  <li>
-                    <a href="/bids/view_bid_winners/<%= bid.id %>"> View Bid Winners </a>
-                  </li>
-                  <li>
-                    <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %>
-                  </li>
-                </ul>
-              </div>
-               <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu pull-right">
-                      <li>
-                       <%= link_to 'Approve', '/bids/update_status/' + bid.id.to_s + "/" +  "approved" %> 
-                      </li>
-                     
-                      <li>
-                       <%= link_to 'Cancel', '/bids/update_status/' + bid.id.to_s + "/" +  "canceled" %> 
-                      </li>
-
-                      <li>
-                       <%= link_to 'Close', '/bids/update_status/' + bid.id.to_s + "/" +  "closed" %> 
-                      </li>
-
-                      <li>
-                       <%= link_to 'Archive', '/bids/update_status/' + bid.id.to_s + "/" +  "archived" %> 
-                      </li>
-                    </ul>
-                  </div>
-
-
+                       <td> <%= transporter&.transporter&.name %> </td>
+                       <td><%= transporter&.destination_count %> </td>
+                       <td> <a href="#"  data-toggle="modal" data-transporter_id= "<%= transporter&.transporter&.id %>" data-id="<%= transporter&.bid_id %>" class="rfq-modal" data-target="#rfq-modal">Update</a>  </td>&middot;
+                       <td> <%= link_to "Remove",  {:controller => "bids", :action => "remove_bid_quotation", :id => transporter&.bid_id, :transporter_id => transporter&.transporter_id }, method: :delete , data: { confirm: 'Are you sure?' } %> </td>
+                       
+             
             </td>
           </tr>
           <% end %>
@@ -223,6 +156,8 @@
 
     </div>
   </div>
+</div>
+
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="rfq-modal">
@@ -253,6 +188,7 @@
         <span class="required">*</span>
         <div>
             <input  type="hidden" name="bid_id" id="bid_id" value="" />
+            <input  type="hidden" name="transporter" id="transporter" value="" />
             <input type="file" name="file" class="form-control" required />
             <input type="submit" class="btn btn-primary" value="Upload Request Items" />
         </div>
@@ -272,6 +208,10 @@
 <script>
 $(document).on("click", ".rfq-modal",function(){
   var bid_id = $(this).data('id');
+  var transporter_id = $(this).data('transporter_id');
   $(".form-group #bid_id").val(bid_id);
+  $(".form-group #transporter").val(transporter_id);
+  $('select[name=transporter]').val(transporter_id)
+   $('select[name=transporter]').attr('disabled', true)
 });
 </script>
