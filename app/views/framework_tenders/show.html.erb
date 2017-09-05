@@ -141,9 +141,8 @@
       <table class="table table-striped">
         <thead>
           <tr>
-                       
-                        <th>Region</th>
                         <th>Bid number</th>
+                        <th>Region</th>
                         <th>Bid bond amount</th>
                         <th>Start date</th>
                         <th>Closing date</th>
@@ -158,10 +157,11 @@
           <% @bids.each do |bid| %>
           <tr>
                         
+                        <td><%= link_to bid.bid_number, 'bids/transporter_quotes/' + bid.id.to_s 
+              %></td>
                         <td><%= bid.location.name
-              %></td>
-                        <td><%= bid.bid_number
-              %></td>
+               %></td>
+
                         <td><%= bid.bid_bond_amount
               %></td>
                         <td><%= bid.start_date
