@@ -1216,14 +1216,6 @@ ActiveRecord::Schema.define(version: 20170828183549) do
     t.index ["deleted_at"], name: "index_transport_orders_on_deleted_at", using: :btree
   end
 
-  create_table "transport_requisition_details", force: :cascade do |t|
-    t.integer  "transport_requisition_id"
-    t.integer  "requisition_id"
-    t.datetime "deleted_at"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
   create_table "transport_requisition_items", force: :cascade do |t|
     t.integer  "transport_requisition_id"
     t.string   "requisition_id"
