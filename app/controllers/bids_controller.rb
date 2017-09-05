@@ -114,6 +114,12 @@ class BidsController < ApplicationController
   end
 
  def upload_rfq
+    # Last row index in RFQ excel template
+    excel_last_row = 17
+    # Tariff column index number in the last row of the RFQ excel template
+    tariff_column_index = 5
+    # WarehouseSelection ID column index in the last row of the RFQ excel template
+    ws_column_index = 0
 
     file = params[:file]
     transporter_id = params[:transporter]
@@ -142,17 +148,17 @@ class BidsController < ApplicationController
     end
 
 
-    (13..spreadsheet.last_row).each do |i|
+    (excel_last_row..spreadsheet.last_row).each do |i|
       row =  spreadsheet.row(i)
-      warehouse_selection = WarehouseSelection.find(row[0])
+      warehouse_selection = WarehouseSelection.find(row[ws_column_index])
       if !bid_quotation_for_transporter.nil?
           bid_quotation_in_db = BidQuotationDetail.where(bid_quotation_id: bid_quotation_for_transporter.id, location_id: warehouse_selection.location_id, warehouse_id: warehouse_selection.warehouse_id).first
       end
          
       
       if bid_quotation_in_db
-        if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil?
-          bid_quotation_in_db.tariff=row[5]
+        if row[tariff_column_index].is_a?( Numeric) &&  row[tariff_column_index] >= 0 && !warehouse_selection.nil?
+          bid_quotation_in_db.tariff=row[tariff_column_index]
           bid_quotation_in_db.save
         
 
@@ -160,20 +166,20 @@ class BidsController < ApplicationController
 
       else
 
-         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil?  
+         if row[tariff_column_index].is_a?( Numeric) &&  row[tariff_column_index] >= 0 && !warehouse_selection.nil?  
                       
                  if !bid_quotation.nil?
                     bid_quotation.bid_quotation_details.create!(
                     warehouse_id: warehouse_selection.warehouse_id,
                     location_id: warehouse_selection.location_id,
-                    tariff: row[5])
+                    tariff: row[tariff_column_index])
 
                     bid_quotation.save
                 elsif !bid_quotation_for_transporter.nil?
                     bid_quotation_for_transporter.bid_quotation_details.create!(
                     warehouse_id: warehouse_selection.warehouse_id,
                     location_id: warehouse_selection.location_id,
-                    tariff: row[5])
+                    tariff: row[tariff_column_index])
 
                     bid_quotation_for_transporter.save
            end
