@@ -71,7 +71,7 @@ class FrameworkTendersController < ApplicationController
 
   def update_status
      @framework_tender = FrameworkTender.find params[:id]
-     @framework_tender.status =  FrameworkTender.get_index(params[:status])
+     @framework_tender.status =  params[:status]
      @framework_tender.certified_by = current_user.id
       respond_to do |format|
           if @framework_tender.save

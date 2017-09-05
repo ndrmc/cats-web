@@ -5,13 +5,4 @@ class FrameworkTender < ApplicationRecord
      has_many :bids
      belongs_to :user, foreign_key: 'certified_by'
 
-     def self.get_index(status)
-         if status == 'open'
-             return :open
-         elsif status == 'closed'
-             return :closed
-        else
-            return :open
-        end
-    end
 end
