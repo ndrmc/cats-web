@@ -14,6 +14,9 @@
 #  deleted_at            :datetime
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  guid_ref              :string
+#  organization_id       :integer
+#  unit_of_measure_id    :integer
 #
 
 class DispatchItem < ApplicationRecord
