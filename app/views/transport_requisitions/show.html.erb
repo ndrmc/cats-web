@@ -264,7 +264,15 @@
                         <%= link_to Transporter.find(tos.transporter_id).name, transporter_url(tos.id) %>
                       </td>
                       <td>
-                        N/A
+                        <% if tos.contract_id.present? %>
+                          <% if Contract.find(tos.contract_id).present? %>
+                            <%= Contract.find(tos.contract_id)&.contract_no %>
+                          <% else %>
+                            <small>Can't Load Contract</small>
+                          <% end %>
+                        <% else %>
+                          N/A
+                        <% end %>
                       </td>
                       <td>
                         <% if (tos.bid_id?) %>
