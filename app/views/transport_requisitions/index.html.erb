@@ -52,9 +52,9 @@
             <tr>
               <td>
               <%= link_to transport_requisition.reference_number, transport_requisition_url('en',transport_requisition) %>
-              <td><%= Location.find(transport_requisition&.location_id)&.name %></td>
-              <td><%= TransportRequisitionItem.where(:transport_requisition_id => transport_requisition.id).count %></td>
-              <td><%= TransportRequisitionItem.where(:transport_requisition_id => transport_requisition.id).sum(:quantity)  %></td>
+              <td><%= transport_requisition.region_name %></td>
+              <td><%= transport_requisition.destinations %></td>
+              <td><%= transport_requisition.total_qty  %></td>
               <td><%= transport_requisition.created_at.to_formatted_s(:long_ordinal) %></td>
               <td><%= transport_requisition.status %></td>
             </tr>
