@@ -14,6 +14,10 @@
 #  created_by  :integer
 #  modified_by :integer
 #  deleted_at  :datetime
+#  address     :string
+#  woreda      :string
+#  zone        :string
+#  region      :string
 #
 
 class Fdp < ApplicationRecord
