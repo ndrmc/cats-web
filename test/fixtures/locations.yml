@@ -25,5 +25,9 @@ location2:
 location3:
     name: 'Adhar'
     location_type: :woreda
-
+location4:
+    id: 4
+    name: 'AMHARA'
+    code: 'AM'
+    location_type: :region
     
