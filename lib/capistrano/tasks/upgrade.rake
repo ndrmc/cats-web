@@ -55,4 +55,15 @@ namespace :upgrade do
     end
   end
 
+  desc "Update PSNP annual plan region and zone id values"
+  task :psnp do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "cats:psnp:upgrade"
+        end
+      end
+    end
+  end
+
 end
