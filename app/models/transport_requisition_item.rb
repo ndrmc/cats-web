@@ -18,6 +18,9 @@
 
 class TransportRequisitionItem < ApplicationRecord
   belongs_to :transport_requisition
+  belongs_to :fdp
+  belongs_to :store
+  belongs_to :transport_order
 
   def fdp
     Fdp.find_by(id: self.fdp_id)

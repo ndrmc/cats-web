@@ -29,16 +29,7 @@ class TransportOrder < ApplicationRecord
   belongs_to :operation
   belongs_to :transporter
   belongs_to :contract
-
-  def bid
-    Bid.find_by(id: self.bid_id)
-  end
-
-  def region
-    Location.find_by(id: self.region_id)
-  end
-
-  def requisitions
-    # get list of requistions within all TO items.
-  end
+  has_many :transport_order_items
+  belongs_to :bid
+  belongs_to :location
 end
