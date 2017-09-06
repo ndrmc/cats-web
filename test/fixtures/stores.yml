@@ -1,15 +1,31 @@
+# == Schema Information
+#
+# Table name: stores
+#
+#  id                :integer          not null, primary key
+#  name              :string           not null
+#  temporary         :boolean
+#  warehouse_id      :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  created_by        :integer
+#  modified_by       :integer
+#  deleted_at        :datetime
+#  store_keeper_name :string
+#
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 # This model initially had no columns defined. If you add columns to the
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: 
+store_1: 
     name: 'store 1'
     warehouse: warehouse1
     store_keeper_name: 'abebe' 
 #
-two:
+store_2:
     name: 'store 2'
     warehouse: warehouse1
     store_keeper_name: 'abebe' 

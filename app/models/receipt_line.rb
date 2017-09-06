@@ -6,7 +6,7 @@
 #  receipt_id            :integer
 #  commodity_category_id :integer
 #  commodity_id          :integer
-#  quantity              :decimal(, )
+#  quantity              :decimal(15, 2)
 #  project_id            :integer
 #  created_by            :integer
 #  modified_by           :integer
@@ -15,6 +15,8 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  unit_of_measure_id    :integer
+#  receive_id            :string(36)       not null
+#  receive_item_id       :string(36)       not null
 #
 
 class ReceiptLine < ApplicationRecord

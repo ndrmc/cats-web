@@ -7,7 +7,7 @@ class StoresControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:admin)
     @warehouse =warehouses(:warehouse1)
-    @store = stores(:one)
+    @store = stores(:store_1)
   end
 
   test "should get index" do

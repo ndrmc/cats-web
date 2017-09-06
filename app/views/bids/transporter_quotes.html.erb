@@ -1,0 +1,217 @@
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h3> <strong> Framework Tender: <%= @framework_tender.year.to_s + '/' + @framework_tender.half_year.to_s %> </strong> </h3>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Bid</a>
+      </li>
+      <li class="active">
+        <strong>Transport quotes</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', bids_path(:framework_tender_id => @bid.framework_tender_id),  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+
+  <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
+ 
+
+
+
+  
+    <div class="col-sm-1">
+      <% if (@framework_tender&.status == 'approved') %>
+        <span class="label label-primary"><%= @framework_tender&.status %></span>
+      <% elsif (@framework_tender&.status == 'canceled') %>
+        <span class="label label-danger"><%= @framework_tender&.status %></span>
+      <% elsif (@framework_tender&.status == 'closed') %>
+        <span class="label label-success"><%= @framework_tender&.status %></span>
+      <% elsif (@framework_tender&.status == 'archived') %>
+        <span class="label label-default"><%= @framework_tender&.status %></span>
+      <% else %>
+        <span class="label label-warning"><%= @framework_tender&.status %></span>
+      <% end %>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Year:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @framework_tender&.year %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Half-year:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @framework_tender&.half_year %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Starting Month:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+        <% if (!(@framework_tender.blank?)) %>
+          <%=  Date::MONTHNAMES[@framework_tender&.starting_month] %>
+        <% end %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          End Month:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+        <% if (!(@framework_tender.blank?)) %>
+          <%= Date::MONTHNAMES[@framework_tender&.ending_month] %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-7">
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Total Destinations:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+          <%= @total_destinations %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Total commodity:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+          <%= @total_amount %> mt
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Created date:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+        <% if (!(@framework_tender.blank?)) %>
+          <%= @framework_tender&.created_at.to_formatted_s(:long_ordinal)  %>
+        <% end %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Certified by:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+        <% if (!(@framework_tender.blank?)) %>
+          <%= @user&.first_name.to_s + " " + @user&.last_name.to_s %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+
+
+
+
+</div>
+</div>
+
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                       
+                        <th>Transporter</th>
+                        <th>Total number of Destinations</th>
+                        <th>Tasks</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transporters.each do |transporter| %>
+          <tr>
+                        
+                       <td> <%= transporter&.transporter&.name %> </td>
+                       <td><%= transporter&.destination_count %> </td>
+                       <td> <a href="#"  data-toggle="modal" data-transporter_id= "<%= transporter&.transporter&.id %>" data-id="<%= transporter&.bid_id %>" class="rfq-modal" data-target="#rfq-modal">Update</a>  </td>&middot;
+                       <td> <%= link_to "Remove",  {:controller => "bids", :action => "remove_bid_quotation", :id => transporter&.bid_id, :transporter_id => transporter&.transporter_id }, method: :delete , data: { confirm: 'Are you sure?' } %> </td>
+                       
+             
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="rfq-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Upload RFQ</h4>
+      </div>
+      <div class="modal-body">
+    
+
+     <form role="form" method="POST" enctype="multipart/form-data" action="/bids/upload_rfq" class="form-inline" style="display: inline;margin-top: 15px"">
+      
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  
+      <div class="form-group">
+          <label for="transporter">Transporter
+            <span class="required">*</span>
+          </label>
+          <div>
+            <%= select("transporter", "transporter_id", Transporter.all.collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:class => 'form-control', :required => true, :name => 'transporter' }) %>
+          </div>
+        </div>
+
+      <div class="form-group">
+        <label for="transporter">File </label>
+        <span class="required">*</span>
+        <div>
+            <input  type="hidden" name="bid_id" id="bid_id" value="" />
+            <input  type="hidden" name="transporter" id="transporter" value="" />
+            <input type="file" name="file" class="form-control" required />
+            <input type="submit" class="btn btn-primary" value="Upload Request Items" />
+        </div>
+      </div>
+
+   
+        
+      </form>
+
+
+      </div>
+    
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+$(document).on("click", ".rfq-modal",function(){
+  var bid_id = $(this).data('id');
+  var transporter_id = $(this).data('transporter_id');
+  $(".form-group #bid_id").val(bid_id);
+  $(".form-group #transporter").val(transporter_id);
+  $('select[name=transporter]').val(transporter_id)
+   $('select[name=transporter]').attr('disabled', true)
+});
+</script>

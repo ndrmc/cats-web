@@ -33,7 +33,7 @@ class FrameworkTendersController < ApplicationController
   # POST /framework_tenders.json
   def create
     @framework_tender = FrameworkTender.new(framework_tender_params)
-    @framework_tender.status = :draft
+    @framework_tender.status = :open
     respond_to do |format|
       if @framework_tender.save
         format.html { redirect_to framework_tenders_path, notice: 'Framework tender was successfully created.' }
@@ -71,18 +71,18 @@ class FrameworkTendersController < ApplicationController
 
   def update_status
      @framework_tender = FrameworkTender.find params[:id]
-     @framework_tender.status =  FrameworkTender.get_index(params[:status])
+     @framework_tender.status =  params[:status]
      @framework_tender.certified_by = current_user.id
-        respond_to do |format|
-            if @framework_tender.save
-                format.html { redirect_to framework_tenders_url, notice: 'Framework tender status was successfully updated.' }
-            else
-                format.html { 
-                    flash[:error] = "Save failed! Please check your input and try again shortly."
-                    redirect_to framework_tenders_url 
-                }
-            end
-        end
+      respond_to do |format|
+          if @framework_tender.save
+              format.html { redirect_to '/en/framework_tenders/' + @framework_tender.id.to_s, notice: 'Framework tender status was successfully updated.' }
+          else
+              format.html { 
+                  flash[:error] = "Save failed! Please check your input and try again shortly."
+                  redirect_to framework_tenders_url 
+              }
+          end
+      end
   end
   
   private

@@ -21,5 +21,7 @@ class TransportRequisitionItem < ApplicationRecord
   belongs_to :fdp  
   belongs_to :commodity
   belongs_to :requisition
+  belongs_to :store
+  belongs_to :transport_order
 
 end
