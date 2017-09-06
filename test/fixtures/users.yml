@@ -50,6 +50,15 @@ admin:
   encrypted_password: <%= User.new.send(:password_digest, 'password') %>
   user_types: 3
 
+tr_creator:
+  id: 2
+  first_name: Admin
+  last_name:
+  email: tr_creator@cats.org
+  is_active: true
+  encrypted_password: <%= User.new.send(:password_digest, 'password') %>
+  user_types: 3
+
 
 #
 # column: value
