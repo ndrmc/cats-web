@@ -93,19 +93,17 @@
             <dl class="dl-horizontal">
 
               <dt>Number of regions:</dt>
-              <dd>7</dd>
-              <dt>Total commodities:</dt>
+              <dd><%= @operation.regional_request_in_operation %></dd>
+              <dt>Allocated commodities:</dt>
               <dd>
-                34,5590 mt
+                <%= ActiveSupport::NumberHelper.number_to_delimited(@operation.allocated) %>
+              </dd>
+              <dt>Dispatched commodities:</dt>
+              <dd>
+                <%= ActiveSupport::NumberHelper.number_to_delimited(@operation.dispatched) %>
               </dd>
               <dt>Total beneficiaries:</dt>
-              <% if @operation.hrd_id %>
-                  <dd><%= Hrd.find(@operation.hrd_id).hrd_items.sum { |i| i.beneficiary } %></dd>
-              <% end %>
-              <% if @operation.fscd_annual_plan_id %>
-                  <dd><%= PsnpPlan.find(@operation.fscd_annual_plan_id).psnp_plan_items.sum { |i| i.beneficiary } %></dd>
-              <% end %>
-
+              <dd><%= ActiveSupport::NumberHelper.number_to_delimited(@operation.total_benficiaries) %></dd>
             </dl>
           </div>
         </div>
@@ -115,10 +113,10 @@
               <dt>Progress:</dt>
               <dd>
                 <div class="progress progress  m-b-sm">
-                  <div style="width: 60%;" class="progress-bar"></div>
+                  <div style="width: <%= number_to_percentage(@operation.progress, precision: 1) %>;" class="progress-bar"></div>
                 </div>
                 <small>Operation progress is at
-                  <strong>60%</strong>.</small>
+                  <strong><%= number_to_percentage(@operation.progress, precision: 1) %></strong>.</small>
               </dd>
             </dl>
           </div>
@@ -170,7 +168,7 @@
                           <tbody>
                             <% total_benficiaries = 0 %>
                             <% @regional_requests.each do |request| %>
-                            <% regional_benficiaries =  request.regional_request_items.sum (:number_of_beneficiaries) %>
+                            <% regional_benficiaries =  request.regional_request_items.sum(:number_of_beneficiaries) %>
                             <% total_benficiaries += regional_benficiaries %>
                             <tr>
                               <td>                             
@@ -181,8 +179,8 @@
                               <td>
                                 Status
                               </td>
-                              <td>
-                                <%=regional_benficiaries%>                                
+                              <td align="right">
+                                <%= ActiveSupport::NumberHelper.number_to_delimited(regional_benficiaries) %>
                               </td>
                               <td> <%=request.requested_date&.strftime('%d-%b-%Y') %>  </td> 
                               <td> <%=request.regional_request_items.count %>      </td> 
@@ -193,7 +191,7 @@
                             <tr>
                             <td>Total</td>
                             <td></td>
-                            <td><%= total_benficiaries %></td>
+                            <td align="right"><%= ActiveSupport::NumberHelper.number_to_delimited(total_benficiaries) %></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -220,7 +218,7 @@
                               <th>Status</th>
                               <th>Progress</th>
                             <% @commodities.each do |commodity| %>
-                              <th><%= commodity.name %></th>
+                              <th align="right"><%= commodity.name %></th>
                             <%end%>
                             </tr>
                           </thead>
@@ -237,7 +235,7 @@
                                 
                               </td>
                               <% @commodities.each do |commodity| %>
-                              <td><%= requisitions[commodity.id] %></td>
+                              <td><%= ActiveSupport::NumberHelper.number_to_delimited(requisitions[commodity.id]) %></td>
                             <%end%>
                               
                             </tr>
