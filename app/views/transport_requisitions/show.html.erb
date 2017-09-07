@@ -254,14 +254,14 @@
                     <% @transport_orders.each do |tos| %>
                     <tr>
                       <td>                             
-                        <%= Transporter.find(tos.transporter_id).name %>
+                        <%= tos.transporter.name %>
                       </td>
                       <td>
                         N/A
                       </td>
                       <td>
-                      <% if (tos.bid_id.present?) %>
-                        <%= Bid.find(tos.bid_id).bid_number %>
+                      <% if (tos.bid.present?) %>
+                        <%= tos.bid.bid_number %>
                       <% else %>
                         N/A
                       <% end %>

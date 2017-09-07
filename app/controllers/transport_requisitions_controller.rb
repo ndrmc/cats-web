@@ -16,7 +16,7 @@ class TransportRequisitionsController < ApplicationController
   # GET /transport_requisitions/1
   # GET /transport_requisitions/1.json
   def show
-    @transport_orders = TransportOrder.where(:transport_requisition_id => params[:id])
+    @transport_orders = TransportOrder.includes(:transporter, :bid).where(:transport_requisition_id => params[:id])
     @transport_requisition = TransportRequisition.includes(transport_requisition_items: [:commodity, fdp: :location, requisition: [:region, :zone] ]).find(params[:id])
     @tri_aggregate_by_zone = TransportRequisitionItem.includes(:commodity, fdp: :location, requisition: [:region, :zone]).where(:transport_requisition_id => params['id']).group(:requisition_id, :'requisitions.requisition_no', :'commodities.name', :'regions_requisitions.name', :'zones_requisitions.name').sum(:quantity)
   end
