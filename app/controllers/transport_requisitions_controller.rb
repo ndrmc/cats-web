@@ -17,11 +17,11 @@ class TransportRequisitionsController < ApplicationController
   # GET /transport_requisitions/1.json
   def show
 
-    @transport_orders = TransportOrder.where(:transport_requisition_id => @transport_requisition.id)
-    @woredas_wo_winner = TransportRequisitionItem.joins(fdp: :location).where(:transport_requisition_id => @transport_requisition.id, :has_transport_order => false).group(:'locations.id AS id', :'locations.name AS name').sum(:quantity)
+    @transport_orders = TransportOrder.where(:transport_requisition_id => params[:id])
+    @woredas_wo_winner = TransportRequisitionItem.joins(fdp: :location).where(:transport_requisition_id => params[:id], :has_transport_order => false).group(:'locations.id AS id', :'locations.name AS name').sum(:quantity)
 
     @transport_requisition = TransportRequisition.includes(transport_requisition_items: [:commodity, fdp: :location, requisition: [:region, :zone] ]).find(params[:id])
-    @tri_aggregate_by_zone = TransportRequisitionItem.includes(:commodity, fdp: :location, requisition: [:region, :zone]).where(:transport_requisition_id => params['id']).group(:requisition_id, :'requisitions.requisition_no', :'commodities.name', :'regions_requisitions.name', :'zones_requisitions.name').sum(:quantity)
+    @tri_aggregate_by_zone = TransportRequisitionItem.includes(:commodity, fdp: :location, requisition: [:region, :zone]).where(:transport_requisition_id => params[:id]).group(:requisition_id, :'requisitions.requisition_no', :'commodities.name', :'regions_requisitions.name', :'zones_requisitions.name').sum(:quantity)
   end
 
   # GET /transport_requisitions/new
