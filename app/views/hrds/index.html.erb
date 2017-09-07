@@ -63,7 +63,7 @@
                 <td class="project-title">
                   <%= link_to hrd.name, hrd_path(hrd) %>
                   <br/>
-                  <small>Created <%= hrd.created_at %></small>
+                  <small>Created <%= time_ago_in_words(hrd.created_at) %> ago</small>
                 </td>
                 <td class="project-status">
                   <span><%= hrd.year_ec %></span>

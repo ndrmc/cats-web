@@ -5,15 +5,15 @@ class TransportOrdersController < ApplicationController
   # GET /transport_orders.json
   def index
      if params[:order_no].present?
-      @transport_orders = TransportOrder.where(order_no: params[:order_no])
+      @transport_orders = TransportOrder.where(order_no: params[:order_no]).includes(:bid, :location)
       return
     end
 
     if params[:transporter].present? && params[:operation].present?
       filter_map = {transporter_id: params[:transporter], operation_id: params[:operation]}
-      @transport_orders = TransportOrder.where( filter_map )
+      @transport_orders = TransportOrder.where( filter_map ).includes(:bid, :location)
     else
-      @transport_orders = TransportOrder.all
+      @transport_orders = TransportOrder.all.includes(:bid, :location)
     end
   end
 
@@ -81,6 +81,6 @@ class TransportOrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
      def transport_order_params
-      params.require(:transport_order).permit(:order_no, :transporter_id, :contract_id, :bid_id, :operation_id, :region_id, :order_date, :created_date, :start_date, :end_date, :performance_bond_receipt, :performance_bond_amount, :printed_copies, :status)
+      params.require(:transport_order).permit(:order_no, :transporter_id, :contract_id, :bid_id, :operation_id, :location_id, :order_date, :created_date, :start_date, :end_date, :performance_bond_receipt, :performance_bond_amount, :printed_copies, :status)
     end
 end
