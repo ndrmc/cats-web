@@ -18,7 +18,7 @@ class TransportRequisitionsController < ApplicationController
     @woredas_wo_winner = TransportRequisitionItem.joins(fdp: :location).where(:transport_requisition_id => params[:id], :has_transport_order => false).group(:'locations.id AS id', :'locations.name AS name').sum(:quantity)
 
     @transport_orders = TransportOrder.includes(:transporter, :bid).where(:transport_requisition_id => params[:id])
-    @transport_requisition = TransportRequisition.includes(transport_requisition_items: [:commodity, fdp: :location, requisition: [:region, :zone] ]).find(params[:id])
+    @transport_requisition = TransportRequisition.includes(:transport_orders, transport_requisition_items: [:commodity, fdp: :location, requisition: [:region, :zone] ]).find(params[:id])
     @tri_aggregate_by_zone = TransportRequisitionItem.includes(:commodity, fdp: :location, requisition: [:region, :zone]).where(:transport_requisition_id => params[:id]).group(:requisition_id, :'requisitions.requisition_no', :'commodities.name', :'regions_requisitions.name', :'zones_requisitions.name').sum(:quantity)
   end
 
@@ -39,7 +39,7 @@ class TransportRequisitionsController < ApplicationController
     @result = false
     result = TransportRequisition.generate_tr(transport_requisition_params, current_user.id)
     if (result.present?)
-      @result = TransportOrder.generate_transport_order(result.id, @bid_id)
+      @result = TransportOrder.generate_transport_order(result.id, @bid_id, current_user.id)
     end
     respond_to do |format|
       if @result
@@ -85,7 +85,7 @@ class TransportRequisitionsController < ApplicationController
   end
 
   def create_to_for_exceptions
-    @result = TransportOrder.to_for_exception(transport_requisition_params[:tr_id], transport_requisition_params[:location_id], transport_requisition_params[:transporter_id], transport_requisition_params[:tariff])
+    @result = TransportOrder.to_for_exception(transport_requisition_params[:tr_id], transport_requisition_params[:location_id], transport_requisition_params[:transporter_id], transport_requisition_params[:tariff], current_user.id)
 
     respond_to do |format|
       if @result

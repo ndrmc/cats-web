@@ -221,7 +221,7 @@
                         N/A
                       </td>
                       <td>
-                        <% TransportOrderItem.joins(:transport_order).where(:'transport_orders.region_id' => Location.find(Fdp.find(tr_detail.fdp_id).location_id).parent.parent_node_id, :'transport_orders.operation_id' => @transport_requisition.operation_id, :fdp_id => tr_detail.fdp_id).select(:id, :'transport_orders.transporter_id').find_each do |transporter| %>
+                        <% TransportOrderItem.joins(:transport_order).where(:'transport_orders.location_id' => Location.find(Fdp.find(tri.fdp_id).location_id).parent.parent_node_id, :'transport_orders.operation_id' => @transport_requisition.operation_id, :fdp_id => tri.fdp_id).select(:id, :'transport_orders.transporter_id').find_each do |transporter| %>
                             <p> <%= Transporter.find(transporter.transporter_id).name %> </p>
                         <% end %>
                       </td>
@@ -305,7 +305,7 @@
                     <% @woredas_wo_winner.each do |woreda| %>
                     <tr>
                       <td>
-                      <%= woreda.fdp.location.parent.name %>
+                      <%= Location.find(woreda[0][0]).parent.name %>                      
                       </td>
                       <td>                             
                         <%= woreda[0][1] %>
