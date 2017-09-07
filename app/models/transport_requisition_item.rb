@@ -4,7 +4,7 @@
 #
 #  id                            :integer          not null, primary key
 #  transport_requisition_item_id :integer
-#  requisition_no                :string
+#  requisition_id                :string
 #  fdp_id                        :integer
 #  commodity_id                  :integer
 #  quantity                      :decimal(, )
@@ -18,20 +18,10 @@
 
 class TransportRequisitionItem < ApplicationRecord
   belongs_to :transport_requisition
-  belongs_to :fdp
+  belongs_to :fdp  
+  belongs_to :commodity
+  belongs_to :requisition
   belongs_to :store
   belongs_to :transport_order
-
-  def fdp
-    Fdp.find_by(id: self.fdp_id)
-  end
-
-  def commodity
-    Commodity.find_by(id: self.commodity_id)
-  end
-
-  def requistions
-    # Get all requisition_no for all items and fetch list of requistion recrods
-  end
 
 end
