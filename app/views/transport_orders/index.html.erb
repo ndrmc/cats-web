@@ -75,7 +75,7 @@
           <tr>      
                     <td>    <%= link_to transport_order.order_no, transport_order_path(transport_order.id) %>
                     <td> <%= transport_order&.transporter&.name %></td>
-                    <td> <%= transport_order&.region&.name  %></td>
+                    <td> <%= transport_order&.location&.name  %></td>
                     <td> <%= transport_order&.transport_order_items.count(:fdp_id) %> </td>
                     <td> <%= number_with_delimiter(transport_order&.transport_order_items.sum(:quantity)) %></td>
                     <td> <%= transport_order.status %> </td>
