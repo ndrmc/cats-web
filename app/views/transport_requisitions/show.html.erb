@@ -260,7 +260,11 @@
                         N/A
                       </td>
                       <td>
+                      <% if (tos.bid_id.present?) %>
                         <%= Bid.find(tos.bid_id).bid_number %>
+                      <% else %>
+                        N/A
+                      <% end %>
                       </td>
                       <td>
                         <%= tos.transport_order_items.count %>
