@@ -221,7 +221,9 @@
                         N/A
                       </td>
                       <td>
-                        N/A
+                        <% TransportOrderItem.joins(:transport_order).where(:'transport_orders.location_id' => Location.find(Fdp.find(tri.fdp_id).location_id).parent.parent_node_id, :'transport_orders.operation_id' => @transport_requisition.operation_id, :fdp_id => tri.fdp_id).select(:id, :'transport_orders.transporter_id').find_each do |transporter| %>
+                            <p> <%= Transporter.find(transporter.transporter_id).name %> </p>
+                        <% end %>
                       </td>
                       <td>
                         <%= tri.commodity.name %>
@@ -236,8 +238,8 @@
               <%end%>
             </div>
 
-            <div class="tab-pane col-sm-12 row" id="tab-3">
-              
+            <div class="tab-pane col-sm-12 row" id="tab-3">           
+
               <%if(!@transport_orders.present?)%>
                 <h2>
                     No transport orders are found under this transport requisition<br>
@@ -257,17 +259,17 @@
                     <% @transport_orders.each do |tos| %>
                     <tr>
                       <td>                             
-                        <%= link_to Transporter.find(tos.transporter_id).name, transporter_url(tos.id) %>
+                        <%= tos.transporter.name %>
                       </td>
                       <td>
                         N/A
                       </td>
                       <td>
-                        <% if (tos.bid_id?) %>
-                          <%= link_to Bid.find(tos.bid_id).bid_number, bid_url(tos.bid_id) %>
-                        <% else %>
-                          N/A
-                        <% end %>
+                      <% if (tos.bid.present?) %>
+                        <%= tos.bid.bid_number %>
+                      <% else %>
+                        N/A
+                      <% end %>
                       </td>
                       <td>
                         <%= tos.transport_order_items.count %>
@@ -280,7 +282,6 @@
                   </tbody>
                 </table>
               <%end%>
-
             </div>
           
 
@@ -304,7 +305,7 @@
                     <% @woredas_wo_winner.each do |woreda| %>
                     <tr>
                       <td>
-                      <%= Location.find(woreda[0][0]).parent.name %>
+                      <%= Location.find(woreda[0][0]).parent.name %>                      
                       </td>
                       <td>                             
                         <%= woreda[0][1] %>

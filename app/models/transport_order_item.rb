@@ -20,22 +20,9 @@
 
 class TransportOrderItem < ApplicationRecord
   belongs_to :transport_order
-
-  def fdp
-    Fdp.find_by(id: self.fdp_id)
-  end
-
-  def store
-    Store.find_by(id: self.store_id)
-  end
-
-  def commodity
-    Commodity.find_by(id: self.commodity_id)
-  end
-
-  def unit_of_measure
-    UnitOfMeasure.find_by(id: self.unit_of_measure_id)
-  end
-
+  belongs_to :fdp
+  belongs_to :store
+  belongs_to :commodity
+  belongs_to :unit_of_measure
   
 end

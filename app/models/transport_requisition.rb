@@ -21,17 +21,20 @@ class TransportRequisition < ApplicationRecord
   belongs_to :location
   belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by_id'
   belongs_to :certified_by, :class_name => 'User', :foreign_key => 'certified_by_id'
+  has_many :transport_orders
 
   def self.generate_tr (transport_requisition_params, current_user_id)
     
     @requisitions = Requisition.joins(:requisition_items).where({:operation_id =>transport_requisition_params[:operation_id], :region_id => transport_requisition_params[:location_id], :status => :approved})
       if @requisitions.count > 0
+        transport_requisition_params.delete("bid_id")
+        transport_requisition_params["created_by_id"] = current_user_id
+        transport_requisition_params["certified_by_id"] = current_user_id
         @transport_requisition = TransportRequisition.new(transport_requisition_params)
         @transport_requisition.save
         @program = Program.find(Operation.find(@transport_requisition.operation_id).program_id)
         @transport_requisition.reference_number = @program.code.to_s + '/' + @transport_requisition.location_id.to_s + '/' + @transport_requisition.id.to_s + '/' + Time.now.year.to_s
         @transport_requisition.status = :open
-        @transport_requisition.created_by = current_user_id
         @transport_requisition.save
 
         @requisitions.find_each do |requisition|
@@ -55,14 +58,4 @@ class TransportRequisition < ApplicationRecord
       end
   end
 
-  def self.get_index(status)
-	if status == 'open'
-		return :open
-	elsif status == 'closed'
-		return :closed
-	else
-		return :open
-	end
-  end
-  
 end

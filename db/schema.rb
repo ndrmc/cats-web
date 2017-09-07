@@ -11,7 +11,10 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20170906075513) do
+<<<<<<< HEAD
 
+=======
+>>>>>>> exception-to
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1233,6 +1236,7 @@ ActiveRecord::Schema.define(version: 20170906075513) do
 
     t.integer  "requisition_id"
     t.integer  "fdp_id"
+    t.integer  "bid_id"
     t.integer  "commodity_id"
     t.decimal  "quantity"
     t.boolean  "has_transport_order"
