@@ -1,6 +1,8 @@
 class BidsController < ApplicationController
-  before_action :set_bid, only: [:show, :edit, :update, :destroy, :generate_winners]
+
+  before_action :set_bid, only: [:show, :edit, :update, :destroy, :transporter_quotes, :generate_winners]
   include BidsHelper
+
   # GET /bids
   # GET /bids.json
   def index
@@ -112,6 +114,12 @@ class BidsController < ApplicationController
   end
 
  def upload_rfq
+    # Last row index in RFQ excel template
+    excel_last_row = 17
+    # Tariff column index number in the last row of the RFQ excel template
+    tariff_column_index = 5
+    # WarehouseSelection ID column index in the last row of the RFQ excel template
+    ws_column_index = 0
 
     file = params[:file]
     transporter_id = params[:transporter]
@@ -130,40 +138,52 @@ class BidsController < ApplicationController
 
 
     number_of_skipped_rows = 0
-
-    (17..spreadsheet.last_row).each do |i|
-      row =  spreadsheet.row(i)
-      warehouse_selection = WarehouseSelection.find(row[0])
-      bid_quotation_in_db = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
-      if !bid_quotation_in_db.nil?
-          bid_quotation_in_db = BidQuotationDetail.where(bid_quotation_id: bid_quotation_in_db.id, location_id: warehouse_selection.location_id, warehouse_id: warehouse_selection.warehouse_id).first
-      end
-
-
-      if bid_quotation_in_db
-        if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil?
-          bid_quotation_in_db.tariff=row[5]
-          bid_quotation_in_db.save
-        else
-          Rails.logger.info("No Warehouse allocation was found for the worda id: #{warehouse_selection.location_id}. Skipping...")
-        end
-
-      else
-
-         if row[5].is_a?( Numeric) &&  row[5] >= 0 && !warehouse_selection.nil? 
-             bid_quotation = BidQuotation.create ({
+    bid_quotation_for_transporter = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
+    if bid_quotation_for_transporter.nil?
+      bid_quotation = BidQuotation.create ({
              bid_id: @bid.id,
              bid_quotation_date: Date.today,
              transporter_id: transporter_id
                })
+    end
 
-           bid_quotation.bid_quotation_details.create!(
-                warehouse_id: warehouse_selection.warehouse_id,
-                location_id: warehouse_selection.location_id,
-                tariff: row[5]
-         )
 
-         bid_quotation.save
+    (excel_last_row..spreadsheet.last_row).each do |i|
+      row =  spreadsheet.row(i)
+      warehouse_selection = WarehouseSelection.find(row[ws_column_index])
+      if !bid_quotation_for_transporter.nil?
+          bid_quotation_in_db = BidQuotationDetail.where(bid_quotation_id: bid_quotation_for_transporter.id, location_id: warehouse_selection.location_id, warehouse_id: warehouse_selection.warehouse_id).first
+      end
+         
+      
+      if bid_quotation_in_db
+        if row[tariff_column_index].is_a?( Numeric) &&  row[tariff_column_index] >= 0 && !warehouse_selection.nil?
+          bid_quotation_in_db.tariff=row[tariff_column_index]
+          bid_quotation_in_db.save
+        
+
+        end
+
+      else
+
+         if row[tariff_column_index].is_a?( Numeric) &&  row[tariff_column_index] >= 0 && !warehouse_selection.nil?  
+                      
+                 if !bid_quotation.nil?
+                    bid_quotation.bid_quotation_details.create!(
+                    warehouse_id: warehouse_selection.warehouse_id,
+                    location_id: warehouse_selection.location_id,
+                    tariff: row[tariff_column_index])
+
+                    bid_quotation.save
+                elsif !bid_quotation_for_transporter.nil?
+                    bid_quotation_for_transporter.bid_quotation_details.create!(
+                    warehouse_id: warehouse_selection.warehouse_id,
+                    location_id: warehouse_selection.location_id,
+                    tariff: row[tariff_column_index])
+
+                    bid_quotation_for_transporter.save
+           end
+
         else
           number_of_skipped_rows += 1
         end
@@ -171,17 +191,19 @@ class BidsController < ApplicationController
         end
       end
 
+
       respond_to do |format|
         if number_of_skipped_rows > 0
           flash[:error] = "#{number_of_skipped_rows} rows were skipped for having invalid values."
         end
 
-        format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: "Excel imported successfully."  }
+        format.html {  redirect_to request.referrer, notice: "Excel imported successfully."  }
+
       end
 
     else
       respond_to do |format|
-          format.html { redirect_to framework_tender_path(@bid.framework_tender_id), alert: "The file is not supported."  }
+          format.html {  redirect_to request.referrer, alert: "The file is not supported."  }
       end
     end
   
@@ -200,6 +222,30 @@ class BidsController < ApplicationController
       end
     end
   end
+
+
+    def transporter_quotes
+
+      @transporters = BidQuotation.joins(:bid_quotation_details).references(:bid_quotation_details).select(
+      'bid_quotations.bid_id','bid_quotations.transporter_id,count(bid_quotation_details.location_id) as destination_count').group(
+      'bid_quotations.transporter_id,bid_quotations.bid_id').order('destination_count desc').where("bid_quotations.bid_id = ?", @bid.id )
+      @framework_tender = FrameworkTender.find(@bid.framework_tender_id)
+    end
+    
+
+    def remove_bid_quotation
+      set_bid
+      transporter_id = params[:transporter_id]
+      @bid_quotation = BidQuotation.where(bid_id: @bid.id, transporter_id: transporter_id).first
+      if @bid_quotation
+        @bid_quotation.destroy
+      end
+      respond_to do |format|
+        format.html { redirect_to request.referrer}
+        format.json { head :no_content }
+      end
+      
+    end
 
   def view_bid_winners
     @bid = Bid.find params[:id]

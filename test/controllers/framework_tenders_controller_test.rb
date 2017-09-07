@@ -21,7 +21,7 @@ include Devise::Test::IntegrationHelpers
   test "should create framework_tender" do
     assert_difference('FrameworkTender.count') do
       post framework_tenders_url, params: { framework_tender: { ending_month: @framework_tender.ending_month, half_year: @framework_tender.half_year, remark: @framework_tender.remark, starting_month: @framework_tender.starting_month, 
-      status: :approved, year: 2012 } }
+      status: :closed, year: 2012 } }
     end
 
     assert_redirected_to framework_tenders_path
