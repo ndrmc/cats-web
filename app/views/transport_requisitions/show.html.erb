@@ -84,7 +84,7 @@
             <% if @transport_requisition.certified_by.present? %>
               <%= @transport_requisition.certified_by.name %>
             <% else %>
-              { pending }
+              N/A
             <% end %>
           </div>
         </div>
@@ -96,7 +96,7 @@
           <% if @transport_requisition.created_at.present? %>
             <%= @transport_requisition.created_at.to_formatted_s(:long_ordinal)  %>
           <% else %>
-            { pending }
+            N/A
           <% end %>
           </div>
         </div>
@@ -108,7 +108,7 @@
           <% if @transport_requisition.certified_date.present? %>
             <%= @transport_requisition.certified_date.to_formatted_s(:long_ordinal)  %>
           <% else %>
-            { pending }
+            N/A
           <% end %>
           </div>
         </div>
@@ -117,7 +117,7 @@
   </div>
 
   <div class="ibox col-sm-12" >
-    <div class="ibox-content col-sm-12" style="height:1100px">
+    <div class="ibox-content col-sm-12" style="min-height:1100px">
       <div class="panel blank-panel">
         <div class="panel-heading">
           <div class="panel-options">
@@ -131,11 +131,14 @@
               <li class="">
                 <a href="#tab-3" data-toggle="tab">Transporters</a>
               </li>
+              <li class="">
+                <a href="#tab-4" data-toggle="tab">Woredas without winner transporter</a>
+              </li>
             </ul>
           </div>
         </div>
 
-        <div class="panel-body col-sm-12" style="height:1100px">
+        <div class="panel-body col-sm-12" style="min-height:1100px">
 
           <div class="tab-content">
             <div class="tab-pane active col-sm-12 row" id="tab-1">
@@ -195,8 +198,6 @@
                       <th>Zone</th>
                       <th>Woreda</th>
                       <th>FDP</th>
-                      <th>Donor</th>
-                      <th>Transporter</th>
                       <th>Commodity</th>
                       <th>Quantity (mt)</th>
                     </tr>
@@ -213,12 +214,6 @@
                       </td>
                       <td>
                         <%= tri.fdp.name %>
-                      </td>
-                      <td>
-                        N/A
-                      </td>
-                      <td>
-                        N/A
                       </td>
                       <td>
                         <%= tri.commodity.name %>
@@ -278,6 +273,49 @@
                 </table>
               <%end%>
             </div>
+          
+
+          <div class="tab-pane col-sm-12" id="tab-4">
+              
+              <%if(!@woredas_wo_winner.present?)%>
+                <h2>
+                    No woreda without winner are found under this transport requisition<br>
+                </h2>
+              <%else%>
+                <table class="table table-hover cats-grouped-datatable" style="width:100% !important;">
+                  <thead>
+                    <tr>
+                      <th>Zone</th>
+                      <th>Woreda</th>
+                      <th>Total Qty.</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @woredas_wo_winner.each do |woreda| %>
+                    <tr>
+                      <td>
+                      <%= woreda['zone_name'] %>                      
+                      </td>
+                      <td>                             
+                        <%= woreda['woreda_name'] %>
+                      </td>
+                      <td>
+                        <%= woreda['total_qty'] %>
+                      </td>
+                      <td>
+                        <a class="create_to_btn" data-target="#new-to-for-exceptions" data-toggle="modal" data-woreda="<%= woreda['woreda_id'] %>" data-woreda-name="<%= woreda['woreda_name'] %>" data-tr="<%= @transport_requisition.id %>">
+                            Create TO
+                        </a>
+                      </td>
+                    </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              <%end%>
+
+            </div>
+            </div>
           </div>
 
         </div>
@@ -286,4 +324,67 @@
     </div>
   </div>
 
+
+
+<div class="modal inmodal" id="new-to-for-exceptions" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">Transport Order for Exceptions</h4>
+      </div>
+      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
+          <div class="col-md-6 col-sm-6 col-xs-6">          
+            <%= label_tag :transport_requisition, "Transport Requisition", { :class => ' control-label'} %>
+            <div class="">
+              <input id="transport_requisition" name="transport_requisition" type="text" class="form-control" placeholder="" readonly="true" value="<%= @transport_requisition.reference_number %>">
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-6">          
+            <%= label_tag :woreda, "Woreda", { :class => ' control-label'} %>
+            <div class="">
+              <input id="woreda-to" name="woreda-to" type="text" class="form-control" placeholder="" readonly="true" value="<%= @transport_requisition.reference_number %>">
+            </div>
+          </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <%= label_tag :fdps, "List of FDPs", { :class => ' control-label'} %>
+          <div class="">
+            <textarea id="fdps_list" name="fdps_list" class="form-control" readonly="true"></textarea>
+          </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <%= label_tag :transporter, "Transporter", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  'transporter_to',  options_from_collection_for_select(Transporter.all, 'id', 'name', params[:transporter_id] ) , {:required => true , :prompt => "-- Select a Transporter --", :class => 'form-control width-100per' }  %>
+          </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <%= label_tag :tariff, "Tariff", { :class => ' control-label'} %>
+          <div class="">
+            <input id="tariff-to" name="tariff-to" type="text" class="form-control" placeholder="0.00"> 
+          </div>
+        </div>
+        <div class="spinner">
+            
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <div class="pll-right" style="width:inherit;"> 
+            Continue adding
+            <%= check_box_tag 'keep_creating', false %>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 colxs-6">          
+          <button type="button" class="btn btn-primary" id="save-to-btn" data-tr_id="<%= @transport_requisition.id %>">Save</button>
+          <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

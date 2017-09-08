@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
  scope "(:locale)", locale: /en|am/ do
 
+  get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
+  post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
   resources :transport_requisitions
   
    resources :bids
