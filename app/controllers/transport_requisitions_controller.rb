@@ -1,5 +1,5 @@
 class TransportRequisitionsController < ApplicationController
-  include TransportRequisitionsHelper
+  include TransportOrdersHelper
   before_action :set_transport_requisition, only: [:edit, :update, :destroy]
 
   # GET /transport_requisitions
@@ -16,6 +16,7 @@ class TransportRequisitionsController < ApplicationController
   # GET /transport_requisitions/1
   # GET /transport_requisitions/1.json
   def show
+    @transport_orders = TransportOrder.includes(:transporter, :bid).where(:transport_requisition_id => params[:id])
     @transport_requisition = TransportRequisition.includes(transport_requisition_items: [:commodity, fdp: :location, requisition: [:region, :zone] ]).find(params[:id])
     @tri_aggregate_by_zone = TransportRequisitionItem.includes(:commodity, fdp: :location, requisition: [:region, :zone]).where(:transport_requisition_id => params['id']).group(:requisition_id, :'requisitions.requisition_no', :'commodities.name', :'regions_requisitions.name', :'zones_requisitions.name').sum(:quantity)
   end
@@ -32,11 +33,15 @@ class TransportRequisitionsController < ApplicationController
   # POST /transport_requisitions
   # POST /transport_requisitions.json
   def create
-    @result = TransportRequisition.generate_tr(transport_requisition_params, current_user.id)
-    
+    @bid_id = transport_requisition_params['bid_id']
+    @result = false
+    result = TransportRequisition.generate_tr(transport_requisition_params, current_user.id)
+    if (result.present?)
+      @result = TransportOrder.generate_transport_order(result.id, @bid_id)
+    end
     respond_to do |format|
-      if (@result.present?)
-        format.html { redirect_to transport_requisitions_url('en',@result), notice: 'Transport requisition was successfully created.' }
+      if @result
+        format.html { redirect_to transport_requisitions_url('en',result), notice: 'Transport requisition was successfully created.' }
         format.json { render json: { :successful => true }}
       else
         format.html { render :new }
@@ -77,6 +82,6 @@ class TransportRequisitionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transport_requisition_params
-      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at)
+      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at, :bid_id)
     end
 end

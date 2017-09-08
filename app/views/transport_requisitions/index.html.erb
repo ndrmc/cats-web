@@ -90,6 +90,12 @@
           </div>
         </div>
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <%= label_tag :bid, "Bid", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  'bid_tr',  options_from_collection_for_select(Bid.where(:status => :active), 'id', 'bid_number', params[:bid_id] ) , {:required => true , :prompt => "-- Select a Bid --", :class => 'form-control width-100per' }  %>
+          </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
           <%= label_tag :description, "Description", { :class => ' control-label'} %>
           <div class="">
             <%= text_area_tag 'description_tr', nil, class: 'form-control width-100per' %>

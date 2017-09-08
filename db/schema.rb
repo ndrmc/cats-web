@@ -1230,6 +1230,7 @@ ActiveRecord::Schema.define(version: 20170906075513) do
     t.integer  "transport_requisition_id"
     t.integer  "requisition_id"
     t.integer  "fdp_id"
+    t.integer  "bid_id"
     t.integer  "commodity_id"
     t.decimal  "quantity"
     t.boolean  "has_transport_order"
