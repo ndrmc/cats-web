@@ -14,7 +14,6 @@
     </ol>
   </div>
   <div class="col-sm-4">
-    
   </div>
 </div>
 
@@ -36,7 +35,7 @@
             Operation:
           </div>
           <div class="col-md-6 col-sm-6 col-xs-6">
-            <%= Operation.find(@transport_requisition.operation_id).name %>
+            <%= @transport_requisition.operation.name %>
           </div>
         </div>
         <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -44,7 +43,7 @@
             Region:
           </div>
           <div class="col-md-6 col-sm-6 col-xs-6">
-            <%= Location.find(@transport_requisition.location_id).name %>
+            <%= @transport_requisition.location.name %>
           </div>
         </div>
         <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -71,7 +70,7 @@
           </div>
           <div class="col-md-8 col-sm-8 col-xs-8">
             <% if @transport_requisition.created_by.present? %>
-              <%= User.find(@transport_requisition.created_by).name %>
+              <%= @transport_requisition.created_by.name %>
             <% else %>
               { N/A }
             <% end %>
@@ -83,7 +82,7 @@
           </div>
           <div class="col-md-8 col-sm-8 col-xs-8">
             <% if @transport_requisition.certified_by.present? %>
-              <%= User.find(@transport_requisition.certified_by).name %>
+              <%= @transport_requisition.certified_by.name %>
             <% else %>
               N/A
             <% end %>
@@ -160,26 +159,25 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% @transport_requisition.transport_requisition_items.pluck(:requisition_id).uniq.each do |req_id| %>
-                    <% @req_obj = Requisition.find(req_id) %>
+                    <% @tri_aggregate_by_zone.each do |tri| %>
                     <tr>
                       <td>                             
-                        <%= link_to @req_obj&.requisition_no, requisitions_url(req_id) %>
+                        <%= link_to tri[0][1], '/en/requisitions/' + tri[0][0].to_s + '/edit' %>
                       </td>
                       <td>
-                        <%= Commodity.find(@req_obj&.commodity_id).name %>
+                        <%= tri[0][2] %>
                       </td>
                       <td>
-                        <%= @req_obj&.requisition_items.sum(:amount) %>
+                        <%= tri[1] %>
                       </td>
                       <td>
                         N/A
                       </td>
                       <td>
-                        <%= Location.find(@req_obj&.region_id).name %>
+                        <%= tri[0][3] %>
                       </td>
                       <td>
-                        <%= Location.find(@req_obj&.zone_id).name %>
+                        <%= tri[0][4] %>
                       </td>
                     </tr>
                     <% end %>
@@ -208,30 +206,28 @@
                   </thead>
                   <tbody>
                     <% @transport_requisition.transport_requisition_items
-                    .each do |tr_detail| %>
+                    .each do |tri| %>
                     <tr>
                       <td>                             
-                        <%= Location.find(Fdp.find(tr_detail.fdp_id).location_id).parent.name %>
+                        <%= tri.fdp.location.parent.name %>
                       </td>
                       <td>
-                        <%= Location.find(Fdp.find(tr_detail.fdp_id).location_id).name %>
+                        <%= tri.fdp.location.name %>
                       </td>
                       <td>
-                        <%= Fdp.find(tr_detail.fdp_id).name %>
+                        <%= tri.fdp.name %>
                       </td>
                       <td>
                         N/A
                       </td>
                       <td>
-                        <% TransportOrderItem.joins(:transport_order).where(:'transport_orders.region_id' => Location.find(Fdp.find(tr_detail.fdp_id).location_id).parent.parent_node_id, :'transport_orders.operation_id' => @transport_requisition.operation_id, :fdp_id => tr_detail.fdp_id).select(:id, :'transport_orders.transporter_id').find_each do |transporter| %>
-                            <p> <%= Transporter.find(transporter.transporter_id).name %> </p>
-                        <% end %>
+                        N/A
                       </td>
                       <td>
-                        <%= Commodity.find(tr_detail&.commodity_id).name %>
+                        <%= tri.commodity.name %>
                       </td>
                       <td>
-                        <%= tr_detail.quantity %>
+                        <%= tri.quantity %>
                       </td>
                     </tr>
                     <% end %>
@@ -337,6 +333,7 @@
 
             </div>
             </div>
+
           </div>
 
         </div>
@@ -344,8 +341,6 @@
       </div>
     </div>
   </div>
-
-
 
 <div class="modal inmodal" id="new-to-for-exceptions" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
