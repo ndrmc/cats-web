@@ -198,8 +198,6 @@
                       <th>Zone</th>
                       <th>Woreda</th>
                       <th>FDP</th>
-                      <th>Donor</th>
-                      <th>Transporter</th>
                       <th>Commodity</th>
                       <th>Quantity (mt)</th>
                     </tr>
@@ -216,14 +214,6 @@
                       </td>
                       <td>
                         <%= tri.fdp.name %>
-                      </td>
-                      <td>
-                        N/A
-                      </td>
-                      <td>
-                        <% TransportOrderItem.joins(:transport_order).where(:'transport_orders.location_id' => Location.find(Fdp.find(tri.fdp_id).location_id).parent.parent_node_id, :'transport_orders.operation_id' => @transport_requisition.operation_id, :fdp_id => tri.fdp_id).select(:id, :'transport_orders.transporter_id').find_each do |transporter| %>
-                            <p> <%= Transporter.find(transporter.transporter_id).name %> </p>
-                        <% end %>
                       </td>
                       <td>
                         <%= tri.commodity.name %>
@@ -305,16 +295,16 @@
                     <% @woredas_wo_winner.each do |woreda| %>
                     <tr>
                       <td>
-                      <%= Location.find(woreda[0][0]).parent.name %>                      
+                      <%= woreda['zone_name'] %>                      
                       </td>
                       <td>                             
-                        <%= woreda[0][1] %>
+                        <%= woreda['woreda_name'] %>
                       </td>
                       <td>
-                        <%= woreda[1] %>
+                        <%= woreda['total_qty'] %>
                       </td>
                       <td>
-                        <a class="create_to_btn" data-target="#new-to-for-exceptions" data-toggle="modal" data-woreda="<%= woreda[0][0] %>" data-woreda-name="<%= Location.find(woreda[0][0]).name %>" data-tr="<%= @transport_requisition.id %>">
+                        <a class="create_to_btn" data-target="#new-to-for-exceptions" data-toggle="modal" data-woreda="<%= woreda['woreda_id'] %>" data-woreda-name="<%= woreda['woreda_name'] %>" data-tr="<%= @transport_requisition.id %>">
                             Create TO
                         </a>
                       </td>
