@@ -21,7 +21,7 @@ class TransportRequisition < ApplicationRecord
   belongs_to :location
   belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by_id'
   belongs_to :certified_by, :class_name => 'User', :foreign_key => 'certified_by_id'
-  has_many :transport_orders
+  has_many :transport_order_items
 
   def self.generate_tr (transport_requisition_params, current_user_id)
     

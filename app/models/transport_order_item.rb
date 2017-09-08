@@ -24,5 +24,6 @@ class TransportOrderItem < ApplicationRecord
   belongs_to :store
   belongs_to :commodity
   belongs_to :unit_of_measure
+  belongs_to :transport_requisition_item
   
 end
