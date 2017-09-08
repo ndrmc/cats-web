@@ -14,8 +14,9 @@ class TransportRequisitionsController < ApplicationController
 
   # GET /transport_requisitions/1
   # GET /transport_requisitions/1.json
-  def show
-    @woredas_wo_winner = TransportRequisitionItem.joins(fdp: :location).where(:transport_requisition_id => params[:id], :has_transport_order => false).group(:'locations.id AS id', :'locations.name AS name').sum(:quantity)
+  def show   
+
+    @woredas_wo_winner = TransportRequisitionItem.joins('INNER JOIN transport_requisitions ON transport_requisitions.id = transport_requisition_items.transport_requisition_id INNER JOIN fdps ON fdps.id = transport_requisition_items.fdp_id INNER JOIN locations AS woreda ON woreda.id = fdps.location_id INNER JOIN locations AS zone ON zone.id = woreda.parent_node_id').where('transport_requisition_items.transport_requisition_id = ' + params[:id] + ' AND transport_requisition_items.has_transport_order = false').group('woreda.id, woreda.name, zone.id, zone.name').select('SUM(transport_requisition_items.quantity) AS total_qty, woreda.id AS woreda_id, woreda.name AS woreda_name, zone.id AS zone_id, zone.name AS zone_name').to_a
 
     @transport_orders = TransportOrder.includes(:transporter, :bid).where(:transport_requisition_id => params[:id])
     @transport_requisition = TransportRequisition.includes(:transport_orders, transport_requisition_items: [:commodity, fdp: :location, requisition: [:region, :zone] ]).find(params[:id])
