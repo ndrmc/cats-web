@@ -198,8 +198,6 @@
                       <th>Zone</th>
                       <th>Woreda</th>
                       <th>FDP</th>
-                      <th>Donor</th>
-                      <th>Transporter</th>
                       <th>Commodity</th>
                       <th>Quantity (mt)</th>
                     </tr>
@@ -218,12 +216,6 @@
                         <%= tri.fdp.name %>
                       </td>
                       <td>
-                        N/A
-                      </td>
-                      <td>
-                        N/A
-                      </td>
-                      <td>
                         <%= tri.commodity.name %>
                       </td>
                       <td>
@@ -236,8 +228,8 @@
               <%end%>
             </div>
 
-            <div class="tab-pane col-sm-12 row" id="tab-3">
-              
+            <div class="tab-pane col-sm-12 row" id="tab-3">           
+
               <%if(!@transport_orders.present?)%>
                 <h2>
                     No transport orders are found under this transport requisition<br>
@@ -257,7 +249,7 @@
                     <% @transport_orders.each do |tos| %>
                     <tr>
                       <td>                             
-                        <%= link_to Transporter.find(tos.transporter_id).name, transporter_url(tos.id) %>
+                        <%= tos.transporter.name %>
                       </td>
                       <td>
                         <% if tos.contract_id.present? %>
@@ -271,11 +263,11 @@
                         <% end %>
                       </td>
                       <td>
-                        <% if (tos.bid_id?) %>
-                          <%= link_to Bid.find(tos.bid_id).bid_number, bid_url(tos.bid_id) %>
-                        <% else %>
-                          N/A
-                        <% end %>
+                      <% if (tos.bid.present?) %>
+                        <%= tos.bid.bid_number %>
+                      <% else %>
+                        N/A
+                      <% end %>
                       </td>
                       <td>
                         <%= tos.transport_order_items.count %>
@@ -288,7 +280,6 @@
                   </tbody>
                 </table>
               <%end%>
-
             </div>
           
 
@@ -312,16 +303,16 @@
                     <% @woredas_wo_winner.each do |woreda| %>
                     <tr>
                       <td>
-                      <%= Location.find(woreda[0][0]).parent.name %>
+                      <%= woreda['zone_name'] %>                      
                       </td>
                       <td>                             
-                        <%= woreda[0][1] %>
+                        <%= woreda['woreda_name'] %>
                       </td>
                       <td>
-                        <%= woreda[1] %>
+                        <%= woreda['total_qty'] %>
                       </td>
                       <td>
-                        <a class="create_to_btn" data-target="#new-to-for-exceptions" data-toggle="modal" data-woreda="<%= woreda[0][0] %>" data-woreda-name="<%= Location.find(woreda[0][0]).name %>" data-tr="<%= @transport_requisition.id %>">
+                        <a class="create_to_btn" data-target="#new-to-for-exceptions" data-toggle="modal" data-woreda="<%= woreda['woreda_id'] %>" data-woreda-name="<%= woreda['woreda_name'] %>" data-tr="<%= @transport_requisition.id %>">
                             Create TO
                         </a>
                       </td>
