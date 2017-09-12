@@ -25,7 +25,8 @@ class TransportRequisition < ApplicationRecord
 
   def self.generate_tr (transport_requisition_params, current_user_id)
     
-    @requisitions = Requisition.joins(:requisition_items).where({:operation_id =>transport_requisition_params[:operation_id], :region_id => transport_requisition_params[:location_id], :status => :approved})
+    @requisitions = Requisition.includes(:requisition_items).where({:operation_id =>transport_requisition_params[:operation_id], :region_id => transport_requisition_params[:location_id], :status => :approved})
+      puts '************************ No of requisitions: ' + @requisitions.count.to_s
       if @requisitions.count > 0
         transport_requisition_params.delete("bid_id")
         transport_requisition_params["created_by_id"] = current_user_id
@@ -36,11 +37,12 @@ class TransportRequisition < ApplicationRecord
         @transport_requisition.reference_number = @program.code.to_s + '/' + @transport_requisition.location_id.to_s + '/' + @transport_requisition.id.to_s + '/' + Time.now.year.to_s
         @transport_requisition.status = :open
         @transport_requisition.save
-
+        puts @requisitions.inspect
         @requisitions.find_each do |requisition|
-
+          puts requisition.requisition_items.inspect
           requisition.requisition_items
         .find_each do |ri|
+          puts '&&&&&&&&&&&&&&&&&&&&&&&&&&& Requisition Items created'
           if ri.unit_of_measure_id.present?
             @ri_qunatity = UnitOfMeasure.find(ri.unit_of_measure_id).to_ref(ri.amount)
           else
