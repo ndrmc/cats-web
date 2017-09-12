@@ -252,7 +252,15 @@
                         <%= tos.transporter.name %>
                       </td>
                       <td>
-                        N/A
+                        <% if tos.contract_id.present? %>
+                          <% if Contract.find(tos.contract_id).present? %>
+                            <%= Contract.find(tos.contract_id)&.contract_no %>
+                          <% else %>
+                            <small>Can't Load Contract</small>
+                          <% end %>
+                        <% else %>
+                          N/A
+                        <% end %>
                       </td>
                       <td>
                       <% if (tos.bid.present?) %>
@@ -316,6 +324,7 @@
 
             </div>
             </div>
+
           </div>
 
         </div>
@@ -323,7 +332,6 @@
       </div>
     </div>
   </div>
-
 
 <div class="modal inmodal" id="new-to-for-exceptions" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">

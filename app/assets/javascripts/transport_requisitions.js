@@ -23,6 +23,7 @@ $(document).ready(function() {
     	var operation = $('#operation_tr').val();     	
         var region = $('#region_tr').val();
         var bid = $('#bid_tr').val()
+
         var desc = $('#description_tr').val();
 		var query_string = $.param({"region" : $('#region').val()});
 
