@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905084005) do
-
+ActiveRecord::Schema.define(version: 20170906075513) do
+  
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -204,6 +204,10 @@ ActiveRecord::Schema.define(version: 20170905084005) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "bid_id"
+    t.boolean  "signed"
+    t.datetime "last_printed_at"
+    t.integer  "printed_copies"
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
   end
 
@@ -1218,8 +1222,10 @@ ActiveRecord::Schema.define(version: 20170905084005) do
 
   create_table "transport_requisition_items", force: :cascade do |t|
     t.integer  "transport_requisition_id"
-    t.string   "requisition_id"
+
+    t.integer  "requisition_id"
     t.integer  "fdp_id"
+    t.integer  "bid_id"
     t.integer  "commodity_id"
     t.decimal  "quantity"
     t.boolean  "has_transport_order"
@@ -1238,11 +1244,11 @@ ActiveRecord::Schema.define(version: 20170905084005) do
     t.text     "description"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.integer  "created_by"
+    t.integer  "created_by_id"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.string   "reference_number"
-    t.integer  "certified_by"
+    t.integer  "certified_by_id"
     t.string   "certified_date"
     t.integer  "status"
     t.index ["deleted_at"], name: "index_transport_requisitions_on_deleted_at", using: :btree

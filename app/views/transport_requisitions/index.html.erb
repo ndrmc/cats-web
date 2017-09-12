@@ -50,10 +50,11 @@
         <tbody>
           <% @transport_requisitions.each do |transport_requisition| %>
             <tr>
-              <td><%= transport_requisition.reference_number %></td>
-              <td><%= Location.find(transport_requisition&.location_id)&.name %></td>
-              <td><%= TransportRequisitionItem.where(:transport_requisition_id => transport_requisition.id).count %></td>
-              <td><%= TransportRequisitionItem.where(:transport_requisition_id => transport_requisition.id).sum(:quantity)  %></td>
+              <td>
+              <%= link_to transport_requisition.reference_number, transport_requisition_url('en',transport_requisition) %>
+              <td><%= transport_requisition.region_name %></td>
+              <td><%= transport_requisition.destinations %></td>
+              <td><%= transport_requisition.total_qty  %></td>
               <td><%= transport_requisition.created_at.to_formatted_s(:long_ordinal) %></td>
               <td><%= transport_requisition.status %></td>
             </tr>
@@ -86,6 +87,12 @@
           <%= label_tag :region, "Region", { :class => ' control-label'} %>
           <div class="">
             <%= select_tag  'region_tr',  options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Select a Region --", :class => 'form-control width-100per' }  %>
+          </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <%= label_tag :bid, "Bid", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  'bid_tr',  options_from_collection_for_select(Bid.where(:status => :active), 'id', 'bid_number', params[:bid_id] ) , {:required => true , :prompt => "-- Select a Bid --", :class => 'form-control width-100per' }  %>
           </div>
         </div>
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">

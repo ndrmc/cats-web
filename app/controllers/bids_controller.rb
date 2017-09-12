@@ -261,7 +261,75 @@ class BidsController < ApplicationController
     end  
     
   end
-  
+
+  def contracts
+    @bid = Bid.find(params[:id])
+    @transporters = BidQuotationDetail.joins(bid_quotation: {bid: :framework_tender}).where(:rank => 1, :'bid_quotations.bid_id' => params[:id]).group(:'bid_quotations.transporter_id').count(:location_id).to_a
+  end
+
+  def download_contract
+    @bid = Bid.find(params[:id])
+    @contract_no = 'LTCD/' + @bid.id.to_s + '/' + Time.current.year.to_s + '/' + Transporter.find(params[:transporter_id]).name.to_s
+    @transporter = Transporter.find(params[:transporter_id])
+    @transporter_info = 'The Transporter Company/ Agency ' + @transporter.name + ' here in after refered as "Carrier" '
+    @count = 0
+    @transporter.transporter_addresses.each do |transporter_address|
+      @count = @count + 1
+      @transporter_info += ' Address ' + @count.to_s + ':- SubCity: ' + transporter_address.subcity.to_s + ' Kebele: ' + transporter_address.kebele.to_s + ' HouseNo: ' + transporter_address.house_no.to_s   
+    end
+    @printed_by = current_user.name
+    @region_name = 'Region: ' + Location.find(@bid.region_id).name
+    @bid_number = 'Bid Number: ' + @bid.bid_number.to_s
+    @bid_start_date = 'Bid Date: ' + @bid.start_date.to_s
+    @won_locations = [['No.', 'Hub', 'Warehouse(Origin)', 'Zone', 'Woreda(Destination)', 'Tariff/Qtl(in birr)']]
+    @no = 1
+    @destinations = BidQuotationDetail.joins(bid_quotation: {bid: :framework_tender}).where(:rank => 1, :'bid_quotations.bid_id' => params[:id], :'bid_quotations.transporter_id' => params[:transporter_id]).select(:id, :warehouse_id, :location_id, :tariff)
+      .find_each do |destination|
+        @woreda = Location.find(destination.location_id)
+        @warehouse = Warehouse.find(destination.warehouse_id)
+        @row = [@no, @warehouse.hub.name, @warehouse.name, @woreda.parent.name, @woreda.name, destination.tariff]
+        @won_locations << @row
+        @no = @no + 1
+      end
+    @contract = Contract.where(:transporter_id => @transporter.id, :bid_id => @bid.id)&.first
+    if (@contract.present?)
+      @contract.last_printed_at = Time.current
+      @contract.printed_copies = @contract.printed_copies + 1
+      @contract.save
+    else
+      @contract = Contract.new(bid_id: @bid.id, transporter_id: @transporter.id, contract_no: @contract_no, signed: false, last_printed_at: Time.current, printed_copies: 1)
+      @contract.save
+    end
+    
+    respond_to do |format|
+      format.docx { headers["Content-Disposition"] = "attachment; filename=\" " + @transporter.name + "-" + @bid.bid_number.to_s + ".docx\"" }
+    end
+  end
+
+  def sign_contract
+    @contract = Contract.where(:transporter_id => params[:transporter_id], :bid_id => params[:id])&.first
+    @post_print_update = BidQuotationDetail.joins(:bid_quotation).where(:'bid_quotations.bid_id' => params[:id]).where("bid_quotations.updated_at > ? OR bid_quotation_details.updated_at > ?", @contract.last_printed_at, @contract.last_printed_at).first
+    respond_to do |format|
+      if (@post_print_update.present?)
+        format.html {
+          flash[:error] = "Contract has not been signed as related data was updated after the contract\'s last print date."
+          redirect_to request.referrer 
+        }
+      elsif (@contract.present?)
+        @contract.signed = true
+        if (@contract.save)        
+          format.html { redirect_to '/en/bids/contracts/'+params[:id], notice: 'Contract has been successfully signed.' }
+          format.json { render :show, status: :ok, contract: @contract } 
+        else
+          format.html { render :contracts }
+          format.json { render json: @contract.errors, status: :unprocessable_entity }
+        end        
+      else
+        format.html { render :contracts }
+        format.json { render json: @contract.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
