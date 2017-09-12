@@ -90,7 +90,7 @@ gem 'hirb-unicode'
 gem 'terminal-table'
 
 gem 'rack-cors', :require => 'rack/cors'
-gem 'rubyzip', '= 1.0.0'
+gem 'rubyzip', '= 1.1.0'
 gem 'axlsx', '= 2.0.1'
 gem 'axlsx_rails'
 gem "graphql"
@@ -105,6 +105,9 @@ gem 'geocoder'
 gem 'ethiopic_calendar'
 
 gem 'chart-js-rails'
+
+gem 'caracal'
+gem 'caracal-rails'
 
 group :development do
     gem 'capistrano',         require: false

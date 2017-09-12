@@ -208,6 +208,7 @@ ActiveRecord::Schema.define(version: 20170906075513) do
     t.boolean  "signed"
     t.datetime "last_printed_at"
     t.integer  "printed_copies"
+
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
   end
 
@@ -1228,6 +1229,7 @@ ActiveRecord::Schema.define(version: 20170906075513) do
 
   create_table "transport_requisition_items", force: :cascade do |t|
     t.integer  "transport_requisition_id"
+
     t.integer  "requisition_id"
     t.integer  "fdp_id"
     t.integer  "bid_id"

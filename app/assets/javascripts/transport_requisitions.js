@@ -37,6 +37,7 @@ $(document).ready(function() {
 		        		operation_id: operation,
 			            location_id: region,
 			            bid_id: bid,
+
 			            description: desc
 		        	}	            
 		        },
@@ -74,6 +75,7 @@ $(document).ready(function() {
         	$('#new-transport-requisition .spinner').delay(3000).fadeOut();
         }		
     });
+
 
     $('#new-to-for-exceptions .spinner').hide();
 
@@ -170,4 +172,5 @@ $(document).ready(function() {
         	$('#new-to-for-exceptions .spinner').delay(3000).fadeOut();
         }		
     });
+
 }); 

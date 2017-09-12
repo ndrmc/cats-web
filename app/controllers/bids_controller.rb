@@ -261,7 +261,40 @@ class BidsController < ApplicationController
     end  
     
   end
-  
+
+  def contracts
+    @bid = Bid.find(params[:bid_id])
+    @transporters = BidQuotationDetail.joins(bid_quotation: {bid: :framework_tender}).where(:rank => 1, :'framework_tenders.id' => params[:id], :'bid_quotations.bid_id' => params[:bid_id]).group(:'bid_quotations.transporter_id').count(:location_id).to_a
+  end
+
+  def download_contract
+    @bid = Bid.find(params[:id])
+    @contract_no = 'LTCD/' + @bid.id.to_s + '/' + Time.current.year.to_s + '/' + Transporter.find(params[:transporter_id]).name.to_s
+    @transporter = Transporter.find(params[:transporter_id])
+    @transporter_info = 'The Transporter Company/ Agency ' + @transporter.name + ' here in after refered as "Carrier" '
+    @count = 0
+    @transporter.transporter_addresses.each do |transporter_address|
+      @count = @count + 1
+      @transporter_info += ' Address ' + @count.to_s + ':- SubCity: ' + transporter_address.subcity.to_s + ' Kebele: ' + transporter_address.kebele.to_s + ' HouseNo: ' + transporter_address.house_no.to_s   
+    end
+
+    @region_name = 'Region: ' + Location.find(@bid.region_id).name
+    @bid_number = 'Bid Number: ' + @bid.bid_number.to_s
+    @bid_start_date = 'Bid Date: ' + @bid.start_date.to_s
+    @won_locations = [['No.', 'Hub', 'Warehouse(Origin)', 'Zone', 'Woreda(Destination)', 'Tariff/Qtl(in birr)']]
+    @no = 1
+    @destinations = BidQuotationDetail.joins(bid_quotation: {bid: :framework_tender}).where(:rank => 1, :'bid_quotations.bid_id' => params[:id], :'bid_quotations.transporter_id' => params[:transporter_id]).select(:id, :warehouse_id, :location_id, :tariff)
+      .find_each do |destination|
+        @woreda = Location.find(destination.location_id)
+        @warehouse = Warehouse.find(destination.warehouse_id)
+        @row = [@no, @warehouse.hub.name, @warehouse.name, @woreda.parent.name, @woreda.name, destination.tariff]
+        @won_locations << @row
+        @no = @no + 1
+      end
+    respond_to do |format|
+      format.docx { headers["Content-Disposition"] = "attachment; filename=\" " + @transporter.name + "-" + @bid.bid_number.to_s + ".docx\"" }
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

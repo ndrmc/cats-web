@@ -54,13 +54,26 @@
               %></td>                        
 
                         <td>
-              <%= link_to 'Warehouse Selection', '/en/warehouse_selections/' + framework_tender.id.to_s %> &middot;
-              <%= link_to 'Edit', edit_framework_tender_path(framework_tender) %> &middot;
-              <%= link_to 'Delete', framework_tender, method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
-              <% if framework_tender.status != 'archived' %>
-                <%= link_to 'Bids', bids_path(:framework_tender_id => framework_tender.id) %>
-              <% end %>
               
+              <%= link_to 'Edit', edit_framework_tender_path(framework_tender), :class => "btn btn-warning" %> &middot;
+              <%= link_to 'Delete', framework_tender, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
+              
+              <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">More...
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                      <li>
+                       <%= link_to 'Warehouse Selection', '/en/warehouse_selections/' + framework_tender.id.to_s %>
+                      </li>                     
+                      <li>
+                        <% if framework_tender.status != 'archived' %>
+                          <%= link_to 'Bids', framework_tender_path(framework_tender.id) %>
+                        <% end %> 
+                      </li>
+
+                    </ul>
+                  </div>
             </td>
           </tr>
           <% end %>

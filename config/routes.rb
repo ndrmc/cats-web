@@ -25,6 +25,8 @@ Rails.application.routes.draw do
    delete '/bids/remove_bid_quotation/:id', to: 'bids#remove_bid_quotation'
    post '/bids/:id/generate_winners', to: 'bids#generate_winners'
    get 'bids/view_bid_winners/:id', to: 'bids#view_bid_winners'
+   get 'bids/contracts/:id', to: 'bids#contracts'
+   get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
 
 
    resources :framework_tenders

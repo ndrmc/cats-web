@@ -35,7 +35,6 @@ class TransportRequisitionsController < ApplicationController
   # POST /transport_requisitions
   # POST /transport_requisitions.json
   def create
-
     @bid_id = transport_requisition_params['bid_id']
     @result = false
     result = TransportRequisition.generate_tr(transport_requisition_params, current_user.id)
@@ -48,7 +47,7 @@ class TransportRequisitionsController < ApplicationController
         format.json { render json: { :successful => true }}
       else
         format.html { render :new }
-        format.json { render json: { :errors => 'Transport Requisition is not created.'}, status: :unprocessable_entity }
+        format.json { render json: @transport_requisition.errors, status: :unprocessable_entity }
       end
     end
   end

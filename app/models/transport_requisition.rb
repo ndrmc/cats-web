@@ -58,6 +58,4 @@ class TransportRequisition < ApplicationRecord
       end
   end
 
-  
-  
 end
