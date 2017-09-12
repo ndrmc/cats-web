@@ -36,6 +36,7 @@ class TransportRequisitionsController < ApplicationController
   # POST /transport_requisitions.json
   def create
     @bid_id = transport_requisition_params['bid_id']
+
     @result = false
     result = TransportRequisition.generate_tr(transport_requisition_params, current_user.id)
     if (result.present?)

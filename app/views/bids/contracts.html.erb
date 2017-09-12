@@ -28,6 +28,7 @@
             <th>Transporter</th>
             <th>Destinations</th>
             <th>Contract No.</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -38,7 +39,24 @@
               <td><%= link_to Transporter.find(transporter[0]).name, transporter_path(transporter[0]) %></td>
               <td><%= transporter[1] %></td>
               <td><%= 'LTCD/' + @bid.id.to_s + '/' + Time.current.year.to_s + '/' + Transporter.find(transporter[0]).name.to_s %></td>
-              <td><%= link_to 'Print Contract', '/en/bids/download_contract/' + @bid.id.to_s + '?transporter_id=' + transporter[0].to_s %></td>
+              <td> 
+              <% if (Contract.where(:transporter_id => transporter[0], :bid_id => @bid.id)&.first&.signed) %>
+                Signed
+              <% elsif (Contract.where(:transporter_id => transporter[0], :bid_id => @bid.id)&.first&.present?) %>
+                Printed
+              <% else %>
+                Not printed
+              <% end %>
+              </td>
+              <td>
+                <% if (Contract.where(:transporter_id => transporter[0], :bid_id => @bid.id)&.first&.signed) %>
+                <% elsif (Contract.where(:transporter_id => transporter[0], :bid_id => @bid.id)&.first&.present?) %>
+                  <%= link_to 'Print Contract', '/en/bids/download_contract/' + @bid.id.to_s + '?transporter_id=' + transporter[0].to_s %>
+                  <%= link_to 'Sign', '/en/bids/sign_contract/'+@bid.id.to_s+'?transporter_id='+transporter[0].to_s, data: { confirm: 'Are you sure the contract <strong>[' + 'LTCD/' + @bid.id.to_s + '/' + Time.current.year.to_s + '/' + Transporter.find(transporter[0]).name.to_s + '</strong>] is signed?'.html_safe } %>
+                <% else %>
+                  <%= link_to 'Print Contract', '/en/bids/download_contract/' + @bid.id.to_s + '?transporter_id=' + transporter[0].to_s %>                  
+                <% end %>
+              </td>
           </tr>
           <% end %>
         </tbody>

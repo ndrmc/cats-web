@@ -24,6 +24,7 @@ docx.p
 
 docx.h3 @contract_no                         
 docx.h3 Time.now.to_formatted_s(:long_ordinal)
+docx.h3 'Printed by: ' + @printed_by
 docx.p
 docx.h4 'ARTICLE 1/ CONTRACTING PARTIES.'
 docx.p 'This Contract is made by and between:-'

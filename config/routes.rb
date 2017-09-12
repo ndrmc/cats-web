@@ -27,11 +27,12 @@ Rails.application.routes.draw do
    get 'bids/view_bid_winners/:id', to: 'bids#view_bid_winners'
    get 'bids/contracts/:id', to: 'bids#contracts'
    get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
-
-
+   get 'bids/sign_contract/:id', to: 'bids#sign_contract'
+   
    resources :framework_tenders
-   get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'
+   get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'   
    get 'framework_tenders/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
+
    resources :case_teams
 
    resources :permissions
