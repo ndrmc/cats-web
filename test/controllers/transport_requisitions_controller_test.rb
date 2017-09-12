@@ -7,6 +7,8 @@ class TransportRequisitionsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:admin)
     @transport_requisition = transport_requisitions(:transport_requisition1)
     @location = locations(:location1)
+    @operation = operations(:operation2)
+    @user = users(:tr_creator)
   end
 
   test "should get index" do

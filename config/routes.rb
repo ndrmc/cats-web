@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
  scope "(:locale)", locale: /en|am/ do
 
+  get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
+  post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
   resources :transport_requisitions
   
    resources :bids
@@ -23,6 +25,8 @@ Rails.application.routes.draw do
    delete '/bids/remove_bid_quotation/:id', to: 'bids#remove_bid_quotation'
    post '/bids/:id/generate_winners', to: 'bids#generate_winners'
    get 'bids/view_bid_winners/:id', to: 'bids#view_bid_winners'
+   get 'bids/contracts/:id', to: 'bids#contracts'
+   get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
 
 
    resources :framework_tenders
