@@ -36,12 +36,27 @@ namespace :cats do
         Fdp.all.each do |l|
           l.save
         end
-
-
-
         puts "Completed update"
       end
     end
+
+    namespace :psnp do |plan|
+      desc "Update region_id and zone_id for plan items"
+      task upgrade: :environment do
+        puts "Started updating region and zone attributes for PSNP Plan items"
+        items = PsnpPlanItem.all
+        items.each do |item|
+          l = Location.find(item.woreda_id)
+          unless l.nil?
+            item.region_id = l.ancestors[0].id
+            item.zone_id = l.ancestors[1].id
+            item.duration = item.cash_ratio + item.kind_ratio
+            item.save!
+          end
+        end
+      end
+    end
+
     namespace :commodities do
       desc "insert commodity records under their category"
       task update: :environment do
@@ -178,7 +193,7 @@ namespace :cats do
           main_warehouse.save!
       end
      end
-	  end
+    end
     namespace :users do
       task update_admin: :environment do
         admin = User.find_or_initialize_by(email: 'admin@cats.org')
