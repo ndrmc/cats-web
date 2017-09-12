@@ -330,7 +330,6 @@ DEPENDENCIES
   rolify
   roo
   ruby-graphviz
-  rubyzip (= 1.0.0)
   rubyzip (= 1.1.0)
   sass-rails (~> 5.0)
   spring
