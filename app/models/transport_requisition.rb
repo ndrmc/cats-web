@@ -38,7 +38,6 @@ class TransportRequisition < ApplicationRecord
         @transport_requisition.save
         
         @requisitions.find_each do |requisition|
-          puts requisition.requisition_items.inspect
           requisition.requisition_items
         .find_each do |ri|        
           if ri.unit_of_measure_id.present?
