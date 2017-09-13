@@ -32,7 +32,6 @@ class TransportOrder < ApplicationRecord
 	has_many :transport_order_items
 	belongs_to :bid
 	belongs_to :location
-	belongs_to :transport_requisition
 
   	def self.generate_transport_order (tr_id, bid_id, user_id)
 		@transport_requisition = TransportRequisition.find(tr_id)
@@ -47,16 +46,16 @@ class TransportOrder < ApplicationRecord
 			@bid_quotations.each do |bid_quotation|
 				@transport_order = TransportOrder.where({:transporter_id => bid_quotation.transporter_id, :bid_id => bid_id, :operation_id => @transport_requisition.operation_id}).first
 				if (@transport_order.present?)
-					@new_to_detail = TransportOrderItem.new(transport_order_id: @transport_order.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity / @bid_quotations.pluck(:id).count, unit_of_measure_id: @uom.id, tariff: bid_quotation.tariff, requisition_no: @requisition.requisition_no, created_by: user_id)
+					@new_to_detail = TransportOrderItem.new(transport_order_id: @transport_order.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity / @bid_quotations.pluck(:id).count, unit_of_measure_id: @uom.id, tariff: bid_quotation.tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: tr_item.id)
 					@new_to_detail.save
 					tr_item.has_transport_order = true
 					tr_item.save
 				else
-					@new_to = TransportOrder.new(order_no: SecureRandom.uuid, transporter_id: bid_quotation.transporter_id, bid_id: bid_id, operation_id: @transport_requisition.operation_id, location_id: @woreda.parent.parent_node_id, order_date: Time.current, created_date: Time.current, start_date: 3.days.from_now, end_date: 13.days.from_now, printed_copies: 0, status: 0, created_by: user_id, transport_requisition_id: @transport_requisition.id)
+					@new_to = TransportOrder.new(order_no: SecureRandom.uuid, transporter_id: bid_quotation.transporter_id, bid_id: bid_id, operation_id: @transport_requisition.operation_id, location_id: @woreda.parent.parent_node_id, order_date: Time.current, created_date: Time.current, start_date: 3.days.from_now, end_date: 13.days.from_now, printed_copies: 0, status: 0, created_by: user_id)
 					@new_to.save
 					@new_to.order_no = "TRN-ORD-" + @new_to.id.to_s	
 					@new_to.save				
-					@new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity / @bid_quotations.pluck(:id).count, unit_of_measure_id: @uom.id, tariff: bid_quotation.tariff, requisition_no: @requisition.requisition_no, created_by: user_id)
+					@new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity / @bid_quotations.pluck(:id).count, unit_of_measure_id: @uom.id, tariff: bid_quotation.tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: tr_item.id)
 					@new_to_detail.save
 					tr_item.has_transport_order = true
 					tr_item.save
@@ -81,16 +80,16 @@ class TransportOrder < ApplicationRecord
 
 	        @transport_order = TransportOrder.where({:transporter_id => transporter_id, :operation_id => @transport_requisition.operation_id}).where.not({status: [:closed, :canceled, :archived] }).first
 	        if (@transport_order.present?)
-	          @new_to_detail = TransportOrderItem.new(transport_order_id: @transport_order.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity, unit_of_measure_id: @uom.id, tariff: tariff, requisition_no: @requisition.requisition_no, created_by: user_id)
+	          @new_to_detail = TransportOrderItem.new(transport_order_id: @transport_order.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity, unit_of_measure_id: @uom.id, tariff: tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: tr_item.id)
 	          @new_to_detail.save
 	          tr_item.has_transport_order = true
 	          tr_item.save
 	        else
-	          @new_to = TransportOrder.new(order_no: SecureRandom.uuid, transporter_id: transporter_id, operation_id: @transport_requisition.operation_id, location_id: @woreda.parent.parent_node_id, order_date: Time.current, created_date: Time.current, start_date: 3.days.from_now, end_date: 13.days.from_now, printed_copies: 0, status: 0, created_by: user_id, transport_requisition_id: @transport_requisition.id)
+	          @new_to = TransportOrder.new(order_no: SecureRandom.uuid, transporter_id: transporter_id, operation_id: @transport_requisition.operation_id, location_id: @woreda.parent.parent_node_id, order_date: Time.current, created_date: Time.current, start_date: 3.days.from_now, end_date: 13.days.from_now, printed_copies: 0, status: 0, created_by: user_id)
 	          @new_to.save
 	          @new_to.order_no = "TRN-ORD-" + @new_to.id.to_s 
 	          @new_to.save        
-	          @new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity, unit_of_measure_id: @uom.id, tariff: tariff, requisition_no: @requisition.requisition_no, created_by: user_id)
+	          @new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity, unit_of_measure_id: @uom.id, tariff: tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: tr_item.id)
 	          @new_to_detail.save
 	          tr_item.has_transport_order = true
 	          tr_item.save
