@@ -24,4 +24,5 @@ class TransportRequisitionItem < ApplicationRecord
   belongs_to :store
   belongs_to :transport_order
 
+  has_many :transport_order_items
 end
