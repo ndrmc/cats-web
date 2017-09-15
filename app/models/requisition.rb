@@ -31,6 +31,7 @@ class Requisition < ApplicationRecord
   belongs_to :operation
   belongs_to :region, :class_name => 'Location', :foreign_key => 'region_id'
   belongs_to :zone, :class_name => 'Location', :foreign_key => 'zone_id'
+  belongs_to :commodity
   has_many :requisition_items
 
   

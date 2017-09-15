@@ -7,34 +7,76 @@ class DispatchesController < ApplicationController
             @dispatches = Dispatch.where gin_no: params[:gin_no]
             return
         end
-        
 
-        if params[:operation].present? && params[:hub].present? && params[:region].present?
-            filter_map = {hub_id: params[:hub], operation_id: params[:operation]}
+        if (params[:operation].present? && params[:hub].present? && params[:region].present? && params[:zone].present? && params[:woreda].present? )
+            if (params[:fdp].present?)
+                @fdp_ids = params[:fdp]
+            elsif (params[:woreda].present?)
+                @fdp_ids = Fdp.where( location_id: params[:woreda]).map { |l| l.id}
+            elsif (params[:zone].present?)
+                fdp_locations = Location.find(params[:zone]).descendants.where( location_type: :woreda).map { |d| d.id}
+                @fdp_ids = Fdp.where( location_id: fdp_locations).map { |l| l.id}
+            else
+                fdp_locations = Location.find(params[:region]).descendants.where( location_type: :woreda).map { |d| d.id}
+                @fdp_ids = 18            
+            end
+
+            allocation_filter = { :'requisitions.operation_id' => params[:operation], :'requisition_items.fdp_id' => @fdp_ids }
+
+            requisitions = Requisition.joins(:requisition_items).where( allocation_filter ).pluck(:requisition_no).to_a
+
+            dispatch_filter = {:'dispatches.hub_id' => params[:hub], :'dispatches.operation_id' => params[:operation], :'dispatches.fdp_id' => @fdp_ids, :'dispatches.requisition_number' => requisitions }  
             
-            if params[:dispatch_date ].present? 
-                dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
+            gin_filter = {:'dispatches.hub_id' => params[:hub], :'dispatches.operation_id' => params[:operation], :'dispatches.fdp_id' => @fdp_ids }
 
-                filter_map[:dispatch_date] = dates[0]..dates[1]
+            @dispatch_summary = []
+            
+            Requisition.joins(:requisition_items, :commodity).where( allocation_filter ).where(' requisition_items.amount > 0').uniq{|t| t.requisition_no }.each do |allocation|
+                @row = Hash.new
+                @row['requisition_no'] = allocation.requisition_no
+                @row['commodity'] = allocation.commodity.name
+                @total_allocated = 0
+                allocation.requisition_items.where(:fdp_id => @fdp_ids).each do |ri|
+                    if(ri.unit_of_measure_id.present?)
+                        @total_allocated = @total_allocated + UnitOfMeasure.find(ri.unit_of_measure_id).to_ref(ri.amount)
+                    else
+                        @total_allocated = @total_allocated + ri.amount
+                    end
+                end
+                @row['allocated'] = @total_allocated
+                # dispatch_filter[:requisition_number] = allocation.requisition_no
+                @total_dispatched = 0
+                Dispatch.joins(:dispatch_items).where( {:'dispatches.hub_id' => params[:hub], :'dispatches.operation_id' => params[:operation], :'dispatches.fdp_id' => @fdp_ids, :'dispatches.requisition_number' => allocation.requisition_no } ).select(:id, :'dispatch_items.quantity', :'dispatch_items.unit_of_measure_id').find_each do |di|                    
+                    @qty_in_ref = UnitOfMeasure.find(di.unit_of_measure_id).to_ref(di.quantity)
+                    @total_dispatched = @total_dispatched + @qty_in_ref
+                end
+                @row['dispatched'] = @total_dispatched
+                @row['progress'] = (@total_dispatched.to_f / @total_allocated.to_f) * 100
+                @dispatch_summary << @row
             end
 
-            if params[:status ]
-                filter_map[:draft ] = params[:status ] == 'Draft'
+            @dispatches = []
+            Dispatch.joins( :transporter, dispatch_items: [:unit_of_measure, :commodity] ).where( dispatch_filter ).find_each do |dispatch|
+                @gin_row = Hash.new
+                @gin_row['gin_no'] = dispatch.gin_no
+                @gin_qty = 0
+                dispatch.dispatch_items.find_each do |di|
+                    @qty_in_ref = UnitOfMeasure.find(di.unit_of_measure_id).to_ref(di.quantity)
+                    @gin_qty = @gin_qty + @qty_in_ref
+                    @gin_row['commodity'] = di.commodity.name
+                end
+                @gin_row['dispatch_qty'] = @gin_qty
+                @gin_row['uom'] = 'MT'
+                @gin_row['transporter'] = dispatch.transporter.name
+                @gin_row['dispatch_date'] = dispatch.dispatch_date
+                @dispatches << @gin_row
             end
-
-            region = Location.find params[:region]
-
-            fdp_locations = region.descendants.map { |d| d.id}.push params[:region] 
-
-            fdp_ids = Fdp.where( location_id: fdp_locations).map { |l| l.id}
-
-            filter_map[:fdp_id] = fdp_ids
-
-            @dispatches = Dispatch.joins( :dispatch_items ).where( filter_map ).distinct
+            
         else 
-           
+            @dispatch_summary = []
             @dispatches = []
         end 
+        return @dispatches
     end
 
     def new 

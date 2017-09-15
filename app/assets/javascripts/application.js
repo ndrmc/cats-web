@@ -138,10 +138,15 @@ $(document).ready(function() {
             {
                 url = "/warehouses/" + observed.val() + ".json";
             }
-            else if (observed_dom_id == 'zone') 
+            else if (observed_dom_id == 'zone' || observed_dom_id == 'region') 
             {
                 url = "/locations/" + observed.val() + "/children";
             }
+            else if (observed_dom_id == 'woreda')
+            {
+                url = "/fdps/location/" + observed.val()
+            }
+            
             // url = "/warehouses/" + observed.val() + ".json";
             $.getJSON(url, function (data) {
               $.each(data, function (i, object) {

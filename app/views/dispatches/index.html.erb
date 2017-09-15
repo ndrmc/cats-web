@@ -21,79 +21,124 @@
 
 
 <div class="ibox float-e-margins">
-  <div class="ibox-content">
+  <div class="ibox-content dispatch-filter-form">
       <%= form_tag( dispatches_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+        <div class='row col-sm-12'>
+          <div class="form-group col-sm-4">
+            <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+            <div class="">
+              <%= select_tag  :hub, options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control width-100per' }  %>
+            </div>
+          </div>
 
-        <div class="form-group">
-          <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
-          <div class="">
-            <%= select_tag  :hub, options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+          <div class="form-group col-sm-4">
+            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control width-100per' }  %>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-4">
+            <%= label_tag :region, "Region", { :class => ' control-label'} %>
+
+            <div class="">
+                <%= select_tag  :region,  options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Select a Region --", :class => 'form-control width-100per' }  %>
+              </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+        <div class='row col-sm-12'>
+          <div class="form-group col-sm-4">
+            <%= label_tag :zone, "Zone", { :class => ' control-label'} %>
 
-          <div class="">
-            <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+            <div class="">
+                <%= select_tag :zone, options_from_collection_for_select(Location.where({parent_node_id: params[:region]}), "id", "name", params[:zone]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "region",
+                  "data-option-url" => "/locations/#{:region}/children",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <%= label_tag :region, "Region", { :class => ' control-label'} %>
-
-          <div class="">
-            <%= select_tag  :region,  options_from_collection_for_select( Location.where(location_type: 'region'), 'id', 'name', params[:region] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+          <div class="form-group col-sm-4">
+            <%= label_tag :woreda, "Woreda", { :class => ' control-label', :required => true } %>
+            <div class="">
+                <%= select_tag :woreda, options_from_collection_for_select(Location.where({parent_node_id: params[:zone]}), "id", "name", params[:woreda]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "zone",
+                  "data-option-url" => "/locations/#{:zone}/children",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <%= label_tag :dispatch_date, "Dispatch Date", { :class => ' control-label'} %>
-
-          <div class="">
-            <%= text_field_tag  :dispatch_date, params[:dispatch_date], { id: 'dispatch-datepicker',class: 'form-control', required: true }  %>
+          <div class="form-group col-sm-3">
+            <%= label_tag :fdp, "FDP", { :class => ' control-label', :required => true } %>
+            <div class="">
+                <%= select_tag :fdp, options_from_collection_for_select(Fdp.where({location_id: params[:woreda]}), "id", "name", params[:fdp]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "woreda",
+                  "data-option-url" => "/fdps/location/#{params[:woreda]}",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+            </div>            
           </div>
+          <div class="form-group col-sm-1">
+              <label for=""></label>
+              <div>
+                  <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+              </div>
+            </div>
         </div>
-
-        <div class="form-group">
-          <%= label_tag :status, "Status", { :class => ' control-label'} %>
-
-          <div class="">
-            <%= select_tag  :status,  options_for_select( ["Draft", "Posted"], params[:status]) , { :prompt => "All", :class => 'form-control col-md-3' }  %>
-          </div>
-        </div>
+                
         
-        <div class="form-group">
-          <label for=""></label>
-          <div>
-              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
-          </div>
-        </div>
 
         <% end %>
 
 
-        <%= form_tag( dispatches_path ,{ class: 'form-inline pull-right', style: 'display: inline-block;',role: 'form', method: 'GET'}) do %>
-        <div class="form-group">
-          <%= label_tag :gin_no, "GIN", { :class => ' control-label'} %>
-
-          <div class="">
-            <%= text_field_tag  :gin_no, params[:gin_no], { class: 'form-control'}  %>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for=""></label>
-          <div>
-              <input type="submit" name="find" value="Go" class="btn btn-sm btn-primary" />
-          </div>
-        </div>
-
-
-      <% end %>
+        
   </div>
 </div>
 
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content scrollable-table">
+
+    <table class="table table-striped scrollable-table">
+      <thead>
+      <tr>
+            <th>Requisition Number</th>
+            <th>Commodity</th>
+            <th>Allocated</th>
+            <th>Dispatched</th>
+            <th>Progress</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% if @dispatch_summary.present? %>
+        <% $i = 0 %>
+        <% while $i < @dispatch_summary.count  do %>
+          <tr>
+              <td><%= @dispatch_summary[$i]['requisition_no'] %></td>
+              <td><%= @dispatch_summary[$i]['commodity'] %></td>
+              <td><%= @dispatch_summary[$i]['allocated'] %></td>
+              <td><%= @dispatch_summary[$i]['dispatched'] %></td>
+              <td><%= number_to_percentage(@dispatch_summary[$i]['progress'], precision: 2) %></td>
+          </tr>
+          <% $i = $i + 1 %>
+        <% end %>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
 
 <div class="ibox float-e-margins">
   <div class="ibox-content">
@@ -101,35 +146,28 @@
     <table class="table table-striped cats-datatable">
       <thead>
       <tr>
-            <th>GIN Number</th>
-            <th>Requisition Number</th>
+            <th>GIN No.</th>
+            <th>Commodity</th>
+            <th>Dispatched Qty. (MT)</th>
+            <th>Transporter</th>
             <th>Dispatch Date</th>
-            <th>FDP</th>
-            <th>Status</th>
-            <th>Remark</th>
-            <th>Actions</th>
       </tr>
       </thead>
 
       <tbody>
-        <% @dispatches.each do |dispatch| %>
-            <tr>
-                <td><%= dispatch.gin_no %></td>
-                <td><%= dispatch.requisition_number %></td>
-                <td><%= dispatch.dispatch_date.strftime('%d/%m/%Y') %></td>
-                <td><%= dispatch.fdp.name  %></td>
-                <td><%= dispatch.draft ? "Draft" : "Posted" %></td>
-                <td><%= dispatch.remark %></td>
-                <td>
-                   <% if policy(Dispatch).edit? %>
-                    <%= link_to 'Edit', edit_dispatch_path(dispatch) %> &middot;
-                    <%end%>
-                     <% if policy(Dispatch).edit? %>
-                    <%= link_to 'Delete', dispatch, method: :delete, data: { confirm: 'Are you sure?' } %>
-                    <%end%>
-                </td>
-            </tr>
+      <% if @dispatches.present? %>
+        <% $i = 0 %>
+        <% while $i < @dispatches.count  do %>
+          <tr>
+              <td><%= @dispatches[$i]['gin_no'] %></td>
+              <td><%= @dispatches[$i]['commodity'] %></td>
+              <td><%= @dispatches[$i]['dispatch_qty'] %></td>
+              <td><%= @dispatches[$i]['transporter'] %></td>
+              <td><%= @dispatches[$i]['dispatch_date'].to_formatted_s(:long_ordinal) %></td>
+          </tr>
+          <% $i = $i + 1 %>
         <% end %>
+      <% end %>
       </tbody>
     </table>
 
@@ -138,6 +176,14 @@
 
 <script type="text/javascript">
   $( function() { 
+    <% if( (!params[:region].present?) || (!params[:zone].present?) ) %>
+      $(".dispatch-filter-form #zone").empty();
+      $(".dispatch-filter-form #woreda").empty();
+    <% end %>
+    $('.dispatch-filter-form #region').on('change', function(){
+      $(".dispatch-filter-form #woreda").empty();
+      $(".dispatch-filter-form #fdp").empty();
+    });
     $('#dispatch-datepicker').daterangepicker(
       {
           locale: {
@@ -150,6 +196,7 @@
         $('#dispatch-datepicker').val( start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY')); 
       }
     ); 
+    
   });
 
 </script>
