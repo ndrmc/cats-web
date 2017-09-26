@@ -37,8 +37,9 @@ class DispatchesController < ApplicationController
                 @row['commodity'] = allocation.commodity.name
                 @total_allocated = 0
                 allocation.requisition_items.where(:fdp_id => @fdp_ids).each do |ri|
-                    if(ri.unit_of_measure_id.present?)
-                        @total_allocated = @total_allocated + UnitOfMeasure.find(ri.unit_of_measure_id).to_ref(ri.amount)
+                    uom_id = allocation&.operation&.ration&.ration_items.where(commodity_id: allocation.commodity_id)&.first&.unit_of_measure_id
+                    if(uom_id.present?)
+                        @total_allocated = @total_allocated + UnitOfMeasure.find(uom_id).to_ref(ri.amount)
                     else
                         @total_allocated = @total_allocated + ri.amount
                     end
