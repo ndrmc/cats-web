@@ -100,6 +100,8 @@ Rails.application.routes.draw do
   resources :fdp_contacts
   get 'fdps/location/:location_id', to: 'fdps#get_by_location'
 
+  get 'commodities/get_by_category/:commodity_category_id', to: 'commodities#get_by_category'
+
   resources :organizations
   resources :projects
   post '/projects/:id/archive', to: 'projects#archive'

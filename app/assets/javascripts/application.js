@@ -124,7 +124,7 @@ $(document).ready(function() {
         var prompt = $('<option value=\"\">').text('-- Select --');
         var regexp = /:[0-9a-zA-Z_]+:/g;
         var observer = $('select#' + observer_dom_id);
-        var observed = $('#' + observed_dom_id);
+        var observed = $('\'' + '#' + observed_dom_id + '\'');
 
         if (!observer.val() && observed.size() > 1) {
           observer.attr('disabled', 'disabled');
@@ -145,6 +145,10 @@ $(document).ready(function() {
             else if (observed_dom_id == 'woreda')
             {
                 url = "/fdps/location/" + observed.val()
+            }
+            else if (observer_dom_id == 'dispatch_dispatch_items__commodity_id')
+            {
+                url = "/commodities/get_by_category/" + observed.val()
             }
             
             // url = "/warehouses/" + observed.val() + ".json";

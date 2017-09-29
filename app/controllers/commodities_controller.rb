@@ -64,6 +64,12 @@ class CommoditiesController < ApplicationController
     end
   end
 
+  def get_by_category
+    respond_to do |format|
+      format.json { render json:  Commodity.where( :commodity_category_id => params[:commodity_category_id] )  }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_commodity
