@@ -41,6 +41,11 @@ class DispatchesController < ApplicationController
     end
 
     def new 
+        if (params[:requisition_no].present?)
+            @requisition = Requisition.includes(commodity: :commodity_category).where(:requisition_no => params[:requisition_no]).first
+            @commodity = @requisition.commodity
+            @category = @requisition.commodity.commodity_category
+        end
         @dispatch = Dispatch.new
     end
 

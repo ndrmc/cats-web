@@ -31,18 +31,35 @@
         <%= f.label :requisition_number, "Requisition Number" %> <span class="required">*</span> &middot; 
           <i class="fa fa-times" title="Requisition not found."> </i> 
           <i class="fa fa-check hidden"  title="Requisition exists."> </i>
-        <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input', :value => params[:requisition_no] %>
+        <% if(params[:requisition_no].present?) %>
+          <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input', :value => params[:requisition_no] %>
+        <% else %>
+          <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input' %>
+        <% end %>
       </div>
 
 
       <div class="form-group">
         <%= f.label :operation_id %> <span class="required">*</span>
-        <%= select_tag  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name', params[:operation_id] ) , {:required => false , :prompt => "-- Select Operation --", :class => 'form-control width-100per' }  %>            
+        <% if (params[:operation_id].present?) %>
+            <%= f.select  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name', params[:operation_id] ) , {:required => true , :prompt => "-- Select Operation --" }, :class => 'form-control width-100per'  %> 
+        <% elsif (@dispatch.operation_id.present?) %>
+            <%= f.select  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name', @dispatch.operation_id ) , {:required => true , :prompt => "-- Select Operation --" }, :class => 'form-control width-100per'  %> 
+        <% else %>
+            <%= f.select  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name' ) , {:required => true , :prompt => "-- Select Operation --" }, :class => 'form-control width-100per'  %> 
+        <% end %>       
       </div>
 
       <div class="form-group">
         <%= f.label :hub %> <span class="required">*</span>
-        <%= select_tag  :hub,  options_from_collection_for_select(Hub.order(:name), 'id', 'name', params[:hub_id] ) , {:required => false , :prompt => "-- Select Hub --", :class => 'form-control width-100per' }  %>
+        <% if (params[:hub_id].present?) %>
+            <%= f.select :hub_id,  options_from_collection_for_select(Hub.order(:name), 'id', 'name', params[:hub_id] ) , {:required => true , :prompt => "-- Select Hub --" }, :class => 'form-control width-100per'  %>
+        <% elsif (@dispatch.hub_id.present?) %>
+            <%= f.select :hub_id,  options_from_collection_for_select(Hub.order(:name), 'id', 'name', @dispatch.hub_id ) , {:required => true , :prompt => "-- Select Hub --" }, :class => 'form-control width-100per'  %> 
+        <% else %>
+            <%= f.select :hub_id,  options_from_collection_for_select(Hub.order(:name), 'id', 'name' ) , {:required => true , :prompt => "-- Select Hub --" }, :class => 'form-control width-100per'  %>
+        <% end %>      
+        
       </div>
 
       <div class="form-group">
@@ -50,13 +67,16 @@
         <% if (params[:hub_id].present?) 
             @warehouses = []
             @warehouses = Warehouse.where(:hub_id => params[:hub_id])
+          elsif (@dispatch.hub_id.present?)
+            @warehouses = []
+            @warehouses = Warehouse.where(:hub_id => @dispatch.hub_id)
           else 
             @warehouses = []
           end %>
-        <%= select_tag :warehouse, options_from_collection_for_select(@warehouses, "id", "name"),
+        <%= select_tag 'dispatch[warehouse_id]', options_from_collection_for_select(@warehouses, "id", "name", @dispatch.warehouse_id),
           :required => true, prompt: "Select Warehouse", :class => 'form-control width-100per', :style => 'min-width: 80px',
           "data-option-dependent" => true,
-          "data-option-observed" => "hub",
+          "data-option-observed" => "dispatch_hub_id",
           "data-option-url" => "/warehouses/#{:hub}.json",
           "data-option-key-method" => :id,
           "data-option-value-method" => :name %>
@@ -133,23 +153,41 @@
                   <% end %>
                   <tr>
                       <td>
-                         <%= select_tag 'dispatch[dispatch_items[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
+                         <%= select_tag 'dispatch[dispatch_items[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name', @category&.id ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true', :class => 'form-control', :id => 'commodity-category-select'} %>
                       </td>
                       <td>
                         <select name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
                           <option value="">-- Choose --</option>
-                          <% Commodity.all.each do |commodity| %>
-                            <option data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden">
-                              <%= commodity.name %>
-                            </option>                         
+                          <% if(@category.present? ) %>
+                            <% Commodity.where(:commodity_category_id => @category.id).each do |commodity| %>
+                              <% if(@commodity.id == commodity.id) %>
+                                <option selected="selected" data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %>">
+                                  <%= commodity.name %>
+                                </option>
+                              <% else %>
+                                <option data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %>">
+                                  <%= commodity.name %>
+                                </option>  
+                              <% end %>                       
+                            <% end %>
+                          <% else %>
+                            <% Commodity.all.each do |commodity| %>
+                              <option data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %>">
+                                  <%= commodity.name %>
+                                </option>                       
+                            <% end %>
                           <% end %>
                         </select>
                       </td>
                       <td>
+                      <% if(@category.present?) %>
+                        <%= select_tag 'dispatch[dispatch_items[][unit_of_measure_id]]',  options_from_collection_for_select( UnitOfMeasure.where( :uom_category_id => @category.id), 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
+                      <% else %>
                         <select name="dispatch[dispatch_items[][unit_of_measure_id]]" id="uom-select" class="form-control" data-parsley-required>
                           <option value="">-- Choose --</option>
 
                         </select>
+                      <% end %>
                       </td>
                       <td>
                           <input name="dispatch[dispatch_items[][quantity]]" type="number" step="any" class="form-control" data-parsley-required/>
@@ -254,7 +292,38 @@
               var EMPTY_OPTION = '<option value="">-- Choose --</option>';
               
               $( function() { 
+                  $.getJSON( '/requisitions/get_requisiton_by_number', 
+                    { requisition_no: $('#req_no_input').val()}, 
+                    function(data) { 
 
+
+                      $("#requisition-input-group i.fa-check").removeClass('hidden'); 
+                      $("#requisition-input-group i.fa-times").addClass('hidden'); 
+
+
+                      var operation_id = data.requisition.operation_id; 
+                      if( null !== operation_id) { 
+                          $("#operation_id_select").val( operation_id); 
+                      }
+
+                      var region_id = data.requisition.region_id; 
+
+                      if( null !== region_id) { 
+                        
+                        $("select[name=region]:first").val(region_id).change(); 
+
+                        var zone_id = data.requisition.zone_id; 
+
+                        if( null !== zone_id ) { 
+                          $("select[name=zone]:first").data('value', zone_id);
+                        }  
+                      }
+                    }
+                )
+                .error(function(event, jqxhr, exception) {
+                    $("#requisition-input-group i.fa-times").removeClass('hidden'); 
+                    $("#requisition-input-group i.fa-check").addClass('hidden'); 
+                });
                   $('#req_no_input').keyup( $.debounce( 500, function() { 
                     $.getJSON( '/requisitions/get_requisiton_by_number', 
                         { requisition_no: $(this).val()}, 
@@ -268,6 +337,15 @@
                           var operation_id = data.requisition.operation_id; 
                           if( null !== operation_id) { 
                               $("#operation_id_select").val( operation_id); 
+                          }
+
+                          var commodity_id = data.requisition.commodity_id;
+                          var commodity_category_id = data.commodity_category_id
+                          if( null !== commodity_id) {
+                              $("#commodity_id_select").val( commodity_id); 
+                          }
+                          if( null !== commodity_category_id) {
+                              $("#commodity_category_id_select").val( commodity_category_id); 
                           }
 
                           var region_id = data.requisition.region_id; 

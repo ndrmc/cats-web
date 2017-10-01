@@ -124,7 +124,7 @@ $(document).ready(function() {
         var prompt = $('<option value=\"\">').text('-- Select --');
         var regexp = /:[0-9a-zA-Z_]+:/g;
         var observer = $('select#' + observer_dom_id);
-        var observed = $('\'' + '#' + observed_dom_id + '\'');
+        var observed = $('#' + observed_dom_id);
 
         if (!observer.val() && observed.size() > 1) {
           observer.attr('disabled', 'disabled');
@@ -134,7 +134,7 @@ $(document).ready(function() {
           observer.empty().append(prompt);
           if (observed.val()) {
             // url = url_mask.replace(regexp, observed.val());            
-            if(observed_dom_id == 'hub')
+            if(observed_dom_id == 'hub' || observed_dom_id == 'dispatch_hub_id')
             {
                 url = "/warehouses/" + observed.val() + ".json";
             }
