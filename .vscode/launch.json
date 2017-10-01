@@ -3,6 +3,16 @@
     "configurations": [
     
         {
+            "name": "Rails server",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rails",
+            "args": [
+                "server"
+            ]
+        },
+        {
             "name": "Debug Local File",
             "type": "Ruby",
             "request": "launch",
@@ -17,16 +27,6 @@
             "remoteHost": "127.0.0.1",
             "remotePort": "3000",
             "remoteWorkspaceRoot": "${workspaceRoot}"
-        },
-        {
-            "name": "Rails server",
-            "type": "Ruby",
-            "request": "launch",
-            "cwd": "${workspaceRoot}",
-            "program": "${workspaceRoot}/bin/rails",
-            "args": [
-                "server"
-            ]
         },
         {
             "name": "RSpec - all",

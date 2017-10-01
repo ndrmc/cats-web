@@ -114,8 +114,8 @@
       <tr>
             <th>Requisition Number</th>
             <th>Commodity</th>
-            <th>Allocated</th>
-            <th>Dispatched</th>
+            <th>Allocated (MT)</th>
+            <th>Dispatched (MT)</th>
             <th>Progress</th>
       </tr>
       </thead>
@@ -159,7 +159,7 @@
         <% $i = 0 %>
         <% while $i < @dispatches.count  do %>
           <tr>
-              <td><%= @dispatches[$i]['gin_no'] %></td>
+              <td><%= link_to @dispatches[$i]['gin_no'], edit_dispatch_path(@dispatches[$i]['id'])  %></td>
               <td><%= @dispatches[$i]['commodity'] %></td>
               <td><%= @dispatches[$i]['dispatch_qty'] %></td>
               <td><%= @dispatches[$i]['transporter'] %></td>
