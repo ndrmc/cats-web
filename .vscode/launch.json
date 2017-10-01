@@ -27,7 +27,7 @@
             "remoteHost": "127.0.0.1",
             "remotePort": "3000",
             "remoteWorkspaceRoot": "${workspaceRoot}"
-        },        
+        },
         {
             "name": "RSpec - all",
             "type": "Ruby",

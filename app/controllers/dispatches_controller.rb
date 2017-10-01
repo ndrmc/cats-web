@@ -41,7 +41,6 @@ class DispatchesController < ApplicationController
     end
 
     def new 
-       
         @dispatch = Dispatch.new
     end
 
@@ -61,7 +60,10 @@ class DispatchesController < ApplicationController
         
         respond_to do |format|
             if @dispatch.save
-                format.html { redirect_to dispatches_path, success: 'Dispatch was successfully created.' }
+                @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
+                @zone = Location.find(@woreda.parent_node_id)
+                @region = Location.find(@zone.parent_node_id)
+                format.html { redirect_to '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s, success: 'Dispatch was successfully created.' }
             else
                 format.html { render :new }
             end

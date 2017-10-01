@@ -77,6 +77,7 @@ class Dispatch < ApplicationRecord
         @dispatches = []
         Dispatch.joins( :transporter, dispatch_items: [:unit_of_measure, :commodity] ).where( dispatch_filter ).find_each do |dispatch|
             @gin_row = Hash.new
+            @gin_row['id'] = dispatch.id
             @gin_row['gin_no'] = dispatch.gin_no
             @gin_qty = 0
             dispatch.dispatch_items.find_each do |di|
