@@ -19,10 +19,12 @@ location1:
     name: 'AFAR'
     code: 'AF'
     location_type: :region
+    parent_node_id: 4
 location2:
     name: 'zone 1'
     location_type: :zone
 location3:
+    id: 3
     name: 'Adhar'
     location_type: :woreda
 location4:
@@ -30,3 +32,4 @@ location4:
     name: 'AMHARA'
     code: 'AM'
     location_type: :region
+    parent_node_id: 4
