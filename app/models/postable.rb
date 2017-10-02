@@ -209,10 +209,11 @@ module Postable
     debit = PostingItem.new({
                               account_id: statistics_account.id,
                               journal_id: receivable_journal.id,
-                              commodity_id: self.commodity_id,
+                              commodity_id: self.commodity_id,                              
                               commodity_category_id: Commodity.find(self.commodity_id).commodity_category_id,
                               quantity: -amount_in_ref,
-                              donor_id: self.organization_id
+                              donor_id: self.organization_id,
+                              project_id: self.id
 
     })
 
@@ -224,6 +225,7 @@ module Postable
                                commodity_category_id: Commodity.find(self.commodity_id).commodity_category_id,
                                quantity: amount_in_ref,
                                donor_id: self.organization_id,
+                               project_id: self.id
     })
     posting_items << credit
 
