@@ -12,7 +12,13 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if (params[:fdp_id].present?) %>
+      <%= link_to 'Cancel', '/en/dispatches?hub=' + params[:hub_id].to_s + '&operation=' + params[:operation_id].to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + params[:fdp_id].to_s,  :class => "btn btn-default"%>  
+    <% elsif (@dispatch.fdp_id.present?) %>
+      <%= link_to 'Cancel', '/en/dispatches?hub=' + @dispatch.hub_id.to_s + '&operation=' + @dispatch.operation_id.to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + @dispatch.fdp_id.to_s,  :class => "btn btn-default"%> 
+    <% else %>
       <%= link_to 'Cancel', dispatches_path,  :class => "btn btn-default"%>
+    <% end %>      
     </div>
   </div>
 </div>
