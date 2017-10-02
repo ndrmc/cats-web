@@ -23,17 +23,13 @@ class Bid < ApplicationRecord
     belongs_to :location, foreign_key: 'region_id'
     belongs_to :framework_tender, foreign_key: 'framework_tender_id'
    
-    enum status: [:draft, :approved, :canceled, :closed, :archived]
+    enum status: [:draft, :active, :closed]
 
      def self.get_index(status)
-         if status == 'approved'
-             return :approved
-         elsif status == 'canceled'
-             return :canceled
+         if status == 'active'
+             return :active
          elsif status == 'closed'
              return :closed
-        elsif status == 'archived'
-            return :archived
         else
             return :draft
         end

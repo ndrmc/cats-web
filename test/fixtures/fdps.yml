@@ -40,3 +40,11 @@ fdp2:
     zone: 'zone 1'
     region: 'Afar'
     location: location1
+
+fdp3:
+    id: '1'
+    name: 'sample fdp'
+    woreda: 'Adhere'
+    zone: 'zone 1'
+    region: 'Afar'
+    location: location1

@@ -13,6 +13,8 @@
   <div class="col-sm-8">
     <div class="title-action">
       <%= link_to 'New Bid', new_bid_path, :class => "btn btn-primary"%>
+      &middot;
+      <%= link_to 'Contracts', '/en/framework_tenders/contracts/' + @framework_tender.id.to_s, :class => "btn btn-info"%>
     </div>
   </div>
 </div>
@@ -130,9 +132,8 @@
       <table class="table table-striped">
         <thead>
           <tr>
-                       
-                        <th>Region</th>
                         <th>Bid number</th>
+                        <th>Region</th>
                         <th>Bid bond amount</th>
                         <th>Start date</th>
                         <th>Closing date</th>
@@ -146,11 +147,10 @@
         <tbody>
           <% @bids.each do |bid| %>
           <tr>
+                         <td><%= link_to bid.bid_number, 'bids/transporter_quotes/' + bid.id.to_s  %></td>
+                        <td><%= bid.location.name %></td>
+                       
                         
-                        <td><%= bid.location.name
-              %></td>
-                        <td><%= bid.bid_number
-              %></td>
                         <td><%= bid.bid_bond_amount
               %></td>
                         <td><%= bid.start_date

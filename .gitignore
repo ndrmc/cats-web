@@ -65,3 +65,6 @@ typings
 
 # Excel data imports
 /data
+
+.yardoc/
+doc/

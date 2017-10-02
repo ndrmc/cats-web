@@ -75,9 +75,9 @@ module Postable
       debit = PostingItem.new({
                                 account_id: stock_account.id,
                                 journal_id: good_issue_journal.id,
-                                hub_id: 1,
+                                hub_id: self.hub_id,
                                 fdp_id: self.fdp_id,
-                                warehouse_id: 1,
+                                warehouse_id: self.warehouse_id,
                                 donor_id: dispatch_line.organization_id,
                                 project_id: dispatch_line.project_id,
                                 batch_id: 1,
@@ -93,9 +93,9 @@ module Postable
       credit = PostingItem.new({
                                  account_id: dispatched_account.id,
                                  journal_id: good_issue_journal.id,
-                                 hub_id: 1,
+                                 hub_id: self.hub_id,
                                  fdp_id: self.fdp_id,
-                                 warehouse_id: 1,
+                                 warehouse_id: self.warehouse_id,
                                  donor_id: dispatch_line.organization_id,
                                  project_id: dispatch_line.project_id,
                                  batch_id: 1,

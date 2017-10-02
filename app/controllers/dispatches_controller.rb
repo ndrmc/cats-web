@@ -7,38 +7,47 @@ class DispatchesController < ApplicationController
             @dispatches = Dispatch.where gin_no: params[:gin_no]
             return
         end
-        
 
-        if params[:operation].present? && params[:hub].present? && params[:region].present?
-            filter_map = {hub_id: params[:hub], operation_id: params[:operation]}
+        if (params[:operation].present? && params[:hub].present? && params[:region].present? && params[:zone].present? && params[:woreda].present? )
+            if (params[:fdp].present?)
+                @fdp_ids = params[:fdp]
+            elsif (params[:woreda].present?)
+                @fdp_ids = Fdp.where( location_id: params[:woreda]).map { |l| l.id}
+            elsif (params[:zone].present?)
+                fdp_locations = Location.find(params[:zone]).descendants.where( location_type: :woreda).map { |d| d.id}
+                @fdp_ids = Fdp.where( location_id: fdp_locations).map { |l| l.id}
+            end
+
+            allocation_filter = { :'requisitions.operation_id' => params[:operation], :'requisition_items.fdp_id' => @fdp_ids }
+
+            requisitions = Requisition.joins(:requisition_items).where( allocation_filter ).pluck(:requisition_no).to_a
+
+            dispatch_filter = {:'dispatches.hub_id' => params[:hub], :'dispatches.operation_id' => params[:operation], :'dispatches.fdp_id' => @fdp_ids, :'dispatches.requisition_number' => requisitions }  
             
-            if params[:dispatch_date ].present? 
-                dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
+            gin_filter = {:'dispatches.hub_id' => params[:hub], :'dispatches.operation_id' => params[:operation], :'dispatches.fdp_id' => @fdp_ids }
 
-                filter_map[:dispatch_date] = dates[0]..dates[1]
-            end
+            @dispatch_summary = Dispatch.fdp_allocations(params[:hub], params[:operation], allocation_filter, @fdp_ids)                       
 
-            if params[:status ]
-                filter_map[:draft ] = params[:status ] == 'Draft'
-            end
-
-            region = Location.find params[:region]
-
-            fdp_locations = region.descendants.map { |d| d.id}.push params[:region] 
-
-            fdp_ids = Fdp.where( location_id: fdp_locations).map { |l| l.id}
-
-            filter_map[:fdp_id] = fdp_ids
-
-            @dispatches = Dispatch.joins( :dispatch_items ).where( filter_map ).distinct
+            @dispatches = Dispatch.fdp_dispatches(dispatch_filter)           
+            
         else 
-           
+            @dispatch_summary = []
             @dispatches = []
         end 
+        return @dispatches
     end
 
     def new 
-       
+        if (params[:requisition_no].present?)
+            @requisition = Requisition.includes(commodity: :commodity_category).where(:requisition_no => params[:requisition_no]).first
+            @commodity = @requisition.commodity
+            @category = @requisition.commodity.commodity_category
+        end
+        if (params[:fdp_id].present?)
+            @woreda = Location.find(Fdp.find(params[:fdp_id]).location_id)
+            @zone = @woreda.parent
+            @region = @zone.parent
+        end
         @dispatch = Dispatch.new
     end
 
@@ -58,7 +67,10 @@ class DispatchesController < ApplicationController
         
         respond_to do |format|
             if @dispatch.save
-                format.html { redirect_to dispatches_path, success: 'Dispatch was successfully created.' }
+                @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
+                @zone = Location.find(@woreda.parent_node_id)
+                @region = Location.find(@zone.parent_node_id)
+                format.html { redirect_to '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s, success: 'Dispatch was successfully created.' }
             else
                 format.html { render :new }
             end
@@ -68,6 +80,9 @@ class DispatchesController < ApplicationController
     def edit 
        
         @dispatch = Dispatch.find( params[:id])
+        @woreda = Location.find(Fdp.find(@dispatch.fdp_id).location_id)
+        @zone = Location.find(@woreda.parent_node_id)
+        @region = Location.find(@zone.parent_node_id)
     end
 
     def update
@@ -99,7 +114,10 @@ class DispatchesController < ApplicationController
 
         if @dispatch.update( dispatch_map )
             respond_to do |format|
-                format.html { redirect_to dispatches_path, notice: 'Dispatch was successfully updated.' }
+                @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
+                @zone = Location.find(@woreda.parent_node_id)
+                @region = Location.find(@zone.parent_node_id)
+                format.html { redirect_to '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s, success: 'Dispatch was successfully updated.' }
             end
         else
             respond_to do |format|

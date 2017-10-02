@@ -1,0 +1,122 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transport Requisitions</h2>
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to 'Home', '/' %>
+      </li>
+      <li class="active">
+        <strong>Transport Requisitions</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <a class="btn btn-primary" data-target="#new-transport-requisition" data-toggle="modal">
+          New Transport Requisition
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="row">
+      <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6" id="tr-operation-filter">
+          <label class='control-label'>Operation</label>
+          <%= select_tag :operation, options_from_collection_for_select(Operation.all.order(:name), 'id', 'name', params[:operation_id]), {:required => true,:class=> 'data-parsley-required form-control width-300px'} %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+            <th>Reference number</th>
+            <th>Region</th>
+            <th>No of Destinations</th>
+            <th>Total Qty.</th>
+            <th>Created date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transport_requisitions.each do |transport_requisition| %>
+            <tr>
+              <td>
+              <%= link_to transport_requisition.reference_number, transport_requisition_url('en',transport_requisition) %>
+              <td><%= transport_requisition.region_name %></td>
+              <td><%= transport_requisition.destinations %></td>
+              <td><%= transport_requisition.total_qty  %></td>
+              <td><%= transport_requisition.created_at.to_formatted_s(:long_ordinal) %></td>
+              <td><%= transport_requisition.status %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal inmodal" id="new-transport-requisition" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">New Transport Requisition</h4>
+      </div>
+      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag 'operation_tr',  options_from_collection_for_select(Operation.all, 'id', 'name', params[:operation_id] ) , {:required => false , :prompt => "-- Select an Operation --", :class => 'form-control width-100per' }  %>
+          </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <%= label_tag :region, "Region", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  'region_tr',  options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Select a Region --", :class => 'form-control width-100per' }  %>
+          </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <%= label_tag :bid, "Bid", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  'bid_tr',  options_from_collection_for_select(Bid.where(:status => :active), 'id', 'bid_number', params[:bid_id] ) , {:required => true , :prompt => "-- Select a Bid --", :class => 'form-control width-100per' }  %>
+          </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <%= label_tag :description, "Description", { :class => ' control-label'} %>
+          <div class="">
+            <%= text_area_tag 'description_tr', nil, class: 'form-control width-100per' %>
+          </div>
+        </div>
+        <div class="spinner">
+            <%= image_tag("loading-gif-15.gif", size: "80x50", alt: "loading..." , class: "menu_icon") %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <div class="pll-right" style="width:inherit;"> 
+            Continue adding
+            <%= check_box_tag 'keep_creating', false %>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 colxs-6">          
+          <button type="button" class="btn btn-primary" id="save-tr-btn">Save</button>
+          <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
