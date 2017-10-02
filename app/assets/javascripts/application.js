@@ -134,14 +134,23 @@ $(document).ready(function() {
           observer.empty().append(prompt);
           if (observed.val()) {
             // url = url_mask.replace(regexp, observed.val());            
-            if(observed_dom_id == 'hub')
+            if(observed_dom_id == 'hub' || observed_dom_id == 'dispatch_hub_id')
             {
                 url = "/warehouses/" + observed.val() + ".json";
             }
-            else if (observed_dom_id == 'zone') 
+            else if (observed_dom_id == 'zone' || observed_dom_id == 'region') 
             {
                 url = "/locations/" + observed.val() + "/children";
             }
+            else if (observed_dom_id == 'woreda')
+            {
+                url = "/fdps/location/" + observed.val()
+            }
+            else if (observer_dom_id == 'dispatch_dispatch_items__commodity_id')
+            {
+                url = "/commodities/get_by_category/" + observed.val()
+            }
+            
             // url = "/warehouses/" + observed.val() + ".json";
             $.getJSON(url, function (data) {
               $.each(data, function (i, object) {

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
  
   
 
+  
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'
@@ -12,21 +13,33 @@ Rails.application.routes.draw do
 
  scope "(:locale)", locale: /en|am/ do
 
+  get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
+  post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
+  resources :transport_requisitions
+  
    resources :bids
    get '/bids/request_for_quotations/:id', to: 'bids#request_for_quotations'
    post 'bids/upload_rfq', to: 'bids#upload_rfq'
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
+   get '/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
+   delete '/bids/remove_bid_quotation/:id', to: 'bids#remove_bid_quotation'
    post '/bids/:id/generate_winners', to: 'bids#generate_winners'
    get 'bids/view_bid_winners/:id', to: 'bids#view_bid_winners'
-
+   get 'bids/contracts/:id', to: 'bids#contracts'
+   get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
+   get 'bids/sign_contract/:id', to: 'bids#sign_contract'
+   
    resources :framework_tenders
-   get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'
+   get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'   
+   get 'framework_tenders/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
+
    resources :case_teams
 
    resources :permissions
   resources :departments
   resources :role_types
   resources :transporters
+  resources :transport_orders
   resources :transporter_addresses  
   get 'setting/index'
   devise_for :users
@@ -86,6 +99,8 @@ Rails.application.routes.draw do
   resources :fdps
   resources :fdp_contacts
   get 'fdps/location/:location_id', to: 'fdps#get_by_location'
+
+  get 'commodities/get_by_category/:commodity_category_id', to: 'commodities#get_by_category'
 
   resources :organizations
   resources :projects

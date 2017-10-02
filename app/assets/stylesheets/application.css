@@ -37,3 +37,8 @@
 	height: 50px !important;
 	background-color: #fff !important;
  }
+
+.scrollable-table {  
+    height: 200px !important;
+    overflow: scroll;
+}​

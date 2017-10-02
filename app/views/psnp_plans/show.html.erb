@@ -1,18 +1,23 @@
+<% can_edit = policy(PsnpPlan).edit? %>
+
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
     <h2><%= @psnp_plan.name %></h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">HRD</a>
+        Plan
+      </li>
+      <li>
+      <%= link_to "PSNP Annual Plans", psnp_plans_path %>        
       </li>
       <li class="active">
-        <strong>Show</strong>
+        <strong><%= @psnp_plan.name %></strong>
       </li>
     </ol>
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-    <% if policy(PsnpPlan).edit? %>
+    <% if can_edit %>
       <%= link_to  edit_psnp_plan_path(@psnp_plan),  :class => "btn btn-default"  do %>
         <i class="fa fa-edit"></i> 
         Edit
@@ -65,13 +70,13 @@
                             <td></td>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody>                        
                         <% @beneficiaries_by_region.each  do |aggregate| %>
                             <tr>
                                 <td><%= Location.find(aggregate.region_id).name %></td>
-                                <td><%= aggregate.total_beneficiaries %></td>
-                                <% if policy(PsnpPlan).edit? %>
-                                <% if policy(PsnpPlan).edit? %>
+                                <td><%= ActiveSupport::NumberHelper.number_to_delimited(aggregate.total_beneficiaries) %></td>
+                                <% if can_edit %>
+                                <% if can_edit %>
                                 <td><a href="/psnp_plans/psnp_plan_items?psnp_plan_id=<%= @psnp_plan.id %>&region_id=<%= aggregate.region_id %>"> <i class="fa fa-edit"></i> Edit</a></td>
                                 <%end%>
                                 <% end %>
@@ -100,11 +105,11 @@
                         <% @beneficiaries_by_region.each  do |aggregate| %>
                             <tr>
                                 <td><%= Location.find(aggregate.region_id).name %></td>
-                                <td><%= aggregate.total_beneficiaries %></td>
+                                <td><%= ActiveSupport::NumberHelper.number_to_delimited(aggregate.total_beneficiaries) %></td>
                                 <% @psnp_plan.ration.ration_items.each do |item| %>
-                                  <td><%= item.amount * aggregate.total_beneficiaries %></td>
+                                  <td><%= ActiveSupport::NumberHelper.number_to_delimited(item.amount * aggregate.total_beneficiaries) %></td>
                                 <% end %>
-                                <td><%= @psnp_plan.ration.ration_items.inject(0) { |result, ration_item| result + ration_item.amount } * aggregate.total_beneficiaries  %></td>
+                                <td><%= ActiveSupport::NumberHelper.number_to_delimited(@psnp_plan.ration.ration_items.inject(0) { |result, ration_item| result + ration_item.amount } * aggregate.total_beneficiaries) %></td>
                             </tr>
                         <% end %>
                     </tbody>

@@ -50,35 +50,28 @@
                         <td><%= Date::MONTHNAMES[framework_tender.ending_month]
               %></td>
                         <td><%= framework_tender.status
-              %></td>
-                       
+
+              %></td>                        
+
                         <td>
-              <%= link_to 'Warehouse Selection', '/en/warehouse_selections/' + framework_tender.id.to_s %> &middot;
-              <%= link_to 'Edit', edit_framework_tender_path(framework_tender) %> &middot;
-              <%= link_to 'Delete', framework_tender, method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
-              <% if framework_tender.status != 'archived' %>
-                <%= link_to 'Bids', bids_path(:framework_tender_id => framework_tender.id) %>
-              <% end %>
+              
+              <%= link_to 'Edit', edit_framework_tender_path(framework_tender), :class => "btn btn-warning" %> &middot;
+              <%= link_to 'Delete', framework_tender, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
+              
               <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
+                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">More...
                       <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu pull-right">
                       <li>
-                       <%= link_to 'Approve', 'framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "approved" %> 
-                      </li>
-                     
+                       <%= link_to 'Warehouse Selection', '/en/warehouse_selections/' + framework_tender.id.to_s %>
+                      </li>                     
                       <li>
-                       <%= link_to 'Cancel', 'framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "canceled" %> 
+                        <% if framework_tender.status != 'archived' %>
+                          <%= link_to 'Bids', framework_tender_path(framework_tender.id) %>
+                        <% end %> 
                       </li>
 
-                       <li>
-                       <%= link_to 'Close', 'framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "closed" %> 
-                      </li>
-
-                       <li>
-                       <%= link_to 'Archive', 'framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "archived" %> 
-                      </li>
                     </ul>
                   </div>
             </td>

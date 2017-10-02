@@ -1,0 +1,192 @@
+#-----------------------------------------------------
+# page settings
+#-----------------------------------------------------
+
+docx.page_numbers true do
+  align :center
+  label 'Page'
+end
+
+docx.font name: 'Courier New'
+
+docx.style id: 'AltFont', name: 'altFont', font: 'Palatino'
+
+docx.style id: 'IndentLeft', name: 'Indent Left', indent_left: 360
+
+#-----------------------------------------------------
+# NDRMC - Framework Contract Template
+#-----------------------------------------------------
+docx.h1 'NATIONAL DISASTER RISK MANAGEMENT COMMISSION'
+docx.hr
+docx.h2 'FRAMEWORK PURCHASE CONTRACT OF COMMODITY TRANSPORTATION SERVICE'
+
+docx.p
+
+docx.h3 @contract_no                         
+docx.h3 Time.now.to_formatted_s(:long_ordinal)
+docx.h3 'Printed by: ' + @printed_by
+docx.p
+docx.h4 'ARTICLE 1/ CONTRACTING PARTIES.'
+docx.p 'This Contract is made by and between:-'
+docx.p 'National Disaster Risk Management Commission, here in after referred it as: "cosigner" Address:- Addis Ababa Nefas Silk Lafto Woreda 8  Tel 0114 42 19 66/0114 42 12 24', style: 'IndentLeft'
+docx.p
+docx.p @transporter_info, style: 'IndentLeft'
+docx.p
+docx.p
+
+docx.h4 'ARTICLE 2/ Description of cargo, origins and destinations.'
+docx.p 'The cargo is composed of food aid commodities as follows:'
+docx.ul do
+  li 'Cereals in grain (wheat, maize) in Polypropylene bags of 50kgs.'
+  li 'Corn Soya blend in double paper bags with plastic inner lining of 25kgs.'
+  li 'Vegetable oil in plastic jerry cans, in cartons of 23 to 25kgs.'
+end
+docx.p
+docx.p 'Commodities will be loaded from NDRMC warehouses and federal Government central Warehouses located in the following locations:'
+docx.p ' -Nazareth - Dire Dawa - Kombolcha -  Shashamene – Sodo -  Woreta -  Mekele -  Shinile.'
+docx.p
+
+docx.h4 'ARTICLE 3/ Validity of the contract and the tariffs.'
+docx.p 'The clauses and conditions of the present contract will remain valid for a period of six months/rounds, from the 12/2/2012 to then 12/212/2012'
+docx.p
+
+docx.h4 'ARTICLE 4/ Commencement and termination of operations.'
+docx.p 'The allocated tonnages for each commodity to the selected destinations will be communicated by the consignor to the carrier on monthly basis through a detailed transport order, subject to the available trucking capacity the carrier will have offered for the period concerned. The transport order will provide the time frame for implementation of the transportation, dates for commencement and termination of operations. '
+docx.p
+
+docx.h4 'ARTICLE 5/ Prices.'
+docx.p '5.1 Transport prices in ETB per quintal for each origin and corresponding destinations are detailed in the table in annex to this contract. These prices are fixed for the duration of the present contract.'
+
+docx.p '5.2 In the eventthat the cost of fuel increases or decreases by more than 10 % from the cost in strengthat the date of award of contract (official price in a said location), the cosigner will revise its transport rates considering that the fuel represents 25% of the agreed tariffs. This adjustment will take place on the first day of the month following the 10% increase (or decrease) on fuel.'
+
+docx.h4 'ARTICLE 6/ Performance bond.'
+docx.p 'The carrier shall deposit a performance bond in advance of the operations, for an amount equivalent to 10% of the total amount of the first transport order received within the contract. The performance bond shall remain in force for the entire duration of the contract and shall be valid for an additional thirty days beyond expiry of the contract. When the transporting agency requests for release of the performance bond after payment of service price is effected given the task of transporting is proved  accomplished without default, the cosigner shall release the performance bond within five days from the date of request.'
+
+docx.h4 'ARTICLE 7/ Obligations of the cosigner.'
+
+docx.p '7.1 Loading/unloading operations. The consignor will organize labor that loads relief goods at its own expense at point of departure, and will get labor organized at point of destination, by remitting expense to the concerned body ahead of time.'
+
+docx.p '7.2 Loading time. The consignor shall register the vehicles which arrive during working hours in the freight order the time, dare and rear of arrival as well as departure of freight vehicles. It shall also maintain the order of arrival of vehicles for loading. However, the cosigner shall ensure that the vehicles complete loading within 24 hours if the loading is made from up to warehouses 2 units, and within 36 hours if loading is from over 2 warehouse units.'
+
+docx.p '7.3 Unloading time. As the vehicle arrives at the destination during regular office hours to deliver the load, the receiving warehouse staff or a person delegated to receive shall do so on the copy of the freight order, registering time, and date of arrival , time and date of completion of unloading. Upon doing so, the receiver shall, on the same date, provide acquisition receipt of already prepared format in the official language of the Federal Government ( Amharic), bearing his signature and the stamp(seal).In the event that the acquisition letter in Amharic is not available, acquisition letter in the regional language, should be submitted along with its legally translated version.'
+
+docx.p '7.4 Invoice and deductions. As of the date the transportation agency ( the carrier) submitted correct and complete documents regarding its obligations under this contract the consignor shall pay transportation service price within 20 days in accordance with the specification of the contract , provided that the documents are acceptable. However if the cosigner obtains evidence that goods are fully or partly lost, or damaged during reckless handling , or goods were not delivered at destination, the cosigner is entitled to withhold  double of the price of the goods, fully or partly lost, damaged or not delivered. If the cause of the damage is found to be not due to reckless or improper handling, the cosigner will withhold only the price of the relief goods.'
+
+docx.p '7.5 Inspection of goods.The consignor has the right to follow up and inspect condition of the relief goods en route while in the carrier’s as found necessary.'
+
+docx.p '7.6 Change of destination. Even under the absence of force majeure, when the cosigner request the carrier to unload before reaching or after the destination stated in the contract, the carrier should meet the request. The compensation for the damage to the carrier shall be resolved amicably, taking into account the new transportation price.'
+
+docx.p '7.7. Change of tonnage/quantities. The cosigner may increase or decrease the amount of relief goods indicated on the transport order, taking into account the capacity of the vehicles the carrier brought in accordance with transport regulations, by prior written notification presented to the carrier, with respect of the increased freight. The duration of loading shall be extended in proportion to the time set in the contract.'
+
+docx.p '7.8. Registration of vehicles. The cosigner registers plate numbers at the loading warehouse of vehicles the transporting agency brought for transportation service, name of the driver and driving license number, prepares issue documents and upon having signed handover to the driver.'
+docx.p
+
+docx.h4 'ARTICLE 8/ Obligations of the carrier.'
+docx.p '8.1 Trucks condition. The carrier will make available suitable dry vehicles at the central warehouses to transport relief goods indicated in the annex table from source to destination.'
+
+docx.p '8.2 Loading time-evacuation. The carrier shall withdraw relief goods indicated in annex table from the warehouse as within duration stipulated in the transport order. However, the carrier should at least load half of the freight within half of the time limit provided in the transport order. In case of documented failure, the carrier will be suspended from the short list. The date of arrival relief goods at destination shall be considered taking the highest distance of discharging stations.'
+
+docx.p '8.3 Good care. The carrier is obliged to take due care to protect the relief goods received from damage and loss and to deliver same under the same condition and amount at the discharging stations.'
+
+docx.p '8.4 Obligation to perform. The carrier should, ahead of the start, maintain positive accomplishment of the transport service with respect to capacity and 
+safety of vehicles made available. If defects or malfunctioning are identified with the vehicles in the midst of transporting, the carrier cannot be free from 
+obligations labeling the defects or malfunctioning as condition beyond capacity'
+
+docx.p '8.5 Increase of tonnage. If the carrier encounters genuine challenge once it brought in the vehicle that has met the required capacity for loading and the safety and already out upon loading the freight, and if it becomes obligatory to change the vehicle, the situation should be notified to the consignor by fax or by any available means in writing by stating the problem, the location where the problem occurred, plate number of the replacing vehicle and obtain accord. But if the incident occurs in areas where there is no communication facility, it can report to the local government organs, receive evidence and use an alternative vehicle to deliver the relief goods. Under such occurrence the receiver shall record on acquisition receipt the incident, plate number of the new vehicle, and name of driver.'
+
+docx.p '8.6 Intermediate offloading or storage. Without prejudice to statement under ( 8.5) as above, if the carrier is found unloading the goods either for his personal or over reason without consent of the cosigner before reaching destination agreed upon, or found keeping at an unapproved location or loading onto a different vehicle, besides being liable to the crime committed, pertinent provisions of this contract shall apply.'
+
+docx.p '8.7 Goods inspection. The carrier is obliged to uninterruptedly follow up and inspect the goods its transport from departure to destination.'
+
+docx.p '8.8 Submission of invoice. Upon accomplishment of transport services in full conformity with this contract, the carrier should submit a copy of the freight order to which seal/stamp is affixed, copy of the document of issue, and the original acquisition document within 60 days. Nevertheless even if a letter as evidence to delivery of relief goods is obtained, it should notify the cosigner with acceptable reasons of its inability to get the require acquisition receipt within 60 days.'
+
+docx.p '8.9 Change of address.  If the carrier changes its permanent address, as stated in the contract, it is obliged to immediately communicate the new address to the cosigner.'
+
+docx.p '8.10 Performance bond. See new article 6'
+
+docx.p 
+
+docx.h4 'ARTICLE 9/ Responsibilities of parties for Truck detention.'
+
+docx.p 'Payment of detention/demurrage. After a vehicle is brought in for loading is registered, if it is found that owing to the fault or default of the cosigner, the vehicle is kept waiting without loading for more than 24 hours for 1 or 2 warehouses, and 36 hours for more than 2 warehouses respectively, the cosigner shall pay demurrage only for wasted official working hours beyond the limit set herein above at the rate of 40 ETB (forty Birr) per hour for truck with trailer and 30 ETB (thirty Birr) per hour for truck without trailer. However, this article shall not apply to vehicles brought in and registered within the last 4 days before the decline.'
+
+docx.p 'Except for Saturday, Sunday and national holidays,if the vehicle that arrived at destination during working hours is kept for more than one day ( 24 hours) without loading due to the cosigner, the cosigner shall pay demurrage for the wasted time beyond the limit set only for working hours of each day at the rate of ETB 40 ( forty Birr) per truck with trailer and ETB 30 (thirty Birr) for trucks without trailer.'
+
+docx.h4 'ARTICLE 10/ Non-Performance, losses and damages of cargo.'
+
+docx.p '10.1. Deduction of losses and/ or damages. If the relief goods are damaged or lost from the date received until the time they are delivered at destination, due to lack of proper handling or care, the carrier shall pay the double of the price of the goods at the market price of the time. But if the loss or damage is not because of proper handling or care, it shall pay the price of the goods.'
+
+docx.p '10.2. Suspension from the selected list. If the carrier either performs acts contrary to the terms of the contract or fails to effect and meet its  obligation of the contract, the cosigner may retain the performance bond deposited to the cosigner. If it breaches performance of the contract or fails to perform obligation of the contract, the cosigner may suspend it from any transportation service purchase bid from three months up to three years, depending on the severity of the breach.'
+
+docx.p '10.3. Litigation. If the cosigner obtain evidence that the carrier failed to deliver the relief goods partly or fully, and if the issue is likely to lead to litigation or already in the process and if the money payable to the carrier is with the cosigner, the cosigner may withhold payment equivalent to double of estimated price of the goods under litigation'
+
+docx.p
+
+docx.h4 'ARTICLE 11/ Force Majeure (6 points)'
+
+docx.p '11.1. Notification. If it becomes absolutely impossible for the carrier to deliver the relief goods to the destination recorder in the annex table due to conditions of force majeure, being flood, flash water, bridge damage, road damage/blockage, continuous rain, mud, security breakdown, the carrier shall promptly notify the cosigner. The notification of the situation and the decision by the cosigner shall be in writing.'
+
+docx.p '11.2. Adjustment of rates for shorter or longer distances.'
+
+docx.p 'A - If it becomes absolutely imperative to unload the relief goods in the vicinity before arriving at destination due to Force Majeure and the cosigner agrees with the unloading, the service shall be done as follows: '
+
+docx.p 'A1 - If the station where the relief goods are unloaded is specified in the table in annex, the payment shall be made according to the specified price or price recorded at that time.', style: 'IndentLeft'
+
+docx.p 'A2 - If the locality where the relief goods are unloaded is not included in the table in annex, the payment shall be made by calculating against the distance covered (km).', style: 'IndentLeft'
+
+docx.p 'B - If, upon cosigner’s request the relief goods are unloaded at a longer distance than the specified destination, payment of extra distance shall be made:'
+
+docx.p 'B1 - If the locality where the relief goods are unloaded is included in the table in annex, the payment shall be made according to the  specified price.', style: 'IndentLeft'
+
+docx.p 'B2 - If the locality where the goods are unloaded is not in the table in annex, the payment shall, be made on the basis of the distance covered(km).', style: 'IndentLeft'
+
+
+docx.p '11.3. Documented evidence. If the carrier moved backward along the route it covered , by written request of the cosigner because of Force Majeure, the carrier shall present written evidence from Government organ of the locality it arrived by the time requested to return. Then the transportation service payment shall be made for round trip up to the locality it unloaded the goods in accordance with the calculation agreed upon in the contract. A single trip shall be made for the distance from initial departure up to the unloading locality.'
+
+docx.p '11.4. Failure by both parties. If the two parties fail to fulfill their obligations due to Force Majeure, they shall be free from payment of compensation. The party that claims state of Force Majeure is obliged to prove its claim by evidence. However, the other party may disprove (contest?) it by submitting tangible evidence.'
+
+docx.p '11.5. Conditions of Force Majeure. Conditions of Force Majeure other than those stated under article 11.1 shall be governed by the Ethiopian Civil Code.'
+
+docx.h4 'ARTICLE 12/ Special resolution to be effected by cosigner.'
+
+docx.p 'Dispute arising out of the need to change the place of destination stated in the contract, due to Force majeure, as well as demurrage and tariff payment shall be resolve by the written statement of resolution which the cosigner gives in accordance with the contract'
+
+docx.h4 'ARTICLE 13/ Relevant documents in case of litigation.'
+
+docx.p 'If disagreement arises out of this contract, the contract, the invitation to bid, the bids, the price specifications submitted and accepted by the carrier, the transport order the freight order, and issuing document prepared by the cosigner, the acquisition document prepared by the receiver are the relevant documents. This contract shall come into force as of the date the two parties signed.'
+
+docx.p
+docx.p
+docx.p
+
+docx.h4 'For cosigner                                          For Transporting Agency'
+docx.p  'Name : ________________________               Name : ________________________'
+docx.p  'Signature :  __________________               Signature : ____________________'
+docx.p  'Date : ________________________               Date : ________________________'
+
+docx.p
+docx.p
+
+docx.h4 'Witnesses'
+docx.p  '   Name                                                                              Signiture '
+docx.p  '1) ___________________________________________          ______________________'
+docx.p  '2) ___________________________________________          ______________________'
+
+docx.p
+docx.p
+docx.p
+
+docx.h4 'CONTRACT AMENDEMENT ANNEX'
+
+docx.p 'TRANSACTION DETAIL'
+
+docx.p
+docx.p
+
+docx.p @region_name
+docx.p @bid_number
+docx.p @bid_start_date
+docx.table @won_locations, border_size: 4 do
+  cell_style rows[0],    bold: true,   background: '3366cc', color: 'ffffff'
+  cell_style cells,      size: 18, margins: { top: 100, bottom: 0, left: 100, right: 100 }
+end

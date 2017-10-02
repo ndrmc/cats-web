@@ -52,7 +52,10 @@ module BidsHelper
             puts "Case 5: BidQuotationDetail: #{bid_quo_det_obj.id}. Current_Rank: #{@current_rank}, Current_Location: #{@current_location_id}, Current_Warehouse: #{@current_warehouse_id}, CurrentTariff: #{@current_tariff}, Bid_Tariff: #{bid_quo_det_obj.tariff}"
           end
           if (bid_quo_det_obj.save)
-              @result = true
+            @bid = Bid.find(id)
+            @bid.status = :active
+            @bid.save
+            @result = true
           end  
         end
         records = BidQuotation.joins(:bid_quotation_details).where(:bid_id => params[:id]).select(:id, 'bid_quotation_details.id AS bid_quotation_detail_id', :transporter_id, :bid_id, 'bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff').order('bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff')
