@@ -16,9 +16,6 @@ class DispatchesController < ApplicationController
             elsif (params[:zone].present?)
                 fdp_locations = Location.find(params[:zone]).descendants.where( location_type: :woreda).map { |d| d.id}
                 @fdp_ids = Fdp.where( location_id: fdp_locations).map { |l| l.id}
-            else
-                fdp_locations = Location.find(params[:region]).descendants.where( location_type: :woreda).map { |d| d.id}
-                @fdp_ids = 18            
             end
 
             allocation_filter = { :'requisitions.operation_id' => params[:operation], :'requisition_items.fdp_id' => @fdp_ids }
