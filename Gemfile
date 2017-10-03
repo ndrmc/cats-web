@@ -90,8 +90,8 @@ gem 'hirb-unicode'
 gem 'terminal-table'
 
 gem 'rack-cors', :require => 'rack/cors'
-gem 'rubyzip', '= 1.1.0'
-gem 'axlsx', '= 2.0.1'
+gem 'rubyzip', '= 1.1.7'
+gem 'axlsx', '2.1.0.pre'
 gem 'axlsx_rails'
 gem "graphql"
 gem "graphiql-rails"
