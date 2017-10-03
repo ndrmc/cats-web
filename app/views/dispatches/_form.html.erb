@@ -302,8 +302,8 @@
 
 
                       var operation_id = data.requisition.operation_id; 
-                      if( null !== operation_id) { 
-                          $("#operation_id_select").val( operation_id); 
+                      if( null !== operation_id) {                         
+                          $("#dispatch_operation_id").val( operation_id); 
                       }
 
                       var region_id = data.requisition.region_id; 
@@ -336,7 +336,8 @@
 
                           var operation_id = data.requisition.operation_id; 
                           if( null !== operation_id) { 
-                              $("#operation_id_select").val( operation_id); 
+                            $("#dispatch_operation_id").val( operation_id); 
+                            alert('Op_ID: ' + operation_id);
                           }
 
                           var commodity_id = data.requisition.commodity_id;
