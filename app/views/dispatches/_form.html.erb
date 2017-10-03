@@ -181,7 +181,7 @@
                       </td>
                       <td>
                       <% if(@category.present?) %>
-                        <%= select_tag 'dispatch[dispatch_items[][unit_of_measure_id]]',  options_from_collection_for_select( UnitOfMeasure.where( :uom_category_id => @category.id), 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
+                        <%= select_tag 'dispatch[dispatch_items[][unit_of_measure_id]]',  options_from_collection_for_select( UnitOfMeasure.where( :uom_category_id => @commodity.uom_category_id), 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
                       <% else %>
                         <select name="dispatch[dispatch_items[][unit_of_measure_id]]" id="uom-select" class="form-control" data-parsley-required>
                           <option value="">-- Choose --</option>
