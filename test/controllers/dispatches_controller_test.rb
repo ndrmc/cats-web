@@ -51,8 +51,8 @@ class DispatchesControllerTest < ActionDispatch::IntegrationTest
     end
 
     @woreda = @fdp.location
-    @zone = Location.find(@woreda.parent_node_id)
-    @region = Location.find(@zone.parent_node_id)
+    @zone = @woreda.parent
+    @region = @zone.parent
     assert_redirected_to '/en/dispatches?hub=' + @hub.id.to_s + '&operation=1&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + @fdp.id.to_s
   end
 
