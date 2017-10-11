@@ -40,7 +40,7 @@ class UnitOfMeasure < ApplicationRecord
     elsif uom_type == 'small'
       result = value/ratio
     end
-    result.to_i
+    result.to_f
   end
 
   ##
