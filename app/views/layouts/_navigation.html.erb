@@ -88,7 +88,7 @@
       </li>
        <% if policy(Dispatch).index? %>
       <li class="<%= 'active' if is_active_controller('dispatches')  %>">
-            <%= link_to t(:dispatch), dispatches_path %>
+            <%= link_to t(:dispatch), "/dispatches/basic" %>
       </li>
       <%end%>
       <%if policy(Delivery).index? %>
