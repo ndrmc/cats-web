@@ -6,6 +6,10 @@ class DispatchPolicy < ApplicationPolicy
        @current_user.has_permission('Dispatch') 
     end
 
+    def basic?
+        @current_user.has_permission('Dispatch') 
+    end
+
     def new?
        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
