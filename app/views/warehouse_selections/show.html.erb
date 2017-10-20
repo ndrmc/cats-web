@@ -118,7 +118,7 @@
         <%= select_tag :region, options_from_collection_for_select(Location.where({location_type: 'region'}).order(:name), 'id', 'name', params[:region]), {:required => true,:class=> 'data-parsley-required width-300px', "data-ftid" => params[:id]} %>
       </div>
       <div class="col-md-6 col-sm-6 col-xs-6 text-right">
-        <% if (@framework_tender&.status == 'draft') %>
+        <% if (@framework_tender&.status == 'open') %>
           <a class="btn btn-primary" data-ft-id="<%= @framework_tender_id %>" data-target="#add-warehouse-assignment" data-toggle="modal">
               Add Warehouse Assignment
           </a>
