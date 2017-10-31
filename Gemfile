@@ -64,6 +64,8 @@ gem 'annotate'
 # Ancestry gem for graph data models
 gem 'ancestry'
 
+gem 'bunny'
+
 # Mongodb gem
 #gem 'mongoid', git: 'https://github.com/mongodb/mongoid.git'
 

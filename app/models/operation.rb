@@ -25,6 +25,8 @@
 #
 
 class Operation < ApplicationRecord
+  include Send
+
   enum status: [:draft, :ongoing, :completed, :archived]
 
   belongs_to :hrd
@@ -36,6 +38,8 @@ class Operation < ApplicationRecord
   has_many :transport_orders
 
   before_validation :reset_plan_id
+
+  after_save :pre_send
 
   validates :program_id, presence: {message: " is required!"}
   validates :name, presence: {message: " is required!"}
