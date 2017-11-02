@@ -3,19 +3,18 @@
     <h2>Dispatches</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Stock</a>
+        <a href="/">Home</a>
       </li>
       <li class="active">
-        <strong>Dispatches</strong>
+        <a href="/dispatches/basic">Dispatches</a>
+      </li>
+      <li class="active">
+        <strong>Advanced</strong>
       </li>
     </ol>
   </div>
   <div class="col-sm-8">
-    <div class="title-action">
-     <% if policy(Dispatch).new? %>
-      <%= link_to 'New Dispatch', new_dispatch_path, :class => "btn btn-primary"%>
-    <%end%>
-    </div>
+    
   </div>
 </div>
 

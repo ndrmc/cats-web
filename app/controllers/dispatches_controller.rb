@@ -3,11 +3,6 @@ class DispatchesController < ApplicationController
 
     def index
        
-        if params[:find].present? 
-            @dispatches = Dispatch.where gin_no: params[:gin_no]
-            return
-        end
-
         if (params[:operation].present? && params[:hub].present? && params[:region].present? && params[:zone].present? && params[:woreda].present? )
             if (params[:fdp].present?)
                 @fdp_ids = params[:fdp]
@@ -37,6 +32,14 @@ class DispatchesController < ApplicationController
         return @dispatches
     end
 
+    def basic
+        @dispatches = []
+        if params[:find].present? 
+            @dispatches = Dispatch.where gin_no: params[:gin_no]
+            return
+        end
+    end
+
     def new 
         if (params[:requisition_no].present?)
             @requisition = Requisition.includes(commodity: :commodity_category).where(:requisition_no => params[:requisition_no]).first
@@ -64,13 +67,19 @@ class DispatchesController < ApplicationController
         @dispatch = Dispatch.new( dispatch_map )
         @dispatch.created_by = current_user.id
         
-        
+        @path = ''
+        if(params[:basic].present?)
+            @path = '/en/dispatches/basic?utf8=✓&gin_no=' + @dispatch.gin_no.to_s + '&find=Go'
+        else
+            @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
+            @zone = Location.find(@woreda.parent_node_id)
+            @region = Location.find(@zone.parent_node_id)
+            @path = '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s
+        end
+
         respond_to do |format|
             if @dispatch.save
-                @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
-                @zone = Location.find(@woreda.parent_node_id)
-                @region = Location.find(@zone.parent_node_id)
-                format.html { redirect_to '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s, success: 'Dispatch was successfully created.' }
+                format.html { redirect_to @path, success: 'Dispatch was successfully created.' }
             else
                 format.html { render :new }
             end
@@ -85,8 +94,7 @@ class DispatchesController < ApplicationController
         @region = Location.find(@zone.parent_node_id)
     end
 
-    def update
-        
+    def update   
 
         @dispatch = Dispatch.find(params[:id])
 
@@ -111,13 +119,20 @@ class DispatchesController < ApplicationController
         dispatch_map = dispatch_params.except(:dispatch_items)
 
         dispatch_map[:dispatch_items] = dispatch_items
+        
+        @path = ''
+        if(params[:basic].present?)
+            @path = '/en/dispatches/basic?utf8=✓&gin_no=' + @dispatch.gin_no.to_s + '&find=Go'
+        else
+            @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
+            @zone = Location.find(@woreda.parent_node_id)
+            @region = Location.find(@zone.parent_node_id)
+            @path = '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s
+        end
 
         if @dispatch.update( dispatch_map )
             respond_to do |format|
-                @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
-                @zone = Location.find(@woreda.parent_node_id)
-                @region = Location.find(@zone.parent_node_id)
-                format.html { redirect_to '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s, success: 'Dispatch was successfully updated.' }
+                format.html { redirect_to @path, success: 'Dispatch was successfully updated.' } 
             end
         else
             respond_to do |format|
