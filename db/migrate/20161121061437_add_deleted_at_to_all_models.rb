@@ -5,7 +5,6 @@ class AddDeletedAtToAllModels < ActiveRecord::Migration[5.0]
 				:accounts,
 				:bid_plan_items,
 				:bid_plans,
-				:bids,
 				:bid_submissions,
 				:bid_winners,
 				:commodity_categories,
