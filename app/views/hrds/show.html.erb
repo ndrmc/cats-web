@@ -18,7 +18,11 @@
         Edit
       <% end %>
     <%end%>
-    </div>
+    <%= link_to  hrd_path(@hrd, format: "pdf"),  :class => "btn btn-default"  do %>
+        <i class="fa fa-edit"></i> 
+        Print
+      <% end %>
+       </div>
   </div>
 </div>
 <div class="row">
