@@ -116,8 +116,10 @@ Rails.application.routes.draw do
 
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
+  get '/receipts/receipt_report', to: 'receipts#receipt_report'
+  post '/receipts/receipt_report_generate', to: 'receipts#receipt_report_generate'
   resources :receipts
-
+  
   get '/receipts/return_receipt_detail/:id', to: 'receipts#return_receipt_detail'
 
   get '/receipts/getProjectCodeStatus/:id', to: 'receipts#getProjectCodeStatus'

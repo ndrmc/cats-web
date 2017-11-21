@@ -28,6 +28,54 @@ class ReceiptsController < ApplicationController
 
   end
 
+def show
+
+  
+end
+
+def receipt_report_generate
+
+  if params[:hub].present?
+       filter_map = {hub_id: params[:hub]}
+
+      if params[:received_date ].present?
+        dates = params[:received_date].split(' - ').map { |d| Date.parse d }
+
+        filter_map[:received_date] = dates[0]..dates[1]
+      end
+      if params[:status ]
+        filter_map[:draft ] = params[:status ] == 'Draft'
+      end
+            @receipts = Receipt.find_by_sql(["SELECT h.name as hub, s.grn_no, s.plate_no, s.waybill_no, c.name as commodity, rl.quantity, u.name as unit,p.project_code, o.name as donor FROM receipts s 
+                                      inner join receipt_lines rl on s.id = rl.receipt_id
+                                      inner join unit_of_measures u on u.id = rl.unit_of_measure_id
+                                      inner join projects p on p.id = rl.project_id
+                                      inner join commodities c on c.id = rl.commodity_id
+                                      inner join hubs h on h.id = s.hub_id
+                                      left outer join Organizations o on o.id = s.donor_id
+                                      WHERE s.hub_id = ? AND s.received_date >= ? AND s.received_date <= ? ",params[:hub], dates[0],dates[1]])
+      
+    else
+      @receipts = []
+    end
+
+    hub = Hub.find(params[:hub])
+    respond_to do |format|
+            format.html
+            format.pdf do
+            pdf = ReceiptPdf.new(@receipts,dates[0],dates[1],hub.name)
+            send_data pdf.render, filename: "receipt_.pdf",
+            type: "application/pdf",
+            disposition: "inline"
+            end
+        end
+ 
+end
+
+def receipt_report
+
+end
+
 
   def new
     authorize Receipt
