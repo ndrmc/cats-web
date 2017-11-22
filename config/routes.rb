@@ -132,6 +132,7 @@ Rails.application.routes.draw do
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
   get '/requisitions/summary/:request_id', to: 'requisitions#summary'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
+  get '/requisitions/print', to: 'requisitions#print'
 
   resources :requisitions
   resources :gift_certificates

@@ -1,7 +1,7 @@
 class RequisitionsController < ApplicationController
   before_action :set_requisition, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-  before_action :authorize_requisition, except: [:show]
+  before_action :authorize_requisition, except: [:show, :print]
   # GET /requisitions
   # GET /requisitions.json
   def index
@@ -12,7 +12,18 @@ class RequisitionsController < ApplicationController
     end
   end
 
-
+  def print
+    @requisition_items = RequisitionItem.includes(:fdp, requisition: [:commodity, ration: :ration_items, operation: :program]).where(:'requisitions.operation_id' => params[:operation], :'fdps.location_id' => Location.find(params[:region]).descendants.where(location_type: :woreda)).where("beneficiary_no > 0")
+    respond_to do |format|
+      format.html
+      format.pdf do
+          pdf = RequisitionPdf.new(@requisition_items)
+          send_data pdf.render, filename: "requisition_#{@requisition_items.first.requisition.id}.pdf",
+          type: "application/pdf",
+          disposition: "inline"
+      end      
+    end
+  end
 
   # GET /requisitions/new
   def new
