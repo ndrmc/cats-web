@@ -11,12 +11,15 @@ class ReceiptPdf < PdfReport
 
 
 def receipt
+    bounding_box([bounds.left, bounds.top - 100 ], :width => bounds.width, :height => bounds.height - 150) do
     table receipt_items do
       row(0).font_style = :bold
       columns(1..3).align = :right
       self.row_colors = ["DDDDDD", "FFFFFF"]
       self.header = true
     end
+end
+
 end
 
     def receipt_items
