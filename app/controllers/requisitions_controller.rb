@@ -13,7 +13,7 @@ class RequisitionsController < ApplicationController
   end
 
   def print
-    @requisition_items = RequisitionItem.includes(:fdp, requisition: [:commodity, ration: :ration_items, operation: :program]).where(:'requisitions.operation_id' => params[:operation], :'fdps.location_id' => Location.find(params[:region]).descendants.where(location_type: :woreda)).where("beneficiary_no > 0")
+    @requisition_items = RequisitionItem.includes(:fdp, requisition: [:commodity, ration: :ration_items, operation: :program]).where(:'requisitions.id' => params[:id]).where("beneficiary_no > 0")
     respond_to do |format|
       format.html
       format.pdf do

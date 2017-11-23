@@ -6,6 +6,10 @@ class RequisitionPdf < PdfReport
         @requisition = @requisition_item_objs.first.requisition
         header "#{@requisition.operation.program.name} Program \t\t-\t\t Allocation for #{@requisition.operation.name}"
         requisitions
+        text "\n"
+        text "\n"
+        text "\n"
+        text "Prepared by: ...................................................    Certified by: ..................................................."
         footer "Commodity Allocation and Tracking System"
     end
 
