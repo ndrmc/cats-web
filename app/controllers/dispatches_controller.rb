@@ -187,7 +187,7 @@ class DispatchesController < ApplicationController
 
     private 
     def authorize_dispatch
-       # authorize Dispatch
+        authorize Dispatch
     end
 
         def dispatch_params

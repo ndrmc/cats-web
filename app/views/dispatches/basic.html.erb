@@ -17,8 +17,9 @@
     <div class="title-action">
      <% if policy(Dispatch).new? %>
       <%= link_to 'New Dispatch', new_dispatch_path(:basic => 1), :class => "btn btn-primary"%>
+      <%= link_to 'Report', '/dispatches/dispatch_report',  :class => "btn btn-default" %>
     <%end%>
-       <%= link_to 'Report', '/dispatches/dispatch_report',  :class => "btn btn-default" %>
+       
     </div>
   </div>
 </div>
