@@ -20,7 +20,7 @@ class PdfReport < Prawn::Document
     end
     move_down 20
   end
-
+  
   def footer(title=nil)
     repeat :all do
     
