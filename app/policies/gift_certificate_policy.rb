@@ -39,11 +39,11 @@ class GiftCertificatePolicy < ApplicationPolicy
      @current_user.has_permission('Gift Certificate') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
 
-  def gift_certificate_generate
+  def gift_certificate_generate?
     @current_user.has_permission('Gift Certificate') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
   
-  def gift_certificate
+  def gift_certificate_report?
     @current_user.has_permission('Gift Certificate') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
   
