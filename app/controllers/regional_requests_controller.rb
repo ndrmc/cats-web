@@ -1,7 +1,7 @@
 class RegionalRequestsController < ApplicationController
   before_action :set_regional_request, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-  before_action :authorize_regional_request
+  before_action :authorize_regional_request, except: [:print]
   # GET /regional_requests
   # GET /regional_requests.json
   def index
@@ -17,6 +17,19 @@ class RegionalRequestsController < ApplicationController
   # GET /regional_requests/1.json
   def show
     @fdp_ids_with_a_request = @regional_request.regional_request_items.collect { |rri| rri.fdp_id }
+  end
+
+  def print
+    @regional_request_items = RegionalRequestItem.includes(:fdp, :regional_request).where(:'regional_requests.id' => params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+          pdf = RegionalRequestPdf.new(@regional_request_items)
+          send_data pdf.render, filename: "regional_request_#{@regional_request_items.first.regional_request.id}.pdf",
+          type: "application/pdf",
+          disposition: "inline"
+      end      
+    end
   end
 
   # GET /regional_requests/new
