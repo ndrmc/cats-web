@@ -13,7 +13,7 @@
 
 <div class="ibox float-e-margins border-bottom">
   <div class="ibox-content">
-      <%= form_tag( 'receipt_report_generate?format=pdf' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'POST'}) do %>
+      <%= form_tag( '/receipts/receipt_report_generate?format=pdf' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'POST'}) do %>
        
         <div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
@@ -47,20 +47,3 @@
         <% end %>
   </div>
 </div>
-
-<script type="text/javascript">
-  $( function() { 
-    $('#received-date-picker').daterangepicker(
-      {
-          locale: {
-            format: 'DD/MM/YYYY'
-          },
-          maxDate: '0', 
-          autoUpdateInput: false
-      }, 
-      function( start, end  ) { 
-        $('#received-date-picker').val( start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY')); 
-      }
-    ); 
-  });
-  </script>
