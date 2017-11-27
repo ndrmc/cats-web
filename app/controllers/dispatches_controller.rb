@@ -41,20 +41,9 @@ class DispatchesController < ApplicationController
         dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
         filter_map[:dispatched_date] = dates[0]..dates[1]
       end
-            @dispatch = Dispatch.find_by_sql(["SELECT p.project_code, gin_no, r.name as region,z.name as zone,w.name as woreda,f.name as fdp_name,
-                                                c.name as commodity, u.name as unit, di.quantity,t.name as transporter_name, o.name as donor
-                                                FROM dispatches d inner join dispatch_items di on d.id = di.dispatch_id
-                                                inner join operations op on op.id = d.operation_id
-                                                inner join fdps f on f.id = d.fdp_id
-                                                inner join locations w on w.id = f.id
-                                                inner join locations z on z.id = w.parent_node_id
-                                                inner join locations r on r.id = z.parent_node_id
-                                                inner join transporters t on t.id = d.transporter_id
-                                                inner join commodities c on c.id = di.commodity_id
-                                                inner join projects p on p.id = di.project_id
-                                                inner join organizations o on o.id = di.organization_id 
-                                                inner join unit_of_measures u on u.id = di.unit_of_measure_id
-                                                WHERE d.hub_id = ? AND d.dispatch_date >= ? AND d.dispatch_date <= ? ",params[:hub], dates[0],dates[1]])
+            @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation] })
+            .where(:'dispatches.hub_id' => params[:hub]).where("dispatches.dispatch_date >= ? AND dispatches.dispatch_date <= ? ",dates[0],dates[1])
+        
       else
          @dispatch = []
       end
@@ -64,11 +53,12 @@ class DispatchesController < ApplicationController
             format.html
             format.pdf do
             pdf = DispatchPdf.new(@dispatch,dates[0],dates[1],hub.name)
-            send_data pdf.render, filename: "receipt_.pdf",
+            send_data pdf.render, filename: "dispatch_report.pdf",
             type: "application/pdf",
             disposition: "inline"
             end
         end
+
     end
     
     def dispatch_report
