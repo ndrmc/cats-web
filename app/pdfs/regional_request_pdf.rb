@@ -1,12 +1,12 @@
 require 'prawn/table'
 class RegionalRequestPdf < PdfReport
-    def initialize(request_item_obj)
+    def initialize(request_item_obj, request)
         super(top_margin: 50)
         @request_item_objs = request_item_obj
-        @request = @request_item_objs.first.request
-        header "#{@request.operation.program.name} Program \t\t-\t\t Allocation for #{@request.operation.name}"
+        @request = request
+        header "#{@request&.location&.name} Region \t\t-\t\t Request for #{@request&.operation&.name}"
         regional_requests
-        text "\n \n \n Prepared by: ...................................................    Certified by: ..................................................."
+        text "\n\n\n\n\n\n\n Prepared by: ...................................................    Certified by: ..................................................."
         footer "Commodity Allocation and Tracking System"
     end
 
