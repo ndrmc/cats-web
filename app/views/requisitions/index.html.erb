@@ -53,12 +53,7 @@
 
       <% end %>
 
-      <% if(params[:operation].present? && params[:region].present? && params[:status].present?) %>
-          <%= link_to '/requisitions/print?format=pdf&operation=' + params[:operation] + '&region=' + params[:region] + '&status=' + params[:status],  :class => "btn btn-default"  do %>
-            <i class="fa fa-print"></i> 
-            Print
-          <% end %>
-      <% end %>
+      
         </div>
       </div>
     </div>
