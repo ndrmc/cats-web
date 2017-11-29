@@ -46,14 +46,7 @@ def receipt_report_generate
       if params[:status ]
         filter_map[:draft ] = params[:status ] == 'Draft'
       end
-            @receipts = Receipt.find_by_sql(["SELECT h.name as hub, s.grn_no, s.plate_no, s.waybill_no, c.name as commodity, rl.quantity, u.name as unit,p.project_code, o.name as donor FROM receipts s 
-                                      inner join receipt_lines rl on s.id = rl.receipt_id
-                                      inner join unit_of_measures u on u.id = rl.unit_of_measure_id
-                                      inner join projects p on p.id = rl.project_id
-                                      inner join commodities c on c.id = rl.commodity_id
-                                      inner join hubs h on h.id = s.hub_id
-                                      left outer join Organizations o on o.id = s.donor_id
-                                      WHERE s.hub_id = ? AND s.received_date >= ? AND s.received_date <= ? ",params[:hub], dates[0],dates[1]])
+      @receipts = ReceiptLine.includes(:unit_of_measure, :project, :commodity, receipt: [:hub, :organization]).select(:'hubs.name AS hub', :'receipts.grn_no', :'receipts.plate_no', :'receipts.waybill_no', :'commodities.name AS commodity', :quantity, :'unit_of_measures.name AS unit', :'projects.project_code', :'organizations.name AS donor').where(:'receipts.hub_id' => params[:hub]).where("receipts.received_date >= ? AND receipts.received_date <= ?", dates[0], dates[1])
       
     else
       @receipts = []
