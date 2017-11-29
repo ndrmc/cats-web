@@ -109,6 +109,8 @@ gem 'chart-js-rails'
 gem 'caracal'
 gem 'caracal-rails'
 
+gem 'prawn'
+gem 'prawn-table'
 group :development do
     gem 'capistrano',         require: false
     gem 'capistrano-rbenv',     require: false

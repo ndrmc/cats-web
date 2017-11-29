@@ -13,6 +13,17 @@ class HrdsController < ApplicationController
         @hrd = Hrd.find params[:id]
         @contributions = Contribution.where( hrd_id: @hrd.id)
         @beneficiaries_by_region = @hrd.hrd_items.group('region_id' ).select( 'region_id, SUM(beneficiary) as total_beneficiaries')
+        respond_to do |format|
+            format.html
+            format.pdf do
+                pdf = HRDPdf.new(@hrd,@beneficiaries_by_region,Location)
+                send_data pdf.render, filename: "hrd_#{@hrd.id}.pdf",
+                type: "application/pdf",
+                disposition: "inline"
+            end
+            
+        end
+        
     end
 
     def hrd_items
