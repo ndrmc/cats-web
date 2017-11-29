@@ -6,5 +6,6 @@ class DropBidTable < ActiveRecord::Migration[5.0]
           bid.timestamps
       end
     end
+
   end 
 end
