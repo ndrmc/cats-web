@@ -29,7 +29,7 @@ end
       
         [dynamic_data] +
             @receipts.map do |r|
-                [r.project_code,r.grn_no,r.commodity,r.unit,r.quantity,r.donor,r.plate_no, r.waybill_no]
+                [r&.project&.project_code,r&.receipt&.grn_no,r&.commodity&.name,r&.unit_of_measure&.name,r&.quantity,r&.receipt&.organization&.name,r&.receipt&.plate_no, r&.receipt&.waybill_no]
             end 
         
         
