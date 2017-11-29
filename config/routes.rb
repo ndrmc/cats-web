@@ -136,6 +136,8 @@ Rails.application.routes.draw do
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
 
   resources :requisitions
+  get '/gift_certificates/gift_certificate_report', to: 'gift_certificates#gift_certificate_report'
+  post '/gift_certificates/gift_certificate_generate', to: 'gift_certificates#gift_certificate_generate'
   resources :gift_certificates
   
 
