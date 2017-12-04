@@ -5,9 +5,9 @@ class PdfReport < Prawn::Document
   TABLE_FONT_SIZE = 9
   TABLE_BORDER_STYLE = :grid
 
-  def initialize(default_prawn_options={})
+  def initialize(default_prawn_options={:bottom_margin => [100]})
     super(default_prawn_options)
-    font_size 10
+    font_size 9
   end
 
   def header(title=nil)

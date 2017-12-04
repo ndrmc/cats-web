@@ -117,8 +117,10 @@ Rails.application.routes.draw do
 
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
+  get '/receipts/receipt_report', to: 'receipts#receipt_report'
+  post '/receipts/receipt_report_generate', to: 'receipts#receipt_report_generate'
   resources :receipts
-
+  
   get '/receipts/return_receipt_detail/:id', to: 'receipts#return_receipt_detail'
 
   get '/receipts/getProjectCodeStatus/:id', to: 'receipts#getProjectCodeStatus'
@@ -135,6 +137,8 @@ Rails.application.routes.draw do
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
 
   resources :requisitions
+  get '/gift_certificates/gift_certificate_report', to: 'gift_certificates#gift_certificate_report'
+  post '/gift_certificates/gift_certificate_generate', to: 'gift_certificates#gift_certificate_generate'
   resources :gift_certificates
   
 

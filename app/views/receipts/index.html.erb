@@ -15,6 +15,7 @@
     <% if policy(Receipt).new? %>
       <%= link_to 'New Receipt', new_receipt_path, :class => "btn btn-primary"%>
     <% end %>
+      <%= link_to 'Report', '/receipts/receipt_report',  :class => "btn btn-default" %>
     </div>
   </div>
 </div>
