@@ -1,6 +1,7 @@
 require 'capistrano-rbenv'
 
-server '10.11.157.20', port: 22, roles: [:web, :app, :db], primary: true
+# server '18.216.117.202', port: 22, roles: [:web, :app, :db], primary: true
+server '18.216.117.202', user: 'fmip', roles: %w{web app db}
 
 set :application,     'cats'
 set :repo_url,      'https://github.com/ndrmc/cats-web.git'

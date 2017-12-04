@@ -25,7 +25,7 @@ class TransportRequisition < ApplicationRecord
 
   def self.generate_tr (transport_requisition_params, current_user_id)
     
-    @requisitions = Requisition.includes(:requisition_items).where({:operation_id =>transport_requisition_params[:operation_id], :region_id => transport_requisition_params[:location_id], :status => :approved})      
+    @requisitions = Requisition.includes(:requisition_items, operation: [ration: :ration_items]).where({:operation_id =>transport_requisition_params[:operation_id], :region_id => transport_requisition_params[:location_id], :status => :approved})      
       if @requisitions.count > 0
         transport_requisition_params.delete("bid_id")
         transport_requisition_params["created_by_id"] = current_user_id
@@ -40,8 +40,9 @@ class TransportRequisition < ApplicationRecord
         @requisitions.find_each do |requisition|
           requisition.requisition_items
         .find_each do |ri|        
-          if ri.unit_of_measure_id.present?
-            @ri_qunatity = UnitOfMeasure.find(ri.unit_of_measure_id).to_ref(ri.amount)
+          @uom_id = requisition.ration.ration_items.where(commodity_id: requisition.commodity_id).first.unit_of_measure_id
+          if @uom_id.present?
+            @ri_qunatity = UnitOfMeasure.find(@uom_id).to_ref(ri.amount)
           else
             @ri_qunatity = UnitOfMeasure.where(code: 'QTL').first.to_ref(ri.amount)
           end
