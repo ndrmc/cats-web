@@ -24,10 +24,10 @@ one:
     full_name: 'mola'
     email: 'dawit@gmail.com'
     mobile: '0912876567'
-    fdp: fdp1
+    fdp_id: 1
 #
 two: 
     full_name: 'dawit'
     email: 'dawit@yahoo.com'
     mobile: '0912876567'
-    fdp: fdp1
+    fdp_id: 1

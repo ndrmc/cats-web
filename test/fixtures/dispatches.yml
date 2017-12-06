@@ -41,7 +41,7 @@ dispatch1:
     dispatch_date: '1/1/2018'
     hub_id:
     warehouse_id: 
-    fdp_id: 1
+    fdp_id: 3
     weight_bridge_ticket_number: '001'
     transporter_id: 1
     storekeeper_name: 'Abebe'

@@ -32,6 +32,39 @@ class DispatchesController < ApplicationController
         return @dispatches
     end
 
+    def dispatch_report_generate
+         filter_map = {}
+      if params[:hub].present?
+        filter_map = {hub_id: params[:hub]}
+
+      if params[:dispatch_date ].present?
+        dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
+        filter_map[:dispatched_date] = dates[0]..dates[1]
+      end
+            @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation] })
+            .where(:'dispatches.hub_id' => params[:hub]).where("dispatches.dispatch_date >= ? AND dispatches.dispatch_date <= ? ",dates[0],dates[1])
+        
+      else
+         @dispatch = []
+      end
+
+    hub = Hub.find(params[:hub])
+    respond_to do |format|
+            format.html
+            format.pdf do
+            pdf = DispatchPdf.new(@dispatch,dates[0],dates[1],hub.name)
+            send_data pdf.render, filename: "dispatch_report.pdf",
+            type: "application/pdf",
+            disposition: "inline"
+            end
+        end
+
+    end
+    
+    def dispatch_report
+
+    end
+    
     def basic
         @dispatches = []
         if params[:find].present? 
@@ -48,8 +81,8 @@ class DispatchesController < ApplicationController
         end
         if (params[:fdp_id].present?)
             @woreda = Location.find(Fdp.find(params[:fdp_id]).location_id)
-            @zone = @woreda.parent
-            @region = @zone.parent
+            @zone = @woreda&.parent
+            @region = @zone&.parent
         end
         @dispatch = Dispatch.new
     end
@@ -72,14 +105,17 @@ class DispatchesController < ApplicationController
             @path = '/en/dispatches/basic?utf8=✓&gin_no=' + @dispatch.gin_no.to_s + '&find=Go'
         else
             @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
-            @zone = Location.find(@woreda.parent_node_id)
-            @region = Location.find(@zone.parent_node_id)
+            @zone = @woreda&.parent
+            @region = @zone&.parent
             @path = '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region.id.to_s + '&zone=' + @zone.id.to_s + '&woreda=' + @woreda.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s
         end
 
         respond_to do |format|
             if @dispatch.save
-                format.html { redirect_to @path, success: 'Dispatch was successfully created.' }
+                @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
+                @zone = @woreda&.parent
+                @region = @zone&.parent
+                format.html { redirect_to '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region&.id.to_s + '&zone=' + @zone&.id.to_s + '&woreda=' + @woreda&.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s, success: 'Dispatch was successfully created.' }
             else
                 format.html { render :new }
             end
@@ -89,9 +125,14 @@ class DispatchesController < ApplicationController
     def edit 
        
         @dispatch = Dispatch.find( params[:id])
-        @woreda = Location.find(Fdp.find(@dispatch.fdp_id).location_id)
-        @zone = Location.find(@woreda.parent_node_id)
-        @region = Location.find(@zone.parent_node_id)
+        if (@dispatch.fdp_id.present?)
+            @fdp = Fdp.find(@dispatch.fdp_id)
+            if (@fdp.present?)
+                @woreda = Location.find(@fdp.location_id)
+                @zone = @woreda&.parent
+                @region = @zone&.parent
+            end
+        end
     end
 
     def update   
@@ -132,7 +173,10 @@ class DispatchesController < ApplicationController
 
         if @dispatch.update( dispatch_map )
             respond_to do |format|
-                format.html { redirect_to @path, success: 'Dispatch was successfully updated.' } 
+                @woreda = Fdp.find(dispatch_params[:fdp_id].to_i).location
+                @zone = @woreda&.parent
+                @region = @zone&.parent
+                format.html { redirect_to '/en/dispatches?hub=' + dispatch_params[:hub_id].to_s + '&operation=' + dispatch_params[:operation_id].to_s + '&region=' + @region&.id.to_s + '&zone=' + @zone&.id.to_s + '&woreda=' + @woreda&.id.to_s + '&fdp=' + dispatch_params[:fdp_id].to_s, success: 'Dispatch was successfully updated.' }
             end
         else
             respond_to do |format|

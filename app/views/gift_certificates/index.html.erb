@@ -14,6 +14,7 @@
     <div class="title-action">
       <% if policy(GiftCertificate).new? %>
       <%= link_to 'New Gift Certificate', new_gift_certificate_path, :class => "btn btn-primary"%>
+      <%= link_to 'Report', '/gift_certificates/gift_certificate_report',  :class => "btn btn-default" %>
       <%end%>
     </div>
   </div>

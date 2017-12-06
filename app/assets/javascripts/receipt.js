@@ -1,4 +1,17 @@
  $(function () {
+  $('#received-date-picker').daterangepicker(
+    {
+        locale: {
+          format: 'DD/MM/YYYY'
+        },
+        maxDate: '0', 
+        autoUpdateInput: false
+    }, 
+    function( start, end  ) { 
+      $('#received-date-picker').val( start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY')); 
+    }
+  ); 
+  
 // commodity category change
  $('#commodity-category-select').change(function () {
         var val = $(this).val();
