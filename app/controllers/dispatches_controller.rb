@@ -32,6 +32,39 @@ class DispatchesController < ApplicationController
         return @dispatches
     end
 
+    def dispatch_report_generate
+         filter_map = {}
+      if params[:hub].present?
+        filter_map = {hub_id: params[:hub]}
+
+      if params[:dispatch_date ].present?
+        dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
+        filter_map[:dispatched_date] = dates[0]..dates[1]
+      end
+            @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation] })
+            .where(:'dispatches.hub_id' => params[:hub]).where("dispatches.dispatch_date >= ? AND dispatches.dispatch_date <= ? ",dates[0],dates[1])
+        
+      else
+         @dispatch = []
+      end
+
+    hub = Hub.find(params[:hub])
+    respond_to do |format|
+            format.html
+            format.pdf do
+            pdf = DispatchPdf.new(@dispatch,dates[0],dates[1],hub.name)
+            send_data pdf.render, filename: "dispatch_report.pdf",
+            type: "application/pdf",
+            disposition: "inline"
+            end
+        end
+
+    end
+    
+    def dispatch_report
+
+    end
+    
     def basic
         @dispatches = []
         if params[:find].present? 

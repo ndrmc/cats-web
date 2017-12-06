@@ -125,6 +125,9 @@ Rails.application.routes.draw do
   get '/receipts/getProjectCodeStatus/:id', to: 'receipts#getProjectCodeStatus'
   get '/receipts/new/:id', to: 'receipts#new'
 
+  get '/dispatches/dispatch_report', to: 'dispatches#dispatch_report'
+  post '/dispatches/dispatch_report_generate', to: 'dispatches#dispatch_report_generate'
+  
   get '/dispatches/basic', to: 'dispatches#basic'
   resources :dispatches
  
