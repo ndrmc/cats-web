@@ -7,7 +7,7 @@ class PdfReport < Prawn::Document
 
   def initialize(default_prawn_options={:bottom_margin => [100]})
     super(default_prawn_options)
-    font_size 10
+    font_size 9
   end
 
   def header(title=nil)

@@ -1,7 +1,7 @@
 require 'prawn/table'
 class GiftCertificatePdf < PdfReport
     def initialize(gift,organization,commodity,currency,date_min,date_max)
-        super(top_margin: 50)
+        super top_margin: 50, :page_size => "A4", :page_layout => :landscape
        @gift = gift
        @organization = organization
        @commodity = commodity
@@ -27,13 +27,13 @@ end
     def gift
         record_number = 1
         dynamic_data = []
-        dynamic_data = ["Donor","Gift Date","Commodity","Weight in MT","Price", "Currency","Estimated","Bill of Loading","Vessele","Declaration"]
+        dynamic_data = ["Donor","Gift Date","Commodity","Weight in MT","Price", "Curr.","Est. Tax(ETB)","Bill of Loading","Vessele","Declaration No."]
       
         [dynamic_data] +
             @gift.map do |r|
                 [@organization.find(r.organization_id).name,
-                r.gift_date, @commodity.find(r.commodity_id).name, 
-                r.amount,r.estimated_price, @currency.find(r.currency_id).name ,r.estimated_tax,r.bill_of_loading,r.vessel, r.customs_declaration_no]
+                r.gift_date.strftime("%d-%b-%Y"), @commodity.find(r.commodity_id).name, 
+                r.amount,ActiveSupport::NumberHelper.number_to_currency(r.estimated_price, precision: 2) , @currency.find(r.currency_id).symbol ,ActiveSupport::NumberHelper.number_to_currency(r.estimated_tax, precision: 2,:unit=> 'ETB '),r.bill_of_loading,r.vessel, r.customs_declaration_no]
             end 
         
         
