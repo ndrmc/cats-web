@@ -28,6 +28,47 @@ class ReceiptsController < ApplicationController
 
   end
 
+def show
+
+  
+end
+
+def receipt_report_generate
+
+  if params[:hub].present?
+       filter_map = {hub_id: params[:hub]}
+
+      if params[:received_date ].present?
+        dates = params[:received_date].split(' - ').map { |d| Date.parse d }
+
+        filter_map[:received_date] = dates[0]..dates[1]
+      end
+      if params[:status ]
+        filter_map[:draft ] = params[:status ] == 'Draft'
+      end
+      @receipts = ReceiptLine.includes(:unit_of_measure, :project, :commodity, receipt: [:hub, :organization]).select(:'hubs.name AS hub', :'receipts.grn_no', :'receipts.plate_no', :'receipts.waybill_no', :'commodities.name AS commodity', :quantity, :'unit_of_measures.name AS unit', :'projects.project_code', :'organizations.name AS donor').where(:'receipts.hub_id' => params[:hub]).where("receipts.received_date >= ? AND receipts.received_date <= ?", dates[0], dates[1])
+      
+    else
+      @receipts = []
+    end
+
+    hub = Hub.find(params[:hub])
+    respond_to do |format|
+            format.html
+            format.pdf do
+            pdf = ReceiptPdf.new(@receipts,dates[0],dates[1],hub.name)
+            send_data pdf.render, filename: "receipt_.pdf",
+            type: "application/pdf",
+            disposition: "inline"
+            end
+        end
+ 
+end
+
+def receipt_report
+
+end
+
 
   def new
     authorize Receipt

@@ -1,0 +1,49 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Receipt Report</h2>
+   
+  </div>
+   <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', receipts_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+
+<div class="ibox float-e-margins border-bottom">
+  <div class="ibox-content">
+      <%= form_tag( '/receipts/receipt_report_generate?format=pdf' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'POST'}) do %>
+       
+        <div class="form-group">
+          <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :status, "Status", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :status,  options_for_select( ["Draft", "Posted"], params[:status]) , { :required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3' }  %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :received_date, "Received Date", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :received_date, params[:received_date], { :required => true,  id: 'received-date-picker',class: 'form-control'}  %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+              <input type="submit" name="filter" value="Generate report" class="btn btn-sm btn-primary" />
+          </div>
+        </div>
+
+        <% end %>
+  </div>
+</div>

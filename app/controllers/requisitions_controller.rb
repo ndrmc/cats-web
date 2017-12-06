@@ -12,7 +12,18 @@ class RequisitionsController < ApplicationController
     end
   end
 
-
+  def print
+    @requisition_items = RequisitionItem.includes(:fdp, requisition: [:commodity, ration: :ration_items, operation: :program]).where(:'requisitions.id' => params[:id]).where("beneficiary_no > 0")
+    respond_to do |format|
+      format.html
+      format.pdf do
+          pdf = RequisitionPdf.new(@requisition_items)
+          send_data pdf.render, filename: "requisition_#{@requisition_items.first.requisition.id}.pdf",
+          type: "application/pdf",
+          disposition: "inline"
+      end      
+    end
+  end
 
   # GET /requisitions/new
   def new
