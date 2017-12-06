@@ -44,6 +44,7 @@ class Receipt < ApplicationRecord
     has_many :receipt_lines 
     belongs_to :project 
     belongs_to :hub
+    belongs_to :organization, class_name: 'Organization', foreign_key: 'donor_id'
   
     validates :donor_id, presence: {message: " is required!"}
     after_save :pre_post
