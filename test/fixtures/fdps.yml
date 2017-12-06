@@ -26,15 +26,17 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-fdp1:
+fdp1:   
+    id: 1
     name: 'sample fdp'
     woreda: 'Adhere'
     zone: 'zone 1'
     region: 'Afar'
-    location: location1
+    location_id: 6
 # column: value
 #
 fdp2:
+    id: 2
     name: 'sample fdp 2'
     woreda: 'Adhere'
     zone: 'zone 1'
@@ -42,9 +44,9 @@ fdp2:
     location: location1
 
 fdp3:
-    id: '1'
+    id: 3
     name: 'sample fdp'
     woreda: 'Adhere'
     zone: 'zone 1'
     region: 'Afar'
-    location: location1
+    location_id: 6

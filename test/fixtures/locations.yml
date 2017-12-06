@@ -29,7 +29,17 @@ location3:
     location_type: :woreda
 location4:
     id: 4
-    name: 'AMHARA'
-    code: 'AM'
+    name: 'SNNPR'
     location_type: :region
-    parent_node_id: 4
+    ancestry: ''
+location5:
+    id: 5
+    name: 'Segen'
+    location_type: :zone
+    ancestry: '4'
+location6:
+    id: 6
+    name: 'Segen Ketema'
+    location_type: :woreda
+    ancestry: '4/5'
+
