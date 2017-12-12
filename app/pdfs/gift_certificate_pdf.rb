@@ -13,7 +13,7 @@ class GiftCertificatePdf < PdfReport
 
 
 def gift_certificate
-     bounding_box([bounds.left, bounds.top - 100 ], :width => bounds.width, :height => bounds.height - 150) do
+     bounding_box([bounds.left, bounds.top - 100 ], :width => bounds.width, :height => bounds.height - 180) do
     table gift do
       row(0).font_style = :bold
       columns(1..3).align = :right

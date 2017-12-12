@@ -26,5 +26,13 @@ class DispatchPolicy < ApplicationPolicy
         @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
 
+    def dispatch_report?
+        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+
+    def dispatch_report_generate?
+        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+    
 end
 
