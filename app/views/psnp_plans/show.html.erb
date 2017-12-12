@@ -22,7 +22,11 @@
         <i class="fa fa-edit"></i> 
         Edit
       <% end %>
-
+      <%= link_to psnp_plan_path(@psnp_plan, format: "pdf"),  :class => "btn btn-default"  do %>
+        <i class="fa fa-edit"></i> 
+        Print
+      <% end %>
+ 
       <%  end %>
     </div>
   </div>

@@ -92,7 +92,7 @@ class GiftCertificatesController < ApplicationController
 
   private
   def authorize_gift_certificate
-    #authorize GiftCertificate
+    authorize GiftCertificate
   end
   
     # Use callbacks to share common setup or constraints between actions.

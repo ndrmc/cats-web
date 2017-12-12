@@ -126,6 +126,9 @@ Rails.application.routes.draw do
   get '/receipts/getProjectCodeStatus/:id', to: 'receipts#getProjectCodeStatus'
   get '/receipts/new/:id', to: 'receipts#new'
 
+  get '/dispatches/dispatch_report', to: 'dispatches#dispatch_report'
+  post '/dispatches/dispatch_report_generate', to: 'dispatches#dispatch_report_generate'
+  
   get '/dispatches/basic', to: 'dispatches#basic'
   resources :dispatches
  
@@ -135,6 +138,7 @@ Rails.application.routes.draw do
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
   get '/requisitions/summary/:request_id', to: 'requisitions#summary'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
+  get '/requisitions/print', to: 'requisitions#print'
 
   resources :requisitions
   get '/gift_certificates/gift_certificate_report', to: 'gift_certificates#gift_certificate_report'
