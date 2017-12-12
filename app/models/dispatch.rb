@@ -33,6 +33,7 @@ class Dispatch < ApplicationRecord
 
     acts_as_paranoid 
 
+    belongs_to :operation
     belongs_to :fdp 
     belongs_to :hub 
     belongs_to :warehouse 

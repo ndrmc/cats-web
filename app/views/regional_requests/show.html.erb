@@ -22,6 +22,10 @@
 
       <% end %>
       <%= link_to 'Cancel', requisitions_path,  :class => "btn btn-default"%>
+      <%= link_to '/regional_requests/print/' + @regional_request.id.to_s + '?format=pdf',  :class => "btn btn-default"  do %>
+         <i class="fa fa-print"></i> 
+         Print
+      <% end %>
     </div>
   </div>
 </div>

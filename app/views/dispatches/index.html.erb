@@ -52,26 +52,30 @@
             <%= label_tag :zone, "Zone", { :class => ' control-label'} %>
 
             <div class="">
-                <%= select_tag :zone, options_from_collection_for_select(Location.where({parent_node_id: params[:region]}), "id", "name", params[:zone]),
+              <% if params[:region].present? %>
+                <%= select_tag :zone, options_from_collection_for_select(Location.find(params[:region])&.children.where(:location_type => :zone), "id", "name", params[:zone]),
                   :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
                   "data-option-dependent" => true,
                   "data-option-observed" => "region",
                   "data-option-url" => "/locations/#{:region}/children",
                   "data-option-key-method" => :id,
                   "data-option-value-method" => :name %>
+              <% end %>
             </div>
           </div>
 
           <div class="form-group col-sm-4">
             <%= label_tag :woreda, "Woreda", { :class => ' control-label', :required => true } %>
             <div class="">
-                <%= select_tag :woreda, options_from_collection_for_select(Location.where({parent_node_id: params[:zone]}), "id", "name", params[:woreda]),
+              <% if params[:zone].present? %>
+                <%= select_tag :woreda, options_from_collection_for_select(Location.find(params[:zone]).children.where(:location_type => :woreda), "id", "name", params[:woreda]),
                   :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
                   "data-option-dependent" => true,
                   "data-option-observed" => "zone",
                   "data-option-url" => "/locations/#{:zone}/children",
                   "data-option-key-method" => :id,
                   "data-option-value-method" => :name %>
+              <% end %>
             </div>
           </div>
 

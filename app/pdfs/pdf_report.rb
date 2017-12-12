@@ -20,11 +20,11 @@ class PdfReport < Prawn::Document
     end
     move_down 20
   end
-
+  
   def footer(title=nil)
     repeat :all do
     
-      bounding_box [bounds.left, bounds.bottom + 35], width: bounds.width do
+      bounding_box [bounds.left, bounds.bottom + 72], width: bounds.width do
          stroke_horizontal_rule 
          move_down 5
          image "#{Rails.root}/public/assets/CATS_Blue.png", height: 20

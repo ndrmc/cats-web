@@ -22,6 +22,7 @@ class RegionalRequest < ApplicationRecord
 
     belongs_to :operation
     belongs_to :program 
+    belongs_to :location, class_name: 'Location', foreign_key: 'region_id'
 
     has_many :regional_request_items
 

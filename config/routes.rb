@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
  scope "(:locale)", locale: /en|am/ do
 
+  get '/transport_requisitions/print', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
   resources :transport_requisitions
@@ -40,6 +41,7 @@ Rails.application.routes.draw do
   resources :role_types
   resources :transporters
   resources :transport_orders
+  get '/transport_orders/print/:id', to: 'transport_orders#print'
   resources :transporter_addresses  
   get 'setting/index'
   devise_for :users
@@ -125,6 +127,9 @@ Rails.application.routes.draw do
   get '/receipts/getProjectCodeStatus/:id', to: 'receipts#getProjectCodeStatus'
   get '/receipts/new/:id', to: 'receipts#new'
 
+  get '/dispatches/dispatch_report', to: 'dispatches#dispatch_report'
+  post '/dispatches/dispatch_report_generate', to: 'dispatches#dispatch_report_generate'
+  
   get '/dispatches/basic', to: 'dispatches#basic'
   resources :dispatches
  
@@ -134,6 +139,7 @@ Rails.application.routes.draw do
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
   get '/requisitions/summary/:request_id', to: 'requisitions#summary'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
+  get '/requisitions/print', to: 'requisitions#print'
 
   resources :requisitions
   get '/gift_certificates/gift_certificate_report', to: 'gift_certificates#gift_certificate_report'
@@ -142,11 +148,13 @@ Rails.application.routes.draw do
   
 
   resources :regional_requests
+  get '/regional_requests/print/:id', to: 'regional_requests#print'
   post '/regional_requests/add_fdp_to_request'
   post '/regional_requests/update_regional_request_item'
   delete '/regional_requests/destroy_regional_request_item/:id', to: 'regional_requests#destroy_regional_request_item'
   get '/regional_requests/request_items/:id', to: 'regional_requests#request_items'
   post '/regional_requests/upload_requests/:id', to: 'regional_requests#upload_requests'
+  
 
   get '/hrds/hrd_items', to: 'hrds#hrd_items'
   get '/hrds/download_hrd_items/:id', to: 'hrds#download_hrd_items'
