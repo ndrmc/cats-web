@@ -12,6 +12,35 @@ class TransportRequisitionsController < ApplicationController
     @transport_requisitions = TransportRequisition.joins('INNER JOIN transport_requisition_items ON transport_requisitions.id = transport_requisition_items.transport_requisition_id INNER JOIN locations ON locations.id = transport_requisitions.location_id').select('transport_requisitions.id, transport_requisitions.operation_id, transport_requisitions.reference_number, transport_requisitions.reference_number, transport_requisitions.location_id, locations.name AS region_name, transport_requisitions.created_at, transport_requisitions.status, sum(transport_requisition_items.quantity) as total_qty, count(transport_requisition_items.id) as destinations').where('transport_requisitions.operation_id = ' + @operation_id.to_s).group('transport_requisitions.id, transport_requisitions.operation_id, transport_requisitions.reference_number, transport_requisitions.reference_number, transport_requisitions.location_id, locations.name, transport_requisitions.created_at, transport_requisitions.status').order('created_at DESC')
   end
 
+  def print
+    
+    # @transport_requisition_items = TransportRequisitionItem.joins(:commodity, :requisition, fdp: :location).group('locations.parent_node_id, commodities.id, commodities.name, requisitions.id, requisitions.requisition_no').select('transport_requisition_items.id, commodities.name AS commodity_name, requisitions.requisition_no, SUM(quantity) AS zone_allocated')
+    
+    
+     
+    # @transport_requisition_items = tri_full_list.group_by(&:zone_id).map{ |zone_id,tri_full_list| {:zone_id => zone_id.to_i, :zone_allocated => tri_full_list.sum {|j| j.quantity.to_f} }}
+    # @transport_requisition_items = tri_full_list.group_by { |h| h[:zone_id] }.values
+    # .map do |a,b,c,d,e,f,g,h,i,j,k,l,m,n|       
+    #   {:tri_id => a.to_s,:commodity_id => b.to_s,:commodity_name => c.to_s,:requisition_id => d.to_s,:requisition_no => e.to_s,:quantity => f.map {|h1| h1[:quantity]}.inject(:+),:zone_id => k.to_s,:zone_name => l.to_s,:region_id => m.to_s,:region_name => n.to_s} 
+    # end
+
+    # hsh = tri_full_list.group_by { |h| h[:requisition_id] }.map do |b,c,d,e,f,k,l,m| 
+    #   {:commodity_id => b.to_s,:commodity_name => c.to_s,:requisition_id => d.to_s,:requisition_no => e.to_s,:quantity => f.map {|h1| h1[:quantity]}.inject(:+),:zone_id => k.to_s,:zone_name => l.to_s,:region_id => m.to_s,:region_name => n.to_s}
+    # end
+
+    @transport_requisition = TransportRequisition.find(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+          pdf = TransportRequisitionPdf.new(params[:id])
+          send_data pdf.render, filename: "trasnport_requisition_#{@transport_requisition.id}.pdf",
+          type: "application/pdf",
+          disposition: "inline"
+      end      
+    end
+  end
+
   # GET /transport_requisitions/1
   # GET /transport_requisitions/1.json
   def show   
