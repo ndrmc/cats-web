@@ -40,7 +40,7 @@ class TransportRequisition < ApplicationRecord
         @requisitions.find_each do |requisition|
           requisition.requisition_items
         .find_each do |ri|        
-          @uom_id = requisition.ration.ration_items.where(commodity_id: requisition.commodity_id).first.unit_of_measure_id
+          @uom_id = requisition.operation.ration.ration_items.where(commodity_id: requisition.commodity_id).first.unit_of_measure_id
           if @uom_id.present?
             @ri_qunatity = UnitOfMeasure.find(@uom_id).to_ref(ri.amount)
           else

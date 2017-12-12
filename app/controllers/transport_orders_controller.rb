@@ -73,6 +73,37 @@ class TransportOrdersController < ApplicationController
     end
   end
 
+  def print
+    @transport_order = TransportOrder.includes(:transporter, :contract, :bid).find(params[:id])
+    @zones = []
+    @commodities = []
+    @requisitions = []
+    TransportOrderItem.where(:transport_order_id => params[:id])
+    .find_each do |toi|
+      @zone_name = Fdp.includes(:location).find(toi.fdp_id).location.parent.name
+      if (!(@zones.include?(@zone_name)))
+        @zones << @zone_name
+      end
+      @commodity_name = Commodity.find(toi.commodity_id).name
+      if (!(@commodities.include?(@commodity_name)))
+        @commodities << @commodity_name
+      end
+      if (!(@requisitions.include?(toi.requisition_no)))
+        @requisitions << toi.requisition_no
+      end
+    end
+    @transport_order_items = TransportOrderItem.includes(:commodity, fdp: :location).where(:transport_order_id => params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones, @commodities, @requisitions)
+          send_data pdf.render, filename: "transport_order_#{@transport_order&.id}.pdf",
+          type: "application/pdf",
+          disposition: "inline"
+      end      
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_transport_order
