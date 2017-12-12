@@ -64,6 +64,32 @@ class GiftCertificatesController < ApplicationController
     end
   end
 
+  def gift_certificate_generate
+        filter_map = {}
+       if params[:gift_date ].present?
+        dates = params[:gift_date].split(' - ').map { |d| Date.parse d }
+        filter_map[:gift_date] = dates[0]..dates[1]
+        @gift_certificate = GiftCertificate.where(filter_map).distinct
+      else
+         @gift_certificate = []
+      end
+
+    respond_to do |format|
+            format.html
+            format.pdf do
+            pdf = GiftCertificatePdf.new(@gift_certificate,Organization,Commodity, Currency, dates[0],dates[1])
+            send_data pdf.render, filename: "gift_certificate.pdf",
+            type: "application/pdf",
+            disposition: "inline"
+            end
+        end
+
+  end
+  
+ def gift_certificate_report
+
+ end
+
   private
   def authorize_gift_certificate
     authorize GiftCertificate
