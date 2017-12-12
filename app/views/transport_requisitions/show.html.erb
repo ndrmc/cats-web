@@ -14,6 +14,10 @@
     </ol>
   </div>
   <div class="col-sm-4">
+    <%= link_to '/transport_requisitions/print?format=pdf&id=' + @transport_requisition.id.to_s, :class => "btn btn-default"  do %>
+        <i class="fa fa-print"></i> 
+        Print
+    <% end %>
   </div>
 </div>
 
