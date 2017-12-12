@@ -7,6 +7,9 @@ class RequisitionPolicy < ApplicationPolicy
     @current_user.has_permission('Requisition')
   end
 
+  def print?
+    @current_user.has_permission('Requisition')
+  end
 
   def new?
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])

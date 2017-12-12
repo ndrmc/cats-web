@@ -14,6 +14,16 @@ class PsnpPlansController < ApplicationController
     @psnp_plan = PsnpPlan.find params[:id]
     #@contributions = Contribution.where( psnp_plan_id: @psnp_plan.id)
     @beneficiaries_by_region = PsnpPlanItem.group('region_id' ).select( 'region_id, SUM(beneficiary) as total_beneficiaries')
+     respond_to do |format|
+            format.html
+            format.pdf do
+                pdf = PsnpPdf.new(@psnp_plan,@beneficiaries_by_region,Location)
+                send_data pdf.render, filename: "psnp_#{@psnp_plan.id}.pdf",
+                type: "application/pdf",
+                disposition: "inline"
+            end
+            
+        end
   end
 
   def psnp_plan_items

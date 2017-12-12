@@ -70,7 +70,7 @@ class UnitOfMeasure < ApplicationRecord
 
     incoming_ref_value = target_unit.to_ref(value_in_unit)
 
-    result_unit_value = self.ref_to_unit(incoming_ref_value)
+    result_unit_value = self.ref_to_unit(incoming_ref_value) 
     result_unit_value.to_f
   end
 
