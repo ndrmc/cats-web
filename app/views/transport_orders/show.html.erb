@@ -20,7 +20,12 @@
          
           <li><%= link_to "Revert TO", '' %></li>
           <li><%= link_to "Delete", '' %></li>
-          <li><%= link_to "Print", '' %></li>
+          <li> 
+              <%= link_to "/transport_orders/print/" + @transport_order.id.to_s + "?format=pdf",  :class => "btn btn-default"  do %>
+                <i class="fa fa-print"></i> 
+                Print
+              <% end %>
+          </li>
         </ul>
         <div></div>
       </div>

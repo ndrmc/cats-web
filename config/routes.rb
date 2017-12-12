@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   resources :role_types
   resources :transporters
   resources :transport_orders
+  get '/transport_orders/print/:id', to: 'transport_orders#print'
   resources :transporter_addresses  
   get 'setting/index'
   devise_for :users
