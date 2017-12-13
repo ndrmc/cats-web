@@ -1403,7 +1403,6 @@ ActiveRecord::Schema.define(version: 20171213085626) do
   end
 
   create_table "warehouse_allocation_items", force: :cascade do |t|
-    t.integer  "warehouse_allocation_item_id"
     t.integer  "warehouse_allocation_id"
     t.integer  "region_id"
     t.integer  "zone_id"
@@ -1416,20 +1415,19 @@ ActiveRecord::Schema.define(version: 20171213085626) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "warehouse_allocations", force: :cascade do |t|
-    t.integer  "warehouse_allocation_id"
     t.integer  "operation_id"
     t.integer  "region_id"
     t.integer  "status"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "warehouse_selections", force: :cascade do |t|

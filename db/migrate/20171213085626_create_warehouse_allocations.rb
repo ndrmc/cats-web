@@ -1,7 +1,6 @@
 class CreateWarehouseAllocations < ActiveRecord::Migration[5.0]
   def change
     create_table :warehouse_allocations do |t|
-      t.integer :warehouse_allocation_id
       t.integer :operation_id
       t.integer :region_id
       t.integer :status
