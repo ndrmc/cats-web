@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 warehouse_allocation_item_1:
-  warehouse_allocation_item_id: 1
   warehouse_allocation_id: 1
   region_id: 1
   zone_id: 1
@@ -15,7 +14,6 @@ warehouse_allocation_item_1:
   modified_by: 1
 
 warehouse_allocation_item_2:
-  warehouse_allocation_item_id: 1
   warehouse_allocation_id: 1
   region_id: 1
   zone_id: 1
