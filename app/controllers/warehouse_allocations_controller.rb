@@ -69,6 +69,6 @@ class WarehouseAllocationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_allocation_params
-      params.require(:warehouse_allocation).permit(:warehouse_allocation_id, :operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
+      params.require(:warehouse_allocation).permit(:operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
     end
 end

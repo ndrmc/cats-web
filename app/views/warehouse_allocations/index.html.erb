@@ -24,7 +24,6 @@
       <table class="table table-striped">
         <thead>
           <tr>
-                        <th>Warehouse allocation</th>
                         <th>Operation</th>
                         <th>Region</th>
                         <th>Status</th>
@@ -37,9 +36,7 @@
 
         <tbody>
           <% @warehouse_allocations.each do |warehouse_allocation| %>
-          <tr>
-                        <td><%= warehouse_allocation.warehouse_allocation_id
-              %></td>
+          <tr>                        
                         <td><%= warehouse_allocation.operation_id
               %></td>
                         <td><%= warehouse_allocation.region_id
