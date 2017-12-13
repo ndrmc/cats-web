@@ -3,7 +3,7 @@
     <h2>Warehouse Allocations</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Lookups</a>
+        <a href="/">Home</a>
       </li>
       <li class="active">
         <strong>Warehouse Allocations</strong>
@@ -11,47 +11,54 @@
     </ol>
   </div>
   <div class="col-sm-8">
-    <div class="title-action">
-      <%= link_to 'New Warehouse Allocation', new_warehouse_allocation_path, :class => "btn btn-primary"%>
-    </div>
   </div>
 </div>
 
-<div class="wrapper wrapper-content">
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <%= form_tag( warehouse_allocations_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+
+          <div class="form-group">
+            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all.order('created_at DESC'), 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-6 data-parsley-required' }  %>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for=""></label>
+            <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+            </div>
+          </div>
+
+      <% end %>
+
+    </div>
+  </div>
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
       <table class="table table-striped">
         <thead>
           <tr>
-                        <th>Operation</th>
-                        <th>Region</th>
-                        <th>Status</th>
-                        <th>Created by</th>
-                        <th>Modified by</th>
-                        <th>Deleted at</th>
-                        <th>Actions</th>
+            <th>Region</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
           <% @warehouse_allocations.each do |warehouse_allocation| %>
-          <tr>                        
-                        <td><%= warehouse_allocation.operation_id
-              %></td>
-                        <td><%= warehouse_allocation.region_id
-              %></td>
-                        <td><%= warehouse_allocation.status
-              %></td>
-                        <td><%= warehouse_allocation.created_by
-              %></td>
-                        <td><%= warehouse_allocation.modified_by
-              %></td>
-                        <td><%= warehouse_allocation.deleted_at
-              %></td>
-                        <td>
-              <%= link_to 'Edit', edit_warehouse_allocation_path(warehouse_allocation) %> &middot;
-              <%= link_to 'Delete', warehouse_allocation, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <tr>
+            <td><%= warehouse_allocation.region.name %></td>
+            <td><%= warehouse_allocation.status %></td>
+            <td>
+              <%= link_to 'Generate', edit_warehouse_allocation_path(warehouse_allocation) %> &middot;
+              <%= link_to 'Reset Allocation', edit_warehouse_allocation_path(warehouse_allocation) %> &middot;
+              <%= link_to 'Close', edit_warehouse_allocation_path(warehouse_allocation) %>
             </td>
           </tr>
           <% end %>
@@ -59,5 +66,4 @@
       </table>
 
     </div>
-  </div>
 </div>

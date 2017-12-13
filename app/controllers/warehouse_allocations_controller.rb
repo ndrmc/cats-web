@@ -4,6 +4,7 @@ class WarehouseAllocationsController < ApplicationController
   # GET /warehouse_allocations
   # GET /warehouse_allocations.json
   def index
+    @warehouse_allocations 
     @warehouse_allocations = WarehouseAllocation.all
   end
 
