@@ -1,0 +1,37 @@
+    <p>
+      <strong>Warehouse allocation:</strong>
+      <%= @warehouse_allocation.warehouse_allocation_id %>
+    </p>
+
+    <p>
+      <strong>Operation:</strong>
+      <%= @warehouse_allocation.operation_id %>
+    </p>
+
+    <p>
+      <strong>Region:</strong>
+      <%= @warehouse_allocation.region_id %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @warehouse_allocation.status %>
+    </p>
+
+    <p>
+      <strong>Created by:</strong>
+      <%= @warehouse_allocation.created_by %>
+    </p>
+
+    <p>
+      <strong>Modified by:</strong>
+      <%= @warehouse_allocation.modified_by %>
+    </p>
+
+    <p>
+      <strong>Deleted at:</strong>
+      <%= @warehouse_allocation.deleted_at %>
+    </p>
+
+<%= link_to 'Edit', edit_warehouse_allocation_path(@warehouse_allocation) %> |
+<%= link_to 'Back', warehouse_allocations_path %>

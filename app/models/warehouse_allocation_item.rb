@@ -1,0 +1,2 @@
+class WarehouseAllocationItem < ApplicationRecord
+end
