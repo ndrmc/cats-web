@@ -1,10 +1,10 @@
 require 'capistrano-rbenv'
 
-server ENV[SERVER_URL], user: ENV[CATS_DEPLOY_USER], roles: %w{web app db}
+server ENV['SERVER_URL'], user: ENV['CATS_DEPLOY_USER'], roles: %w{web app db}
 
 set :application,     'cats'
 set :repo_url,      'https://github.com/ndrmc/cats-web.git'
-set :user,            ENV[USER]
+set :user,            'fmip'
 set :puma_threads,    [4, 16]
 set :puma_workers,    1
 
