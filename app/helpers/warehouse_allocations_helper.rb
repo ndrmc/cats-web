@@ -1,0 +1,2 @@
+module WarehouseAllocationsHelper
+end

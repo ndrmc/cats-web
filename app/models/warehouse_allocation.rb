@@ -1,0 +1,2 @@
+class WarehouseAllocation < ApplicationRecord
+end
