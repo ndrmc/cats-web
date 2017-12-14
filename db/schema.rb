@@ -1404,7 +1404,6 @@ ActiveRecord::Schema.define(version: 20171213085626) do
 
   create_table "warehouse_allocation_items", force: :cascade do |t|
     t.integer  "warehouse_allocation_id"
-    t.integer  "region_id"
     t.integer  "zone_id"
     t.integer  "woreda_id"
     t.integer  "fdp_id"
