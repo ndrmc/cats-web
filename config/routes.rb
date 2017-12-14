@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   
 
   
+  resources :warehouse_allocations
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'
