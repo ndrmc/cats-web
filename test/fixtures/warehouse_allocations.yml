@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+warehouse_allocation_1:
+  operation_id: 1
+  region_id: 1
+  status: 1
+  created_by: 1
+  modified_by: 1
+
+warehouse_allocation_2:
+  operation_id: 1
+  region_id: 1
+  status: 1
+  created_by: 1
+  modified_by: 1

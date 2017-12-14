@@ -1,0 +1,63 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Warehouse Allocations</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Warehouse Allocations</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Warehouse Allocation', new_warehouse_allocation_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Operation</th>
+                        <th>Region</th>
+                        <th>Status</th>
+                        <th>Created by</th>
+                        <th>Modified by</th>
+                        <th>Deleted at</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @warehouse_allocations.each do |warehouse_allocation| %>
+          <tr>                        
+                        <td><%= warehouse_allocation.operation_id
+              %></td>
+                        <td><%= warehouse_allocation.region_id
+              %></td>
+                        <td><%= warehouse_allocation.status
+              %></td>
+                        <td><%= warehouse_allocation.created_by
+              %></td>
+                        <td><%= warehouse_allocation.modified_by
+              %></td>
+                        <td><%= warehouse_allocation.deleted_at
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_warehouse_allocation_path(warehouse_allocation) %> &middot;
+              <%= link_to 'Delete', warehouse_allocation, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
