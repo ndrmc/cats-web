@@ -7,6 +7,18 @@ class WarehouseAllocationsController < ApplicationController
     @warehouse_allocations = WarehouseAllocation.get_regions(params['operation'])    
   end
 
+  def generate
+    respond_to do |format|
+      if WarehouseAllocation.generate(params['operation'], params['region'])
+        format.html { redirect_to '/warehouse_allocations', notice: 'Warehouse allocation was successfully created.' }
+        format.json { render :show, status: :created, location: @warehouse_allocation }
+      else
+        format.html { render :new }
+        format.json { render json: @warehouse_allocation.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # GET /warehouse_allocations/1
   # GET /warehouse_allocations/1.json
   def show

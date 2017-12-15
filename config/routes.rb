@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   
   resources :warehouse_allocations
+  post 'warehouse_allocations/generate', to: 'warehouse_allocations#generate'
+
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'

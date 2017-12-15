@@ -67,7 +67,7 @@
               <%= link_to 'Reset Allocation', warehouse_allocations_path(warehouse_allocation), :class => "btn btn-warning" %> &middot;
               <%= link_to 'Close', warehouse_allocations_path(warehouse_allocation), :class => "btn btn-danger" %>
             <% elsif warehouse_allocation[:status] == :ready %>
-              <%= link_to 'Generate', warehouse_allocations_path(warehouse_allocation), :class => "btn btn-primary" %>
+              <%= link_to 'Generate', '/warehouse_allocations/generate?' + {operation: params[:operation], region: warehouse_allocation[:region_id]}.to_param, method: :post, data: { confirm: "All #{warehouse_allocation[:region_name]} FDPs under this operation will be warehouse allocated according to their default settings. Are you sure?" }, :class => "btn btn-primary" %>
             <% else%>
 
             <% end %>               

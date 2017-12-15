@@ -35,6 +35,34 @@ class WarehouseAllocation < ApplicationRecord
         end 
         return @warehouse_allocations 
     end
+
+    def self.generate(operation_id, region_id)
+      @warehouse_allocation = WarehouseAllocation.new
+      @warehouse_allocation.operation_id = operation_id
+      @warehouse_allocation.region_id = region_id
+      # @warehouse_allocation.created_by = current_user_id
+      @warehouse_allocation.save
+
+      @requisitions = Requisition.where(:operation_id => operation_id).where('zone_id IN (?)', Location.find(region_id).descendants.where(:location_type => :zone).select(:id))
+
+      @requisitions.each do |requisition|
+        requisition.requisition_items do |requisition_item|
+          @fdp = Fdp.includes(location: [warehouse: :hub]).find(requisition_item.fdp_id)
+          @warehouse_allocation_item = WarehouseAllocationItem.new
+          @warehouse_allocation_item.warehouse_allocation_id = @warehouse_allocation.id
+          @warehouse_allocation_item.zone_id = @fdp.location.parent.id
+          @warehouse_allocation_item.woreda_id = @fdp.location.id
+          @warehouse_allocation_item.fdp_id = @fdp.id
+          @warehouse_allocation_item.hub_id = @fdp.location.warehouse.hub.id
+          @warehouse_allocation_item.warehouse_id = @fdp.location.warehouse.id
+          @warehouse_allocation_item.requisition_id = requisition.id
+          @warehouse_allocation_item.status = :draft
+          # @warehouse_allocation_item.created_by = current_user_id
+          @warehouse_allocation_item.save
+        end
+      end
+      return true
+    end
 end
 
 
