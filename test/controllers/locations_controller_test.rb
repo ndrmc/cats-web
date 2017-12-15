@@ -38,7 +38,7 @@ class LocationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update location" do
     patch location_url('en',@location), params: { location: { name: 'Oromia', code: 'OR', location_type: :region   } }
-    assert_redirected_to location_url(@location.parent_id ? @location.parent_id : 0)
+    assert_response :success
   end
 
   test "should destroy location" do
