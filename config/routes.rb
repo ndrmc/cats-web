@@ -4,7 +4,7 @@ Rails.application.routes.draw do
  
   
 
-  
+  get '/warehouse_allocations/warehouse_allocation_zonal_view'
   resources :warehouse_allocations
   get 'stock_status/index'
 
