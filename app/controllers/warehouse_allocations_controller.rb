@@ -5,6 +5,7 @@ class WarehouseAllocationsController < ApplicationController
   # GET /warehouse_allocations.json
   def index
     @warehouse_allocations = WarehouseAllocation.get_regions(params['operation'])    
+    @operation =params['operation']
   end
 
   # GET /warehouse_allocations/1
