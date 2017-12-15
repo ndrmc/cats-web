@@ -720,6 +720,7 @@ ActiveRecord::Schema.define(version: 20171213085626) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "parent_node_id"
+    t.integer  "warehouse_id"
     t.index ["ancestry"], name: "index_locations_on_ancestry", using: :btree
     t.index ["deleted_at"], name: "index_locations_on_deleted_at", using: :btree
   end
