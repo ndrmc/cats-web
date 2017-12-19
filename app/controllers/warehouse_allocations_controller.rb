@@ -117,6 +117,28 @@ class WarehouseAllocationsController < ApplicationController
     end
   end
 
+  def warehouse_allocation_fdp_view
+    operation_id = params[:operation]
+    region_id = params[:region]
+    zone_id = params[:zone]
+
+    @requisition_items = RequisitionItem.joins(:requisition, :fdp)
+    .where('requisitions.operation_id' => operation_id, 'requisitions.region_id' => region_id, 'requisitions.zone_id' => zone_id)
+    .where("beneficiary_no > 0")
+    @requisition_items = @requisition_items.group_by {|item| item.fdp.location_id}
+  end
+
+  def warehouse_allocation_zonal_view
+    operation_id = params[:operation]
+    region_id = params[:region]
+
+    @requisition_items = RequisitionItem.joins(:requisition).select("sum(beneficiary_no) as beneficiary_no, sum(requisition_items.amount) as amount, requisition_id,requisitions.requisition_no")
+    .group("requisition_id,requisitions.requisition_no")
+    .where('requisitions.operation_id' => operation_id, 'requisitions.region_id' => region_id)
+    .where("beneficiary_no > 0")
+    @requisition_items = @requisition_items.group_by {|item| item.requisition.zone_id}
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_warehouse_allocation
