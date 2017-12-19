@@ -10,10 +10,9 @@
       </li>
     </ol>
   </div>
-
   <div class="col-sm-8">
     <div class="title-action">
-       <a  class = "btn btn-default" href="/warehouse_allocations?operation=<%= params['operation'] %>">Cancel</a>
+      <a  class = "btn btn-default" href="/warehouse_allocations/warehouse_allocation_zonal_view?operation=<%= params['operation'] %>&region=<%= params['region'] %>">Cancel</a>
     </div>
   </div>
 </div>
@@ -24,7 +23,7 @@
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
-      <%= form_tag( '/warehouse_allocations/warehouse_allocation_zonal_view' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( '/warehouse_allocations/warehouse_allocation_fdp_view' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
 
           <div class="form-group">
             <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
@@ -41,6 +40,21 @@
             </div>
           </div>
 
+           <div class="form-group">
+            <%= label_tag :zone, "Zone", { :class => ' control-label'} %>
+
+            <div class="">
+              <% if params[:region].present? %>
+                <%= select_tag :zone, options_from_collection_for_select(Location.find(params[:region])&.children.where(:location_type => :zone), "id", "name", params[:zone]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "region",
+                  "data-option-url" => "/locations/#{:region}/children",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              <% end %>
+            </div>
+          </div>
           <div class="form-group">
             <label for=""></label>
             <div>
@@ -53,11 +67,11 @@
     </div>
   </div>
   <div class="ibox float-e-margins">
-  <% @requisition_items.each do |zone , requisition_details| %>
+  <% @requisition_items.each do |woreda , requisition_details| %>
     <div class="ibox-title">
-                <%= link_to Location.find(zone).name ,'/warehouse_allocations/warehouse_allocation_fdp_view?operation=' +  params['operation'].to_s + '&region=' + params['region'].to_s + '&zone=' + zone.to_s %> 
+                <h5> <%=  Location.find(woreda).name %> </h5>
                 <div class="ibox-tools">
-        
+    
                     <a class="collapse-link">
                         <i class="fa fa-chevron-up"></i>
                     </a>
@@ -68,22 +82,23 @@
       <table class="table table-striped  cats-datatable">
         <thead>
           <tr>
-                        <th>Req No</th>
-                        <th>Commodity</th>
-                        <th>Qty</th>
-                        <th>Beneficiaty No</th>
+                        <th>FDP</th>
+                        <th>Beneficiary No</th>
+                        <th>Allocated</th>
                         <th>Hub</th>
+                        <th></th>
+
           </tr>
         </thead>
 
         <tbody>
           <% requisition_details.each do |requisition_detail| %>
           <tr>
-                        <td> <%= requisition_detail.requisition.requisition_no %> </td>
-                        <td><%=  Commodity.find(requisition_detail.requisition.commodity_id).name %></td>
+                        <td> <%= requisition_detail&.fdp&.name %> </td>
                         <td><%=  requisition_detail.amount %></td>
                         <td><%=  requisition_detail.beneficiary_no %></td>
-                        <td></td>
+                        <td>-</td>
+                        <td> <%= link_to 'Change', '#' %> </td>
           </tr>
            
           <% end %>
