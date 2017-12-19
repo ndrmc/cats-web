@@ -5,6 +5,7 @@ class WarehouseAllocationsController < ApplicationController
   # GET /warehouse_allocations.json
   def index
     @warehouse_allocations = WarehouseAllocation.get_regions(params['operation'])    
+    @operation =params['operation']
   end
 
   # GET /warehouse_allocations/1
@@ -61,6 +62,17 @@ class WarehouseAllocationsController < ApplicationController
     end
   end
 
+  def warehouse_allocation_zonal_view
+    operation_id = params[:operation]
+    region_id = params[:region]
+
+    @requisition_items = RequisitionItem.joins(:requisition).select("sum(beneficiary_no) as beneficiary_no, sum(requisition_items.amount) as amount, requisition_id,requisitions.requisition_no")
+    .group("requisition_id,requisitions.requisition_no")
+    .where('requisitions.operation_id' => operation_id, 'requisitions.region_id' => region_id)
+    .where("beneficiary_no > 0")
+    @requisition_items = @requisition_items.group_by {|item| item.requisition.zone_id}
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_warehouse_allocation
