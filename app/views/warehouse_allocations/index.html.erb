@@ -14,7 +14,6 @@
   </div>
 </div>
 
-
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
@@ -40,46 +39,56 @@
   </div>
   <div class="ibox float-e-margins">
     <div class="ibox-content">
-
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Region</th>
-            <th>Status</th>
-            <th></th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @warehouse_allocations.each do |warehouse_allocation| %>
-          <tr>
-            <% if (!@operation.nil?) %>
-            <td> <%= link_to warehouse_allocation[:region_name] , '/warehouse_allocations/warehouse_allocation_zonal_view?operation=' +  @operation + '&region=' + warehouse_allocation[:region_id].to_s %></td>
-            <%else%>
+      <% if params['operation'].present? %>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Region</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @warehouse_allocations.each do |warehouse_allocation| %>
+            <tr>
+              <% if (!@operation.nil?) %>
+                <td> <%= link_to warehouse_allocation[:region_name] , '/warehouse_allocations/warehouse_allocation_zonal_view?operation=' +  @operation + '&region=' + warehouse_allocation[:region_id].to_s %></td>
+              <%else%>
                 <td> <%= warehouse_allocation[:region_name] %></td>
-            <%end%>
-            <td><%= warehouse_allocation[:status] %></td>
-            <td>
-              <small><%= number_to_percentage(warehouse_allocation[:progress], precision: 1)%> requisitions ready</small>
-              <div class="progress progress-mini">
-                <div style="width: <%= number_to_percentage(warehouse_allocation[:progress], precision: 1) %>;" class="progress-bar"></div>
-              </div>
-            </td>
-            <td>
-            <% if warehouse_allocation[:status] == :generated %>
-              <%= link_to 'Reset Allocation', warehouse_allocations_path(warehouse_allocation), :class => "btn btn-warning" %> &middot;
-              <%= link_to 'Close', warehouse_allocations_path(warehouse_allocation), :class => "btn btn-danger" %>
-            <% elsif warehouse_allocation[:status] == :ready %>
-              <%= link_to 'Generate', warehouse_allocations_path(warehouse_allocation), :class => "btn btn-primary" %>
-            <% else%>
-
-            <% end %>               
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+              <%end%>
+              <td>              
+              <% if warehouse_allocation[:status] == :closed %>
+                <span class="label label-default">Closed</span>
+              <% elsif warehouse_allocation[:status] == :allocated %>
+                <span class="label label-success">Allocated</span>
+              <% elsif warehouse_allocation[:status] == :ready %>
+                <span class="label label-warning">Ready</span>
+              <% else%>
+                <small>Only <%= number_to_percentage(warehouse_allocation[:progress], precision: 1)%> of requisitions are approved</small>
+                <div class="progress progress-mini">
+                  <div style="width: <%= number_to_percentage(warehouse_allocation[:progress], precision: 1) %>;" class="progress-bar"></div>
+                </div>
+              <% end %>   
+              </td>
+              <td>
+              <% if warehouse_allocation[:status] == :allocated %>                
+                <% if warehouse_allocation[:edited] %>
+                  <%= link_to 'Reset', '/warehouse_allocations/reset_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to reset warehouse allocations of FDPs to their default warehouses. All the updates you made will be lost. Are you sure?" }, :class => "btn btn-warning" %>
+                  &middot;
+                <% end %>   
+                <%= link_to 'Close', '/warehouse_allocations/close_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to close this warehouse allocation. You will not be able to edit it after you close it. Are you sure?" }, :class => "btn btn-default" %>
+              <% elsif warehouse_allocation[:status] == :ready %>
+                <%= link_to 'Allocate', '/warehouse_allocations/generate?' + {operation: params[:operation], region: warehouse_allocation[:region_id]}.to_param, method: :post, data: { confirm: "All #{warehouse_allocation[:region_name]} FDPs under this operation will be warehouse allocated according to their default settings. Are you sure?" }, :class => "btn btn-primary" %>
+              <% end %>           
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        Select an operation first.
+      <% end %>      
 
     </div>
+
 </div>
