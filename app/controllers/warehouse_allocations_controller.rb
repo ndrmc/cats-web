@@ -84,7 +84,7 @@ class WarehouseAllocationsController < ApplicationController
 
     respond_to do |format|
       if @warehouse_allocation.save
-        format.html { redirect_to @warehouse_allocation, notice: 'Warehouse allocation was successfully created.' }
+        format.html { redirect_to @warehouse_allocation, notice: 'Warehouse allocation was successfully closed.' }
         format.json { render :show, status: :created, location: @warehouse_allocation }
       else
         format.html { render :new }
