@@ -55,7 +55,7 @@
   <div class="ibox float-e-margins">
   <% @requisition_items.each do |zone , requisition_details| %>
     <div class="ibox-title">
-                <%= link_to Location.find(zone).name ,'/warehouse_allocations/warehouse_allocation_fdp_view?operation=' +  params['operation'].to_s + '&region=' + params['region'].to_s + '&zone=' + zone.to_s %> 
+                <%= link_to Location.find(zone).name ,'/warehouse_allocations/warehouse_allocation_fdp_view?operation=' +  params['operation'].to_s + '&region=' + params['region'].to_s + '&zone=' + zone.to_s %>
                 <div class="ibox-tools">
         
                     <a class="collapse-link">
@@ -79,7 +79,7 @@
         <tbody>
           <% requisition_details.each do |requisition_detail| %>
           <tr>
-                        <td> <%= requisition_detail.requisition.requisition_no %> </td>
+                        <td> <%= link_to requisition_detail.requisition.requisition_no, '/warehouse_allocations/warehouse_allocation_fdp_view?operation=' +  params['operation'].to_s + '&region=' + params['region'].to_s + '&requisition_id=' + requisition_detail.requisition_id.to_s %> </td>
                         <td><%=  Commodity.find(requisition_detail.requisition.commodity_id).name %></td>
                         <td><%=  requisition_detail.amount %></td>
                         <td><%=  requisition_detail.beneficiary_no %></td>
