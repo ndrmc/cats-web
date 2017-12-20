@@ -83,7 +83,7 @@
                         <td><%=  Commodity.find(requisition_detail.requisition.commodity_id).name %></td>
                         <td><%=  requisition_detail.amount %></td>
                         <td><%=  requisition_detail.beneficiary_no %></td>
-                        <td></td>
+                        <td><%= WarehouseAllocationItem.find_by(requisition_id: requisition_detail.requisition_id)&.warehouse&.name  %></td>
           </tr>
            
           <% end %>

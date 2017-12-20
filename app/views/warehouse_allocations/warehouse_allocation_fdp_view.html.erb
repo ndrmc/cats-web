@@ -97,7 +97,7 @@
                         <td> <%= requisition_detail&.fdp&.name %> </td>
                         <td><%=  requisition_detail.amount %></td>
                         <td><%=  requisition_detail.beneficiary_no %></td>
-                        <td>-</td>
+                        <td> <%=  WarehouseAllocationItem.find_by(fdp_id: requisition_detail.fdp_id)&.warehouse&.name  %> </td>
                         <td> <%= link_to 'Change', '#' %> </td>
           </tr>
            
