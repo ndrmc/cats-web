@@ -21,6 +21,7 @@
 class Warehouse < ApplicationRecord
     belongs_to :hub
     has_many :stores
+    has_many :warehouse_allocation_items
     belongs_to :organization
 
 
