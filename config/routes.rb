@@ -4,7 +4,13 @@ Rails.application.routes.draw do
  
   
 
-  
+  get '/warehouse_allocations/warehouse_allocation_zonal_view'
+  get '/warehouse_allocations/warehouse_allocation_fdp_view'
+  resources :warehouse_allocations
+  post 'warehouse_allocations/generate', to: 'warehouse_allocations#generate'
+  post 'warehouse_allocations/reset_allocation', to: 'warehouse_allocations#reset_allocation'
+  post 'warehouse_allocations/close_allocation', to: 'warehouse_allocations#close_allocation'
+
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'

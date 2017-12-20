@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170908094128) do
+ActiveRecord::Schema.define(version: 20171213085626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -720,6 +720,7 @@ ActiveRecord::Schema.define(version: 20170908094128) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "parent_node_id"
+    t.integer  "warehouse_id"
     t.index ["ancestry"], name: "index_locations_on_ancestry", using: :btree
     t.index ["deleted_at"], name: "index_locations_on_deleted_at", using: :btree
   end
@@ -1400,6 +1401,33 @@ ActiveRecord::Schema.define(version: 20170908094128) do
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_users_roles_on_deleted_at", using: :btree
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+  end
+
+  create_table "warehouse_allocation_items", force: :cascade do |t|
+    t.integer  "warehouse_allocation_id"
+    t.integer  "zone_id"
+    t.integer  "woreda_id"
+    t.integer  "fdp_id"
+    t.integer  "hub_id"
+    t.integer  "warehouse_id"
+    t.integer  "requisition_id"
+    t.integer  "status"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "warehouse_allocations", force: :cascade do |t|
+    t.integer  "operation_id"
+    t.integer  "region_id"
+    t.integer  "status"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "warehouse_selections", force: :cascade do |t|

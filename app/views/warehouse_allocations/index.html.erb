@@ -1,0 +1,94 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Warehouse Allocations</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li class="active">
+        <strong>Warehouse Allocations</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+  </div>
+</div>
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <%= form_tag( warehouse_allocations_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+
+          <div class="form-group">
+            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all.order('created_at DESC'), 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-6 data-parsley-required' }  %>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for=""></label>
+            <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+            </div>
+          </div>
+
+      <% end %>
+
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <% if params['operation'].present? %>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Region</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @warehouse_allocations.each do |warehouse_allocation| %>
+            <tr>
+              <% if (params['operation'].present?) %>
+                <td> <%= link_to warehouse_allocation[:region_name] , '/warehouse_allocations/warehouse_allocation_zonal_view?operation=' +  params['operation'].to_s + '&region=' + warehouse_allocation[:region_id].to_s %></td>
+              <%else%>
+                <td> <%= warehouse_allocation[:region_name] %></td>
+              <%end%>
+              <td>              
+              <% if warehouse_allocation[:status] == :closed %>
+                <span class="label label-default">Closed</span>
+              <% elsif warehouse_allocation[:status] == :allocated %>
+                <span class="label label-success">Allocated</span>
+              <% elsif warehouse_allocation[:status] == :ready %>
+                <span class="label label-warning">Ready</span>
+              <% else%>
+                <small>Only <%= number_to_percentage(warehouse_allocation[:progress], precision: 1)%> of requisitions are approved</small>
+                <div class="progress progress-mini">
+                  <div style="width: <%= number_to_percentage(warehouse_allocation[:progress], precision: 1) %>;" class="progress-bar"></div>
+                </div>
+              <% end %>   
+              </td>
+              <td>
+              <% if warehouse_allocation[:status] == :allocated %>                
+                <% if warehouse_allocation[:edited] %>
+                  <%= link_to 'Reset', '/warehouse_allocations/reset_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to reset warehouse allocations of FDPs to their default warehouses. All the updates you made will be lost. Are you sure?" }, :class => "btn btn-warning" %>
+                  &middot;
+                <% end %>   
+                <%= link_to 'Close', '/warehouse_allocations/close_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to close this warehouse allocation. You will not be able to edit it after you close it. Are you sure?" }, :class => "btn btn-default" %>
+              <% elsif warehouse_allocation[:status] == :ready %>
+                <%= link_to 'Allocate', '/warehouse_allocations/generate?' + {operation: params[:operation], region: warehouse_allocation[:region_id]}.to_param, method: :post, data: { confirm: "All #{warehouse_allocation[:region_name]} FDPs under this operation will be warehouse allocated according to their default settings. Are you sure?" }, :class => "btn btn-primary" %>
+              <% end %>           
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        Select an operation first.
+      <% end %>      
+
+    </div>
+
+</div>

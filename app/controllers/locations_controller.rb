@@ -26,7 +26,8 @@ class LocationsController < ApplicationController
   def create
 
     parent_id = params[:parent_id].to_i
-
+    warehouse_id = params[:warehouse]
+  
     if params[:name].blank?
       flash[:error] = "The 'name' field is required."
 
@@ -40,7 +41,7 @@ class LocationsController < ApplicationController
       else
         parent = Location.find parent_id
 
-        Location.create!( name: params[:name], location_type: child_location_type(parent.location_type), parent: parent)
+        Location.create!( name: params[:name], location_type: child_location_type(parent.location_type), parent: parent, warehouse_id: warehouse_id)
       end
 
       flash[:success] = 'Created!'
@@ -60,14 +61,18 @@ class LocationsController < ApplicationController
 
   # PATCH/PUT /locations/1
   def update
-    if @location.update(params.permit(:name))
+    @location.transaction do
+      @location.update(name: params[:name], warehouse_id: params[:warehouse])
+       woreda_locations = Location.find(@location.id).descendants
+      woreda_locations.update_all(warehouse_id: params[:warehouse])
+
       flash[:success] = 'Updated!'
       redirect_to  location_path(@location.parent_id ? @location.parent_id : 0)
       return
-    else
+    end
+    
       flash[:error] = "Couldn't save. Please check your input."
       render :edit
-    end
   end
 
   # DELETE /locations/1
