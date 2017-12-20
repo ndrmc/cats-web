@@ -46,7 +46,7 @@
           <tr>
             <th>Region</th>
             <th>Status</th>
-            <th>Progress</th>
+            <th></th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -61,7 +61,7 @@
             <%end%>
             <td><%= warehouse_allocation[:status] %></td>
             <td>
-              <small><%= number_to_percentage(warehouse_allocation[:progress], precision: 1)%> approved</small>
+              <small><%= number_to_percentage(warehouse_allocation[:progress], precision: 1)%> requisitions ready</small>
               <div class="progress progress-mini">
                 <div style="width: <%= number_to_percentage(warehouse_allocation[:progress], precision: 1) %>;" class="progress-bar"></div>
               </div>
