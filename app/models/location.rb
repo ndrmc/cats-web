@@ -31,4 +31,5 @@ class Location < ApplicationRecord
 
   has_many :fdps
   has_many :users
+  belongs_to :warehouse
 end
