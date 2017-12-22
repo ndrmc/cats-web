@@ -61,14 +61,18 @@ class LocationsController < ApplicationController
 
   # PATCH/PUT /locations/1
   def update
-    if @location.update(name: params[:name], warehouse_id: params[:warehouse])
+    @location.transaction do
+      @location.update(name: params[:name], warehouse_id: params[:warehouse])
+       woreda_locations = Location.find(@location.id).descendants
+      woreda_locations.update_all(warehouse_id: params[:warehouse])
+
       flash[:success] = 'Updated!'
       redirect_to  location_path(@location.parent_id ? @location.parent_id : 0)
       return
-    else
+    end
+    
       flash[:error] = "Couldn't save. Please check your input."
       render :edit
-    end
   end
 
   # DELETE /locations/1
