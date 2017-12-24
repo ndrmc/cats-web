@@ -1,0 +1,145 @@
+<div class="row  border-bottom white-bg dashboard-header">
+  <div class="col-sm-4">
+    <h2>Welcome
+      <%= current_user.name %></h2>
+  </div>
+</div>
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <span class="label label-success pull-right">Yearly</span>
+          <h5>Benficiaries</h5>
+        </div>
+        <div class="ibox-content">
+          <h1 class="no-margins"></h1>
+          <small>Relief program</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <span class="label label-success pull-right">Yearly</span>
+          <h5>PSNP/FSCD beneficiareis</h5>
+        </div>
+        <div class="ibox-content">
+          <h1 class="no-margins"> NO DATA AVAILABLE </h1>
+          <small>FSCD program</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <span class="label label-primary pull-right">Food Resource</span>
+          <h5>Avaliable Resource</h5>
+        </div>
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-md-6">
+              <h1 class="no-margins">XXXmt</h1>
+              <small>Stock at all NDRMC warehouse</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <div>
+            <h3 class="font-bold no-margins">
+              Stock Status
+                            </h3>
+            <small>Available and free stock.</small>
+          </div>
+          <div class="m-t-sm">
+            <div class="row">
+              <div class="col-md-8">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Commodity</th>
+                      <th>Stock amount (mt)</th>                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <% @category_balance.each do |balance| %>
+                    <tr>
+                      <td><%= balance.id %></td>
+                      <td><%= balance.commodity_category_name %></td>
+                      <td align="right"><%= ActiveSupport::NumberHelper.number_to_delimited(balance.category_sum) %></td>                      
+                    </tr>
+                  <% end %>                    
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-4">
+                <ul class="stat-list m-t-lg">
+                  <li>
+                    <h2 class="no-margins">0,000</h2>
+                    <small>Reserved stock</small>
+                    <div class="progress progress-mini">
+                      <div class="progress-bar" style="width: 0%;"></div>
+                    </div>
+                  </li>
+                  <li>
+                    <h2 class="no-margins ">0,000</h2>
+                    <small>Total allocated</small>
+                    <div class="progress progress-mini">
+                      <div class="progress-bar" style="width: 0%;"></div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="m-t-md">
+            <small class="pull-right">
+              <i class="fa fa-clock-o"> </i>
+              Update on <%= DateTime.now.to_s(:long) %>
+              </small>
+            <small>
+              <strong>Note:</strong> Shown values are based on status of captured data at the hubs.
+              </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <span class="label label-primary pull-right">Year: <%= DateTime.now.year - 8 %></span>
+          <h5>Operation Status</h5>
+        </div>
+        <% @operations.each do |operation| %>
+          <div class="ibox-content">
+          <div class="row">
+            <div class="col-xs-3">
+              <small class="stats-label">Round/Month</small>              
+              <h4><%= link_to operation[:name], operation_path(operation[:id])%></h4>
+            </div>
+            <div class="col-xs-3">
+              <small class="stats-label">Allocated(mt)</small>
+              <h4><%= ActiveSupport::NumberHelper.number_to_delimited(operation[:allocated]) %></h4>
+            </div>
+            <div class="col-xs-3">
+              <small class="stats-label">Dispatched(mt)</small>
+              <h4><%= ActiveSupport::NumberHelper.number_to_delimited(operation[:dispatched])%></h4>
+            </div>
+            <div class="col-xs-3">
+              <small class="stats-label">Progress</small>
+              <h4><%= number_to_percentage(operation[:dispatched]&.to_f/operation[:allocated]&.to_f * 100, precision: 1)%></h4>
+            </div>
+          </div>
+        </div>
+        <% end %>        
+      </div>
+    </div>
+  </div>
+</div>

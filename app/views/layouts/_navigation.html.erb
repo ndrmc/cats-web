@@ -81,6 +81,10 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
+    <li class="<%= 'active' if is_active_controller('stock_reports')  %>">
+        <%= link_to t(:stock_reports), "#" %>
+      </li>
+     
       <li class="<%= 'active' if is_active_controller('receipts')  %>">
       <% if policy(Receipt).index? %>
             <%= link_to t(:receiving), receipts_path %>
@@ -100,46 +104,13 @@
         <a href="#"><%= t(:transfer)%></a>
       </li>
       <li>
-        <a href="#"><%= t(:adjustment)%></a>
+        <a href="#"><%= t(:internal_move)%></a>
       </li>
      <%if policy(StockTake).index? %>
       <li class="<%= 'active' if is_active_controller('stock_takes')  %>">
-        <%= link_to t(:stock_take), stock_takes_url %>
+        <%= link_to t(:adjustment), stock_takes_url %>
       </li>
-      <%end%>
-      <li>
-        <a href="#"><%= t(:internal_move)%></a>
-      </li>
-      <li>
-        <a href="#"><%= t(:stock_ledger)%></a>
-      </li>
-      <li class="<%= 'active' if is_active_controller('stock_takes')  %>">
-        <%= link_to t(:stock_status), "/stock_status/index" %>
-      </li>
-    </ul>
-  </li>
-
-  <li class="<%= 'active' if current_page?('/home/minor') %>">
-    <%= link_to "/home/minor" do %>
-    <i class="fa fa-truck"></i>
-    <span class="nav-label"><%= t(:transport)%></span>
-    <span class="fa arrow"></span>
-    <% end %>
-    <ul class="nav nav-second-level collapse">
-      <li>
-        <a href="#"><%= t(:bids)%></a>
-      </li>
-      <li>
-        <a href="#"><%= t(:rfq)%></a>
-      </li>
-      <li>
-        <a href="#"><%= t(:bid_evaluation)%></a>
-      </li>
-      <% if policy(Transporter).index? %>
-      <li class="<%= 'active' if is_active_controller('transporters')  %>">
-        <%= link_to 'Transporters', transporters_path %>
-      </li>
-      <%end%>
+      <%end%>            
     </ul>
   </li>
 
@@ -150,6 +121,11 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
+    <% if policy(Transporter).index? %>
+      <li class="<%= 'active' if is_active_controller('transporters')  %>">
+        <%= link_to 'Transporters', transporters_path %>
+      </li>
+      <%end%>
       <li>
         <%= link_to t(:transport_order), transport_orders_url %>
       </li>
@@ -171,22 +147,13 @@
     <span class="nav-label"><%= t(:region)%></span>
     <span class="fa arrow"></span>
     <% end %>
-    <ul class="nav nav-second-level collapse">
-      <% if policy(RegionalRequest).index? %>
-
-        <li class="<%= 'active' if is_active_controller('regional_requests')  %>">
-          <%= link_to "Monthly Requests", regional_requests_url %>
-        </li>
-      <%end%>
+    <ul class="nav nav-second-level collapse">      
       <li>
         <a href="#"><%= t(:fdp_receipts)%></a>
       </li>
       <li>
         <a href="#"><%= t(:cmpm_reports)%></a>
-      </li>
-      <li>
-        <a href="#"><%= t(:needs_assessment)%></a>
-      </li>
+      </li>      
     </ul>
   </li>
 <%if policy(:admin).admin?%>
