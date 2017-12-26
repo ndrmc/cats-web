@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   post 'warehouse_allocations/close_allocation', to: 'warehouse_allocations#close_allocation'
 
   get 'stock_status/index'
+  get 'stock_status/stock_status_by_project_code'
 
   get 'fdp_operation_summary/index'
 
