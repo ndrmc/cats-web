@@ -65,7 +65,7 @@
         <%= link_to t(:request_allocation), requisitions_url %></a>
       </li>
       <%end%>
-      <li>
+      <li class="<%= 'active' if is_active_controller('warehouse_allocations')  %>">
         <%= link_to t(:warehouse_allocation), warehouse_allocations_url %>
       </li>
       <li>
