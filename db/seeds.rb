@@ -300,3 +300,10 @@ o2 = Organization.find_or_initialize_by(name: "Saudi Government")
 o2.long_name = "Government of Saudi Arabia"
 o2.save!
 
+if (Permission.where(:name => "Transporters").present? == false )
+  Permission.create(name: 'Transporters', description: '')
+end
+
+if (Permission.where(:name => "StockTake").present? == false )
+  Permission.create(name: 'StockTake', description: '')
+end

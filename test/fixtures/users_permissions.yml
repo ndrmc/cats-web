@@ -44,3 +44,6 @@ user_permission_ration:
 user_permission_location:
         user: admin
         permission: Location
+user_permission_stock_take:
+        user: admin
+        permission: StockTake
