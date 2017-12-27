@@ -1,7 +1,7 @@
 class StockTakesController < ApplicationController
   
   before_action :set_stock_take, only: [:show, :edit, :update, :destroy]
-
+  before_action :authorize_stock_take
   # GET /stock_takes
   # GET /stock_takes.json
   def index
@@ -74,6 +74,10 @@ class StockTakesController < ApplicationController
       format.html { redirect_to stock_takes_url, notice: 'Stock take was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def authorize_stock_take
+    authorize StockTake 
   end
 
   private
