@@ -51,7 +51,7 @@
           <tbody>
             <% @warehouse_allocations.each do |warehouse_allocation| %>
             <tr>
-              <% if (params['operation'].present?) %>
+              <% if (params['operation'].present? && warehouse_allocation[:status] == :allocated) %>
                 <td> <%= link_to warehouse_allocation[:region_name] , '/warehouse_allocations/warehouse_allocation_zonal_view?operation=' +  params['operation'].to_s + '&region=' + warehouse_allocation[:region_id].to_s %></td>
               <%else%>
                 <td> <%= warehouse_allocation[:region_name] %></td>
@@ -71,7 +71,7 @@
               <% end %>   
               </td>
               <td>
-              <% if warehouse_allocation[:status] == :allocated %>                
+              <% if warehouse_allocation[:status] == :allocated %>                 
                 <% if warehouse_allocation[:edited] %>
                   <%= link_to 'Reset', '/warehouse_allocations/reset_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to reset warehouse allocations of FDPs to their default warehouses. All the updates you made will be lost. Are you sure?" }, :class => "btn btn-warning" %>
                   &middot;
