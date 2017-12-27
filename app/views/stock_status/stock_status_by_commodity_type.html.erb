@@ -1,0 +1,132 @@
+<% @warehouses = Warehouse.all %>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Stock Status</h2>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+    </div>
+  </div>
+</div>
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+      <%= form_tag( "/stock_status/stock_status_by_commodity_type" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+
+      	<div class="form-group">
+          <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+          <div class="">
+             <%= collection_select :hub_id,:id,Hub.order(:name), :id, :name, {:selected => Warehouse.find_by(id: @location&.warehouse_id)&.hub_id,  :prompt => true},  {  :id => 'hub_select',:name => 'hub' ,:class => 'form-control' }%>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :program, "warehouse", { :class => ' control-label', :required => true } %>
+
+          <div class="">
+             <%= collection_select :warehouse_id,:id,@warehouses.select{|w| w.hub_id == "#{:hub_select}"}, :id, :name, { :prompt => true}, {:id => 'warehouse_select',:name => 'warehouse' ,:class => 'form-control' }%>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+          </div>
+        </div>
+
+        <% end %>
+
+
+  </div>
+  
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+            <th>Commodity Type</th>
+            <th>hub</th>    
+            <th>Warehouse</th>       
+            <th>Commodity</th>
+            <th>Balance</th>
+      </tr>
+      </thead>
+
+      <tbody>  
+        <% @stock_status.each do |commodity_type, stock| %>
+        <% sum=0 %>
+        <% stock.each do |stock_detail| %>
+            <tr>
+                <td><%= CommodityCategory.find(commodity_type)&.name %></td>
+                <td><%= stock_detail.hub.name %></td>
+                <td><%= stock_detail.warehouse.name %></td>
+                <td><%= stock_detail.commodity.name %></td>
+                <td><%= number_with_delimiter(stock_detail.balance,:delimiter => ',') %></td>  
+                <% sum = sum + stock_detail.balance %>     
+            </tr>
+        <% end %>
+            <tr style="font-weight:bold">
+                <td>Total <%= CommodityCategory.find(commodity_type)&.name %></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><%= number_with_delimiter(sum,:delimiter => ',') %><td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>        
+    
+  </div>
+</div>
+
+<script>
+ $(document).ready(function () {
+
+
+     $( '.table' ).each(function( i ) { 
+
+    var worktable = $(this);
+    var num_head_columns = worktable.find('thead tr th').length;
+    var rows_to_validate = worktable.find('tbody tr');
+
+    rows_to_validate.each( function (i) {
+
+        var row_columns = $(this).find('td').length;
+        for (i = $(this).find('td').length; i < num_head_columns; i++) {
+            $(this).append('<td class="hidden"></td>');
+        }
+
+    });
+
+});
+
+
+      
+       populate($('#hub_select').val());
+
+      $('#hub_select').change(function(){
+        populate($(this).val());
+      });
+
+
+    });
+
+function populate(id)
+{
+  var hub_id =id;
+         var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+        var warehouses = <%= @warehouses.to_json.html_safe %>   
+        var warehouses_in_hub = $.grep(warehouses, function (elem) {
+          return elem.hub_id == hub_id
+        });
+    
+        var warehouse_options = $.map(warehouses_in_hub, function (val) {
+          return '<option value="' + val.id + '">' + val.name + '</option>';
+        });
+       warehouse_options.unshift(EMPTY_OPTION);
+       $('#warehouse_select').html(warehouse_options);
+       
+}
+    </script>
