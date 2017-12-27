@@ -12,7 +12,7 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <a  class = "btn btn-default" href="/warehouse_allocations/warehouse_allocation_zonal_view?operation=<%= params['operation'] %>&region=<%= params['region'] %>">Cancel</a>
+      <a  class = "btn btn-default" href="/warehouse_allocations/warehouse_allocation_zonal_view?operation=<%= params['operation'] %>&region=<%= params['region'] %>">Back</a>
     </div>
   </div>
 </div>
@@ -21,41 +21,42 @@
 
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
-    <div class="ibox-content">
+    <div class="ibox-content col-sm-12">
 
-      <%= form_tag( '/warehouse_allocations/warehouse_allocation_fdp_view' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
-
-          <div class="form-group">
+      <%= form_tag( '/warehouse_allocations/warehouse_allocation_fdp_view' ,{ class: '', role: 'form', method: 'GET'}) do %>
+          <input id="operation" name="operation" type="hidden" value="<%= params[:operation] %>" />
+          <input id="region" name="region" type="hidden" value="<%= params[:region] %>" />
+          <div class="form-group col-sm-3">
             <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+              <h3><%= @operation_name  %></h3>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group col-sm-2">
             <%= label_tag :region, "Region", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :region,  options_from_collection_for_select( Location.where(location_type:'region').order('name ASC'), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+              <h3><%= @region_name  %></h3>
             </div>
           </div>
 
-           <div class="form-group">
+           <div class="form-group col-sm-2">
             <%= label_tag :zone, "Zone", { :class => ' control-label'} %>
 
             <div class="">
-              <% if params[:region].present? %>
-                <%= select_tag :zone, options_from_collection_for_select(Location.find(params[:region])&.children.where(:location_type => :zone), "id", "name", params[:zone]),
-                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
-                  "data-option-dependent" => true,
-                  "data-option-observed" => "region",
-                  "data-option-url" => "/locations/#{:region}/children",
-                  "data-option-key-method" => :id,
-                  "data-option-value-method" => :name %>
-              <% end %>
+              <h3><%= @zone_name %></h3>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group col-sm-3">
+            <%= label_tag :requisition, "Requisition", { :class => ' control-label'} %>
+
+            <div class="">
+              <%# <%= select_tag  :operation,  options_from_collection_for_select( @requi_comm_list, 'id', 'name', params[:requisition] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %> 
+              <%= select_tag :requisition_id, options_for_select(@merged_hash, :selected => params[:requisition_id]), {:class => 'form-control col-md-3 data-parsley-required'} %>
+            </div>
+          </div>
+          <div class="form-group col-sm-2">
             <label for=""></label>
             <div>
               <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />

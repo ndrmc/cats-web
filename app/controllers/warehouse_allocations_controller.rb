@@ -180,6 +180,20 @@ class WarehouseAllocationsController < ApplicationController
     operation_id = params[:operation]
     region_id = params[:region]
     requisition_id = params[:requisition_id]
+    requisition = Requisition.includes(:region, :zone, :commodity).find(params[:requisition_id])
+    @operation_name = Operation.find(params[:operation]).name
+    @region_name = requisition.region.name
+    @zone_name = requisition.zone.name
+    @commodity_name = requisition.commodity.name
+    requisition_list = Requisition.includes(:region, :zone, :commodity).where(operation_id: params[:operation], zone_id: requisition.zone_id)
+
+    @requi_comm_list = []
+    requisition_list.each do |requisition|
+      requi_comm = requisition.requisition_no + " - " + requisition.commodity.name
+      @requi_comm_list << { :id => requisition.id, :name => requi_comm}
+    end
+    @formatted_array_of_hashes = @requi_comm_list.each.map{ |h| { h[:name] => h[:id] }}
+    @merged_hash = Hash[*@formatted_array_of_hashes.map(&:to_a).flatten]
 
     @requisition_items = RequisitionItem.joins(:requisition, :fdp)
     .where('requisitions.operation_id' => operation_id, 'requisitions.region_id' => region_id, 'requisition_id' => requisition_id)
@@ -189,7 +203,7 @@ class WarehouseAllocationsController < ApplicationController
 
   def warehouse_allocation_zonal_view
     operation_id = params[:operation]
-    region_id = params[:region]
+    region_id = params[:region]   
 
     @requisition_items = RequisitionItem.joins(:requisition).select("sum(beneficiary_no) as beneficiary_no, sum(requisition_items.amount) as amount, requisition_id,requisitions.requisition_no")
     .group("requisition_id,requisitions.requisition_no")
