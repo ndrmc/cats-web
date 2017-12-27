@@ -81,7 +81,7 @@ class WarehouseAllocationsController < ApplicationController
   # POST /warehouse_allocations.json
   def create
     @warehouse_allocation = WarehouseAllocation.new(warehouse_allocation_params)
-
+    
     respond_to do |format|
       if @warehouse_allocation.save
         format.html { redirect_to @warehouse_allocation, notice: 'Warehouse allocation was successfully closed.' }
@@ -89,6 +89,28 @@ class WarehouseAllocationsController < ApplicationController
       else
         format.html { render :new }
         format.json { render json: @warehouse_allocation.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def change_wai    
+    @existing_wai = WarehouseAllocationItem.includes(:warehouse_allocation, fdp: :location).find(warehouse_allocation_params["wai_id"])
+    @existing_wai.hub_id = warehouse_allocation_params["hub_id"]
+    @existing_wai.warehouse_id = warehouse_allocation_params["warehouse_id"]
+    @existing_wai.status = :edited
+    @flag = true
+    if(warehouse_allocation_params["set_as_default"])
+      @flag = false
+      location = @existing_wai.fdp.location
+      location.warehouse_id = warehouse_allocation_params["warehouse_id"]
+      location.save
+      @flag = true
+    end
+    respond_to do |format|
+      if (@existing_wai.save && @flag)
+        format.json { head :no_content }
+      else
+        format.json { render json: @existing_wai.warehouse_allocation.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -147,6 +169,6 @@ class WarehouseAllocationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_allocation_params
-      params.require(:warehouse_allocation).permit(:operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
+      params.require(:warehouse_allocation).permit(:wai_id, :hub_id, :warehouse_id, :set_as_default, :operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
     end
 end

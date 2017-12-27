@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   post 'warehouse_allocations/generate', to: 'warehouse_allocations#generate'
   post 'warehouse_allocations/reset_allocation', to: 'warehouse_allocations#reset_allocation'
   post 'warehouse_allocations/close_allocation', to: 'warehouse_allocations#close_allocation'
-
+  post '/en/warehouse_allocations/change_wai', to: 'warehouse_allocations#change_wai'
   get 'stock_status/index'
   get 'stock_status/stock_status_by_project_code'
 
