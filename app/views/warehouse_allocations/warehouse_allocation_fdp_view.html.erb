@@ -88,6 +88,7 @@
                         <th>Beneficiary No</th>
                         <th>Allocated</th>
                         <th>Hub</th>
+                        <th>Warehouse</th>
                         <th></th>
 
           </tr>
@@ -95,8 +96,8 @@
 
         <tbody>
           <% requisition_details.each do |requisition_detail| %>
+          <% @wai = WarehouseAllocationItem.includes(:fdp, :requisition, :warehouse, :hub).where(:fdp_id => requisition_detail.fdp_id, :requisition_id => requisition_detail.requisition.id).first %>
           <tr>
-
             <td> <%= requisition_detail&.fdp&.name %> </td>
             <td><%=  requisition_detail.amount %></td>
             <td><%=  requisition_detail.beneficiary_no %></td>
@@ -119,8 +120,6 @@
   
 </div>
 
-<<<<<<< Updated upstream
-=======
 </div>
 
 <div class="modal inmodal" id="change-warehouse-allocation" tabindex="-1" role="dialog" aria-hidden="true">
@@ -194,5 +193,4 @@
       </div>
     </div>
   </div>
->>>>>>> Stashed changes
 </div>

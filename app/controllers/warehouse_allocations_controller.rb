@@ -81,7 +81,7 @@ class WarehouseAllocationsController < ApplicationController
   # POST /warehouse_allocations.json
   def create
     @warehouse_allocation = WarehouseAllocation.new(warehouse_allocation_params)
-
+    
     respond_to do |format|
       if @warehouse_allocation.save
         format.html { redirect_to @warehouse_allocation, notice: 'Warehouse allocation was successfully closed.' }
@@ -116,6 +116,7 @@ class WarehouseAllocationsController < ApplicationController
     end
   end
 
+
   def change_wa_woreda
     @hub_id = warehouse_allocation_params["hub_id"]
     @warehouse_id = warehouse_allocation_params["warehouse_id"]
@@ -148,6 +149,7 @@ class WarehouseAllocationsController < ApplicationController
       end
     end
   end
+
 
 
   # PATCH/PUT /warehouse_allocations/1
@@ -204,10 +206,6 @@ class WarehouseAllocationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_allocation_params
-<<<<<<< Updated upstream
-      params.require(:warehouse_allocation).permit(:operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
-=======
       params.require(:warehouse_allocation).permit(:wai_id, :hub_id, :warehouse_id, :woreda_id, :requisition_id, :set_as_default, :operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
->>>>>>> Stashed changes
     end
 end
