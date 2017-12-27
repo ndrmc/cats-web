@@ -2,9 +2,10 @@ require 'test_helper'
 
 class StockTakesControllerTest < ActionDispatch::IntegrationTest
    include Devise::Test::IntegrationHelpers
+  
 
   setup do
-    sign_in users(:admin)
+     sign_in users(:admin)
      @stock_take = stock_takes(:stock_take_1)
   end
   
