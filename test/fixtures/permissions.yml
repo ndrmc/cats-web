@@ -43,5 +43,7 @@ Receipts:
     name: 'Receipts'
 Location:
     name: 'locations'
+StockTake:
+    name: 'StockTake'
 
 

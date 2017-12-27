@@ -1,19 +1,37 @@
 class StockTakePolicy < ApplicationPolicy
 
     def index?
-    return true
+         @current_user.has_permission('StockTake')
+    end
+
+    def show?
+         @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+
+     def edit?
+         @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
 
     def new?
-        return true
+         @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
 
     def create?
-        return true
+        @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
 
-    def update?
-    return true
+    def post_stock_take?
+        @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
+    
+
+    def update?
+         @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+
+    def destroy?
+        @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+    
 
 end

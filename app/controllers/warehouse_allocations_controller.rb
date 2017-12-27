@@ -93,6 +93,7 @@ class WarehouseAllocationsController < ApplicationController
     end
   end
 
+
   def change_wai    
     @existing_wai = WarehouseAllocationItem.includes(:warehouse_allocation, fdp: :location).find(warehouse_allocation_params["wai_id"])
     @existing_wai.hub_id = warehouse_allocation_params["hub_id"]
@@ -114,6 +115,42 @@ class WarehouseAllocationsController < ApplicationController
       end
     end
   end
+
+
+  def change_wa_woreda
+    @hub_id = warehouse_allocation_params["hub_id"]
+    @warehouse_id = warehouse_allocation_params["warehouse_id"]
+    @set_as_default = warehouse_allocation_params["set_as_default"]
+    @operation_id = warehouse_allocation_params["operation_id"]
+    @woreda_id = warehouse_allocation_params["woreda_id"]
+    @requisition_id = warehouse_allocation_params["requisition_id"]
+
+    @warehouse_allocation_items.count = WarehouseAllocationItem.includes(:warehouse_allocation, fdp: :location).where(:'warehouse_allocations.operation_id' => @operation_id, :woreda_id => @woreda_id, :requisition_id => @requisition_id)
+
+    @warehouse_allocation_items.each do |warehouse_allocation_item|
+      warehouse_allocation_item.hub_id = @hub_id
+      warehouse_allocation_item.warehouse_id = @warehouse_id
+      warehouse_allocation_item.status = :edited
+      @flag = true
+      if(@set_as_default)
+        @flag = false
+        location = warehouse_allocation_item.fdp.location
+        location.warehouse_id = @warehouse_id
+        location.save
+        @flag = true
+      end
+      warehouse_allocation_item.save
+    end
+    respond_to do |format|
+      if (@flag)
+        format.json { head :no_content }
+      else
+        format.json { render json: @existing_wai.warehouse_allocation.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
 
   # PATCH/PUT /warehouse_allocations/1
   # PATCH/PUT /warehouse_allocations/1.json
@@ -143,6 +180,20 @@ class WarehouseAllocationsController < ApplicationController
     operation_id = params[:operation]
     region_id = params[:region]
     requisition_id = params[:requisition_id]
+    requisition = Requisition.includes(:region, :zone, :commodity).find(params[:requisition_id])
+    @operation_name = Operation.find(params[:operation]).name
+    @region_name = requisition.region.name
+    @zone_name = requisition.zone.name
+    @commodity_name = requisition.commodity.name
+    requisition_list = Requisition.includes(:region, :zone, :commodity).where(operation_id: params[:operation], zone_id: requisition.zone_id)
+
+    @requi_comm_list = []
+    requisition_list.each do |requisition|
+      requi_comm = requisition.requisition_no + " - " + requisition.commodity.name
+      @requi_comm_list << { :id => requisition.id, :name => requi_comm}
+    end
+    @formatted_array_of_hashes = @requi_comm_list.each.map{ |h| { h[:name] => h[:id] }}
+    @merged_hash = Hash[*@formatted_array_of_hashes.map(&:to_a).flatten]
 
     @requisition_items = RequisitionItem.joins(:requisition, :fdp)
     .where('requisitions.operation_id' => operation_id, 'requisitions.region_id' => region_id, 'requisition_id' => requisition_id)
@@ -152,7 +203,7 @@ class WarehouseAllocationsController < ApplicationController
 
   def warehouse_allocation_zonal_view
     operation_id = params[:operation]
-    region_id = params[:region]
+    region_id = params[:region]   
 
     @requisition_items = RequisitionItem.joins(:requisition).select("sum(beneficiary_no) as beneficiary_no, sum(requisition_items.amount) as amount, requisition_id,requisitions.requisition_no")
     .group("requisition_id,requisitions.requisition_no")
@@ -169,6 +220,6 @@ class WarehouseAllocationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_allocation_params
-      params.require(:warehouse_allocation).permit(:wai_id, :hub_id, :warehouse_id, :set_as_default, :operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
+      params.require(:warehouse_allocation).permit(:wai_id, :hub_id, :warehouse_id, :woreda_id, :requisition_id, :set_as_default, :operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
     end
 end
