@@ -1,29 +1,40 @@
 <% @warehouses = Warehouse.all %>
 <div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-sm-4">
-    <h2>Stock Status</h2>
+  <div class="col-sm-6">
+    <h2>Stock Reports</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/stock_reports">Stock Reports</a>
+      </li>
+      <li class="active">
+        <strong>Stock Status By Project Code</strong>
+      </li>
+    </ol>
   </div>
-  <div class="col-sm-8">
+  <div class="col-sm-6">
     <div class="title-action">
     </div>
   </div>
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-      <%= form_tag( "/stock_status/index" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/stock_reports/stock_status_by_project_code" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
 
       	<div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
 
           <div class="">
-             <%= collection_select :hub_id,:id,Hub.order(:name), :id, :name, {:selected => Warehouse.find_by(id: @location&.warehouse_id)&.hub_id,  :prompt => true},  {  :id => 'hub_select',:name => 'hub' ,:class => 'form-control', :required => true }%>
+             <%= collection_select :hub_id,:id,Hub.order(:name), :id, :name, {:selected => Warehouse.find_by(id: @location&.warehouse_id)&.hub_id,  :prompt => true},  {  :id => 'hub_select',:name => 'hub' ,:class => 'form-control' }%>
           </div>
         </div>
         <div class="form-group">
           <%= label_tag :program, "warehouse", { :class => ' control-label', :required => true } %>
 
           <div class="">
-             <%= collection_select :warehouse_id,:id,@warehouses.select{|w| w.hub_id == "#{:hub_select}"}, :id, :name, { :prompt => true}, {:id => 'warehouse_select',:name => 'warehouse' ,:class => 'form-control', :required => true }%>
+             <%= collection_select :warehouse_id,:id,@warehouses.select{|w| w.hub_id == "#{:hub_select}"}, :id, :name, { :prompt => true}, {:id => 'warehouse_select',:name => 'warehouse' ,:class => 'form-control' }%>
           </div>
         </div>
         
@@ -43,9 +54,10 @@
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table class="table table-striped cats-datatable">
+    <table class="table table-striped cats-grouped-aggregated-datatable">
       <thead>
       <tr>
+            <th>Project code</th>
             <th>Hub</th>
             <th>Warehouse</th>           
             <th>Commodity</th>
@@ -55,11 +67,12 @@
 
       <tbody>      
         <% @stock_status.each do |stock| %>
-            <tr>
+            <tr> 
+                <td><%= stock['project_code'] %></td>
                 <td><%= stock['hub'] %></td>
                 <td><%= stock['warehouse'] %></td>
                 <td><%= stock['commodity'] %></td>
-                <td><%= number_with_delimiter(stock['balance'],:delimiter => ',') %></td>             
+                <td style="text-align:right;"><%= number_with_delimiter(stock['balance'],:delimiter => ',') %></td>             
             </tr>
         <% end %>
       </tbody>

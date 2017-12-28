@@ -19,6 +19,7 @@ class Reports
 		end
 	end 
 
+
 	def stock_status_by_commodity_type hub, warehouse
 		stock_account = Account.find_by({'code': :stock})
 		 
