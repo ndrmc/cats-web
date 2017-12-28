@@ -1,9 +1,20 @@
 <% @warehouses = Warehouse.all %>
 <div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-sm-4">
-    <h2>Stock Status</h2>
+  <div class="col-sm-6">
+    <h2>Stock Reports</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/stock_reports">Stock Reports</a>
+      </li>
+      <li class="active">
+        <strong>Stock Status By Project Code</strong>
+      </li>
+    </ol>
   </div>
-  <div class="col-sm-8">
+  <div class="col-sm-6">
     <div class="title-action">
     </div>
   </div>
