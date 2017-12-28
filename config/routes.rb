@@ -15,20 +15,10 @@ Rails.application.routes.draw do
   post '/en/warehouse_allocations/change_wa_woreda', to: 'warehouse_allocations#change_wa_woreda'
 
   get 'stock_status/index'
-<<<<<<< HEAD
-  get 'stock_status/stock_status_by_commodity_type'
-  get 'stock_status/stock_pdf_report', to: 'stock_status#stock_pdf_report'
-
-=======
-  get 'stock_status/stock_status_by_project_code'
->>>>>>> 71806c0245b2b6a3a53f13a9b5204e7d75241557
 
   get 'fdp_operation_summary/index'
 
-  
-
  scope "(:locale)", locale: /en|am/ do
-
   get '/transport_requisitions/print', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
@@ -201,6 +191,7 @@ Rails.application.routes.draw do
 
   get'/stock_reports', to: 'stock_reports#index'
   get '/stock_reports/stock_status_by_project_code', to: 'stock_reports#stock_status_by_project_code'
+  get '/stock_reports/stock_status_by_commodity_type', to: 'stock_reports#stock_status_by_commodity_type'
  
 
   

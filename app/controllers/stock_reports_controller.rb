@@ -6,4 +6,9 @@ class StockReportsController < ApplicationController
   def stock_status_by_project_code
      @stock_status = Reports.new.stock_status_by_project_code(params[:hub], params[:warehouse])
   end
+
+  def stock_status_by_commodity_type
+    @stock_status = Reports.new.stock_status_by_commodity_type(params[:hub], params[:warehouse])
+  end
+  
 end

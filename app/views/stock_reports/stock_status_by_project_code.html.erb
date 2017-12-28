@@ -27,7 +27,7 @@
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
 
           <div class="">
-             <%= collection_select :hub_id,:id,Hub.order(:name), :id, :name, {:selected => Warehouse.find_by(id: @location&.warehouse_id)&.hub_id,  :prompt => true},  {  :id => 'hub_select',:name => 'hub' ,:class => 'form-control' }%>
+             <%= collection_select :hub_id,:id,Hub.order(:name), :id, :name, {:selected => params[:hub],  :prompt => true},  {  :id => 'hub_select',:name => 'hub' ,:class => 'form-control' }%>
           </div>
         </div>
         <div class="form-group">
@@ -107,6 +107,6 @@ function populate(id)
         });
        warehouse_options.unshift(EMPTY_OPTION);
        $('#warehouse_select').html(warehouse_options);
-       
+        $('#warehouse_select').val(<%= params[:warehouse] %>)  
 }
     </script>
