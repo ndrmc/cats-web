@@ -43,7 +43,7 @@
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table class="table table-striped cats-datatable">
+    <table class="table table-striped cats-grouped-aggregated-datatable">
       <thead>
       <tr>
             <th>Project code</th>
@@ -61,7 +61,7 @@
                 <td><%= stock['hub'] %></td>
                 <td><%= stock['warehouse'] %></td>
                 <td><%= stock['commodity'] %></td>
-                <td><%= number_with_delimiter(stock['balance'],:delimiter => ',') %></td>             
+                <td style="text-align:right;"><%= number_with_delimiter(stock['balance'],:delimiter => ',') %></td>             
             </tr>
         <% end %>
       </tbody>
