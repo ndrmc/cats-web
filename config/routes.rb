@@ -192,6 +192,9 @@ Rails.application.routes.draw do
   resources :stock_takes
   resources :stock_take_items
   resources :adjustments
+
+  get'/stock_reports', to: 'stock_reports#index'
+  get '/stock_reports/stock_status_by_project_code', to: 'stock_reports#stock_status_by_project_code'
  
 
   
