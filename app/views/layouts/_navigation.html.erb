@@ -65,7 +65,7 @@
         <%= link_to t(:request_allocation), requisitions_url %></a>
       </li>
       <%end%>
-      <li>
+      <li class="<%= 'active' if is_active_controller('warehouse_allocations')  %>">
         <%= link_to t(:warehouse_allocation), warehouse_allocations_url %>
       </li>
       <li>
@@ -81,10 +81,7 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-    <li class="<%= 'active' if is_active_controller('stock_reports')  %>">
-        <%= link_to t(:stock_reports), "#" %>
-      </li>
-     
+       
       <li class="<%= 'active' if is_active_controller('receipts')  %>">
       <% if policy(Receipt).index? %>
             <%= link_to t(:receiving), receipts_path %>
@@ -106,9 +103,14 @@
       <li>
         <a href="#"><%= t(:internal_move)%></a>
       </li>
-     <%if policy(StockTake).index? %>
+      <%if policy(StockTake).index? %>
       <li class="<%= 'active' if is_active_controller('stock_takes')  %>">
         <%= link_to t(:adjustment), stock_takes_url %>
+      <li>
+        <a href="#"><%= t(:stock_ledger)%></a>
+      </li>
+      <li class="<%= 'active' if is_active_controller('stock_reports')  %>">
+        <%= link_to t(:stock_reports), '/stock_reports/' %>
       </li>
       <%end%>            
     </ul>

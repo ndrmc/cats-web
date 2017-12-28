@@ -12,7 +12,7 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <a  class = "btn btn-default" href="/warehouse_allocations/warehouse_allocation_zonal_view?operation=<%= params['operation'] %>&region=<%= params['region'] %>">Cancel</a>
+      <a  class = "btn btn-default" href="/warehouse_allocations/warehouse_allocation_zonal_view?operation=<%= params['operation'] %>&region=<%= params['region'] %>">Back</a>
     </div>
   </div>
 </div>
@@ -21,41 +21,42 @@
 
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
-    <div class="ibox-content">
+    <div class="ibox-content col-sm-12">
 
-      <%= form_tag( '/warehouse_allocations/warehouse_allocation_fdp_view' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
-
-          <div class="form-group">
+      <%= form_tag( '/warehouse_allocations/warehouse_allocation_fdp_view' ,{ class: '', role: 'form', method: 'GET'}) do %>
+          <input id="operation" name="operation" type="hidden" value="<%= params[:operation] %>" />
+          <input id="region" name="region" type="hidden" value="<%= params[:region] %>" />
+          <div class="form-group col-sm-3">
             <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+              <h3><%= @operation_name  %></h3>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group col-sm-2">
             <%= label_tag :region, "Region", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :region,  options_from_collection_for_select( Location.where(location_type:'region').order('name ASC'), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+              <h3><%= @region_name  %></h3>
             </div>
           </div>
 
-           <div class="form-group">
+           <div class="form-group col-sm-2">
             <%= label_tag :zone, "Zone", { :class => ' control-label'} %>
 
             <div class="">
-              <% if params[:region].present? %>
-                <%= select_tag :zone, options_from_collection_for_select(Location.find(params[:region])&.children.where(:location_type => :zone), "id", "name", params[:zone]),
-                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
-                  "data-option-dependent" => true,
-                  "data-option-observed" => "region",
-                  "data-option-url" => "/locations/#{:region}/children",
-                  "data-option-key-method" => :id,
-                  "data-option-value-method" => :name %>
-              <% end %>
+              <h3><%= @zone_name %></h3>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group col-sm-3">
+            <%= label_tag :requisition, "Requisition", { :class => ' control-label'} %>
+
+            <div class="">
+              <%# <%= select_tag  :operation,  options_from_collection_for_select( @requi_comm_list, 'id', 'name', params[:requisition] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %> 
+              <%= select_tag :requisition_id, options_for_select(@merged_hash, :selected => params[:requisition_id]), {:class => 'form-control col-md-3 data-parsley-required'} %>
+            </div>
+          </div>
+          <div class="form-group col-sm-2">
             <label for=""></label>
             <div>
               <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
@@ -71,7 +72,9 @@
     <div class="ibox-title">
                 <h5> <%=  Location.find(woreda).name %> </h5>
                 <div class="ibox-tools">
-    
+                    <a data-woreda-name = "<%= Location.find(woreda).name %>" data-woreda-id = "<%= woreda %>" data-operation = "<%= params['operation'] %>" data-requisition-id = "<%= requisition_details.first.requisition_id %>" data-requisition = "<%= requisition_details.first.requisition.requisition_no %>" data-target="#change-warehouse-allocation" data-toggle="modal" data-level="woreda" class="btn btn-sm btn-primary">
+                      Change for Woreda
+                    </a>
                     <a class="collapse-link">
                         <i class="fa fa-chevron-up"></i>
                     </a>
@@ -86,6 +89,7 @@
                         <th>Beneficiary No</th>
                         <th>Allocated</th>
                         <th>Hub</th>
+                        <th>Warehouse</th>
                         <th></th>
 
           </tr>
@@ -93,14 +97,20 @@
 
         <tbody>
           <% requisition_details.each do |requisition_detail| %>
+          <% @wai = WarehouseAllocationItem.includes(:fdp, :requisition, :warehouse, :hub).where(:fdp_id => requisition_detail.fdp_id, :requisition_id => requisition_detail.requisition.id).first %>
           <tr>
-                        <td> <%= requisition_detail&.fdp&.name %> </td>
-                        <td><%=  requisition_detail.amount %></td>
-                        <td><%=  requisition_detail.beneficiary_no %></td>
-                        <td> <%=  WarehouseAllocationItem.find_by(fdp_id: requisition_detail.fdp_id)&.warehouse&.name  %> </td>
-                        <td> <%= link_to 'Change', '#' %> </td>
-          </tr>
-           
+            <td> <%= requisition_detail&.fdp&.name %> </td>
+            <td><%=  requisition_detail.amount %></td>
+            <td><%=  requisition_detail.beneficiary_no %></td>
+            <td> <%=  @wai&.hub&.name  %> </td> 
+            <td> <%=  @wai&.warehouse&.name  %> </td>                    
+            <td> 
+              <a data-wai-id="<%= @wai.id %>" data-woreda-name = "<%= @wai&.fdp&.location&.name %>" data-fdp-name = "<%= @wai&.fdp&.name %>" data-hub = "<%= @wai&.hub&.id %>" data-warehouse = "<%= @wai&.warehouse&.id %>" data-hub-name = "<%= @wai&.hub&.name %>" data-warehouse-name = "<%= @wai&.warehouse&.name %>" data-requisition = "<%= @wai&.requisition&.requisition_no %>" data-target="#change-warehouse-allocation" data-toggle="modal" data-level="fdp">
+                Change
+              </a>
+            </td>
+          </tr>           
+
           <% end %>
         </tbody>
       </table>
@@ -111,4 +121,77 @@
   
 </div>
 
+</div>
+
+<div class="modal inmodal" id="change-warehouse-allocation" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">Change Warehouse Allocation</h4>
+      </div>
+      <input id="operation_id" name="operation_id" type="hidden" value="" />
+      <input id="requisition_id" name="operation_id" type="hidden" value="" />
+      <input id="woreda_id" name="woreda_id" type="hidden" value="" />
+      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">          
+            <div class="location_tree" style="font-weight:bold">
+                
+            </div>    
+          </div> 
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :requisition, "Requisition", { :class => ' control-label'} %>
+            <div class="requisition_id">
+              
+            </div>
+          </div>      
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Select a Hub --", :class => 'form-control width-100per' }  %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :warehouse, "Warehouse", { :class => ' control-label', :required => true } %>
+
+              <div class="">
+                <%= select_tag :warehouse, options_from_collection_for_select([], "id", "name", params[:warehouse]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "hub",
+                  "data-option-url" => "/warehouses/#{:hub}.json",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              </div>
+            </div>
+        </div>
+        <div class="spinner col-md-12 col-sm-12 col-xs-12">
+            
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <div class="pull-left" style="">             
+            <%= check_box_tag 'set_as_default', false %>
+            Make this default warehouse
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="changes-fdp-wa-btn">Save</button>
+          <button type="button" class="btn btn-primary" id="changes-woreda-wa-btn" data-wai-id=<%= params[:id] %>>Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
