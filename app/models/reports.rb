@@ -88,5 +88,21 @@ class Reports
 		end
 	end
 	
+
+	def received_stock_by_project_code (from_date, to_date, hub, warehouse)
+		receipt_journal = Journal.find_by({'code': :goods_received})
+		stock_account = Account.find_by({'code': :stock})		
+
+		if( from_date.present? && to_date.present? && hub.present?  && warehouse.present? )
+			@result = PostingItem.joins(:project, :commodity).where(journal_id: receipt_journal, account_id: stock_account, hub: hub, warehouse: warehouse).where("posting_items.created_at > ? AND posting_items.created_at < ?", from_date, to_Date).group(:'projects.project_code', :'commodities.name').select('projects.project_code, commodities.name, SUM(posting_items.quantity)')
+
+		elsif ( from_date.present? && to_date.present? && hub.present? )
+			@result = PostingItem.joins(:project, :commodity).where(journal_id: receipt_journal, account_id: stock_account, hub: hub).where("posting_items.created_at > ? AND posting_items.created_at < ?", from_date, to_Date).group(:'projects.project_code', :'commodities.name').select('projects.project_code, commodities.name, SUM(posting_items.quantity)')
+		elsif ( from_date.present? && to_date.present? )
+			@result = PostingItem.joins(:project, :commodity).where(journal_id: receipt_journal, account_id: stock_account).where("posting_items.created_at > ? AND posting_items.created_at < ?", from_date, to_Date).group(:'projects.project_code', :'commodities.name').select('projects.project_code, commodities.name, SUM(posting_items.quantity)')
+		else
+			@result = PostingItem.joins(:project, :commodity).where(journal_id: receipt_journal, account_id: stock_account).group(:'projects.project_code', :'commodities.name').select('projects.project_code, commodities.name, SUM(posting_items.quantity)')
+		end
+	end
 	
 end
