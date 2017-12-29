@@ -10,20 +10,20 @@
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-      <%= form_tag( "/stock_status/index" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/stock_reports/stock_status_by_commodity_type" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
 
       	<div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
 
           <div class="">
-             <%= collection_select :hub_id,:id,Hub.order(:name), :id, :name, {:selected => Warehouse.find_by(id: @location&.warehouse_id)&.hub_id,  :prompt => true},  {  :id => 'hub_select',:name => 'hub' ,:class => 'form-control', :required => true }%>
+             <%= collection_select :hub_id,:id,Hub.order(:name), :id, :name, {:selected => params[:hub],  :prompt => true},  {  :id => 'hub_select',:name => 'hub' ,:class => 'form-control' }%>
           </div>
         </div>
         <div class="form-group">
           <%= label_tag :program, "warehouse", { :class => ' control-label', :required => true } %>
 
           <div class="">
-             <%= collection_select :warehouse_id,:id,@warehouses.select{|w| w.hub_id == "#{:hub_select}"}, :id, :name, { :prompt => true}, {:id => 'warehouse_select',:name => 'warehouse' ,:class => 'form-control', :required => true }%>
+             <%= collection_select :warehouse_id,:id,@warehouses.select{|w| w.hub_id == "#{:hub_select}"}, :id, :name, { :prompt => true}, {:id => 'warehouse_select',:name => 'warehouse' ,:class => 'form-control' }%>
           </div>
         </div>
         
@@ -38,29 +38,35 @@
 
 
   </div>
-</div>
+  
 
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table class="table table-striped cats-datatable">
+    <table class="table table-striped cats-grouped-aggregated-datatable">
       <thead>
       <tr>
-            <th>Hub</th>
-            <th>Warehouse</th>           
+            <th>Commodity Type</th>
+            <th>hub</th>    
+            <th>Warehouse</th>       
             <th>Commodity</th>
             <th>Balance</th>
       </tr>
       </thead>
 
-      <tbody>      
-        <% @stock_status.each do |stock| %>
+      <tbody>  
+        <% @stock_status.each do |commodity_type, stock| %>
+        <% sum=0 %>
+          <% stock.each do |stock_detail| %>
             <tr>
-                <td><%= stock['hub'] %></td>
-                <td><%= stock['warehouse'] %></td>
-                <td><%= stock['commodity'] %></td>
-                <td><%= number_with_delimiter(stock['balance'],:delimiter => ',') %></td>             
+                <td><%= CommodityCategory.find(commodity_type)&.name %></td>
+                <td><%= stock_detail.hub.name %></td>
+                <td><%= stock_detail.warehouse.name %></td>
+                <td><%= stock_detail.commodity.name %></td>
+                <td><%= number_with_delimiter(stock_detail.balance,:delimiter => ',') %></td>  
+                <% sum = sum + stock_detail.balance %>     
             </tr>
+           <% end %>
         <% end %>
       </tbody>
     </table>        
@@ -70,7 +76,8 @@
 
 <script>
  $(document).ready(function () {
-      
+
+   
        populate($('#hub_select').val());
 
       $('#hub_select').change(function(){
@@ -82,8 +89,8 @@
 
 function populate(id)
 {
-  var hub_id =id;
-         var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+        var hub_id =id;
+        var EMPTY_OPTION = '<option value="">-- Choose --</option>';
         var warehouses = <%= @warehouses.to_json.html_safe %>   
         var warehouses_in_hub = $.grep(warehouses, function (elem) {
           return elem.hub_id == hub_id
@@ -94,6 +101,6 @@ function populate(id)
         });
        warehouse_options.unshift(EMPTY_OPTION);
        $('#warehouse_select').html(warehouse_options);
-       
+       $('#warehouse_select').val(<%= params[:warehouse] %>)  
 }
     </script>

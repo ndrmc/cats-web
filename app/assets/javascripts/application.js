@@ -86,6 +86,71 @@ $(document).ready(function() {
         }
     });
 
+    $('.cats-grouped-aggregated-datatable').DataTable({
+        info: false,
+        pageLength: 25,
+        stateSave: true,
+        dom: 'lfrtipB',
+        buttons: ['copy', 'csv', 'excel', 'print'],
+        "columnDefs": [
+            { "visible": false, "targets": 0 }
+        ],
+        "order": [[ 0, 'asc' ]],
+        "displayLength": 25,
+        "drawCallback": function ( settings ) {
+            console.log(this);
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+            var total = 0.0;
+            var flag = 0;
+            var last_index = api.column( 0 ).data().length;
+            console.log("Row Data Length: " + last_index);
+            
+            api.column(0, {page:'current'} ).data().each( function ( group, i ) {
+                var next_index = api.row($(rows).eq( i + 1 )).index();
+                var row_data = api.row(api.row($(rows).eq( i )).index()).data();
+                console.log("Row Data Length: " + last_index);
+                if(next_index == null)
+                {
+                    console.log("Last row found!");
+                    var row_length = row_data.length;
+                    var row_data_trim = parseFloat(row_data[row_length-1].replace(',', ''));
+                    total = total + row_data_trim;
+                    $(rows).eq( i ).after(
+                        '<tr class="group" style="background-color:#ececec;margin-bottom:5px"><td colspan="5"> <div class="pull-right"><span style="font-weight:bold;">Sub-Total: </span>'+Math.round(total * 100) / 100+'</div></td></tr>'
+                    );
+                }
+                else{
+                    if ( last !== group || last == last_index - 1 ) {
+                        console.log("Row Data Length: " + last_index + " - last = " + last);
+                        if (flag!=0){
+                            $(rows).eq( i ).before(
+                                '<tr class="group" style="background-color:#ececec;margin-bottom:5px"><td colspan="5"> <div class="pull-right"><span style="font-weight:bold;">Sub-Total: </span>'+Math.round(total * 100) / 100+'</div></td></tr>'
+                            );
+                            total = 0.0;
+                        }         
+                        flag = 1;           
+                        
+                        $(rows).eq( i ).before(
+                            '<tr class="group" style="background-color:#ccc;"><td colspan="5">'+group+'</td></tr>'
+                        );
+     
+                        last = group;
+                    }
+                }
+
+                
+                // console.log("Total = " + total + " + " + row_data[4]);
+                // console.log("Total (P) = " + parseFloat(total).toFixed(2) + " + " + parseFloat(row_data[4]).toFixed(2));
+                var row_length = row_data.length;
+                var row_data_trim = parseFloat(row_data[row_length-1].replace(',', ''));
+                total = total + row_data_trim;
+                // console.log("Total = " + total)
+            } );
+        }
+    });
+
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy'
     });
