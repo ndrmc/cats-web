@@ -3,7 +3,7 @@
     <h2>Transporter Summary</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Transport</a>
+        <a href="#">Contract</a>
       </li>
       <li>
         <%= link_to 'Transporters', transporters_path %>
@@ -166,7 +166,7 @@
                   <%= link_to 'Edit', edit_transporter_address_path(transporter_address) %>
                   <% end %>
                   &middot;
-                    <% if policy(Transporter).delete? %>
+                    <% if policy(Transporter).destroy? %>
                   <%= link_to 'Delete', transporter_address, method: :delete, data: { confirm: "Are you sure you want to delete the selected address record?" } %>
                   <% end %>
                 </td>
