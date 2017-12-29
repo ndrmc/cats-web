@@ -63,7 +63,7 @@
                 <td><%= stock_detail.hub.name %></td>
                 <td><%= stock_detail.warehouse.name %></td>
                 <td><%= stock_detail.commodity.name %></td>
-                <td><%= number_with_delimiter(stock_detail.balance,:delimiter => ',') %></td>  
+                <td style="text-align:right;"><%= number_with_delimiter(stock_detail.balance,:delimiter => ',') %></td>  
                 <% sum = sum + stock_detail.balance %>     
             </tr>
            <% end %>
