@@ -1,27 +1,16 @@
 <% @warehouses = Warehouse.all %>
 <div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-sm-6">
-    <h2>Stock Reports</h2>
-    <ol class="breadcrumb">
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/stock_reports">Stock Reports</a>
-      </li>
-      <li class="active">
-        <strong>Stock Status By Project Code</strong>
-      </li>
-    </ol>
+  <div class="col-sm-4">
+    <h2>Stock Status</h2>
   </div>
-  <div class="col-sm-6">
+  <div class="col-sm-8">
     <div class="title-action">
     </div>
   </div>
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-      <%= form_tag( "/stock_reports/stock_status_by_project_code" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/stock_reports/stock_status_by_commodity_type" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
 
       	<div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
@@ -49,7 +38,7 @@
 
 
   </div>
-</div>
+  
 
 <div class="ibox float-e-margins">
   <div class="ibox-content">
@@ -57,23 +46,27 @@
     <table class="table table-striped cats-grouped-aggregated-datatable">
       <thead>
       <tr>
-            <th>Project code</th>
-            <th>Hub</th>
-            <th>Warehouse</th>           
+            <th>Commodity Type</th>
+            <th>hub</th>    
+            <th>Warehouse</th>       
             <th>Commodity</th>
             <th>Balance</th>
       </tr>
       </thead>
 
-      <tbody>      
-        <% @stock_status.each do |stock| %>
-            <tr> 
-                <td><%= stock['project_code'] %></td>
-                <td><%= stock['hub'] %></td>
-                <td><%= stock['warehouse'] %></td>
-                <td><%= stock['commodity'] %></td>
-                <td style="text-align:right;"><%= number_with_delimiter(stock['balance'],:delimiter => ',') %></td>             
+      <tbody>  
+        <% @stock_status.each do |commodity_type, stock| %>
+        <% sum=0 %>
+          <% stock.each do |stock_detail| %>
+            <tr>
+                <td><%= CommodityCategory.find(commodity_type)&.name %></td>
+                <td><%= stock_detail.hub.name %></td>
+                <td><%= stock_detail.warehouse.name %></td>
+                <td><%= stock_detail.commodity.name %></td>
+                <td><%= number_with_delimiter(stock_detail.balance,:delimiter => ',') %></td>  
+                <% sum = sum + stock_detail.balance %>     
             </tr>
+           <% end %>
         <% end %>
       </tbody>
     </table>        
@@ -83,7 +76,8 @@
 
 <script>
  $(document).ready(function () {
-      
+
+   
        populate($('#hub_select').val());
 
       $('#hub_select').change(function(){
@@ -95,8 +89,8 @@
 
 function populate(id)
 {
-  var hub_id =id;
-         var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+        var hub_id =id;
+        var EMPTY_OPTION = '<option value="">-- Choose --</option>';
         var warehouses = <%= @warehouses.to_json.html_safe %>   
         var warehouses_in_hub = $.grep(warehouses, function (elem) {
           return elem.hub_id == hub_id
@@ -107,6 +101,6 @@ function populate(id)
         });
        warehouse_options.unshift(EMPTY_OPTION);
        $('#warehouse_select').html(warehouse_options);
-        $('#warehouse_select').val(<%= params[:warehouse] %>)  
+       $('#warehouse_select').val(<%= params[:warehouse] %>)  
 }
     </script>

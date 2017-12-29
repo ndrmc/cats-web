@@ -33,5 +33,9 @@
 
 class PostingItem < ApplicationRecord
     belongs_to :posting
-    
+    belongs_to :hub
+    belongs_to :warehouse
+    belongs_to :commodity
+    belongs_to :commodity_category
+    belongs_to :account
 end
