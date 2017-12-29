@@ -15,16 +15,10 @@ Rails.application.routes.draw do
   post '/en/warehouse_allocations/change_wa_woreda', to: 'warehouse_allocations#change_wa_woreda'
 
   get 'stock_status/index'
-<<<<<<< HEAD
-<<<<<<< HEAD
   get 'stock_status/stock_status_by_commodity_type'
   get 'stock_status/stock_pdf_report', to: 'stock_status#stock_pdf_report'
-
-=======
   get 'stock_status/stock_status_by_project_code'
->>>>>>> 71806c0245b2b6a3a53f13a9b5204e7d75241557
-=======
->>>>>>> a556af0817282e6a73d843f75de8b5303abb54c4
+
 
   get 'fdp_operation_summary/index'
 

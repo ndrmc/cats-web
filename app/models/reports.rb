@@ -19,10 +19,7 @@ class Reports
 		end
 	end 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> a556af0817282e6a73d843f75de8b5303abb54c4
 	def stock_status_by_commodity_type hub, warehouse
 		stock_account = Account.find_by({'code': :stock})
 		 
@@ -45,8 +42,7 @@ class Reports
 			group('commodity_categories.id,hubs.id, hubs.name,warehouses.id,warehouses.name,commodities.id, commodities.name').
 			where(:'account_id' => stock_account)
 			@result = @result.group_by {| stock| stock.commodity_category.id }
-<<<<<<< HEAD
-=======
+
 
 		end
 	end
@@ -90,7 +86,7 @@ class Reports
 													inner join warehouses w on w.id = pi.warehouse_id
 													where pi.account_id  = ' + stock_account.id.to_s  + '
 													group by commodity_source, hub, warehouse, commodity, project_code')
->>>>>>> a556af0817282e6a73d843f75de8b5303abb54c4
+
 		end
 	end
 	
