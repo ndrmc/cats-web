@@ -32,6 +32,31 @@ class Reports
 		end
 	end
 
+	def dispatch_report_by_project hub, warehouse, from_date, to_date
+		 
+    	  dispatched_account = Account.find_by({'code': :dispatched})
+    	  good_issue_journal = Journal.find_by({'code': :goods_issue})
+		  @result = DispatchReportByProject.where(:'account_id' => dispatched_account.id, :'journal_id' => good_issue_journal.id)
+	    if( hub.present?  && warehouse.present?  && from_date.present? && to_date.present?)
+			@result = @result.where(:'hub_id' => hub , :'warehouse_id' => warehouse).where('dispatch_date >= ? and dispatch_date <= ?',from_date,to_date )
+			@result = @result.group('project_code, commodity,hub,warehouse').select('project_code,hub,warehouse, commodity, sum(balance) as balance')
+		elsif (hub.present? && from_date.present? && to_date.present?)
+			@result = @result.where(:'hub_id' => hub).where('dispatch_date >= ? and dispatch_date <= ?',from_date,to_date )
+			@result = @result.group('project_code, commodity,hub,warehouse').select('project_code,hub,warehouse, commodity, sum(balance) as balance')
+		elsif( hub.present?  && warehouse.present?)
+			@result = @result.where(:'hub_id' => hub , :'warehouse_id' => warehouse)
+			@result = @result.group('project_code, commodity,hub,warehouse').select('project_code,hub,warehouse, commodity, sum(balance) as balance')
+		elsif (hub.present?)
+			@result = @result.where(:'hub_id' => hub)
+			@result = @result.group('project_code, commodity,hub,warehouse').select('project_code,hub,warehouse, commodity, sum(balance) as balance')
+		elsif (from_date.present? && to_date.present?)
+		  	@result = @result.where('dispatch_date >= ? and dispatch_date <= ?',from_date,to_date )
+			  @result = @result.group('project_code, commodity,hub,warehouse').select('project_code,hub,warehouse, commodity, sum(balance) as balance')
+		else
+			@result = @result.group('project_code, commodity,hub,warehouse').select('project_code,hub,warehouse, commodity, sum(balance) as balance')
+		end
+	end
+	
 
 	def stock_status_by_project_code hub, warehouse
 		stock_account = Account.find_by({'code': :stock})

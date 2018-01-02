@@ -137,6 +137,7 @@ Rails.application.routes.draw do
   get '/receipts/getProjectCodeStatus/:id', to: 'receipts#getProjectCodeStatus'
   get '/receipts/new/:id', to: 'receipts#new'
 
+  
   get '/dispatches/dispatch_report', to: 'dispatches#dispatch_report'
   post '/dispatches/dispatch_report_generate', to: 'dispatches#dispatch_report_generate'
   
@@ -196,7 +197,7 @@ Rails.application.routes.draw do
   get'/stock_reports', to: 'stock_reports#index'
   get '/stock_reports/stock_status_by_project_code', to: 'stock_reports#stock_status_by_project_code'
   get '/stock_reports/stock_status_by_commodity_type', to: 'stock_reports#stock_status_by_commodity_type'
- 
+  get '/stock_reports/dispatch_report_by_project', to: 'stock_reports#dispatch_report_by_project'
 
   
   root to: 'dashboard#index'
