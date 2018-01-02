@@ -55,18 +55,18 @@
       </thead>
 
       <tbody>  
-        <% @stock_status.each do |commodity_type, stock| %>
+        <% @stock_status.each do |stock_detail| %>
         <% sum=0 %>
-          <% stock.each do |stock_detail| %>
+          
             <tr>
-                <td><%= CommodityCategory.find(commodity_type)&.name %></td>
-                <td><%= stock_detail.hub.name %></td>
-                <td><%= stock_detail.warehouse.name %></td>
-                <td><%= stock_detail.commodity.name %></td>
+                <td><%= stock_detail.commodity_category %></td>
+                <td><%= stock_detail.hub %></td>
+                <td><%= stock_detail.warehouse %></td>
+                <td><%= stock_detail.commodity %></td>
                 <td style="text-align:right;"><%= number_with_delimiter(stock_detail.balance,:delimiter => ',') %></td>  
                 <% sum = sum + stock_detail.balance %>     
             </tr>
-           <% end %>
+           
         <% end %>
       </tbody>
     </table>        
