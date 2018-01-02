@@ -12,8 +12,12 @@ class StockReportsController < ApplicationController
   end
 
   def received_stock_by_project_code
+    dates = []
+    if params[:received_date].present?
+      dates = params[:received_date].split(' - ').map { |d| Date.parse d }
+    end
     @warehouses = Warehouse.all
-    @stock_status = Reports.new.received_stock_by_project_code(params[:from_date], params[:to_date], params[:hub], params[:warehouse])
+    @stock_status = Reports.new.received_stock_by_project_code(dates[0],dates[1], params[:hub], params[:warehouse])
   end
   
 end
