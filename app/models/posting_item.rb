@@ -38,4 +38,5 @@ class PostingItem < ApplicationRecord
     belongs_to :commodity
     belongs_to :commodity_category
     belongs_to :account
+    belongs_to :project
 end

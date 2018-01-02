@@ -99,5 +99,35 @@ class Reports
 		end
 	end
 	
+
+	def received_stock_by_project_code (from_date, to_date, hub, warehouse)
+		receipt_journal = Journal.find_by({'code': :goods_received})
+		stock_account = Account.find_by({'code': :stock})		
+
+		if( from_date.present? && to_date.present? && hub.present?  && warehouse.present? )
+			@result = PostingItem.joins(:project, :commodity, :posting).joins("INNER JOIN receipts on receipts.id = postings.document_id").where(journal_id: receipt_journal, account_id: stock_account, hub: hub, warehouse: warehouse).where("receipts.received_Date > ? AND receipts.received_Date < ?", from_date, to_date).group(:'projects.project_code', :'commodities.name').select('projects.project_code, commodities.name, SUM(posting_items.quantity)')
+		elsif ( from_date.present? && to_date.present? && hub.present? )
+			@result = PostingItem.joins(:project, :commodity, :posting).joins("INNER JOIN receipts on receipts.id = postings.document_id").where(journal_id: receipt_journal, account_id: stock_account, hub: hub).where("receipts.received_Date > ? AND receipts.received_Date < ?", from_date, to_date).group(:'projects.project_code', :'commodities.name').select('projects.project_code, commodities.name, SUM(posting_items.quantity)')
+		elsif ( from_date.present? && to_date.present? )
+			@result = PostingItem.joins(:project, :commodity, :posting).joins("INNER JOIN receipts on receipts.id = postings.document_id").where(journal_id: receipt_journal, account_id: stock_account).where("receipts.received_Date > ? AND receipts.received_Date < ?", from_date, to_date).group(:'projects.project_code', :'commodities.name').select('projects.project_code, commodities.name, SUM(posting_items.quantity)')
+		else
+			@result = PostingItem.joins(:project, :commodity).where(journal_id: receipt_journal, account_id: stock_account).group(:'projects.project_code', :'commodities.name').select('projects.project_code, commodities.name, SUM(posting_items.quantity)')
+		end
+	end
+
+	def received_stock_by_commodity_source (from_date, to_date, hub, warehouse)
+		receipt_journal = Journal.find_by({'code': :goods_received})
+		stock_account = Account.find_by({'code': :stock})		
+
+		if( from_date.present? && to_date.present? && hub.present?  && warehouse.present? )
+			@result = PostingItem.joins(:project, :commodity, :posting).joins("INNER JOIN receipts on receipts.id = postings.document_id INNER JOIN commodity_sources ON commodity_sources.id = receipts.commodity_source_id").where(journal_id: receipt_journal, account_id: stock_account, hub: hub, warehouse: warehouse).where("receipts.received_Date > ? AND receipts.received_Date < ?", from_date, to_date).group(:'commodity_sources.name').select('commodity_sources.name, SUM(posting_items.quantity)')
+		elsif ( from_date.present? && to_date.present? && hub.present? )
+			@result = PostingItem.joins(:project, :commodity, :posting).joins("INNER JOIN receipts on receipts.id = postings.document_id INNER JOIN commodity_sources ON commodity_sources.id = receipts.commodity_source_id").where(journal_id: receipt_journal, account_id: stock_account, hub: hub).where("receipts.received_Date > ? AND receipts.received_Date < ?", from_date, to_date).group(:'commodity_sources.name').select('commodity_sources.name, SUM(posting_items.quantity)')
+		elsif ( from_date.present? && to_date.present? )
+			@result = PostingItem.joins(:project, :commodity, :posting).joins("INNER JOIN receipts on receipts.id = postings.document_id INNER JOIN commodity_sources ON commodity_sources.id = receipts.commodity_source_id").where(journal_id: receipt_journal, account_id: stock_account).where("receipts.received_Date > ? AND receipts.received_Date < ?", from_date, to_date).group(:'commodity_sources.name').select('commodity_sources.name, SUM(posting_items.quantity)')
+		else
+			@result = PostingItem.joins(:project, :commodity, :posting).joins("INNER JOIN receipts on receipts.id = postings.document_id INNER JOIN commodity_sources ON commodity_sources.id = receipts.commodity_source_id").where(journal_id: receipt_journal, account_id: stock_account).group(:'commodity_sources.name').select('commodity_sources.name, SUM(posting_items.quantity)')
+		end
+	end
 	
 end
