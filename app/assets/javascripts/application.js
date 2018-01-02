@@ -54,6 +54,9 @@ $(document).ready(function() {
         info: false,
         pageLength: 25,
         stateSave: true,
+        "columnDefs": [
+            { "visible": true, "targets": 0 }
+        ],
         dom: 'lfrtipB',
         buttons: ['copy', 'csv', 'excel', 'print']
     });
