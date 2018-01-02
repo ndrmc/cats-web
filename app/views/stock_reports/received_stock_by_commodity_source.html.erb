@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-6">
-    <h2>Received Stock by Project Code</h2>
+    <h2>Received Stock by Commodity Source</h2>
   </div>
   <div class="col-sm-6">
     <div class="title-action">
@@ -9,7 +9,7 @@
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-      <%= form_tag( "/stock_reports/received_stock_by_project_code" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/stock_reports/received_stock_by_commodity_source" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
         <div class="form-group">
           <%= label_tag :received_date, "Received Date", { :class => ' control-label'} %>
 
@@ -50,17 +50,15 @@
 
     <table class="table table-striped cats-datatable">
       <thead>
-      <tr>
-            <th>Project</th>      
-            <th>Commodity</th>
-            <th>Quantity(MT)</th>
+      <tr>     
+        <th>Commodity Source</th>
+        <th>Quantity(MT)</th>
       </tr>
       </thead>
 
       <tbody>  
         <% @stock_status.each do |ss| %>
             <tr>
-                <td><%= ss&.project_code %></td>
                 <td><%= ss&.name %></td>
                 <td><%= number_with_delimiter(ss&.sum,:delimiter => ',') %></td>
             </tr>
