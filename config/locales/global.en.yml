@@ -39,6 +39,7 @@ en:
   dispatch_allocation: "Dispatch Allocation"
   transport_requisition: "Transport Requisition"
   stock: "Stock"
+  stock_reports: "Stock Reports"
   receiving: "Receiving"
   dispatch: "Dispatch"
   delivery: "Delivery"
