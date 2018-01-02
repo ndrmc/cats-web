@@ -1,15 +1,15 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-sm-4">
+  <div class="col-sm-6">
     <h2>Received Stock by Commodity Source</h2>
   </div>
-  <div class="col-sm-8">
+  <div class="col-sm-6">
     <div class="title-action">
     </div>
   </div>
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-      <%= form_tag( "/stock_reports/received_stock_by_project_code" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/stock_reports/received_stock_by_commodity_source" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
         <div class="form-group">
           <%= label_tag :received_date, "Received Date", { :class => ' control-label'} %>
 
