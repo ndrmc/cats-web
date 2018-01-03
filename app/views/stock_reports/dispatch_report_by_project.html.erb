@@ -1,27 +1,24 @@
 <% @warehouses = Warehouse.all %>
 <div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-sm-6">
-    <h2>Stock Reports</h2>
-    <ol class="breadcrumb">
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/stock_reports">Stock Reports</a>
-      </li>
-      <li class="active">
-        <strong>Stock Status By Project Code</strong>
-      </li>
-    </ol>
+  <div class="col-sm-4">
+    <h2>Dispatch Report by Project</h2>
   </div>
-  <div class="col-sm-6">
+  <div class="col-sm-8">
     <div class="title-action">
     </div>
   </div>
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-      <%= form_tag( "/stock_reports/stock_status_by_project_code" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/stock_reports/dispatch_report_by_project" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+
+        <div class="form-group">
+          <%= label_tag :dispatched_date, "Dispatched Date", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :dispatched_date, params[:dispatched_date], { id: 'dispatched-date-picker',class: 'form-control'}  %>
+          </div>
+        </div>
 
       	<div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
@@ -49,30 +46,30 @@
 
 
   </div>
-</div>
+  
 
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table class="table table-striped cats-grouped-aggregated-datatable">
+    <table class="table table-striped">
       <thead>
       <tr>
-            <th>Project code</th>
-            <th>Hub</th>
-            <th>Warehouse</th>           
+            <th>Project</th>
+            <th>hub</th>    
+            <th>Warehouse</th>       
             <th>Commodity</th>
-            <th>Balance(MT)</th>
+            <th>Amount(MT)</th>
       </tr>
       </thead>
 
-      <tbody>      
-        <% @stock_status.each do |stock| %>
-            <tr> 
-                <td><%= stock['project_code'] %></td>
-                <td><%= stock['hub'] %></td>
-                <td><%= stock['warehouse'] %></td>
-                <td><%= stock['commodity'] %></td>
-                <td style="text-align:right;"><%= number_with_delimiter(stock['balance'],:delimiter => ',') %></td>             
+      <tbody>  
+        <% @dispatch_status_by_project.each do |dispatch_detail| %>        
+            <tr>
+                <td><%= dispatch_detail.project_code %></td>
+                <td><%= dispatch_detail.hub %></td>
+                <td><%= dispatch_detail.warehouse %></td>
+                <td><%= dispatch_detail.commodity %></td>
+                <td style="text-align:right;"><%= number_with_delimiter(dispatch_detail.balance,:delimiter => ',') %></td>  
             </tr>
         <% end %>
       </tbody>
@@ -82,8 +79,26 @@
 </div>
 
 <script>
+
+ $( function() { 
+    $('#dispatched-date-picker').daterangepicker(
+      {
+          locale: {
+            format: 'DD/MM/YYYY'
+          },
+          maxDate: '0', 
+          autoUpdateInput: false
+      }, 
+      function( start, end  ) { 
+        $('#dispatched-date-picker').val( start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY')); 
+      }
+    ); 
+  });
+
+
  $(document).ready(function () {
-      
+
+   
        populate($('#hub_select').val());
 
       $('#hub_select').change(function(){
@@ -95,8 +110,8 @@
 
 function populate(id)
 {
-  var hub_id =id;
-         var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+        var hub_id =id;
+        var EMPTY_OPTION = '<option value="">-- Choose --</option>';
         var warehouses = <%= @warehouses.to_json.html_safe %>   
         var warehouses_in_hub = $.grep(warehouses, function (elem) {
           return elem.hub_id == hub_id
@@ -107,6 +122,6 @@ function populate(id)
         });
        warehouse_options.unshift(EMPTY_OPTION);
        $('#warehouse_select').html(warehouse_options);
-        $('#warehouse_select').val(<%= params[:warehouse] %>)  
+       $('#warehouse_select').val(<%= params[:warehouse] %>)  
 }
     </script>
