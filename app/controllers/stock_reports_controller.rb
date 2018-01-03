@@ -7,6 +7,10 @@ class StockReportsController < ApplicationController
      @stock_status = Reports.new.stock_status_by_project_code(params[:hub], params[:warehouse])
   end
 
+  def stock_summary_by_project_code
+    @stock_status = Reports.new.stock_summary_by_project_code(params[:hub], params[:warehouse])
+  end
+
   def stock_status_by_commodity_type
     @stock_status = Reports.new.stock_status_by_commodity_type(params[:hub], params[:warehouse])
   end
@@ -28,5 +32,7 @@ class StockReportsController < ApplicationController
     @warehouses = Warehouse.all
     @stock_status = Reports.new.received_stock_by_commodity_source(dates[0],dates[1], params[:hub], params[:warehouse])
   end
+
+  
   
 end

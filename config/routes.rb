@@ -194,7 +194,7 @@ Rails.application.routes.draw do
   get '/stock_reports/stock_status_by_commodity_type', to: 'stock_reports#stock_status_by_commodity_type'
   get '/stock_reports/received_stock_by_project_code', to: 'stock_reports#received_stock_by_project_code'
   get '/stock_reports/received_stock_by_commodity_source', to: 'stock_reports#received_stock_by_commodity_source' 
-
+  get '/stock_reports/stock_summary_by_project_code', to: 'stock_reports#stock_summary_by_project_code' 
   
   root to: 'dashboard#index'
   # GraphQL configuration
