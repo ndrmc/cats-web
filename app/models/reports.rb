@@ -105,4 +105,35 @@ class Reports
 		end
 	end
 	
+	def dispatch_report_by_project hub, warehouse, from_date, to_date
+		 
+    	  dispatched_account = Account.find_by({'code': :dispatched})
+    	  good_issue_journal = Journal.find_by({'code': :goods_issue})
+		  flag = 0
+		  @result = DispatchReportByProject.where(:'account_id' => dispatched_account.id, :'journal_id' => good_issue_journal.id)
+	    if( hub.present?  && warehouse.present?  && from_date.present? && to_date.present?)
+			@result = @result.where(:'hub_id' => hub , :'warehouse_id' => warehouse).where('dispatch_date >= ? and dispatch_date <= ?',from_date,to_date )
+			flag = 1
+		elsif (hub.present? && from_date.present? && to_date.present?)
+			@result = @result.where(:'hub_id' => hub).where('dispatch_date >= ? and dispatch_date <= ?',from_date,to_date )
+			flag = 1
+		elsif( hub.present?  && warehouse.present?)
+			@result = @result.where(:'hub_id' => hub , :'warehouse_id' => warehouse)
+			flag = 1
+		elsif (hub.present?)
+			@result = @result.where(:'hub_id' => hub)
+			flag = 1
+		elsif (from_date.present? && to_date.present?)
+		  	@result = @result.where('dispatch_date >= ? and dispatch_date <= ?',from_date,to_date )
+			flag = 1
+		else
+			@result = @result.group('project_code, commodity,hub,warehouse').select('project_code,hub,warehouse, commodity, sum(balance) as balance')
+		end
+		
+		if (flag)
+			@result = @result.group('project_code, commodity,hub,warehouse').select('project_code,hub,warehouse, commodity, sum(balance) as balance')
+		end
+		 
+	end
+
 end
