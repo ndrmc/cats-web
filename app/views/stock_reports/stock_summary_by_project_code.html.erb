@@ -10,7 +10,7 @@
         <a href="/stock_reports">Stock Reports</a>
       </li>
       <li class="active">
-        <strong>Stock Status By Project Code</strong>
+        <strong>Stock Status Summary By Project Code</strong>
       </li>
     </ol>
   </div>
@@ -21,7 +21,7 @@
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-      <%= form_tag( "/stock_reports/stock_status_by_project_code" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/stock_reports/stock_summary_by_project_code" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
 
       	<div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
@@ -54,12 +54,10 @@
 <div class="ibox float-e-margins">
   <div class="ibox-content">
 
-    <table class="table table-striped cats-grouped-aggregated-datatable">
+    <table class="table table-striped cats-datatable">
       <thead>
       <tr>
-            <th>Project code</th>
-            <th>Hub</th>
-            <th>Warehouse</th>           
+            <th>Project code</th>          
             <th>Commodity</th>
             <th>Balance(MT)</th>
       </tr>
@@ -69,8 +67,6 @@
         <% @stock_status.each do |stock| %>
             <tr> 
                 <td><%= stock['project_code'] %></td>
-                <td><%= stock['hub'] %></td>
-                <td><%= stock['warehouse'] %></td>
                 <td><%= stock['commodity'] %></td>
                 <td style="text-align:right;"><%= number_with_delimiter(stock['balance'],:delimiter => ',') %></td>             
             </tr>
