@@ -15,13 +15,6 @@
       <div class="col-sm-12">
         <div class="title-action">        
             <%= link_to 'New Bid', new_bid_path, :class => "btn btn-primary"%>    
-            <%= link_to 'Close', '/framework_tenders/update_status/' + @framework_tender.id.to_s + "/" +  "closed", :class => "btn btn-default" %>    
-        </div>
-      </div>
-    <% else %>
-      <div class="col-sm-12">
-        <div class="title-action"> 
-          <%= link_to 'Re-open', '/framework_tenders/update_status/' + @framework_tender.id.to_s + "/" +  "open", :class => "btn btn-default" %>
         </div>
       </div>
     <% end %>
