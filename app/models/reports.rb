@@ -24,11 +24,11 @@ class Reports
 		stock_account = Account.find_by({'code': :stock})
 		 
 		if( hub.present?  && warehouse.present? )
-			@result = StockReportByCommodity.where(:'p_id' => stock_account, :'hub_id' => hub ,:'warehouse_id' => warehouse)
+			@result = StockReportByCommodity.group('commodity_category,commodity').select('commodity,commodity_category, sum(balance) as balance').where(:'p_id' => stock_account, :'hub_id' => hub ,:'warehouse_id' => warehouse)
 		elsif (hub.present?)
-			@result = StockReportByCommodity.where(:'p_id' => stock_account, :'hub_id' => hub)
+			@result = StockReportByCommodity.group('commodity_category,commodity').select('commodity,commodity_category, sum(balance) as balance').where(:'p_id' => stock_account, :'hub_id' => hub)
 		else
-		  	@result = StockReportByCommodity.where(:'p_id' => stock_account)
+		  	@result = StockReportByCommodity.group('commodity_category,commodity').select('commodity,commodity_category, sum(balance) as balance').where(:'p_id' => stock_account)
 		end
 	end
 
