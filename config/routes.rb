@@ -3,8 +3,7 @@ Rails.application.routes.draw do
   
  
   
-  get '/stock_movements/getCommodity/:id', to: 'stock_movements#getCommodity'
-  resources :stock_movements
+
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
   resources :warehouse_allocations
@@ -20,6 +19,9 @@ Rails.application.routes.draw do
   get 'fdp_operation_summary/index'
 
  scope "(:locale)", locale: /en|am/ do
+  get '/stock_movements/getCommodity/:id', to: 'stock_movements#getCommodity'
+  resources :stock_movements
+
   get '/transport_requisitions/print', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'

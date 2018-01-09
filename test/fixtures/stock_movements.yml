@@ -7,10 +7,9 @@ one:
   destination_hub_id: 1
   destination_warehouse_id: 1
   destination_store_id: 1
-  project: one
-  commodity: one
-  quantity: 
-  quantity: 
+  project_id: 01
+  commodity_id: 1
+  quantity: 10
   description: MyString
 
 two:
@@ -20,8 +19,7 @@ two:
   destination_hub_id: 1
   destination_warehouse_id: 1
   destination_store_id: 1
-  project: two
-  commodity: two
-  quantity: 
-  quantity: 
+  project_id: 02
+  commodity_id: 1
+  quantity: 100
   description: MyString
