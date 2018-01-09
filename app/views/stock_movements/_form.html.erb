@@ -70,6 +70,11 @@
 
                 </div>
 
+                <div class="form-group">
+                        <%= f.label :movement_date, "Date" %>
+                        <span class="required">*</span>
+                        <%= f.text_field :movement_date, :class => 'form-control datepicker', :required => true  %>
+                 </div>
 
                 <div class="form-group">
                           <%= f.label :donor_id %>
@@ -88,9 +93,18 @@
 
                 <div class="form-group">
                             <%= f.label :commodity_id, "Commodity" %>
-                <%= f.hidden_field :commodity_id, :class => 'form-control' ,:readonly => true %>
-                <%= f.text_field :commodity_id, :class => 'form-control', :id => "commodity_id" ,:readonly => true %>
+                <%= f.hidden_field :commodity_id, :class => 'form-control' %>
+                <input type="text" id="commodity_lable" class="form-control" readonly/>
+              
                         </div>
+
+                 <div class="form-group">
+                          <%= f.label :project_id, "Unit of Measure" %>
+                         <span class="required">*</span>
+                         <%= f.collection_select :unit_of_measures_id,
+                         UnitOfMeasure.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'unit_of_measures_select', :required => true }%>
+                </div> 
+
 
                 <div class="form-group">
                             <%= f.label :quantity %>
@@ -210,7 +224,7 @@ function populate_store(warehouse_id, type)
                         else
                         {
                                 $("#stock_movement_commodity_id").val(data.id);
-                                $("#commodity_id").val(data.name);
+                                $("#commodity_lable").val(data.name);
                         }
                 });
     }

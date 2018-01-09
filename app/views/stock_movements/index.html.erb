@@ -33,7 +33,6 @@
                         <th>Project</th>
                         <th>Commodity</th>
                         <th>Quantity</th>
-                        <th>Quantity</th>
                         <th>Description</th>
                         <th>Actions</th>
           </tr>
@@ -42,23 +41,21 @@
         <tbody>
           <% @stock_movements.each do |stock_movement| %>
           <tr>
-                        <td><%= stock_movement.source_hub_id
+                        <td><%= stock_movement&.hub&.name
               %></td>
-                        <td><%= stock_movement.source_warehouse_id
+                        <td><%= stock_movement&.warehouse&.name
               %></td>
-                        <td><%= stock_movement.source_store_id
+                        <td><%= stock_movement&.store&.name
               %></td>
-                        <td><%= stock_movement.destination_hub_id
+                        <td><%= stock_movement&.hub&.name
               %></td>
-                        <td><%= stock_movement.destination_warehouse_id
+                        <td><%= stock_movement&.warehouse&.name
               %></td>
-                        <td><%= stock_movement.destination_store_id
+                        <td><%= stock_movement&.store&.name
               %></td>
-                        <td><%= stock_movement.project
+                        <td><%= stock_movement&.project&.project_code
               %></td>
-                        <td><%= stock_movement.commodity
-              %></td>
-                        <td><%= stock_movement.quantity
+                        <td><%= stock_movement&.commodity&.name
               %></td>
                         <td><%= stock_movement.quantity
               %></td>
