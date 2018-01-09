@@ -405,6 +405,7 @@
           });
           commodity_category = commodity_category[0];
           $('#commodity-category-select').val(commodity_category["id"]);
+          console.log("Commodity Category ID: " + $('#commodity-category-select').val());
           var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
           if ('' === commodity_category)
             return;
