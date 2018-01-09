@@ -71,7 +71,13 @@
                           <%= link_to 'Bids', framework_tender_path(framework_tender.id) %>
                         <% end %> 
                       </li>
-
+                       <li>
+                           <% if framework_tender.status == 'open' %>
+                                      <%= link_to 'Close', '/framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "closed", :data => {:confirm => 'Do you want to close it?'} %>    
+                              <% else %>
+                                    <%= link_to 'Re-open', '/framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "open", :data => {:confirm => 'Re-open?'} %> 
+                              <% end %>
+                         </li>
                     </ul>
                   </div>
             </td>
