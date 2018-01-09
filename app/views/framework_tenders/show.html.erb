@@ -175,18 +175,22 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right">
+                 <% if (bid.status == 'draft') %>
                   <li>
                     <%= link_to 'Edit', edit_bid_path(bid) %>
                   </li>
                   <li>
                     <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx"> Download RFQ </a>
                   </li>
+                  
                   <li>
                     <a href="#" class='rfq-modal' data-toggle="modal" data-id="<%= bid.id %>" data-target="#rfq-modal">Upload RFQ</a>
                   </li>
+
                   <li>
                     <%= link_to 'Generate Bid Winners', '/bids/' + bid.id.to_s + '/generate_winners', method: :post, data: { confirm: 'This action will close the bid. Are you sure you want to generate winners?' } %>
                   </li>
+                   <% end %>
                   <li>
                     <a href="/bids/view_bid_winners/<%= bid.id %>"> View Bid Winners </a>
                   </li>
