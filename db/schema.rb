@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180103083542) do
+ActiveRecord::Schema.define(version: 20180109070007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -954,7 +954,6 @@ ActiveRecord::Schema.define(version: 20180103083542) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
-    t.decimal  "quantity",                         precision: 15, scale: 2
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -965,6 +964,7 @@ ActiveRecord::Schema.define(version: 20180103083542) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
@@ -1068,14 +1068,15 @@ ActiveRecord::Schema.define(version: 20180103083542) do
   create_table "requisition_items", force: :cascade do |t|
     t.integer  "requisition_id"
     t.integer  "fdp_id"
-    t.integer  "beneficiary_no", null: false
-    t.decimal  "amount",         null: false
+    t.integer  "beneficiary_no",     null: false
+    t.decimal  "amount",             null: false
     t.decimal  "contingency"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "unit_of_measure_id"
     t.index ["deleted_at"], name: "index_requisition_items_on_deleted_at", using: :btree
   end
 
@@ -1125,6 +1126,23 @@ ActiveRecord::Schema.define(version: 20180103083542) do
     t.integer  "month_to"
     t.index ["deleted_at"], name: "index_seasons_on_deleted_at", using: :btree
     t.index ["name"], name: "index_seasons_on_name", unique: true, using: :btree
+  end
+
+  create_table "stock_movements", force: :cascade do |t|
+    t.integer  "source_hub_id"
+    t.integer  "source_warehouse_id"
+    t.integer  "source_store_id"
+    t.integer  "destination_hub_id"
+    t.integer  "destination_warehouse_id"
+    t.integer  "destination_store_id"
+    t.integer  "project_id"
+    t.integer  "commodity_id"
+    t.decimal  "quantity",                 precision: 8, scale: 2
+    t.string   "description"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.index ["commodity_id"], name: "index_stock_movements_on_commodity_id", using: :btree
+    t.index ["project_id"], name: "index_stock_movements_on_project_id", using: :btree
   end
 
   create_table "stock_take_items", force: :cascade do |t|
@@ -1481,6 +1499,8 @@ ActiveRecord::Schema.define(version: 20180103083542) do
   add_foreign_key "regional_requests", "operations"
   add_foreign_key "regional_requests", "programs"
   add_foreign_key "regional_requests", "rations"
+  add_foreign_key "stock_movements", "commodities"
+  add_foreign_key "stock_movements", "projects"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
   add_foreign_key "users_permissions", "permissions"

@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  source_hub_id: 1
+  source_warehouse_id: 1
+  source_store_id: 1
+  destination_hub_id: 1
+  destination_warehouse_id: 1
+  destination_store_id: 1
+  project: one
+  commodity: one
+  quantity: 
+  quantity: 
+  description: MyString
+
+two:
+  source_hub_id: 1
+  source_warehouse_id: 1
+  source_store_id: 1
+  destination_hub_id: 1
+  destination_warehouse_id: 1
+  destination_store_id: 1
+  project: two
+  commodity: two
+  quantity: 
+  quantity: 
+  description: MyString

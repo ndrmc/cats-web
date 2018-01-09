@@ -1,0 +1,84 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(stock_movement) do |f| %>
+        <% if stock_movement.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(stock_movement.errors.count, "error") %> prohibited this stock_movement from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% stock_movement.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :source_hub_id %>
+                <%= f.number_field :source_hub_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :source_warehouse_id %>
+                <%= f.number_field :source_warehouse_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :source_store_id %>
+                <%= f.number_field :source_store_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :destination_hub_id %>
+                <%= f.number_field :destination_hub_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :destination_warehouse_id %>
+                <%= f.number_field :destination_warehouse_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :destination_store_id %>
+                <%= f.number_field :destination_store_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :project_id %>
+                <%= f.text_field :project_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :commodity_id %>
+                <%= f.text_field :commodity_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :quantity %>
+                <%= f.text_field :quantity, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :quantity %>
+                <%= f.text_field :quantity, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :description %>
+                <%= f.text_field :description, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

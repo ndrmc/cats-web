@@ -1,0 +1,57 @@
+    <p>
+      <strong>Source hub:</strong>
+      <%= @stock_movement.source_hub_id %>
+    </p>
+
+    <p>
+      <strong>Source warehouse:</strong>
+      <%= @stock_movement.source_warehouse_id %>
+    </p>
+
+    <p>
+      <strong>Source store:</strong>
+      <%= @stock_movement.source_store_id %>
+    </p>
+
+    <p>
+      <strong>Destination hub:</strong>
+      <%= @stock_movement.destination_hub_id %>
+    </p>
+
+    <p>
+      <strong>Destination warehouse:</strong>
+      <%= @stock_movement.destination_warehouse_id %>
+    </p>
+
+    <p>
+      <strong>Destination store:</strong>
+      <%= @stock_movement.destination_store_id %>
+    </p>
+
+    <p>
+      <strong>Project:</strong>
+      <%= @stock_movement.project %>
+    </p>
+
+    <p>
+      <strong>Commodity:</strong>
+      <%= @stock_movement.commodity %>
+    </p>
+
+    <p>
+      <strong>Quantity:</strong>
+      <%= @stock_movement.quantity %>
+    </p>
+
+    <p>
+      <strong>Quantity:</strong>
+      <%= @stock_movement.quantity %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @stock_movement.description %>
+    </p>
+
+<%= link_to 'Edit', edit_stock_movement_path(@stock_movement) %> |
+<%= link_to 'Back', stock_movements_path %>
