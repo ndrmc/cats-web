@@ -60,6 +60,19 @@ class StockMovementsController < ApplicationController
       format.json { head :no_content }
     end
   end
+   
+  def getCommodity
+    commodity_id = Project.find(params[:id]).commodity_id
+    commmodity = Commodity.find(commodity_id)
+     respond_to do |format| 
+         format.json{
+         render :json => {
+        :id => commmodity.id,
+        :name => commmodity.name
+      }
+    }
+  end
+end
 
   private
     # Use callbacks to share common setup or constraints between actions.

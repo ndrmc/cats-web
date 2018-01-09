@@ -1138,11 +1138,17 @@ ActiveRecord::Schema.define(version: 20180109070007) do
     t.integer  "project_id"
     t.integer  "commodity_id"
     t.decimal  "quantity",                 precision: 8, scale: 2
+    t.datetime "movement_date"
+    t.integer  "unit_of_measures_id"
     t.string   "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.index ["commodity_id"], name: "index_stock_movements_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_stock_movements_on_project_id", using: :btree
+    t.index ["unit_of_measures_id"], name: "index_stock_movements_on_unit_of_measures_id", using: :btree
   end
 
   create_table "stock_take_items", force: :cascade do |t|
@@ -1501,6 +1507,7 @@ ActiveRecord::Schema.define(version: 20180109070007) do
   add_foreign_key "regional_requests", "rations"
   add_foreign_key "stock_movements", "commodities"
   add_foreign_key "stock_movements", "projects"
+  add_foreign_key "stock_movements", "unit_of_measures", column: "unit_of_measures_id"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
   add_foreign_key "users_permissions", "permissions"

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   
  
   
-
+  get '/stock_movements/getCommodity/:id', to: 'stock_movements#getCommodity'
   resources :stock_movements
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'

@@ -10,9 +10,14 @@ class CreateStockMovements < ActiveRecord::Migration[5.0]
       t.references :project, foreign_key: true
       t.references :commodity, foreign_key: true
       t.decimal :quantity, :precision => 8, :scale => 2
+      t.datetime :movement_date
+      t.references :unit_of_measures, foreign_key: true
       t.string :description
-
+      t.integer :created_by
+      t.integer :modified_by
+      t.datetime :deleted_at
       t.timestamps
+     
     end
   end
 end
