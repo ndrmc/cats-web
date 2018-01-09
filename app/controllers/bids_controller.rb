@@ -29,7 +29,14 @@ class BidsController < ApplicationController
 
   # GET /bids/1/edit
   def edit
-      @framework_tender_no =  $framework_tender_no
+       if @bid.status == 'draft'
+          @framework_tender_no =  $framework_tender_no
+      else
+          respond_to do |format|
+            flash[:error] = "Bid can not be edited."
+            format.html {  redirect_to request.referrer }
+      end
+      end
   end
 
   # POST /bids
@@ -126,6 +133,10 @@ class BidsController < ApplicationController
     bid_id =params[:bid_id]
 
     @bid = Bid.find(bid_id)
+    if @bid.status == 'draft'
+      
+    
+
     file_not_supported=false
     case File.extname(file.original_filename)
     when '.xls' then spreadsheet = Roo::Excel.new(file.path, nil, :ignore)
@@ -206,10 +217,17 @@ class BidsController < ApplicationController
           format.html {  redirect_to request.referrer, alert: "The file is not supported."  }
       end
     end
+  else
+     respond_to do |format|
+          flash[:error] = "Bid is active and can be updated."
+          format.html {  redirect_to request.referrer }
+      end
+  end
   
   end
 
   def generate_winners
+    if @bid.status == 'draft'
     @result = generate_bid_winners(params[:id])
 
     respond_to do |format|
@@ -221,6 +239,13 @@ class BidsController < ApplicationController
         format.json { render json: @bid.errors, status: :unprocessable_entity }
       end
     end
+  else
+    respond_to do |format|
+          flash[:error] = "Winner is already created for this bid."
+          format.html {  redirect_to request.referrer }
+      end
+  end
+    
   end
 
 
