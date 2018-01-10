@@ -1,5 +1,7 @@
 <%= form_for(receipt, :html=> {:id => 'receipt-form' , :remote => true }) do |f| %>
 <% @projects = Project.where('archived = ? OR archived IS NULL',false)%>
+<% @commodities = Commodity.all%>
+<% @commodity_categories = CommodityCategory.all%>
 <% @uoms = UnitOfMeasure.all%>
 <% @warehouses = Warehouse.all %>
 <% @reference_unit =  UnitOfMeasure.find_by(:uom_type => UnitOfMeasure.uom_types[:ref]).name %>
@@ -112,11 +114,10 @@
         <table class="table" id="table_id">
           <thead>
             <tr>
-              <th>Commodity Category</th>
+              <th>Project</th>
               <th>Commodity</th>
               <th>Unit of Measure</th>
-              <th>Quantity</th>
-              <th>Project</th>
+              <th>Quantity</th>              
               <th></th>
             </tr>
           </thead>
@@ -125,13 +126,12 @@
 
             <% @receipt.receipt_lines.each do |receipt_line| %>
 
-            <tr class="receipt-line">
+            <tr class="receipt-line">              
               <td>
-                <input type="hidden" name="receipt[receipt_lines[][id]]" value="<%= receipt_line.id %>"/>
-                <select name="receipt[receipt_lines[][commodity_category_id]]" class="form-control" readonly>
-                  <option value="<%= receipt_line.commodity_category.id %>"><%= receipt_line.commodity_category.name %></option>
+                <select name="receipt[receipt_lines[][project_id]]" class="form-control" readonly>
+                  <option value="<%= receipt_line.project&.id %>"><%= receipt_line&.project&.project_code %></option>
                 </select>
-              </td>
+              </td>              
               <td>
                 <select name="receipt[receipt_lines[][commodity_id]]" class="form-control" readonly>
                   <option value="<%= receipt_line.commodity.id %>"><%= receipt_line.commodity.name %></option>
@@ -144,12 +144,7 @@
               </td>
               <td>
                 <input name="receipt[receipt_lines[][quantity]]" type="number" class="form-control" value="<%= receipt_line.quantity %>" readonly/>
-              </td>
-              <td>
-                <select name="receipt[receipt_lines[][project_id]]" class="form-control" readonly>
-                  <option value="<%= receipt_line.project&.id %>"><%= receipt_line&.project&.project_code %></option>
-                </select>
-              </td>
+              </td>              
               <td>
                 <a href="#" class="remove-receipt-line">
                   <i class="fa fa-times"></i>
@@ -159,19 +154,16 @@
 
             <% end %>
             <tr>
+              <div style="display: none;">
+                <input name="receipt[receipt_lines[][commodity_category_id]]" id="commodity-category-select" value=""/>
+                <input name="receipt[receipt_lines[][commodity_id]]" id="commodity-select" value=""/>
+              </div>
               <td>
-                <%= select_tag 'receipt[receipt_lines[][commodity_category_id]]', options_from_collection_for_select( CommodityCategory.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true', :class => 'form-control', :id =>
-                'commodity-category-select'} %>
-              </td>
-              <td>
-                <select name="receipt[receipt_lines[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
-                  <option value="">-- Choose --</option>
-                  <% Commodity.all.each do |commodity| %>
-                  <option data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %> hidden">
-                    <%= commodity.name %>
-                  </option>
-                  <% end %>
+                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' id='project_select' data-parsley-required %>
                 </select>
+              </td>              
+              <td>
+                <input class="form-control" name="commodity_di" id="commodity_di" type="text" disabled="disabled">
               </td>
 
               <td>
@@ -183,12 +175,6 @@
 
               <td>
                 <input name="receipt[receipt_lines[][quantity]]" type="number" step="any" class="form-control" data-parsley-required/>
-              </td>
-              <td>
-
-                <select name='receipt[receipt_lines[][project_id]]', class = 'form-control project_select' id='project_select' data-parsley-required %>
-
-                </select>
               </td>
               <td>
                 <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
@@ -299,15 +285,12 @@
      
       if (<%= !@project_id.blank? %>){
       var element = document.getElementById("prject_code_status");
-      element.style.display = 'block';
+      element.style.display = "block";
       $("#donor_select").val(<%= @organization_id %>);
       $("#donor_select").change();
       $("#project_select").val(<%= @project_id %>);
      
-      $("#commodity-category-select").val(<%= @commodity_category_id %>);
-      $("#commodity-category-select").change();
-      $("#commodity-select").val(<%= @commodity_id %>);
-      $("#commodity-select").change();
+      
       $("#uom-select").val(<%= @unit_of_measure_id %>);
       get_received_qty( $("#project_select").val(), $('#hub_select').val());
       
@@ -360,25 +343,16 @@
         updateProjects(donor_id);
       });
 
-      $("#commodity-select").change(function () {
-        var categoryId = $(this).find('option:selected').data('uom-category-id');
-        var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
-        if ('' === categoryId)
-          return;
-
-        var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
-          return elem.uom_category_id == categoryId
+        $('#project_select').change(function(){
+          console.log("-------Start------");
+          var projectId = $(this).find('option:selected').val();
+          console.log("projectId: " + projectId);
+          var categoryId = $(this).find('option:selected').data('category-id');
+          console.log("categoryId: " + categoryId);
+          updateCommodityAndUnit(projectId, categoryId);
         });
 
-        var options = $.map(unitOfMeasuresInCategory, function (val) {
-          return '<option value="' + val.id + '">' + val.name + '</option>';
-        });
-
-        options.unshift(EMPTY_OPTION);
-
-        $('#uom-select').html(options);
-
-      });
+      
       
      
 
@@ -391,15 +365,59 @@
         var projects_by_donor = $.grep(allProjects, function (elem) {
           return elem.organization_id == donor_id
         });
-
+        var commodities = <%= @commodities.to_json.html_safe %>
         var proj_options = $.map(projects_by_donor, function (val) {
-          return '<option value="' + val.id + '">' + val.project_code + '</option>';
+          var commodity = $.grep(commodities, function (elem) {
+            return elem.id == val.commodity_id
+          });
+          var commodity = commodity[0];   
+          return '<option value="' + val.id + '" data-category-id="' + commodity["commodity_category_id"] + '">' + val.project_code + '</option>';
         });
 
         proj_options.unshift(EMPTY_OPTION);
 
         $('.project_select').html(proj_options);
       }
+
+      function updateCommodityAndUnit(projectId, categoryId){
+          if (projectId === '')
+          {
+            $('#uom-select').html("");
+            return;
+          }
+            
+          var allProjects = <%= @projects.to_json.html_safe %>
+          var project = $.grep(allProjects, function (elem) {
+            return elem.id == projectId
+          });
+          var commodities = <%= @commodities.to_json.html_safe %>
+          var commodity = $.grep(commodities, function (elem) {
+              return elem.id == project[0].commodity_id
+          });
+          
+          var commodity = commodity[0]; 
+          console.log("Commodity ID: " + commodity["name"]);
+          $('#commodity_di').val(commodity["name"]);
+          $('#commodity-select').val(commodity["id"]);
+          var commodity_categories = <%= @commodity_categories.to_json.html_safe %>
+          var commodity_category = $.grep(commodity_categories, function (elem) {
+              return elem.id == commodity["commodity_category_id"]
+          });
+          commodity_category = commodity_category[0];
+          $('#commodity-category-select').val(commodity_category["id"]);
+          console.log("Commodity Category ID: " + $('#commodity-category-select').val());
+          var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
+          if ('' === commodity_category)
+            return;
+          var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+            return elem.uom_category_id == commodity_category["uom_category_id"]
+          });
+          var options = $.map(unitOfMeasuresInCategory, function (val) {
+            return '<option value="' + val.id + '">' + val.name + '</option>';
+          });
+          options.unshift(EMPTY_OPTION);
+          $('#uom-select').html(options);
+        }
 
 
   </script>
