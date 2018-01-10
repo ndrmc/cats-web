@@ -261,84 +261,96 @@
           var EMPTY_OPTION = '<option value="">-- Choose --</option>';
           
           $( function() { 
-              $.getJSON( '/requisitions/get_requisiton_by_number', 
-                { requisition_no: $('#req_no_input').val()}, 
-                function(data) { 
-
-
-                  $("#requisition-input-group i.fa-check").removeClass('hidden'); 
-                  $("#requisition-input-group i.fa-times").addClass('hidden'); 
-                  console.log("Commodity id: " + data.requisition.commodity_id);    
-                  $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
-                  var donor_id = $("#donor_select").find('option:selected').val();
-                  var commodity_id = data.requisition.commodity_id;
-                  updateProjects(donor_id,commodity_id);
-                  var operation_id = data.requisition.operation_id; 
-                  if( null !== operation_id) {                         
-                      $("#dispatch_operation_id").val( operation_id); 
-                  }
-
-                  var region_id = data.requisition.region_id; 
-
-                  if( null !== region_id) { 
-                    
-                    $("select[name=region]:first").val(region_id).change(); 
-
-                    var zone_id = data.requisition.zone_id; 
-
-                    if( null !== zone_id ) { 
-                      $("select[name=zone]:first").data('value', zone_id);
-                    }  
-                  }
-                }
-            )
-            .error(function(event, jqxhr, exception) {
+              var req_no = $('#req_no_input').val();
+              if (req_no == '' || req_no == '')
+              {
                 $("#requisition-input-group i.fa-times").removeClass('hidden'); 
                 $("#requisition-input-group i.fa-check").addClass('hidden'); 
-                $('#req_no_input').attr("data-commodity", "");
-                var commodity_id = "";
-                var donor_id = $("#donor_select").find('option:selected').val();
-                $('#uom-select').html("");
-                updateProjects(donor_id,commodity_id);
-            });
+              }
+              else{
+                $.getJSON( '/requisitions/get_requisiton_by_number', 
+                    { requisition_no: $('#req_no_input').val()}, 
+                    function(data) { 
+
+                      if(data!="" && data!=null)
+                      {
+                        $("#requisition-input-group i.fa-check").removeClass('hidden'); 
+                        $("#requisition-input-group i.fa-times").addClass('hidden'); 
+                        console.log("Commodity id: " + data.requisition.commodity_id);    
+                        $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
+                        var donor_id = $("#donor_select").find('option:selected').val();
+                        var commodity_id = data.requisition.commodity_id;
+                        updateProjects(donor_id,commodity_id);
+                        var operation_id = data.requisition.operation_id; 
+                        if( null !== operation_id) {                         
+                            $("#dispatch_operation_id").val( operation_id); 
+                        }
+
+                        var region_id = data.requisition.region_id; 
+
+                        if( null !== region_id) { 
+                          
+                          $("select[name=region]:first").val(region_id).change(); 
+
+                          var zone_id = data.requisition.zone_id; 
+
+                          if( null !== zone_id ) { 
+                            $("select[name=zone]:first").data('value', zone_id);
+                          }  
+                        }
+                      }
+                      
+                    }
+                )
+                .error(function(event, jqxhr, exception) {
+                    $("#requisition-input-group i.fa-times").removeClass('hidden'); 
+                    $("#requisition-input-group i.fa-check").addClass('hidden'); 
+                    $('#req_no_input').attr("data-commodity", "");
+                    var commodity_id = "";
+                    var donor_id = $("#donor_select").find('option:selected').val();
+                    $('#uom-select').html("");
+                    updateProjects(donor_id,commodity_id);
+                });
+              }
+              
               $('#req_no_input').keyup( $.debounce( 500, function() { 
                 $.getJSON( '/requisitions/get_requisiton_by_number', 
                     { requisition_no: $(this).val()}, 
                     function(data) { 
+                      console.log(data);
+                      if(data.requisition!="" && data.requisition!=null)
+                      {
+                        var operation_id = data.requisition.operation_id; 
+                        if( null !== operation_id) { 
+                          $("#dispatch_operation_id").val( operation_id); 
+                        }
 
-
-                      $("#requisition-input-group i.fa-check").removeClass('hidden'); 
-                      $("#requisition-input-group i.fa-times").addClass('hidden'); 
-
-
-                      var operation_id = data.requisition.operation_id; 
-                      if( null !== operation_id) { 
-                        $("#dispatch_operation_id").val( operation_id); 
-                      }
-
-                      var commodity_id = data.requisition.commodity_id;
-                      var commodity_category_id = data.commodity_category_id
-                      if( null !== commodity_id) {
-                          $("#commodity_id_select").val( commodity_id); 
-                      }
-                      if( null !== commodity_category_id) {
-                          $("#commodity_category_id_select").val( commodity_category_id); 
-                      }
-                      $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
-                      var donor_id = $("#donor_select").find('option:selected').val();
-                      updateProjects(donor_id,commodity_id);
-                      
-                      var region_id = data.requisition.region_id; 
-
-                      if( null !== region_id) { 
+                        var commodity_id = data.requisition.commodity_id;
+                        var commodity_category_id = data.commodity_category_id
+                        if( null !== commodity_id) {
+                            $("#commodity_id_select").val( commodity_id); 
+                        }
+                        if( null !== commodity_category_id) {
+                            $("#commodity_category_id_select").val( commodity_category_id); 
+                        }
+                        $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
+                        var donor_id = $("#donor_select").find('option:selected').val();
+                        updateProjects(donor_id,commodity_id);
                         
-                        $("select[name=region]:first").val(region_id).change(); 
+                        var region_id = data.requisition.region_id; 
 
-                        var zone_id = data.requisition.zone_id; 
+                        if( null !== region_id) { 
+                          
+                          $("select[name=region]:first").val(region_id).change(); 
 
-                        if( null !== zone_id ) { 
-                          $("select[name=zone]:first").data('value', zone_id);
-                        }  
+                          var zone_id = data.requisition.zone_id; 
+
+                          if( null !== zone_id ) { 
+                            $("select[name=zone]:first").data('value', zone_id);
+                          }  
+                        }
+                        $("#requisition-input-group i.fa-check").removeClass('hidden'); 
+                        $("#requisition-input-group i.fa-times").addClass('hidden'); 
                       }
                     }
                 )
@@ -360,6 +372,15 @@
                   var project = $("#dispatch_project_select").find('option:selected').val();
                   var unit = $("#uom-select").find('option:selected').val();
                   var quantity = $("#quantity-di").val();
+
+                  if(quantity <= 0)
+                  {
+                    $("#qunaity-limit").removeClass("label label-primary");
+                    $("#qunaity-limit").addClass("label label-danger");
+                    $("#qunaity-limit").html("");
+                    $("#qunaity-limit").html("Quantity must be greater than zero(0)!");
+                    return;
+                  }
                   
                   var $this = $(this); 
 
@@ -508,6 +529,12 @@
 		        }
 		    });
     }
+    else{
+      $("#qunaity-limit").removeClass("label label-primary");
+      $("#qunaity-limit").addClass("label label-danger");
+      $("#qunaity-limit").html("");
+      $("#qunaity-limit").html("Please select hub, warehouse, and project!");
+    }
   }
 
 
@@ -587,6 +614,14 @@
     $('#uom-select').html(options);
     $("#qunaity-limit").show();
   }
+
+  $('#dispatch_warehouse_id').change(function(){
+    var hub = $('#dispatch_hub_id').val();
+    var warehouse = $(this).val();
+    var projectId = $("#dispatch_project_select").find('option:selected').val();
+    
+    check_stock(hub, warehouse, projectId);
+  });
 
   $('#donor_select').change(function(){
     var donor_id = $(this).val();
