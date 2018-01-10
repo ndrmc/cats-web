@@ -1,5 +1,7 @@
 <%= form_for(dispatch, :html=> {:id => 'dispatch-form'} ) do |f| %>
-<% @projects = Project.where('archived = ? OR archived IS NULL',false)%>
+<% @projects = Project.includes(commodity: :commodity_category).where('archived = ? OR archived IS NULL',false)%>
+<% @commodities = Commodity.all%>
+<% @commodity_categories = CommodityCategory.all%>
 <% @uoms = UnitOfMeasure.all%>
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
@@ -29,11 +31,11 @@
       </div>
 
       <div class="form-group" id="requisition-input-group">
-        <%= f.label :requisition_number, "Requisition Number" %> <span class="required">*</span> &middot; 
-          <i class="fa fa-times" title="Requisition not found."> </i> 
-          <i class="fa fa-check hidden"  title="Requisition exists."> </i>
+        <%= f.label :requisition_number, "Requisition Number" %> <span class="required">*</span> &middot;  
+          <span class=""><i class="fa fa-times label-danger" title="Requisition not found."> </i> </span>
+          <span class=""><i class="fa fa-check label-primary"  title="Requisition exists."> </i></span>
         <% if(params[:requisition_no].present?) %>
-          <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input', :value => params[:requisition_no] %>
+          <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input', :value => params[:requisition_no], :data => {:commodity => '' } %>
         <% else %>
           <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input' %>
         <% end %>
@@ -101,12 +103,11 @@
       <table class="table">
               <thead>
                 <tr>
-                  <th>Commodity Category</th>
-                  <th>Commodity</th>                 
-                  <th>Unit of Measure</th>
-                  <th>Quantity</th>
                   <th>Donor</th>
                   <th>Project</th>
+                  <th>Commodity</th>                 
+                  <th>Unit of Measure</th>
+                  <th>Quantity</th>                  
                   <th></th>
                 </tr>
               </thead>
@@ -117,15 +118,17 @@
                   
                   <tr class="dispatch-line">
                     <td>
-                      <input type="hidden" name="dispatch[dispatch_items[][id]]" value="<%= dispatch_line.id %>" />
-                      <select name="dispatch[dispatch_items[][commodity_category_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line&.commodity_category&.id %>"><%= dispatch_line&.commodity_category&.name %></option>
+                      <select name="dispatch[dispatch_items[][organization_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line&.organization&.id %>"><%= dispatch_line&.organization&.name %></option>
                       </select>
                     </td>
                     <td>
-                      <select name="dispatch[dispatch_items[][commodity_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line&.commodity&.id %>"><%= dispatch_line&.commodity&.name %></option>
+                      <select name="dispatch[dispatch_items[][project_id]]" class="form-control" readonly>
+                        <option value="<%= dispatch_line&.project&.id %>"><%= dispatch_line&.project&.project_code %></option>
                       </select>
+                    </td>
+                    <td>
+                      <%= dispatch_line&.commodity&.name %>
                     </td>               
                     <td>
                       <select name="dispatch[dispatch_items[][unit_of_measure_id]]" class="form-control" readonly>
@@ -133,74 +136,39 @@
                       </select>
                     </td>
                     <td>
-                          <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" value="<%= dispatch_line.quantity %>" readonly/>
-                    </td>                   
-                     <td>
-                      <select name="dispatch[dispatch_items[][organization_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line&.organization&.id %>"><%= dispatch_line&.organization&.name %></option>
-                      </select>
-                    </td>
-
-                    <td>
-                      <select name="dispatch[dispatch_items[][project_id]]" class="form-control" readonly>
-                        <option value="<%= dispatch_line&.project&.id %>"><%= dispatch_line&.project&.project_code %></option>
-                      </select>
-                    </td>
+                      <input name="dispatch[dispatch_items[][quantity]]" type="number" class="form-control" value="<%= dispatch_line.quantity %>" readonly/>
+                    </td>  
                     <td>
                       <a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>
                     </td>
                   </tr>
                     
                   <% end %>
-                  <tr>
+                  <tr>   
+                      <div style="display: none;">
+                        <input name="dispatch[dispatch_items[][commodity_category_id]]" id="commodity-category-select" value=""/>
+                        <input name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" value=""/>
+                      </div>
                       <td>
-                         <%= select_tag 'dispatch[dispatch_items[][commodity_category_id]]',  options_from_collection_for_select( CommodityCategory.all, 'id', 'name', @category&.id ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true', :class => 'form-control', :id => 'commodity-category-select'} %>
-                      </td>
+                        <%= select_tag 'dispatch[dispatch_items[][organization_id]]',  options_from_collection_for_select( Organization.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control', :id => 'donor_select'} %>
+                      </td>                      
                       <td>
-                        <select name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" class="form-control" data-parsley-required>
-                          <option value="">-- Choose --</option>
-                          <% if(@category.present? ) %>
-                            <% Commodity.where(:commodity_category_id => @category.id).each do |commodity| %>
-                              <% if(@commodity.id == commodity.id) %>
-                                <option selected="selected" data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %>">
-                                  <%= commodity.name %>
-                                </option>
-                              <% else %>
-                                <option data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %>">
-                                  <%= commodity.name %>
-                                </option>  
-                              <% end %>                       
-                            <% end %>
-                          <% else %>
-                            <% Commodity.all.each do |commodity| %>
-                              <option data-uom-category-id="<%= !commodity.uom_category.nil? ? commodity.uom_category.id : commodity.commodity_category.uom_category.id %>" value="<%= commodity.id %>" class="cc-<%= commodity.commodity_category.id %>">
-                                  <%= commodity.name %>
-                                </option>                       
-                            <% end %>
-                          <% end %>
+                        <select id="dispatch_project_select" name='dispatch[dispatch_items[][project_id]]', class = 'form-control dispatch_project_select' data-parsley-required %>
                         </select>
+                      </td>                   
+                      <td>
+                        <input class="form-control" name="commodity_di" id="commodity_di" type="text" disabled="disabled">
                       </td>
                       <td>
-                      <% if(@category.present?) %>
-                        <%= select_tag 'dispatch[dispatch_items[][unit_of_measure_id]]',  options_from_collection_for_select( UnitOfMeasure.where( :uom_category_id => @commodity.uom_category_id), 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control', :id => 'commodity-category-select'} %>
-                      <% else %>
                         <select name="dispatch[dispatch_items[][unit_of_measure_id]]" id="uom-select" class="form-control" data-parsley-required>
-                          <option value="">-- Choose --</option>
+                            <option value="">-- Choose --</option>
 
-                        </select>
-                      <% end %>
+                          </select>
                       </td>
                       <td>
-                          <input name="dispatch[dispatch_items[][quantity]]" type="number" step="any" class="form-control" data-parsley-required/>
-                      </td>
-                       <td>
-                       <%= select_tag 'dispatch[dispatch_items[][organization_id]]',  options_from_collection_for_select( Organization.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control', :id => 'donor_select'} %>
-                      </td>
-                      
-                    <td>
-                        <select name='dispatch[dispatch_items[][project_id]]', class = 'form-control project_select' data-parsley-required %>
-                        </select>
-                       </td>
+                          <input id="quantity-di" name="dispatch[dispatch_items[][quantity]]" type="number" step="any" class="form-control" data-parsley-required/>
+                          <span id="qunaity-limit" class=""></span>
+                      </td>                       
                       <td>
                           <a href="#" class="btn btn-primary" id="add-dispatch-line">Add</a>
                       </td>
@@ -289,199 +257,408 @@
 
 <script type="text/javascript">
 
-              var REMOVE_dispatchLINE_BTN = '<a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>';
-              var EMPTY_OPTION = '<option value="">-- Choose --</option>';
-              
-              $( function() { 
-                  $.getJSON( '/requisitions/get_requisiton_by_number', 
+          var REMOVE_dispatchLINE_BTN = '<a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>';
+          var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+          
+          $( function() { 
+              var req_no = $('#req_no_input').val();
+              if (req_no == '' || req_no == '')
+              {
+                $("#requisition-input-group i.fa-times").removeClass('hidden'); 
+                $("#requisition-input-group i.fa-check").addClass('hidden'); 
+              }
+              else{
+                $.getJSON( '/requisitions/get_requisiton_by_number', 
                     { requisition_no: $('#req_no_input').val()}, 
                     function(data) { 
 
+                      if(data!="" && data!=null)
+                      {
+                        $("#requisition-input-group i.fa-check").removeClass('hidden'); 
+                        $("#requisition-input-group i.fa-times").addClass('hidden'); 
+                        console.log("Commodity id: " + data.requisition.commodity_id);    
+                        $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
+                        var donor_id = $("#donor_select").find('option:selected').val();
+                        var commodity_id = data.requisition.commodity_id;
+                        updateProjects(donor_id,commodity_id);
+                        var operation_id = data.requisition.operation_id; 
+                        if( null !== operation_id) {                         
+                            $("#dispatch_operation_id").val( operation_id); 
+                        }
 
-                      $("#requisition-input-group i.fa-check").removeClass('hidden'); 
-                      $("#requisition-input-group i.fa-times").addClass('hidden'); 
+                        var region_id = data.requisition.region_id; 
 
+                        if( null !== region_id) { 
+                          
+                          $("select[name=region]:first").val(region_id).change(); 
 
-                      var operation_id = data.requisition.operation_id; 
-                      if( null !== operation_id) {                         
-                          $("#dispatch_operation_id").val( operation_id); 
+                          var zone_id = data.requisition.zone_id; 
+
+                          if( null !== zone_id ) { 
+                            $("select[name=zone]:first").data('value', zone_id);
+                          }  
+                        }
                       }
+                      
+                    }
+                )
+                .error(function(event, jqxhr, exception) {
+                    $("#requisition-input-group i.fa-times").removeClass('hidden'); 
+                    $("#requisition-input-group i.fa-check").addClass('hidden'); 
+                    $('#req_no_input').attr("data-commodity", "");
+                    var commodity_id = "";
+                    var donor_id = $("#donor_select").find('option:selected').val();
+                    $('#uom-select').html("");
+                    updateProjects(donor_id,commodity_id);
+                });
+              }
+              
+              $('#req_no_input').keyup( $.debounce( 500, function() { 
+                $.getJSON( '/requisitions/get_requisiton_by_number', 
+                    { requisition_no: $(this).val()}, 
+                    function(data) { 
+                      console.log(data);
+                      if(data.requisition!="" && data.requisition!=null)
+                      {
+                        var operation_id = data.requisition.operation_id; 
+                        if( null !== operation_id) { 
+                          $("#dispatch_operation_id").val( operation_id); 
+                        }
 
-                      var region_id = data.requisition.region_id; 
-
-                      if( null !== region_id) { 
+                        var commodity_id = data.requisition.commodity_id;
+                        var commodity_category_id = data.commodity_category_id
+                        if( null !== commodity_id) {
+                            $("#commodity_id_select").val( commodity_id); 
+                        }
+                        if( null !== commodity_category_id) {
+                            $("#commodity_category_id_select").val( commodity_category_id); 
+                        }
+                        $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
+                        var donor_id = $("#donor_select").find('option:selected').val();
+                        updateProjects(donor_id,commodity_id);
                         
-                        $("select[name=region]:first").val(region_id).change(); 
+                        var region_id = data.requisition.region_id; 
 
-                        var zone_id = data.requisition.zone_id; 
+                        if( null !== region_id) { 
+                          
+                          $("select[name=region]:first").val(region_id).change(); 
 
-                        if( null !== zone_id ) { 
-                          $("select[name=zone]:first").data('value', zone_id);
-                        }  
+                          var zone_id = data.requisition.zone_id; 
+
+                          if( null !== zone_id ) { 
+                            $("select[name=zone]:first").data('value', zone_id);
+                          }  
+                        }
+                        $("#requisition-input-group i.fa-check").removeClass('hidden'); 
+                        $("#requisition-input-group i.fa-times").addClass('hidden'); 
                       }
                     }
                 )
                 .error(function(event, jqxhr, exception) {
                     $("#requisition-input-group i.fa-times").removeClass('hidden'); 
                     $("#requisition-input-group i.fa-check").addClass('hidden'); 
+                    $('#req_no_input').attr("data-commodity", "");
+                    var commodity_id = "";
+                    var donor_id = $("#donor_select").find('option:selected').val();
+                    $('#uom-select').html("");
+                    updateProjects(donor_id,commodity_id);
                 });
-                  $('#req_no_input').keyup( $.debounce( 500, function() { 
-                    $.getJSON( '/requisitions/get_requisiton_by_number', 
-                        { requisition_no: $(this).val()}, 
-                        function(data) { 
+              }));
 
+              $("#add-dispatch-line").click( function(e) { 
+                  e.preventDefault(); 
+                  var hub = $('#dispatch_hub_id').val();
+                  var warehouse = $('#dispatch_warehouse_id').val();
+                  var project = $("#dispatch_project_select").find('option:selected').val();
+                  var unit = $("#uom-select").find('option:selected').val();
+                  var quantity = $("#quantity-di").val();
 
-                          $("#requisition-input-group i.fa-check").removeClass('hidden'); 
-                          $("#requisition-input-group i.fa-times").addClass('hidden'); 
+                  if(quantity <= 0)
+                  {
+                    $("#qunaity-limit").removeClass("label label-primary");
+                    $("#qunaity-limit").addClass("label label-danger");
+                    $("#qunaity-limit").html("");
+                    $("#qunaity-limit").html("Quantity must be greater than zero(0)!");
+                    return;
+                  }
+                  
+                  var $this = $(this); 
 
+                  var $dispatchLineForm = $this.closest('tr'); 
 
-                          var operation_id = data.requisition.operation_id; 
-                          if( null !== operation_id) { 
-                            $("#dispatch_operation_id").val( operation_id); 
-                          }
+                  var valid = true; 
 
-                          var commodity_id = data.requisition.commodity_id;
-                          var commodity_category_id = data.commodity_category_id
-                          if( null !== commodity_id) {
-                              $("#commodity_id_select").val( commodity_id); 
-                          }
-                          if( null !== commodity_category_id) {
-                              $("#commodity_category_id_select").val( commodity_category_id); 
-                          }
-
-                          var region_id = data.requisition.region_id; 
-
-                          if( null !== region_id) { 
-                            
-                            $("select[name=region]:first").val(region_id).change(); 
-
-                            var zone_id = data.requisition.zone_id; 
-
-                            if( null !== zone_id ) { 
-                              $("select[name=zone]:first").data('value', zone_id);
-                            }  
-                          }
-                        }
-                    )
-                    .error(function(event, jqxhr, exception) {
-                        $("#requisition-input-group i.fa-times").removeClass('hidden'); 
-                        $("#requisition-input-group i.fa-check").addClass('hidden'); 
-                    });
-                  }));
-
-                  $("#add-dispatch-line").click( function(e) { 
-                      e.preventDefault(); 
-
-                      var $this = $(this); 
-
-                      var $dispatchLineForm = $this.closest('tr'); 
-                      
-                      var valid = true; 
-
-                      $dispatchLineForm.find(':input').each( function() { 
-                          $(this).parsley().validate(); 
-                          valid = $(this).parsley().isValid() && valid; 
-                      });
-
-                      if( !valid ) {
-                        return; 
-                      }
-
-                      var $newRow = $dispatchLineForm.clone();
-
-                      $newRow.find('td').last().html(REMOVE_dispatchLINE_BTN); 
-
-                      $newRow.find(':input').attr('readonly', true).removeAttr('id'); 
-
-                      $newRow.addClass('dispatch-line');
-
-                      $newRow.insertBefore( $dispatchLineForm); 
-
-                      $dispatchLineForm.find(':input').val('');
-                  }); 
-
-                  $('#dispatchItemsTableBody').on('click', '.remove-dispatch-line', function(e) { 
-                      $(e.target).closest( 'tr').fadeOut('slow', function(){
-                        $(this).remove();
-                      });
+                  $dispatchLineForm.find(':input').each( function() { 
+                      $(this).parsley().validate(); 
+                      valid = $(this).parsley().isValid() && valid; 
                   });
 
-                  $('#submit-dispatch').click( function(e) { 
+                  if( !valid ) {
+                    return; 
+                  }
 
-                      if( $('.dispatch-line').length === 0 ) { 
-                        toastr.error("You need to atleast add one commodity."); 
+                  var flag = validate_quantity(this, hub, warehouse, project, quantity, unit);
+                  console.log("validate quantity: ");
+                  console.log(flag);
+              }); 
 
-                        e.preventDefault();
-                        return; 
-                      }
-
+              $('#dispatchItemsTableBody').on('click', '.remove-dispatch-line', function(e) { 
+                  $(e.target).closest( 'tr').fadeOut('slow', function(){
+                    $(this).remove();
                   });
-
-
-                  $('#commodity-category-select').change( function() { 
-                    var val = $(this).val();
-
-                    if( val === '' ) {
-                      return; 
-                    }
-
-
-                    $("#commodity-select > option").addClass('hidden'); 
-                    $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
-
-                    $("#commodity-select > option:first").removeClass('hidden'); 
-
-
-
-                  });
-
-
-
-      function updateProjects(donor_id){        
-        if (donor_id === '')
-          return;
-        var allProjects = <%= @projects.to_json.html_safe %>
-     
-        var projects_by_donor = $.grep(allProjects, function (elem) {
-          return elem.organization_id == donor_id
-        });
-
-        var proj_options = $.map(projects_by_donor, function (val) {
-          return '<option value="' + val.id + '">' + val.project_code + '</option>';
-        });
-
-        proj_options.unshift(EMPTY_OPTION);
-
-   
-        $('.project_select').html(proj_options);
-      }
-
-      $('#donor_select').change(function(){
-        var donor_id = $(this).val();
-        updateProjects(donor_id);
-      });
-
-       $("#commodity-select").change(function () {
-        var categoryId = $(this).find('option:selected').data('uom-category-id');
-        var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
-        if ('' === categoryId)
-          return;
-
-        var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
-          return elem.uom_category_id == categoryId
-        });
-
-        var options = $.map(unitOfMeasuresInCategory, function (val) {
-          return '<option value="' + val.id + '">' + val.name + '</option>';
-        });
-
-        options.unshift(EMPTY_OPTION);
-
-        $('#uom-select').html(options);
-
-      });
               });
-            </script>
+
+              $('#submit-dispatch').click( function(e) { 
+
+                  if( $('.dispatch-line').length === 0 ) { 
+                    toastr.error("You need to atleast add one commodity."); 
+
+                    e.preventDefault();
+                    return; 
+                  }
+
+              });
+
+
+              $('#commodity-category-select').change( function() { 
+                var val = $(this).val();
+
+                if( val === '' ) {
+                  return; 
+                }
+
+
+                $("#commodity-select > option").addClass('hidden'); 
+                $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
+
+                $("#commodity-select > option:first").removeClass('hidden'); 
+
+
+
+              });
+
+  function validate_quantity(node, hub, warehouse, project, quantity, unit)
+  {
+    if( hub!="" && warehouse!="" && project!="" && quantity!="" && unit!="")
+    {
+      $.ajax({
+		        url:'/dispatches/validate_quantity',
+		        type:'POST',
+		        dataType:'json',
+		        data:{
+		        	dispatch: {
+		        		hub_id: hub,
+                warehouse_id: warehouse,
+						    proj_id: project,
+                quantity: quantity,
+                unit: unit
+		        	}	            
+		        },
+		        before: function() {
+		        
+		        },
+		        success:function(data){
+		        		console.log(data);	
+                if(!data){
+                  $("#qunaity-limit").removeClass("label label-primary");
+                  $("#qunaity-limit").addClass("label label-danger");
+                  $("#qunaity-limit").html("");
+                  $("#qunaity-limit").html("More than available stock!");
+                  return;
+                }   
+                var $this = $(node); 
+
+                $("#qunaity-limit").hide();
+
+                var $dispatchLineForm = $this.closest('tr'); 
+                
+                var $newRow = $dispatchLineForm.clone();
+
+                $newRow.find('td').last().html(REMOVE_dispatchLINE_BTN); 
+
+                $newRow.find(':input').attr('readonly', true).removeAttr('id'); 
+
+                $newRow.find('#qunaity-limit').remove();
+
+                $newRow.addClass('dispatch-line');
+
+                $newRow.insertBefore( $dispatchLineForm); 
+
+                $dispatchLineForm.find(':input').val('');                          
+		        },
+		        error:function(data){
+		            console.log(data);
+		        }
+		    });
+    }
+  }
+
+  function check_stock(hub, warehouse, project)
+  {
+    if( hub!="" && warehouse!="" && project!="")
+    {
+      $.ajax({
+		        url:'/dispatches/check_stock',
+		        type:'POST',
+		        dataType:'json',
+		        data:{
+		        	dispatch: {
+		        		hub_id: hub,
+                warehouse_id: warehouse,
+						    proj_id: project
+		        	}	            
+		        },
+		        before: function() {
+		        
+		        },
+		        success:function(data){
+		        		console.log(data);	
+                if(data > 0){
+                  $("#qunaity-limit").removeClass("label label-danger");
+                  $("#qunaity-limit").addClass("label label-primary");
+                }
+                else{
+                  $("#qunaity-limit").removeClass("label label-primary");
+                  $("#qunaity-limit").addClass("label label-danger");
+                }
+                $("#qunaity-limit").html("");
+                $("#qunaity-limit").html("Available stock " + data + " MT");             
+		        },
+		        error:function(data){
+		            console.log(data);
+		        }
+		    });
+    }
+    else{
+      $("#qunaity-limit").removeClass("label label-primary");
+      $("#qunaity-limit").addClass("label label-danger");
+      $("#qunaity-limit").html("");
+      $("#qunaity-limit").html("Please select hub, warehouse, and project!");
+    }
+  }
+
+
+  function updateProjects(donor_id, commodity_id){        
+    if (donor_id === '')
+      return;
+    var allProjects = <%= @projects.to_json.html_safe %>
+    var projects_by_donor;
+    if(commodity_id !== '')
+    {
+      console.log("commodity_id: " + commodity_id);
+      projects_by_donor = $.grep(allProjects, function (elem) {
+        return elem.organization_id == donor_id && elem.commodity_id == commodity_id
+      });
+      $('#commodity_di').val("");
+    }
+    else{
+      console.log("Commodity id not set!");
+      projects_by_donor = [];
+      $('#commodity_di').val("");
+    }
+     
+    var commodities = <%= @commodities.to_json.html_safe %>
+    var proj_options = $.map(projects_by_donor, function (val) {
+      var commodity = $.grep(commodities, function (elem) {
+        return elem.id == val.commodity_id
+      });
+      var commodity = commodity[0];          
+      return '<option value="' + val.id + '" data-category-id="' + commodity["commodity_category_id"] + '">' + val.project_code + '</option>';
+    });
+    console.log(proj_options);
+    proj_options.unshift(EMPTY_OPTION);
+
+
+    $('#dispatch_project_select').html(proj_options);
+  }
+
+  function updateCommodityAndUnit(projectId, categoryId){
+    if (projectId === '')
+    {
+      $('#uom-select').html("");
+      return;
+    }
+      
+    var allProjects = <%= @projects.to_json.html_safe %>
+    var project = $.grep(allProjects, function (elem) {
+      return elem.id == projectId
+    });
+    var commodities = <%= @commodities.to_json.html_safe %>
+    var commodity = $.grep(commodities, function (elem) {
+        return elem.id == project[0].commodity_id
+    });
+    var commodity = commodity[0]; 
+    $('#commodity_di').val(commodity["name"]);
+    $('#commodity-select').val(commodity["id"]);
+    var hub = $('#dispatch_hub_id').val();
+    var warehouse = $('#dispatch_warehouse_id').val();
+    check_stock(hub, warehouse, projectId);
+
+    var commodity_categories = <%= @commodity_categories.to_json.html_safe %>
+    var commodity_category = $.grep(commodity_categories, function (elem) {
+        return elem.id == commodity["commodity_category_id"]
+    });
+    commodity_category = commodity_category[0];
+    $('#commodity-category-select').val(commodity_category["id"]);
+    var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
+    if ('' === commodity_category)
+      return;
+    var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+      return elem.uom_category_id == commodity_category["uom_category_id"]
+    });
+    var options = $.map(unitOfMeasuresInCategory, function (val) {
+      return '<option value="' + val.id + '">' + val.name + '</option>';
+    });
+    options.unshift(EMPTY_OPTION);
+
+    $('#uom-select').html(options);
+    $("#qunaity-limit").show();
+  }
+
+  $('#dispatch_warehouse_id').change(function(){
+    var hub = $('#dispatch_hub_id').val();
+    var warehouse = $(this).val();
+    var projectId = $("#dispatch_project_select").find('option:selected').val();
+    
+    check_stock(hub, warehouse, projectId);
+  });
+
+  $('#donor_select').change(function(){
+    var donor_id = $(this).val();
+    var commodity_id = $('#req_no_input').attr("data-commodity");
+    updateProjects(donor_id,commodity_id);
+  });
+
+  $('#dispatch_project_select').change(function(){
+    console.log("-------Start------");
+    var projectId = $(this).find('option:selected').val();
+    console.log("projectId: " + projectId);
+    var categoryId = $(this).find('option:selected').data('category-id');
+    console.log("categoryId: " + categoryId);
+    updateCommodityAndUnit(projectId, categoryId);
+  });
+
+    $("#commodity-select").change(function () {
+    var categoryId = $(this).find('option:selected').data('uom-category-id');
+    var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
+    if ('' === categoryId)
+      return;
+
+    var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+      return elem.uom_category_id == categoryId
+    });
+
+    var options = $.map(unitOfMeasuresInCategory, function (val) {
+      return '<option value="' + val.id + '">' + val.name + '</option>';
+    });
+
+    options.unshift(EMPTY_OPTION);
+
+    $('#uom-select').html(options);
+
+  });
+          });
+        </script>
 
 
 
