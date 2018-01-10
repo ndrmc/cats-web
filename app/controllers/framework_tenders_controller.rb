@@ -75,7 +75,7 @@ class FrameworkTendersController < ApplicationController
      @framework_tender.certified_by = current_user.id
       respond_to do |format|
           if @framework_tender.save
-              format.html { redirect_to '/en/framework_tenders/' + @framework_tender.id.to_s, notice: 'Framework tender status was successfully updated.' }
+              format.html {  redirect_to request.referrer, notice: 'Framework tender status was successfully updated.' }
           else
               format.html { 
                   flash[:error] = "Save failed! Please check your input and try again shortly."
