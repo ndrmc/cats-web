@@ -26,10 +26,10 @@
           <tr>
                         <th>Source hub</th>
                         <th>Source warehouse</th>
-                        <th>Source store</th>
+                      
                         <th>Destination hub</th>
                         <th>Destination warehouse</th>
-                        <th>Destination store</th>
+                      
                         <th>Project</th>
                         <th>Commodity</th>
                         <th>Quantity</th>
@@ -41,18 +41,16 @@
         <tbody>
           <% @stock_movements.each do |stock_movement| %>
           <tr>
-                        <td><%= stock_movement&.hub&.name
+                        <td><%= Hub.find_by(id: stock_movement&.source_hub_id)&.name
               %></td>
-                        <td><%= stock_movement&.warehouse&.name
+                        <td><%= Warehouse.find_by(id: stock_movement&.source_warehouse_id)&.name
               %></td>
-                        <td><%= stock_movement&.store&.name
+                        
+                        <td><%= Hub.find_by(id: stock_movement&.destination_hub_id)&.name
               %></td>
-                        <td><%= stock_movement&.hub&.name
+                        <td><%= Warehouse.find_by(id: stock_movement&.destination_warehouse_id)&.name
               %></td>
-                        <td><%= stock_movement&.warehouse&.name
-              %></td>
-                        <td><%= stock_movement&.store&.name
-              %></td>
+                        
                         <td><%= stock_movement&.project&.project_code
               %></td>
                         <td><%= stock_movement&.commodity&.name

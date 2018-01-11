@@ -2,7 +2,9 @@
 <% @uoms = UnitOfMeasure.all%>
 <% @warehouses = Warehouse.all %>
 <% @stores = Store.all %>
-<% @donor_id = @projects.find(@stock_movement&.project_id)&.organization_id %>
+<% if (@stock_movement&.project_id) %>
+  <% @donor_id = @projects.find(@stock_movement&.project_id)&.organization_id %>
+<% end %>
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
@@ -27,14 +29,14 @@
                             <%= f.label :source_hub_id, "Source Hub" %>
                                  <span class="required">*</span>
                                 <%= f.collection_select :source_hub_id,
-                                 Hub.order(:name), :id, :name, {:selected => @stock_movement.source_hub_id, include_blank: '-- Choose --'}, {:onchange => "populate_warehouse(this.value, 'source')", :id => 'source_hub_select' ,:name => 'source_hub' ,:class => 'form-control', :required => true }%>
+                                 Hub.order(:name), :id, :name, {:selected => @stock_movement.source_hub_id, include_blank: '-- Choose --'}, {:onchange => "populate_warehouse(this.value, 'source')", :id => 'source_hub_select' ,:class => 'form-control', :required => true }%>
                  </div>
 
                 <div class="form-group">
                          <%= f.label :source_warehouse_id, "Source Warehouse" %>
                             <span class="required">*</span>
                             <%= f.collection_select :source_warehouse_id,
-                            @warehouses.select{|w| w.hub_id ==  "#{:source_hub_select}"}, :id, :name, {include_blank: '-- Choose --'}, { :onchange => "populate_store(this.value, 'source')", :id => 'warehouse_select', :name => 'source_warehouse', :class => 'form-control', :required => true }%>
+                            @warehouses.select{|w| w.hub_id ==  "#{:source_hub_select}"}, :id, :name, {include_blank: '-- Choose --'}, { :onchange => "populate_store(this.value, 'source')", :id => 'warehouse_select', :class => 'form-control', :required => true }%>
 
                 </div>
 
@@ -42,7 +44,7 @@
                          <%= f.label :source_store_id, "Source Store" %>
                             <span class="required">*</span>
                             <%= f.collection_select :source_store_id,
-                            @stores.select{|w| w.warehouse_id ==  "#{:warehouse_select}"}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'store_select', :name => 'source_store', :class => 'form-control'}%>
+                            @stores.select{|w| w.warehouse_id ==  "#{:warehouse_select}"}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'store_select', :class => 'form-control'}%>
 
                 </div>
 
@@ -132,7 +134,7 @@
 
 var EMPTY_OPTION = '<option value="">-- Choose --</option>';
 populate_warehouse("<%= @stock_movement.source_hub_id %>", 'source')
-populate_warehouse("<%= @stock_movement.source_hub_id %>", 'destination')
+populate_warehouse("<%= @stock_movement.destination_hub_id %>", 'destination')
 updateProjects("<%=  @donor_id %>")
 $("#organization").val(<%=  @donor_id %>)
 get_commodity("<%= @stock_movement.project_id  %>")
@@ -158,7 +160,7 @@ function populate_warehouse(id,type)
          }
       else{
                 $('#destination_warehouse_select').html(warehouse_options);
-                $('#destination_warehouse_select').val(<%=  @stock_movement.source_warehouse_id %>) 
+                $('#destination_warehouse_select').val(<%=  @stock_movement.destination_warehouse_id %>) 
       }
 
        populate_store("<%= params[:warehouse] %>", type)
@@ -180,11 +182,11 @@ function populate_store(warehouse_id, type)
          if (type == 'source')
        {
                 $('#store_select').html(store_options);
-                $('#store_select').val(<%= params[:source_store] %>)       
+                $('#store_select').val(<%= @stock_movement.source_store_id %>)       
        }
        else{
                 $('#destination_store_select').html(store_options);
-                $('#destination_store_select').val(<%= params[:source_store] %>)
+                $('#destination_store_select').val(<%= @stock_movement.destination_store_id %>)
        }
       
 }
