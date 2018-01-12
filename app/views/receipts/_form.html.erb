@@ -7,18 +7,7 @@
 <% @reference_unit =  UnitOfMeasure.find_by(:uom_type => UnitOfMeasure.uom_types[:ref]).name %>
 <div class="row">
   <div class="wrapper">
-    
-    <div class="ibox float-e-margins col-sm-12">
-      <div class="ibox-content col-sm-12">
-        <div class="col-sm-6">
-          <div class="form-group">
-            <%= f.label :grn_no, "GRN Number" %>
-            <span class="required">*</span>
-            <%= f.text_field :grn_no, :class => 'form-control big-text-field', :autofocus => true, :required => true %>
-          </div>
-        </div>  
-      </div>
-    </div>
+
     <div class="ibox float-e-margins col-sm-12">
       <div class="ibox-content col-sm-12">
 
@@ -42,6 +31,22 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
+              <%= f.label :grn_no, "GRN Number" %>
+              <span class="required">*</span>
+              <%= f.text_field :grn_no, :class => 'form-control big-text-field', :autofocus => true, :required => true %>
+            </div>
+          </div> 
+          <div class="col-sm-6">
+            <div class="form-group">
+              <%= f.label :waybill_no, "Waybill(s)" %>
+              <span class="required">*</span>
+              <%= f.text_field :waybill_no, :class => 'form-control big-text-field', :required => true %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
               <%= f.label :hub_id, "Hub" %>
               <span class="required">*</span>
               <%= f.collection_select :hub_id,
@@ -56,24 +61,7 @@
                       @warehouses.select{|w| w.hub_id == @receipt.hub_id}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'warehouse_select',:class => 'form-control', :required => true }%>              
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <%= f.label :donor_id %>
-              <span class="required">*</span>
-              <%= f.collection_select :donor_id,
-                      Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'donor_select', :required => true }%>
-            </div> 
-          </div>          
-          <div class="col-sm-6">
-            <div class="form-group">
-              <%= f.label :waybill_no, "Waybill(s)" %>
-              <span class="required">*</span>
-              <%= f.text_field :waybill_no, :class => 'form-control', :required => true %>
-            </div>
-          </div>
-        </div>
+        </div>        
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
@@ -89,6 +77,16 @@
               <%= f.text_field :received_date, :class => 'form-control datepicker', :required => true  %>
             </div>
           </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <%= f.label :donor_id %>
+              <span class="required">*</span>
+              <%= f.collection_select :donor_id,
+                      Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'donor_select', :required => true }%>
+            </div> 
+          </div> 
         </div>
       </div>
     </div>
@@ -443,7 +441,7 @@
                     $("#qunaity-limit").removeClass("label label-primary");
                     $("#qunaity-limit").addClass("label label-danger");
                   }
-                  $("#hub-received").html("Received Amount: " + data["hub_received"] + " MT"); 
+                  $("#hub-received").html("Received Amount: " + data["total_received"] + " MT"); 
                   $("#allocated-quantity").html("of total amount of " + data["allocated_quantity"] + " MT")
                   $("#progress-text").html(data["progress"] + "% Completed");
                   $("#proj-receive-progress .progress-bar").css("width", data["progress"]);

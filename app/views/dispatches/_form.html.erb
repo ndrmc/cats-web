@@ -32,12 +32,18 @@
             <%= f.text_field :gin_no, :class => 'form-control big-text-field', :autofocus => true, :required => true %>
           </div>
         </div>
-        <div class="col-sm-6 m-0">
-          <div class="form-group">
-            <%= f.label :dispatch_date %> <span class="required">*</span>
-            <%= f.text_field :dispatch_date, :class => 'form-control datepicker', :required => true  %>
+        <div class="col-sm-6">
+          <div class="form-group" id="requisition-input-group">
+            <%= f.label :requisition_number, "Requisition Number" %> <span class="required">*</span> &middot;  
+              <span class=""><i class="fa fa-times label-danger" title="Requisition not found."> </i> </span>
+              <span class=""><i class="fa fa-check label-primary"  title="Requisition exists."> </i></span>
+            <% if(params[:requisition_no].present?) %>
+              <%= f.text_field :requisition_number, :class => 'form-control big-text-field', :required => true, :id => 'req_no_input', :value => params[:requisition_no], :data => {:commodity => '' } %>
+            <% else %>
+              <%= f.text_field :requisition_number, :class => 'form-control big-text-field', :required => true, :id => 'req_no_input' %>
+            <% end %>
           </div>
-        </div>
+        </div>  
       </div>
       <div class="row">
         <div class="col-sm-6">
@@ -52,18 +58,12 @@
             <% end %>       
           </div>
         </div>
-        <div class="col-sm-6">
-          <div class="form-group" id="requisition-input-group">
-            <%= f.label :requisition_number, "Requisition Number" %> <span class="required">*</span> &middot;  
-              <span class=""><i class="fa fa-times label-danger" title="Requisition not found."> </i> </span>
-              <span class=""><i class="fa fa-check label-primary"  title="Requisition exists."> </i></span>
-            <% if(params[:requisition_no].present?) %>
-              <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input', :value => params[:requisition_no], :data => {:commodity => '' } %>
-            <% else %>
-              <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input' %>
-            <% end %>
+        <div class="col-sm-6 m-0">
+          <div class="form-group">
+            <%= f.label :dispatch_date %> <span class="required">*</span>
+            <%= f.text_field :dispatch_date, :class => 'form-control datepicker', :required => true  %>
           </div>
-        </div>        
+        </div>              
       </div>
       <div class="row">
         <div class="col-sm-6">
@@ -101,6 +101,12 @@
           </div>
         </div>
       </div>
+      
+    </div>
+  </div>
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
       <div class="row">
         <% if (params[:fdp_id].present?) %>
           <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: params[:fdp_id], required: true  %>
@@ -110,7 +116,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="ibox float-e-margins">
     <div class="ibox-content">
