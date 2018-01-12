@@ -28,7 +28,7 @@ class StockMovementsController < ApplicationController
 
     respond_to do |format|
       if @stock_movement.save
-        format.html { redirect_to action: "index", notice: 'Stock movement was successfully created.' }
+        format.html { redirect_to stock_movements_path, notice: 'Stock movement was successfully created.' }
         format.json { render :show, status: :created, location: @stock_movement }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class StockMovementsController < ApplicationController
   def update
     respond_to do |format|
       if @stock_movement.update(stock_movement_params)
-        format.html { redirect_to action: "index", notice: 'Stock movement was successfully updated.' }
+        format.html { redirect_to stock_movements_path, notice: 'Stock movement was successfully updated.' }
         format.json { render :show, status: :ok, location: @stock_movement }
       else
         format.html { render :edit }

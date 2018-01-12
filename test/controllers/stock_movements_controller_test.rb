@@ -23,7 +23,7 @@ class StockMovementsControllerTest < ActionDispatch::IntegrationTest
       post stock_movements_url, params: { stock_movement: { commodity_id: @stock_movement.commodity_id, description: @stock_movement.description, destination_hub_id: @stock_movement.destination_hub_id, destination_store_id: @stock_movement.destination_store_id, destination_warehouse_id: @stock_movement.destination_warehouse_id, project_id: @stock_movement.project_id, quantity: @stock_movement.quantity, source_hub_id: @stock_movement.source_hub_id, source_store_id: @stock_movement.source_store_id, source_warehouse_id: @stock_movement.source_warehouse_id } }
     end
 
-    assert_redirected_to stock_movement_url(StockMovement.last)
+    assert_redirected_to stock_movements_url
   end
 
   test "should show stock_movement" do
@@ -38,7 +38,7 @@ class StockMovementsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update stock_movement" do
     patch stock_movement_url("en",@stock_movement), params: { stock_movement: { commodity_id: @stock_movement.commodity_id, description: @stock_movement.description, destination_hub_id: @stock_movement.destination_hub_id, destination_store_id: @stock_movement.destination_store_id, destination_warehouse_id: @stock_movement.destination_warehouse_id, project_id: @stock_movement.project_id, quantity: @stock_movement.quantity, source_hub_id: @stock_movement.source_hub_id, source_store_id: @stock_movement.source_store_id, source_warehouse_id: @stock_movement.source_warehouse_id } }
-    assert_redirected_to stock_movement_url(@stock_movement)
+   assert_redirected_to stock_movements_url
   end
 
   test "should destroy stock_movement" do
