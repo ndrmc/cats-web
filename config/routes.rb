@@ -126,6 +126,7 @@ Rails.application.routes.draw do
 
   get '/receipts/receipt_report', to: 'receipts#receipt_report'
   post '/receipts/receipt_report_generate', to: 'receipts#receipt_report_generate'
+  post '/receipts/check_stock', to: 'receipts#check_stock'
   resources :receipts
   
   get '/receipts/return_receipt_detail/:id', to: 'receipts#return_receipt_detail'
@@ -135,7 +136,8 @@ Rails.application.routes.draw do
 
   get '/dispatches/dispatch_report', to: 'dispatches#dispatch_report'
   post '/dispatches/dispatch_report_generate', to: 'dispatches#dispatch_report_generate'
-  
+  post '/dispatches/check_stock', to: 'dispatches#check_stock' 
+  post '/dispatches/validate_quantity', to: 'dispatches#validate_quantity'
   get '/dispatches/basic', to: 'dispatches#basic'
   resources :dispatches
  

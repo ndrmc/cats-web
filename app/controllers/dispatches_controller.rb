@@ -1,7 +1,7 @@
 class DispatchesController < ApplicationController
  before_action :authorize_dispatch
-
-    def index
+    
+ def index
        
         if (params[:operation].present? && params[:hub].present? && params[:region].present? && params[:zone].present? && params[:woreda].present? )
             if (params[:fdp].present?)
@@ -59,6 +59,38 @@ class DispatchesController < ApplicationController
             end
         end
 
+    end
+
+    def validate_quantity    
+        @hub_id = dispatch_params["hub_id"]
+        @warehouse_id = dispatch_params["warehouse_id"]
+        @project_id = dispatch_params["proj_id"]
+        @quantity = dispatch_params["quantity"]
+        @unit = dispatch_params["unit"]
+        stock_account = Account.find_by({'code': :stock})
+        @stock = PostingItem.where(account_id: stock_account.id, hub_id: @hub_id, warehouse_id: @warehouse_id, project_id: @project_id).sum(:quantity)
+        quantity_in_ref = UnitOfMeasure.find(@unit.to_i).to_ref(@quantity.to_f)
+        @flag = false
+        if(quantity_in_ref < @stock)
+            @flag = true
+        end
+        respond_to do |format|
+            format.html
+            format.json { render :json => @flag.to_json }
+        end
+    end
+
+    def check_stock    
+        @hub_id = dispatch_params["hub_id"]
+        @warehouse_id = dispatch_params["warehouse_id"]
+        @project_id = dispatch_params["proj_id"]
+        stock_account = Account.find_by({'code': :stock})
+        @stock = PostingItem.where(account_id: stock_account.id, hub_id: @hub_id, warehouse_id: @warehouse_id, project_id: @project_id).sum(:quantity)
+        
+        respond_to do |format|
+            format.html
+            format.json { render :json => @stock.to_json }
+        end
     end
     
     def dispatch_report
@@ -195,7 +227,7 @@ class DispatchesController < ApplicationController
             params.require(:dispatch).permit( 
                 :gin_no, :requisition_number,
                 :operation_id, :dispatch_date, 
-                :hub_id, :warehouse_id, 
+                :hub_id, :warehouse_id, :proj_id, :quantity, :unit,
                 :fdp_id, 
                 :weight_bridge_ticket_number, :transporter_id, 
                 :plate_number, 

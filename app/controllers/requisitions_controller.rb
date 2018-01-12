@@ -63,12 +63,14 @@ class RequisitionsController < ApplicationController
 
   def get_requisiton_by_number
     requisition = Requisition.includes(commodity: :commodity_category).find_by_requisition_no params[:requisition_no]
-    category = CommodityCategory.find(Commodity.find(requisition.commodity_id).commodity_category_id)
+    if requisition.present?
+      category = CommodityCategory.find(Commodity.find(requisition.commodity_id).commodity_category_id)
+    end
     respond_to do |format|
-      if requisition
+      if requisition.present?
         format.json { render json: { requisition: requisition, commodity_category_id:  category.id}}
       else
-        format.json { render json: { }, status: 404}
+        format.json { render json: { }}
       end
     end
   end
