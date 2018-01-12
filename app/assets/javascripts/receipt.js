@@ -21,7 +21,7 @@
         }
 
         $("#commodity-select > option").addClass('hidden');
-        $("#commodity-selezzzzct > option.cc-" + val).removeClass('hidden');
+        $("#commodity-select > option.cc-" + val).removeClass('hidden');
 
         $("#commodity-select > option:first").removeClass('hidden');
 
