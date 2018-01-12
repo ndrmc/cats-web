@@ -21,7 +21,7 @@
         }
 
         $("#commodity-select > option").addClass('hidden');
-        $("#commodity-select > option.cc-" + val).removeClass('hidden');
+        $("#commodity-selezzzzct > option.cc-" + val).removeClass('hidden');
 
         $("#commodity-select > option:first").removeClass('hidden');
 
@@ -50,6 +50,11 @@
         current_project_id = $("#project_select").val();
         current_hub_id = $("#hub_select").val();
 
+        $('#hub-received').html("");
+        $('#allocated-quantity').html("");
+        $('#progress-text').html("");
+        $('#proj-receive-progress').html('<div class="progress-bar"></div>');
+
         var $newRow = $receiptLineForm.clone();
 
         $newRow.find('td').last().html(REMOVE_RECEIPTLINE_BTN);
@@ -57,6 +62,11 @@
         $newRow.find(':input').attr('readonly', true).removeAttr('id');
 
         $newRow.addClass('receipt-line');
+
+        $newRow.find('#hub-received').remove();
+        $newRow.find('#allocated-quantity').remove();
+        $newRow.find('#progress-text').remove();
+        $newRow.find('#proj-receive-progress').remove();
 
         $newRow.insertBefore($receiptLineForm);
 
@@ -76,7 +86,11 @@ alert("");
           return;
         }
        
-       
+        $('#hub-received').html("");
+        $('#allocated-quantity').html("");
+        $('#progress-text').html("");
+        $('#proj-receive-progress').html('<div class="progress-bar"></div>');
+        
         setTimeout(function() {
      get_received_qty(current_project_id,current_hub_id);
    }, 3000);
@@ -103,13 +117,13 @@ alert("");
       }); 
 
 
-    $('#project_select').change(function(){
- project_id = $(this).val();
- hub_id = $('#hub_select').val();
- get_received_qty(project_id,hub_id);
- var element = document.getElementById("prject_code_status");
- element.style.display = 'block';
-});
+//     $('#project_select').change(function(){
+//  project_id = $(this).val();
+//  hub_id = $('#hub_select').val();
+//  get_received_qty(project_id,hub_id);
+//  var element = document.getElementById("prject_code_status");
+//  element.style.display = 'block';
+// });
 
 
   $('#receiptLinesTableBody').on('click', '.remove-receipt-line', function (e) {
@@ -125,20 +139,20 @@ alert("");
         function get_received_qty(id,hub_id)
     {
         
-        $.ajax( { url: '/receipts/getProjectCodeStatus/' + id + '?hub_id=' + hub_id,cache: false, method: 'GET'})
-            .done( function(data) {
+        // $.ajax( { url: '/receipts/getProjectCodeStatus/' + id + '?hub_id=' + hub_id,cache: false, method: 'GET'})
+        //     .done( function(data) {
             
-          var id = document.getElementById("project_select");
-          var text = id.options[id.selectedIndex].text
+        //   var id = document.getElementById("project_select");
+        //   var text = id.options[id.selectedIndex].text
          
-           if ($("#project_select").val()!=""){
-              document.getElementById("project_code").innerHTML=text
-           } 
-            document.getElementById("allocated").innerHTML=data.allocated
-            document.getElementById("received").innerHTML=data.received
-            document.getElementById("remaining").innerHTML= data.allocated - data.received
+        //    if ($("#project_select").val()!=""){
+        //       document.getElementById("project_code").innerHTML=text
+        //    } 
+        //     document.getElementById("allocated").innerHTML=data.allocated
+        //     document.getElementById("received").innerHTML=data.received
+        //     document.getElementById("remaining").innerHTML= data.allocated - data.received
             
-            });
+        //     });
     }
 
 

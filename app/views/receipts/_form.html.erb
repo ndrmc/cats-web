@@ -6,32 +6,21 @@
 <% @warehouses = Warehouse.all %>
 <% @reference_unit =  UnitOfMeasure.find_by(:uom_type => UnitOfMeasure.uom_types[:ref]).name %>
 <div class="row">
-  <div class="wrapper wrapper-content">
-
-    <div class="ibox float-e-margins">
+  <div class="wrapper">
     
-           <div class="ibox-content" id="prject_code_status" style="display: none">
-            Project code status for <b><div id="project_code"> </div></b>
-
-              <table class="table">
-              <thead>
-              <th>Total in <%=@reference_unit%></th>
-              <th>Received in <%=@reference_unit%></th>
-              <th>Remaining in <%=@reference_unit%></th>
-              </thead>  
-              <tbody>
-              <tr>
-              <td> <div id="allocated"> </div> </td>
-              <td> <div id="received"> </div> </td>
-              <td>  <div id="remaining"> </div> </td></tr>
-              </tbody>
-              </table>         
-          
+    <div class="ibox float-e-margins col-sm-12">
+      <div class="ibox-content col-sm-12">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <%= f.label :grn_no, "GRN Number" %>
+            <span class="required">*</span>
+            <%= f.text_field :grn_no, :class => 'form-control big-text-field', :autofocus => true, :required => true %>
           </div>
-        </div>
-
-    <div class="ibox float-e-margins">
-      <div class="ibox-content">
+        </div>  
+      </div>
+    </div>
+    <div class="ibox float-e-margins col-sm-12">
+      <div class="ibox-content col-sm-12">
 
         <% if receipt.errors.any? %>
         <div class="panel panel-danger">
@@ -50,62 +39,57 @@
         </div>
         <% end %>
         
-
-      
-
-
-        <div class="form-group">
-          <%= f.label :grn_no, "GRN Number" %>
-          <span class="required">*</span>
-          <%= f.text_field :grn_no, :class => 'form-control', :autofocus => true, :required => true %>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <%= f.label :hub_id, "Hub" %>
+              <span class="required">*</span>
+              <%= f.collection_select :hub_id,
+              Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:id => 'hub_select' ,:class => 'form-control', :required => true }%>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <%= f.label :warehouse_id, "Warehouse" %>
+              <span class="required">*</span>
+              <%= f.collection_select :warehouse_id,
+                      @warehouses.select{|w| w.hub_id == @receipt.hub_id}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'warehouse_select',:class => 'form-control', :required => true }%>              
+            </div>
+          </div>
         </div>
-
-        <div class="form-group">
-          <%= f.label :hub_id, "Hub" %>
-          <span class="required">*</span>
-          <%= f.collection_select :hub_id,
-          Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:id => 'hub_select' ,:class => 'form-control', :required => true }%>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <%= f.label :donor_id %>
+              <span class="required">*</span>
+              <%= f.collection_select :donor_id,
+                      Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'donor_select', :required => true }%>
+            </div> 
+          </div>          
+          <div class="col-sm-6">
+            <div class="form-group">
+              <%= f.label :waybill_no, "Waybill(s)" %>
+              <span class="required">*</span>
+              <%= f.text_field :waybill_no, :class => 'form-control', :required => true %>
+            </div>
+          </div>
         </div>
-
-        <div class="form-group">
-          <%= f.label :warehouse_id, "Warehouse" %>
-          <span class="required">*</span>
-          <%= f.collection_select :warehouse_id,
-                  @warehouses.select{|w| w.hub_id == @receipt.hub_id}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'warehouse_select',:class => 'form-control', :required => true }%>
-          
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <%= f.label :storekeeper_name, "Received By" %>
+              <span class="required">*</span>
+              <%= f.text_field :storekeeper_name, :class => 'form-control', :required => true %>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <%= f.label :received_date %>
+              <span class="required">*</span>
+              <%= f.text_field :received_date, :class => 'form-control datepicker', :required => true  %>
+            </div>
+          </div>
         </div>
-
-        <div class="form-group">
-          <%= f.label :received_date %>
-          <span class="required">*</span>
-          <%= f.text_field :received_date, :class => 'form-control datepicker', :required => true  %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :storekeeper_name, "Received By" %>
-          <span class="required">*</span>
-          <%= f.text_field :storekeeper_name, :class => 'form-control', :required => true %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :waybill_no, "Waybill(s)" %>
-          <span class="required">*</span>
-          <%= f.text_field :waybill_no, :class => 'form-control', :required => true %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :commodity_source_id %>
-          <span class="required">*</span>
-          <%= f.collection_select :commodity_source_id,
-                  CommoditySource.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true }%>
-        </div> 
-        <div class="form-group">
-          <%= f.label :donor_id %>
-          <span class="required">*</span>
-          <%= f.collection_select :donor_id,
-                  Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'donor_select', :required => true }%>
-        </div> 
-           
       </div>
     </div>
 
@@ -175,6 +159,14 @@
 
               <td>
                 <input name="receipt[receipt_lines[][quantity]]" type="number" step="any" class="form-control" data-parsley-required/>
+                <div style="max-width: 100px">
+                  <div id="hub-received" class="label label-primary"></div>
+                  <div id="allocated-quantity" class="label label-default"></div>
+                  <div id="progress-text" style="font-size: 10px; margin-top:10px"></div>
+                  <div id="proj-receive-progress" class="progress progress-mini">
+                    <div class="progress-bar"></div>
+                  </div>
+                </div>
               </td>
               <td>
                 <a href="#" class="btn btn-primary" id="add-receipt-line">Add</a>
@@ -394,7 +386,11 @@
           var commodity = $.grep(commodities, function (elem) {
               return elem.id == project[0].commodity_id
           });
-          
+
+          var hub = $('#hub_select').val();
+          var warehouse = $('#warehouse_select').val();
+          check_stock(hub, warehouse, projectId);
+
           var commodity = commodity[0]; 
           console.log("Commodity ID: " + commodity["name"]);
           $('#commodity_di').val(commodity["name"]);
@@ -417,7 +413,53 @@
           });
           options.unshift(EMPTY_OPTION);
           $('#uom-select').html(options);
+      }
+
+      function check_stock(hub, warehouse, project)
+      {
+        if( hub!="" && hub!=null && warehouse!="" && warehouse!=null && project!="" && project!=null)
+        {
+          $.ajax({
+              url:'/receipts/check_stock',
+              type:'POST',
+              dataType:'json',
+              data:{
+                receipt: {
+                  hub_id: hub,
+                  warehouse_id: warehouse,
+                  proj_id: project
+                }	            
+              },
+              before: function() {
+              
+              },
+              success:function(data){
+                  console.log(data);	
+                  if(data > 0){
+                    $("#qunaity-limit").removeClass("label label-danger");
+                    $("#qunaity-limit").addClass("label label-primary");
+                  }
+                  else{
+                    $("#qunaity-limit").removeClass("label label-primary");
+                    $("#qunaity-limit").addClass("label label-danger");
+                  }
+                  $("#hub-received").html("Received Amount: " + data["hub_received"] + " MT"); 
+                  $("#allocated-quantity").html("of total amount of " + data["allocated_quantity"] + " MT")
+                  $("#progress-text").html(data["progress"] + "% Completed");
+                  $("#proj-receive-progress .progress-bar").css("width", data["progress"]);
+              },
+              error:function(data){
+                  console.log(data);
+              }
+          });
         }
+        else{
+          $("#qunaity-limit").removeClass("label label-primary");
+          $("#qunaity-limit").addClass("label label-danger");
+          $("#qunaity-limit").html("");
+          $("#qunaity-limit").html("Please select hub, warehouse, and project!");
+        }
+      }
 
 
   </script>

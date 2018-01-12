@@ -4,8 +4,8 @@
 <% @commodity_categories = CommodityCategory.all%>
 <% @uoms = UnitOfMeasure.all%>
 <div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
+  <div class="ibox float-e-margins col-sm-12">
+    <div class="ibox-content col-sm-12">
 
       <% if dispatch.errors.any? %>
       <div class="panel panel-danger">
@@ -24,76 +24,90 @@
       </div>
       <% end %>
       <input id="basic" name="basic" type="text" style="display:none" value="<%=params[:basic]%>" />
-
-      <div class="form-group">
-        <%= f.label :gin_no, "GIN Number" %> <span class="required">*</span>
-        <%= f.text_field :gin_no, :class => 'form-control', :autofocus => true, :required => true %>
+    
+      <div class="row">
+        <div class="col-sm-6 m-0">
+          <div class="form-group">
+            <%= f.label :gin_no, "GIN Number" %> <span class="required">*</span>
+            <%= f.text_field :gin_no, :class => 'form-control big-text-field', :autofocus => true, :required => true %>
+          </div>
+        </div>
+        <div class="col-sm-6 m-0">
+          <div class="form-group">
+            <%= f.label :dispatch_date %> <span class="required">*</span>
+            <%= f.text_field :dispatch_date, :class => 'form-control datepicker', :required => true  %>
+          </div>
+        </div>
       </div>
-
-      <div class="form-group" id="requisition-input-group">
-        <%= f.label :requisition_number, "Requisition Number" %> <span class="required">*</span> &middot;  
-          <span class=""><i class="fa fa-times label-danger" title="Requisition not found."> </i> </span>
-          <span class=""><i class="fa fa-check label-primary"  title="Requisition exists."> </i></span>
-        <% if(params[:requisition_no].present?) %>
-          <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input', :value => params[:requisition_no], :data => {:commodity => '' } %>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <%= f.label :operation_id %> <span class="required">*</span>
+            <% if (params[:operation_id].present?) %>
+                <%= f.select  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name', params[:operation_id] ) , {:required => true , :prompt => "-- Select Operation --" }, :class => 'form-control width-100per'  %> 
+            <% elsif (@dispatch.operation_id.present?) %>
+                <%= f.select  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name', @dispatch.operation_id ) , {:required => true , :prompt => "-- Select Operation --" }, :class => 'form-control width-100per'  %> 
+            <% else %>
+                <%= f.select  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name' ) , {:required => true , :prompt => "-- Select Operation --" }, :class => 'form-control width-100per'  %> 
+            <% end %>       
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group" id="requisition-input-group">
+            <%= f.label :requisition_number, "Requisition Number" %> <span class="required">*</span> &middot;  
+              <span class=""><i class="fa fa-times label-danger" title="Requisition not found."> </i> </span>
+              <span class=""><i class="fa fa-check label-primary"  title="Requisition exists."> </i></span>
+            <% if(params[:requisition_no].present?) %>
+              <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input', :value => params[:requisition_no], :data => {:commodity => '' } %>
+            <% else %>
+              <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input' %>
+            <% end %>
+          </div>
+        </div>        
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <%= f.label :hub %> <span class="required">*</span>
+            <% if (params[:hub_id].present?) %>
+                <%= f.select :hub_id,  options_from_collection_for_select(Hub.order(:name), 'id', 'name', params[:hub_id] ) , {:required => true , :prompt => "-- Select Hub --" }, :class => 'form-control width-100per'  %>
+            <% elsif (@dispatch.hub_id.present?) %>
+                <%= f.select :hub_id,  options_from_collection_for_select(Hub.order(:name), 'id', 'name', @dispatch.hub_id ) , {:required => true , :prompt => "-- Select Hub --" }, :class => 'form-control width-100per'  %> 
+            <% else %>
+                <%= f.select :hub_id,  options_from_collection_for_select(Hub.order(:name), 'id', 'name' ) , {:required => true , :prompt => "-- Select Hub --" }, :class => 'form-control width-100per'  %>
+            <% end %>      
+            
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <%= f.label :warehouse_id  %> <span class="required">*</span>
+            <% if (params[:hub_id].present?)
+                @warehouses = []
+                @warehouses = Warehouse.where(:hub_id => params[:hub_id])
+              elsif (@dispatch.hub_id.present?)
+                @warehouses = []
+                @warehouses = Warehouse.where(:hub_id => @dispatch.hub_id)
+              else 
+                @warehouses = []
+              end %>
+            <%= select_tag 'dispatch[warehouse_id]', options_from_collection_for_select(@warehouses, "id", "name", @dispatch.warehouse_id),
+              :required => true, prompt: "Select Warehouse", :class => 'form-control width-100per', :style => 'min-width: 80px',
+              "data-option-dependent" => true,
+              "data-option-observed" => "dispatch_hub_id",
+              "data-option-url" => "/warehouses/#{:hub}.json",
+              "data-option-key-method" => :id,
+              "data-option-value-method" => :name %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <% if (params[:fdp_id].present?) %>
+          <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: params[:fdp_id], required: true  %>
         <% else %>
-          <%= f.text_field :requisition_number, :class => 'form-control', :required => true, :id => 'req_no_input' %>
+          <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: (@dispatch.fdp ?  @dispatch.fdp.id : nil), required: true  %>
         <% end %>
       </div>
-
-
-      <div class="form-group">
-        <%= f.label :operation_id %> <span class="required">*</span>
-        <% if (params[:operation_id].present?) %>
-            <%= f.select  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name', params[:operation_id] ) , {:required => true , :prompt => "-- Select Operation --" }, :class => 'form-control width-100per'  %> 
-        <% elsif (@dispatch.operation_id.present?) %>
-            <%= f.select  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name', @dispatch.operation_id ) , {:required => true , :prompt => "-- Select Operation --" }, :class => 'form-control width-100per'  %> 
-        <% else %>
-            <%= f.select  :operation_id,  options_from_collection_for_select(Operation.order(:name), 'id', 'name' ) , {:required => true , :prompt => "-- Select Operation --" }, :class => 'form-control width-100per'  %> 
-        <% end %>       
-      </div>
-
-      <div class="form-group">
-        <%= f.label :hub %> <span class="required">*</span>
-        <% if (params[:hub_id].present?) %>
-            <%= f.select :hub_id,  options_from_collection_for_select(Hub.order(:name), 'id', 'name', params[:hub_id] ) , {:required => true , :prompt => "-- Select Hub --" }, :class => 'form-control width-100per'  %>
-        <% elsif (@dispatch.hub_id.present?) %>
-            <%= f.select :hub_id,  options_from_collection_for_select(Hub.order(:name), 'id', 'name', @dispatch.hub_id ) , {:required => true , :prompt => "-- Select Hub --" }, :class => 'form-control width-100per'  %> 
-        <% else %>
-            <%= f.select :hub_id,  options_from_collection_for_select(Hub.order(:name), 'id', 'name' ) , {:required => true , :prompt => "-- Select Hub --" }, :class => 'form-control width-100per'  %>
-        <% end %>      
-        
-      </div>
-
-      <div class="form-group">
-        <%= f.label :warehouse_id  %> <span class="required">*</span>
-        <% if (params[:hub_id].present?) 
-            @warehouses = []
-            @warehouses = Warehouse.where(:hub_id => params[:hub_id])
-          elsif (@dispatch.hub_id.present?)
-            @warehouses = []
-            @warehouses = Warehouse.where(:hub_id => @dispatch.hub_id)
-          else 
-            @warehouses = []
-          end %>
-        <%= select_tag 'dispatch[warehouse_id]', options_from_collection_for_select(@warehouses, "id", "name", @dispatch.warehouse_id),
-          :required => true, prompt: "Select Warehouse", :class => 'form-control width-100per', :style => 'min-width: 80px',
-          "data-option-dependent" => true,
-          "data-option-observed" => "dispatch_hub_id",
-          "data-option-url" => "/warehouses/#{:hub}.json",
-          "data-option-key-method" => :id,
-          "data-option-value-method" => :name %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :dispatch_date %> <span class="required">*</span>
-        <%= f.text_field :dispatch_date, :class => 'form-control datepicker', :required => true  %>
-      </div>
-      <% if (params[:fdp_id].present?) %>
-        <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: params[:fdp_id], required: true  %>
-      <% else %>
-        <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: (@dispatch.fdp ?  @dispatch.fdp.id : nil), required: true  %>
-      <% end %>
     </div>
   </div>
 
@@ -261,6 +275,12 @@
           var EMPTY_OPTION = '<option value="">-- Choose --</option>';
           
           $( function() { 
+
+              $("#fdp_selector_region").addClass('col-sm-3'); 
+              $("#fdp_selector_zone").addClass('col-sm-3'); 
+              $("#fdp_selector_woreda").addClass('col-sm-3'); 
+              $("#fdp_selector_fdp").addClass('col-sm-3'); 
+
               var req_no = $('#req_no_input').val();
               if (req_no == '' || req_no == '')
               {
@@ -373,15 +393,6 @@
                   var unit = $("#uom-select").find('option:selected').val();
                   var quantity = $("#quantity-di").val();
 
-                  if(quantity <= 0)
-                  {
-                    $("#qunaity-limit").removeClass("label label-primary");
-                    $("#qunaity-limit").addClass("label label-danger");
-                    $("#qunaity-limit").html("");
-                    $("#qunaity-limit").html("Quantity must be greater than zero(0)!");
-                    return;
-                  }
-                  
                   var $this = $(this); 
 
                   var $dispatchLineForm = $this.closest('tr'); 
@@ -395,6 +406,15 @@
 
                   if( !valid ) {
                     return; 
+                  }
+
+                  if(quantity <= 0)
+                  {
+                    $("#qunaity-limit").removeClass("label label-primary");
+                    $("#qunaity-limit").addClass("label label-danger");
+                    $("#qunaity-limit").html("");
+                    $("#qunaity-limit").html("Quantity must be greater than zero(0)!");
+                    return;
                   }
 
                   var flag = validate_quantity(this, hub, warehouse, project, quantity, unit);
@@ -495,7 +515,7 @@
 
   function check_stock(hub, warehouse, project)
   {
-    if( hub!="" && warehouse!="" && project!="")
+    if( hub!="" && hub!=null && warehouse!="" && warehouse!=null && project!="" && project!=null)
     {
       $.ajax({
 		        url:'/dispatches/check_stock',
@@ -543,12 +563,32 @@
       return;
     var allProjects = <%= @projects.to_json.html_safe %>
     var projects_by_donor;
-    if(commodity_id !== '')
+
+    var commodities = <%= @commodities.to_json.html_safe %>
+    var commodity = $.grep(commodities, function (elem) {
+        return elem.id == commodity_id;
+    });
+    commodity = commodity[0];
+    var commodity_category_id = commodity["commodity_category_id"];
+    console.log("commodity_category_id:");
+    console.log(commodity_category_id);
+    var sibling_commodities = $.grep(commodities, function (elem) {
+        return elem.commodity_category_id == commodity_category_id;
+    });
+    console.log("sibling_commodities:");
+    console.log(sibling_commodities);
+    var sibling_commodity_ids = $.map( sibling_commodities, function( sc ) {
+      return sc["id"];
+    });
+    console.log("sibling_commodity_ids:");
+    console.log(sibling_commodity_ids);
+    if(commodity_category_id !== '')
     {
-      console.log("commodity_id: " + commodity_id);
       projects_by_donor = $.grep(allProjects, function (elem) {
-        return elem.organization_id == donor_id && elem.commodity_id == commodity_id
+        return elem.organization_id == donor_id && $.inArray(elem.commodity_id, sibling_commodity_ids) !== -1
       });
+      console.log("projects_by_donor:");
+      console.log(projects_by_donor);
       $('#commodity_di').val("");
     }
     else{
@@ -619,8 +659,11 @@
     var hub = $('#dispatch_hub_id').val();
     var warehouse = $(this).val();
     var projectId = $("#dispatch_project_select").find('option:selected').val();
-    
-    check_stock(hub, warehouse, projectId);
+    if( hub!="" && hub!=null && warehouse!="" && warehouse!=null && projectId!="" && projectId!=null)
+    {
+      console.log("Hub = " + hub + " --- Warehouse = " + warehouse + " --- project = " + projectId);
+      check_stock(hub, warehouse, projectId);
+    }
   });
 
   $('#donor_select').change(function(){

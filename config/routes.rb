@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   get 'fdp_operation_summary/index'
 
- scope "(:locale)", locale: /en|am/ do
+ scope "(:locale)", locazzle: /en|am/ do
   get '/transport_requisitions/print', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
@@ -126,6 +126,7 @@ Rails.application.routes.draw do
 
   get '/receipts/receipt_report', to: 'receipts#receipt_report'
   post '/receipts/receipt_report_generate', to: 'receipts#receipt_report_generate'
+  post '/receipts/check_stock', to: 'receipts#check_stock'
   resources :receipts
   
   get '/receipts/return_receipt_detail/:id', to: 'receipts#return_receipt_detail'
