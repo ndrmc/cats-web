@@ -1,0 +1,73 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Stock Movements</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Stock Movements</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Stock Movement', new_stock_movement_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Source hub</th>
+                        <th>Source warehouse</th>
+                      
+                        <th>Destination hub</th>
+                        <th>Destination warehouse</th>
+                      
+                        <th>Project</th>
+                        <th>Commodity</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @stock_movements.each do |stock_movement| %>
+          <tr>
+                        <td><%= Hub.find_by(id: stock_movement&.source_hub_id)&.name
+              %></td>
+                        <td><%= Warehouse.find_by(id: stock_movement&.source_warehouse_id)&.name
+              %></td>
+                        
+                        <td><%= Hub.find_by(id: stock_movement&.destination_hub_id)&.name
+              %></td>
+                        <td><%= Warehouse.find_by(id: stock_movement&.destination_warehouse_id)&.name
+              %></td>
+                        
+                        <td><%= stock_movement&.project&.project_code
+              %></td>
+                        <td><%= stock_movement&.commodity&.name
+              %></td>
+                        <td><%= stock_movement.quantity
+              %></td>
+                        <td><%= stock_movement.description
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_stock_movement_path(stock_movement) %> &middot;
+              <%= link_to 'Delete', stock_movement, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
