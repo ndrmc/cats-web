@@ -69,11 +69,32 @@ def receipt_report
 
 end
 
+def check_stock    
+  @hub_id = receipt_params["hub_id"]
+  @warehouse_id = receipt_params["warehouse_id"]
+  @project_id = receipt_params["proj_id"]
+
+  project = Project.find(@project_id);
+  @allocated_quantity = 0
+  if project.amount.present?
+    @allocated_quantity = UnitOfMeasure.find(project.unit_of_measure_id).to_ref(project.amount)
+  end
+  receipt_journal = Journal.find_by({'code': :goods_received})
+  stock_account = Account.find_by({'code': :stock})
+  @hub_received = PostingItem.where(journal_id: receipt_journal, account_id: stock_account.id, hub_id: @hub_id, project_id: @project_id).sum(:quantity)
+  @total_received = PostingItem.where(journal_id: receipt_journal, account_id: stock_account.id, project_id: @project_id).sum(:quantity)
+  @progress = ((@total_received / @allocated_quantity) * 100).round(2)
+  @data = {allocated_quantity: @allocated_quantity, hub_received: @hub_received, total_received: @total_received, progress: @progress}
+  respond_to do |format|
+      format.html
+      format.json { render :json => @data.to_json }
+  end
+end
 
   def new
     authorize Receipt
    
-    if params[:id] 
+    if params[:id]
       @project_id = params[:id]
       @organization = Project.where(:id => params[:id])
       @organization_id = @organization.pluck(:organization_id)
@@ -225,7 +246,7 @@ end
   private
 
   def receipt_params
-    params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :hub_id, :warehouse_id, :commodity_source_id,:donor_id,
+    params.require(:receipt).permit( :grn_no, :store_id, :received_date, :storekeeper_name, :waybill_no, :hub_id, :warehouse_id, :commodity_source_id,:donor_id, :proj_id,
                                      :weight_bridge_ticket_no, :transporter_id, :weight_before_unloading,:weight_after_unloading, :plate_no, :trailer_plate_no, :drivers_name, :remark,
                                      :receipt_lines => [:id, :commodity_category_id, :commodity_id, :unit_of_measure_id,  :quantity, :project_id]
                                      )

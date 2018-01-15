@@ -34,5 +34,12 @@ class DispatchPolicy < ApplicationPolicy
         @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
     
+    def check_stock?
+        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+
+    def validate_quantity?
+        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
 end
 
