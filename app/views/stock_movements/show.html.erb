@@ -64,7 +64,7 @@
               <dt>Date:</dt>
               <dd> <%= @stock_movement.movement_date  %> </dd>
               <dt>Unit:</dt>
-              <dd><%= UnitOfMeasure.find_by(id: @stock_movement.unit_of_measures_id)&.name %></dd>
+              <dd><%= UnitOfMeasure.find_by(id: @stock_movement.unit_of_measure_id)&.name %></dd>
             </dl>
           </div>
         </div>
