@@ -14,9 +14,6 @@ class StockMovementsController < ApplicationController
   def show
     @receipts = ReceiptLine.includes(:receipt).where('receipts.receipt_type' => :transfer)
     @uom_category_id = Commodity.find(@stock_movement.commodity_id).uom_category_id
-    puts "========================"
-    puts @uom_category_id
-    puts "========================"
   end
 
   # GET /stock_movements/new
