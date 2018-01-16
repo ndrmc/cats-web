@@ -17,57 +17,42 @@
   </div>
 </div>
 
-<div class="wrapper wrapper-content">
+<div class="row wrapper wrapper-content">
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
       <table class="table table-striped">
         <thead>
           <tr>
-                        <th>Source hub</th>
-                        <th>Source warehouse</th>
-                      
-                        <th>Destination hub</th>
-                        <th>Destination warehouse</th>
-                      
-                        <th>Project</th>
-                        <th>Commodity</th>
-                        <th>Quantity</th>
-                        <th>Description</th>
-                        <th>Actions</th>
+            <th>Source</th>          
+            <th>Destination</th>          
+            <th>Project</th>
+            <th>Quantity</th>
+            <th>Unit of Measure</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
           <% @stock_movements.each do |stock_movement| %>
           <tr>
-                        <td class="project-title">
-                          <%= link_to Hub.find_by(id: stock_movement&.source_hub_id)&.name, stock_movement_path(stock_movement) %>
-                           <br/>
-                        <small>Created 14/08/2014</small>
-                     </td>
-
-                        <td><%= Hub.find_by(id: stock_movement&.source_hub_id)&.name
-              %></td>
-                        <td><%= Warehouse.find_by(id: stock_movement&.source_warehouse_id)&.name
-              %></td>
-                        
-                        <td><%= Hub.find_by(id: stock_movement&.destination_hub_id)&.name
-              %></td>
-                        <td><%= Warehouse.find_by(id: stock_movement&.destination_warehouse_id)&.name
-              %></td>
-                        
-                        <td><%= stock_movement&.project&.project_code
-              %></td>
-                        <td><%= stock_movement&.commodity&.name
-              %></td>
-                        <td><%= stock_movement.quantity
-              %></td>
-                        <td><%= stock_movement.description
-              %></td>
-                        <td>
-              <%= link_to 'Edit', edit_stock_movement_path(stock_movement) %> &middot;
-              <%= link_to 'Delete', stock_movement, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <td><%= link_to stock_movement&.source_hub&.name + " > " + stock_movement&.source_warehouse&.name, stock_movement_path(stock_movement.id) %></td>
+            <td><%= stock_movement&.destination_hub&.name + " > " + stock_movement&.destination_warehouse&.name %></td>
+            <td><%= stock_movement&.project&.project_code + " [" + stock_movement&.commodity&.name + "]" %></td>
+            <td><%= stock_movement.quantity %></td>
+            <td><%= stock_movement&.unit_of_measure&.name %></td>
+            <% if (stock_movement.status == "closed") %>
+              <td><span class="label label-default"><%= stock_movement.status %></span></td>
+            <% else %>
+              <td><span class="label label-primary"><%= stock_movement.status %></span></td>
+            <% end %>
+            <td>
+              <%= link_to 'Edit', edit_stock_movement_path(stock_movement), :class => "btn btn-warning" %> &middot;
+              <% if (stock_movement.status == "open") %>
+                <%= link_to 'Close', "/stock_movements/close/" + stock_movement.id.to_s, class: "btn btn-default", method: :post, data: { confirm: 'Are you sure you want to close this Stock Transfer?' } %> &middot;
+              <% end %>
+              <%= link_to 'Delete', stock_movement, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure you want to delete this Stock Transfer?' } %>
             </td>
           </tr>
           <% end %>
