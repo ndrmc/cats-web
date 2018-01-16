@@ -41,6 +41,12 @@
         <tbody>
           <% @stock_movements.each do |stock_movement| %>
           <tr>
+                        <td class="project-title">
+                          <%= link_to Hub.find_by(id: stock_movement&.source_hub_id)&.name, stock_movement_path(stock_movement) %>
+                           <br/>
+                        <small>Created 14/08/2014</small>
+                     </td>
+
                         <td><%= Hub.find_by(id: stock_movement&.source_hub_id)&.name
               %></td>
                         <td><%= Warehouse.find_by(id: stock_movement&.source_warehouse_id)&.name
