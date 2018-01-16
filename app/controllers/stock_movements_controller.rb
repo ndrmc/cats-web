@@ -1,9 +1,7 @@
 class StockMovementsController < ApplicationController
-<<<<<<< HEAD
+
   before_action :set_stock_movement, only: [:show, :edit, :update, :destroy, :createReceive]
-=======
-  before_action :set_stock_movement, only: [:show, :edit, :update, :destroy, :close]
->>>>>>> 1887923f123584c9e30809bc26f908652c0523eb
+
 
   # GET /stock_movements
   # GET /stock_movements.json
