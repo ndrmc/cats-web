@@ -51,4 +51,5 @@ class Receipt < ApplicationRecord
     after_update :reverse
 
     validates :grn_no, uniqueness: true
+    enum receipt_type: [:Donation, :loan, :transfer, :localPurhcase, :InternationalPurchase]
 end

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'fdp_operation_summary/index'
 
  scope "(:locale)", locale: /en|am/ do
+  post '/stock_movements/createReceive/:id', to: 'stock_movements#createReceive'
   get '/stock_movements/getCommodity/:id', to: 'stock_movements#getCommodity'
   resources :stock_movements
 
