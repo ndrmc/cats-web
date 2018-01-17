@@ -10,6 +10,10 @@ class StockMovementsController < ApplicationController
   # GET /stock_movements/1
   # GET /stock_movements/1.json
   def show
+    @commodity_category = Commodity.includes(:commodity_category).find(@stock_movement.commodity_id)
+    @unit_of_measures = UnitOfMeasure.where(uom_category_id: @commodity_category.uom_category_id)
+    @transporters = Transporter.order(:name)
+    @dispatch_items = DispatchItem.includes(:unit_of_measure, dispatch: :transporter).where(:'dispatches.dispatch_type' => 0)
   end
 
   # GET /stock_movements/new
@@ -96,6 +100,46 @@ class StockMovementsController < ApplicationController
     end
   end
 
+  def stock_movement_dispatch
+    @existing_ws = Dispatch.where(:gin_no => stock_movement_params["gin"]).count
+    if @existing_ws == 0 
+      @stock_movement = StockMovement.includes(:unit_of_measure,:source_hub,:destination_hub,:source_warehouse,:destination_warehouse,:project,commodity: :commodity_category).find(stock_movement_params["stock_movement_id"])
+
+      @dispatch = Dispatch.new
+      @dispatch.gin_no = stock_movement_params["gin"]
+      @dispatch.dispatch_date = stock_movement_params["dispatch_date"]
+      @dispatch.transporter_id = stock_movement_params["transporter"]
+      @dispatch.drivers_name = stock_movement_params["driver_name"]
+      @dispatch.plate_number = stock_movement_params["plate_no"]
+      @dispatch.trailer_plate_number = stock_movement_params["plate_no_trailer"]
+      @dispatch.hub_id = @stock_movement.source_hub_id
+      @dispatch.warehouse_id = @stock_movement.source_warehouse_id
+      @dispatch.storekeeper_name = stock_movement_params["store_keeper"]
+      @dispatch.dispatch_type_id = stock_movement_params["stock_movement_id"]
+      @dispatch.dispatch_type = 0
+      @dispatch.save
+
+      @dispatch_item =  DispatchItem.new
+      @dispatch_item.dispatch_id = @dispatch.id
+      @dispatch_item.commodity_category_id = @stock_movement.commodity.commodity_category_id
+      @dispatch_item.commodity_id = @stock_movement.commodity_id
+      @dispatch_item.quantity = stock_movement_params["amount"]
+      @dispatch_item.unit_of_measure_id = stock_movement_params["unit_of_measure"]
+      @dispatch_item.project_id = @stock_movement.project_id
+      @dispatch_item.organization_id = @stock_movement.project.organization_id
+    end
+    
+    respond_to do |format|                        
+      if @dispatch_item.save && @existing_ws == 0 
+        format.html { redirect_to @dispatch, notice: 'Dispatch was successfully created.' }
+        format.json { render :show, status: :created, location: @dispatch }
+      else
+        format.html { render :new }
+        format.json { render json: @dispatch.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # DELETE /stock_movements/1
   # DELETE /stock_movements/1.json
   def destroy
@@ -122,11 +166,11 @@ end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_stock_movement
-      @stock_movement = StockMovement.includes(project: :organization).find(params[:id])
+      @stock_movement = StockMovement.includes(:unit_of_measure,:source_hub,:destination_hub,:source_warehouse,:destination_warehouse,:project,:commodity).find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stock_movement_params
-      params.require(:stock_movement).permit(:movement_date, :source_hub_id, :source_warehouse_id, :source_store_id, :destination_hub_id, :destination_warehouse_id, :destination_store_id, :project_id, :commodity_id, :unit_of_measure_id, :quantity, :description, :hub_id, :warehouse_id, :proj_id)
+      params.require(:stock_movement).permit(:movement_date, :source_hub_id, :source_warehouse_id, :source_store_id, :destination_hub_id, :destination_warehouse_id, :destination_store_id, :project_id, :commodity_id, :unit_of_measure_id, :quantity, :description, :hub_id, :warehouse_id, :proj_id, :stock_movement_id, :gin, :dispatch_date, :amount, :unit_of_measure, :transporter, :driver_name, :plate_no, :plate_no_trailer, :store_keeper)
     end
 end

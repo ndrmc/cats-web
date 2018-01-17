@@ -32,7 +32,7 @@ class Dispatch < ApplicationRecord
     include Postable
 
     acts_as_paranoid 
-
+    
     belongs_to :operation
     belongs_to :fdp 
     belongs_to :hub 
@@ -40,6 +40,8 @@ class Dispatch < ApplicationRecord
     belongs_to :transporter
     
     has_many :dispatch_items
+
+    enum status: [ :transfer ]
 
     after_save :pre_post
 
