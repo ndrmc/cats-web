@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180115085510) do
-
+ActiveRecord::Schema.define(version: 20180116121800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -391,6 +390,8 @@ ActiveRecord::Schema.define(version: 20180115085510) do
     t.string   "storekeeper_name",            limit: 200,                 null: false
     t.string   "dispatch_id_guid"
     t.string   "dispatched_date_ec"
+    t.integer  "dispatch_type_id"
+    t.integer  "dispatch_type"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree

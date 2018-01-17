@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get '/stock_movements/getCommodity/:id', to: 'stock_movements#getCommodity'
   post '/stock_movements/close/:id', to: 'stock_movements#close'
   post '/stock_movements/check_stock', to: 'stock_movements#check_stock' 
+  post '/stock_movements/stock_movement_dispatch', to: 'stock_movements#stock_movement_dispatch' 
   resources :stock_movements
 
   get '/transport_requisitions/print', to: 'transport_requisitions#print'
