@@ -1,5 +1,7 @@
 class StockMovementsController < ApplicationController
-  before_action :set_stock_movement, only: [:show, :edit, :update, :destroy, :close]
+
+  before_action :set_stock_movement, only: [:show, :edit, :update, :destroy, :createReceive]
+
 
   # GET /stock_movements
   # GET /stock_movements.json
@@ -14,6 +16,9 @@ class StockMovementsController < ApplicationController
     @unit_of_measures = UnitOfMeasure.where(uom_category_id: @commodity_category.uom_category_id)
     @transporters = Transporter.order(:name)
     @dispatch_items = DispatchItem.includes(:unit_of_measure, dispatch: :transporter).where(:'dispatches.dispatch_type' => 0)
+
+    @receipts = ReceiptLine.includes(:receipt).where('receipts.receipt_type' => :transfer)
+    @uom_category_id = Commodity.find(@stock_movement.commodity_id).uom_category_id
   end
 
   # GET /stock_movements/new
@@ -161,6 +166,78 @@ class StockMovementsController < ApplicationController
       }
     }
   end
+end
+
+def createReceive
+@receipt_lines = ReceiptLine.includes(:receipt).where(project_id: @stock_movement&.project_id, 
+                                      :'receipts.hub_id' =>  @stock_movement&.source_hub_id, 
+                                      :'receipts.warehouse_id' =>  @stock_movement&.source_warehouse)
+if (!@receipt_lines.empty?)
+              @receipt_line = @receipt_lines.first
+              @commodity_category_id = Commodity.find(@stock_movement.commodity_id).commodity_category_id
+
+              receipt = Receipt.new(:grn_no => params[:grn])
+              receipt.received_date = params[:receive_date]
+              receipt.hub_id = @stock_movement&.destination_hub_id
+              receipt.warehouse_id = @stock_movement&.destination_warehouse_id
+              receipt.delivered_by = @receipt_line&.receipt&.delivered_by
+              receipt.supplier_id = @receipt_line&.receipt&.supplier_id
+              receipt.transporter_id = params[:transporter]
+              receipt.plate_no = params[:plate_no]
+              receipt.trailer_plate_no = params[:plate_no_trailer]
+              if (@receipt_line&.receipt&.donor_id.nil?) 
+                  receipt.donor_id = 1 #default donor_id
+              else
+                  receipt.donor_id = @receipt_line&.receipt&.donor_id
+              end
+              receipt.weight_bridge_ticket_no = @receipt_line&.receipt&.weight_bridge_ticket_no
+              receipt.weight_before_unloading = @receipt_line&.receipt&.weight_before_unloading
+              receipt.weight_after_unloading = @receipt_line&.receipt&.weight_after_unloading
+              receipt.storekeeper_name = params[:store_keeper]
+              receipt.waybill_no = @receipt_line&.receipt&.waybill_no
+              receipt.purchase_request_no =  @receipt_line&.receipt&.purchase_request_no
+              receipt.purchase_order_no = @receipt_line&.receipt&.purchase_order_no
+              receipt.invoice_no = @receipt_line&.receipt&.invoice_no
+              receipt.commodity_source_id = @receipt_line&.receipt&.commodity_source_id
+              receipt.program_id = @receipt_line&.receipt&.program_id
+              receipt.store_id = params[:store]
+              receipt.drivers_name= @receipt_line&.receipt&.drivers_name
+              receipt.created_at = Time.now
+              receipt.updated_at = Time.now
+              receipt.receiveid = 'N/A'
+              receipt.receipt_type = :transfer
+              receipt.receipt_type_id = @stock_movement&.id                   
+
+
+              receipt.receipt_lines.build(:commodity_category_id => @commodity_category_id,
+                                          :commodity_id => @stock_movement.commodity_id,
+                                          :project_id =>  @stock_movement.project_id,
+                                          :quantity => params[:quantity],
+                                          :unit_of_measure_id => params[:unit],
+                                          :created_by => current_user.id,
+                                          :receive_id => 'N/A',
+                                          :receive_item_id => 'N/A')
+                respond_to do |format|
+                    if (receipt.save!)
+                      format.html { redirect_to stock_movement_path(@stock_movement.id), notice: 'Stock movement was successfully updated.' }
+                      format.json { render :show, status: :ok, location: @stock_movement }
+                    else
+                        format.html { redirect_to stock_movement_path(@stock_movement.id)}
+                        flash[:error] = "Received not saved. Check the data and try again"
+                        format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
+                    end
+                  end
+    else
+                respond_to do |format|
+                    
+                        format.html { redirect_to stock_movement_path(@stock_movement.id)}
+                        flash[:error] = "Received not saved. Check the stock and try again"
+                        format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
+                   
+                  end
+    end
+    
+
 end
 
   private
