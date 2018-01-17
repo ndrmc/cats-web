@@ -44,7 +44,6 @@
         <div class="row">
           <div class="col-sm-6">
             <dl class="dl-horizontal">
-<<<<<<< HEAD
               <dt>Source warehouse:</dt>
               <dd><%= @stock_movement&.source_warehouse&.name %></dd>
             </dl>
@@ -59,28 +58,12 @@
         <div class="row">
           <div class="col-sm-6">
             <dl class="dl-horizontal">
-=======
-
-              <dt>Source Hub:</dt>
-              <dd><%= Hub.find_by(id: @stock_movement&.source_hub_id)&.name %></dd>
-              <dt>Source warehouse:</dt>
-              <dd><%= Warehouse.find_by(id: @stock_movement&.source_warehouse_id)&.name %></dd>
->>>>>>> develop
               <dt>Project:</dt>
               <dd><%= @stock_movement&.project&.project_code %></dd>
             </dl>
           </div>
           <div class="col-sm-6">
             <dl class="dl-horizontal">
-<<<<<<< HEAD
-=======
-
-              <dt>Destination Hub:</dt>
-              <dd><%= Hub.find_by(id: @stock_movement&.destination_hub_id)&.name %></dd>
-              <dt>Destination warehouse:</dt>
-              <dd><%= Warehouse.find_by(id: @stock_movement&.destination_warehouse_id)&.name %></dd>
-
->>>>>>> develop
               <dt>Date:</dt>
               <dd><%= @stock_movement.movement_date %></dd>
             </dl>
