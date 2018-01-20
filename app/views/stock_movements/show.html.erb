@@ -208,7 +208,7 @@
                   </div>
                   <div class="tab-pane" id="tab-2">
                     <div class="title-action">
-                               <a href="#" class='btn btn-primary btn-sm new-receipt-modal' data-toggle="modal" data-id="1" data-target="#new-receipt-modal">New Receipt</a>
+                               <a href="#" class='btn btn-primary btn-sm' data-toggle="modal" data-id="1" data-target="#new-receipt-modal">New Receipt</a>
                             </div>
                     <div>
                       <%if(false)%>
@@ -219,7 +219,6 @@
                         <table class="table table-hover">
                           <thead>
                             <tr>
-                              <th>Req No (Invoice No)</th>
                               <th>GRN</th>
                               <th>Amount</th>                           
                               <th>Unit</th>
@@ -239,8 +238,8 @@
                                 <td> <%= receipt_line&.receipt&.storekeeper_name %> </td> 
                                 <td> <%= receipt_line&.receipt&.drivers_name %> </td>                              
                                 
-                                <td>  <%= link_to 'Edit', '#', :class => "btn btn-sm btn-warning" %> &middot;
-                                      <%= link_to 'Delete', '#', class: "btn btn-sm btn-danger", method: :delete, data: { confirm: 'Are you sure you want to delete this Stock Transfer?' } %>
+                                <td><a href="#"  data-toggle="modal" data-id="<%= receipt_line&.receipt&.id %>" class="new-receipt-modal btn btn-sm btn-warning" data-target="#new-receipt-modal">Update</a></td>
+                                 <td> <%= link_to 'Delete', '/stock_movements/stock_movement_destroy_receive/' + receipt_line&.receipt&.id.to_s, class: "btn btn-sm btn-danger", method: :delete, data: { confirm: 'Are you sure you want to delete this Stock Transfer?' } %>
                               </td>  
                               </tr>
                             <% end %>
@@ -367,79 +366,113 @@
 </div>
 
 
-<div class="modal fade" id="new-receipt-modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">New Receipt</h4>
-      </div>
-      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
-    
-
-     <form role="form" method="POST" enctype="multipart/form-data" action="/en/stock_movements/createReceive/<%= @stock_movement.id %>" class="form-inline" style="display: inline;margin-top: 15px"">
+  <div class="modal inmodal" id="new-receipt-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">New Receipt</h4>
+        </div>
+        <div class="modal-body col-md-12 col-sm-12 col-xs-12">
       
-      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-       <input  type="hidden" name="sm_id" id="sm_id" value=<%= @stock_movement.id %> /> 
-          <div class="ibox float-e-margins">          
-                      <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="grn">GRN<span class="required">*</span> </label>
-                                <input  type="text" name="grn" id="grn" value="" />
 
-                                 <label for="receive_date">Plate No</label><span class="required">*</span>
-                                 <input  type="text" name="plate_no" id="plate_no" value="" value=""/>
+      <form role="form" method="POST" enctype="multipart/form-data" action="/en/stock_movements/createReceive/<%= @stock_movement.id %>" class="form-inline" style="display: inline;margin-top: 15px"">
+        
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <input  type="hidden" name="edit_mode" id="edit_mode" value="false" /> 
+        <input  type="hidden" name="receipt_id" id="receipt_id" value=<%= @stock_movement.id %> /> 
+            <div class="ibox float-e-margins">          
+                        <div class="row">
+                          <div class="col-sm-4">
+                              <div class="form-group">
+                                  <label for="grn">GRN<span class="required">*</span> </label>
+                                  <input  type="text" name="grn_no" id="grn_no" value="" required/>
 
-                                 <label for="grn">Plate No Trailer<span class="required">*</span></label>
-                                <input  type="text" name="plate_no_trailer" id="plate_no_trailer" value="" />
+                                  <label for="plate_no">Plate No</label><span class="required">*</span>
+                                  <input  type="text" name="plate_no" id="plate_no" value="" value="" required/>
 
-                                 <label for="receive_date">Receive Date </label><span class="required">*</span>
-                                   <input  type="text" name="receive_date" id="receive_date" value="" class="datepicker"/>
+                                  <label for="plate_no_trailer">Plate No Trailer<span class="required">*</span></label>
+                                  <input  type="text" name="trailer_plate_no" id="trailer_plate_no" value="" required />
 
-                                <label for="amount">Amount
-                                <span class="required">*</span></label>
-                                <%= number_field_tag :quantity, '', min: 0, max: 9999999999999999, :step => 'any', class: "number", placeholder: '0.00' %>
+                                  <label for="receive_date">Receive Date </label><span class="required">*</span>
+                                  <input  type="text" name="received_date" id="received_date" value="" class="datepicker" stype="width: 170px"/>
+
+                                  <label for="amount">Amount
+                                  <span class="required">*</span></label>
+                                  <%= number_field_tag :quantity, '', min: 0, max: 9999999999999999, :step => 'any', class: "number", placeholder: '0.00' %>
+
+                            </div>
+                          </div>
+
+                          <div class="col-sm-4">
+                              <div class="form-group">
+                                  <label for="transporter">Transporter</label>
+                                  <span class="required">*</span>
+                                  <%= select("transporter", "transporter_id", Transporter.all.collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px",:class => 'form-control', :required => true, :name => 'transporter_id' }) %>
+                          
+                          
+
+                                <label for="store">Store </label>
+                                <%= select("store", "store_id", Store.where(warehouse_id: @stock_movement.destination_warehouse_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px", :class => 'form-control input-small', :name => 'store' }) %>
+                  
+
+                                  <label for="store_keeper">Store Keeper</label>  
+                                  <input  type="text" name="store_keeper" id="store_keeper" value="" />
+                  
+                                  <label for="unit">Unit
+                                  <span class="required">*</span></label>               
+                                  <%= select("unit", "unit_id", UnitOfMeasure.where(uom_category_id: @uom_category_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px", :class => 'form-control input-small', :required => true, :name => 'unit' }) %>
+                  
 
                           </div>
-                        </div>
+                          </div>
+                </div>
+        </div>
 
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="transporter">Transporter</label>
-                                <span class="required">*</span>
-                                <%= select("transporter", "transporter_id", Transporter.all.collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px",:class => 'form-control', :required => true, :name => 'transporter' }) %>
-                         
-                         
+            
 
-                               <label for="store">Store </label>
-                               <%= select("store", "store_id", Store.where(warehouse_id: @stock_movement.destination_warehouse_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px", :class => 'form-control input-small', :name => 'store' }) %>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </form>
+      
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <script>
+$(document).ready(function(){
+    $(document).on('hidden.bs.modal', '#new-receipt-modal', function (e) {
+        $(".modal-body input").val("")
+        $(".modal-body select").val("")
+    });
+});
+ 
+
+$(document).on("click", ".new-receipt-modal",function(){
+  var receieved_id = $(this).data('id');
+
+   $.ajax( { url: '/stock_movements/stock_movement_edit/' + receieved_id,cache: false, method: 'GET'})
+             .done( function(data) {
+            
+                $(".form-group #grn_no").val(data.grn_no);
+                $(".form-group #plate_no").val(data.plate_no);
+                $(".form-group #trailer_plate_no").val(data.trailer_plate_no);
+                $(".form-group #received_date").val(data.receipt_date);
+                $(".form-group #quantity").val(data.quantity);
+                $('select[name=store]').val(data.store);
+                $(".form-group #store_keeper").val(data.store_keeper);
+                document.getElementById('edit_mode').value = "true"
+                document.getElementById('receipt_id').value = data.receipt_id
+                $('select[name=transporter_id]').val(data.transporter_id)
+                $('select[name=unit]').val(data.unit)
                 
+             });
 
-                                 <label for="store_keeper">Store Keeper</label>  
-                                <input  type="text" name="store_keeper" id="store_keeper" value="" />
-                
-                                <label for="unit">Unit
-                                <span class="required">*</span></label>               
-                                <%= select("unit", "unit_id", UnitOfMeasure.where(uom_category_id: @uom_category_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px", :class => 'form-control input-small', :required => true, :name => 'unit' }) %>
-                
-
-                         </div>
-                        </div>
-               </div>
-       </div>
-
-          
-
-      </div>
-
-       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-      </form>
-    
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
+ 
+});
+</script>

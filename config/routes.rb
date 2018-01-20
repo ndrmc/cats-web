@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   post '/stock_movements/close/:id', to: 'stock_movements#close'
   post '/stock_movements/check_stock', to: 'stock_movements#check_stock' 
   post '/stock_movements/stock_movement_dispatch', to: 'stock_movements#stock_movement_dispatch' 
+  delete 'stock_movements/stock_movement_destroy_receive/:id', to: 'stock_movements#stock_movement_destroy_receive'
   resources :stock_movements
 
   get '/transport_requisitions/print', to: 'transport_requisitions#print'
@@ -134,6 +135,7 @@ Rails.application.routes.draw do
   get '/receipts/receipt_report', to: 'receipts#receipt_report'
   post '/receipts/receipt_report_generate', to: 'receipts#receipt_report_generate'
   post '/receipts/check_stock', to: 'receipts#check_stock'
+  get '/stock_movements/stock_movement_edit/:id', to: 'stock_movements#stock_movement_edit'
   resources :receipts
   
   get '/receipts/return_receipt_detail/:id', to: 'receipts#return_receipt_detail'

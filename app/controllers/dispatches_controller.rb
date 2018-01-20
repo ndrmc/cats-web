@@ -176,7 +176,9 @@ class DispatchesController < ApplicationController
         dispatch_line_ids = @dispatch.dispatch_items.collect { |rl| rl.id }
 
         recept_lines_hash = dispatch_params[:dispatch_items][0...-1]
-
+        puts "==============================================================================================="
+        puts recept_lines_hash.pretty_inspect
+         puts "==============================================================================================="
         deleted_dispatch_line_ids = dispatch_line_ids -  recept_lines_hash.collect { |r| r[:id].to_i }
 
         DispatchItem.where( :id => deleted_dispatch_line_ids).destroy_all 
