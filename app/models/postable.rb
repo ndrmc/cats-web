@@ -4,8 +4,17 @@ module Postable
     return if self.draft
 
     if (self.is_a?(Receipt))
-      logger.info "Processing posting information for Receipt"
-      post_receipt
+      
+      if (self.receipt_type == 'transfer')
+        logger.info "Processing posting information for Stock Movement Receipt"
+        puts "========================================================================================================="
+        puts "new receipt"
+        puts "========================================================================================================="
+        post_stock_movement_receipt
+      else
+         logger.info "Processing posting information for Receipt"
+         post_receipt
+      end
     elsif(self.is_a?(Dispatch))
       logger.info "Processing posting information for Dispatch"
       post_dispatch
@@ -22,7 +31,50 @@ module Postable
 
   end
 
+  def post_stock_movement_receipt
+    stock_account = Account.find_by({'code': :stock})
+    dispatched_account = Account.find_by({'code': :dispatched})
+    stock_movement_journal = Journal.find_by({'code': :internal_movement})
+    posting_items = []
+    self.receipt_lines.each do |receipt_line|
+      amount_in_ref = UnitOfMeasure.find(receipt_line.unit_of_measure_id).to_ref(receipt_line.quantity)
+      debit = PostingItem.new({
+                                account_id: dispatched_account.id,
+                                journal_id: stock_movement_journal.id,
+                                donor_id: self.supplier_id,
+                                hub_id: self.hub_id,
+                                warehouse_id: self.warehouse_id,
+                                store_id: self.store_id,
+                                project_id: receipt_line.project_id,
+                                batch_id: 1,
+                                program_id: self.program_id,
+                                commodity_id: receipt_line.commodity_id,
+                                commodity_category_id: receipt_line.commodity_category_id,
+                                quantity: -amount_in_ref
 
+      })
+
+      posting_items << debit
+      credit = PostingItem.new({
+                                 account_id: stock_account.id,
+                                 journal_id: stock_movement_journal.id,
+                                 donor_id: self.supplier_id,
+                                 hub_id: self.hub_id,
+                                 warehouse_id: self.warehouse_id,
+                                 store_id: self.store_id,
+                                 project_id: receipt_line.project_id,
+                                 batch_id: 1,
+                                 program_id: self.program_id,
+                                 commodity_id: receipt_line.commodity_id,
+                                 commodity_category_id: receipt_line.commodity_category_id,
+                                 quantity: amount_in_ref
+      })
+      posting_items << credit
+    end
+
+    post( Posting.document_types[:receipt], self.id, Posting.posting_types[:normal], posting_items)
+  end
+  
   def post_receipt
     stock_account = Account.find_by({'code': :stock})
     receivable_account = Account.find_by({'code': :receivable})
@@ -348,7 +400,9 @@ module Postable
                                      posting_items: reversal_items
     })
 
-
+        puts "========================================================================================================="
+        puts "reverse receipt"
+        puts "========================================================================================================="
     reversal_posting.save!
 
 

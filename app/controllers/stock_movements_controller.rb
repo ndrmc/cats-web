@@ -190,7 +190,7 @@ if (params[:edit_mode]=='true')#update
 
 
      respond_to do |format|
-                      if receipt.update_attributes(receipt_lines_attributes: [receipt_line.attributes])
+                      if receipt.update_attributes!(receipt_lines_attributes: [receipt_line.attributes])
                                 format.html { redirect_to stock_movement_path(@stock_movement.id), notice: 'Stock movement was successfully updated.' }
                                 format.json { render :show, status: :ok, location: @stock_movement }
                       else
@@ -250,7 +250,7 @@ else#add new receipt
                                           :receive_id => 'N/A',
                                           :receive_item_id => 'N/A')
                 respond_to do |format|
-                    if (receipt.save)
+                    if (receipt.save!)
                       format.html { redirect_to stock_movement_path(@stock_movement.id), notice: 'Stock movement was successfully updated.' }
                       format.json { render :show, status: :ok, location: @stock_movement }
                     else
