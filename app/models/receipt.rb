@@ -42,6 +42,7 @@ class Receipt < ApplicationRecord
     acts_as_paranoid
 
     has_many :receipt_lines 
+    accepts_nested_attributes_for :receipt_lines
     belongs_to :project 
     belongs_to :hub
     belongs_to :organization, class_name: 'Organization', foreign_key: 'donor_id'
@@ -49,7 +50,7 @@ class Receipt < ApplicationRecord
     validates :donor_id, presence: {message: " is required!"}
     after_save :pre_post
     after_update :reverse
-
+    after_destroy :reverse
     validates :grn_no, uniqueness: true
-    enum receipt_type: [:donation, :loan, :transfer, :localPurhcase, :internationalPurchase]
+    enum receipt_type: [:regular, :transfer, :swap]
 end
