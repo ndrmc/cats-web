@@ -41,12 +41,15 @@
     journal9:
             name: 'Transfer'
             code: 9
-   journal1_1: 
+    journal11: 
             name: 'Annual Inventory'
             code: 10
-   journal_2:
+    journal2:
             name: 'Delivery'
             code: 11
-   journal_3:
+    journal3:
             name: 'Distribution'
             code: 12
+    journal14:
+           name: 'Internal Movement'
+           code: 13

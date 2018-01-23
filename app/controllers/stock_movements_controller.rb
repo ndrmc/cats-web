@@ -336,10 +336,7 @@ def validate_quantity
         @stock = get_dispatched_amount_for_project_code( @project_id, @hub_id)
         quantity_in_ref = UnitOfMeasure.find(@unit.to_i).to_ref(@quantity.to_f)
         @flag = false
-        puts "========================================"
-        puts quantity_in_ref
-        puts @stock
-        puts "========================================"
+     
         if(quantity_in_ref < @stock)
             @flag = true
         end
