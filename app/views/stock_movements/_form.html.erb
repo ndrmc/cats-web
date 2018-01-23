@@ -306,7 +306,9 @@ function populate_store(warehouse_id, type)
         return '<option value="' + val.id + '">' + val.name + '</option>';
       });
       options.unshift(EMPTY_OPTION);
-      $('#unit_of_measure_id').html(options);
+      $('#unit_of_measure_select').html(options);
+      console.log("Unit of measure select list:");
+      console.log(options);
     }
 
     function check_stock(hub, warehouse, project)

@@ -147,7 +147,7 @@
                       </select>
                     </td>
                     <td>
-                      <%= dispatch_line&.commodity&.name %>
+                      <input name="dispatch[dispatch_items[][commodity_name]]" type="text" class="form-control" value="<%= dispatch_line&.commodity&.name %>" readonly/>
                     </td>               
                     <td>
                       <select name="dispatch[dispatch_items[][unit_of_measure_id]]" class="form-control" readonly>
