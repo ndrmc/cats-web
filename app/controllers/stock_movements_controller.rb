@@ -19,6 +19,8 @@ class StockMovementsController < ApplicationController
 
     @receipts = ReceiptLine.includes(:receipt).where('receipts.receipt_type' => :transfer)
     @uom_category_id = Commodity.find(@stock_movement.commodity_id).uom_category_id
+    @dispached_stock = get_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id)
+    @received_stock = get_received_amount_for_project_code(@stock_movement.project_id, @stock_movement.destination_hub_id)
   end
 
   # GET /stock_movements/new
@@ -311,6 +313,41 @@ def stock_movement_destroy_receive
         end
 end
 
+def get_dispatched_amount_for_project_code(project_id, source_hub_id)
+    dispatched_account = Account.find_by({'code': :dispatched})
+    stock_movement_journal = Journal.find_by({'code': :internal_movement})
+    @dispatched_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: dispatched_account.id, hub_id: source_hub_id, project_id: project_id).sum(:quantity)
+end
+
+def get_received_amount_for_project_code(project_id, destination_hub_id)
+    stock_account = Account.find_by({'code': :stock})
+    stock_movement_journal = Journal.find_by({'code': :internal_movement})
+    @dispatched_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: stock_account.id, hub_id: destination_hub_id, project_id: project_id).sum(:quantity)
+end
+
+def validate_quantity    
+         
+
+        @hub_id = stock_movement_params["source_hub_id"]
+        @project_id = stock_movement_params["proj_id"]
+        @quantity = stock_movement_params["quantity"]
+        @unit = stock_movement_params["unit_of_measure_id"]
+        
+        @stock = get_dispatched_amount_for_project_code( @project_id, @hub_id)
+        quantity_in_ref = UnitOfMeasure.find(@unit.to_i).to_ref(@quantity.to_f)
+        @flag = false
+        puts "========================================"
+        puts quantity_in_ref
+        puts @stock
+        puts "========================================"
+        if(quantity_in_ref < @stock)
+            @flag = true
+        end
+        respond_to do |format|
+            format.html
+            format.json { render :json => @flag.to_json }
+        end
+    end
 
   private
     # Use callbacks to share common setup or constraints between actions.

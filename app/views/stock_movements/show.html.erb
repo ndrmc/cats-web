@@ -131,6 +131,29 @@
             </div>            
           </div>
         </div>
+
+         <div class="row">
+          <div class="col-sm-12">
+            <div class="col-sm-6">
+              <dl class="dl-horizontal">
+                <dt>Incoming Dispatch:</dt>
+                <dd>
+                 <%= @dispached_stock  %>
+                </dd>
+              </dl>
+            </div>
+            <div class="col-sm-6">
+              <dl class="dl-horizontal">
+                <dt>Received so far:</dt>
+                <dd>
+                  <%= @received_stock %>
+                </dd>
+              </dl>
+            </div>            
+          </div>
+        </div>
+
+
       </div>
     </div>
   </div>
@@ -400,6 +423,7 @@
                                   <label for="amount">Amount
                                   <span class="required">*</span></label>
                                   <%= number_field_tag :quantity, '', min: 0, max: 9999999999999999, :step => 'any', class: "number", placeholder: '0.00' %>
+                                  
 
                             </div>
                           </div>
@@ -424,9 +448,18 @@
                                   <%= select("unit", "unit_id", UnitOfMeasure.where(uom_category_id: @uom_category_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px", :class => 'form-control input-small', :required => true, :name => 'unit' }) %>
                   
 
+                            </div>
                           </div>
-                          </div>
+                        
                 </div>
+
+                <div class="row">
+                        <div class="col-sm-4">
+                              <div class="form-group">
+                                 <span id="qunaity-limit" class=""></span>
+                             </div>
+                        </div>
+               </div>
         </div>
 
             
@@ -434,7 +467,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="submit" id="submit" class="btn btn-primary">Save changes</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
         </form>
@@ -446,12 +479,70 @@
 
   <script>
 $(document).ready(function(){
+
+   $("#qunaity-limit").hide();
     $(document).on('hidden.bs.modal', '#new-receipt-modal', function (e) {
         $(".modal-body input").val("")
         $(".modal-body select").val("")
+        $("#qunaity-limit").hide();
     });
+
+        $(document).on('show.bs.modal', '#new-receipt-modal', function (e) {
+          $(".form-group #balance").text("Available stock: " + <%= @dispached_stock - @received_stock %>);
+
+          $("#quantity").on('change keydown keypress keyup mousedown click mouseup', function(){
+              var stock_available = "<%= @dispached_stock - @received_stock %>"
+              
+              if ($("#quantity").val() > stock_available){
+                var flag = validate_quantity(<%= @stock_movement&.source_hub_id %>, <%= @stock_movement&.project_id %>, $("#quantity").val() , $('select[name=unit]').val())
+                if (!flag){
+                  $("#qunaity-limit").removeClass("label label-primary");
+                  $("#qunaity-limit").addClass("label label-danger");
+                  $("#qunaity-limit").html("");
+                  $("#qunaity-limit").html("More than available stock! " + stock_available);
+                  $("#qunaity-limit").show();
+                }
+                else{
+                   $("#qunaity-limit").hide();
+                }
+              }
+          });
+    });
+
+ 
 });
  
+  function validate_quantity(hub, project, quantity, unit)
+  {
+    
+    if( hub!="" && project!="" && quantity!="" && unit!="")
+    {
+      
+      $.ajax({
+		        url:'/stock_movements/validate_quantity',
+		        type:'GET',
+		        dataType:'json',
+		        data:{
+		        	stock_movement: {
+                          source_hub_id: hub,
+                          proj_id: project,
+                          quantity: quantity,
+                          unit_of_measure_id: unit
+		        	}	            
+		        },
+		        before: function() {
+		        
+		        },
+		        success:function(data){
+		        		console.log(data);	
+                return data;                         
+		        },
+		        error:function(data){
+		            console.log(data);
+		        }
+		    });
+    }
+  }
 
 $(document).on("click", ".new-receipt-modal",function(){
   var receieved_id = $(this).data('id');

@@ -7,9 +7,6 @@ module Postable
       
       if (self.receipt_type == 'transfer')
         logger.info "Processing posting information for Stock Movement Receipt"
-        puts "========================================================================================================="
-        puts "new receipt"
-        puts "========================================================================================================="
         post_stock_movement_receipt
       else
          logger.info "Processing posting information for Receipt"
@@ -400,9 +397,6 @@ module Postable
                                      posting_items: reversal_items
     })
 
-        puts "========================================================================================================="
-        puts "reverse receipt"
-        puts "========================================================================================================="
     reversal_posting.save!
 
 
