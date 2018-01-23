@@ -19,8 +19,8 @@ class StockMovementsController < ApplicationController
 
     @receipts = ReceiptLine.includes(:receipt).where('receipts.receipt_type' => :transfer)
     @uom_category_id = Commodity.find(@stock_movement.commodity_id).uom_category_id
-    @dispached_stock = get_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id)
-    @received_stock = get_received_amount_for_project_code(@stock_movement.project_id, @stock_movement.destination_hub_id)
+    @dispached_stock, @dispatch_stock_progress = get_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
+    @received_stock, @received_stock_progress = get_received_amount_for_project_code(@stock_movement.project_id, @stock_movement.destination_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
   end
 
   # GET /stock_movements/new
@@ -313,16 +313,24 @@ def stock_movement_destroy_receive
         end
 end
 
-def get_dispatched_amount_for_project_code(project_id, source_hub_id)
+def get_dispatched_amount_for_project_code(project_id, source_hub_id,total_to_be_dispatched,unit)
     dispatched_account = Account.find_by({'code': :dispatched})
     stock_movement_journal = Journal.find_by({'code': :internal_movement})
     @dispatched_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: dispatched_account.id, hub_id: source_hub_id, project_id: project_id).sum(:quantity)
+    total_to_be_dispatched_in_ref = UnitOfMeasure.find(unit.to_i).to_ref(total_to_be_dispatched.to_f)
+
+    @stock_momvement_dispatch_progress = (@dispatched_stock / total_to_be_dispatched_in_ref) * 100
+    return @dispached_stock, @stock_momvement_dispatch_progress
 end
 
-def get_received_amount_for_project_code(project_id, destination_hub_id)
+def get_received_amount_for_project_code(project_id, destination_hub_id, total_to_be_received,unit)
     stock_account = Account.find_by({'code': :stock})
     stock_movement_journal = Journal.find_by({'code': :internal_movement})
-    @dispatched_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: stock_account.id, hub_id: destination_hub_id, project_id: project_id).sum(:quantity)
+    @received_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: stock_account.id, hub_id: destination_hub_id, project_id: project_id).sum(:quantity)
+
+    total_to_be_received_in_ref = UnitOfMeasure.find(unit.to_i).to_ref(total_to_be_received.to_f)
+    @stock_movement_reveived_progress = (@received_stock/total_to_be_received_in_ref) * 100
+    return @received_stock, @stock_movement_reveived_progress
 end
 
 def validate_quantity    
