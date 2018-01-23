@@ -110,10 +110,10 @@
                 <dt>Dispatch Progress:</dt>
                 <dd>
                   <div class="progress progress  m-b-sm">
-                    <div style="width: <%= number_to_percentage(20, precision: 1) %>;" class="progress-bar"></div>
+                    <div style="width: <%= number_to_percentage(@dispached_stock_progress, precision: 1) %>;" class="progress-bar"></div>
                   </div>
                   <small>Dispatch Progress progress is at
-                    <strong><%= number_to_percentage(10, precision: 1) %></strong>.</small>
+                    <strong><%= number_to_percentage(@dispached_stock_progress, precision: 1) %></strong>.</small>
                 </dd>
               </dl>
             </div>
@@ -122,10 +122,10 @@
                 <dt>Receipt Progress:</dt>
                 <dd>
                   <div class="progress progress  m-b-sm">
-                    <div style="width: <%= number_to_percentage(10, precision: 1) %>;" class="progress-bar"></div>
+                    <div style="width: <%= number_to_percentage(@received_stock_progress, precision: 1) %>;" class="progress-bar"></div>
                   </div>
                   <small>Receipt Progress progress is at
-                    <strong><%= number_to_percentage(10, precision: 1) %></strong>.</small>
+                    <strong><%= number_to_percentage(@received_stock_progress, precision: 1) %></strong>.</small>
                 </dd>
               </dl>
             </div>            
@@ -487,10 +487,10 @@ $(document).ready(function(){
     });
 
         $(document).on('show.bs.modal', '#new-receipt-modal', function (e) {
-          $(".form-group #balance").text("Available stock: " + <%= @dispached_stock - @received_stock %>);
+          $(".form-group #balance").text("Available stock: " + <%= @dispached_stock %> - <%= @received_stock %>);
 
           $("#quantity").on('change keydown keypress keyup mousedown click mouseup', function(){
-              var stock_available = "<%= @dispached_stock - @received_stock %>"
+              var stock_available = "<%= @dispached_stock %>  - <%= @received_stock %>"
               
               if ($("#quantity").val() > stock_available){
                 var flag = validate_quantity(<%= @stock_movement&.source_hub_id %>, <%= @stock_movement&.project_id %>, $("#quantity").val() , $('select[name=unit]').val())
