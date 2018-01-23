@@ -16,8 +16,8 @@ class DispatchSummary < ActiveRecord::Base
 		DispatchSummary.where(operation_id: operation_id)
 	end
 
-	def self.yearly(year)
-		DispatchSummary.where(operation_year: year)
+	def self.get_all
+		DispatchSummary.all
 	end
 
 end
