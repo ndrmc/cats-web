@@ -77,7 +77,7 @@ end
 
 
 
-puts "Created seed data for Commodity records"
+#puts "Created seed data for Commodity records"
 
 
 
@@ -307,3 +307,9 @@ end
 if (Permission.where(:name => "StockTake").present? == false )
   Permission.create(name: 'StockTake', description: '')
 end
+# add internal  movement Journal
+if (Journal.where(:name => 'Internal Movement').present? == false)
+  Journal.create(name: 'Internal Movement', description: 'used to handle stock movememt amoung hubs, warehouses and stores', code: :internal_movement)
+  puts "Added Internal Movement to Journal"
+end
+

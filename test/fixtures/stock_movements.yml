@@ -11,6 +11,7 @@ one:
   commodity_id: 1
   quantity: 10
   description: MyString
+  unit_of_measure_id: 1
 
 two:
   source_hub_id: 1
@@ -23,3 +24,4 @@ two:
   commodity_id: 1
   quantity: 100
   description: MyString
+  unit_of_measure_id: 1

@@ -1,7 +1,7 @@
 class StockMovementsController < ApplicationController
 
   before_action :set_stock_movement, only: [:show, :edit, :update, :destroy, :createReceive]
-
+  protect_from_forgery prepend:true
 
   # GET /stock_movements
   # GET /stock_movements.json
@@ -19,6 +19,8 @@ class StockMovementsController < ApplicationController
 
     @receipts = ReceiptLine.includes(:receipt).where('receipts.receipt_type' => :transfer)
     @uom_category_id = Commodity.find(@stock_movement.commodity_id).uom_category_id
+    @dispached_stock, @dispatch_stock_progress = get_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
+    @received_stock, @received_stock_progress = get_received_amount_for_project_code(@stock_movement.project_id, @stock_movement.destination_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
   end
 
   # GET /stock_movements/new
@@ -169,22 +171,54 @@ class StockMovementsController < ApplicationController
 end
 
 def createReceive
-@receipt_lines = ReceiptLine.includes(:receipt).where(project_id: @stock_movement&.project_id, 
+
+if (params[:edit_mode]=='true')#update
+
+    receipt = Receipt.find(params[:receipt_id])
+    receipt_line = receipt.receipt_lines.first
+    
+    receipt.grn_no = params[:grn_no]
+    receipt.received_date = params[:received_date]
+    receipt.transporter_id = params[:transporter_id]
+    receipt.plate_no = params[:plate_no]
+    receipt.trailer_plate_no = params[:trailer_plate_no]
+    receipt.storekeeper_name = params[:store_keeper]
+    receipt.store_id = params[:store]
+
+   
+    receipt_line.quantity = params[:quantity]
+    receipt_line.unit_of_measure_id = params[:unit]
+    
+
+
+     respond_to do |format|
+                      if receipt.update_attributes!(receipt_lines_attributes: [receipt_line.attributes])
+                                format.html { redirect_to stock_movement_path(@stock_movement.id), notice: 'Stock movement was successfully updated.' }
+                                format.json { render :show, status: :ok, location: @stock_movement }
+                      else
+                                format.html { redirect_to stock_movement_path(@stock_movement.id)}
+                                flash[:error] = "Received not updated. Check the data and try again"
+                                format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
+                      end
+            end
+else#add new receipt
+          
+          @receipt_lines = ReceiptLine.includes(:receipt).where(project_id: @stock_movement&.project_id, 
                                       :'receipts.hub_id' =>  @stock_movement&.source_hub_id, 
                                       :'receipts.warehouse_id' =>  @stock_movement&.source_warehouse)
-if (!@receipt_lines.empty?)
+          if (!@receipt_lines.empty?)
               @receipt_line = @receipt_lines.first
               @commodity_category_id = Commodity.find(@stock_movement.commodity_id).commodity_category_id
 
-              receipt = Receipt.new(:grn_no => params[:grn])
-              receipt.received_date = params[:receive_date]
+              receipt = Receipt.new(:grn_no => params[:grn_no])
+              receipt.received_date = params[:received_date]
               receipt.hub_id = @stock_movement&.destination_hub_id
               receipt.warehouse_id = @stock_movement&.destination_warehouse_id
               receipt.delivered_by = @receipt_line&.receipt&.delivered_by
               receipt.supplier_id = @receipt_line&.receipt&.supplier_id
-              receipt.transporter_id = params[:transporter]
+              receipt.transporter_id = params[:transporter_id]
               receipt.plate_no = params[:plate_no]
-              receipt.trailer_plate_no = params[:plate_no_trailer]
+              receipt.trailer_plate_no = params[:trailer_plate_no]
               if (@receipt_line&.receipt&.donor_id.nil?) 
                   receipt.donor_id = 1 #default donor_id
               else
@@ -227,7 +261,7 @@ if (!@receipt_lines.empty?)
                         format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
                     end
                   end
-    else
+          else
                 respond_to do |format|
                     
                         format.html { redirect_to stock_movement_path(@stock_movement.id)}
@@ -236,9 +270,89 @@ if (!@receipt_lines.empty?)
                    
                   end
     end
+
+end  
+
     
 
 end
+
+def stock_movement_edit
+  @receipts = ReceiptLine.includes(:receipt).where('receipt_id' => params[:id]).first
+      respond_to do |format| 
+         format.json{
+         render :json => {
+        :receipt_id =>  @receipts&.receipt.id,
+        :grn_no => @receipts&.receipt&.grn_no,
+        :receipt_date => @receipts&.receipt&.received_date.strftime('%d/%m/%Y'),
+        :plate_no => @receipts&.receipt&.plate_no,
+        :trailer_plate_no => @receipts&.receipt&.trailer_plate_no,
+        :transporter_id => @receipts&.receipt&.transporter_id,
+        :store => @receipts&.receipt&.store_id,
+        :unit => @receipts&.unit_of_measure_id,
+        :quantity => @receipts.quantity,
+        :store_keeper => @receipts&.receipt&.storekeeper_name
+      }
+    }
+    end
+ 
+  
+end
+
+def stock_movement_destroy_receive
+   @receipt = Receipt.find params[:id]
+        respond_to do |format|
+            if  @receipt.destroy
+                format.html { redirect_to request.referrer, notice: 'Receipt item was successfully deleted.' }
+            else
+                format.html { 
+                    flash[:error] = "Delete failed! Please try again shortly."
+                    redirect_to request.referrer 
+                }
+            end
+        end
+end
+
+def get_dispatched_amount_for_project_code(project_id, source_hub_id,total_to_be_dispatched,unit)
+    dispatched_account = Account.find_by({'code': :dispatched})
+    stock_movement_journal = Journal.find_by({'code': :internal_movement})
+    @dispatched_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: dispatched_account.id, hub_id: source_hub_id, project_id: project_id).sum(:quantity)
+    total_to_be_dispatched_in_ref = UnitOfMeasure.find(unit.to_i).to_ref(total_to_be_dispatched.to_f)
+
+    @stock_momvement_dispatch_progress = (@dispatched_stock / total_to_be_dispatched_in_ref) * 100
+    return @dispached_stock, @stock_momvement_dispatch_progress
+end
+
+def get_received_amount_for_project_code(project_id, destination_hub_id, total_to_be_received,unit)
+    stock_account = Account.find_by({'code': :stock})
+    stock_movement_journal = Journal.find_by({'code': :internal_movement})
+    @received_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: stock_account.id, hub_id: destination_hub_id, project_id: project_id).sum(:quantity)
+
+    total_to_be_received_in_ref = UnitOfMeasure.find(unit.to_i).to_ref(total_to_be_received.to_f)
+    @stock_movement_reveived_progress = (@received_stock/total_to_be_received_in_ref) * 100
+    return @received_stock, @stock_movement_reveived_progress
+end
+
+def validate_quantity    
+         
+
+        @hub_id = stock_movement_params["source_hub_id"]
+        @project_id = stock_movement_params["proj_id"]
+        @quantity = stock_movement_params["quantity"]
+        @unit = stock_movement_params["unit_of_measure_id"]
+        
+        @stock = get_dispatched_amount_for_project_code( @project_id, @hub_id)
+        quantity_in_ref = UnitOfMeasure.find(@unit.to_i).to_ref(@quantity.to_f)
+        @flag = false
+     
+        if(quantity_in_ref < @stock)
+            @flag = true
+        end
+        respond_to do |format|
+            format.html
+            format.json { render :json => @flag.to_json }
+        end
+    end
 
   private
     # Use callbacks to share common setup or constraints between actions.
