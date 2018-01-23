@@ -8,9 +8,9 @@ class DashboardController < ApplicationController
 
   private
   def operation_summary
-  	year_in_ec = DateTime.now.year - 8
-  	allocations = AllocationSummary.yearly year_in_ec
-  	dispatches = DispatchSummary.yearly year_in_ec
+  	
+  	allocations = AllocationSummary.get_last_five_operations
+  	dispatches = DispatchSummary.get_all
 
   	summary = []
 
