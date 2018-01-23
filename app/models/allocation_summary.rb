@@ -36,8 +36,8 @@ class AllocationSummary < ActiveRecord::Base
 		AllocationSummary.where(operation_id: operation_id)
 	end
 
-	def self.yearly(year)
-		ops = Operation.where(year: year)
+	def self.get_last_five_operations
+		ops = Operation.order(id: :desc).limit(5)
 		allocations = []
 		ops.each do | operation|
 			alloc_total = AllocationSummary.total(operation.id)
