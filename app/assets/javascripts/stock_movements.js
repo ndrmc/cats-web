@@ -1,7 +1,26 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
+    function get_stock_movement_for_edit(receipt_id)
+    {
+        
+         $.ajax( { url: '/stock_movements/stock_movement_edit/' + receipt_id,cache: false, method: 'GET'})
+             .done( function(data) {
+            alert(data.grn_no);
+        //   var id = document.getElementById("project_select");
+        //   var text = id.options[id.selectedIndex].text
+         
+        //    if ($("#project_select").val()!=""){
+        //       document.getElementById("project_code").innerHTML=text
+        //    } 
+        //     document.getElementById("allocated").innerHTML=data.allocated
+        //     document.getElementById("received").innerHTML=data.received
+        //     document.getElementById("remaining").innerHTML= data.allocated - data.received
+            
+             });
+    }
 
 $(document).ready(function() {
+
     $("#edit-sm-dispatch-btn").hide(); 
     $("#save-sm-dispatch-btn").show();     
 
@@ -120,6 +139,7 @@ $(document).ready(function() {
         }
         $('#add-stock-move-dispatch .spinner').delay(3000).fadeOut();
     });
+
 
     $('#save-sm-dispatch-btn').on('click', function (e) {
         e.preventDefault();

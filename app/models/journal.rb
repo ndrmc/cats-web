@@ -14,7 +14,7 @@
 #  updated_at  :datetime         not null
 #
 
-class Journal < ApplicationRecord
+class Journal < ApplicationRecord   
     enum code: {
         beginning_inventory: 0,
         donation: 1,

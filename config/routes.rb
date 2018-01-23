@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'fdp_operation_summary/index'
 
  scope "(:locale)", locale: /en|am/ do
+  get '/stock_movements/validate_quantity', to: 'stock_movements#validate_quantity'
   post '/stock_movements/createReceive/:id', to: 'stock_movements#createReceive'
   get '/stock_movements/getCommodity/:id', to: 'stock_movements#getCommodity'
   post '/stock_movements/close/:id', to: 'stock_movements#close'
@@ -27,6 +28,7 @@ Rails.application.routes.draw do
   post '/stock_movements/stock_movement_dispatch', to: 'stock_movements#stock_movement_dispatch' 
   post '/stock_movements/stock_movement_dispatch_edit', to: 'stock_movements#stock_movement_dispatch_edit'
   delete 'stock_movements/delete_dispatch/:id', to: 'stock_movements#delete_dispatch'
+  delete 'stock_movements/stock_movement_destroy_receive/:id', to: 'stock_movements#stock_movement_destroy_receive'
   resources :stock_movements
 
   get '/transport_requisitions/print', to: 'transport_requisitions#print'
@@ -137,6 +139,7 @@ Rails.application.routes.draw do
   get '/receipts/receipt_report', to: 'receipts#receipt_report'
   post '/receipts/receipt_report_generate', to: 'receipts#receipt_report_generate'
   post '/receipts/check_stock', to: 'receipts#check_stock'
+  get '/stock_movements/stock_movement_edit/:id', to: 'stock_movements#stock_movement_edit'
   resources :receipts
   
   get '/receipts/return_receipt_detail/:id', to: 'receipts#return_receipt_detail'

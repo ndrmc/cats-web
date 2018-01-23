@@ -86,6 +86,7 @@
                   <span class="label label-primary"><%= @stock_movement.status %></span>
                 <% end %>
               </dd>
+
             </dl>
           </div>
         </div>
@@ -110,10 +111,10 @@
                 <dt>Dispatch Progress:</dt>
                 <dd>
                   <div class="progress progress  m-b-sm">
-                    <div style="width: <%= number_to_percentage(20, precision: 1) %>;" class="progress-bar"></div>
+                    <div style="width: <%= number_to_percentage(@dispached_stock_progress, precision: 1) %>;" class="progress-bar"></div>
                   </div>
                   <small>Dispatch Progress progress is at
-                    <strong><%= number_to_percentage(10, precision: 1) %></strong>.</small>
+                    <strong><%= number_to_percentage(@dispached_stock_progress, precision: 1) %></strong>.</small>
                 </dd>
               </dl>
             </div>
@@ -122,15 +123,38 @@
                 <dt>Receipt Progress:</dt>
                 <dd>
                   <div class="progress progress  m-b-sm">
-                    <div style="width: <%= number_to_percentage(10, precision: 1) %>;" class="progress-bar"></div>
+                    <div style="width: <%= number_to_percentage(@received_stock_progress, precision: 1) %>;" class="progress-bar"></div>
                   </div>
                   <small>Receipt Progress progress is at
-                    <strong><%= number_to_percentage(10, precision: 1) %></strong>.</small>
+                    <strong><%= number_to_percentage(@received_stock_progress, precision: 1) %></strong>.</small>
                 </dd>
               </dl>
             </div>            
           </div>
         </div>
+
+         <div class="row">
+          <div class="col-sm-12">
+            <div class="col-sm-6">
+              <dl class="dl-horizontal">
+                <dt>Incoming Dispatch:</dt>
+                <dd>
+                 <%= @dispached_stock  %>
+                </dd>
+              </dl>
+            </div>
+            <div class="col-sm-6">
+              <dl class="dl-horizontal">
+                <dt>Received so far:</dt>
+                <dd>
+                  <%= @received_stock %>
+                </dd>
+              </dl>
+            </div>            
+          </div>
+        </div>
+
+
       </div>
     </div>
   </div>
@@ -162,8 +186,8 @@
                     <div class="col-sm-12">
                       <div class="pull-right" style="margin-top: -60px;">
                         <% if (@stock_movement&.status == 'open') %>
-                          <a class="btn btn-primary" data-smid="<%= @stock_movement.id %>" data-target="#add-stock-move-dispatch" data-toggle="modal">
-                              Dispatch
+                          <a class="btn btn-primary" data-ft-id="<%= @stock_movement.id %>" data-target="#add-stock-move-dispatch" data-toggle="modal">
+                              New Dispatch
                           </a>
                         <% end %>
                       </div>
@@ -212,9 +236,13 @@
 
                   </div>
                   <div class="tab-pane" id="tab-2">
-                    <div class="title-action">
-                               <a href="#" class='btn btn-primary btn-sm new-receipt-modal' data-toggle="modal" data-id="1" data-target="#new-receipt-modal">New Receipt</a>
-                            </div>
+                    <div class="col-sm-12">
+                      <div class="pull-right" style="margin-top: -60px;">
+                        <% if (@stock_movement&.status == 'open') %>
+                          <a href="#" class='btn btn-primary btn-sm' data-toggle="modal" data-id="1" data-target="#new-receipt-modal">New Receipt</a>
+                        <% end %>
+                      </div>
+                    </div>
                     <div>
                       <%if(false)%>
                         <h2>
@@ -224,7 +252,6 @@
                         <table class="table table-hover">
                           <thead>
                             <tr>
-                              <th>Req No (Invoice No)</th>
                               <th>GRN</th>
                               <th>Amount</th>                           
                               <th>Unit</th>
@@ -244,8 +271,8 @@
                                 <td> <%= receipt_line&.receipt&.storekeeper_name %> </td> 
                                 <td> <%= receipt_line&.receipt&.drivers_name %> </td>                              
                                 
-                                <td>  <%= link_to 'Edit', '#', :class => "btn btn-sm btn-warning" %> &middot;
-                                      <%= link_to 'Delete', '#', class: "btn btn-sm btn-danger", method: :delete, data: { confirm: 'Are you sure you want to delete this Stock Transfer?' } %>
+                                <td><a href="#"  data-toggle="modal" data-id="<%= receipt_line&.receipt&.id %>" class="new-receipt-modal btn btn-sm btn-warning" data-target="#new-receipt-modal">Update</a></td>
+                                 <td> <%= link_to 'Delete', '/stock_movements/stock_movement_destroy_receive/' + receipt_line&.receipt&.id.to_s, class: "btn btn-sm btn-danger", method: :delete, data: { confirm: 'Are you sure you want to delete this Stock Transfer?' } %>
                               </td>  
                               </tr>
                             <% end %>
@@ -373,79 +400,176 @@
 </div>
 
 
-<div class="modal fade" id="new-receipt-modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">New Receipt</h4>
-      </div>
-      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
-    
-
-     <form role="form" method="POST" enctype="multipart/form-data" action="/en/stock_movements/createReceive/<%= @stock_movement.id %>" class="form-inline" style="display: inline;margin-top: 15px"">
+  <div class="modal inmodal" id="new-receipt-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">New Receipt</h4>
+        </div>
+        <div class="modal-body col-md-12 col-sm-12 col-xs-12">
       
-      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-       <input  type="hidden" name="sm_id" id="sm_id" value=<%= @stock_movement.id %> /> 
-          <div class="ibox float-e-margins">          
-                      <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="grn">GRN<span class="required">*</span> </label>
-                                <input  type="text" name="grn" id="grn" value="" />
 
-                                 <label for="receive_date">Plate No</label><span class="required">*</span>
-                                 <input  type="text" name="plate_no" id="plate_no" value="" value=""/>
+      <form role="form" method="POST" enctype="multipart/form-data" action="/en/stock_movements/createReceive/<%= @stock_movement.id %>" class="form-inline" style="display: inline;margin-top: 15px"">
+        
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <input  type="hidden" name="edit_mode" id="edit_mode" value="false" /> 
+        <input  type="hidden" name="receipt_id" id="receipt_id" value=<%= @stock_movement.id %> /> 
+          <div class="modal-body col-md-12 col-sm-12 col-xs-12 form-group">
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="grn">GRN<span class="required">*</span> </label>
+                <input class="form-control" type="text" name="grn_no" id="grn_no" value="" required/>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="transporter">Transporter</label>
+                    <span class="required">*</span>
+                    <%= select("transporter", "transporter_id", Transporter.all.collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 100%",:class => 'form-control', :required => true, :name => 'transporter_id' }) %>
+              </div>
+            </div>
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="plate_no">Plate No</label><span class="required">*</span>
+                <input class="form-control" type="text" name="plate_no" id="plate_no" value="" value="" required/>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="store" style="display:block">Store </label>
+                  <%= select("store", "store_id", Store.where(warehouse_id: @stock_movement.destination_warehouse_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 100%", :class => 'form-control input-small', :name => 'store' }) %>
+              </div>
+            </div>
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="plate_no_trailer">Plate No Trailer<span class="required">*</span></label>
+                <input class="form-control" type="text" name="trailer_plate_no" id="trailer_plate_no" value="" required />
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="store_keeper">Store Keeper</label>  
+                <input class="form-control" type="text" name="store_keeper" id="store_keeper" value="" />
+              </div>
+            </div>
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="receive_date">Receive Date </label><span class="required">*</span>
+                <input class="form-control datepicker" type="text" name="received_date" id="received_date" value="" style="width: 100%"/>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="unit">Unit
+                    <span class="required">*</span></label>               
+                    <%= select("unit", "unit_id", UnitOfMeasure.where(uom_category_id: @uom_category_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 100%", :class => 'form-control input-small', :required => true, :name => 'unit' }) %>
+              </div>
+            </div>
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="amount">Amount
+                <span class="required">*</span></label>
+                <%= number_field_tag :quantity, '', min: 0, max: 9999999999999999, :step => 'any', class: "number form-control", placeholder: '0.00' %>
+                <span id="qunaity-limit" class="form-control"></span>
+              </div>
+            </div>
+                 
+          </div>
+        </div>
 
-                                 <label for="grn">Plate No Trailer<span class="required">*</span></label>
-                                <input  type="text" name="plate_no_trailer" id="plate_no_trailer" value="" />
+            
 
-                                 <label for="receive_date">Receive Date </label><span class="required">*</span>
-                                   <input  type="text" name="receive_date" id="receive_date" value="" class="datepicker"/>
+        <div class="modal-footer">
+          <button type="submit" id="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </form>
+      
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
-                                <label for="amount">Amount
-                                <span class="required">*</span></label>
-                                <%= number_field_tag :quantity, '', min: 0, max: 9999999999999999, :step => 'any', class: "number", placeholder: '0.00' %>
 
-                          </div>
-                        </div>
+  <script>
+$(document).ready(function(){
 
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="transporter">Transporter</label>
-                                <span class="required">*</span>
-                                <%= select("transporter", "transporter_id", Transporter.all.collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px",:class => 'form-control', :required => true, :name => 'transporter' }) %>
-                         
-                         
+   $("#qunaity-limit").hide();
+    $(document).on('hidden.bs.modal', '#new-receipt-modal', function (e) {
+        $(".modal-body input").val("")
+        $(".modal-body select").val("")
+        $("#qunaity-limit").hide();
+    });
 
-                               <label for="store">Store </label>
-                               <%= select("store", "store_id", Store.where(warehouse_id: @stock_movement.destination_warehouse_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px", :class => 'form-control input-small', :name => 'store' }) %>
-                
+        $(document).on('show.bs.modal', '#new-receipt-modal', function (e) {
+          $(".form-group #balance").text("Available stock: " + <%= @dispached_stock %> - <%= @received_stock %>);
 
-                                 <label for="store_keeper">Store Keeper</label>  
-                                <input  type="text" name="store_keeper" id="store_keeper" value="" />
-                
-                                <label for="unit">Unit
-                                <span class="required">*</span></label>               
-                                <%= select("unit", "unit_id", UnitOfMeasure.where(uom_category_id: @uom_category_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px", :class => 'form-control input-small', :required => true, :name => 'unit' }) %>
-                
+          $("#quantity").on('change keydown keypress keyup mousedown click mouseup', function(){
+              var stock_available = "<%= @dispached_stock %>  - <%= @received_stock %>"
+              
+              if ($("#quantity").val() > stock_available){
+                var flag = validate_quantity(<%= @stock_movement&.source_hub_id %>, <%= @stock_movement&.project_id %>, $("#quantity").val() , $('select[name=unit]').val())
+                if (!flag){
+                  $("#qunaity-limit").removeClass("label label-primary");
+                  $("#qunaity-limit").addClass("label label-danger");
+                  $("#qunaity-limit").html("");
+                  $("#qunaity-limit").html("More than available stock! " + stock_available);
+                  $("#qunaity-limit").show();
+                }
+                else{
+                   $("#qunaity-limit").hide();
+                }
+              }
+          });
+    });
 
-                         </div>
-                        </div>
-               </div>
-       </div>
-
-          
-
-      </div>
-
-       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-      </form>
+ 
+});
+ 
+  function validate_quantity(hub, project, quantity, unit)
+  {
     
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    if( hub!="" && project!="" && quantity!="" && unit!="")
+    {
+      
+      $.ajax({
+		        url:'/stock_movements/validate_quantity',
+		        type:'GET',
+		        dataType:'json',
+		        data:{
+		        	stock_movement: {
+                          source_hub_id: hub,
+                          proj_id: project,
+                          quantity: quantity,
+                          unit_of_measure_id: unit
+		        	}	            
+		        },
+		        before: function() {
+		        
+		        },
+		        success:function(data){
+		        		console.log(data);	
+                return data;                         
+		        },
+		        error:function(data){
+		            console.log(data);
+		        }
+		    });
+    }
+  }
 
+$(document).on("click", ".new-receipt-modal",function(){
+  var receieved_id = $(this).data('id');
+
+   $.ajax( { url: '/stock_movements/stock_movement_edit/' + receieved_id,cache: false, method: 'GET'})
+             .done( function(data) {
+            
+                $(".form-group #grn_no").val(data.grn_no);
+                $(".form-group #plate_no").val(data.plate_no);
+                $(".form-group #trailer_plate_no").val(data.trailer_plate_no);
+                $(".form-group #received_date").val(data.receipt_date);
+                $(".form-group #quantity").val(data.quantity);
+                $('select[name=store]').val(data.store);
+                $(".form-group #store_keeper").val(data.store_keeper);
+                document.getElementById('edit_mode').value = "true"
+                document.getElementById('receipt_id').value = data.receipt_id
+                $('select[name=transporter_id]').val(data.transporter_id)
+                $('select[name=unit]').val(data.unit)
+                
+             });
+
+ 
+});
+</script>
