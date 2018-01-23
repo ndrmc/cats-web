@@ -15,7 +15,7 @@ class StockMovementsController < ApplicationController
     @commodity_category = Commodity.includes(:commodity_category).find(@stock_movement.commodity_id)
     @unit_of_measures = UnitOfMeasure.where(uom_category_id: @commodity_category.uom_category_id)
     @transporters = Transporter.order(:name)
-    @dispatch_items = DispatchItem.includes(:unit_of_measure, dispatch: :transporter).where(:'dispatches.dispatch_type' => 1)
+    @dispatch_items = DispatchItem.includes(:unit_of_measure, dispatch: :transporter).where(:'dispatches.dispatch_type' => :transfer)
 
     @receipts = ReceiptLine.includes(:receipt).where('receipts.receipt_type' => :transfer)
     @uom_category_id = Commodity.find(@stock_movement.commodity_id).uom_category_id
@@ -121,7 +121,7 @@ class StockMovementsController < ApplicationController
       @dispatch.warehouse_id = @stock_movement.source_warehouse_id
       @dispatch.storekeeper_name = stock_movement_params["store_keeper"]
       @dispatch.dispatch_type_id = stock_movement_params["stock_movement_id"]
-      @dispatch.dispatch_type = 1      
+      @dispatch.dispatch_type = :transfer
 
       @dispatch_item =  DispatchItem.new
       @dispatch_item.dispatch_id = @dispatch.id

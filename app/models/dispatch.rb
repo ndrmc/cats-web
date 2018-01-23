@@ -41,7 +41,7 @@ class Dispatch < ApplicationRecord
     
     has_many :dispatch_items
 
-    enum status: [ :normal, :transfer ]
+    enum dispatch_type: { normal: 0, transfer: 1 }
 
     after_save :pre_post
 

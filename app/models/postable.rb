@@ -69,14 +69,14 @@ module Postable
     stock_account = Account.find_by({'code': :stock})
     dispatched_account = Account.find_by({'code': :dispatched})
     
-    if(self.dispatch_type == 1)
-      good_issue_journal = Journal.find_by({'code': :internal_movement})
+    if(self.dispatch_type == "transfer")
+      internal_movement_journal = Journal.find_by({'code': :internal_movement})
       posting_items = []
       self.dispatch_items.each do |dispatch_line|
         amount_in_ref = UnitOfMeasure.find(dispatch_line.unit_of_measure_id).to_ref(dispatch_line.quantity)
         debit = PostingItem.new({
                                   account_id: stock_account.id,
-                                  journal_id: good_issue_journal.id,
+                                  journal_id: internal_movement_journal.id,
                                   hub_id: self.hub_id,
                                   warehouse_id: self.warehouse_id,
                                   donor_id: dispatch_line.organization_id,
@@ -91,7 +91,7 @@ module Postable
         posting_items << debit
         credit = PostingItem.new({
                                    account_id: dispatched_account.id,
-                                   journal_id: good_issue_journal.id,
+                                   journal_id: internal_movement_journal.id,
                                    hub_id: self.hub_id,
                                    warehouse_id: self.warehouse_id,
                                    donor_id: dispatch_line.organization_id,
