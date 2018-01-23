@@ -68,45 +68,83 @@ module Postable
   def post_dispatch
     stock_account = Account.find_by({'code': :stock})
     dispatched_account = Account.find_by({'code': :dispatched})
-    good_issue_journal = Journal.find_by({'code': :goods_issue})
-    posting_items = []
-    self.dispatch_items.each do |dispatch_line|
-      amount_in_ref = UnitOfMeasure.find(dispatch_line.unit_of_measure_id).to_ref(dispatch_line.quantity)
-      debit = PostingItem.new({
-                                account_id: stock_account.id,
-                                journal_id: good_issue_journal.id,
-                                hub_id: self.hub_id,
-                                fdp_id: self.fdp_id,
-                                warehouse_id: self.warehouse_id,
-                                donor_id: dispatch_line.organization_id,
-                                project_id: dispatch_line.project_id,
-                                batch_id: 1,
-                                program_id: Operation.find(self.operation_id).program_id,
-                                operation_id: self.operation_id,
-                                commodity_id: dispatch_line.commodity_id,
-                                commodity_category_id: dispatch_line.commodity_category_id,
-                                quantity: -amount_in_ref
-
-      })
-
-      posting_items << debit
-      credit = PostingItem.new({
-                                 account_id: dispatched_account.id,
-                                 journal_id: good_issue_journal.id,
-                                 hub_id: self.hub_id,
-                                 fdp_id: self.fdp_id,
-                                 warehouse_id: self.warehouse_id,
-                                 donor_id: dispatch_line.organization_id,
-                                 project_id: dispatch_line.project_id,
-                                 batch_id: 1,
-                                 program_id: Operation.find(self.operation_id).program_id,
-                                 operation_id: self.operation_id,
-                                 commodity_id: dispatch_line.commodity_id,
-                                 commodity_category_id: dispatch_line.commodity_category_id,
-                                 quantity: amount_in_ref
-      })
-      posting_items << credit
+    
+    if(self.dispatch_type == 1)
+      good_issue_journal = Journal.find_by({'code': :internal_movement})
+      posting_items = []
+      self.dispatch_items.each do |dispatch_line|
+        amount_in_ref = UnitOfMeasure.find(dispatch_line.unit_of_measure_id).to_ref(dispatch_line.quantity)
+        debit = PostingItem.new({
+                                  account_id: stock_account.id,
+                                  journal_id: good_issue_journal.id,
+                                  hub_id: self.hub_id,
+                                  warehouse_id: self.warehouse_id,
+                                  donor_id: dispatch_line.organization_id,
+                                  project_id: dispatch_line.project_id,
+                                  batch_id: 1,
+                                  commodity_id: dispatch_line.commodity_id,
+                                  commodity_category_id: dispatch_line.commodity_category_id,
+                                  quantity: -amount_in_ref
+  
+        })
+  
+        posting_items << debit
+        credit = PostingItem.new({
+                                   account_id: dispatched_account.id,
+                                   journal_id: good_issue_journal.id,
+                                   hub_id: self.hub_id,
+                                   warehouse_id: self.warehouse_id,
+                                   donor_id: dispatch_line.organization_id,
+                                   project_id: dispatch_line.project_id,
+                                   batch_id: 1,
+                                   commodity_id: dispatch_line.commodity_id,
+                                   commodity_category_id: dispatch_line.commodity_category_id,
+                                   quantity: amount_in_ref
+        })
+        posting_items << credit
+      end      
+    else
+      good_issue_journal = Journal.find_by({'code': :goods_issue})
+      posting_items = []
+      self.dispatch_items.each do |dispatch_line|
+        amount_in_ref = UnitOfMeasure.find(dispatch_line.unit_of_measure_id).to_ref(dispatch_line.quantity)
+        debit = PostingItem.new({
+                                  account_id: stock_account.id,
+                                  journal_id: good_issue_journal.id,
+                                  hub_id: self.hub_id,
+                                  fdp_id: self.fdp_id,
+                                  warehouse_id: self.warehouse_id,
+                                  donor_id: dispatch_line.organization_id,
+                                  project_id: dispatch_line.project_id,
+                                  batch_id: 1,
+                                  program_id: Operation.find(self.operation_id).program_id,
+                                  operation_id: self.operation_id,
+                                  commodity_id: dispatch_line.commodity_id,
+                                  commodity_category_id: dispatch_line.commodity_category_id,
+                                  quantity: -amount_in_ref
+  
+        })
+  
+        posting_items << debit
+        credit = PostingItem.new({
+                                   account_id: dispatched_account.id,
+                                   journal_id: good_issue_journal.id,
+                                   hub_id: self.hub_id,
+                                   fdp_id: self.fdp_id,
+                                   warehouse_id: self.warehouse_id,
+                                   donor_id: dispatch_line.organization_id,
+                                   project_id: dispatch_line.project_id,
+                                   batch_id: 1,
+                                   program_id: Operation.find(self.operation_id).program_id,
+                                   operation_id: self.operation_id,
+                                   commodity_id: dispatch_line.commodity_id,
+                                   commodity_category_id: dispatch_line.commodity_category_id,
+                                   quantity: amount_in_ref
+        })
+        posting_items << credit
+      end
     end
+    
     post( Posting.document_types[:dispatch], self.id, Posting.posting_types[:normal], posting_items)
   end
 

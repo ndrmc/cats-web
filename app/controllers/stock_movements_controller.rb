@@ -15,7 +15,7 @@ class StockMovementsController < ApplicationController
     @commodity_category = Commodity.includes(:commodity_category).find(@stock_movement.commodity_id)
     @unit_of_measures = UnitOfMeasure.where(uom_category_id: @commodity_category.uom_category_id)
     @transporters = Transporter.order(:name)
-    @dispatch_items = DispatchItem.includes(:unit_of_measure, dispatch: :transporter).where(:'dispatches.dispatch_type' => 0)
+    @dispatch_items = DispatchItem.includes(:unit_of_measure, dispatch: :transporter).where(:'dispatches.dispatch_type' => 1)
 
     @receipts = ReceiptLine.includes(:receipt).where('receipts.receipt_type' => :transfer)
     @uom_category_id = Commodity.find(@stock_movement.commodity_id).uom_category_id
@@ -121,8 +121,7 @@ class StockMovementsController < ApplicationController
       @dispatch.warehouse_id = @stock_movement.source_warehouse_id
       @dispatch.storekeeper_name = stock_movement_params["store_keeper"]
       @dispatch.dispatch_type_id = stock_movement_params["stock_movement_id"]
-      @dispatch.dispatch_type = 0
-      @dispatch.save
+      @dispatch.dispatch_type = 1      
 
       @dispatch_item =  DispatchItem.new
       @dispatch_item.dispatch_id = @dispatch.id
@@ -132,16 +131,84 @@ class StockMovementsController < ApplicationController
       @dispatch_item.unit_of_measure_id = stock_movement_params["unit_of_measure"]
       @dispatch_item.project_id = @stock_movement.project_id
       @dispatch_item.organization_id = @stock_movement.project.organization_id
+
+      @dispatch.dispatch_items << @dispatch_item
     end
     
     respond_to do |format|                        
-      if @dispatch_item.save && @existing_ws == 0 
+      if @dispatch.save && @existing_ws == 0 
         format.html { redirect_to @dispatch, notice: 'Dispatch was successfully created.' }
         format.json { render :show, status: :created, location: @dispatch }
       else
         format.html { render :new }
         format.json { render json: @dispatch.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def stock_movement_dispatch_edit    
+    @stock_movement = StockMovement.includes(:unit_of_measure,:source_hub,:destination_hub,:source_warehouse,:destination_warehouse,:project,commodity: :commodity_category).find(stock_movement_params["stock_movement_id"])
+
+    @dispatch = Dispatch.find(stock_movement_params["dispatch_id"])
+    @dispatch_hash = Hash.new
+    @dispatch_hash["id"] = @dispatch.id
+    @dispatch_hash["gin_no"] = stock_movement_params["gin"]
+    @dispatch_hash["dispatch_date"] = stock_movement_params["dispatch_date"]
+    @dispatch_hash["transporter_id"] = stock_movement_params["transporter"]
+    @dispatch_hash["drivers_name"] = stock_movement_params["driver_name"]
+    @dispatch_hash["plate_number"] = stock_movement_params["plate_no"]
+    @dispatch_hash["trailer_plate_number"] = stock_movement_params["plate_no_trailer"]
+    @dispatch_hash["hub_id"] = @stock_movement.source_hub_id
+    @dispatch_hash["warehouse_id"] = @stock_movement.source_warehouse_id
+    @dispatch_hash["storekeeper_name"] = stock_movement_params["store_keeper"]
+    @dispatch_hash["dispatch_type_id"] = stock_movement_params["stock_movement_id"]
+    @dispatch_hash["dispatch_type"] = 1      
+
+    @dispatch_item =  DispatchItem.where(dispatch_id: stock_movement_params["dispatch_id"]).first
+    @dispatch_item.commodity_category_id = @stock_movement.commodity.commodity_category_id
+    @dispatch_item.commodity_id = @stock_movement.commodity_id
+    @dispatch_item.quantity = stock_movement_params["amount"]
+    @dispatch_item.unit_of_measure_id = stock_movement_params["unit_of_measure"]
+    @dispatch_item.project_id = @stock_movement.project_id
+    @dispatch_item.organization_id = @stock_movement.project.organization_id
+    @dispatch_items_array = []
+    @dispatch_items_array << @dispatch_item
+    @dispatch_hash["dispatch_items"] = @dispatch_items_array
+    
+    respond_to do |format|                        
+      if @dispatch.update(@dispatch_hash)
+        format.html { redirect_to @dispatch, notice: 'Dispatch was successfully updated.' }
+        format.json { render :show, status: :created, location: @dispatch }
+      else
+        format.html { render :new }
+        format.json { render json: @dispatch.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  def get_dispatch
+    @dispatch_item = DispatchItem.includes(:unit_of_measure, dispatch: :transporter).where(dispatch_id: stock_movement_params["dispatch_id"]).first
+    @data = []
+    @data << @dispatch_item.dispatch.gin_no.to_s
+    @data << @dispatch_item.dispatch.dispatch_date.to_s
+    @data << @dispatch_item.quantity.to_s
+    @data << @dispatch_item.dispatch.drivers_name    
+    @data << @dispatch_item.dispatch.plate_number.to_s
+    @data << @dispatch_item.dispatch.trailer_plate_number.to_s
+    @data << @dispatch_item.dispatch.storekeeper_name    
+    @data << @dispatch_item.unit_of_measure.name
+    @data << @dispatch_item.unit_of_measure.id.to_s
+    @data << @dispatch_item.dispatch.transporter.name
+    @data << @dispatch_item.dispatch.transporter.id.to_s    
+
+    render json: @data
+  end
+
+  def delete_dispatch
+    @dispatch = Dispatch.find(params["id"])
+    @dispatch.destroy
+    respond_to do |format|
+      format.html { redirect_to "/en/stock_movements/" + params["stock_movement_id"], notice: 'Dispatch was successfully destroyed.' }
+      format.json { head :no_content }
     end
   end
 
@@ -248,6 +315,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stock_movement_params
-      params.require(:stock_movement).permit(:movement_date, :source_hub_id, :source_warehouse_id, :source_store_id, :destination_hub_id, :destination_warehouse_id, :destination_store_id, :project_id, :commodity_id, :unit_of_measure_id, :quantity, :description, :hub_id, :warehouse_id, :proj_id, :stock_movement_id, :gin, :dispatch_date, :amount, :unit_of_measure, :transporter, :driver_name, :plate_no, :plate_no_trailer, :store_keeper)
+      params.require(:stock_movement).permit(:movement_date, :source_hub_id, :source_warehouse_id, :source_store_id, :destination_hub_id, :destination_warehouse_id, :destination_store_id, :project_id, :commodity_id, :unit_of_measure_id, :quantity, :description, :hub_id, :warehouse_id, :proj_id, :stock_movement_id, :gin, :dispatch_date, :amount, :unit_of_measure, :transporter, :driver_name, :plate_no, :plate_no_trailer, :store_keeper, :dispatch_id)
     end
 end

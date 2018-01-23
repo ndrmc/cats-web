@@ -27,7 +27,8 @@ class Journal < ApplicationRecord
         transfer: 8,
         annual_inventory: 9,
         delivery: 10,
-        distribution: 11
+        distribution: 11,
+        internal_movement: 12
     }
    
 end

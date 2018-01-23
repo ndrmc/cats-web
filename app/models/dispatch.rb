@@ -41,11 +41,13 @@ class Dispatch < ApplicationRecord
     
     has_many :dispatch_items
 
-    enum status: [ :transfer ]
+    enum status: [ :normal, :transfer ]
 
     after_save :pre_post
 
     after_update :reverse
+
+    after_destroy :reverse
 
     def self.fdp_allocations (hub_id, operation_id, allocation_filter, fdp_ids)
         @dispatch_summary = []
