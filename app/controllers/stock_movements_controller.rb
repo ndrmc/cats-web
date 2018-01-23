@@ -171,6 +171,7 @@ class StockMovementsController < ApplicationController
     @dispatch_item.unit_of_measure_id = stock_movement_params["unit_of_measure"]
     @dispatch_item.project_id = @stock_movement.project_id
     @dispatch_item.organization_id = @stock_movement.project.organization_id
+    @dispatch_item.save
     @dispatch_items_array = []
     @dispatch_items_array << @dispatch_item
     @dispatch_hash["dispatch_items"] = @dispatch_items_array
