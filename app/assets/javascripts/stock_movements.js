@@ -17,7 +17,7 @@ $(document).ready(function() {
         $("#edit-sm-dispatch-btn").show(); 
         $.ajax({
             url:'/stock_movements/get_dispatch',
-            type:'POST',
+            type:'GET',
             dataType:'json',
             data:{
                 stock_movement: {
