@@ -186,7 +186,7 @@
                       <div class="pull-right" style="margin-top: -60px;">
                         <% if (@stock_movement&.status == 'open') %>
                           <a class="btn btn-primary" data-ft-id="<%= @stock_movement.id %>" data-target="#add-stock-move-dispatch" data-toggle="modal">
-                              Dispatch
+                              New Dispatch
                           </a>
                         <% end %>
                       </div>
@@ -230,9 +230,13 @@
 
                   </div>
                   <div class="tab-pane" id="tab-2">
-                    <div class="title-action">
-                               <a href="#" class='btn btn-primary btn-sm' data-toggle="modal" data-id="1" data-target="#new-receipt-modal">New Receipt</a>
-                            </div>
+                    <div class="col-sm-12">
+                      <div class="pull-right" style="margin-top: -60px;">
+                        <% if (@stock_movement&.status == 'open') %>
+                          <a href="#" class='btn btn-primary btn-sm' data-toggle="modal" data-id="1" data-target="#new-receipt-modal">New Receipt</a>
+                        <% end %>
+                      </div>
+                    </div>
                     <div>
                       <%if(false)%>
                         <h2>
@@ -404,67 +408,62 @@
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         <input  type="hidden" name="edit_mode" id="edit_mode" value="false" /> 
         <input  type="hidden" name="receipt_id" id="receipt_id" value=<%= @stock_movement.id %> /> 
-            <div class="ibox float-e-margins">          
-                        <div class="row">
-                          <div class="col-sm-4">
-                              <div class="form-group">
-                                  <label for="grn">GRN<span class="required">*</span> </label>
-                                  <input  type="text" name="grn_no" id="grn_no" value="" required/>
-
-                                  <label for="plate_no">Plate No</label><span class="required">*</span>
-                                  <input  type="text" name="plate_no" id="plate_no" value="" value="" required/>
-
-                                  <label for="plate_no_trailer">Plate No Trailer<span class="required">*</span></label>
-                                  <input  type="text" name="trailer_plate_no" id="trailer_plate_no" value="" required />
-
-                                  <label for="receive_date">Receive Date </label><span class="required">*</span>
-                                  <input  type="text" name="received_date" id="received_date" value="" class="datepicker" stype="width: 170px"/>
-
-                                  <label for="amount">Amount
-                                  <span class="required">*</span></label>
-                                  <%= number_field_tag :quantity, '', min: 0, max: 9999999999999999, :step => 'any', class: "number", placeholder: '0.00' %>
-                                  
-
-                            </div>
-                          </div>
-
-                          <div class="col-sm-4">
-                              <div class="form-group">
-                                  <label for="transporter">Transporter</label>
-                                  <span class="required">*</span>
-                                  <%= select("transporter", "transporter_id", Transporter.all.collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px",:class => 'form-control', :required => true, :name => 'transporter_id' }) %>
-                          
-                          
-
-                                <label for="store">Store </label>
-                                <%= select("store", "store_id", Store.where(warehouse_id: @stock_movement.destination_warehouse_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px", :class => 'form-control input-small', :name => 'store' }) %>
-                  
-
-                                  <label for="store_keeper">Store Keeper</label>  
-                                  <input  type="text" name="store_keeper" id="store_keeper" value="" />
-                  
-                                  <label for="unit">Unit
-                                  <span class="required">*</span></label>               
-                                  <%= select("unit", "unit_id", UnitOfMeasure.where(uom_category_id: @uom_category_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 170px", :class => 'form-control input-small', :required => true, :name => 'unit' }) %>
-                  
-
-                            </div>
-                          </div>
-                        
-                </div>
-
-                <div class="row">
-                        <div class="col-sm-4">
-                              <div class="form-group">
-                                 <span id="qunaity-limit" class=""></span>
-                             </div>
-                        </div>
-               </div>
+          <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="grn">GRN<span class="required">*</span> </label>
+                <input class="form-control" type="text" name="grn_no" id="grn_no" value="" required/>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="transporter">Transporter</label>
+                    <span class="required">*</span>
+                    <%= select("transporter", "transporter_id", Transporter.all.collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 100%",:class => 'form-control', :required => true, :name => 'transporter_id' }) %>
+              </div>
+            </div>
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="plate_no">Plate No</label><span class="required">*</span>
+                <input class="form-control" type="text" name="plate_no" id="plate_no" value="" value="" required/>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="store" style="display:block">Store </label>
+                  <%= select("store", "store_id", Store.where(warehouse_id: @stock_movement.destination_warehouse_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 100%", :class => 'form-control input-small', :name => 'store' }) %>
+              </div>
+            </div>
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="plate_no_trailer">Plate No Trailer<span class="required">*</span></label>
+                <input class="form-control" type="text" name="trailer_plate_no" id="trailer_plate_no" value="" required />
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="store_keeper">Store Keeper</label>  
+                <input class="form-control" type="text" name="store_keeper" id="store_keeper" value="" />
+              </div>
+            </div>
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="receive_date">Receive Date </label><span class="required">*</span>
+                <input class="form-control datepicker" type="text" name="received_date" id="received_date" value="" style="width: 100%"/>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="unit">Unit
+                    <span class="required">*</span></label>               
+                    <%= select("unit", "unit_id", UnitOfMeasure.where(uom_category_id: @uom_category_id).collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:style => "width: 100%", :class => 'form-control input-small', :required => true, :name => 'unit' }) %>
+              </div>
+            </div>
+            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <label for="amount">Amount
+                <span class="required">*</span></label>
+                <%= number_field_tag :quantity, '', min: 0, max: 9999999999999999, :step => 'any', class: "number form-control", placeholder: '0.00' %>
+                <span id="qunaity-limit" class="form-control"></span>
+              </div>
+            </div>
+                 
+          </div>
         </div>
 
             
-
-        </div>
 
         <div class="modal-footer">
           <button type="submit" id="submit" class="btn btn-primary">Save changes</button>
