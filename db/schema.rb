@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180103083542) do
+ActiveRecord::Schema.define(version: 20180116121800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -390,6 +390,8 @@ ActiveRecord::Schema.define(version: 20180103083542) do
     t.string   "storekeeper_name",            limit: 200,                 null: false
     t.string   "dispatch_id_guid"
     t.string   "dispatched_date_ec"
+    t.integer  "dispatch_type_id"
+    t.integer  "dispatch_type"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
@@ -1024,6 +1026,8 @@ ActiveRecord::Schema.define(version: 20180103083542) do
     t.string   "receiveid",               limit: 36,                 null: false
     t.string   "received_date_ec"
     t.integer  "donor_id"
+    t.integer  "receipt_type"
+    t.integer  "receipt_type_id"
     t.index ["commodity_source_id"], name: "index_receipts_on_commodity_source_id", using: :btree
     t.index ["hub_id"], name: "index_receipts_on_hub_id", using: :btree
     t.index ["program_id"], name: "index_receipts_on_program_id", using: :btree
@@ -1125,6 +1129,30 @@ ActiveRecord::Schema.define(version: 20180103083542) do
     t.integer  "month_to"
     t.index ["deleted_at"], name: "index_seasons_on_deleted_at", using: :btree
     t.index ["name"], name: "index_seasons_on_name", unique: true, using: :btree
+  end
+
+  create_table "stock_movements", force: :cascade do |t|
+    t.integer  "source_hub_id"
+    t.integer  "source_warehouse_id"
+    t.integer  "source_store_id"
+    t.integer  "destination_hub_id"
+    t.integer  "destination_warehouse_id"
+    t.integer  "destination_store_id"
+    t.integer  "project_id"
+    t.integer  "commodity_id"
+    t.decimal  "quantity",                 precision: 8, scale: 2
+    t.datetime "movement_date"
+    t.integer  "unit_of_measure_id"
+    t.string   "description"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.integer  "status"
+    t.index ["commodity_id"], name: "index_stock_movements_on_commodity_id", using: :btree
+    t.index ["project_id"], name: "index_stock_movements_on_project_id", using: :btree
+    t.index ["unit_of_measure_id"], name: "index_stock_movements_on_unit_of_measure_id", using: :btree
   end
 
   create_table "stock_take_items", force: :cascade do |t|
@@ -1481,6 +1509,9 @@ ActiveRecord::Schema.define(version: 20180103083542) do
   add_foreign_key "regional_requests", "operations"
   add_foreign_key "regional_requests", "programs"
   add_foreign_key "regional_requests", "rations"
+  add_foreign_key "stock_movements", "commodities"
+  add_foreign_key "stock_movements", "projects"
+  add_foreign_key "stock_movements", "unit_of_measures"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
   add_foreign_key "users_permissions", "permissions"

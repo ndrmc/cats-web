@@ -45,10 +45,11 @@ class Receipt < ApplicationRecord
     belongs_to :project 
     belongs_to :hub
     belongs_to :organization, class_name: 'Organization', foreign_key: 'donor_id'
-  
+    belongs_to :transporter
     validates :donor_id, presence: {message: " is required!"}
     after_save :pre_post
     after_update :reverse
 
     validates :grn_no, uniqueness: true
+    enum receipt_type: [:donation, :loan, :transfer, :localPurhcase, :internationalPurchase]
 end

@@ -1,0 +1,359 @@
+<div class="wrapper wrapper-content">
+      <%= form_for(stock_movement) do |f| %>
+        <% if stock_movement.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(stock_movement.errors.count, "error") %> prohibited this stock_movement from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% stock_movement.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <%= f.label :source_hub_id, "Source Hub" %>
+                        <span class="required">*</span>
+                      <%= f.collection_select :source_hub_id,
+                        @hubs, :id, :name, {:selected => @stock_movement.source_hub_id, include_blank: '-- Choose --'}, {:onchange => "populate_warehouse(this.value, 'source')", :id => 'source_hub_select' ,:class => 'form-control', :required => true }%>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <%= f.label :source_warehouse_id, "Source Warehouse" %>
+                    <span class="required">*</span>
+                    <%= f.collection_select :source_warehouse_id,
+                    @warehouses.select{|w| w.hub_id ==  "#{:source_hub_select}"}, :id, :name, {include_blank: '-- Choose --'}, { :onchange => "populate_store(this.value, 'source')", :id => 'warehouse_select', :class => 'form-control', :required => true }%>
+
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <%= f.label :source_store_id, "Source Store" %>
+                    <%= f.collection_select :source_store_id,
+                    @stores.select{|w| w.warehouse_id ==  "#{:warehouse_select}"}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'store_select', :class => 'form-control'}%>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <%= f.label :destination_hub_id, "Destination Hub" %>
+                        <span class="required">*</span>
+                      <%= f.collection_select :destination_hub_id,
+                        @hubs, :id, :name, {:selected => @stock_movement.destination_hub_id,include_blank: '-- Choose --'}, {:onchange => "populate_warehouse(this.value, 'destination')", :id => 'destination_hub_select' ,:class => 'form-control', :required => true }%>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <%= f.label :destination_warehouse_id, "Destination Warehouse" %>
+                    <span class="required">*</span>
+                    <%= f.collection_select :destination_warehouse_id,
+                    @warehouses.select{|w| w.hub_id ==  "#{:destination_hub_select}"}, :id, :name, {include_blank: '-- Choose --'}, { :onchange => "populate_store(this.value,'destination')", :id => 'destination_warehouse_select',:class => 'form-control', :required => true }%>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <%= f.label :destination_store_id, "Destination Store" %>
+                    <%= f.collection_select :destination_store_id,
+                    @stores.select{|w| w.warehouse_id ==  "#{:destination_warehouse_select}"}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'destination_store_select',:class => 'form-control'}%>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <%= f.label :donor_id %>
+                  <span class="required">*</span>
+                  <%= select_tag  :organization, options_from_collection_for_select( @organizations, 'id', 'name', params[:organization] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control width-100per' }  %>
+                </div> 
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <%= f.label :project_id, "Project code" %>
+                  <span class="required">*</span>
+                  <%= f.collection_select :project_id,
+                  @projects.select{|p| p.organization_id == "#{:donor_select}"}, :id, :project_code, {:selected => @stock_movement.project_id, include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'project_code_select', :required => true }%>
+                </div> 
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <%= f.label :commodity_id, "Commodity" %>
+                  <%= f.hidden_field :commodity_id, :class => 'form-control' %>
+                  <input type="text" id="commodity_lable" class="form-control" readonly/>              
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">
+            <div class="row">
+              <div class="col-sm-6">  
+                <div class="form-group">
+                  <%= f.label :quantity %>
+                  <%= f.text_field :quantity, :class => 'form-control' %>
+                  <div id="qunaity-limit" class="label label-primary"></div>
+                </div>
+              </div>
+              <div class="col-sm-6">        
+                <div class="form-group">
+                  <%= f.label :unit_of_measure_id, "Unit of Measure" %>
+                  <span class="required">*</span>
+                  <%= f.collection_select :unit_of_measure_id,
+                  @unit_of_measures, :id, :name, {:selected => @stock_movement.unit_of_measure_id, include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'unit_of_measure_select', :required => true } %>
+                </div> 
+              </div>              
+            </div>
+          </div>
+        </div>
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">
+            <div class="row">
+              <div class="col-sm-6"> 
+                <div class="form-group">
+                  <%= f.label :movement_date, "Date" %>
+                  <span class="required">*</span>
+                  <%= f.text_field :movement_date, :class => 'form-control datepicker', :required => true  %>
+                </div>
+              </div>
+              <div class="col-sm-6"> 
+                <div class="form-group">
+                  <%= f.label :description %>
+                  <%= f.text_area :description, :class => 'form-control' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">
+            <div class="row">
+              <div class="actions">
+                <%= f.submit :class => 'btn btn-primary' %>
+              </div>
+            </div>
+          </div>
+        </div>
+  <% end %>
+
+</div>
+
+
+<script>
+
+var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+populate_warehouse("<%= @stock_movement.source_hub_id %>", 'source')
+populate_warehouse("<%= @stock_movement.destination_hub_id %>", 'destination')
+updateProjects("<%=  @donor_id %>")
+$("#organization").val(<%=  @donor_id %>)
+get_commodity("<%= @stock_movement.project_id  %>")
+$(function () {
+  $('#project_code_select').change(function(){
+    var project_id = $(this).find('option:selected').val();
+    get_commodity(project_id);
+    updateCommodityAndUnit(project_id);
+  });
+
+  $('#organization').change(function(){
+    var donor_id = $(this).val();
+    updateProjects(donor_id);
+  });
+
+});
+
+function populate_warehouse(id,type)
+{
+       
+        var hub_id =id;
+     
+        var warehouses = <%= @warehouses.to_json.html_safe %>   
+        var warehouses_in_hub = $.grep(warehouses, function (elem) {
+          return elem.hub_id == hub_id
+        });
+    
+        var warehouse_options = $.map(warehouses_in_hub, function (val) {
+          return '<option value="' + val.id + '">' + val.name + '</option>';
+        });
+       warehouse_options.unshift(EMPTY_OPTION);
+
+       if (type == 'source')
+       {
+                $('#warehouse_select').html(warehouse_options);
+                $('#warehouse_select').val(<%= @stock_movement.source_warehouse_id %>)  
+         }
+      else{
+                $('#destination_warehouse_select').html(warehouse_options);
+                $('#destination_warehouse_select').val(<%=  @stock_movement.destination_warehouse_id %>) 
+      }
+
+       populate_store("<%= params[:warehouse] %>", type)
+}
+
+function populate_store(warehouse_id, type)
+{
+        
+        var stores = <%= @stores.to_json.html_safe %>   
+        var stores_in_warehouse = $.grep(stores, function (elem) {
+          return elem.warehouse_id == warehouse_id
+        });
+    
+        var store_options = $.map(stores_in_warehouse, function (val) {
+          return '<option value="' + val.id + '">' + val.name + '</option>';
+        });
+       store_options.unshift(EMPTY_OPTION);
+
+         if (type == 'source')
+       {
+                $('#store_select').html(store_options);
+                $('#store_select').val(<%= @stock_movement.source_store_id %>)       
+       }
+       else{
+                $('#destination_store_select').html(store_options);
+                $('#destination_store_select').val(<%= @stock_movement.destination_store_id %>)
+       }
+      
+}
+
+         
+
+      function updateProjects(donor_id){    
+            
+        if (donor_id === '')
+          return;
+        var allProjects = <%= @projects.to_json.html_safe %>
+      
+        var projects_by_donor = $.grep(allProjects, function (elem) {
+          return elem.organization_id == donor_id
+        });
+
+        var proj_options = $.map(projects_by_donor, function (val) {
+          return '<option value="' + val.id + '">' + val.project_code + '</option>';
+        });
+
+        proj_options.unshift(EMPTY_OPTION);
+
+        $('#project_code_select').html(proj_options);
+        $('#project_code_select').val("<%= @stock_movement.project_id %>")
+      }
+
+        function get_commodity(project_id)
+        {
+               
+                $.ajax( { url: '/stock_movements/getCommodity/' + project_id,cache: false, method: 'GET'})
+                .done( function(data) {
+                if ($("#project_code_select").val()==""){
+                                $("#stock_movement_commodity_id").val("");
+                        } 
+                        else
+                        {
+                                $("#stock_movement_commodity_id").val(data.id);
+                                $("#commodity_lable").val(data.name);
+                        }
+                });
+    }
+
+    function updateCommodityAndUnit(projectId){
+      if (projectId === '')
+      {
+        $('#uom-select').html("");
+        return;
+      }
+        
+      var allProjects = <%= @projects.to_json.html_safe %>
+      var project = $.grep(allProjects, function (elem) {
+        return elem.id == projectId
+      });
+      var commodities = <%= @commodities.to_json.html_safe %>
+      var commodity = $.grep(commodities, function (elem) {
+          return elem.id == project[0].commodity_id
+      });
+
+      var hub = $('#source_hub_select').val();
+      var warehouse = $('#warehouse_select').val();
+      check_stock(hub, warehouse, projectId);
+
+      var commodity = commodity[0]; 
+      var commodity_categories = <%= @commodity_categories.to_json.html_safe %>
+      var commodity_category = $.grep(commodity_categories, function (elem) {
+          return elem.id == commodity["commodity_category_id"]
+      });
+      commodity_category = commodity_category[0];
+      var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
+      if ('' === commodity_category)
+        return;
+      var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+        return elem.uom_category_id == commodity_category["uom_category_id"]
+      });
+      var options = $.map(unitOfMeasuresInCategory, function (val) {
+        return '<option value="' + val.id + '">' + val.name + '</option>';
+      });
+      options.unshift(EMPTY_OPTION);
+      $('#unit_of_measure_id').html(options);
+    }
+
+    function check_stock(hub, warehouse, project)
+    {
+      if( hub!="" && hub!=null && warehouse!="" && warehouse!=null && project!="" && project!=null)
+      {
+        $.ajax({
+              url:'/stock_movements/check_stock',
+              type:'POST',
+              dataType:'json',
+              data:{
+                stock_movement: {
+                  hub_id: hub,
+                  warehouse_id: warehouse,
+                  proj_id: project
+                }	            
+              },
+              before: function() {
+                $("#qunaity-limit").removeClass("label label-danger");
+                $("#qunaity-limit").removeClass("label label-primary");
+                $("#qunaity-limit").addClass("label label-default");
+                $("#qunaity-limit").html("Loading...");
+              },
+              success:function(data){
+                  console.log(data);	
+                  if(data > 0){
+                    $("#qunaity-limit").removeClass("label label-danger");
+                    $("#qunaity-limit").addClass("label label-primary");
+                  }
+                  else{
+                    $("#qunaity-limit").removeClass("label label-primary");
+                    $("#qunaity-limit").addClass("label label-danger");
+                  }
+                  $("#qunaity-limit").html("");
+                  $("#qunaity-limit").html("Available stock " + data + " MT");             
+              },
+              error:function(data){
+                  console.log(data);
+              }
+          });
+      }
+      else{
+        $("#qunaity-limit").removeClass("label label-primary");
+        $("#qunaity-limit").addClass("label label-danger");
+        $("#qunaity-limit").html("");
+        $("#qunaity-limit").html("Please select hub, warehouse, and project!");
+      }
+    }
+
+</script>
