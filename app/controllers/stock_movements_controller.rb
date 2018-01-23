@@ -162,7 +162,6 @@ class StockMovementsController < ApplicationController
     @dispatch_hash["warehouse_id"] = @stock_movement.source_warehouse_id
     @dispatch_hash["storekeeper_name"] = stock_movement_params["store_keeper"]
     @dispatch_hash["dispatch_type_id"] = stock_movement_params["stock_movement_id"]
-    @dispatch_hash["dispatch_type"] = :transfer      
 
     @dispatch_item =  DispatchItem.where(dispatch_id: stock_movement_params["dispatch_id"]).first
     @dispatch_item.commodity_category_id = @stock_movement.commodity.commodity_category_id
