@@ -114,7 +114,7 @@
                     <div style="width: <%= number_to_percentage(@stock_momvement_dispatch_progress , precision: 1) %>;" class="progress-bar"></div>
                   </div>
                   <small>Dispatch Progress progress is at
-                    <strong><%= number_to_percentage(@stock_momvement_dispatch_progress , precision: 1) %></strong>.</small>
+                    <strong><%= number_to_percentage(@stock_momvement_dispatch_progress , precision: 1) %></strong> (Total dispatched: <%= @total_dispatched_quantity.to_f %> ).</small>
                 </dd>
               </dl>
             </div>
@@ -123,10 +123,10 @@
                 <dt>Receipt Progress:</dt>
                 <dd>
                   <div class="progress progress  m-b-sm">
-                    <div style="width: <%= number_to_percentage(@received_stock_progress, precision: 1) %>;" class="progress-bar"></div>
+                    <div style="width: <%= number_to_percentage(@received_progress_against_in_transit , precision: 1) %>;" class="progress-bar"></div>
                   </div>
                   <small>Receipt Progress progress is at
-                    <strong><%= number_to_percentage(@received_stock_progress, precision: 1) %></strong>.</small>
+                    <strong><%= number_to_percentage( @received_progress_against_in_transit, precision: 1) %></strong>.</small>
                 </dd>
               </dl>
             </div>            
@@ -137,9 +137,9 @@
           <div class="col-sm-12">
             <div class="col-sm-6">
               <dl class="dl-horizontal">
-                <dt>Incoming Dispatch:</dt>
+                <dt>Goods in Transit:</dt>
                 <dd>
-                 <%= @dispached_stock  %>
+                 <%= @dispached_stock.to_f %>
                 </dd>
               </dl>
             </div>
@@ -147,7 +147,7 @@
               <dl class="dl-horizontal">
                 <dt>Received so far:</dt>
                 <dd>
-                  <%= @received_stock %>
+                  <%= @received_stock.to_f %>
                 </dd>
               </dl>
             </div>            
@@ -463,10 +463,12 @@
                 <label for="amount">Amount
                 <span class="required">*</span></label>
                 <%= number_field_tag :quantity, '', min: 0, max: 9999999999999999, :step => 'any', class: "number form-control", placeholder: '0.00' %>
-                <span id="qunaity-limit" class="form-control"></span>
+                <span style="font-size: 8pt; border: 0px" id="qunaity-limit" class="form-control"></span>
               </div>
             </div>
-                 
+
+             
+
           </div>
         </div>
 
@@ -486,7 +488,7 @@
   <script>
 $(document).ready(function(){
 
-   $("#qunaity-limit").hide();
+   
     $(document).on('hidden.bs.modal', '#new-receipt-modal', function (e) {
         $(".modal-body input").val("")
         $(".modal-body select").val("")
@@ -494,11 +496,10 @@ $(document).ready(function(){
     });
 
         $(document).on('show.bs.modal', '#new-receipt-modal', function (e) {
-          $(".form-group #balance").text("Available stock: " + <%= @dispached_stock %> - <%= @received_stock %>);
+          $(".form-group #qunaity-limit").text("Available stock: " + "<%= @dispached_stock.to_i %>");
 
-          $("#quantity").on('change keydown keypress keyup mousedown click mouseup', function(){
-              var stock_available = "<%= @dispached_stock %>  - <%= @received_stock %>"
-              
+          $("#quantity").on('change keydown keypress keyup ', function(){
+              var stock_available = "<%= @dispached_stock.to_i %>"
               if ($("#quantity").val() > stock_available){
                 var flag = validate_quantity(<%= @stock_movement&.source_hub_id %>, <%= @stock_movement&.project_id %>, $("#quantity").val() , $('select[name=unit]').val())
                 if (!flag){
@@ -509,8 +510,10 @@ $(document).ready(function(){
                   $("#qunaity-limit").show();
                 }
                 else{
-                   $("#qunaity-limit").hide();
+                  
                 }
+              }else{
+                $("#qunaity-limit").text("Available stock: " + "<%= @dispached_stock.to_i %>");
               }
           });
     });
