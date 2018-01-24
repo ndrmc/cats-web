@@ -91,16 +91,7 @@
       <li class="<%= 'active' if is_active_controller('dispatches')  %>">
             <%= link_to t(:dispatch), "/dispatches/basic" %>
       </li>
-      <%end%>
-      <%if policy(Delivery).index? %>
-      <li class="<%= 'active' if is_active_controller('deliveries')  %>">
-        <%= link_to t(:delivery), deliveries_url %>
-      </li>
-      <%end%>
-      <li>
-        <a href="#"><%= t(:transfer)%></a>
-      </li>
-
+      <%end%>      
        <li class="<%= 'active' if is_active_controller('stock_movements')  %>">
         <%= link_to t(:stock_movements), '/stock_movements/' %>
       </li>
@@ -151,7 +142,12 @@
     <span class="nav-label"><%= t(:region)%></span>
     <span class="fa arrow"></span>
     <% end %>
-    <ul class="nav nav-second-level collapse">      
+    <ul class="nav nav-second-level collapse">  
+      <%if policy(Delivery).index? %>
+      <li class="<%= 'active' if is_active_controller('deliveries')  %>">
+        <%= link_to t(:delivery), deliveries_url %>
+      </li>
+      <%end%>          
       <li>
         <a href="#"><%= t(:fdp_receipts)%></a>
       </li>
