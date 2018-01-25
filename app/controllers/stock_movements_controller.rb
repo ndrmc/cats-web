@@ -122,6 +122,13 @@ end
       @available_stock = PostingItem.where(account_id: stock_account.id, hub_id: @stock_movement.source_hub_id, warehouse_id: @stock_movement.source_warehouse_id, project_id: @stock_movement.project_id).sum(:quantity)
       @amount_in_ref = UnitOfMeasure.find(stock_movement_params["unit_of_measure"].to_i).to_ref(stock_movement_params["amount"].to_f)
 
+      @total_dispatched = 0
+      DispatchItem.includes(:dispatch).where(:'dispatches.dispatch_type_id' => @stock_movement.id).each do |dispatch_item|
+        dispatched_to_ref = UnitOfMeasure.find(dispatch_item.unit_of_measure_id.to_i).to_ref(dispatch_item.quantity.to_f)
+        @total_dispatched = @total_dispatched + dispatched_to_ref
+      end
+      @total_dispatched = @total_dispatched + @amount_in_ref
+
       @dispatch = Dispatch.new
       @dispatch.gin_no = stock_movement_params["gin"]
       @dispatch.dispatch_date = stock_movement_params["dispatch_date"]
@@ -151,6 +158,11 @@ end
       @data = []
       @data << 'exists'        
       render json: @data
+    elsif @total_dispatched > @stock_movement.quantity
+      @data = []
+      @data << 'invalid'     
+      @data << 'Dispatching more than the planned amount is not allowed.'      
+      render json: @data
     elsif @available_stock < @amount_in_ref
       @data = []
       @data << 'notenough'     
@@ -174,6 +186,13 @@ end
     stock_account = Account.find_by({'code': :stock})
     @available_stock = PostingItem.where(account_id: stock_account.id, hub_id: @stock_movement.source_hub_id, warehouse_id: @stock_movement.source_warehouse_id, project_id: @stock_movement.project_id).sum(:quantity)
     @amount_in_ref = UnitOfMeasure.find(stock_movement_params["unit_of_measure"]).to_ref(stock_movement_params["amount"])
+
+    @total_dispatched = 0
+    DispatchItem.includes(:dispatch).where(:'dispatches.dispatch_type_id' => @stock_movement.id).each do |dispatch_item|
+      dispatched_to_ref = UnitOfMeasure.find(dispatch_item.unit_of_measure_id.to_i).to_ref(dispatch_item.quantity.to_f)
+      @total_dispatched = @total_dispatched + dispatched_to_ref
+    end
+    @total_dispatched = @total_dispatched + @amount_in_ref
 
     @dispatch = Dispatch.find(stock_movement_params["dispatch_id"])
     @dispatch_hash = Hash.new
