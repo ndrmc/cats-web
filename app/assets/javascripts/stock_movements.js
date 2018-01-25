@@ -113,15 +113,16 @@ $(document).ready(function() {
                     $('#add-stock-move-dispatch .spinner').attr('style', 'color:#ff0').html('Loading...'); 
                 },
                 success:function(data){
-                    if ( $('#keep_creating').is(':checked') )
+                    if ( data[0] == 'exists' )
                     {
-                        // $('#add-warehouse-assignment .spinner').hide();
-                        // $('#zone').val('');
-                        // $('#woreda').val('');
-                        // $('#hub').val('');
-                        // $('#warehouse').val('');
-                        $('#estimated_qty').val('');
-                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#18a689').html('Stock movement dispatch was created successfully!');		            	
+                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: GIN already exists. Try using another GIN");		            	
+                    }
+                    else if (data[0] == 'notenough')
+                    {
+                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: " + data[1]);
+                    }
+                    else if (data[0] == 'failed'){
+                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: Stock movement dispatch create failed.");
                     }
                     else
                     {
@@ -180,19 +181,24 @@ $(document).ready(function() {
                     $('#add-stock-move-dispatch .spinner').attr('style', 'color:#ff0').html('Loading...'); 
                 },
                 success:function(data){
-                    if ( $('#keep_creating').is(':checked') )
+                    if ( data[0] == 'exists' )
                     {
-                        // $('#add-warehouse-assignment .spinner').hide();
-                        // $('#zone').val('');
-                        // $('#woreda').val('');
-                        // $('#hub').val('');
-                        // $('#warehouse').val('');
-                        $('#estimated_qty').val('');
-                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#18a689').html('Stock movement dispatch was created successfully!');		            	
+                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: GIN already exists. Try using another GIN");		            	
+                    }
+                    else if (data[0] == 'notenough')
+                    {
+                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: " + data[1]);
+                    }
+                    else if (data[0] == 'failed'){
+                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: Stock movement dispatch create failed.");
+                    }
+                    else if (data[0] == 'success')
+                    {
+                        $("#add-stock-move-dispatch .close").click();
                     }
                     else
                     {
-                        $("#add-stock-move-dispatch .close").click();			
+                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: Unknown error occurred during dispatch create.");			
                     }		             
                 },
                 error:function(data){
