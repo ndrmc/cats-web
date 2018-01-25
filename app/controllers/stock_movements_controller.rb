@@ -276,7 +276,7 @@ else#add new receipt
           @goods_dispatched = get_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
           @goods_received = get_received_amount_for_project_code(@stock_movement.project_id, @stock_movement.destination_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
           @goods_in_transit = @goods_dispatched[0].to_f - @goods_received[0].to_f
-          if (@goods_in_transit > params[:quantity].to_f)
+          if (@goods_in_transit >= params[:quantity].to_f)
               @organization_id = Project.find(@stock_movement.project_id)&.organization_id
               @commodity_category_id = Commodity.find(@stock_movement.commodity_id).commodity_category_id
 
@@ -399,16 +399,21 @@ end
 def validate_quantity    
          
 
-        @hub_id = stock_movement_params["source_hub_id"]
+        @source_hub_id = stock_movement_params["source_hub_id"]
+        @destination_hub_id = stock_movement_params["destination_hub_id"]
         @project_id = stock_movement_params["proj_id"]
         @quantity = stock_movement_params["quantity"]
         @unit = stock_movement_params["unit_of_measure_id"]
+        @total_qty =  stock_movement_params["total_qty"]
         
-        @stock = get_dispatched_amount_for_project_code( @project_id, @hub_id)
+        @stock_dispatched = get_total_dispatched_amount_for_project_code( @project_id, @source_hub_id)
+        @received_amount  =  get_received_amount_for_project_code(@project_id,@destination_hub_id, @total_qty,@unit)
+
         quantity_in_ref = UnitOfMeasure.find(@unit.to_i).to_ref(@quantity.to_f)
         @flag = false
-     
-        if(quantity_in_ref < @stock)
+      
+        balance = @stock_dispatched - @received_amount[0]
+        if(quantity_in_ref <= balance)
             @flag = true
         end
         respond_to do |format|

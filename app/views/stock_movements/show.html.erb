@@ -487,45 +487,43 @@
 
   <script>
 $(document).ready(function(){
-
-   
     $(document).on('hidden.bs.modal', '#new-receipt-modal', function (e) {
         $(".modal-body input").val("")
         $(".modal-body select").val("")
         $("#qunaity-limit").hide();
     });
 
+
+    function validate()
+    {
+         var flag = validate_quantity(<%= @stock_movement&.source_hub_id %>, 
+                                              <%= @stock_movement&.destination_hub_id %>,
+                                              <%= @stock_movement&.project_id %>,
+                                              $("#quantity").val() , 
+                                              $('select[name=unit]').val(), <%= @stock_movement&.quantity %>)
+    }
+
         $(document).on('show.bs.modal', '#new-receipt-modal', function (e) {
           $(".form-group #qunaity-limit").text("Available stock: " + "<%= @dispached_stock.to_i %>");
 
-          $("#quantity").on('change keydown keypress keyup ', function(){
-              var stock_available = "<%= @dispached_stock.to_i %>"
-              if ($("#quantity").val() > stock_available){
-                var flag = validate_quantity(<%= @stock_movement&.source_hub_id %>, <%= @stock_movement&.project_id %>, $("#quantity").val() , $('select[name=unit]').val())
-                if (!flag){
-                  $("#qunaity-limit").removeClass("label label-primary");
-                  $("#qunaity-limit").addClass("label label-danger");
-                  $("#qunaity-limit").html("");
-                  $("#qunaity-limit").html("More than available stock! " + stock_available);
-                  $("#qunaity-limit").show();
-                }
-                else{
-                  
-                }
-              }else{
-                $("#qunaity-limit").text("Available stock: " + "<%= @dispached_stock.to_i %>");
-              }
+          $("#quantity").on('input keyup ', function(){           
+            validate();
           });
+
+         $('select[name=unit]').on('change',function(){
+           validate();
+         });
     });
 
  
 });
  
-  function validate_quantity(hub, project, quantity, unit)
+  function validate_quantity(source_hub,destination_hub, project, quantity, unit, total_qty)
   {
     
-    if( hub!="" && project!="" && quantity!="" && unit!="")
+    if(source_hub!="" && destination_hub!="" && project!="" && quantity!="" && unit!="" && total_qty!="")
     {
+      
       
       $.ajax({
 		        url:'/stock_movements/validate_quantity',
@@ -533,23 +531,43 @@ $(document).ready(function(){
 		        dataType:'json',
 		        data:{
 		        	stock_movement: {
-                          source_hub_id: hub,
+                          source_hub_id: source_hub,
+                          destination_hub_id: destination_hub,
                           proj_id: project,
                           quantity: quantity,
-                          unit_of_measure_id: unit
+                          unit_of_measure_id: unit,
+                          total_qty: total_qty
 		        	}	            
 		        },
 		        before: function() {
 		        
 		        },
 		        success:function(data){
-		        		console.log(data);	
-                return data;                         
+		        		  
+                     if (!data){
+                   
+                              $("#qunaity-limit").removeClass("label label-primary");
+                              $("#qunaity-limit").addClass("label label-danger");
+                              $("#qunaity-limit").html("");
+                              $("#qunaity-limit").text("More than available stock");
+                  
+                              }
+                     else if ($('select[name=unit]').val()!="" && data) {
+                              $("#qunaity-limit").text("Available stock: " + "<%= @dispached_stock.to_i %>");
+                     }
+                                      
 		        },
 		        error:function(data){
 		            console.log(data);
 		        }
 		    });
+    } else
+    
+    {
+                              $("#qunaity-limit").removeClass("label label-primary");
+                              $("#qunaity-limit").addClass("label label-danger");
+                              $("#qunaity-limit").html("");
+                              $("#qunaity-limit").html("Unit or quantity is empty!");
     }
   }
 
