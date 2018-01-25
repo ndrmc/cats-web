@@ -6,7 +6,7 @@ class StockMovementsController < ApplicationController
   # GET /stock_movements
   # GET /stock_movements.json
   def index
-    @stock_movements = StockMovement.includes(:unit_of_measure,:source_hub,:destination_hub,:source_warehouse,:destination_warehouse,:project,:commodity).all
+    @stock_movements = StockMovement.includes(:unit_of_measure,:source_hub,:destination_hub,:source_warehouse,:destination_warehouse,:project,:commodity).all.order('created_at DESC')
   end
 
   # GET /stock_movements/1
@@ -478,6 +478,6 @@ def validate_quantity
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stock_movement_params
-      params.require(:stock_movement).permit(:movement_date, :source_hub_id, :source_warehouse_id, :source_store_id, :destination_hub_id, :destination_warehouse_id, :destination_store_id, :project_id, :commodity_id, :unit_of_measure_id, :quantity, :description, :hub_id, :warehouse_id, :proj_id, :stock_movement_id, :gin, :dispatch_date, :amount, :unit_of_measure, :transporter, :driver_name, :plate_no, :plate_no_trailer, :store_keeper, :dispatch_id)
+      params.require(:stock_movement).permit(:movement_date, :source_hub_id, :source_warehouse_id, :source_store_id, :destination_hub_id, :destination_warehouse_id, :destination_store_id, :project_id, :commodity_id, :unit_of_measure_id, :quantity, :description, :hub_id, :warehouse_id, :proj_id, :stock_movement_id, :gin, :dispatch_date, :amount, :unit_of_measure, :transporter, :driver_name, :plate_no, :plate_no_trailer, :store_keeper, :dispatch_id, :reference_no, :requisition_no)
     end
 end

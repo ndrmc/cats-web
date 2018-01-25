@@ -24,6 +24,7 @@
       <table class="table table-striped">
         <thead>
           <tr>
+            <th>Reference</th>    
             <th>Source</th>          
             <th>Destination</th>          
             <th>Project</th>
@@ -37,7 +38,8 @@
         <tbody>
           <% @stock_movements.each do |stock_movement| %>
           <tr>
-            <td><%= link_to stock_movement&.source_hub&.name + " > " + stock_movement&.source_warehouse&.name, stock_movement_path(stock_movement.id) %></td>
+            <td><%= link_to stock_movement&.reference_no, stock_movement_path(stock_movement.id) %></td>
+            <td><%= stock_movement&.source_hub&.name + " > " + stock_movement&.source_warehouse&.name %></td>
             <td><%= stock_movement&.destination_hub&.name + " > " + stock_movement&.destination_warehouse&.name %></td>
             <td><%= stock_movement&.project&.project_code + " [" + stock_movement&.commodity&.name + "]" %></td>
             <td><%= stock_movement.quantity %></td>

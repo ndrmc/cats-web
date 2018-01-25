@@ -30,34 +30,6 @@
         <div class="row">
           <div class="col-sm-6">
             <dl class="dl-horizontal">
-              <dt>Source Hub:</dt>
-              <dd><%= @stock_movement&.source_hub&.name %></dd>
-            </dl>
-          </div>
-          <div class="col-sm-6">
-            <dl class="dl-horizontal">
-              <dt>Destination Hub:</span>
-              <dd><%= @stock_movement&.destination_hub&.name %></dd>
-            </dl>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <dl class="dl-horizontal">
-              <dt>Source warehouse:</dt>
-              <dd><%= @stock_movement&.source_warehouse&.name %></dd>
-            </dl>
-          </div>
-          <div class="col-sm-6">
-            <dl class="dl-horizontal">
-              <dt>Destination warehouse:</dt>
-              <dd><%= @stock_movement&.destination_warehouse&.name %></dd>
-            </dl>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <dl class="dl-horizontal">
               <dt>Project:</dt>
               <dd><%= @stock_movement&.project&.project_code %></dd>
             </dl>
@@ -105,6 +77,34 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Source Hub:</dt>
+              <dd><%= @stock_movement&.source_hub&.name %></dd>
+            </dl>
+          </div>
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Destination Hub:</span>
+              <dd><%= @stock_movement&.destination_hub&.name %></dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Source warehouse:</dt>
+              <dd><%= @stock_movement&.source_warehouse&.name %></dd>
+            </dl>
+          </div>
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Destination warehouse:</dt>
+              <dd><%= @stock_movement&.destination_warehouse&.name %></dd>
+            </dl>
+          </div>
+        </div>        
+        <div class="row">
           <div class="col-sm-12">
             <div class="col-sm-6">
               <dl class="dl-horizontal">
@@ -114,7 +114,7 @@
                     <div style="width: <%= number_to_percentage(@stock_momvement_dispatch_progress , precision: 1) %>;" class="progress-bar"></div>
                   </div>
                   <small>Dispatch Progress progress is at
-                    <strong><%= number_to_percentage(@stock_momvement_dispatch_progress , precision: 1) %></strong> (Total dispatched: <%= @total_dispatched_quantity.to_f %> ).</small>
+                    <strong><%= number_to_percentage(@stock_momvement_dispatch_progress , precision: 1) %></strong> (Total dispatched: <%= @total_dispatched_quantity.to_f %>MT ).</small>
                 </dd>
               </dl>
             </div>
@@ -139,7 +139,7 @@
               <dl class="dl-horizontal">
                 <dt>Goods in Transit:</dt>
                 <dd>
-                 <%= @dispached_stock.to_f %>
+                 <%= @dispached_stock.to_f %>MT
                 </dd>
               </dl>
             </div>
@@ -147,7 +147,7 @@
               <dl class="dl-horizontal">
                 <dt>Received so far:</dt>
                 <dd>
-                  <%= @received_stock.to_f %>
+                  <%= @received_stock.to_f %>MT
                 </dd>
               </dl>
             </div>            
