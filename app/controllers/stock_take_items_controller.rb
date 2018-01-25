@@ -20,6 +20,7 @@ class StockTakeItemsController < ApplicationController
 
   # GET /stock_take_items/1/edit
   def edit
+    @stock_take = StockTake.find_by_id(StockTakeItem.find_by_id(params[:id]).stock_take_id)
   end
 
    # POST /stock_take_items
