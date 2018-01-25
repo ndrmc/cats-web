@@ -15,12 +15,17 @@ class StockMovementsController < ApplicationController
     @commodity_category = Commodity.includes(:commodity_category).find(@stock_movement.commodity_id)
     @unit_of_measures = UnitOfMeasure.where(uom_category_id: @commodity_category.uom_category_id)
     @transporters = Transporter.order(:name)
-    @dispatch_items = DispatchItem.includes(:unit_of_measure, dispatch: :transporter).where(:'dispatches.dispatch_type' => :transfer)
+    @dispatch_items = DispatchItem.includes(:unit_of_measure, dispatch: :transporter).where(:'dispatches.dispatch_type' => :transfer, :'dispatches.dispatch_type_id' => @stock_movement.id)
+    stock_account = Account.find_by({'code': :stock})
+    dispatched_account = Account.find_by({'code': :dispatched})
+    stock_movement_journal = Journal.find_by({'code': :internal_movement})
 
-    @receipts = ReceiptLine.includes(:receipt).where('receipts.receipt_type' => :transfer)
+    @receipts = ReceiptLine.includes(:receipt).where('receipts.receipt_type' => :transfer, :'receipts.receipt_type_id' => @stock_movement.id)
     @uom_category_id = Commodity.find(@stock_movement.commodity_id).uom_category_id
-    @dispached_stock, @dispatch_stock_progress = get_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
-    @received_stock, @received_stock_progress = get_received_amount_for_project_code(@stock_movement.project_id, @stock_movement.destination_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
+    @dispatched_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: dispatched_account.id, hub_id: @stock_movement.source_hub_id, project_id: @stock_movement.project_id).sum(:quantity)
+    @dispatch_stock_progress = get_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
+    @received_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: stock_account.id, hub_id: @stock_movement.destination_hub_id, project_id: @stock_movement.project_id).sum(:quantity)
+    @received_stock_progress = get_received_amount_for_project_code(@stock_movement.project_id, @stock_movement.destination_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
   end
 
   # GET /stock_movements/new
@@ -112,6 +117,10 @@ class StockMovementsController < ApplicationController
     if @existing_ws == 0 
       @stock_movement = StockMovement.includes(:unit_of_measure,:source_hub,:destination_hub,:source_warehouse,:destination_warehouse,:project,commodity: :commodity_category).find(stock_movement_params["stock_movement_id"])
 
+      stock_account = Account.find_by({'code': :stock})
+      @available_stock = PostingItem.where(account_id: stock_account.id, hub_id: @stock_movement.source_hub_id, warehouse_id: @stock_movement.source_warehouse_id, project_id: @stock_movement.project_id).sum(:quantity)
+      @amount_in_ref = UnitOfMeasure.find(stock_movement_params["unit_of_measure"].to_i).to_ref(stock_movement_params["amount"].to_f)
+
       @dispatch = Dispatch.new
       @dispatch.gin_no = stock_movement_params["gin"]
       @dispatch.dispatch_date = stock_movement_params["dispatch_date"]
@@ -137,19 +146,33 @@ class StockMovementsController < ApplicationController
       @dispatch.dispatch_items << @dispatch_item
     end
     
-    respond_to do |format|                        
-      if @dispatch.save && @existing_ws == 0 
-        format.html { redirect_to @dispatch, notice: 'Dispatch was successfully created.' }
-        format.json { render :show, status: :created, location: @dispatch }
-      else
-        format.html { render :new }
-        format.json { render json: @dispatch.errors, status: :unprocessable_entity }
-      end
+    if @existing_ws > 0
+      @data = []
+      @data << 'exists'        
+      render json: @data
+    elsif @available_stock < @amount_in_ref
+      @data = []
+      @data << 'notenough'     
+      @data << 'Not enough stock available. Only ' + @available_stock.to_s + 'MT is avalable.'      
+      render json: @data
+    elsif @dispatch.save
+      @data = []
+      @data << 'success'     
+      @data << 'Dispatch was successfully created.'      
+      render json: @data
+    else
+      @data = []
+      @data << 'failed'        
+      render json: @data
     end
   end
 
   def stock_movement_dispatch_edit    
     @stock_movement = StockMovement.includes(:unit_of_measure,:source_hub,:destination_hub,:source_warehouse,:destination_warehouse,:project,commodity: :commodity_category).find(stock_movement_params["stock_movement_id"])
+    
+    stock_account = Account.find_by({'code': :stock})
+    @available_stock = PostingItem.where(account_id: stock_account.id, hub_id: @stock_movement.source_hub_id, warehouse_id: @stock_movement.source_warehouse_id, project_id: @stock_movement.project_id).sum(:quantity)
+    @amount_in_ref = UnitOfMeasure.find(stock_movement_params["unit_of_measure"]).to_ref(stock_movement_params["amount"])
 
     @dispatch = Dispatch.find(stock_movement_params["dispatch_id"])
     @dispatch_hash = Hash.new
@@ -168,6 +191,8 @@ class StockMovementsController < ApplicationController
     @dispatch_item =  DispatchItem.where(dispatch_id: stock_movement_params["dispatch_id"]).first
     @dispatch_item.commodity_category_id = @stock_movement.commodity.commodity_category_id
     @dispatch_item.commodity_id = @stock_movement.commodity_id
+    @old_amount_in_ref = UnitOfMeasure.find(@dispatch_item.unit_of_measure_id).to_ref(@dispatch_item.quantity)
+    @available_stock = @available_stock + @old_amount_in_ref
     @dispatch_item.quantity = stock_movement_params["amount"]
     @dispatch_item.unit_of_measure_id = stock_movement_params["unit_of_measure"]
     @dispatch_item.project_id = @stock_movement.project_id
@@ -177,14 +202,20 @@ class StockMovementsController < ApplicationController
     @dispatch_items_array << @dispatch_item
     @dispatch_hash["dispatch_items"] = @dispatch_items_array
     
-    respond_to do |format|                        
-      if @dispatch.update(@dispatch_hash)
-        format.html { redirect_to @dispatch, notice: 'Dispatch was successfully updated.' }
-        format.json { render :show, status: :created, location: @dispatch }
-      else
-        format.html { render :new }
-        format.json { render json: @dispatch.errors, status: :unprocessable_entity }
-      end
+    if @available_stock < @amount_in_ref
+      @data = []
+      @data << 'notenough'     
+      @data << 'Not enough stock available. Only ' + @available_stock.to_s + 'MT is avalable.'      
+      render json: @data
+    elsif @dispatch.save
+      @data = []
+      @data << 'success'     
+      @data << 'Dispatch was successfully updated.'      
+      render json: @data
+    else
+      @data = []
+      @data << 'failed'        
+      render json: @data
     end
   end
   def get_dispatch
