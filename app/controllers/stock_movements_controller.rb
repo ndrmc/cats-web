@@ -6,7 +6,7 @@ class StockMovementsController < ApplicationController
   # GET /stock_movements
   # GET /stock_movements.json
   def index
-    @stock_movements = StockMovement.includes(:unit_of_measure,:source_hub,:destination_hub,:source_warehouse,:destination_warehouse,:project,:commodity).all
+    @stock_movements = StockMovement.includes(:unit_of_measure,:source_hub,:destination_hub,:source_warehouse,:destination_warehouse,:project,:commodity).all.order('created_at DESC')
   end
 
   # GET /stock_movements/1
@@ -76,11 +76,27 @@ end
   # PATCH/PUT /stock_movements/1
   # PATCH/PUT /stock_movements/1.json
   def update
+    @total_dispatched = 0
+    DispatchItem.includes(:dispatch).where(:'dispatches.dispatch_type_id' => params[:id].to_i).each do |dispatch_item|
+      dispatched_to_ref = UnitOfMeasure.find(dispatch_item.unit_of_measure_id.to_i).to_ref(dispatch_item.quantity.to_f)
+      @total_dispatched = @total_dispatched + dispatched_to_ref
+    end
+    @projects = Project.where('archived = ? OR archived IS NULL',false)
+    @commodities = Commodity.all
+    @commodity_categories = CommodityCategory.all
+    @uoms = UnitOfMeasure.all
+    @hubs = Hub.order(:name)
+    @warehouses = Warehouse.order(:name)
+    @stores = Store.order(:name)
+    @organizations = Organization.order(:name)
+    @unit_of_measures = UnitOfMeasure.order(:name)
+    @donor_id = @stock_movement&.project&.organization&.id 
     respond_to do |format|
-      if @stock_movement.update(stock_movement_params)
+      if (@stock_movement.update(stock_movement_params) && @total_dispatched < stock_movement_params['quantity'].to_f)
         format.html { redirect_to stock_movements_path, notice: 'Stock movement was successfully updated.' }
         format.json { render :show, status: :ok, location: @stock_movement }
       else
+        flash[:error] = "Update failed. Make sure the updated quantity is not less than the total dispatch amount under this plan."
         format.html { render :edit }
         format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
       end
@@ -122,6 +138,13 @@ end
       @available_stock = PostingItem.where(account_id: stock_account.id, hub_id: @stock_movement.source_hub_id, warehouse_id: @stock_movement.source_warehouse_id, project_id: @stock_movement.project_id).sum(:quantity)
       @amount_in_ref = UnitOfMeasure.find(stock_movement_params["unit_of_measure"].to_i).to_ref(stock_movement_params["amount"].to_f)
 
+      @total_dispatched = 0
+      DispatchItem.includes(:dispatch).where(:'dispatches.dispatch_type_id' => @stock_movement.id).each do |dispatch_item|
+        dispatched_to_ref = UnitOfMeasure.find(dispatch_item.unit_of_measure_id.to_i).to_ref(dispatch_item.quantity.to_f)
+        @total_dispatched = @total_dispatched + dispatched_to_ref
+      end
+      @total_dispatched = @total_dispatched + @amount_in_ref
+
       @dispatch = Dispatch.new
       @dispatch.gin_no = stock_movement_params["gin"]
       @dispatch.dispatch_date = stock_movement_params["dispatch_date"]
@@ -151,6 +174,11 @@ end
       @data = []
       @data << 'exists'        
       render json: @data
+    elsif @total_dispatched > @stock_movement.quantity
+      @data = []
+      @data << 'invalid'     
+      @data << 'Dispatching more than the planned amount is not allowed.'      
+      render json: @data
     elsif @available_stock < @amount_in_ref
       @data = []
       @data << 'notenough'     
@@ -174,6 +202,13 @@ end
     stock_account = Account.find_by({'code': :stock})
     @available_stock = PostingItem.where(account_id: stock_account.id, hub_id: @stock_movement.source_hub_id, warehouse_id: @stock_movement.source_warehouse_id, project_id: @stock_movement.project_id).sum(:quantity)
     @amount_in_ref = UnitOfMeasure.find(stock_movement_params["unit_of_measure"]).to_ref(stock_movement_params["amount"])
+
+    @total_dispatched = 0
+    DispatchItem.includes(:dispatch).where(:'dispatches.dispatch_type_id' => @stock_movement.id).each do |dispatch_item|
+      dispatched_to_ref = UnitOfMeasure.find(dispatch_item.unit_of_measure_id.to_i).to_ref(dispatch_item.quantity.to_f)
+      @total_dispatched = @total_dispatched + dispatched_to_ref
+    end
+    @total_dispatched = @total_dispatched + @amount_in_ref
 
     @dispatch = Dispatch.find(stock_movement_params["dispatch_id"])
     @dispatch_hash = Hash.new
@@ -482,6 +517,6 @@ def validate_quantity
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stock_movement_params
-      params.require(:stock_movement).permit(:movement_date, :source_hub_id, :source_warehouse_id, :source_store_id, :destination_hub_id, :destination_warehouse_id, :destination_store_id, :project_id, :commodity_id, :unit_of_measure_id, :quantity, :description, :hub_id, :warehouse_id, :proj_id, :stock_movement_id, :gin, :dispatch_date, :amount, :unit_of_measure, :transporter, :driver_name, :plate_no, :plate_no_trailer, :store_keeper, :dispatch_id)
+      params.require(:stock_movement).permit(:movement_date, :source_hub_id, :source_warehouse_id, :source_store_id, :destination_hub_id, :destination_warehouse_id, :destination_store_id, :project_id, :commodity_id, :unit_of_measure_id, :quantity, :description, :hub_id, :warehouse_id, :proj_id, :stock_movement_id, :gin, :dispatch_date, :amount, :unit_of_measure, :transporter, :driver_name, :plate_no, :plate_no_trailer, :store_keeper, :dispatch_id, :reference_no, :requisition_no)
     end
 end

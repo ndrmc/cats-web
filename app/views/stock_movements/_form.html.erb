@@ -16,7 +16,25 @@
           </div>
         <% end %>
         <div class="ibox float-e-margins">
-          <div class="ibox-content">
+          <div class="ibox-content">  
+            <div class="row">
+              <div class="col-sm-6">  
+                <div class="form-group">
+                  <%= f.label :reference_no %> *
+                  <%= f.text_field :reference_no, :class => 'form-control big-text-field' %>
+                </div>
+              </div>
+              <div class="col-sm-6">        
+                <div class="form-group">
+                  <%= f.label :requisition_no %>
+                  <%= f.text_field :requisition_no, :class => 'form-control big-text-field' %>
+                </div> 
+              </div>              
+            </div>
+          </div>
+        </div>
+        <div class="ibox float-e-margins">
+          <div class="ibox-content">            
             <div class="row">
               <div class="col-sm-4">
                 <div class="form-group">

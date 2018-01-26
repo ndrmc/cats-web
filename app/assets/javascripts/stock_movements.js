@@ -117,6 +117,10 @@ $(document).ready(function() {
                     {
                         $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: GIN already exists. Try using another GIN");		            	
                     }
+                    else if (data[0] == 'invalid')
+                    {
+                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: " + data[1]);
+                    }
                     else if (data[0] == 'notenough')
                     {
                         $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: " + data[1]);
@@ -184,6 +188,10 @@ $(document).ready(function() {
                     if ( data[0] == 'exists' )
                     {
                         $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: GIN already exists. Try using another GIN");		            	
+                    }
+                    else if (data[0] == 'invalid')
+                    {
+                        $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: " + data[1]);
                     }
                     else if (data[0] == 'notenough')
                     {
