@@ -500,7 +500,7 @@ $(document).ready(function(){
                                               <%= @stock_movement&.destination_hub_id %>,
                                               <%= @stock_movement&.project_id %>,
                                               $("#quantity").val() , 
-                                              $('select[name=unit]').val(), <%= @stock_movement&.quantity %>)
+                                              $('select[name=unit]').val(), <%= @stock_movement&.quantity %>,<%= @stock_movement&.id %> )
     }
 
         $(document).on('show.bs.modal', '#new-receipt-modal', function (e) {
@@ -518,10 +518,10 @@ $(document).ready(function(){
  
 });
  
-  function validate_quantity(source_hub,destination_hub, project, quantity, unit, total_qty)
+  function validate_quantity(source_hub,destination_hub, project, quantity, unit, total_qty,stock_movement)
   {
-    
-    if(source_hub!="" && destination_hub!="" && project!="" && quantity!="" && unit!="" && total_qty!="")
+  
+    if(source_hub!="" && destination_hub!="" && project!="" && quantity!="" && unit!="" && total_qty!="" && stock_movement!=null)
     {
       
       
@@ -536,24 +536,26 @@ $(document).ready(function(){
                           proj_id: project,
                           quantity: quantity,
                           unit_of_measure_id: unit,
-                          total_qty: total_qty
+                          total_qty: total_qty,
+                          stock_movement_id: stock_movement
 		        	}	            
 		        },
 		        before: function() {
 		        
 		        },
 		        success:function(data){
-		        		  
+		        		  alert(data);
                      if (!data){
                    
                               $("#qunaity-limit").removeClass("label label-primary");
                               $("#qunaity-limit").addClass("label label-danger");
                               $("#qunaity-limit").html("");
                               $("#qunaity-limit").text("More than available stock");
-                  
+                              $("#qunaity-limit").show();
                               }
                      else if ($('select[name=unit]').val()!="" && data) {
                               $("#qunaity-limit").text("Available stock: " + "<%= @dispached_stock.to_i %>");
+                              $("#qunaity-limit").show();
                      }
                                       
 		        },
@@ -568,13 +570,13 @@ $(document).ready(function(){
                               $("#qunaity-limit").addClass("label label-danger");
                               $("#qunaity-limit").html("");
                               $("#qunaity-limit").html("Unit or quantity is empty!");
+                              $("#qunaity-limit").show();
     }
   }
 
 $(document).on("click", ".new-receipt-modal",function(){
   var receieved_id = $(this).data('id');
-
-   $.ajax( { url: '/stock_movements/stock_movement_edit/' + receieved_id,cache: false, method: 'GET'})
+   $.ajax( { url: '/stock_movements/stock_movement_edit/' + receieved_id,  dataType: 'json', type: 'GET'})
              .done( function(data) {
             
                 $(".form-group #grn_no").val(data.grn_no);
@@ -591,6 +593,6 @@ $(document).on("click", ".new-receipt-modal",function(){
                 
              });
 
- 
+  $("#qunaity-limit").hide();
 });
 </script>
