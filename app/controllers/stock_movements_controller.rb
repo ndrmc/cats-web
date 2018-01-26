@@ -273,33 +273,49 @@ def createReceive
 
 if (params[:edit_mode]=='true')#update
 
-    receipt = Receipt.find(params[:receipt_id])
-    receipt_line = receipt.receipt_lines.first
+       @goods_dispatched = get_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
+       @goods_received = get_received_amount_for_project_code(@stock_movement.project_id, @stock_movement.destination_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
+       @goods_in_transit = @goods_dispatched[0].to_f - @goods_received[0].to_f
+       
+         if (@goods_in_transit >= params[:quantity].to_f)
+
+                receipt = Receipt.find(params[:receipt_id])
+                receipt_line = receipt.receipt_lines.first
+                
+                receipt.grn_no = params[:grn_no]
+                receipt.received_date = params[:received_date]
+                receipt.transporter_id = params[:transporter_id]
+                receipt.plate_no = params[:plate_no]
+                receipt.trailer_plate_no = params[:trailer_plate_no]
+                receipt.storekeeper_name = params[:store_keeper]
+                receipt.store_id = params[:store]
+
+              
+                receipt_line.quantity = params[:quantity]
+                receipt_line.unit_of_measure_id = params[:unit]
     
-    receipt.grn_no = params[:grn_no]
-    receipt.received_date = params[:received_date]
-    receipt.transporter_id = params[:transporter_id]
-    receipt.plate_no = params[:plate_no]
-    receipt.trailer_plate_no = params[:trailer_plate_no]
-    receipt.storekeeper_name = params[:store_keeper]
-    receipt.store_id = params[:store]
-
-   
-    receipt_line.quantity = params[:quantity]
-    receipt_line.unit_of_measure_id = params[:unit]
-    
 
 
-     respond_to do |format|
-                      if receipt.update_attributes!(receipt_lines_attributes: [receipt_line.attributes])
-                                format.html { redirect_to stock_movement_path(@stock_movement.id), notice: 'Stock movement was successfully updated.' }
-                                format.json { render :show, status: :ok, location: @stock_movement }
-                      else
-                                format.html { redirect_to stock_movement_path(@stock_movement.id)}
-                                flash[:error] = "Received not updated. Check the data and try again"
-                                format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
-                      end
-            end
+                respond_to do |format|
+                                  if receipt.update_attributes!(receipt_lines_attributes: [receipt_line.attributes])
+                                            format.html { redirect_to stock_movement_path(@stock_movement.id), notice: 'Stock movement was successfully updated.' }
+                                            format.json { render :show, status: :ok, location: @stock_movement }
+                                  else
+                                            format.html { redirect_to stock_movement_path(@stock_movement.id)}
+                                            flash[:error] = "Received not updated. Check the data and try again"
+                                            format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
+                                  end
+                          end
+          else
+               respond_to do |format|
+                    
+                        format.html { redirect_to stock_movement_path(@stock_movement.id)}
+                        flash[:error] = "Received not saved. Received amount is more than dispatched amount"
+                        format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
+                   
+                  end
+          end
+          
 else#add new receipt
           
           @goods_dispatched = get_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id, @stock_movement.quantity, @stock_movement.unit_of_measure_id)
