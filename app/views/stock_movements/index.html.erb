@@ -37,6 +37,7 @@
 
         <tbody>
           <% @stock_movements.each do |stock_movement| %>
+          <% @dispatch_count = Dispatch.where(:dispatch_type_id => stock_movement.id).count %>
           <tr>
             <td><%= link_to stock_movement&.reference_no, stock_movement_path(stock_movement.id) %></td>
             <td><%= stock_movement&.source_hub&.name + " > " + stock_movement&.source_warehouse&.name %></td>
@@ -50,11 +51,26 @@
               <td><span class="label label-primary"><%= stock_movement.status %></span></td>
             <% end %>
             <td>
-              <%= link_to 'Edit', edit_stock_movement_path(stock_movement), :class => "btn btn-warning" %> &middot;
-              <% if (stock_movement.status == "open") %>
-                <%= link_to 'Close', "/stock_movements/close/" + stock_movement.id.to_s, class: "btn btn-default", method: :post, data: { confirm: 'Are you sure you want to close this Stock Transfer?' } %> &middot;
-              <% end %>
-              <%= link_to 'Delete', stock_movement, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure you want to delete this Stock Transfer?' } %>
+            <% if (stock_movement.status == "open") %>
+              <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Take Action
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li>
+                    <%= link_to 'Edit', edit_stock_movement_path(stock_movement) %>
+                  </li>                     
+                  <li>                    
+                    <%= link_to 'Close', "/stock_movements/close/" + stock_movement.id.to_s, class: "", method: :post, data: { confirm: 'Are you sure you want to close this Stock Transfer?' } %>  
+                  </li>
+                  <li>
+                    <% if @dispatch_count == 0 %>
+                      <%= link_to 'Delete', stock_movement, class: "", method: :delete, data: { confirm: 'Are you sure you want to delete this Stock Transfer?' } %>
+                    <% end %>
+                  </li>
+                </ul>
+              </div>
+            <% end %> 
             </td>
           </tr>
           <% end %>

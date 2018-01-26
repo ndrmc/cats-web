@@ -1,6 +1,6 @@
 class StockMovementsController < ApplicationController
 
-  before_action :set_stock_movement, only: [:show, :edit, :update, :destroy, :createReceive]
+  before_action :set_stock_movement, only: [:show, :edit, :update, :destroy, :createReceive, :close]
   protect_from_forgery prepend:true
 
   # GET /stock_movements
@@ -76,11 +76,27 @@ end
   # PATCH/PUT /stock_movements/1
   # PATCH/PUT /stock_movements/1.json
   def update
+    @total_dispatched = 0
+    DispatchItem.includes(:dispatch).where(:'dispatches.dispatch_type_id' => params[:id].to_i).each do |dispatch_item|
+      dispatched_to_ref = UnitOfMeasure.find(dispatch_item.unit_of_measure_id.to_i).to_ref(dispatch_item.quantity.to_f)
+      @total_dispatched = @total_dispatched + dispatched_to_ref
+    end
+    @projects = Project.where('archived = ? OR archived IS NULL',false)
+    @commodities = Commodity.all
+    @commodity_categories = CommodityCategory.all
+    @uoms = UnitOfMeasure.all
+    @hubs = Hub.order(:name)
+    @warehouses = Warehouse.order(:name)
+    @stores = Store.order(:name)
+    @organizations = Organization.order(:name)
+    @unit_of_measures = UnitOfMeasure.order(:name)
+    @donor_id = @stock_movement&.project&.organization&.id 
     respond_to do |format|
-      if @stock_movement.update(stock_movement_params)
+      if (@stock_movement.update(stock_movement_params) && @total_dispatched < stock_movement_params['quantity'].to_f)
         format.html { redirect_to stock_movements_path, notice: 'Stock movement was successfully updated.' }
         format.json { render :show, status: :ok, location: @stock_movement }
       else
+        flash[:error] = "Update failed. Make sure the updated quantity is not less than the total dispatch amount under this plan."
         format.html { render :edit }
         format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
       end
