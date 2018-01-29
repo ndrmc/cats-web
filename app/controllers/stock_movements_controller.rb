@@ -25,7 +25,7 @@ class StockMovementsController < ApplicationController
     @dispached_stock, @dispatch_stock_progress = get_dispatched_amount_for_project_code(@stock_movement)
     @received_stock, @received_stock_progress = get_received_amount_for_project_code(@stock_movement)
     @received_progress_against_in_transit = (@dispached_stock.to_i == 0) ? 0 : (@received_stock/@dispached_stock) * 100
-    @total_dispatched_quantity = get_total_dispatched_amount_for_project_code(@stock_movement.project_id, @stock_movement.source_hub_id)
+    @total_dispatched_quantity = get_total_dispatched_amount_for_project_code(@stock_movement)
     @dispached_stock = @dispached_stock -  @received_stock
 end
 
@@ -337,7 +337,7 @@ if (params[:edit_mode]=='true')#update
                                             format.json { render :show, status: :ok, location: @stock_movement }
                                   else
                                             format.html { redirect_to stock_movement_path(@stock_movement.id)}
-                                            flash[:error] = "Received not updated. Check the data and try again"
+                                            flash[:error] = "Record not updated. Check the data and try again"
                                             format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
                                   end
                           end
@@ -345,7 +345,7 @@ if (params[:edit_mode]=='true')#update
                respond_to do |format|
                     
                         format.html { redirect_to stock_movement_path(@stock_movement.id)}
-                        flash[:error] = "Received not saved. Received amount is more than dispatched amount"
+                        flash[:error] = "Record not saved. Received amount is more than dispatched amount"
                         format.json { render json: @stock_movement.errors, status: :unprocessable_entity }
                    
                   end
@@ -449,11 +449,12 @@ def stock_movement_destroy_receive
             end
         end
 end
-def get_total_dispatched_amount_for_project_code(project_id, source_hub_id)
-    dispatched_account = Account.find_by({'code': :dispatched})
-    stock_movement_journal = Journal.find_by({'code': :internal_movement})
-
-    @dispatched_stock = PostingItem.where(journal_id: stock_movement_journal.id, account_id: dispatched_account.id, hub_id: source_hub_id, project_id: project_id).where('quantity > 0').sum(:quantity)
+def get_total_dispatched_amount_for_project_code(stock_movement)
+             @dispatched_stock = 0
+              DispatchItem.includes(:dispatch).where(:'dispatches.dispatch_type_id' => stock_movement.id).each do |dispatch_item|
+              dispatched_to_ref = UnitOfMeasure.find(dispatch_item.unit_of_measure_id.to_i).to_ref(dispatch_item.quantity.to_f)
+              @dispatched_stock = @dispatched_stock + dispatched_to_ref
+              end
     return @dispatched_stock
 end
 
@@ -493,7 +494,7 @@ def validate_quantity
         @unit = stock_movement_params["unit_of_measure_id"]
         @total_qty =  stock_movement_params["total_qty"]
         
-        @stock_dispatched = get_total_dispatched_amount_for_project_code( @project_id, @source_hub_id)
+        @stock_dispatched = get_total_dispatched_amount_for_project_code( @stock_movement)
         @received_amount  =  get_received_amount_for_project_code(@stock_movement)
 
         quantity_in_ref = UnitOfMeasure.find(@unit.to_i).to_ref(@quantity.to_f)

@@ -420,7 +420,7 @@
         <div class="modal-body col-md-12 col-sm-12 col-xs-12">
       
 
-      <form role="form" method="POST" enctype="multipart/form-data" action="/en/stock_movements/createReceive/<%= @stock_movement.id %>" class="form-inline" style="display: inline;margin-top: 15px"">
+      <form role="form" method="POST" enctype="multipart/form-data" action="/stock_movements/createReceive/<%= @stock_movement.id %>" class="form-inline" style="display: inline;margin-top: 15px"">
         
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         <input  type="hidden" name="edit_mode" id="edit_mode" value="false" /> 
@@ -554,7 +554,7 @@ $(document).ready(function(){
 		        
 		        },
 		        success:function(data){
-		        		  alert(data);
+		        		 
                      if (!data){
                    
                               $("#qunaity-limit").removeClass("label label-primary");
