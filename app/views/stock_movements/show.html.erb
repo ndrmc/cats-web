@@ -515,6 +515,7 @@ $(document).ready(function(){
 
         $(document).on('show.bs.modal', '#new-receipt-modal', function (e) {
           $(".form-group #qunaity-limit").text("Available stock: " + "<%= @dispached_stock.to_i %>");
+          $("#qunaity-limit").show();
 
           $("#quantity").on('input keyup ', function(){           
             validate();
