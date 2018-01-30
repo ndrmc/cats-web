@@ -4,6 +4,9 @@ Rails.application.routes.draw do
  
   
 
+  resources :project_code_allocations
+  post '/project_code_allocations/create_for_requisition', to: 'project_code_allocations#create_for_requisition'
+
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
   resources :warehouse_allocations
