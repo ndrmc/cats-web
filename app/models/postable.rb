@@ -404,8 +404,8 @@ module Postable
     posting_items = []
     amount_in_ref = UnitOfMeasure.find(self.unit_of_measure_id).to_ref(self.amount)
     debit = PostingItem.new({
-      account_id: stock_account.id,
-      journal_id: dispatch_allocation_journal.id,
+      account_id: stock_account&.id,
+      journal_id: dispatch_allocation_journal&.id,
       donor_id: Project.find(self.project_id).organization_id,
       hub_id: self.hub_id,
       warehouse_id: self.warehouse_id,
@@ -414,14 +414,13 @@ module Postable
       batch_id: 1,
       program_id: Operation.find(self.operation_id).program_id,
       commodity_id: Project.find(self.project_id).commodity_id,
-      commodity_category_id: Commodity.find(Project.find(self.project_id).commodity_id).commodity_category_id,
       quantity: -amount_in_ref
     })
     posting_items << debit
 
     credit = PostingItem.new({
-      account_id: allocated_account.id,
-      journal_id: dispatch_allocation_journal.id,
+      account_id: allocated_account&.id,
+      journal_id: dispatch_allocation_journal&.id,
       donor_id: Project.find(self.project_id).organization_id,
       hub_id: self.hub_id,
       warehouse_id: self.warehouse_id,
@@ -430,7 +429,6 @@ module Postable
       batch_id: 1,
       program_id: Operation.find(self.operation_id).program_id,
       commodity_id: Project.find(self.project_id).commodity_id,
-      commodity_category_id: Commodity.find(Project.find(self.project_id).commodity_id).commodity_category_id,
       quantity: amount_in_ref
     })
     posting_items << credit

@@ -7,7 +7,8 @@ class ProjectCodeAllocationsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:admin)
     @project_code_allocation = project_code_allocations(:pc_allocation_1)
     @requisition = requisitions(:requisition3)
-    
+    @project = projects(:project5)
+    @commodity = commodities(:commodity_1)
   end
 
   test "should get index" do
