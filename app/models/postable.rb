@@ -24,6 +24,9 @@ module Postable
     elsif(self.is_a?(StockTake))
       logger.info "Processing posting information for StockTake"
       post_stock_take
+    elsif(self.is_a?(ProjectCodeAllocation))
+      logger.info "Processing posting information for ProjectCodeAllocation"
+      post_project_code_allocation
     end
 
   end
@@ -392,6 +395,47 @@ module Postable
     end
     post( Posting.document_types[:stock_take], self.id, Posting.posting_types[:normal], posting_items)
 
+  end
+
+  def post_project_code_allocation
+    stock_account = Account.find_by({'code': :stock})
+    allocated_account = Account.find_by({'code': :allocated})
+    dispatch_allocation_journal = Journal.find_by({'code': :dispatch_allocation})
+    posting_items = []
+    amount_in_ref = UnitOfMeasure.find(self.unit_of_measure_id).to_ref(self.amount)
+    debit = PostingItem.new({
+      account_id: stock_account.id,
+      journal_id: dispatch_allocation_journal.id,
+      donor_id: Project.find(self.project_id).organization_id,
+      hub_id: self.hub_id,
+      warehouse_id: self.warehouse_id,
+      store_id: self.store_id,
+      project_id: self.project_id,
+      batch_id: 1,
+      program_id: Operation.find(self.operation_id).program_id,
+      commodity_id: Project.find(self.project_id).commodity_id,
+      commodity_category_id: Commodity.find(Project.find(self.project_id).commodity_id).commodity_category_id,
+      quantity: -amount_in_ref
+    })
+    posting_items << debit
+
+    credit = PostingItem.new({
+      account_id: allocated_account.id,
+      journal_id: dispatch_allocation_journal.id,
+      donor_id: Project.find(self.project_id).organization_id,
+      hub_id: self.hub_id,
+      warehouse_id: self.warehouse_id,
+      store_id: self.store_id,
+      project_id: self.project_id,
+      batch_id: 1,
+      program_id: Operation.find(self.operation_id).program_id,
+      commodity_id: Project.find(self.project_id).commodity_id,
+      commodity_category_id: Commodity.find(Project.find(self.project_id).commodity_id).commodity_category_id,
+      quantity: amount_in_ref
+    })
+    posting_items << credit
+
+    post( Posting.document_types[:receipt], self.id, Posting.posting_types[:normal], posting_items)
   end
 
 

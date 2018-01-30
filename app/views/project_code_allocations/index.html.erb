@@ -146,7 +146,7 @@
             <div class="col-md-6 col-sm-6 col-xs-6">
               <%= label_tag :store, "Store", { :class => ' control-label'} %>
               <div class="">
-                <%= select_tag  :store,  options_from_collection_for_select( [], 'id', 'name', params[:store] ) , {:required => true , :class => 'form-control width-100per', name: 'project_code_allocation[store]' }  %>
+                <%= select_tag  :store,  options_from_collection_for_select( [], 'id', 'name', params[:store] ) , {:class => 'form-control width-100per', name: 'project_code_allocation[store]' }  %>
               </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6">
@@ -167,21 +167,6 @@
               <div class="">
                 <input type="text" id="requested_amount_lable" class="form-control width-100per" readonly/>     
               </div>
-            </div>
-          </div>
-          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
-            <div class="col-md-6 col-sm-6 col-xs-6">
-              <%= label_tag :amount, "Amount", { :class => ' control-label', :required => true } %>
-              <span class="required">*</span>
-              <div class="">
-                <input type="text" id="amount" class="form-control width-100per" , name='project_code_allocation[amount]'/>   
-                <div id="qunaity-limit" class="label label-primary"></div>  
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-6 col-xs-6">
-              <%= label_tag :unit_of_measure, "Unit" %>
-              <span class="required">*</span>
-              <%= select_tag :unit_of_measure, options_from_collection_for_select( [], 'id', 'name', params[:unit_of_measure] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control width-100per', name: 'project_code_allocation[unit_of_measure]' }  %>
             </div>
           </div>
           <div class="spinner col-md-12 col-sm-12 col-xs-12">

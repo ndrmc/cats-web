@@ -122,16 +122,16 @@
               </td>
               <td>
                 <% if(@progress_fdp.to_f == 100) %>
-                  <%= link_to 'Re-Allocate', '/', :class => "btn btn-warning" %>
+                  <%= link_to 'Re-Allocate', '/', :class => "" %>
                   &middot;
-                  <%= link_to 'Unallocate', '/' , method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-default" %>
+                  <%= link_to 'Unallocate', '/' , method: :delete, data: { confirm: 'Are you sure?' }, :class => "" %>
                 <% elsif(@requisition.project_code_allocations.present?) %>
-                  <a class="btn btn-primary allocate_pc_to_location" data-target="#allocate_pc_to_location_modal" data-toggle="modal" data-level="fdp" data-commodity-id="<%= @requisition.commodity_id %>" data-commodity="<%= @requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref_sum %>" data-commodity-category-id="<%= @requisition.commodity.commodity_category_id %>" data-requisition-id="<%= @requisition.id %>" data-operation-id="<%= @requisition.operation_id %>">Allocate PC</a>
-                  <%= link_to 'Re-Allocate', '/', :class => "btn btn-warning" %>
+                  <a class="allocate_pc_to_location" data-target="#allocate_pc_to_location_modal" data-toggle="modal" data-level="fdp" data-commodity-id="<%= @requisition.commodity_id %>" data-commodity="<%= @requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref_sum %>" data-commodity-category-id="<%= @requisition.commodity.commodity_category_id %>" data-requisition-id="<%= @requisition.id %>" data-operation-id="<%= @requisition.operation_id %>">Allocate PC</a> &middot;
+                  <%= link_to 'Re-Allocate', '/', :class => "" %>
                   &middot;
-                  <%= link_to 'Unallocate', '/' , method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-default" %>
+                  <%= link_to 'Unallocate', '/' , method: :delete, data: { confirm: 'Are you sure?' }, :class => "" %>
                 <% else %>
-                  <a class="btn btn-primary allocate_pc_to_location" data-target="#allocate_pc_to_location_modal" data-toggle="modal" data-level="fdp" data-commodity-id="<%= @requisition.commodity_id %>" data-commodity="<%= @requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref_sum %>" data-commodity-category-id="<%= @requisition.commodity.commodity_category_id %>" data-requisition-id="<%= @requisition.id %>" data-operation-id="<%= @requisition.operation_id %>">Allocate PC</a>
+                  <a class="allocate_pc_to_location" data-target="#allocate_pc_to_location_modal" data-toggle="modal" data-level="fdp" data-commodity-id="<%= @requisition.commodity_id %>" data-commodity="<%= @requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref_sum %>" data-commodity-category-id="<%= @requisition.commodity.commodity_category_id %>" data-requisition-id="<%= @requisition.id %>" data-operation-id="<%= @requisition.operation_id %>">Allocate PC</a>
                 <% end %>
               </td>
             </tr>
