@@ -6,7 +6,7 @@
         <%= link_to "Home", root_path %>
       </li>
       <li>
-        <%= link_to "Project Code Allocations", project_code_allocations_path(operation: @requisition.operation_id, region: @requisition.zone.parent.id) %>
+        <%= link_to "Project Code Allocations", project_code_allocations_path(operation: @requisition.operation_id, region: @requisition&.zone&.parent&.id) %>
       </li>
       <li class="active">
         <strong>Detail</strong>
@@ -15,7 +15,7 @@
   </div>
   <div class="col-sm-4">
     <div class="title-action">
-      <%= link_to 'Cancel', project_code_allocations_path(operation: @requisition.operation_id, region: @requisition.zone.parent.id),  :class => "btn btn-default"%>
+      <%= link_to 'Cancel', project_code_allocations_path(operation: @requisition.operation_id, region: @requisition&.zone&.parent&.id),  :class => "btn btn-default"%>
     </div>
   </div>
 </div>
@@ -34,7 +34,7 @@
           <div class="col-sm-6">
             <dl class="dl-horizontal">
               <dt>Zone:</dt>
-              <dd><%= @requisition.zone.name %></dd>
+              <dd><%= @requisition&.zone&.name %></dd>
             </dl>
           </div>
         </div>
@@ -48,8 +48,8 @@
           <div class="col-sm-6">
             <dl class="dl-horizontal">
               <dt>Requested Amount:</dt>
-              <% @unit_of_measure_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id %>
-              <% @requested_amount_to_ref = @requisition.requisition_items.map { |r| UnitOfMeasure.find(@unit_of_measure_id).to_ref(r.amount) } %>
+              <% @unit_of_measure_id = @requisition&.ration&.ration_items&.where(commodity_id: @requisition.commodity_id)&.first&.unit_of_measure_id %>
+              <% @requested_amount_to_ref = @requisition&.requisition_items.map { |r| UnitOfMeasure.find(@unit_of_measure_id).to_ref(r.amount) } %>
               <% @requested_amount_to_ref_sum = @requested_amount_to_ref.sum.round(2)%>
               <dd><%= ActiveSupport::NumberHelper.number_to_delimited(@requested_amount_to_ref_sum) %>MT</dd>
             </dl>
@@ -66,7 +66,12 @@
             <dl class="dl-horizontal">
               <dt>Progress:</dt>
               <% @allocated_amount_to_ref = @requisition.project_code_allocations.map { |p| UnitOfMeasure.find(p.unit_of_measure_id).to_ref(p.amount) } %>
-              <% @progress = (@allocated_amount_to_ref.sum / @requested_amount_to_ref.sum) * 100 %>
+              <% @requested_amount_to_ref_sum = @requested_amount_to_ref.sum %>
+              <% if (@requested_amount_to_ref_sum != 0) %>
+                <% @progress = (@allocated_amount_to_ref.sum / @requested_amount_to_ref_sum) * 100 %>
+              <% else %>
+                <% @progress = 0 %>
+              <% end %>
               <dd style="width: 150px">
                 <small><%= number_to_percentage(@progress, precision: 1)%> completed</small>
                 <div class="progress progress-mini">

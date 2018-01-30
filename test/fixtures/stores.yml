@@ -29,3 +29,10 @@ store_2:
     name: 'store 2'
     warehouse: warehouse1
     store_keeper_name: 'abebe' 
+
+store_3:
+    id: 1
+    name: 'store 3'
+    warehouse: warehouse1
+    store_keeper_name: 'abebe'
+
