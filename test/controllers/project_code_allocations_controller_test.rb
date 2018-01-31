@@ -44,11 +44,11 @@ class ProjectCodeAllocationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to project_code_allocation_url(@project_code_allocation)
   end
 
-  test "should destroy project_code_allocation" do
-    assert_difference('ProjectCodeAllocation.count', -1) do
-      delete project_code_allocation_url('en',@project_code_allocation)
-    end
+  ##test "should destroy project_code_allocation" do
+   # assert_difference('ProjectCodeAllocation.count', -1) do
+   #   delete project_code_allocation_url('en',@project_code_allocation)
+   # end
 
-    assert_redirected_to project_code_allocations_url
-  end
+    #assert_redirected_to project_code_allocations_url
+  #end
 end
