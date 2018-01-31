@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
   resources :project_code_allocations
   post '/project_code_allocations/create_for_requisition', to: 'project_code_allocations#create_for_requisition'
+  delete '/project_code_allocations/destroy_project_code_allocations/:id', to: 'project_code_allocations#destroy_project_code_allocations'
 
   get '/stock_movements/validate_quantity', to: 'stock_movements#validate_quantity'
   post '/stock_movements/createReceive/:id', to: 'stock_movements#createReceive'

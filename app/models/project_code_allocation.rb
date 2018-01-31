@@ -5,4 +5,5 @@ class ProjectCodeAllocation < ApplicationRecord
     belongs_to :fdp
 
     after_save :pre_post   
+    after_destroy :reverse
 end

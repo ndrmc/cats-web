@@ -101,6 +101,17 @@ class ProjectCodeAllocationsController < ApplicationController
     end
   end
 
+ def destroy_project_code_allocations
+    
+      project_code_allocations = ProjectCodeAllocation.where(requisition_id: params["id"])
+      project_code_allocations.destroy_all
+   
+    
+    respond_to do |format|
+      format.html { redirect_back fallback_location: project_code_allocations_url, notice: 'Project code allocations were successfully destroyed.' }
+      format.json { render :show, status: :created, location: @project_code_allocation }
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project_code_allocation

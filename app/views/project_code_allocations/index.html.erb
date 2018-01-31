@@ -89,7 +89,7 @@
               <% if(requisition.project_code_allocations.present?) %>
                 <%= link_to 'Re-Allocate', '/', :class => "btn btn-warning" %>
                  &middot;
-                <%= link_to 'Unallocate', '/' , method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-default" %>
+                <%= link_to 'Reset', '/project_code_allocations/destroy_project_code_allocations/' + requisition.id.to_s , method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-default" %>
               <% else %>
                 <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate PC</a>
               <% end %>              
