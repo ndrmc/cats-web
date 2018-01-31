@@ -87,8 +87,8 @@
             </td>
             <td>
               <% if(requisition.project_code_allocations.present?) %>
-                <%= link_to 'Re-Allocate', '/', :class => "btn btn-warning" %>
-                 &middot;
+                
+                <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate PC</a>
                 <%= link_to 'Reset', '/project_code_allocations/destroy_project_code_allocations/' + requisition.id.to_s , method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-default" %>
               <% else %>
                 <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate PC</a>
@@ -168,6 +168,22 @@
                 <input type="text" id="requested_amount_lable" class="form-control width-100per" readonly/>     
               </div>
             </div>
+            </div>
+              <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :unit_of_measure, "Unit" %>
+              <span class="required">*</span>
+              <%= select_tag :unit_of_measure, options_from_collection_for_select( [], 'id', 'name', params[:unit_of_measure] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control width-100per', name: 'project_code_allocation[unit_of_measure]' }  %>
+            </div>
+            
+             <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :amount, "Allocate amount", { :class => ' control-label', :required => true } %>
+              <div class="">
+                <input type="text" id="amount" name="project_code_allocation[amount]" class="form-control width-100per" required/>     
+              </div>
+            </div>
+
           </div>
           <div class="spinner col-md-12 col-sm-12 col-xs-12">
               

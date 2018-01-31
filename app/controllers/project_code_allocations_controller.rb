@@ -54,11 +54,12 @@ class ProjectCodeAllocationsController < ApplicationController
   end
 
   def create_for_requisition
-    RequisitionItem.includes(requisition: [ration: :ration_items]).where(requisition_id: project_code_allocation_params["requisition_id"]).each do |requisition_item|
-      @unit_of_measure_id = requisition_item.requisition.ration.ration_items.where(commodity_id: requisition_item.requisition.commodity_id).first.unit_of_measure_id
-      @requested_amount_to_ref = UnitOfMeasure.find(@unit_of_measure_id).to_ref(requisition_item.amount)
+   
+      @unit_of_measure_id = project_code_allocation_params["unit_of_measure"]
+      @amount = project_code_allocation_params["amount"]
+      @requested_amount_to_ref = UnitOfMeasure.find(@unit_of_measure_id).to_ref(@amount)
       pc_allocation = ProjectCodeAllocation.new
-      pc_allocation.fdp_id = requisition_item.fdp_id
+    
       pc_allocation.hub_id = project_code_allocation_params["hub"]
       pc_allocation.warehouse_id = project_code_allocation_params["warehouse"]
       pc_allocation.store_id = project_code_allocation_params["store"]
@@ -69,7 +70,7 @@ class ProjectCodeAllocationsController < ApplicationController
       pc_allocation.project_id = project_code_allocation_params["project"]
       pc_allocation.hub_id = project_code_allocation_params["hub"]
       pc_allocation.save
-    end
+    
     
     respond_to do |format|
       format.html { redirect_back fallback_location: project_code_allocations_url, notice: 'Project code allocations were successfully created.' }
