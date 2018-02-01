@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
- scope "(:locale)", locale: /en|am/ do
+ 
 
   
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
