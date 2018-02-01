@@ -139,7 +139,7 @@ class RequisitionsController < ApplicationController
         end
 
       end
-      render :js => "window.location = '/requisitions/summary?region=#{@request.region_id}&operation=#{@request.operation_id}' ,
+      render :js => "window.location = '/requisitions/summary/#{@request.id}' ,
                     window.success = 'Requisitions generated' "
     else
 
