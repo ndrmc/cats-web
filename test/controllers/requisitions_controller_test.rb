@@ -34,7 +34,7 @@ class RequisitionsControllerTest < ActionDispatch::IntegrationTest
     patch requisition_url('en',@requisition), params: { requisition: { 
 
 
-       requisition_no: '002',
+       requisition_no: '005',
        operation_id: 1,
        commodity_id: 1,
        region_id: 1,

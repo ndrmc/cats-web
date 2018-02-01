@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
  scope "(:locale)", locale: /en|am/ do
 
+  
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
   resources :warehouse_allocations
@@ -15,6 +16,13 @@ Rails.application.routes.draw do
   get 'stock_status/index'
 
   get 'fdp_operation_summary/index'
+
+
+ scope "(:locale)", locale: /en|am/ do
+
+  resources :project_code_allocations
+  post '/project_code_allocations/create_for_requisition', to: 'project_code_allocations#create_for_requisition'
+  delete '/project_code_allocations/destroy_project_code_allocations/:id', to: 'project_code_allocations#destroy_project_code_allocations'
   get '/stock_movements/validate_quantity', to: 'stock_movements#validate_quantity'
   post '/stock_movements/createReceive/:id', to: 'stock_movements#createReceive'
   get '/stock_movements/getCommodity/:id', to: 'stock_movements#getCommodity'
