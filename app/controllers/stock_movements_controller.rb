@@ -308,11 +308,12 @@ def createReceive
 
 if (params[:edit_mode]=='true')#update
 
-       @goods_dispatched = get_dispatched_amount_for_project_code(@stock_movement)
-       @goods_received = get_received_amount_for_project_code(@stock_movement)
-       @goods_in_transit = @goods_dispatched[0].to_f - @goods_received[0].to_f
+        @goods_dispatched = get_dispatched_amount_for_project_code(@stock_movement)
+        @goods_received = get_received_amount_for_project_code(@stock_movement)
+        @goods_in_transit = @goods_dispatched[0].to_f - @goods_received[0].to_f
        
-         if (@goods_in_transit >= params[:quantity].to_f)
+         quantity_to_ref = UnitOfMeasure.find(params[:unit].to_i).to_ref(params[:quantity].to_f)
+          if (@goods_in_transit >= quantity_to_ref)
 
                 receipt = Receipt.find(params[:receipt_id])
                 receipt_line = receipt.receipt_lines.first
@@ -353,10 +354,11 @@ if (params[:edit_mode]=='true')#update
           
 else#add new receipt
           
-          @goods_dispatched = get_dispatched_amount_for_project_code(@stock_movement)
+         @goods_dispatched = get_dispatched_amount_for_project_code(@stock_movement)
           @goods_received = get_received_amount_for_project_code(@stock_movement)
           @goods_in_transit = @goods_dispatched[0].to_f - @goods_received[0].to_f
-          if (@goods_in_transit >= params[:quantity].to_f)
+          quantity_to_ref = UnitOfMeasure.find(params[:unit].to_i).to_ref(params[:quantity].to_f)
+          if (@goods_in_transit >= quantity_to_ref)
               @organization_id = Project.find(@stock_movement.project_id)&.organization_id
               @commodity_category_id = Commodity.find(@stock_movement.commodity_id).commodity_category_id
 
