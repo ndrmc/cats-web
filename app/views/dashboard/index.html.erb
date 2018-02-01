@@ -1,6 +1,6 @@
 <div class="row  border-bottom white-bg dashboard-header">
   <div class="col-sm-4">
-    <h2>Welcome
+    <h2><%= t(:welcome) %>
       <%= current_user.name %></h2>
   </div>
 </div>
@@ -10,7 +10,7 @@
       <div class="ibox float-e-margins">
         <div class="ibox-title">
           <span class="label label-success pull-right">Yearly</span>
-          <h5>Benficiaries</h5>
+          <h5><%= t(:beneficiaries)%></h5>
         </div>
         <div class="ibox-content">
           <h1 class="no-margins"><%= ActiveSupport::NumberHelper.number_to_delimited(@hrd.total_beneficiaries)%></h1>

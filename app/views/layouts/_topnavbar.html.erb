@@ -7,7 +7,7 @@
 
       <ul class="nav navbar-top-links navbar-right">
         <li>
-          <%= link_to 'Commodity & Allocation Tracking System', root_path %>
+          <%= link_to t(:app_name), root_path %>
         </li>
       </ul>
 
@@ -53,14 +53,14 @@
 
         <ul class="dropdown-menu">
           <li>
-            <%= link_to 'Profile', edit_user_registration_path %>
+            <%= link_to t(:profile) , edit_user_registration_path %>
           </li>
           <li>
-            <%= link_to 'Change password', edit_user_registration_path %>
+            <%= link_to t(:change_password) , edit_user_registration_path %>
           </li>
           <li class="divider"></li>
           <li>
-            <%= link_to 'Log out', destroy_user_session_path, :method => :delete %>
+            <%= link_to  t(:logout) , destroy_user_session_path, :method => :delete %>
           </li>
         </ul>
       </li>

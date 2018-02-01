@@ -32,6 +32,11 @@ class UsersController < ApplicationController
 
   end
 
+  def profile
+    @user = User.find(params[:user_id])
+    
+  end
+
   def user_departments
     @user = User.find(params[:user_id])
     @all_departments = Department.all

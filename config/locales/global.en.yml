@@ -20,9 +20,14 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  app_name: "Commodity & Allocaiton Tracking System"
+  home: "Home"
+  welcome: "Welcome"
   hello: "Hello world"
   setting: "Settings"
   profile: "User Profile"
+  logout: "Logout"
+  change_password: "Change Password"
   plan: "Plan & Resource"
   hrd_plan: "HRD Plan"
   psnp_plan: "PSNP Annual Plan"
@@ -36,6 +41,7 @@ en:
   operations: "Operations"
   regional_request: "Regional Request"
   request_allocation: "Request Allocation"
+  warehouse_allocation: "Warehouse Allocation"
   dispatch_allocation: "Dispatch Allocation"
   transport_requisition: "Transport Requisition"
   stock: "Stock"

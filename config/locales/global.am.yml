@@ -20,9 +20,14 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 am:
+  app_name: "የዕርዳታ ድልድል ና ክትትል መረጃ ስርአት (CATS)"
+  home: "ዋና"
+  welcome: "እንኳን ደህና መጡ"
   hello: "ሰላም ለሁሉም!"
   setting: "ማስተካከያዎች"
-  profile: "ፕሮፋይል"
+  profile: "የተጠቃሚ መግለጫ"
+  change_password: "የ ይለፍ ቃል ቀይር"
+  logout: "ውጣ"
   plan: "እቅድ"
   hrd_plan: "የሰብእዊ እርዳታ ሰነድ እቅድ"
   psnp_plan: "ዓመታዊ የPSNP እቅድ"
@@ -36,6 +41,7 @@ am:
   operations: "የስራ ሂደቶች"
   regional_request: "ክልላዊ መጠየቂያ"
   request_allocation: "የገቢ ማዝዣ"
+  warehouse_allocation: "የመጋዘን ድልድል"
   dispatch_allocation: "የወጪ ማዝዣ"
   transport_requisition: "የማጉዋጉዋዣ ማዘዣ"
   stock: "ክምችት"
