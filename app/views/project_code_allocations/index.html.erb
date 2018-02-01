@@ -1,12 +1,12 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Project Code Allocations</h2>
+    <h2>Stock Reserves</h2>
     <ol class="breadcrumb">
       <li>
         <a href="/">Home</a>
       </li>
       <li class="active">
-        <strong>Project Code Allocations</strong>
+        <strong>Stock Reserves</strong>
       </li>
     </ol>
   </div>
@@ -88,10 +88,10 @@
             <td>
               <% if(requisition.project_code_allocations.present?) %>
                 
-                <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate PC</a>
+                <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate</a>
                 <%= link_to 'Reset', '/project_code_allocations/destroy_project_code_allocations/' + requisition.id.to_s , method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-default" %>
               <% else %>
-                <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate PC</a>
+                <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate</a>
               <% end %>              
               
             </td>

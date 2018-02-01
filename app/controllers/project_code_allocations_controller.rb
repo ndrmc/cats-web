@@ -26,6 +26,7 @@ class ProjectCodeAllocationsController < ApplicationController
     @unit_of_measures = UnitOfMeasure.order(:name)
     @commodities = Commodity.order(:name)
     @stores = Store.order(:name)
+    @project_code_allocations = ProjectCodeAllocation.includes(:hub, :warehouse, :store, :project, :unit_of_measure).where(:requisition_id => params[:id])
   end
 
   # GET /project_code_allocations/new
@@ -57,7 +58,7 @@ class ProjectCodeAllocationsController < ApplicationController
    
       @unit_of_measure_id = project_code_allocation_params["unit_of_measure"]
       @amount = project_code_allocation_params["amount"]
-      @requested_amount_to_ref = UnitOfMeasure.find(@unit_of_measure_id).to_ref(@amount)
+      @requested_amount_to_ref = UnitOfMeasure.find(@unit_of_measure_id).to_ref(@amount.to_f)
       pc_allocation = ProjectCodeAllocation.new
     
       pc_allocation.hub_id = project_code_allocation_params["hub"]
