@@ -80,12 +80,16 @@
     <span class="nav-label"><%= t(:stock)%></span>
     <span class="fa arrow"></span>
     <% end %>
-    <ul class="nav nav-second-level collapse">
-       
+    <ul class="nav nav-second-level collapse">      
       <li class="<%= 'active' if is_active_controller('receipts')  %>">
       <% if policy(Receipt).index? %>
             <%= link_to t(:receiving), receipts_path %>
       <%end%>
+      </li>
+      <li class="<%= 'active' if is_active_controller('project_code_allocations')  %>">
+      <% #if policy(ProjectCodeAllocation).index? %>
+            <%= link_to t(:stock_reserve), project_code_allocations_path %>
+      <% #end %>
       </li>
        <% if policy(Dispatch).index? %>
       <li class="<%= 'active' if is_active_controller('dispatches')  %>">

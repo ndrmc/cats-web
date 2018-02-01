@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+pc_allocation_1:
+  hub_id: 1
+  warehouse_id: 1
+  store_id: 1
+  operation_id: 1
+  requisition_id: 1
+  amount: 9.99
+  unit_of_measure_id: 1
+  fdp_id: 1
+  project_id: 05
+
+pc_allocation_2:
+  hub_id: 1
+  warehouse_id: 1
+  store_id: 1
+  operation_id: 1
+  requisition_id: 1
+  amount: 9.99
+  unit_of_measure_id: 1
+  fdp_id: 1
+  project_id: 1

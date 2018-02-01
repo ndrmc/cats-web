@@ -34,6 +34,7 @@ class Requisition < ApplicationRecord
   belongs_to :commodity
   belongs_to :ration
   has_many :requisition_items
+  has_many :project_code_allocations
 
   
   def region
