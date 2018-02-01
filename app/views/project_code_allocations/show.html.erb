@@ -1,0 +1,332 @@
+<div class="row wrapper border-bottom white-bg page-heading" style="margin-bottom: 20px;">
+  <div class="col-sm-8">
+    <h2>Project Code Allocation for Requisition [<%= @requisition.requisition_no %>] </h2>
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to "Home", root_path %>
+      </li>
+      <li>
+        <%= link_to "Project Code Allocations", project_code_allocations_path(operation: @requisition.operation_id, region: @requisition&.zone&.parent&.id) %>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-4">
+    <div class="title-action">
+      <%= link_to 'Cancel', project_code_allocations_path(operation: @requisition.operation_id, region: @requisition&.zone&.parent&.id),  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper">
+    <div class="ibox">
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Requisition No.:</dt>
+              <dd><%= @requisition.requisition_no %></dd>
+            </dl>
+          </div>
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Zone:</dt>
+              <dd><%= @requisition&.zone&.name %></dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Commodity:</dt>
+              <dd><%= @requisition.commodity.name %></dd>
+            </dl>
+          </div>
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Requested Amount:</dt>
+              <% @unit_of_measure_id = @requisition&.ration&.ration_items&.where(commodity_id: @requisition.commodity_id)&.first&.unit_of_measure_id %>
+              <% @requested_amount_to_ref = @requisition&.requisition_items.map { |r| UnitOfMeasure.find(@unit_of_measure_id).to_ref(r.amount) } %>
+              <% @requested_amount_to_ref_sum = @requested_amount_to_ref.sum.round(2)%>
+              <dd><%= ActiveSupport::NumberHelper.number_to_delimited(@requested_amount_to_ref_sum) %>MT</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Requested on:</dt>
+              <dd><%= @requisition.requested_on.to_formatted_s(:long_ordinal) %></dd>
+            </dl>
+          </div>
+          <div class="col-sm-6">
+            <dl class="dl-horizontal">
+              <dt>Progress:</dt>
+              <% @allocated_amount_to_ref = @requisition.project_code_allocations.map { |p| UnitOfMeasure.find(p.unit_of_measure_id).to_ref(p.amount) } %>
+              <% @requested_amount_to_ref_sum = @requested_amount_to_ref.sum %>
+              <% if (@requested_amount_to_ref_sum != 0) %>
+                <% @progress = (@allocated_amount_to_ref.sum / @requested_amount_to_ref_sum) * 100 %>
+              <% else %>
+                <% @progress = 0 %>
+              <% end %>
+              <dd style="width: 150px">
+                <small><%= number_to_percentage(@progress, precision: 1)%> completed</small>
+                <div class="progress progress-mini">
+                  <div style="width: <%= number_to_percentage(@progress, precision: 1) %>;" class="progress-bar"></div>
+                </div>
+              </dd>
+            </dl>
+          </div>
+        </div>     
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wrapper">
+    <div class="ibox">
+      <div class="ibox-content">
+        <table class="table table-striped pca-grouped-datatable">
+          <thead>
+            <tr>
+              <th>WoredaID</th>
+              <th>Woreda</th>
+              <th>FDP</th>
+              <th>Beneficiary No.</th>
+              <th>Amount(MT)</th>
+              <th>Progress</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @requisition.requisition_items.where('beneficiary_no > 0').each do |requisition_item| %>
+            <tr>
+              <% @unit_of_measure_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id %>
+              <% @requested_amount_to_ref = UnitOfMeasure.find(@unit_of_measure_id).to_ref(requisition_item.amount) %>
+              <% @allocated_amount_to_ref = @requisition.project_code_allocations.where(fdp_id: requisition_item.fdp_id).map { |p| UnitOfMeasure.find(p.unit_of_measure_id).to_ref(p.amount) } %>
+              <% @progress_fdp = (@allocated_amount_to_ref.sum / @requested_amount_to_ref) * 100 %>
+              <td><%= requisition_item.fdp.location.id %></td>
+              <td><%= requisition_item.fdp.location.name %></td>
+              <td><%= requisition_item.fdp.name %></td>
+              <td><%= ActiveSupport::NumberHelper.number_to_delimited(requisition_item.beneficiary_no) %></td>
+              <td><%= ActiveSupport::NumberHelper.number_to_delimited(@requested_amount_to_ref.round(2)) %></td>
+              <td>
+                <small><%= number_to_percentage(@progress_fdp, precision: 1)%> completed</small>
+                <div class="progress progress-mini">
+                  <div style="width: <%= number_to_percentage(@progress_fdp, precision: 1) %>;" class="progress-bar"></div>
+                </div>
+              </td>
+              <td>
+                <% if(@progress_fdp.to_f == 100) %>
+                  <%= link_to 'Re-Allocate', '/', :class => "" %>
+                  &middot;
+                  <%= link_to 'Unallocate', '/' , method: :delete, data: { confirm: 'Are you sure?' }, :class => "" %>
+                <% elsif(@requisition.project_code_allocations.present?) %>
+                  <a class="allocate_pc_to_location" data-target="#allocate_pc_to_location_modal" data-toggle="modal" data-level="fdp" data-commodity-id="<%= @requisition.commodity_id %>" data-commodity="<%= @requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref_sum %>" data-commodity-category-id="<%= @requisition.commodity.commodity_category_id %>" data-requisition-id="<%= @requisition.id %>" data-operation-id="<%= @requisition.operation_id %>">Allocate PC</a> &middot;
+                  <%= link_to 'Re-Allocate', '/', :class => "" %>
+                  &middot;
+                  <%= link_to 'Unallocate', '/' , method: :delete, data: { confirm: 'Are you sure?' }, :class => "" %>
+                <% else %>
+                  <a class="allocate_pc_to_location" data-target="#allocate_pc_to_location_modal" data-toggle="modal" data-level="fdp" data-commodity-id="<%= @requisition.commodity_id %>" data-commodity="<%= @requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref_sum %>" data-commodity-category-id="<%= @requisition.commodity.commodity_category_id %>" data-requisition-id="<%= @requisition.id %>" data-operation-id="<%= @requisition.operation_id %>">Allocate PC</a>
+                <% end %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal inmodal" id="allocate_pc_to_location_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">Allocate Project Code to FDP(s)</h4>
+      </div>
+      <form role="form" method="POST" enctype="multipart/form-data" action="/project_code_allocations/create_for_location" class="form-inline" style="display: inline;margin-top: 15px">
+         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+         <%= csrf_meta_tags %>
+        <input type="hidden" name="project_code_allocation[requisition_id]" id="requisition_id" value="" /> 
+        <input type="hidden" name="project_code_allocation[operation_id]" id="operation_id" value="" /> 
+        <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :woreda, "Woreda", { :class => ' control-label', :required => true } %>
+              <div class="">
+                <input type="text" id="woreda_lable" class="form-control width-100per" readonly/>     
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :fdp, "FDP", { :class => ' control-label', :required => true } %>
+              <div class="">
+                <input type="text" id="fdp_lable" class="form-control width-100per" readonly/>     
+              </div>
+            </div>
+          </div>
+          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :commodity, "Commodity", { :class => ' control-label', :required => true } %>
+              <div class="">
+                <input type="text" id="commodity_lable" class="form-control width-100per" readonly/>     
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :requested_amount, "Requested Amount (MT)", { :class => ' control-label', :required => true } %>
+              <div class="">
+                <input type="text" id="requested_amount_lable" class="form-control width-100per" readonly/>     
+              </div>
+            </div>
+          </div>
+          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+              <span class="required">*</span>
+              <div class="">
+                <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Select a Hub --", :class => 'form-control width-100per', name: 'project_code_allocation[hub]' }  %>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :warehouse, "Warehouse", { :class => ' control-label', :required => true } %>
+              <span class="required">*</span>
+              <div class="">
+                <%= select_tag :warehouse, options_from_collection_for_select([], "id", "name", params[:warehouse]),
+                  :required => true , :class => 'form-control width-100per', name: 'project_code_allocation[warehouse]', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "hub",
+                  "data-option-url" => "/warehouses/#{:hub}.json",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              </div>
+            </div>
+          </div>
+          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :store, "Store", { :class => ' control-label'} %>
+              <div class="">
+                <%= select_tag  :store,  options_from_collection_for_select( [], 'id', 'name', params[:store] ) , {:required => true , :class => 'form-control width-100per', name: 'project_code_allocation[store]' }  %>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :project, "Project code" %>
+              <span class="required">*</span>
+              <%= select_tag :project, options_from_collection_for_select( [], 'id', 'project_code', params[:organization] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control width-100per', name: 'project_code_allocation[project]' }  %>
+            </div>
+          </div>          
+          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :amount, "Amount", { :class => ' control-label', :required => true } %>
+              <span class="required">*</span>
+              <div class="">
+                <input type="text" id="amount" class="form-control width-100per" , name='project_code_allocation[amount]'/>   
+                <div id="qunaity-limit" class="label label-primary"></div>  
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :unit_of_measure, "Unit" %>
+              <span class="required">*</span>
+              <%= select_tag :unit_of_measure, options_from_collection_for_select( [], 'id', 'name', params[:unit_of_measure] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control width-100per', name: 'project_code_allocation[unit_of_measure]' }  %>
+            </div>
+          </div>
+          <div class="spinner col-md-12 col-sm-12 col-xs-12">
+              
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="col-md-6 col-sm-6 colxs-6">
+            <div class="pll-right" style="width:inherit;"> 
+              
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6 colxs-6">
+            <button type="submit" id="submit" class="btn btn-primary">Allocate PC</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>       
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  $(".allocate_pc_to_location").on('click', function(e) {
+    var commodityId = '<%= @requisition.commodity_id %>';
+    var commodity = '<%= @requisition.commodity.name %>';
+    var requested_amount = "<%= @requested_amount_to_ref_sum %>";
+    var commodityCategoryId = '<%= @requisition.commodity.commodity_category_id %>';
+    var requisitionId = '<%= @requisition.id %>';
+    var operationId = '<%= @requisition.operation_id %>';
+    var allocationLevel = $(this).attr("data-level");
+    var woreda = $(this).attr("data-woreda");
+    var woredaId = $(this).attr("data-woreda-id");
+    var fdp = $(this).attr("data-fdp");
+
+    if(allocationLevel == 'woreda'){
+      $('#allocate_pc_to_location_modal #woreda_lable').val(woreda);
+      $('#allocate_pc_to_location_modal #fdp_lable').val("ALL");
+    }
+    else {
+
+    }
+
+    $('#commodity_lable').val(commodity);
+    $('#requested_amount_lable').val(requested_amount);
+    $('#requisition_id').val(requisitionId);
+    $('#operation_id').val(operationId);
+    
+    var commodities = <%= @commodities.to_json.html_safe %>
+    var sibling_commodities = $.grep(commodities, function (elem) {
+      return elem.commodity_category_id == commodityCategoryId;
+    });
+    var sibling_commodity_ids = $.map( sibling_commodities, function( sc ) {
+      return sc["id"];
+    });
+
+    var allProjects = <%= @projects.to_json.html_safe %>
+    var projects_by_donor = $.grep(allProjects, function (elem) {
+      return $.inArray(elem.commodity_id, sibling_commodity_ids) !== -1
+    });
+    var proj_options = $.map(projects_by_donor, function (val) {
+      return '<option value="' + val.id + '">' + val.project_code + '</option>';
+    });
+    proj_options.unshift('<option value="">Select Project</option>');
+    $('#allocate_pc_to_location_modal #project').html(proj_options);
+
+    var allUnitOfMeasures = <%= @unit_of_measures.to_json.html_safe %>
+    if ('' === commodityCategoryId)
+      return;
+    var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+      return elem.uom_category_id == commodityCategoryId
+    });
+    var options = $.map(unitOfMeasuresInCategory, function (val) {
+      return '<option value="' + val.id + '">' + val.name + '</option>';
+    });
+    options.unshift('<option value="">Select Unit</option>');
+    $('#allocate_pc_to_location_modal #unit_of_measure').html(options);
+  });
+
+  $("#allocate_pc_to_location_modal #warehouse").on('change', function(e){
+    var warehouseId = $(this).val();
+
+    var allStores = <%= @stores.to_json.html_safe %>
+    var storeByWarehouse = $.grep(allStores, function (elem) {
+      return elem.warehouse_id == warehouseId;
+    });
+    var stores_options = $.map(storeByWarehouse, function (val) {
+      return '<option value="' + val.id + '">' + val.name + '</option>';
+    });
+    stores_options.unshift('<option value="">Select Store</option>');
+    $('#allocate_pc_to_location_modal #store').html(stores_options);
+  });
+});
+</script>
