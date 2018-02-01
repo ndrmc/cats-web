@@ -29,3 +29,9 @@ store_2:
     name: 'store 2'
     warehouse: warehouse1
     store_keeper_name: 'abebe' 
+
+store_4:
+    name: 'store 4'
+    warehouse: warehouse1
+    store_keeper_name: 'abebe'
+

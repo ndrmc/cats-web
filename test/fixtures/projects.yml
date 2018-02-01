@@ -52,3 +52,13 @@ project2:
         unit_of_measure: unit_of_measure_1
         publish_date: '1/1/2000'
 
+project5:
+        id: 05
+        project_code: 'pc-0050'
+        commodity_id: 1
+        commodity: commodity_1
+        commodity_source: commodity_source_1
+        organization: org1
+        amount: 50
+        unit_of_measure: unit_of_measure_1
+        publish_date: '1/1/2000'
