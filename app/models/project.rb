@@ -80,7 +80,7 @@ class Project < ApplicationRecord
       sequence_number = "0001"
     end
   
-    if Date.today.year < saved_year.to_i   # reset year
+    if Date.today.year > saved_year.to_i   # reset year
         sequence_number ='0001'
     end
 
