@@ -27,7 +27,7 @@
 class UnitOfMeasure < ApplicationRecord
   belongs_to :uom_category
   enum uom_type: [:ref, :big, :small]
-
+  after_commit :flush_cache
   ##
   # Convert passed argument 'value' to the reference unit of same category and returns an Integer. E.g.
   # 2qtl will be converted to 200kg.
@@ -74,6 +74,18 @@ class UnitOfMeasure < ApplicationRecord
     result_unit_value.to_f
   end
 
+  def self.cache_find(id)
+    Rails.cache.fetch([name,id],expires_in: 12.hours){ find(id)}
+  end
+
+  def flush_cache
+    Rails.cache.delete([self.class.name, id])
+  end
+
+   def self.cache_find_ref(id)
+    Rails.cache.fetch([name,id],expires_in: 12.hours){ where(uom_type: id).first}
+  end
+  
   validates :name, presence: true
   validates :code, presence: true
   validates :uom_type, presence: true

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles, :user_profile, :updateDepartments, :updatePermissions]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles, :user_profile, :updateDepartments, :updatePermissions,:updateUserPreference]
   include Administrated
 
   # GET /users
@@ -34,7 +34,26 @@ class UsersController < ApplicationController
 
   def profile
     @user = User.find(params[:user_id])
-    
+  end
+
+  def user_preference
+    @user = User.find(params[:id])
+  end
+  
+  def updateUserPreference
+
+    user = User.find(@user.id)
+    user.calendar = params[:calendar]
+    user.language = params[:language]
+    user.keyboard = params[:keyboard]
+    user.default_uom = params[:unit_of_measure]
+    if user.save
+      flash['success']= "Preference updated successfully"
+      redirect_to action: 'user_preference'
+    else
+      flash['error']= "Preference was not updated"
+      redirect_to action: 'user_preference'
+    end
   end
 
   def user_departments
