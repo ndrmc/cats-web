@@ -87,6 +87,11 @@ def flush_cache
   Rails.cache.delete([self.class.name, id])
 end
 
+enum calendar: {ec: 'ec',gc: 'gc'}  
+enum keyboard: {am: 'am',en: 'en'}  
+enum language: {am: 'am',or: 'or',en: 'en'} , _prefix: :language
+
+
     def has_permission(permission)
          self.permissions.where(name: permission).count > 0 ? true : false
          
