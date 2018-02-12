@@ -76,7 +76,9 @@ class User < ApplicationRecord
         manager:5
     }   
 
-
+enum calendar: {ec: 'ec',gc: 'gc'}  
+enum keyboard: {am: 'am',en: 'en'}  
+enum language: {am: 'am',or: 'or',en: 'en'} , _prefix: :language
 
    
     def has_permission(permission)

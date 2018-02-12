@@ -87,6 +87,10 @@ Rails.application.routes.draw do
   resources :users
   resources :roles
 
+  get 'users/:id/user_preference', to: 'users#user_preference'
+
+  put 'users/:id/updateUserPreference', to: 'users#updateUserPreference'
+
   get 'users/:id/roles', to: 'users#roles'
 
   put 'users/:id/updateRoles', to: 'users#updateRoles'
