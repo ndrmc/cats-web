@@ -19,4 +19,14 @@ module ApplicationHelper
         "https://maps.googleapis.com/maps/api/staticmap?center=#{center}&size=300x300&zoom=17"
     end
 
+  
+
+    def user_uom_preference(value)
+         user_default_unit = User.cache_find(current_user.id).default_uom
+         target_unit = UnitOfMeasure.cache_find(user_default_unit)
+         ref_unit = UnitOfMeasure.cache_find_ref('ref')
+         amount_in_user_preference = target_unit.convert_to(ref_unit&.name, value)
+         return amount_in_user_preference
+    end
+    
 end
