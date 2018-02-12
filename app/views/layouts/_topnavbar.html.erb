@@ -56,6 +56,9 @@
             <%= link_to t(:profile) , edit_user_registration_path %>
           </li>
           <li>
+            <%= link_to t(:preference) , '/users/' + current_user.id.to_s + '/user_preference' %>
+          </li>
+          <li>
             <%= link_to t(:change_password) , edit_user_registration_path %>
           </li>
           <li class="divider"></li>
