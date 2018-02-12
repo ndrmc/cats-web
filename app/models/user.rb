@@ -45,7 +45,7 @@ class User < ApplicationRecord
   has_many :departments, through: :users_departments
   has_many :permissions, through: :users_permissions
   after_create :assign_default_role
-
+  after_commit :flush_cache
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -76,11 +76,22 @@ class User < ApplicationRecord
         manager:5
     }   
 
+
+def self.cache_find(id)
+  Rails.cache.fetch([name,id],expires_in:12.hours){
+    find(id)
+  }
+end
+
+def flush_cache
+  Rails.cache.delete([self.class.name, id])
+end
+
 enum calendar: {ec: 'ec',gc: 'gc'}  
 enum keyboard: {am: 'am',en: 'en'}  
 enum language: {am: 'am',or: 'or',en: 'en'} , _prefix: :language
 
-   
+
     def has_permission(permission)
          self.permissions.where(name: permission).count > 0 ? true : false
          
