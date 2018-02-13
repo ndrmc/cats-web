@@ -1,0 +1,72 @@
+
+
+<% @Unit_of_measure = UnitOfMeasure.all%>
+<div class="row wrapper border-bottom white-bg page-heading">
+<div class="col-sm-4">
+    <h2>Manage preference for <em><%= @user.name %></em></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">User</a>
+      </li>
+      <li class="active">
+        <strong>preference</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Done', root_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+  <%= form_tag "/users/#{@user.id}/updateUserPreference", method: :put, :class => "form-horizontal" do %>      
+                       
+                             
+                 <div class="form-group" >
+                            <label class="control-label col-sm-2" for="Calendar">Calendar</label>
+                            <div class="col-sm-10">
+                                <%= select_tag "calendar", options_for_select(User.calendars,@user.calendar), {:required=> true, :include_blank => '--- choose ---',:class => 'form-control'}  %>
+                             </div>
+                </div>
+
+                 <div class="form-group">
+                            <label  class="control-label col-sm-2" for="language">Language</label>
+                            <div class="col-sm-10">
+                                <%= select_tag "language",options_for_select(User.languages,@user.language), { :required=> true, :include_blank => '--- choose ---',:class => 'form-control'}  %>
+                            </div>
+                </div>
+
+
+                 <div class="form-group">
+                         <label  class="control-label col-sm-2" for="keyboard">Keyboard</label>
+                         <div class="col-sm-10">
+                           <%= select_tag  "keyboard",options_for_select(User.keyboards, @user.keyboard), { :required=> true, :include_blank => '--- choose ---',:class => 'form-control'}  %>
+                         </div>
+                </div>
+
+
+                <div class="form-group">
+                         <label  class="control-label col-sm-2" for="Unit_of_measure">Unit of Measure</label>
+                          <div class="col-sm-10">
+                             <%= select_tag "unit_of_measure", options_from_collection_for_select(UnitOfMeasure.order(:name), 'id', 'name', @user.default_uom), { :required=> true, :include_blank => '--- choose ---',:class => 'form-control'} %> 
+                         </div>
+                 </div
+                  
+              
+                <div class="form-group">
+                        <div class="actions">
+                            <%= submit_tag 'Update Changes', :class => 'btn btn-primary' %>
+                    </div>
+                </div>
+    <% end %>
+
+    </div>
+  </div>
+</div>
+
+

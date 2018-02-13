@@ -120,4 +120,6 @@ group :development do
 end
 
 gem 'devise-i18n'
+gem 'rack-mini-profiler'
+gem 'dalli'
 
