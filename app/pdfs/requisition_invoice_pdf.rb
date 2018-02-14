@@ -15,7 +15,23 @@ class RequisitionInvoicePdf < PdfReport
         @region =  Location.find(@requisition.region_id).name
         @program =@requisition.operation.program.name
         @operation = @requisition.operation.name
-        font Rails.root.join("app/assets/fonts/gfzemenu.ttf")
+         font Rails.root.join("app/assets/fonts/gfzemenu.ttf")
+        create_stamp("watermark") do
+                rotate(30, :origin => [-5, -5]) do
+                stroke_color "FF3333"
+                stroke_ellipse [20, 0], 50, 15
+                stroke_color "000000"
+                fill_color "993333"
+                font("Times-Roman") do
+                    draw_text "a sample watermark", :at => [-26, -1]
+                end
+                fill_color "000000"
+            end
+        end
+
+        stamp_at "watermark", [400, 500] 
+
+       
         image "#{Rails.root}/public/assets/ndrmc.png", height: 30,:at=> [180,700],:size => 20
         stroke_rectangle [0,y], width, height
         text_box("ዋናው ዕቃ ግዥ ክፍል
@@ -100,5 +116,7 @@ class RequisitionInvoicePdf < PdfReport
             num = num + 1
             [num, item.commodity.name, Location.find(item.zone_id).name,"","","Quintal",amount_in_qtl,""]       
         end
-    end    
+    end 
+
+       
 end
