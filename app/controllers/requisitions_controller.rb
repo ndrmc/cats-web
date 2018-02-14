@@ -25,6 +25,26 @@ class RequisitionsController < ApplicationController
     end
   end
 
+  def print_rrd
+   
+     @requisition = Requisition.joins('INNER JOIN requisition_items ON requisition_items.requisition_id = requisitions.id').
+     group('requisition_no, requisitions.id,zone_id,region_id, zone_id,operation_id,ration_id,commodity_id')
+     .select('requisition_no, commodity_id,requisitions.id as requisition_id, sum(requisition_items.amount) as total_allocated, region_id, zone_id,operation_id,
+     ration_id').where('requisitions.id=' + params[:id])
+
+     @current_user = current_user.name
+     respond_to do |format|
+      format.html
+      format.pdf do
+          pdf = RequisitionInvoicePdf.new(@requisition,@current_user)
+          send_data pdf.render, filename: "RequisitionInvoicePdf_#{@requisition.first.requisition_id}.pdf",
+          type: "application/pdf",
+          disposition: "inline"
+      end      
+    end
+  end 
+  
+
   # GET /requisitions/new
   def new
     @requisition = Requisition.new
