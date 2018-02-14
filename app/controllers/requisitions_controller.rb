@@ -40,6 +40,8 @@ class RequisitionsController < ApplicationController
           send_data pdf.render, filename: "RequisitionInvoicePdf_#{@requisition.first.requisition_id}.pdf",
           type: "application/pdf",
           disposition: "inline"
+
+         3.times { pdf.autoprint }
       end      
     end
   end 
