@@ -17,6 +17,12 @@
         <i class="fa fa-print"></i> 
         Print
       <% end %>
+
+       <%= link_to '/requisitions/print_rrd?format=pdf&id=' + @requisition.id.to_s,  :class => "btn btn-default"  do %>
+        <i class="fa fa-print"></i> 
+        Print Invoice
+      <% end %>
+
     </div>
   </div>
 </div>
