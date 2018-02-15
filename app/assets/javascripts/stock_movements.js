@@ -131,11 +131,15 @@ $(document).ready(function() {
                     else
                     {
                         $("#add-stock-move-dispatch .close").click();			
-                    }		             
+                    }	
+		    console.log('Message Dump:');
+                    console.log(data);
                 },
                 error:function(data){
                     $('#add-stock-move-dispatch .spinner').attr('style', 'color:#f00').html("Error: Stock movement dispatch was unsuccessful.");
-                }
+		    console.log('Message Dump:');
+                    console.log(data);
+		}
             });
         }
         else{
