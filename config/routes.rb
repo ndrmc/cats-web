@@ -169,6 +169,7 @@ Rails.application.routes.draw do
   get '/requisitions/summary/:request_id', to: 'requisitions#summary'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
   get '/requisitions/print', to: 'requisitions#print'
+  get '/requisitions/print_rrd', to: 'requisitions#print_rrd'
 
   resources :requisitions
   get '/gift_certificates/gift_certificate_report', to: 'gift_certificates#gift_certificate_report'
