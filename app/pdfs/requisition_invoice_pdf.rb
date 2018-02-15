@@ -15,22 +15,59 @@ class RequisitionInvoicePdf < PdfReport
         @region =  Location.find(@requisition.region_id).name
         @program =@requisition.operation.program.name
         @operation = @requisition.operation.name
-         font Rails.root.join("app/assets/fonts/gfzemenu.ttf")
-        create_stamp("watermark") do
+        font Rails.root.join("app/assets/fonts/gfzemenu.ttf")
+  i=0
+        repeat :all, dynamic: true do
+          
+          
+        if (page_number == 1)
+            create_stamp("watermark" + i.to_s) do
                 rotate(30, :origin => [-5, -5]) do
                 stroke_color "FF3333"
                 stroke_ellipse [20, 0], 50, 15
                 stroke_color "000000"
                 fill_color "993333"
                 font("Times-Roman") do
-                    draw_text "a sample watermark", :at => [-26, -1]
+                    draw_text  "procurment", :at => [-26, -1]
                 end
                 fill_color "000000"
             end
         end
+ stamp_at "watermark" + i.to_s, [400, 500] 
+    elsif (page_number == 2)
+        create_stamp("watermark" + i.to_s) do
+                rotate(30, :origin => [-5, -5]) do
+                stroke_color "ADD8E6"
+                stroke_ellipse [20, 0], 50, 15
+                stroke_color "000000"
+                fill_color "ADD8E6"
+                font("Times-Roman") do
+                    draw_text  "store", :at => [-26, -1]
+                end
+                fill_color "ADD8E6"
+            end
+        end
+ stamp_at "watermark" + i.to_s, [400, 500] 
+            
+    elsif(page_number == 3)
+        create_stamp("watermark" + i.to_s) do
+                rotate(30, :origin => [-5, -5]) do
+                stroke_color "c6e6ad"
+                stroke_ellipse [20, 0], 50, 15
+                stroke_color "000000"
+                fill_color "c6e6ad"
+                font("Times-Roman") do
+                    draw_text  "Requesting Office", :at => [-26, -1]
+                end
+                fill_color "c6e6ad"
+            end
+        end
+         stamp_at "watermark" + i.to_s, [400, 500] 
+        else    
+    end
 
-        stamp_at "watermark", [400, 500] 
-
+       
+        i = i + 1
        
         image "#{Rails.root}/public/assets/ndrmc.png", height: 30,:at=> [180,700],:size => 20
         stroke_rectangle [0,y], width, height
@@ -91,7 +128,24 @@ class RequisitionInvoicePdf < PdfReport
         text "መግለጫ፡- 1. በሠንጠረዥ ቁጥር 1 ፤ 2 ፤ 3 ፤ 4 ፤ 5 ፤ 6 ፤ 7.1 ፤ 7.2 እና 8 የተጠቀሰው በተጠያቂ ክፍል ይሞላል፡\nቀሪው በሎጅስቲክስ ይሞላል፡፡"
         move_down 20
        
-        footer "Commodity Allocation and Tracking System"
+       bounding_box [bounds.left, bounds.bottom + 72], width: bounds.width do
+         stroke_horizontal_rule 
+         move_down 5
+         image "#{Rails.root}/public/assets/CATS_Blue.png", height: 20
+         text "Commodity Allocation and Tracking System", size: 8, align: :center
+         number_pages "Page <page> of <total>", 
+                                       {:start_count_at => 1,
+                                        :at => [bounds.right - 60, 0],
+                                        :align => :right,
+                                        :size => 8}
+        
+           end
+
+
+      end
+
+
+        2.times { start_new_page }
     end
 
     def requisitions
