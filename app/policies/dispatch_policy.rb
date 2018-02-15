@@ -41,5 +41,10 @@ class DispatchPolicy < ApplicationPolicy
     def validate_quantity?
         @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end
+
+    def get_hub_warehouse?
+        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    end
+
 end
 

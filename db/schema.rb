@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180130124657) do
+ActiveRecord::Schema.define(version: 20180213091910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -392,6 +392,7 @@ ActiveRecord::Schema.define(version: 20180130124657) do
     t.string   "dispatched_date_ec"
     t.integer  "dispatch_type_id"
     t.integer  "dispatch_type"
+    t.integer  "store_id"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
@@ -852,7 +853,7 @@ ActiveRecord::Schema.define(version: 20180130124657) do
     t.index ["deleted_at"], name: "index_programs_on_deleted_at", using: :btree
   end
 
-  create_table "project_code_allocations", force: :cascade do |t|
+  create_table "project_code_allocations", id: :integer, default: -> { "nextval('stock_reserves_id_seq'::regclass)" }, force: :cascade do |t|
     t.integer  "hub_id"
     t.integer  "warehouse_id"
     t.integer  "store_id"
