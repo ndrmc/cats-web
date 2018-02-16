@@ -1,4 +1,5 @@
 
+<p class="flash-notice"><%= params[:notice] %></p>
 <div class="row">
   <div class="wrapper wrapper-content">
 
@@ -27,8 +28,9 @@
             </div>
           <% end %>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
-            <%= f.label :requisition_no, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-              <%= f.text_field :requisition_no%>
+              <%= f.label :requisition_no, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
+              <%= f.text_field :requisition_no %>
+              <span class="" id="req_no" style="display:none;font-size: 12pt;font-family: courier"><i class="fa fa-times label-danger" title="Requisition found."> Requisition exists </i> </span>
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :operation_id, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
@@ -131,3 +133,29 @@
       
   </div>
 </div>
+<script>
+
+ 
+$('#requisition_requisition_no').on('keyup blur', function (e){
+ 
+                $.getJSON( '/requisitions/get_requisiton_by_number', 
+                    { requisition_no: $(this).val()}, 
+                    function(data) { 
+                      console.log(data);
+                      if(data.requisition!="" && data.requisition!=null)
+                      {
+                       document.getElementById("req_no").style.display = 'block';
+                      }
+                      else{
+                        document.getElementById("req_no").style.display = 'none';
+                      }
+                    }
+                )
+                .error(function(event, jqxhr, exception) {
+                   document.getElementById("req_no").style.display = 'none';
+                   
+                });
+             
+
+});
+</script>
