@@ -120,7 +120,9 @@ module Postable
   def post_dispatch
     stock_account = Account.find_by({'code': :stock})
     dispatched_account = Account.find_by({'code': :dispatched})
-    
+    requisition = Requisition.where(:requisition_no => self.requisition_number).first
+    project_code_allocations = ProjectCodeAllocation.includes(project: :organization).where(:requisition_id => requisition.id)
+
     if(self.dispatch_type == "transfer")
       internal_movement_journal = Journal.find_by({'code': :internal_movement})
       posting_items = []
@@ -157,43 +159,160 @@ module Postable
       end      
     else
       good_issue_journal = Journal.find_by({'code': :goods_issue})
+      allocated_account = Account.find_by({'code': :allocated})
       posting_items = []
       self.dispatch_items.each do |dispatch_line|
         amount_in_ref = UnitOfMeasure.find(dispatch_line.unit_of_measure_id).to_ref(dispatch_line.quantity)
-        debit = PostingItem.new({
-                                  account_id: stock_account.id,
-                                  journal_id: good_issue_journal.id,
-                                  hub_id: self.hub_id,
-                                  fdp_id: self.fdp_id,
-                                  warehouse_id: self.warehouse_id,
-                                  donor_id: dispatch_line.organization_id,
-                                  project_id: dispatch_line.project_id,
-                                  batch_id: 1,
-                                  program_id: Operation.find(self.operation_id).program_id,
-                                  operation_id: self.operation_id,
-                                  commodity_id: dispatch_line.commodity_id,
-                                  commodity_category_id: dispatch_line.commodity_category_id,
-                                  quantity: -amount_in_ref
-  
-        })
-  
-        posting_items << debit
-        credit = PostingItem.new({
-                                   account_id: dispatched_account.id,
-                                   journal_id: good_issue_journal.id,
-                                   hub_id: self.hub_id,
-                                   fdp_id: self.fdp_id,
-                                   warehouse_id: self.warehouse_id,
-                                   donor_id: dispatch_line.organization_id,
-                                   project_id: dispatch_line.project_id,
-                                   batch_id: 1,
-                                   program_id: Operation.find(self.operation_id).program_id,
-                                   operation_id: self.operation_id,
-                                   commodity_id: dispatch_line.commodity_id,
-                                   commodity_category_id: dispatch_line.commodity_category_id,
-                                   quantity: amount_in_ref
-        })
-        posting_items << credit
+
+        if (project_code_allocations.present?)
+          @flag = project_code_allocations.where(project_id: dispatch_line.project_id)
+          if (@flag.present?)
+            # Dispatch made from allocated project code - Debit allocated PC
+            debit = PostingItem.new({
+                        account_id: allocated_account.id,
+                        journal_id: good_issue_journal.id,
+                        hub_id: self.hub_id,
+                        fdp_id: self.fdp_id,
+                        warehouse_id: self.warehouse_id,
+                        donor_id: dispatch_line.organization_id,
+                        project_id: dispatch_line.project_id,
+                        batch_id: 1,
+                        program_id: Operation.find(self.operation_id).program_id,
+                        operation_id: self.operation_id,
+                        commodity_id: dispatch_line.commodity_id,
+                        commodity_category_id: dispatch_line.commodity_category_id,
+                        quantity: -amount_in_ref
+
+            })
+            posting_items << debit
+            # Dispatch made from allocated project code - Credit allocated PC
+            credit = PostingItem.new({
+                        account_id: dispatched_account.id,
+                        journal_id: good_issue_journal.id,
+                        hub_id: self.hub_id,
+                        fdp_id: self.fdp_id,
+                        warehouse_id: self.warehouse_id,
+                        donor_id: dispatch_line.organization_id,
+                        project_id: dispatch_line.project_id,
+                        batch_id: 1,
+                        program_id: Operation.find(self.operation_id).program_id,
+                        operation_id: self.operation_id,
+                        commodity_id: dispatch_line.commodity_id,
+                        commodity_category_id: dispatch_line.commodity_category_id,
+                        quantity: amount_in_ref
+            })
+            posting_items << credit
+          else
+            # Dispatch made from other than the allocated project code - unallocate selected PC
+            allocated_project = project_code_allocations.first
+            debit = PostingItem.new({
+                        account_id: allocated_account.id,
+                        journal_id: good_issue_journal.id,
+                        hub_id: self.hub_id,
+                        fdp_id: self.fdp_id,
+                        warehouse_id: self.warehouse_id,
+                        donor_id: allocated_project.project.organization_id,
+                        project_id: allocated_project.project_id,
+                        batch_id: 1,
+                        program_id: Operation.find(self.operation_id).program_id,
+                        operation_id: self.operation_id,
+                        commodity_id: dispatch_line.commodity_id,
+                        commodity_category_id: dispatch_line.commodity_category_id,
+                        quantity: -amount_in_ref
+
+            })
+            posting_items << debit
+            
+            credit = PostingItem.new({
+                        account_id: stock_account.id,
+                        journal_id: good_issue_journal.id,
+                        hub_id: self.hub_id,
+                        fdp_id: self.fdp_id,
+                        warehouse_id: self.warehouse_id,
+                        donor_id: allocated_project.project.organization_id,
+                        project_id: allocated_project.project_id,
+                        batch_id: 1,
+                        program_id: Operation.find(self.operation_id).program_id,
+                        operation_id: self.operation_id,
+                        commodity_id: dispatch_line.commodity_id,
+                        commodity_category_id: dispatch_line.commodity_category_id,
+                        quantity: amount_in_ref
+            })
+            posting_items << credit
+
+            # Dispatch made from other than the allocated project code - Debit selected PC
+            debit = PostingItem.new({
+                        account_id: stock_account.id,
+                        journal_id: good_issue_journal.id,
+                        hub_id: self.hub_id,
+                        fdp_id: self.fdp_id,
+                        warehouse_id: self.warehouse_id,
+                        donor_id: dispatch_line.organization_id,
+                        project_id: dispatch_line.project_id,
+                        batch_id: 1,
+                        program_id: Operation.find(self.operation_id).program_id,
+                        operation_id: self.operation_id,
+                        commodity_id: dispatch_line.commodity_id,
+                        commodity_category_id: dispatch_line.commodity_category_id,
+                        quantity: -amount_in_ref
+
+            })
+            posting_items << debit
+            # Dispatch made from other than the allocated project code - Credit selected PC
+            credit = PostingItem.new({
+                        account_id: dispatched_account.id,
+                        journal_id: good_issue_journal.id,
+                        hub_id: self.hub_id,
+                        fdp_id: self.fdp_id,
+                        warehouse_id: self.warehouse_id,
+                        donor_id: dispatch_line.organization_id,
+                        project_id: dispatch_line.project_id,
+                        batch_id: 1,
+                        program_id: Operation.find(self.operation_id).program_id,
+                        operation_id: self.operation_id,
+                        commodity_id: dispatch_line.commodity_id,
+                        commodity_category_id: dispatch_line.commodity_category_id,
+                        quantity: amount_in_ref
+            })
+            posting_items << credit
+          end
+        else
+          # No allocated PC found for dispatch - debit from selected project code
+          debit = PostingItem.new({
+                      account_id: stock_account.id,
+                      journal_id: good_issue_journal.id,
+                      hub_id: self.hub_id,
+                      fdp_id: self.fdp_id,
+                      warehouse_id: self.warehouse_id,
+                      donor_id: dispatch_line.organization_id,
+                      project_id: dispatch_line.project_id,
+                      batch_id: 1,
+                      program_id: Operation.find(self.operation_id).program_id,
+                      operation_id: self.operation_id,
+                      commodity_id: dispatch_line.commodity_id,
+                      commodity_category_id: dispatch_line.commodity_category_id,
+                      quantity: -amount_in_ref
+
+          })
+          posting_items << debit
+          # No allocated PC found for dispatch - credit from selected project code
+          credit = PostingItem.new({
+                      account_id: dispatched_account.id,
+                      journal_id: good_issue_journal.id,
+                      hub_id: self.hub_id,
+                      fdp_id: self.fdp_id,
+                      warehouse_id: self.warehouse_id,
+                      donor_id: dispatch_line.organization_id,
+                      project_id: dispatch_line.project_id,
+                      batch_id: 1,
+                      program_id: Operation.find(self.operation_id).program_id,
+                      operation_id: self.operation_id,
+                      commodity_id: dispatch_line.commodity_id,
+                      commodity_category_id: dispatch_line.commodity_category_id,
+                      quantity: amount_in_ref
+          })
+          posting_items << credit
+        end
       end
     end
     

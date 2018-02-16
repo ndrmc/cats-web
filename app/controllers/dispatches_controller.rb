@@ -99,7 +99,7 @@ class DispatchesController < ApplicationController
         @requisition = Requisition.where(:requisition_no => @requisition_no).first
         @data = []
         ProjectCodeAllocation.includes(:hub, :warehouse, :store, project: :organization).where(:requisition_id => @requisition.id).each do |pca|
-            @data << { 'hub_id' => pca&.hub_id, 'hub' => pca&.hub&.name, 'warehouse_id' => pca&.warehouse_id, 'warehouse' => pca&.warehouse&.name, 'store_id' => pca&.store_id, 'store' => pca&.store&.name, 'project_id' => pca&.project_id, 'project' => pca&.project&.project_code, 'donor_id' => pca&.project&.organization_id, 'donor' => pca&.organization&.name }        
+            @data << { 'hub_id' => pca&.hub_id, 'hub' => pca&.hub&.name, 'warehouse_id' => pca&.warehouse_id, 'warehouse' => pca&.warehouse&.name, 'store_id' => pca&.store_id, 'store' => pca&.store&.name, 'project_id' => pca&.project_id, 'project' => pca&.project&.project_code, 'donor_id' => pca&.project&.organization_id, 'donor' => pca&.project&.organization&.name }        
         end
 
         if (@data.empty?)
