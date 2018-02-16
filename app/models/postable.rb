@@ -121,8 +121,11 @@ module Postable
     stock_account = Account.find_by({'code': :stock})
     dispatched_account = Account.find_by({'code': :dispatched})
     requisition = Requisition.where(:requisition_no => self.requisition_number).first
-    project_code_allocations = ProjectCodeAllocation.includes(project: :organization).where(:requisition_id => requisition.id)
-
+    project_code_allocations = ProjectCodeAllocation.includes(project: :organization)
+    if requisition.present?
+      project_code_allocations = ProjectCodeAllocation.includes(project: :organization).where(:requisition_id => requisition.id)
+    end
+    
     if(self.dispatch_type == "transfer")
       internal_movement_journal = Journal.find_by({'code': :internal_movement})
       posting_items = []
