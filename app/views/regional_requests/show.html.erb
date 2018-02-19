@@ -19,7 +19,8 @@
       <a href="#" class="btn btn-default" data-toggle="modal"  data-target="#request-item-modal"><i class="fa fa-plus"></i> Add Item</a>
 
       <a href="/regional_requests/request_items/<%= @regional_request.id %>.xlsx" target="_blank" class="btn btn-default" title="Download items in Excel file format"><i class="fa fa-download"></i> Download Excel</a>      
-
+         
+       <%= link_to 'Delete FDPs', "/requisitions/delete_regional_requests_fdps_with_zero_ben_no/" + @regional_request.id.to_s, class: "btn btn-default", method: :delete, data: { confirm: 'Are you sure you want to delete ?' }, :title => "It deletes all fdps in this request which have zero bebeficiary numbers. Irreversible!" %>
       <% end %>
       <%= link_to 'Cancel', requisitions_path,  :class => "btn btn-default"%>
       <%= link_to '/regional_requests/print/' + @regional_request.id.to_s + '?format=pdf',  :class => "btn btn-default"  do %>

@@ -171,6 +171,7 @@ Rails.application.routes.draw do
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
   get '/requisitions/print', to: 'requisitions#print'
   get '/requisitions/print_rrd', to: 'requisitions#print_rrd'
+  delete '/requisitions/delete_regional_requests_fdps_with_zero_ben_no/:id', to: 'requisitions#delete_regional_requests_fdps_with_zero_ben_no'
 
   resources :requisitions
   get '/gift_certificates/gift_certificate_report', to: 'gift_certificates#gift_certificate_report'

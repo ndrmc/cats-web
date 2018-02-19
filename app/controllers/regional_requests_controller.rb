@@ -22,10 +22,11 @@ class RegionalRequestsController < ApplicationController
   def print
     @regional_request_items = RegionalRequestItem.includes(:fdp, regional_request: [operation: :program]).where(:'regional_requests.id' => params[:id]).where("number_of_beneficiaries > 0")
     @request = RegionalRequest.includes(:location, operation: :program).find(params[:id])
+    @total_beneficiary_no = @regional_request_items.sum(:number_of_beneficiaries)
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = RegionalRequestPdf.new(@regional_request_items, @request)
+          pdf = RegionalRequestPdf.new(@regional_request_items, @request,  @total_beneficiary_no)
           send_data pdf.render, filename: "regional_request_#{@first_ri&.regional_request&.id}.pdf",
           type: "application/pdf",
           disposition: "inline"
