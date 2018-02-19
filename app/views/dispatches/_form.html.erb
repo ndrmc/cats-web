@@ -410,7 +410,7 @@
         var project = $("#dispatch_project_select").find('option:selected').val();
         var unit = $("#uom-select").find('option:selected').val();
         var quantity = $("#quantity-di").val();
-
+        var requisitionNo = $('#req_no_input').val();
         var $this = $(this); 
 
         var $dispatchLineForm = $this.closest('tr'); 
@@ -435,7 +435,7 @@
           return;
         }
 
-        var flag = validate_quantity(this, hub, warehouse, project, quantity, unit);
+        var flag = validate_quantity(this, hub, warehouse, project, quantity, unit, requisitionNo);
         console.log("validate quantity: ");
         console.log(flag);
     }); 
@@ -506,12 +506,26 @@
           var storeOptions = '';
           var projectOptions = '';
           var donorOptions = '';
+          var hubArray = [];
+          var warehouseArray = [];
           for(var d in data)
           {
             if(data[d]['hub_id']!='' && data[d]['hub_id']!=null)
-              hubOptions += '<option value="' + data[d]['hub_id'] + '">' + data[d]['hub'] + '</option>';
+            {
+              if ((jQuery.inArray(data[d]['hub_id'], hubArray)) == -1)
+              {
+                hubArray.push(data[d]['hub_id']);
+                hubOptions += '<option value="' + data[d]['hub_id'] + '">' + data[d]['hub'] + '</option>';
+              }              
+            }              
             if(data[d]['warehouse_id']!='' && data[d]['warehouse_id']!=null)
-              warehouseOptions += '<option value="' + data[d]['warehouse_id'] + '">' + data[d]['warehouse'] + '</option>';
+            {
+              if ((jQuery.inArray(data[d]['warehouse_id'], warehouseArray)) == -1)
+              {
+                warehouseArray.push(data[d]['warehouse_id']);
+                warehouseOptions += '<option value="' + data[d]['warehouse_id'] + '">' + data[d]['warehouse'] + '</option>';
+              }  
+            }              
             if(data[d]['store_id']!='' && data[d]['store_id']!=null)
               storeOptions += '<option value="' + data[d]['store_id'] + '">' + data[d]['store'] + '</option>';
             if(data[d]['project_id']!='' && data[d]['project_id']!=null)
@@ -651,7 +665,20 @@
     }
   }
 
-  function validate_quantity(node, hub, warehouse, project, quantity, unit)
+  function GetUnique(inputArray)
+  {
+    var outputArray = [];
+    for (var i = 0; i < inputArray.length; i++)
+    {
+      if ((jQuery.inArray(inputArray[i], outputArray)) == -1)
+      {
+        outputArray.push(inputArray[i]);
+      }
+    }
+    return outputArray;
+  }
+
+  function validate_quantity(node, hub, warehouse, project, quantity, unit, requisitionNo)
   {
     if( hub!="" && warehouse!="" && project!="" && quantity!="" && unit!="")
     {
@@ -665,7 +692,8 @@
                 warehouse_id: warehouse,
 						    proj_id: project,
                 quantity: quantity,
-                unit: unit
+                unit: unit,
+                requisition_number: requisitionNo
 		        	}	            
 		        },
 		        before: function() {
@@ -709,6 +737,7 @@
 
   function check_stock(hub, warehouse, project)
   {
+    var requisitionNo = $('#req_no_input').val();
     if( hub!="" && hub!=null && warehouse!="" && warehouse!=null && project!="" && project!=null)
     {
       $.ajax({
@@ -719,7 +748,8 @@
 		        	dispatch: {
 		        		hub_id: hub,
                 warehouse_id: warehouse,
-						    proj_id: project
+						    proj_id: project,
+                requisition_number: requisitionNo
 		        	}	            
 		        },
 		        before: function() {
