@@ -58,5 +58,9 @@ class RequisitionPolicy < ApplicationPolicy
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['guest','admin', 'cleark', 'manager'])
   end
 
+  def delete_regional_requests_fdps_with_zero_ben_no?
+    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+  end
+
 end
 

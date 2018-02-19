@@ -108,6 +108,14 @@ class RequisitionsController < ApplicationController
   # PREPARE /requisitions/prepare?request_id=1
   def prepare
     @request = RegionalRequest.find(params[:request_id])
+    @zero_beneficiary_nos = @request.regional_request_items.where('number_of_beneficiaries < 1')
+    if (@zero_beneficiary_nos.present?)
+       respond_to do |format|
+            flash[:error] = "Can not create requisition as there are zones with zero beneficiary number."
+            format.html {  redirect_to request.referrer }
+      end
+    end
+    
     @requests_per_zone = @request.regional_request_items.group_by { |ri| Fdp.find(ri.fdp_id).location.ancestors.find { |a| a.location_type == 'zone' } }
     @operation = Operation.find(@request.operation_id)
 
@@ -117,6 +125,23 @@ class RequisitionsController < ApplicationController
       @commodities << Commodity.find(ration_item.commodity_id)
     end
   end
+
+ def delete_regional_requests_fdps_with_zero_ben_no
+    @request = RegionalRequest.find(params[:id])
+    @zero_beneficiary_nos = @request.regional_request_items.where('number_of_beneficiaries < 1')
+    if (@zero_beneficiary_nos.delete_all)
+      respond_to do |format|
+            flash[:notice] = "FDPs with zero beneficiary numbers have been deleted."
+            format.html {  redirect_to request.referrer }
+      end
+    else
+        respond_to do |format|
+            flash[:alert] = "Operation was unsuccessful."
+            format.html {  redirect_to request.referrer }
+      end
+    end
+    
+ end
 
   def generate
 
