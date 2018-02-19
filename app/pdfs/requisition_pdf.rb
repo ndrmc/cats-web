@@ -1,9 +1,11 @@
 require 'prawn/table'
 class RequisitionPdf < PdfReport
-    def initialize(requisition_item_obj)
+    def initialize(requisition_item_obj, total_beneficiary_no, total_amount)
         super(top_margin: 50)
         @requisition_item_objs = requisition_item_obj
         @requisition = @requisition_item_objs.first.requisition
+        @total_beneficiary_no = total_beneficiary_no
+        @total_amount = total_amount
         header "#{@requisition.operation.program.name} Program \t\t-\t\t Allocation for #{@requisition.operation.name}"
         requisitions
         text "\n"
@@ -20,6 +22,10 @@ class RequisitionPdf < PdfReport
         self.row_colors = ["DDDDDD", "FFFFFF"]
         self.header = true
         end
+        move_down  10
+        text "Total Beneficiaries: " + ActiveSupport::NumberHelper.number_to_currency(@total_beneficiary_no.to_s,precision: 2, :unit=> '')
+        move_down 1
+        text "Total Amount: " + ActiveSupport::NumberHelper.number_to_currency(@total_amount.to_s,precision: 2, :unit=> '') + " QTL"
     end
 
     def requisition_item
@@ -31,7 +37,7 @@ class RequisitionPdf < PdfReport
             target_unit = UnitOfMeasure.find_by(name: "Quintal")
             current_unit = UnitOfMeasure.find(@uom_id)
             amount_in_qtl = target_unit.convert_to(current_unit.name, item.amount)
-            [item.requisition.commodity.name,item.requisition.requisition_no, item.beneficiary_no, item.amount, item.fdp.location.parent.parent.name, item.fdp.location.parent.name, item.fdp.location.name, item.fdp.name]       
+            [item.requisition.commodity.name,item.requisition.requisition_no, item.beneficiary_no, amount_in_qtl, item.fdp.location.parent.parent.name, item.fdp.location.parent.name, item.fdp.location.name, item.fdp.name]       
         end
     end    
 end
