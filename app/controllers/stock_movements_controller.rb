@@ -174,24 +174,31 @@ end
       @data = []
       @data << 'exists'        
       render json: @data
+      return
     elsif @total_dispatched > @stock_movement.quantity
       @data = []
       @data << 'invalid'     
       @data << 'Dispatching more than the planned amount is not allowed.'      
       render json: @data
+      return
     elsif @available_stock < @amount_in_ref
       @data = []
       @data << 'notenough'     
       @data << 'Not enough stock available. Only ' + @available_stock.to_s + 'MT is avalable.'      
       render json: @data
-    elsif @dispatch.save
+      return
+    end
+
+    @flag = @dispatch.save
+    if @flag
       @data = []
       @data << 'success'     
       @data << 'Dispatch was successfully created.'      
       render json: @data
     else
       @data = []
-      @data << 'failed'        
+      @data << 'failed' 
+      @data << @flag.to_s       
       render json: @data
     end
   end
