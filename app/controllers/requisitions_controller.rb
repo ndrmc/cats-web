@@ -59,7 +59,14 @@ class RequisitionsController < ApplicationController
   # PATCH/PUT /requisitions/1
   # PATCH/PUT /requisitions/1.json
   def update
-    respond_to do |format|
+    requisition = Requisition.find_by_requisition_no requisition_params[:requisition_no]
+    if requisition.present?
+       respond_to do |format|
+        format.html { redirect_to requisitions_url, alert: 'Requisition number exists.' }
+        format.json { render :edit, status: :ok, location: @requisition }
+      end
+    else
+      respond_to do |format|
       if @requisition.update(requisition_params)
         format.html { redirect_to edit_requisition_path(@requisition), notice: 'Requisition was successfully updated.' }
         format.json { render :edit, status: :ok, location: @requisition }
@@ -68,6 +75,9 @@ class RequisitionsController < ApplicationController
         format.json { render json: @requisition.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+    
   end
 
   # DELETE /requisitions/1
