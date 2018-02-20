@@ -14,10 +14,20 @@ class RequisitionsController < ApplicationController
 
   def print
     @requisition_items = RequisitionItem.includes(:fdp, requisition: [:commodity, ration: :ration_items, operation: :program]).where(:'requisitions.id' => params[:id]).where("beneficiary_no > 0")
+    @total_beneficiary_no = RequisitionItem.where(:requisition_id => params[:id]).where("beneficiary_no > 0").sum(:beneficiary_no)
+    @requisition = @requisition_items.first.requisition
+    @uom_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id   
+    target_unit = UnitOfMeasure.find_by(name: "Quintal")
+    current_unit = UnitOfMeasure.find(@uom_id)
+    
+    @total_amount = 0
+    RequisitionItem.where(:requisition_id => params[:id]).where("beneficiary_no > 0").each do |ri|
+      @total_amount += target_unit.convert_to(current_unit.name, ri.amount.to_f) 
+    end
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = RequisitionPdf.new(@requisition_items)
+          pdf = RequisitionPdf.new(@requisition_items, @total_beneficiary_no, @total_amount)
           send_data pdf.render, filename: "requisition_#{@requisition_items.first.requisition.id}.pdf",
           type: "application/pdf",
           disposition: "inline"
