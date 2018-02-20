@@ -8,14 +8,12 @@ class RequisitionPdf < PdfReport
         @total_amount = total_amount
         header "#{@requisition.operation.program.name} Program \t\t-\t\t Allocation for #{@requisition.operation.name}"
         requisitions
-        text "\n"
-        text "\n"
-        text "\n"
-        text "Prepared by: ...................................................    Certified by: ..................................................."
+        
         footer "Commodity Allocation and Tracking System"
     end
 
     def requisitions
+        bounding_box([bounds.left, bounds.top - 75 ], :width => bounds.width, :height => bounds.height - 173) do
         table requisition_item do
         row(0).font_style = :bold
         columns(1..3).align = :right
@@ -26,6 +24,11 @@ class RequisitionPdf < PdfReport
         text "Total Beneficiaries: " + ActiveSupport::NumberHelper.number_to_currency(@total_beneficiary_no.to_s,precision: 2, :unit=> '')
         move_down 1
         text "Total Amount: " + ActiveSupport::NumberHelper.number_to_currency(@total_amount.to_s,precision: 2, :unit=> '') + " QTL"
+        text "\n"
+        text "\n"
+        text "\n"
+        text "Prepared by: ...................................................    Certified by: ..................................................."
+        end
     end
 
     def requisition_item
