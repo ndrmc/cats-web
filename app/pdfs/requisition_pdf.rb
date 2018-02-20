@@ -21,9 +21,9 @@ class RequisitionPdf < PdfReport
         self.header = true
         end
         move_down  10
-        text "Total Beneficiaries: " + ActiveSupport::NumberHelper.number_to_currency(@total_beneficiary_no.to_s,precision: 2, :unit=> '')
+        text "Total Beneficiaries: " + ActiveSupport::NumberHelper.number_to_currency(@total_beneficiary_no.to_s,precision: 2, :unit=> '')  
         move_down 1
-        text "Total Amount: " + ActiveSupport::NumberHelper.number_to_currency(@total_amount.to_s,precision: 2, :unit=> '') + " QTL"
+        text "Total Amount: " + ActiveSupport::NumberHelper.number_to_currency(@total_amount.to_s,precision: 2, :unit=> '') + UnitOfMeasure.find(@uom_id).name
         text "\n"
         text "\n"
         text "\n"
@@ -33,14 +33,14 @@ class RequisitionPdf < PdfReport
 
     def requisition_item
         dynamic_data = []
-        dynamic_data = ["Item","Req.No","Beneficiary No","Amount(QTL)","Region","Zone","Woreda","Destination"]
+        dynamic_data = ["Item","Req.No","Beneficiary No","Amount", "Unit","Region","Zone","Woreda","Destination"]
         @uom_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id
         [dynamic_data] +
         @requisition_item_objs.map do |item|
-            target_unit = UnitOfMeasure.find_by(name: "Quintal")
-            current_unit = UnitOfMeasure.find(@uom_id)
-            amount_in_qtl = target_unit.convert_to(current_unit.name, item.amount)
-            [item.requisition.commodity.name,item.requisition.requisition_no, item.beneficiary_no, amount_in_qtl, item.fdp.location.parent.parent.name, item.fdp.location.parent.name, item.fdp.location.name, item.fdp.name]       
+            # target_unit = UnitOfMeasure.find_by(name: "Quintal")
+            # current_unit = UnitOfMeasure.find(@uom_id)
+            # amount_in_qtl = target_unit.convert_to(current_unit.name, item.amount)
+            [item.requisition.commodity.name,item.requisition.requisition_no, item.beneficiary_no, item.amount, UnitOfMeasure.find(@uom_id).name, item.fdp.location.parent.parent.name, item.fdp.location.parent.name, item.fdp.location.name, item.fdp.name]       
         end
     end    
 end
