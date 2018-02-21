@@ -50,6 +50,6 @@ test "convert_to in model" do
   value = 20
   expected_unit = 'mt'
 
-  assert_equal(0.2,@unit_of_measure_qtl.convert_to(expected_unit,value))
+  assert_equal(2000,@unit_of_measure_qtl.convert_to(expected_unit,value))
 end
 end
