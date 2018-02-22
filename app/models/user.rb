@@ -84,7 +84,7 @@ def self.cache_find(id)
 end
 
 def flush_cache
-  Rails.cache.delete([self.class.name, id])
+  Rails.cache.delete([UnitOfMeasure.name, id])
 end
 
 enum calendar: {ec: 'ec',gc: 'gc'}  
