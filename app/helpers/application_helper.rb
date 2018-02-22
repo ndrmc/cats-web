@@ -21,11 +21,11 @@ module ApplicationHelper
 
   
 
-    def user_uom_preference(value)
+    def user_uom_preference(value,unit)
+         unit_to_be_changed = UnitOfMeasure.cache_find(unit).name
          user_default_unit = User.cache_find(current_user.id).default_uom
          target_unit = UnitOfMeasure.cache_find(user_default_unit)
-         ref_unit = UnitOfMeasure.cache_find_ref('ref')
-         amount_in_user_preference = target_unit.convert_to(ref_unit&.name, value)
+         amount_in_user_preference = target_unit.convert_to(unit_to_be_changed, value)
          return amount_in_user_preference
     end
     
