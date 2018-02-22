@@ -52,7 +52,11 @@ class UnitOfMeasure < ApplicationRecord
       result = value/self.ratio
     elsif self.uom_type == 'small'
       result = value * self.ratio
+<<<<<<< Updated upstream
     elsif self.uom_type == 'ref'
+=======
+    elsif self.uom_type == "ref"
+>>>>>>> Stashed changes
       result = value
     end
     result.to_f
