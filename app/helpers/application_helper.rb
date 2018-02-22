@@ -28,5 +28,13 @@ module ApplicationHelper
          amount_in_user_preference = target_unit.convert_to(unit_to_be_changed, value)
          return amount_in_user_preference
     end
+
+    def to_user_unit(value)
+         user_default_unit = User.cache_find(current_user.id).default_uom
+         target_unit = UnitOfMeasure.cache_find(user_default_unit)
+         amount_in_user_preference = target_unit.ref_to_unit(value)
+         return amount_in_user_preference
+    end
+    
     
 end
