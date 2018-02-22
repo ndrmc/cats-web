@@ -76,7 +76,7 @@
               <th>Woreda</th>
               <th>FDP</th>
               <th>Beneficiaries</th>
-              <th>Amount</th>
+              <th>Amount (<%= UnitOfMeasure.find_by(id: current_user.default_uom).name %>) </th>
               <th>Contingency</th>
 
               <th></th>
@@ -103,10 +103,11 @@
               <% end %>
               </td>
               <td>                
-                <%= ri.beneficiary_no %>        
+                <%= ActionController::Base.helpers.number_with_delimiter(ri.beneficiary_no) %>        
               </td>
               <td>
-                <%= ri.amount%>
+               
+                <%= ActionController::Base.helpers.number_with_delimiter(user_uom_preference(ri.amount)) %>
               </td>
               <td>
                 <%= ri.contingency %>
