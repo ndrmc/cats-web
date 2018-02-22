@@ -124,7 +124,7 @@
   </div>
 </div>
 
-
+<% unit  = UnitOfMeasure.find(current_user.default_uom).name %>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
     <h2> FDP Allocations </h2>
@@ -133,9 +133,9 @@
       <tr>
             <th>Requisition Number</th>
             <th>Commodity</th>
-            <th>Allocated (MT)</th>
-            <th>Dispatched (MT)</th>
-            <th>Remaining (MT)</th>
+            <th>Allocated (<%= unit %>)</th>
+            <th>Dispatched (<%= unit %>)</th>
+            <th>Remaining (<%= unit %>)</th>
             <th>Progress</th>
             <th>Actions</th>
       </tr>
@@ -148,10 +148,10 @@
           <tr>
               <td><%= @dispatch_summary[$i]['requisition_no'] %></td>
               <td><%= @dispatch_summary[$i]['commodity'] %></td>
-              <td><%= number_with_precision(@dispatch_summary[$i]['allocated'], precision: 2) %></td>
-              <td><%= number_with_precision(@dispatch_summary[$i]['dispatched'], precision: 2) %></td>
-              <td><%= number_with_precision((@dispatch_summary[$i]['allocated'] - @dispatch_summary[$i]['dispatched']), precision: 2) %></td>
-              <td><%= number_to_percentage(@dispatch_summary[$i]['progress'], precision: 2) %></td>
+              <td><%= number_with_precision(user_uom_preference(@dispatch_summary[$i]['allocated']), precision: 2) %></td>
+              <td><%= number_with_precision(user_uom_preference(@dispatch_summary[$i]['dispatched']), precision: 2) %></td>
+              <td><%= number_with_precision(user_uom_preference(@dispatch_summary[$i]['allocated']) - user_uom_preference(@dispatch_summary[$i]['dispatched']), precision: 2) %></td>
+              <td><%= number_to_percentage(user_uom_preference(@dispatch_summary[$i]['progress']), precision: 2) %></td>
               <td><%= link_to 'Dispatch', '/en/dispatches/new?requisition_no=' + @dispatch_summary[$i]['requisition_no'].to_s + '&operation_id=' + params[:operation].to_s + '&hub_id=' + params[:hub].to_s + '&warehouse_id=' + params[:warehouse].to_s + '&fdp_id=' + params[:fdp].to_s, :class => "btn btn-primary"%></td>
           </tr>
           <% $i = $i + 1 %>
