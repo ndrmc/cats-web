@@ -72,7 +72,9 @@ class DispatchesController < ApplicationController
         @project_code_allocation = ProjectCodeAllocation.where(:requisition_id => @requisition.id, :project_id => @project_id).first
         @allocated = 0
         if ( @project_code_allocation.present? )
-            @allocated = UnitOfMeasure.find(@project_code_allocation.unit_of_measure_id).to_ref(@project_code_allocation.amount)
+            target_unit = UnitOfMeasure.find_by(code: "MT")
+            current_unit = UnitOfMeasure.find(@project_code_allocation.unit_of_measure_id)
+            @allocated = target_unit.convert_to(current_unit.name, @project_code_allocation.amount)
         end
 
         stock_account = Account.find_by({'code': :stock})
