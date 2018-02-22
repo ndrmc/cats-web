@@ -11,7 +11,7 @@ class PdfReport < Prawn::Document
   end
 
   def header(title=nil)
-     repeat :all do
+    
     image "#{Rails.root}/public/assets/ndrmc.png", height: 30
     text "National Disaster Risk Management Comission", size: 15, style: :bold, align: :center
     stroke_horizontal_rule 
@@ -20,7 +20,7 @@ class PdfReport < Prawn::Document
       text title, size: 14, style: :bold_italic, align: :center
     end
     move_down 10
-    end
+   
   end
   
   def footer(title=nil)
