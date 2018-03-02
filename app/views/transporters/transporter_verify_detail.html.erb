@@ -1,0 +1,97 @@
+<div class="row">
+  <div class="wrapper wrapper-content">
+    <div class="ibox">
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-lg-12">
+            <dl class="dl-horizontal">
+              <h3><%= @transporter&.name %></h3>
+            </dl>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-5">
+            <dl class="dl-horizontal">
+
+              <dt>Code:</dt>
+              <dd><%= @transporter&.code %> </dd>
+              <dt>Transport Order:</dt>
+              <dd><%=  @order_no  %></dd>
+              <dt>Total Quantity:</dt>
+                <dd> </dd>
+            </dl>
+          </div>
+          <div class="col-lg-7" id="cluster_info">
+            <dl class="dl-horizontal">
+
+              <dt>Estimated Payment:</dt>
+              <dd></dd>
+              <dt>Outstanding Payment:</dt>
+              <dd>
+               
+              </dd>
+              <dt>Confirmed Delivery:</dt>
+              <dd>
+                
+              </dd>
+              <dt>Paid Amount:</dt>
+              <dd></dd>
+            </dl>
+          </div>
+        </div>
+        
+      </div>
+      </div>
+      </div>
+      </div>
+
+<% user_unit = UnitOfMeasure.find(current_user.default_uom).code %>
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+    <h2> Transporter Dispatches </h2>
+    <table class="table table-striped cats-datatable">
+      <thead>
+      <tr>
+            <th>GIN</th>
+            <th>Commodity</th>
+            <th>Operation</th>
+            <th>Requisition</th>
+            <th>FDP</th>
+            <th>Hub</th>
+            <th>Allocated (<%= user_unit %>)</th>
+            <th>Dispatched (<%= user_unit %>) </th>
+            <th>Delivered (<%= user_unit %>)</th>
+            <th>Losss</th>
+            <th>Loss Reason </th>
+            <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% if @dispatch_summary.present? %>
+        <% $i = 0 %>
+        <% while $i < @dispatch_summary.count  do %>
+          <tr>
+              <td><%= @dispatch_summary[$i]['gin_no'] %></td>
+              <td><%= @dispatch_summary[$i]['commodity'] %></td>
+              <td><%= @dispatch_summary[$i]['operation'] %></td>
+              <td><%= @dispatch_summary[$i]['requisition_no'] %></td>
+              <td><%= @dispatch_summary[$i]['fdp'] %></td>
+              <td><%= @dispatch_summary[$i]['hub'] %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['allocated_amount']), precision: 2) %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched_amount']), precision: 2) %></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td> <%= link_to 'Validate', "#" %>
+               <%= link_to 'Close', transporter_path(@transporter) %>
+              </td>
+          </tr>
+          <% $i = $i + 1 %>
+        <% end %>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>

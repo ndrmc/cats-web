@@ -10,7 +10,33 @@ class TransportersController < ApplicationController
   # GET /transporters/1
   # GET /transporters/1.json
   def show
-  end
+    @transport_order_items = TransportOrderItem.joins(transport_order: [:operation]).
+    joins("LEFT OUTER JOIN bids b on b.id =transport_orderS.bid_id LEFT OUTER JOIN bid_winners bw on bw.bid_id = b.id")
+    .where(:'transport_orders.transporter_id' => params[:id],
+     :'transport_orders.status'=> :draft) #here status has to be changed to :ongoing
+    .group(:'transport_order_items.transport_order_id', :'operations.id',:'transport_orders.order_no')
+    .select('operations.id as operation_id, sum(bw.tariff_amount) as tarrif_amount, sum(transport_order_items.quantity) as balance, transport_order_items.transport_order_id, transport_orders.order_no as order_no,operations.name as operation')
+end
+
+def transporter_fdp_detail
+    @requisitions = TransportOrderItem.joins(transport_order: [:operation])
+    .where(:'transport_orders.id' => params[:order_id], 
+    :'transport_orders.transporter_id' => params[:transporter_id], 
+    :'transport_orders.operation_id' => params[:operation_id]).distinct.pluck(:requisition_no)
+     @dispatch_summary = Transporter.fdp_allocations(params[:transporter_id], params[:operation_id], @requisitions)  
+     @transporter = Transporter.find(params[:transporter_id])
+     @order_no = TransportOrder.find(params[:order_id]).order_no
+end
+
+def transporter_verify_detail
+   @requisitions = TransportOrderItem.joins(transport_order: [:operation])
+    .where(:'transport_orders.id' => params[:order_id], 
+    :'transport_orders.transporter_id' => params[:transporter_id], 
+    :'transport_orders.operation_id' => params[:operation_id]).pluck(:requisition_no)
+     @dispatch_summary = Transporter.fdp_verification(params[:transporter_id], params[:operation_id], @requisitions)  
+     @transporter = Transporter.find(params[:transporter_id])
+     @order_no = TransportOrder.find(params[:order_id]).order_no
+end
 
   # GET /transporters/new
   def new
