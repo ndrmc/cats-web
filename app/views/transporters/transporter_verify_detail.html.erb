@@ -80,11 +80,16 @@
               <td><%= @dispatch_summary[$i]['hub'] %></td>
               <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['allocated_amount']), precision: 2) %></td>
               <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched_amount']), precision: 2) %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['Delivered_amount']), precision: 2) %></td></td>
               <td></td>
               <td></td>
-              <td></td>
-              <td> <%= link_to 'Validate', "#" %>
-               <%= link_to 'Close', transporter_path(@transporter) %>
+              <% if  @dispatch_summary[$i]['grn_no'].present? %>
+                  <% if @dispatch_summary[$i]['delivery_status'] == 'draft' || @dispatch_summary[$i]['delivery_status'] == 'reverted' %>
+                      <td> <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s %>
+                  <% elsif  @dispatch_summary[$i]['delivery_status'] == 'verified' %>
+                      <td> <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s %>
+                  <% end %>
+              <% end %>
               </td>
           </tr>
           <% $i = $i + 1 %>

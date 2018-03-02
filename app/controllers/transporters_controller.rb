@@ -38,6 +38,33 @@ def transporter_verify_detail
      @order_no = TransportOrder.find(params[:order_id]).order_no
 end
 
+def update_status
+  grn_no = params[:grn_no]
+  status = params[:status]
+  @delivery = Delivery.where(receiving_number: grn_no).first
+  if @delivery.present?
+    @delivery.status = status.to_i
+    if @delivery.save
+     respond_to do |format|
+            flash[:notice] = "Record has been updated."
+            format.html {  redirect_to request.referrer }
+      end
+    else
+        respond_to do |format|
+            flash[:alert] = "Operation was unsuccessful."
+            format.html {  redirect_to request.referrer }
+         end
+     end
+  else
+      
+        respond_to do |format|
+            flash[:alert] = "Operation was unsuccessful."
+            format.html {  redirect_to request.referrer }
+        end
+  end
+  
+end
+
   # GET /transporters/new
   def new
     @transporter = Transporter.new

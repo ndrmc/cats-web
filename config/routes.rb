@@ -61,6 +61,7 @@ Rails.application.routes.draw do
    resources :permissions
   resources :departments
   resources :role_types
+  get 'transporters/update_status', do: 'transporters#update_status'
   get 'transporters/transporter_fdp_detail', to: 'transporters#transporter_fdp_detail'
   get 'transporters/transporter_verify_detail', to: 'transporters#transporter_verify_detail'
   resources :transporters
