@@ -29,7 +29,7 @@ include Filterable
   include Postable
   include OperationLoggable
   
-  enum status: [:draft, :verified, :reverted, :paid, :rejected]
+  enum status: [:draft, :verified, :payment_request_created, :reverted, :paid, :rejected]
   
   #scope :fdp_id, ->(fdp_id) { where fdp_id: fdp_id }
   scope :operation_id, ->(operation_id) { where operation_id: operation_id }
