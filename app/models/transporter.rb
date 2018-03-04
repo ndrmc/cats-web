@@ -138,8 +138,4 @@ class Transporter < ApplicationRecord
         return @dispatch_summary
     end
 
-    def self.getEstimatedPayment(bid_id, transport_order_amount)
-        
-    end
-    
 end

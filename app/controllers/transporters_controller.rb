@@ -34,8 +34,64 @@ def transporter_verify_detail
     :'transport_orders.transporter_id' => params[:transporter_id], 
     :'transport_orders.operation_id' => params[:operation_id]).pluck(:requisition_no)
      @dispatch_summary = Transporter.fdp_verification(params[:transporter_id], params[:operation_id], @requisitions)  
+     @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) }
      @transporter = Transporter.find(params[:transporter_id])
      @order_no = TransportOrder.find(params[:order_id]).order_no
+end
+
+def processPayment
+
+    @transporter_id = params[:id]
+   
+    @reference_no = params[:reference_no]
+    @payment_date = params[:payment_date]
+    @requested_amount = params[:request_amount]
+    @remark = params[:remark]
+
+    @payment_request = PaymentRequest.new
+    @payment_request.reference_no = @reference_no
+    #payment_request.payment_date = @payment_date
+    @payment_request.amount_requested = @requested_amount
+    @payment_request.remark = @remark
+    @payment_request.transporter_id = @transporter_id
+
+    deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified)
+    if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:payment_request_created]))  
+   
+      deliveries_with_status_verified.each do |delivery|
+          delivery.delivery_details.each do |delivery_item|
+
+          @payment_request_items = PaymentRequestItem.new
+          @payment_request_items.requisition_no = delivery_item&.delivery&.requisition_number
+          @payment_request_items.gin_no = delivery_item&.delivery&.gin_number
+          @payment_request_items.grn_no = delivery_item&.delivery&.receiving_number
+          @payment_request_items.fdp_id = delivery_item&.delivery&.fdp_id
+          @payment_request_items.commodity_id = delivery_item&.commodity_id
+          @payment_request_items.dispatched = delivery_item&.sent_quantity
+          @payment_request_items.received  = delivery_item&.received_quantity
+          @payment_request_items.loss = 0
+          @payment_request_items.tariff = 0
+          @payment_request_items.freightCharge = 0
+          
+          @payment_request.payment_request_items << @payment_request_items
+      end
+    end
+    if  @payment_request.save
+       respond_to do |format|
+            flash[:notice] = "Record has been updated."
+            format.html {  redirect_to request.referrer }
+      end
+  end
+end
+end
+
+def payment_request
+  @payment_requests = PaymentRequest.all
+end
+
+def payment__request_items
+  @id = params[:id]
+  @payment__request_items = PaymentRequestItem.where(payment_request_id: @id)
 end
 
 def update_status

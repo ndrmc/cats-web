@@ -1,0 +1,49 @@
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+    <h2> Payment Request</h2>
+    <table class="table table-striped cats-datatable">
+      <thead>
+      <tr>
+            <th>Reference No</th>
+            <th>Requisition No</th>
+            <th>GIN</th>
+            <th>GRN</th>
+            <th>Commodity</th>
+            <th>Source Hub </th>
+            <th>FDP</th>
+            <th>Dispatched</th>
+            <th>Received</th>
+            <th>Loss</th>
+            <th>Tariff</th>
+            <th>Freight Chanrge</th>
+            <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+          <% @payment__request_items.each do |payment_request_item| %>
+          <tr>
+              <td><%= payment_request_item&.payment_request&.reference_no  %></td>
+              <td><%= payment_request_item&.requisition_no %></td>
+              <td><%= payment_request_item&.gin_no %></td>
+              <td><%= payment_request_item&.grn_no %></td>
+              <td><%= payment_request_item&.commodity&.name %></td>
+              <td><%= payment_request_item&.hub&.name %></td>
+              <td><%= payment_request_item&.fdp&.name %></td>
+              <td><%= payment_request_item&.dispatched %></td>
+              <td><%= payment_request_item&.received %></td>
+              <td><%= payment_request_item&.loss %></td>
+              <td><%= payment_request_item&.tariff %></td>
+              <td><%= payment_request_item&.freightCharge %></td>
+              <td> <%= link_to 'Process', "#" %>
+               <%= link_to 'Reject', '#'%>
+              </td>
+          </tr>
+          
+       
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
