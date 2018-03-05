@@ -30,6 +30,9 @@ module ApplicationHelper
     end
 
     def to_user_unit(value)
+        if value.nil?
+            value = 0
+        end
          user_default_unit = User.cache_find(current_user.id).default_uom
          target_unit = UnitOfMeasure.cache_find(user_default_unit)
          amount_in_user_preference = target_unit.ref_to_unit(value)

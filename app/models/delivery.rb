@@ -28,7 +28,8 @@ class Delivery < ApplicationRecord
 include Filterable
   include Postable
   include OperationLoggable
-
+  
+  enum status: [:draft, :verified, :payment_request_created, :reverted, :paid, :rejected]
   
   #scope :fdp_id, ->(fdp_id) { where fdp_id: fdp_id }
   scope :operation_id, ->(operation_id) { where operation_id: operation_id }
@@ -36,6 +37,7 @@ include Filterable
   
   has_many :delivery_details
   belongs_to :fdp
+  belongs_to :operation
   accepts_nested_attributes_for :delivery_details, reject_if: :all_blank
 
   validates :receiving_number, uniqueness: true

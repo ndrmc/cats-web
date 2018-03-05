@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180130124657) do
+ActiveRecord::Schema.define(version: 20180302111455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -785,6 +785,45 @@ ActiveRecord::Schema.define(version: 20180130124657) do
     t.datetime "updated_at",                  null: false
   end
 
+  create_table "payment_request_items", force: :cascade do |t|
+    t.integer  "payment_request_id"
+    t.string   "requisition_no"
+    t.integer  "gin_no"
+    t.integer  "grn_no"
+    t.integer  "commodity_id"
+    t.integer  "hub_id"
+    t.integer  "fdp_id"
+    t.decimal  "dispatched",         precision: 10, scale: 2
+    t.decimal  "received",           precision: 10, scale: 2
+    t.decimal  "loss",               precision: 10, scale: 2
+    t.decimal  "tariff",             precision: 10, scale: 2
+    t.decimal  "freightCharge",      precision: 10, scale: 2
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.index ["commodity_id"], name: "index_payment_request_items_on_commodity_id", using: :btree
+    t.index ["fdp_id"], name: "index_payment_request_items_on_fdp_id", using: :btree
+    t.index ["hub_id"], name: "index_payment_request_items_on_hub_id", using: :btree
+    t.index ["payment_request_id"], name: "index_payment_request_items_on_payment_request_id", using: :btree
+  end
+
+  create_table "payment_requests", force: :cascade do |t|
+    t.integer  "transporter_id"
+    t.string   "reference_no"
+    t.decimal  "amount_requested", precision: 10, scale: 2
+    t.string   "remark"
+    t.integer  "status"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.index ["reference_no"], name: "index_payment_requests_on_reference_no", unique: true, using: :btree
+    t.index ["transporter_id"], name: "index_payment_requests_on_transporter_id", using: :btree
+  end
+
   create_table "permissions", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -1519,6 +1558,11 @@ ActiveRecord::Schema.define(version: 20180130124657) do
   add_foreign_key "dispatch_items", "organizations"
   add_foreign_key "dispatches", "hubs"
   add_foreign_key "dispatches", "warehouses"
+  add_foreign_key "payment_request_items", "commodities"
+  add_foreign_key "payment_request_items", "fdps"
+  add_foreign_key "payment_request_items", "hubs"
+  add_foreign_key "payment_request_items", "payment_requests"
+  add_foreign_key "payment_requests", "transporters"
   add_foreign_key "projects", "commodity_categories", column: "commodity_categories_id"
   add_foreign_key "projects", "programs"
   add_foreign_key "receipt_lines", "unit_of_measures"
