@@ -274,7 +274,7 @@
           <span aria-hidden="true">&times;</span>
           <span class="sr-only">Close</span>
         </button>
-        <h4 id='modal-title' class="modal-title">[transporter name]</h4>
+        <h4 id='modal-title' class="modal-title"><%= @transporter&.name %></h4>
       </div>
          <form role="form" method="POST" enctype="multipart/form-data" action="/transporters/processPayment/<%= @transporter.id %>" class="form-inline" style="display: inline;margin-top: 15px"">
         
@@ -285,10 +285,10 @@
 
                   
               <div class="col-md-3 col-sm-3 col-xs-3">
-                 <%= label_tag :reference_no, "Reference No", { :class => ' control-label'} %>
+                 <%= label_tag :reference_no, "Reference No", { :class => ' control-label' } %>
               </div>
               <div class="col-md-8 col-sm-8 col-xs-8">
-                <%= text_field_tag :reference_no, nil, class: "form-control" %>
+                <%= text_field_tag :reference_no, nil, class: "form-control" , :required => true %>
               </div>
          
 
@@ -304,21 +304,21 @@
 
              
               <div class="col-md-3 col-sm-3 col-xs-3">
-                <%= label_tag :amount_requested, "Amount Requested", { :class => ' control-label', :required => true } %>
+                <%= label_tag :amount_requested, "Amount Requeseted", { :class => ' control-label' } %>
               </div>
                <div class="col-md-8 col-sm-8 col-xs-8">
                 <%= number_field_tag :amount_requested, '', min: 0, max: 9999999999999999, :step => 'any', class: "form-control number", placeholder: '0.00' %>
               </div>
            
-
+           <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
               <div class="col-md-3 col-sm-3 col-xs-3">
-                <%= label_tag :remark, "Remark", { :class => ' control-label', :required => true } %>
+                <%= label_tag :remark, "Remark", { :class => ' control-label'} %>
               </div>  
                <div class="col-md-8 col-sm-8 col-xs-8">
-                <%= text_area_tag :remark, '', :class => 'form-control', :required => true  %>
+                <%= text_area_tag :remark, '', :class => 'form-control'  %>
               </div>
             
-
+          </div>
         </div>
         
       </div>
