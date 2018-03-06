@@ -24,6 +24,7 @@
 class Transporter < ApplicationRecord
   enum ownership: [:plc, :sc, :pvt, :govt, :other]
   enum status: [:active, :inactive]
+  enum payment_type: [:check, :bank]
   has_many :transporter_addresses
 
   validates :name, presence: {message: "  is required!"}  
