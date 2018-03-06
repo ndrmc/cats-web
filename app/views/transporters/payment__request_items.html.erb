@@ -1,6 +1,16 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Payment Request : <%= @referenceNo %></h2>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', '/transporters/payment_request',  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-    <h2> Payment Request</h2>
     <table class="table table-striped cats-datatable">
       <thead>
       <tr>

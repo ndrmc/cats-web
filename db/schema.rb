@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180302111455) do
+ActiveRecord::Schema.define(version: 20180305080421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -821,6 +821,7 @@ ActiveRecord::Schema.define(version: 20180302111455) do
     t.datetime "deleted_at"
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+    t.datetime "payment_date"
     t.index ["reference_no"], name: "index_payment_requests_on_reference_no", unique: true, using: :btree
     t.index ["transporter_id"], name: "index_payment_requests_on_transporter_id", using: :btree
   end
