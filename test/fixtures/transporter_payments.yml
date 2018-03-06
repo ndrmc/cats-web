@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  payment_requests: one
+  payment_request: one
   cheque_no: MyString
   voucher_no: MyString
   bank_name: MyString
@@ -14,7 +14,7 @@ one:
   status: 1
 
 two:
-  payment_requests: two
+  payment_request: two
   cheque_no: MyString
   voucher_no: MyString
   bank_name: MyString
