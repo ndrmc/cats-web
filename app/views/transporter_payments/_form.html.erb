@@ -1,0 +1,64 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(transporter_payment) do |f| %>
+        <% if transporter_payment.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(transporter_payment.errors.count, "error") %> prohibited this transporter_payment from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% transporter_payment.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :payment_requests_id %>
+                <%= f.text_field :payment_requests_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :chequeNo %>
+                <%= f.text_field :chequeNo, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :voucherNo %>
+                <%= f.text_field :voucherNo, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :bankName %>
+                <%= f.text_field :bankName, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :paidAmount %>
+                <%= f.text_field :paidAmount, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :paymentDate %>
+                <%= f.datetime_select :paymentDate, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :status %>
+                <%= f.number_field :status, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

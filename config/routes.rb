@@ -3,6 +3,7 @@ Rails.application.routes.draw do
  
 
   
+  resources :transporter_payments
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
   resources :warehouse_allocations

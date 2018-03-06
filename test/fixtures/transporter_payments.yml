@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  payment_requests: one
+  chequeNo: MyString
+  voucherNo: MyString
+  bankName: MyString
+  paidAmount: 9.99
+  paymentDate: 2018-03-06 04:16:09
+  status: 1
+
+two:
+  payment_requests: two
+  chequeNo: MyString
+  voucherNo: MyString
+  bankName: MyString
+  paidAmount: 9.99
+  paymentDate: 2018-03-06 04:16:09
+  status: 1

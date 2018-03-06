@@ -1,0 +1,37 @@
+    <p>
+      <strong>Payment requests:</strong>
+      <%= @transporter_payment.payment_requests %>
+    </p>
+
+    <p>
+      <strong>Chequeno:</strong>
+      <%= @transporter_payment.chequeNo %>
+    </p>
+
+    <p>
+      <strong>Voucherno:</strong>
+      <%= @transporter_payment.voucherNo %>
+    </p>
+
+    <p>
+      <strong>Bankname:</strong>
+      <%= @transporter_payment.bankName %>
+    </p>
+
+    <p>
+      <strong>Paidamount:</strong>
+      <%= @transporter_payment.paidAmount %>
+    </p>
+
+    <p>
+      <strong>Paymentdate:</strong>
+      <%= @transporter_payment.paymentDate %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @transporter_payment.status %>
+    </p>
+
+<%= link_to 'Edit', edit_transporter_payment_path(@transporter_payment) %> |
+<%= link_to 'Back', transporter_payments_path %>

@@ -1,0 +1,66 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transporter Payments</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Transporter Payments</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'New Transporter Payment', new_transporter_payment_path, :class => "btn btn-primary"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+                        <th>Payment requests</th>
+                        <th>Chequeno</th>
+                        <th>Voucherno</th>
+                        <th>Bankname</th>
+                        <th>Paidamount</th>
+                        <th>Paymentdate</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transporter_payments.each do |transporter_payment| %>
+          <tr>
+                        <td><%= transporter_payment.payment_requests
+              %></td>
+                        <td><%= transporter_payment.chequeNo
+              %></td>
+                        <td><%= transporter_payment.voucherNo
+              %></td>
+                        <td><%= transporter_payment.bankName
+              %></td>
+                        <td><%= transporter_payment.paidAmount
+              %></td>
+                        <td><%= transporter_payment.paymentDate
+              %></td>
+                        <td><%= transporter_payment.status
+              %></td>
+                        <td>
+              <%= link_to 'Edit', edit_transporter_payment_path(transporter_payment) %> &middot;
+              <%= link_to 'Delete', transporter_payment, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
