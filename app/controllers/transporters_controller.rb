@@ -68,50 +68,76 @@ def processPayment
 
     @payment_request = PaymentRequest.new
     @payment_request.reference_no = @reference_no
-    #payment_request.payment_date = @payment_date
+    payment_request.payment_date = @payment_date
     @payment_request.amount_requested = @requested_amount
     @payment_request.remark = @remark
     @payment_request.transporter_id = @transporter_id
 
     deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified)
-    if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:payment_request_created]))  
-   
-      deliveries_with_status_verified.each do |delivery|
-          delivery.delivery_details.each do |delivery_item|
+    if deliveries_with_status_verified.present?
+                    if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:payment_request_created]))  
+                  
+                      deliveries_with_status_verified.each do |delivery|
+                          delivery.delivery_details.each do |delivery_item|
 
-          @payment_request_items = PaymentRequestItem.new
-          @payment_request_items.requisition_no = delivery_item&.delivery&.requisition_number
-          @payment_request_items.gin_no = delivery_item&.delivery&.gin_number
-          @payment_request_items.grn_no = delivery_item&.delivery&.receiving_number
-          @payment_request_items.fdp_id = delivery_item&.delivery&.fdp_id
-          @payment_request_items.commodity_id = delivery_item&.commodity_id
-          @payment_request_items.dispatched = delivery_item&.sent_quantity
-          @payment_request_items.received  = delivery_item&.received_quantity
-          @payment_request_items.loss = 0
-          @payment_request_items.tariff = 0
-          @payment_request_items.freightCharge = 0
-          
-          @payment_request.payment_request_items << @payment_request_items
-      end
-    end
-    if  @payment_request.save
-       respond_to do |format|
-            flash[:notice] = "Record has been updated."
-            format.html {  redirect_to request.referrer }
-      end
+                          @payment_request_items = PaymentRequestItem.new
+                          @payment_request_items.requisition_no = delivery_item&.delivery&.requisition_number
+                          @payment_request_items.gin_no = delivery_item&.delivery&.gin_number
+                          @payment_request_items.grn_no = delivery_item&.delivery&.receiving_number
+                          @payment_request_items.fdp_id = delivery_item&.delivery&.fdp_id
+                          @payment_request_items.commodity_id = delivery_item&.commodity_id
+                          @payment_request_items.dispatched = delivery_item&.sent_quantity
+                          @payment_request_items.received  = delivery_item&.received_quantity
+                          @payment_request_items.loss = 0
+                          @payment_request_items.tariff = 0
+                          @payment_request_items.freightCharge = 0
+                          
+                          @payment_request.payment_request_items << @payment_request_items
+                      end
+                    end
+                    if  @payment_request.save
+                      respond_to do |format|
+                            flash[:notice] = "Record has been updated."
+                            format.html {  redirect_to :action => 'payment_request' }
+                      end
+                  end
+                end
+  else
+      respond_to do |format|
+                            flash[:alert] = "No verified record found."
+                            format.html {  redirect_to request.referrer  }
+                      end
   end
-end
+  
 end
 
 def payment_request
-  @payment_requests = PaymentRequest.all
+   if params[:reference_no].present?
+      @payment_requests = PaymentRequest.where(reference_no: params[:reference_no])
+      return
+    end
+
+    if params[:transporter].present? && params[:status].present?
+      filter_map = {transporter_id: params[:transporter], status: params[:status]}
+      @payment_requests = PaymentRequest.where( filter_map )
+    else
+      @payment_requests = PaymentRequest.all
+    end
+
+  
 end
 
 def payment__request_items
   @id = params[:id]
-  @payment__request_items = PaymentRequestItem.where(payment_request_id: @id)
-end
 
+  @payment__request_items = PaymentRequestItem.where(payment_request_id: @id)
+  if @payment__request_items.present?
+      @referenceNo =  @payment__request_items&.first&.payment_request&.reference_no
+      @transporter = Transporter.find(@payment__request_items&.first&.payment_request&.transporter_id)
+    else
+      @payment__request_items =[]
+    end
+end
 def update_status
   grn_no = params[:grn_no]
   status = params[:status]

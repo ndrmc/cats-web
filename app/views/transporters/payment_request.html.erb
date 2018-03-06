@@ -1,6 +1,65 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Payment Request</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Payment Request</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', '#',  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+
+   <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <%= form_tag( '/transporters/payment_request' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+          <div class="form-group">
+            <%= label_tag :transporter, "Transporter", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :status, "Status", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :status,  options_for_select( PaymentRequest.statuses) , { :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+          
+          <div class="form-group">
+          <%= label_tag :reference_no, "Reference No", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :reference_no, params[:reference_no], { class: 'form-control'}  %>
+          </div>
+        </div>
+
+          <div class="form-group">
+            <label for=""></label>
+            <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+            </div>
+          </div>
+
+      <% end %>
+
+    </div>
+
+
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-    <h2> Payment Request</h2>
     <table class="table table-striped cats-datatable">
       <thead>
       <tr>
@@ -20,11 +79,11 @@
           <tr>
               <td><%= link_to payment_request&.reference_no, '/transporters/payment__request_items/' + payment_request.id.to_s %></td>
               <td><%= payment_request&.transporter&.name %></td>
-              <td><%=  %></td>
-              <td><%=  %></td>
+              <td><%= payment_request&.payment_date %></td>
+              <td><%= Contract.find_by(:transporter_id => payment_request&.transporter&.id)&.contract_no %></td>
               <td><%= payment_request&.amount_requested %></td>
-              <td><%=  %></td>
-              <td><%=  %></td>
+              <td><%=   %></td>
+              <td><%= payment_request&.status %></td>
               <td> <%= link_to 'Process', "#" %>
                <%= link_to 'Reject', '#'%>
               </td>
