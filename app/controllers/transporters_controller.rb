@@ -50,7 +50,7 @@ def processPayment
 
     @payment_request = PaymentRequest.new
     @payment_request.reference_no = @reference_no
-    payment_request.payment_date = @payment_date
+    @payment_request.payment_date = @payment_date
     @payment_request.amount_requested = @requested_amount
     @payment_request.remark = @remark
     @payment_request.transporter_id = @transporter_id
