@@ -122,16 +122,16 @@ class Transporter < ApplicationRecord
                  :'requisitions.requisition_no' => dispatch_item&.dispatch&.requisition_number, :'requisition_items.fdp_id' => dispatch_item&.dispatch&.fdp&.id } )
                  .where('requisition_items.amount > 0').find_each do |allocation|
          
-                allocation.requisition_items.each do |ri|
-                    uom_id = allocation&.operation&.ration&.ration_items.where(commodity_id: allocation.commodity_id)&.first&.unit_of_measure_id
-                    if(uom_id.present?)
-                        @row['allocated_amount'] = UnitOfMeasure.find(uom_id).to_ref(ri.amount)
-                    else
-                        @row['allocated_amount'] = ri.amount
+                    allocation.requisition_items.each do |ri|
+                        uom_id = allocation&.operation&.ration&.ration_items.where(commodity_id: allocation.commodity_id)&.first&.unit_of_measure_id
+                        if(uom_id.present?)
+                            @row['allocated_amount'] = UnitOfMeasure.find(uom_id).to_ref(ri.amount)
+                        else
+                            @row['allocated_amount'] = ri.amount
+                        end
                     end
                 end
             end
-        end
             @row['progress'] = ( @row['Delivered_amount'].to_f / @row['dispatched_amount'].to_f) * 100
             @dispatch_summary << @row
         end
