@@ -892,7 +892,7 @@ ActiveRecord::Schema.define(version: 20180302111455) do
     t.index ["deleted_at"], name: "index_programs_on_deleted_at", using: :btree
   end
 
-  create_table "project_code_allocations", id: :integer, default: -> { "nextval('stock_reserves_id_seq'::regclass)" }, force: :cascade do |t|
+  create_table "project_code_allocations", force: :cascade do |t|
     t.integer  "hub_id"
     t.integer  "warehouse_id"
     t.integer  "store_id"
