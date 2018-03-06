@@ -114,6 +114,7 @@ def payment__request_items
 
   @payment__request_items = PaymentRequestItem.where(payment_request_id: @id)
   if @payment__request_items.present?
+      @payment_request_id = @id
       @referenceNo =  @payment__request_items&.first&.payment_request&.reference_no
       @transporter = Transporter.find(@payment__request_items&.first&.payment_request&.transporter_id)
     else

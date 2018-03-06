@@ -25,11 +25,15 @@
         <thead>
           <tr>
                         <th>Payment requests</th>
-                        <th>Chequeno</th>
-                        <th>Voucherno</th>
-                        <th>Bankname</th>
-                        <th>Paidamount</th>
-                        <th>Paymentdate</th>
+                        <th>Cheque no</th>
+                        <th>Voucher no</th>
+                        <th>Bank name</th>
+                        <th>Paid amount</th>
+                        <th>Prepared by</th>
+                        <th>Approved by</th>
+                        <th>Approved date</th>
+                        <th>Datetime</th>
+                        <th>Payment date</th>
                         <th>Status</th>
                         <th>Actions</th>
           </tr>
@@ -40,15 +44,23 @@
           <tr>
                         <td><%= transporter_payment.payment_requests
               %></td>
-                        <td><%= transporter_payment.chequeNo
+                        <td><%= transporter_payment.cheque_no
               %></td>
-                        <td><%= transporter_payment.voucherNo
+                        <td><%= transporter_payment.voucher_no
               %></td>
-                        <td><%= transporter_payment.bankName
+                        <td><%= transporter_payment.bank_name
               %></td>
-                        <td><%= transporter_payment.paidAmount
+                        <td><%= transporter_payment.paid_amount
               %></td>
-                        <td><%= transporter_payment.paymentDate
+                        <td><%= transporter_payment.prepared_by
+              %></td>
+                        <td><%= transporter_payment.approved_by
+              %></td>
+                        <td><%= transporter_payment.approved_date
+              %></td>
+                        <td><%= transporter_payment.datetime
+              %></td>
+                        <td><%= transporter_payment.payment_date
               %></td>
                         <td><%= transporter_payment.status
               %></td>

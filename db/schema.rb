@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180306011609) do
+ActiveRecord::Schema.define(version: 20180306014612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1362,11 +1362,15 @@ ActiveRecord::Schema.define(version: 20180306011609) do
 
   create_table "transporter_payments", force: :cascade do |t|
     t.integer  "payment_request_id"
-    t.string   "chequeNo"
-    t.string   "voucherNo"
-    t.string   "bankName"
-    t.decimal  "paidAmount",         precision: 10, scale: 2
-    t.datetime "paymentDate"
+    t.string   "cheque_no"
+    t.string   "voucher_no"
+    t.string   "bank_name"
+    t.decimal  "paid_amount",        precision: 10, scale: 2
+    t.string   "prepared_by"
+    t.string   "approved_by"
+    t.string   "approved_date"
+    t.string   "datetime"
+    t.datetime "payment_date"
     t.integer  "status"
     t.integer  "created_by"
     t.integer  "modified_by"
