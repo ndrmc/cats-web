@@ -392,6 +392,7 @@ ActiveRecord::Schema.define(version: 20180306014612) do
     t.string   "dispatched_date_ec"
     t.integer  "dispatch_type_id"
     t.integer  "dispatch_type"
+    t.integer  "store_id"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree

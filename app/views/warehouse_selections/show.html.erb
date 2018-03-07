@@ -147,7 +147,7 @@
             <td><%= warehouse_selection.warehouse_name %></td>
             <td><%= warehouse_selection.estimated_qty %></td>
             <td>
-              <% if (@framework_tender&.status == 'draft') %>
+              <% if (@framework_tender&.status == 'open') %>
                 <%= link_to 'Remove', warehouse_selection, method: :delete, data: { confirm: 'Are you sure?' } %>
               <% end %>
             </td>

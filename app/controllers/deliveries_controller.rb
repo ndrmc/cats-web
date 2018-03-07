@@ -85,7 +85,7 @@ class DeliveriesController < ApplicationController
 
     @delivery = Delivery.new(delivery_params)
     @delivery.created_by = current_user.id
-
+    @delivery.status = :draft
     respond_to do |format|
       if @delivery.save
         format.html { redirect_to deliveries_url, notice: 'Delivery was successfully created.' }
