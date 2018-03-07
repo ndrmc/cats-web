@@ -68,7 +68,7 @@ def processPayment
 
     @payment_request = PaymentRequest.new
     @payment_request.reference_no = @reference_no
-    payment_request.payment_date = @payment_date
+    @payment_request.payment_date = @payment_date
     @payment_request.amount_requested = @requested_amount
     @payment_request.remark = @remark
     @payment_request.transporter_id = @transporter_id
@@ -132,6 +132,7 @@ def payment__request_items
 
   @payment__request_items = PaymentRequestItem.where(payment_request_id: @id)
   if @payment__request_items.present?
+      @payment_request_id = @id
       @referenceNo =  @payment__request_items&.first&.payment_request&.reference_no
       @transporter = Transporter.find(@payment__request_items&.first&.payment_request&.transporter_id)
     else

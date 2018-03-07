@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305080421) do
+ActiveRecord::Schema.define(version: 20180306014612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1359,6 +1359,26 @@ ActiveRecord::Schema.define(version: 20180305080421) do
     t.index ["deleted_at"], name: "index_transporter_addresses_on_deleted_at", using: :btree
   end
 
+  create_table "transporter_payments", force: :cascade do |t|
+    t.integer  "payment_request_id"
+    t.string   "cheque_no"
+    t.string   "voucher_no"
+    t.string   "bank_name"
+    t.decimal  "paid_amount",        precision: 10, scale: 2
+    t.string   "prepared_by"
+    t.string   "approved_by"
+    t.string   "approved_date"
+    t.string   "datetime"
+    t.datetime "payment_date"
+    t.integer  "status"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.index ["payment_request_id"], name: "index_transporter_payments_on_payment_request_id", using: :btree
+  end
+
   create_table "transporters", force: :cascade do |t|
     t.string   "name",                          null: false
     t.string   "code",                          null: false
@@ -1576,6 +1596,7 @@ ActiveRecord::Schema.define(version: 20180305080421) do
   add_foreign_key "stock_movements", "commodities"
   add_foreign_key "stock_movements", "projects"
   add_foreign_key "stock_movements", "unit_of_measures"
+  add_foreign_key "transporter_payments", "payment_requests"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
   add_foreign_key "users_permissions", "permissions"

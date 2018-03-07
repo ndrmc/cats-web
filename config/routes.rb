@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
  
 
-  
+ 
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
   resources :warehouse_allocations
@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
  scope "(:locale)", locale: /en|am/ do
 
+  get 'transporter_payments/update_status', to: 'transporter_payments#update_status'
+  resources :transporter_payments
   resources :project_code_allocations
   post '/project_code_allocations/create_for_requisition', to: 'project_code_allocations#create_for_requisition'
   delete '/project_code_allocations/destroy_project_code_allocations/:id', to: 'project_code_allocations#destroy_project_code_allocations'
