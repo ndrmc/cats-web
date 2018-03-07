@@ -56,7 +56,8 @@
               <td><%= transporter.contact_phone %></td>
               <td>
                 <%if policy(Transporter).edit? %>
-                <%= link_to 'Edit', edit_transporter_path(transporter) %>
+                <%= link_to 'Edit', edit_transporter_path(transporter) %> &middot;
+                 <%= link_to 'Process Payment', transporter_path(transporter) %>
                 <% end %>
                 &middot;
                  <%if policy(Transporter).destroy? %>

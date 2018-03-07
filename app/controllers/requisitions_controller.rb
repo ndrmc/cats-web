@@ -71,9 +71,11 @@ class RequisitionsController < ApplicationController
   def update
     requisition = Requisition.find_by_requisition_no requisition_params[:requisition_no]
     if requisition.present?
-       respond_to do |format|
-        format.html { redirect_to requisitions_url, alert: 'Requisition number exists.' }
+     if @requisition.update(update_requisition_params)
+        respond_to do |format|
+        format.html { redirect_to edit_requisition_path(@requisition), notice: 'Requisition number exisits but the other parameters were successfully updated.' }
         format.json { render :edit, status: :ok, location: @requisition }
+        end
       end
     else
       respond_to do |format|
@@ -298,6 +300,10 @@ class RequisitionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def requisition_params
     params.require(:requisition).permit(:requisition_no, :operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status)
+  end
+
+  def update_requisition_params
+    params.require(:requisition).permit(:operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status)
   end
 
 end
