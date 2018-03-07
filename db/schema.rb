@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20180306014612) do
 
   # These are extensions that must be enabled in order to support this database
@@ -276,6 +277,8 @@ ActiveRecord::Schema.define(version: 20180306014612) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.string   "guid_ref_delivery_id"
+    t.decimal  "loss_quantity"
+    t.string   "loss_reason"
   end
 
   create_table "delivery_imports", force: :cascade do |t|
@@ -1596,6 +1599,10 @@ ActiveRecord::Schema.define(version: 20180306014612) do
   add_foreign_key "stock_movements", "commodities"
   add_foreign_key "stock_movements", "projects"
   add_foreign_key "stock_movements", "unit_of_measures"
+<<<<<<< Updated upstream
+=======
+  add_foreign_key "stock_movements", "unit_of_measures"
+>>>>>>> Stashed changes
   add_foreign_key "transporter_payments", "payment_requests"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"

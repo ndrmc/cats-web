@@ -143,7 +143,7 @@ class DeliveriesController < ApplicationController
     def delivery_params
       params.require(:delivery).permit(:receiving_number, :transporter_id, :primary_plate_number, :trailer_plate_number, :driver_name,
       :fdp_id, :gin_number, :waybill_number, :requisition_number, :received_by, :received_date, :status, :operation_id,
-      :delivery_details_attributes => [:id, :commodity_id, :uom_id, :sent_quantity, :received_quantity])
+      :delivery_details_attributes => [:id, :commodity_id, :uom_id, :sent_quantity, :received_quantity, :loss_quantity, :loss_reason])
 
 
     end
