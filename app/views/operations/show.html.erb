@@ -273,7 +273,7 @@
                             <% @dispatches_map.each do |region,dispatches| %>
                             <tr>
                               <td>                             
-                                <%= link_to region, dispatches_path(:region => region, :operation => @operation.id) %>
+                                <%= link_to region, dispatches_path(:region => Location.find_by(name: region)&.id, :operation => @operation.id) %>
                               </td>
                               <td>
                               

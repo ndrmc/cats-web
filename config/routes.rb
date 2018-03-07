@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
  
 
-  
+ 
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
   resources :warehouse_allocations
@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
  scope "(:locale)", locale: /en|am/ do
 
+  get 'transporter_payments/update_status', to: 'transporter_payments#update_status'
+  resources :transporter_payments
   resources :project_code_allocations
   post '/project_code_allocations/create_for_requisition', to: 'project_code_allocations#create_for_requisition'
   delete '/project_code_allocations/destroy_project_code_allocations/:id', to: 'project_code_allocations#destroy_project_code_allocations'
@@ -61,6 +63,14 @@ Rails.application.routes.draw do
    resources :permissions
   resources :departments
   resources :role_types
+  get 'transporters/update_status', do: 'transporters#update_status'
+  get 'transporters/transporter_fdp_detail', to: 'transporters#transporter_fdp_detail'
+  get 'transporters/transporter_verify_detail', to: 'transporters#transporter_verify_detail'
+  post '/transporters/processPayment/:id', to: 'transporters#processPayment'
+  get '/transporters/payment_request', to: 'transporters#payment_request'
+  get '/transporters/payment__request_items/:id', to: 'transporters#payment__request_items'
+  
+
   resources :transporters
   resources :transport_orders
   get '/transport_orders/print/:id', to: 'transport_orders#print'
@@ -213,6 +223,9 @@ Rails.application.routes.draw do
   resources :stock_takes
   resources :stock_take_items
   resources :adjustments
+  resources :payment_requests
+  resources :payment_request_items
+  
 
   get'/stock_reports', to: 'stock_reports#index'
   get '/stock_reports/stock_status_by_project_code', to: 'stock_reports#stock_status_by_project_code'

@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  payment_request: one
+  requisition_no: MyString
+  gin_no: 1
+  grn_no: 1
+  commodity: one
+  hub: one
+  fdp: one
+  dispatched: 9.99
+  received: 9.99
+  loss: 9.99
+  tariff: 9.99
+  freightCharge: 9.99
+
+two:
+  payment_request: two
+  requisition_no: MyString
+  gin_no: 1
+  grn_no: 1
+  commodity: two
+  hub: two
+  fdp: two
+  dispatched: 9.99
+  received: 9.99
+  loss: 9.99
+  tariff: 9.99
+  freightCharge: 9.99
