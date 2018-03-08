@@ -83,7 +83,8 @@
             <th>Unit of Measure</th>
             <th>Sent Quantity</th>
             <th>Received Quantity</th>
-
+            <th>Loss Quantity</th>
+            <th>Loss Reason</th>
             <th></th>
           </tr>
         </thead>
@@ -110,6 +111,12 @@
               <%= ff.text_field :received_quantity , class: 'form_control'%>
             </td>
             <td>
+              <%= ff.text_field :loss_quantity , class: 'form_control'%>
+            </td>
+            <td>
+              <%= ff.text_field :loss_reason , class: 'form_control'%>
+            </td>
+            <td>
               <button type="button" class="btn btn-danger btn-sm remove-detail">Remove</button>
             </td>
           </tr>
@@ -132,6 +139,16 @@
             <td>
 
               <input name="delivery[delivery_details_attributes][][received_quantity]" type="number" class="form-control" data-parsley-required/>
+
+            </td>
+            <td>
+
+              <input name="delivery[delivery_details_attributes][][loss_quantity]" type="number" class="form-control" data-parsley-required/>
+
+            </td>
+            <td>
+
+              <input name="delivery[delivery_details_attributes][][loss_reason]" type="text" class="form-control" data-parsley-required/>
 
             </td>
             <td>

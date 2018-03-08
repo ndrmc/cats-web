@@ -1,0 +1,84 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(transporter_payment) do |f| %>
+        <% if transporter_payment.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(transporter_payment.errors.count, "error") %> prohibited this transporter_payment from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% transporter_payment.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+                <div class="form-group">
+                            <%= f.label :payment_request_id %>
+                <%= f.text_field :payment_request_id, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :cheque_no %>
+                <%= f.text_field :cheque_no, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :voucher_no %>
+                <%= f.text_field :voucher_no, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :bank_name %>
+                <%= f.text_field :bank_name, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :paid_amount %>
+                <%= f.text_field :paid_amount, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :prepared_by %>
+                <%= f.text_field :prepared_by, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :approved_by %>
+                <%= f.text_field :approved_by, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :approved_date %>
+                <%= f.text_field :approved_date, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :datetime %>
+                <%= f.text_field :datetime, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :payment_date %>
+                <%= f.datetime_select :payment_date, :class => 'form-control' %>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :status %>
+                <%= f.number_field :status, :class => 'form-control' %>
+                        </div>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>
