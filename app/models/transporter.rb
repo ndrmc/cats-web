@@ -109,9 +109,9 @@ class Transporter < ApplicationRecord
                          @row['grn_no'] = delivery.receiving_number
                          @row['delivery_status'] = delivery.status
                          delivery.delivery_details.each do |dd|
-                            uom_id = delivery&.operation&.ration&.ration_items.where(commodity_id: dd.commodity_id)&.first&.unit_of_measure_id
-                            if(uom_id.present?)
-                                @row['Delivered_amount'] = UnitOfMeasure.find(uom_id).to_ref(dd.received_quantity)
+                            # uom_id = delivery&.operation&.ration&.ration_items.where(commodity_id: dd.commodity_id)&.first&.unit_of_measure_id
+                            if(dd.uom_id.present?)
+                                @row['Delivered_amount'] = UnitOfMeasure.find(dd.uom_id).to_ref(dd.received_quantity)
                             else
                                 @row['Delivered_amount'] = dd.received_quantity
                             end

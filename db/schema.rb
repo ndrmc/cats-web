@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20180306014612) do
+ActiveRecord::Schema.define(version: 20180307110603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1599,10 +1598,6 @@ ActiveRecord::Schema.define(version: 20180306014612) do
   add_foreign_key "stock_movements", "commodities"
   add_foreign_key "stock_movements", "projects"
   add_foreign_key "stock_movements", "unit_of_measures"
-<<<<<<< Updated upstream
-=======
-  add_foreign_key "stock_movements", "unit_of_measures"
->>>>>>> Stashed changes
   add_foreign_key "transporter_payments", "payment_requests"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
