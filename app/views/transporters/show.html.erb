@@ -39,7 +39,7 @@
                                       <%= link_to 'Contracts', "", class: ""%>
                                   </li>
                                   <li>
-                                      <%= link_to 'Print', "", class: "", method: :delete, data: { confirm: 'Are you sure you want to close this Transport Order?' } %>
+                                      <%= link_to 'Print', "/transporters/print_payment_request?format=pdf&transporter_id=" + @transporter.id.to_s, class: ""%>
                                   </li>
                                 </ul>
                         </div>

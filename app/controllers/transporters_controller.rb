@@ -135,6 +135,27 @@ def processPayment
   end
   
 end
+def print_payment_request
+      transporter_id = params[:transporter_id]
+      @payment_requested =  PaymentRequestItem.includes(:payment_request).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open)
+      @received = @payment_requested.sum(:received)
+      @dispatched = @payment_requested.sum(:dispatched )
+      @freight_charge = @payment_requested.sum(:freightCharge)
+      @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
+   puts "====================================================="
+   puts @current_user.first_name
+   puts "====================="
+       respond_to do |format|
+            format.html
+            format.pdf do
+                pdf = PaymentRequestPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name)
+                send_data pdf.render, filename: "payment_request.pdf",
+                type: "application/pdf",
+                disposition: "inline"
+            end
+            
+        end
+end
 
 def payment_request
    if params[:reference_no].present?
