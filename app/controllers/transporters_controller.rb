@@ -141,6 +141,11 @@ def payment_request
       @payment_requests = PaymentRequest.where(reference_no: params[:reference_no])
       return
     end
+    
+    if params[:transporter].present?
+      @payment_requests = PaymentRequest.where(transporter_id: params[:transporter])
+      return
+    end
 
     if params[:transporter].present? && params[:status].present?
       filter_map = {transporter_id: params[:transporter], status: params[:status]}
