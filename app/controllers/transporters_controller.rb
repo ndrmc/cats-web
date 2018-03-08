@@ -135,6 +135,20 @@ def processPayment
   end
   
 end
+def print_payment_request
+      transporter_id = params[:transporter_id]
+      @payment_requested =  PaymentRequestItem.includes(:payment_request).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open)
+       respond_to do |format|
+            format.html
+            format.pdf do
+                pdf = PaymentRequestPdf.new(@payment_requested)
+                send_data pdf.render, filename: "payment_request.pdf",
+                type: "application/pdf",
+                disposition: "inline"
+            end
+            
+        end
+end
 
 def payment_request
    if params[:reference_no].present?
