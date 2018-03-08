@@ -29,7 +29,7 @@ class TransporterPaymentsController < ApplicationController
     @transporter_payment.status = TransporterPayment.statuses[:open]
     respond_to do |format|
       if @transporter_payment.save
-        format.html { redirect_to @transporter_payment, notice: 'Transporter payment was successfully created.' }
+        format.html { redirect_to transporter_payments_url, notice: 'Transporter payment was successfully created.' }
         format.json { render :show, status: :created, location: @transporter_payment }
       else
         format.html { render :new }

@@ -52,7 +52,7 @@
           Estimated Payment:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-          <%= @total_destinations %>
+           <%= @transport_order[0]['est_payment'] %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -60,7 +60,7 @@
           Outstanding Payment:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-          
+           <%= @transport_order[0]['est_payment'] -  @transport_order[0]['paid_amount'] %> 
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -68,7 +68,7 @@
           Confirmed Delivery:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-        
+       <%= @transport_order[0]['confirmed_delivery'] %> 
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -76,7 +76,7 @@
           Paid Amount:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-        
+        <%= @transport_order[0]['paid_amount'] %>
         </div>
       </div>
     </div>
@@ -99,8 +99,6 @@
             <th>Allocated (<%= user_unit %>)</th>
             <th>Dispatched (<%= user_unit %>) </th>
             <th>Delivered (<%= user_unit %>)</th>
-            <th>Losss</th>
-            <th>Loss Reason </th>
             <th>Actions</th>
       </tr>
       </thead>
@@ -119,8 +117,7 @@
               <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['allocated_amount']), precision: 2) %></td>
               <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched_amount']), precision: 2) %></td>
               <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['Delivered_amount']), precision: 2) %></td></td>
-              <td></td>
-              <td></td>
+            
               <% if  @dispatch_summary[$i]['grn_no'].present? %>
                   <% if (!@dispatch_summary[$i]['delivery_status'].present?) || @dispatch_summary[$i]['delivery_status'] == 'draft' || @dispatch_summary[$i]['delivery_status'] == 'reverted' %>
                       <td> <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s %>

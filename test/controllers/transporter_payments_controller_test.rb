@@ -22,7 +22,7 @@ class TransporterPaymentsControllerTest < ActionDispatch::IntegrationTest
       post transporter_payments_url, params: { transporter_payment: { approved_by: @transporter_payment.approved_by, approved_date: @transporter_payment.approved_date, bank_name: @transporter_payment.bank_name, cheque_no: @transporter_payment.cheque_no, datetime: @transporter_payment.datetime, paid_amount: @transporter_payment.paid_amount, payment_date: @transporter_payment.payment_date, payment_request_id: @transporter_payment.payment_request_id, prepared_by: @transporter_payment.prepared_by, status: @transporter_payment.status, voucher_no: @transporter_payment.voucher_no } }
     end
 
-    assert_redirected_to transporter_payment_url(TransporterPayment.last)
+    assert_redirected_to transporter_payments_url
   end
 
   test "should show transporter_payment" do
