@@ -1,3 +1,4 @@
+<% user_unit = UnitOfMeasure.find(current_user.default_uom).code %>
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
     <h2>Transporter Summary</h2>
@@ -81,17 +82,17 @@
             </tr>
             <tr>
               <td>
-                <strong>61</strong>
+                <strong><%= @delivery_count%></strong>
                 <a href="#">Pending delivery notes</a>
               </td>
               <td>
-                <strong>2</strong>
+                <strong><%=@invoice_count%></strong>
                 <a href="#">Pending invoices</a>
               </td>
             </tr>
             <tr>
               <td>
-                <strong><%= @transport_orders.uniq{|x| x['order_no']}.length %></strong>
+                <strong><%= $transport_orders.uniq{|x| x['order_no']}.length %></strong>
                 <a href="#"> active Transport orders</a>
               </td>
             </tr>
@@ -104,7 +105,7 @@
     <div class="ibox">
       <div class="ibox-content" style="min-height: 170px;">
         <small>Total amount of commodity moved</small>
-        <h2 class="no-margins">26,480.7 mt</h2>
+        <h2 class="no-margins"><%= @delivery_sum  %> (<%= user_unit %>)</h2>
         <div id="sparkline1"></div>
       </div>
     </div>
@@ -203,7 +204,7 @@
           </h5>
           
         </div>
-        <%if !@transport_orders.present? %>
+        <%if !$transport_orders.present? %>
         <div class="ibox-content" style="display: block;">
           <h2>No outstanding invoices and payments</h2></div>
           <% else %>
@@ -224,7 +225,7 @@
                   </thead>
 
               <tbody>
-              <% @transport_orders.each do |transport_order| %>
+              <% $transport_orders.each do |transport_order| %>
                     <tr>
                         <td> <%= transport_order['order_no'] %></td>
                         <td> <%= transport_order['operation'] %></td>

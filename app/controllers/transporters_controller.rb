@@ -16,10 +16,26 @@ class TransportersController < ApplicationController
     #  :'transport_orders.status'=> :draft) #here status has to be changed to :ongoing
     # .group(:'transport_order_items.transport_order_id', :'operations.id',:'transport_orders.order_no')
     # .select('operations.id as operation_id, sum(bw.tariff_amount) as tarrif_amount, sum(transport_order_items.quantity) as balance, transport_order_items.transport_order_id, transport_orders.order_no as order_no,operations.name as operation')
+     
+    @delivery_count = Delivery.where(:'transporter_id' => params[:id], :'deliveries.status' => :draft).count
+    @payment_request_ids = TransporterPayment.where(:status => :paid).distinct.pluck(:'payment_request_id')
+  
+    
+    @approved_grns = PaymentRequestItem.includes(:payment_request).where('payment_requests.id IN (?) and payment_requests.transporter_id = ?', @payment_request_ids, params[:id]).distinct.pluck(:'payment_request_items.grn_no')
+   
+    @approved_grns = @approved_grns.map(&:to_s)
+    if  @approved_grns.present?
+      @delivery_sum = Delivery.joins(:delivery_details).where({:'transporter_id' => params[:id]}).where('receiving_number IN (?)', @approved_grns).sum(:'delivery_details.received_quantity')
+    else
+       @delivery_sum = 0
+    end
+    
+    @invoice_count = PaymentRequest.where(:'transporter_id' => params[:id], :'payment_requests.status' => :open).count
+
 
     @transport_order_items = TransportOrder.joins(:operation, :transport_order_items).where(:'transport_orders.transporter_id' => params[:id], :'transport_orders.status'=> :draft).select('transport_orders.id, operations.id as operation_id, transport_order_items.tariff, transport_order_items.quantity, (transport_order_items.tariff * transport_order_items.quantity) as delivery_price, transport_order_items.transport_order_id, transport_orders.order_no, operations.name as operation').to_a
     
-    @transport_orders = []
+    $transport_orders = []
     TransportOrder.includes(:operation,:transport_order_items).where(:'transport_orders.transporter_id' => params[:id], :'transport_orders.status'=> :draft).each do |to|
       received_qty = 0
       requisition_nos = to.transport_order_items.map { |toi| toi.requisition_no }
@@ -32,11 +48,12 @@ class TransportersController < ApplicationController
       est_payment = 0
       tio_filtered.each { |a| balance+=a.quantity }
       tio_filtered.each { |a| est_payment+=a.delivery_price }
-      @transport_orders << {'id' => to.id, 'order_no' => to.order_no, 'operation_id' => to.operation_id, 'operation' => to.operation.name, 'balance' => balance,'confirmed_delivery' => received_qty, 'est_payment' => est_payment, 'paid_amount' => 0 }
+      $transport_orders << {'id' => to.id, 'order_no' => to.order_no, 'operation_id' => to.operation_id, 'operation' => to.operation.name, 'balance' => balance,'confirmed_delivery' => received_qty, 'est_payment' => est_payment, 'paid_amount' => 0 }
     end
 end
 
 def transporter_fdp_detail
+    @transport_order =[]
     @requisitions = TransportOrderItem.joins(transport_order: [:operation])
     .where(:'transport_orders.id' => params[:order_id], 
     :'transport_orders.transporter_id' => params[:transporter_id], 
@@ -44,9 +61,14 @@ def transporter_fdp_detail
      @dispatch_summary = Transporter.fdp_allocations(params[:transporter_id], params[:operation_id], @requisitions)  
      @transporter = Transporter.find(params[:transporter_id])
      @order_no = TransportOrder.find(params[:order_id]).order_no
+     $transport_orders.each do | to |
+       @transport_order << to if to['id'].to_i == params[:order_id].to_i
+    end
+ 
 end
 
 def transporter_verify_detail
+  @transport_order =[]
    @requisitions = TransportOrderItem.joins(transport_order: [:operation])
     .where(:'transport_orders.id' => params[:order_id], 
     :'transport_orders.transporter_id' => params[:transporter_id], 
@@ -55,6 +77,9 @@ def transporter_verify_detail
      @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) }
      @transporter = Transporter.find(params[:transporter_id])
      @order_no = TransportOrder.find(params[:order_id]).order_no
+      $transport_orders.each do | to |
+       @transport_order << to if to['id'].to_i == params[:order_id].to_i
+    end
 end
 
 def processPayment
@@ -72,7 +97,7 @@ def processPayment
     @payment_request.amount_requested = @requested_amount
     @payment_request.remark = @remark
     @payment_request.transporter_id = @transporter_id
-
+    @payment_request.status = :open
     deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified)
     if deliveries_with_status_verified.present?
                     if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:payment_request_created]))  

@@ -69,13 +69,13 @@ class Transporter < ApplicationRecord
                 :'deliveries.requisition_number' => allocation.requisition_no,
                 :'deliveries.fdp_id' =>  ri&.fdp&.id }).where('delivery_details.received_quantity > 0').
                 select(:id, :'delivery_details.received_quantity',:'delivery_details.uom_id').find_each do |delivery|
-                       @qty_in_ref =  UnitOfMeasure.find(Delivery.uom_id).to_ref(delivery.received_qunatity)
-                       @row['Delivered_amount'] = @row['Delivered_amount'] + @qty_in_ref
+                       @qty_in_ref =  UnitOfMeasure.find(delivery.uom_id).to_ref(delivery.received_quantity)
+                       @row['delivered_amount'] = @row['delivered_amount'].to_f + @qty_in_ref
                  end
 
-
+             @dispatch_summary << @row
             @row['progress'] = ( @row['dispatched_amount'].to_f / @row['allocated_amount'].to_f) * 100
-            @dispatch_summary << @row
+           
         end
         end
         return @dispatch_summary
@@ -109,13 +109,10 @@ class Transporter < ApplicationRecord
                          @row['grn_no'] = delivery.receiving_number
                          @row['delivery_status'] = delivery.status
                          delivery.delivery_details.each do |dd|
-                            uom_id = delivery&.operation&.ration&.ration_items.where(commodity_id: dd.commodity_id)&.first&.unit_of_measure_id
-                            if(uom_id.present?)
-                                @row['Delivered_amount'] = UnitOfMeasure.find(uom_id).to_ref(dd.received_quantity)
-                            else
-                                @row['Delivered_amount'] = dd.received_quantity
-                            end
-                        end
+                              @qty_in_ref = UnitOfMeasure.find(dd.uom_id).to_ref(dd.received_quantity)
+                                @row['Delivered_amount'] =  @row['Delivered_amount'].to_f + dd.received_quantity
+                         end
+                        
                  end
 
                  #allocation information
@@ -126,15 +123,16 @@ class Transporter < ApplicationRecord
                     allocation.requisition_items.each do |ri|
                         uom_id = allocation&.operation&.ration&.ration_items.where(commodity_id: allocation.commodity_id)&.first&.unit_of_measure_id
                         if(uom_id.present?)
-                            @row['allocated_amount'] = UnitOfMeasure.find(uom_id).to_ref(ri.amount)
+                            @row['allocated_amount'] = @row['allocated_amount'].to_f + UnitOfMeasure.find(uom_id).to_ref(ri.amount.to_f)
                         else
                             @row['allocated_amount'] = ri.amount
                         end
                     end
+                       @dispatch_summary << @row
                 end
             end
             @row['progress'] = ( @row['Delivered_amount'].to_f / @row['dispatched_amount'].to_f) * 100
-            @dispatch_summary << @row
+         
         end
         return @dispatch_summary
     end

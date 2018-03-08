@@ -62,7 +62,7 @@
                                   <li>                    
                                       <%= link_to 'Approve', '/transporter_payments/update_status?status=' + TransporterPayment.statuses[:approved].to_s + "&transporter_payment_id=" + transporter_payment&.id.to_s %>  
                                   </li>
-                                <% elsif transporter_payment.status == 'Approved' %>   
+                                <% elsif transporter_payment.status == 'approved' %>   
                                   <li>
                                       <%= link_to 'Pay',  '/transporter_payments/update_status?status=' + TransporterPayment.statuses[:paid].to_s + "&transporter_payment_id=" + transporter_payment&.id.to_s %>   
                                   </li>
