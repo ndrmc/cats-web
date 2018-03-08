@@ -73,8 +73,9 @@ class Transporter < ApplicationRecord
                        @row['delivered_amount'] = @row['delivered_amount'].to_f + @qty_in_ref
                  end
 
-             @dispatch_summary << @row
+             
             @row['progress'] = ( @row['dispatched_amount'].to_f / @row['allocated_amount'].to_f) * 100
+            @dispatch_summary << @row
            
         end
         end
