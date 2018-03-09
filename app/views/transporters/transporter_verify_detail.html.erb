@@ -13,6 +13,10 @@
       </li>
     </ol>
   </div>
+  <div class="title-action">
+      <%= link_to 'Back', '/transporters/' + @transporter.id.to_s,  :class => "btn btn-default"%>
+  </div>
+  
   <div class="col-sm-4">
     
   </div>
@@ -120,9 +124,11 @@
             
               <% if  @dispatch_summary[$i]['grn_no'].present? %>
                   <% if (!@dispatch_summary[$i]['delivery_status'].present?) || @dispatch_summary[$i]['delivery_status'] == 'draft' || @dispatch_summary[$i]['delivery_status'] == 'reverted' %>
-                      <td> <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s %>
+                      <td> <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s,data: { confirm: "Are you sure you want to verify this delivery?" } %>
                   <% elsif  @dispatch_summary[$i]['delivery_status'] == 'verified' %>
                       <td> <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s %>
+                  <%else%>
+                       
                   <% end %>
               <% end %>
               </td>
