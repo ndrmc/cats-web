@@ -32,7 +32,7 @@ class TransportersController < ApplicationController
     
     @invoice_count = PaymentRequest.where(:'transporter_id' => params[:id], :'payment_requests.status' => :open).count
 
-    @amount_requested =  Delivery.joins(:delivery_details).where({:'status' => Delivery.statuses.key(Delivery.statuses[:verified]),  :'transporter_id' => params[:id]}).sum(:'delivery_details.received_quantity')
+    @amount_requested =  Transporter.amount_requested(params[:id])
 
     @transport_order_items = TransportOrder.joins(:operation, :transport_order_items).where(:'transport_orders.transporter_id' => params[:id], :'transport_orders.status'=> :draft).select('transport_orders.id, operations.id as operation_id, transport_order_items.tariff, transport_order_items.quantity, (transport_order_items.tariff * transport_order_items.quantity) as delivery_price, transport_order_items.transport_order_id, transport_orders.order_no, operations.name as operation').to_a
     
@@ -88,7 +88,7 @@ def processPayment
     @transporter_id = params[:id]
    
     @reference_no = params[:reference_no]
-    @payment_date = params[:payment_date]
+    @payment_date = params[:request_date]
     @requested_amount = params[:request_amount]
     @remark = params[:remark]
 
@@ -114,7 +114,7 @@ def processPayment
                           @payment_request_items.commodity_id = delivery_item&.commodity_id
                           @payment_request_items.dispatched = delivery_item&.sent_quantity
                           @payment_request_items.received  = delivery_item&.received_quantity
-                          @payment_request_items.loss = 0
+                          @payment_request_items.loss = delivery_item&.loss_quantity
                           @payment_request_items.tariff = 0
                           @payment_request_items.freightCharge = 0
                           
@@ -184,6 +184,7 @@ def payment__request_items
       @payment_request_id = @id
       @referenceNo =  @payment__request_items&.first&.payment_request&.reference_no
       @transporter = Transporter.find(@payment__request_items&.first&.payment_request&.transporter_id)
+      @amount_paid = @payment__request_items.sum(:freightCharge)
     else
       @payment__request_items =[]
     end
