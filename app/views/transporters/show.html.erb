@@ -306,7 +306,7 @@
             <%= label_tag :amount_requested, "Amount Requested", { :class => ' control-label', :required => true } %>
           </div>
           <div class="col-md-8 col-sm-8 col-xs-8">
-            <%= number_field_tag :amount_requested, '', min: 0, max: 9999999999999999, :step => 'any', class: "form-control number", placeholder: '0.00' %>
+            <%= number_field_tag :amount_requested, @amount_requested, min: 0, max: 9999999999999999, :step => 'any', class: "form-control number", placeholder: '0.00' %>
           </div>
         </div>
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">  

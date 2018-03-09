@@ -32,6 +32,7 @@ class TransportersController < ApplicationController
     
     @invoice_count = PaymentRequest.where(:'transporter_id' => params[:id], :'payment_requests.status' => :open).count
 
+    @amount_requested =  Delivery.joins(:delivery_details).where({:'status' => Delivery.statuses.key(Delivery.statuses[:verified]),  :'transporter_id' => params[:id]}).sum(:'delivery_details.received_quantity')
 
     @transport_order_items = TransportOrder.joins(:operation, :transport_order_items).where(:'transport_orders.transporter_id' => params[:id], :'transport_orders.status'=> :draft).select('transport_orders.id, operations.id as operation_id, transport_order_items.tariff, transport_order_items.quantity, (transport_order_items.tariff * transport_order_items.quantity) as delivery_price, transport_order_items.transport_order_id, transport_orders.order_no, operations.name as operation').to_a
     
@@ -122,14 +123,14 @@ def processPayment
                     end
                     if  @payment_request.save
                       respond_to do |format|
-                            flash[:notice] = "Record has been updated."
+                            flash[:notice] = "Payment request has been processed."
                             format.html {  redirect_to :action => 'payment_request' }
                       end
                   end
                 end
   else
       respond_to do |format|
-                            flash[:alert] = "No verified record found."
+                            flash[:alert] = "No verified payment request was found."
                             format.html {  redirect_to request.referrer  }
                       end
   end
@@ -142,9 +143,6 @@ def print_payment_request
       @dispatched = @payment_requested.sum(:dispatched )
       @freight_charge = @payment_requested.sum(:freightCharge)
       @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
-   puts "====================================================="
-   puts @current_user.first_name
-   puts "====================="
        respond_to do |format|
             format.html
             format.pdf do
@@ -198,19 +196,19 @@ def update_status
     @delivery.status = status.to_i
     if @delivery.save
      respond_to do |format|
-            flash[:notice] = "Record has been updated."
+            flash[:notice] = "Payment request has been updated."
             format.html {  redirect_to request.referrer }
       end
     else
         respond_to do |format|
-            flash[:alert] = "Operation was unsuccessful."
+            flash[:alert] = "Paymant was not updated."
             format.html {  redirect_to request.referrer }
          end
      end
   else
       
         respond_to do |format|
-            flash[:alert] = "Operation was unsuccessful."
+            flash[:alert] = "Paymant was not updated."
             format.html {  redirect_to request.referrer }
         end
   end
