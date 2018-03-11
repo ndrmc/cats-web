@@ -313,3 +313,9 @@ if (Journal.where(:name => 'Internal Movement').present? == false)
   puts "Added Internal Movement to Journal"
 end
 
+if PaymentType.count == 0
+  PaymentType.create(name: 'Cheque')
+  PaymentType.create(name: 'Bank')
+end
+
+

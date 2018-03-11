@@ -1,0 +1,2 @@
+class PaymentType < ApplicationRecord
+end
