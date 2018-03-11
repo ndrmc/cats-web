@@ -33,6 +33,25 @@ class Transporter < ApplicationRecord
   validates :code, presence: true
   validates :code, uniqueness: true
 
+  def self.amount_requested(transporter_id)
+
+      @amount_requested = 0
+      TransportOrder.includes(:transport_order_items).where(:'transport_orders.transporter_id' => transporter_id).each do |to|
+        to.transport_order_items.each do |to_item|
+
+
+                 Delivery.joins(:delivery_details).where({:'deliveries.transporter_id' => transporter_id,
+                :'deliveries.requisition_number' => to_item.requisition_no,
+                :'deliveries.fdp_id' =>  to_item&.fdp_id, :'deliveries.status' => :verified }).where('delivery_details.received_quantity > 0').
+                select(:id, :'delivery_details.received_quantity',:'delivery_details.uom_id').find_each do |delivery|
+                       
+                       @qty_in_ref =  UnitOfMeasure.find(delivery.uom_id).to_ref(delivery.received_quantity)
+                       @amount_requested = @amount_requested  + (@qty_in_ref * to_item.tariff)
+                    end
+                end
+         end
+        return @amount_requested
+  end
 
   def self.fdp_allocations (transporter_id, operation_id, requisition_nos)
     
