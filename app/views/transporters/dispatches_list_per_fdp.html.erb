@@ -14,7 +14,7 @@
     </ol>
   </div>
   <div class="col-sm-4">
-    <%= link_to 'Back', '/transporters/' + @transporter.id.to_s,  :class => "btn btn-default pull-right", :style => "margin-top:30px;" %>
+    <%= link_to 'Back', '/transporters/transporter_fdp_detail?transporter_id=' + @transporter.id.to_s + '&operation_id=' + @operation.id.to_s + '&order_id=' + @order_no.id.to_s ,  :class => "btn btn-default pull-right", :style => "margin-top:30px;" %>
   </div>
 </div>
 
@@ -83,51 +83,34 @@
   </div>
 </div>
 
+
 <% user_unit = UnitOfMeasure.find(current_user.default_uom).code %>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
-    <h2> Transporter Dispatches </h2>
+    <h2> Transporter Summary </h2>
     <table class="table table-striped cats-datatable">
       <thead>
       <tr>
-            <th>GIN</th>
+            <th>GIN No.</th>
             <th>Commodity</th>
-            <th>Operation</th>
-            <th>Requisition</th>
-            <th>FDP</th>
-            <th>Hub</th>
-            <th>Allocated (<%= user_unit %>)</th>
-            <th>Dispatched (<%= user_unit %>) </th>
+            <th>Dispatched Date</th>
+            <th>Dispatched Qty. (<%= user_unit %>)</th>
             <th>Delivered (<%= user_unit %>)</th>
-            <th>Loss</th>
-            <th>Actions</th>
+            <th>Loss (<%= user_unit %>)</th>
+            <th>Progress</th>
       </tr>
       </thead>
 
       <tbody>
-      <% if @dispatch_summary.present? %>
-        <% $i = 0 %>
-        <% while $i < @dispatch_summary.count  do %>
-          <tr>
-              <td><%= @dispatch_summary[$i]['gin_no'] %></td>
-              <td><%= @dispatch_summary[$i]['commodity'] %></td>
-              <td><%= @dispatch_summary[$i]['operation'] %></td>
-              <td><%= @dispatch_summary[$i]['requisition_no'] %></td>
-              <td><%= @dispatch_summary[$i]['fdp'] %></td>
-              <td><%= @dispatch_summary[$i]['hub'] %></td>
-              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['allocated_amount']), precision: 2) %></td>
-              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched_amount']), precision: 2) %></td>
-              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['delivered_amount']), precision: 2) %></td></td>
-              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched_amount']), precision: 2).to_f - number_with_precision(to_user_unit(@dispatch_summary[$i]['delivered_amount']), precision: 2).to_f %></td>
-              <% if  @dispatch_summary[$i]['grn_no'].present? %>
-                  <% if (!@dispatch_summary[$i]['delivery_status'].present?) || @dispatch_summary[$i]['delivery_status'] == 'draft' || @dispatch_summary[$i]['delivery_status'] == 'reverted' %>
-                      <td> <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s, method: :post, data: { confirm: 'Are you sure?' } %> </td>
-                  <% elsif  @dispatch_summary[$i]['delivery_status'] == 'verified' %>
-                      <td> <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s, method: :post, data: { confirm: 'Are you sure?' } %> </td>
-                  <% end %>
-              <% end %>              
-          </tr>
-          <% $i = $i + 1 %>
+      <% if @dispatches_list_per_fdp.present? %>
+        <% @dispatches_list_per_fdp.each do |dipf| %>
+            <td><%= dipf['gin_no'] %></td>
+            <td><%= dipf['commodity'] %></td>
+            <td><%= dipf['dispatch_date'] %></td>
+            <td><%= number_with_precision(to_user_unit(dipf['dispatched_amount']), precision: 2) %></td>
+            <td><%= number_with_precision(to_user_unit(dipf['delivered_amount']), precision: 2) %></td>
+            <td><%= number_with_precision(to_user_unit(dipf['dispatched_amount']), precision: 2).to_f - number_with_precision(to_user_unit(dipf['delivered_amount']), precision: 2).to_f %></td>
+            <td><%= number_with_precision(to_user_unit(dipf['progress']), precision: 2) %>%</td>
         <% end %>
       <% end %>
       </tbody>

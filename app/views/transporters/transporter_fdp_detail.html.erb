@@ -14,7 +14,7 @@
     </ol>
   </div>
   <div class="col-sm-4">
-    
+    <%= link_to 'Back', '/transporters/' + @transporter.id.to_s, :class => "btn btn-default pull-right", :style => "margin-top: 30px"%>
   </div>
 </div>
 
@@ -34,7 +34,7 @@
           Transport Order:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          <%= @order_no %>
+          <%= @order_no.order_no %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -113,10 +113,8 @@
               <td><%= @dispatch_summary[$i]['commodity'] %></td>
               <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['allocated_amount']), precision: 2) %></td>
               <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched_amount']), precision: 2) %></td>
-              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dilivered_amount']), precision: 2) %></td>
-              <td> <%= link_to 'Validate', "#" %>
-               <%= link_to 'Close', transporter_path(@transporter) %>
-              </td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['delivered_amount']), precision: 2) %></td>
+              <td><%= link_to 'GINs', '/transporters/dispatches_list_per_fdp?transporter_id=' + @transporter.id.to_s + '&operation_id=' + @dispatch_summary[$i]['operation_id'].to_s + '&fdp_id=' + @dispatch_summary[$i]['fdp_id'].to_s + '&requisition_no=' + @dispatch_summary[$i]['requisition_no'] +'&order_id=' + @order_no.id.to_s %></td>
           </tr>
           <% $i = $i + 1 %>
         <% end %>

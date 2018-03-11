@@ -246,9 +246,6 @@
                                 <%= link_to 'Verify', '/transporters/transporter_verify_detail?transporter_id=' + @transporter['id'].to_s + '&operation_id=' + transport_order['operation_id'].to_s + "&order_id=" + transport_order['id'].to_s %>  
                               </li>
                               <li>
-                                  <%= link_to 'Process', "", class: ""%>
-                              </li>
-                              <li>
                                   <%= link_to 'Close', "", class: "", method: :delete, data: { confirm: 'Are you sure you want to close this Transport Order?' } %>
                               </li>
                             </ul>
