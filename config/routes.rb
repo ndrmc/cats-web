@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   get '/transporters/payment_request', to: 'transporters#payment_request'
   get '/transporters/payment__request_items/:id', to: 'transporters#payment__request_items'
   get '/transporters/dispatches_list_per_fdp', to: 'transporters#dispatches_list_per_fdp'
+  get '/transporters/print_payment_request', to: 'transporters#print_payment_request'
 
   resources :transporters
   resources :transport_orders

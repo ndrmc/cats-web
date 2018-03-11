@@ -13,6 +13,10 @@
       </li>
     </ol>
   </div>
+  <div class="title-action">
+      <%= link_to 'Back', '/transporters/' + @transporter.id.to_s,  :class => "btn btn-default"%>
+  </div>
+  
   <div class="col-sm-4">
     <%= link_to 'Back', '/transporters/' + @transporter.id.to_s,  :class => "btn btn-default pull-right", :style => "margin-top:30px;" %>
   </div>
@@ -52,7 +56,7 @@
           Estimated Payment:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-          <%= @total_destinations %>
+           <%= @transport_order[0]['est_payment'] %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -60,7 +64,7 @@
           Outstanding Payment:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-          
+           <%= @transport_order[0]['est_payment'] -  @transport_order[0]['paid_amount'] %> 
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -68,7 +72,7 @@
           Confirmed Delivery:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-        
+       <%= @transport_order[0]['confirmed_delivery'] %> 
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -76,7 +80,7 @@
           Paid Amount:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-        
+        <%= @transport_order[0]['paid_amount'] %>
         </div>
       </div>
     </div>
@@ -124,6 +128,7 @@
                       <td> <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s, method: :post, data: { confirm: 'Are you sure?' } %> </td>
                   <% elsif  @dispatch_summary[$i]['delivery_status'] == 'verified' %>
                       <td> <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s, method: :post, data: { confirm: 'Are you sure?' } %> </td>
+
                   <% end %>
               <% end %>              
           </tr>

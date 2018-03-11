@@ -163,4 +163,3 @@ class Transporter < ApplicationRecord
           return @dispatch_summary       
       end
   end
-  

@@ -5,7 +5,9 @@
   <div class="col-sm-8">
 
     <div class="title-action">
-    <a  class="btn btn-default"  data-target="#pay-transporter" data-toggle="modal"> <span class="glyphicon glyphicon-usd"> </span>Pay </a>
+    <% if @payment__request_items.present? %>
+        <a  class="btn btn-default"  data-target="#pay-transporter" data-toggle="modal"> <span class="glyphicon glyphicon-usd"> </span>Pay</a>
+    <% end %>
     
       <%= link_to 'Back', '/transporters/payment_request',  :class => "btn btn-default"%>
     </div>
@@ -85,7 +87,7 @@
                  <%= label_tag :transporter, "Transporter", { :class => ' control-label' } %>
               </div>
               <div class="col-md-8 col-sm-8 col-xs-8">
-                <%= text_field_tag :transporter, nil, class: "form-control" , :name => "transporter_payment[transporter]", :required => true %>
+                <%= text_field_tag :transporter, nil, class: "form-control" ,:value => Transporter.find_by(id: @payment__request_items.first&.payment_request&.transporter_id)&.name , :name => "transporter_payment[transporter]", :required => true , :readonly => true %>
               </div>
             </div>
 
