@@ -169,8 +169,8 @@ def processPayment
                           @payment_request_items.dispatched = delivery_item&.sent_quantity
                           @payment_request_items.received  = delivery_item&.received_quantity
                           @payment_request_items.loss = delivery_item&.loss_quantity
-                          @payment_request_items.tariff =  @tariff
-                          @payment_request_items.freightCharge =  @tariff.to_s.to_d * (delivery_item&.received_quantity - delivery_item&.loss_quantity.to_s.to_d)
+                          @payment_request_items.tariff =  @tariff&.tariff
+                          @payment_request_items.freightCharge = @tariff&.tariff.to_s.to_d * delivery_item&.received_quantity.to_s.to_d
                           
                           @payment_request.payment_request_items << @payment_request_items
                       end

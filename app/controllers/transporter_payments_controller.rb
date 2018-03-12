@@ -96,6 +96,6 @@ class TransporterPaymentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transporter_payment_params
-      params.require(:transporter_payment).permit(:payment_request_id, :cheque_no, :voucher_no, :bank_name, :paid_amount, :prepared_by, :approved_by, :approved_date, :datetime, :payment_date, :status)
+      params.require(:transporter_payment).permit(:payment_request_id, :cheque_no, :voucher_no, :bank_name, :paid_amount, :prepared_by, :approved_by, :approved_date, :datetime, :payment_date, :status, :transporter_id)
     end
 end

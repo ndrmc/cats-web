@@ -71,6 +71,12 @@
         </button>
         <h4 id='modal-title' class="modal-title">Pay Transporter</h4>
       </div>
+      <form name="transporter_payment" role="form" method="POST" enctype="multipart/form-data" action="/transporter_payments" class="form-inline" style="display: inline;margin-top: 15px">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <%= hidden_field_tag :payment_request_id, @payment__request_items.first&.payment_request&.id, class: "",  :name => "transporter_payment[payment_request_id]", :required => true, :display => false  %>
+      <%= hidden_field_tag :paid_amount, @amount_paid, class: "",  :name => "transporter_payment[paid_amount]", :required => true, :display => false  %>
+
       <div class="modal-body col-md-12 col-sm-12 col-xs-12">
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
           <div class="col-md-6 col-sm-6 col-xs-6">
@@ -131,6 +137,7 @@
           <button type="submit" id="submit" class="btn btn-primary"><span class="glyphicon glyphicon-usd"> </span>Pay</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
