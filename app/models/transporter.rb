@@ -62,7 +62,9 @@ class Transporter < ApplicationRecord
              @row = Hash.new
             @row['requisition_no'] = allocation&.requisition_no
             @row['commodity'] = allocation&.commodity&.name
+            @row['operation_id'] = allocation&.operation_id
             @row['operation'] = allocation&.operation&.name
+            @row['fdp_id'] = ri&.fdp&.id
             @row['fdp'] = ri&.fdp&.name
                 uom_id = allocation&.operation&.ration&.ration_items.where(commodity_id: allocation.commodity_id)&.first&.unit_of_measure_id
                 if(uom_id.present?)

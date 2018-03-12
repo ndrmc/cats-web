@@ -69,25 +69,29 @@ end
 
 def transporter_verify_detail
   @transport_order =[]
-   @requisitions = TransportOrderItem.joins(transport_order: [:operation])
-    .where(:'transport_orders.id' => params[:order_id], 
-    :'transport_orders.transporter_id' => params[:transporter_id], 
-    :'transport_orders.operation_id' => params[:operation_id]).pluck(:requisition_no)
-     @dispatch_summary = Transporter.fdp_verification(params[:transporter_id], params[:operation_id], @requisitions)  
-     @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) }
-     @transporter = Transporter.find(params[:transporter_id])
-     @order_no = TransportOrder.find(params[:order_id])
+  @requisitions = TransportOrderItem.joins(transport_order: [:operation])
+  .where(:'transport_orders.id' => params[:order_id], 
+  :'transport_orders.transporter_id' => params[:transporter_id], 
+  :'transport_orders.operation_id' => params[:operation_id]).pluck(:requisition_no)
+  @dispatch_summary = Transporter.fdp_verification(params[:transporter_id], params[:operation_id], @requisitions)  
+  @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) }
+  @transporter = Transporter.find(params[:transporter_id])
+  @order_no = TransportOrder.find(params[:order_id])
+  $transport_orders.each do | to |
+    @transport_order << to if to['id'].to_i == params[:order_id].to_i
+  end
 end
 
 def dispatches_list_per_fdp
+  @transport_order =[]
   @transporter = Transporter.find(params[:transporter_id])
   @operation = Operation.find(params[:operation_id])
   @order_no = TransportOrder.find(params[:order_id])
   @dispatches_list_per_fdp = Transporter.dispatches_list_per_fdp(params[:transporter_id], params[:operation_id], params[:requisition_no], params[:fdp_id])
-     @order_no = TransportOrder.find(params[:order_id]).order_no
-      $transport_orders.each do | to |
-       @transport_order << to if to['id'].to_i == params[:order_id].to_i
-    end
+  @order_no = TransportOrder.find(params[:order_id])
+  $transport_orders.each do | to |
+    @transport_order << to if to['id'].to_i == params[:order_id].to_i
+  end
 end
 
 def processPayment
