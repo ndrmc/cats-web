@@ -71,78 +71,66 @@
         </button>
         <h4 id='modal-title' class="modal-title">Pay Transporter</h4>
       </div>
-         <form name="transporter_payment" role="form" method="POST" enctype="multipart/form-data" action="/transporter_payments" class="form-inline" style="display: inline;margin-top: 15px"">
-        
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-          <input  type="hidden" name="edit_mode" id="edit_mode" value="false" /> 
-        <input  type="hidden" name="transporter_payment[payment_request_id]" id="payment_request_id" value=<%= @payment_request_id %> /> 
       <div class="modal-body col-md-12 col-sm-12 col-xs-12">
-        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">    
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :transporter, "Transporter:" , {:style => "display: block; text-align: left;",:class => 'align-left control-label' } %>
 
-            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
-              <div class="col-md-3 col-sm-3 col-xs-3">
-                 <%= label_tag :transporter, "Transporter:" , {:style => "display: block; text-align: left;",:class => 'align-left control-label' } %>
-              </div>
-              <div class="col-md-9 col-sm-9 col-xs-9">
-                <%= text_field_tag :transporter, nil, class: "form-control width-100per" ,:value => Transporter.find_by(id: @payment__request_items.first&.payment_request&.transporter_id)&.name , :name => "transporter_payment[transporter]", :required => true , :readonly => true %>
-              </div>
+            <div class="">
+              <%= text_field_tag :transporter, nil, class: "form-control width-100per" ,:value => Transporter.find_by(id: @payment__request_items.first&.payment_request&.transporter_id)&.name , :name => "transporter_payment[transporter]", :required => true , :readonly => true %>
             </div>
-
-            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
-              <div class="col-md-3 col-sm-3 col-xs-3">
-                <%= label_tag :paid_amount, "Amount:", { :style => 'display: block; text-align: left',:class => ' control-label' } %>
-              </div>
-               <div class="col-md-9 col-sm-9 col-xs-9">
-                <%= number_field_tag :paid_amount, '', min: 0, max: 9999999999999999, :step => 'any', class: "form-control number width-100per",  :name => "transporter_payment[paid_amount]", placeholder: '0.00' %>
-              </div>
            </div>
 
-            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
-               <div class="col-md-6 col-sm-6 col-xs-6">
-                 <%= label_tag :payment_date, "Payment Date:", { :class => ' control-label'} %>
-                <div class="">
-                  <%= text_field_tag :payment_date, nil, :class => 'form-control datepicker', :name => "transporter_payment[payment_date]", :required => true  %>
-                </div>
-             
-              </div>
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :paid_amount, "Amount:", { :style => 'display: block; text-align: left',:class => ' control-label' } %>
 
-            <div class="col-md-6 col-sm-6 col-xs-6">
-             <%= label_tag :bank_name, "Bank Name:", {:class => ' control-label' } %>
-               <div class="">
-                <%= select_tag  :bank_name,  options_from_collection_for_select( PaymentType.all, 'name', 'name', params[:bank_name] ) , {:required => true , :prompt => "-- Select a Payment Type --",:name => "transporter_payment[bank_name]", :class => 'form-control width-100per' }  %>            
+              <div class="">
+                <%= number_field_tag :paid_amount, @amount_paid, min: 0, max: 9999999999999999, :step => 'any', class: "form-control number width-100per",  :name => "transporter_payment[paid_amount]", disabled: true %>
               </div>
-           </div>
-        </div>
-
-            <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
-              <div class="col-md-3 col-sm-3 col-xs-3">
-                <%= label_tag :cheque_no, "Check No:", { :style => 'display: block; text-align: left', :class => ' control-label' } %>
-               </div>
-               <div class="col-md-9 col-sm-9 col-xs-9">
-                  <%= text_field_tag :cheque_no, '',class: "form-control number width-100per",  :name => "transporter_payment[cheque_no]", :required => true  %>
-              </div>
-              
             </div>
-         
-              <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
-                <div class="col-md-3 col-sm-3 col-xs-3">
-                  <%= label_tag :remark, "Remark:", { :style => 'display: block; text-align: left',:class => ' control-label',  :name => "transporter_payment[remark]" } %>
-                </div>  
-               <div class="col-md-9 col-sm-9 col-xs-9">
-                  <%= text_area_tag :remark, '', :class => 'form-control width-100per'  %>
-              </div>
-             </div>
-
-          </div>
         </div>
-        
-      
-        <div class="modal-footer">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :payment_date, "Payment Date:", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= text_field_tag :payment_date, nil, :class => 'form-control datepicker', :name => "transporter_payment[payment_date]", :required => true  %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :bank_name, "Bank Name:", {:class => ' control-label' } %>
+
+              <div class="">
+                <%= select_tag  :bank_name,  options_from_collection_for_select( PaymentType.all, 'name', 'name', params[:bank_name] ) , {:required => true , :prompt => "-- Select a Payment Type --",:name => "transporter_payment[bank_name]", :class => 'form-control width-100per' }  %>  
+              </div>
+            </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :cheque_no, "Check No:", { :style => 'display: block; text-align: left', :class => ' control-label' } %>
+
+            <div class="">
+              <%= text_field_tag :cheque_no, '',class: "form-control number width-100per",  :name => "transporter_payment[cheque_no]", :required => true  %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :remark, "Remark:", { :style => 'display: block; text-align: left',:class => ' control-label',  :name => "transporter_payment[remark]" } %>
+
+              <div class="">
+                <%= text_area_tag :remark, '', :class => 'form-control width-100per'  %>
+              </div>
+            </div>
+        </div>
+        <div class="spinner col-md-12 col-sm-12 col-xs-12">
+            
+        </div>
+      </div>
+      <div class="modal-footer">
           <button type="submit" id="submit" class="btn btn-primary"><span class="glyphicon glyphicon-usd"> </span>Pay</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-        </form>
-        
+      </div>
     </div>
   </div>
 </div>

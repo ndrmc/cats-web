@@ -226,16 +226,16 @@ end
 
 def payment__request_items
   @id = params[:id]
-
+  @amount_paid = 0
   @payment__request_items = PaymentRequestItem.where(payment_request_id: @id)
   if @payment__request_items.present?
-      @payment_request_id = @id
-      @referenceNo =  @payment__request_items&.first&.payment_request&.reference_no
-      @transporter = Transporter.find(@payment__request_items&.first&.payment_request&.transporter_id)
-      @amount_paid = @payment__request_items.sum(:freightCharge)
-    else
-      @payment__request_items =[]
-    end
+    @payment_request_id = @id
+    @referenceNo =  @payment__request_items&.first&.payment_request&.reference_no
+    @transporter = Transporter.find(@payment__request_items&.first&.payment_request&.transporter_id)
+    @amount_paid = @payment__request_items.sum(:freightCharge)
+  else
+    @payment__request_items = []
+  end
 end
 
 def update_status_all

@@ -314,8 +314,10 @@ if (Journal.where(:name => 'Internal Movement').present? == false)
 end
 
 if PaymentType.count == 0
-  PaymentType.create(name: 'Cheque')
-  PaymentType.create(name: 'Bank')
+  PaymentType.create(name: 'Commercial Bank of Ethiopia')
+  PaymentType.create(name: 'Dashen Bank')
+  PaymentType.create(name: 'Wegagen Bank')
+  PaymentType.create(name: 'United Bank')
 end
 
 
