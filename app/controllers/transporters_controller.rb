@@ -75,12 +75,45 @@ def transporter_verify_detail
     :'transport_orders.transporter_id' => params[:transporter_id], 
     :'transport_orders.operation_id' => params[:operation_id]).pluck(:requisition_no)
      @dispatch_summary = Transporter.fdp_verification(params[:transporter_id], params[:operation_id], @requisitions)  
-     @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) }
+     @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) ||
+     hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:verified])  }
      @transporter = Transporter.find(params[:transporter_id])
      @order_no = TransportOrder.find(params[:order_id]).order_no
       $transport_orders.each do | to |
        @transport_order << to if to['id'].to_i == params[:order_id].to_i
     end
+end
+
+def reject_payment_request
+  flag = 0
+  @reference_no = params[:reference_no]
+  @payment_request = PaymentRequest.where(reference_no: @reference_no).first
+  @payment_request.payment_request_items.each do | item |
+    @delivery = Delivery.where(receiving_number: item.grn_no).first
+    @delivery.status = :verified
+    @delivery.save
+    flag = 1
+  end
+  if flag
+     if  @payment_request.destroy
+                      respond_to do |format|
+                            flash[:notice] = "Payment request has been reveresed."
+                            format.html {  redirect_to :action => 'payment_request' }
+                      end
+     else
+            respond_to do |format|
+                            flash[:alert] = "Payment request has not been reveresed.."
+                            format.html {  redirect_to :action => 'payment_request' }
+                      end
+     end
+
+  else
+    respond_to do |format|
+                            flash[:alert] = "Payment request has not been reveresed.."
+                            format.html {  redirect_to :action => 'payment_request' }
+                      end
+  end
+  
 end
 
 def processPayment
@@ -89,7 +122,7 @@ def processPayment
    
     @reference_no = params[:reference_no]
     @payment_date = params[:request_date]
-    @requested_amount = params[:request_amount]
+    @requested_amount = params[:amount_requested]
     @remark = params[:remark]
 
     @payment_request = PaymentRequest.new
@@ -111,6 +144,7 @@ def processPayment
                           @payment_request_items.gin_no = delivery_item&.delivery&.gin_number
                           @payment_request_items.grn_no = delivery_item&.delivery&.receiving_number
                           @payment_request_items.fdp_id = delivery_item&.delivery&.fdp_id
+                          @payment_request_items.hub_id = Dispatch.find_by(gin_no: delivery_item&.delivery&.gin_number)&.hub_id
                           @payment_request_items.commodity_id = delivery_item&.commodity_id
                           @payment_request_items.dispatched = delivery_item&.sent_quantity
                           @payment_request_items.received  = delivery_item&.received_quantity
@@ -189,6 +223,52 @@ def payment__request_items
       @payment__request_items =[]
     end
 end
+
+def update_status_all
+  @transporter_id = params[:transporter_id]
+  @status_type = params[:type]
+  @order_no =params[:order_no]
+ if params[:type].present?
+  if @status_type == 'verify'
+        deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :draft)
+        if deliveries_with_status_verified.present?
+                        if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:verified]))  
+                          respond_to do |format|
+                                  flash[:notice] = "Payment request(s) have been verified"
+                                  format.html {  redirect_to request.referrer }
+                            end
+                        end
+        else
+            respond_to do |format|
+            flash[:alert] = "There are no deliveries to be verified."
+            format.html {  redirect_to request.referrer }
+        end
+        end
+  elsif @status_type == 'revert'
+        deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified)
+        if deliveries_with_status_verified.present?
+                        if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:draft]))  
+                               respond_to do |format|
+                                  flash[:notice] = "Payment request(s) have been reverted to Draft."
+                                  format.html {  redirect_to request.referrer }
+                            end
+                        end
+        else
+          respond_to do |format|
+            flash[:alert] = "There are no deliveries to be Revereted."
+            format.html {  redirect_to request.referrer }
+        end
+      end
+  end
+else
+  respond_to do |format|
+            flash[:alert] = "Deliveries were not updated. Please check the data and try again"
+            format.html {  redirect_to request.referrer }
+        end
+end
+
+end
+
 def update_status
   grn_no = params[:grn_no]
   status = params[:status]

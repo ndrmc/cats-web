@@ -78,13 +78,13 @@
           <tr>
               <td><%= link_to payment_request&.reference_no, '/transporters/payment__request_items/' + payment_request.id.to_s %></td>
               <td><%= payment_request&.transporter&.name %></td>
-              <td><%= payment_request&.payment_date %></td>
+              <td><%= payment_request&.payment_date ?  payment_request&.payment_date.strftime('%d/%m/%Y') : '-' %></td>
               <td><%= Contract.find_by(:transporter_id => payment_request&.transporter&.id)&.contract_no %></td>
               <td><%= payment_request&.amount_requested %></td>
               <td><%=   %></td>
               <td><%= payment_request&.status %></td>
               <td> <%= link_to 'Process', "#" %>
-               <%= link_to 'Reject', '#'%>
+               <%= link_to 'Reject', '/transporters/reject_payment_request?reference_no=' + payment_request&.reference_no.to_s ,data: { confirm: "Are you sure you want to verify this delivery?" } %>
               </td>
           </tr>
           

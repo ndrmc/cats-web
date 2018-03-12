@@ -15,6 +15,20 @@
   </div>
   <div class="title-action">
       <%= link_to 'Back', '/transporters/' + @transporter.id.to_s,  :class => "btn btn-default"%>
+      <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Action
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                              <li>
+                                <%= link_to 'Verify all', '/transporters/update_status_all?transporter_id=' + @transporter.id.to_s + '&type=verify&order_no=' + @order_no.to_s, data: { confirm: 'Are you sure you want to verify deliveries ?' } %>
+                              </li>                     
+                              <li>                    
+                                <%= link_to 'Revert all','/transporters/update_status_all?transporter_id=' + @transporter.id.to_s + '&type=revert&order_no=' + @order_no.to_s, data: { confirm: 'Are you sure you want to revert deliveries ?' } %>
+                              </li>
+                             
+                            </ul>
+                          </div>
   </div>
   
   <div class="col-sm-4">
@@ -126,7 +140,7 @@
                   <% if (!@dispatch_summary[$i]['delivery_status'].present?) || @dispatch_summary[$i]['delivery_status'] == 'draft' || @dispatch_summary[$i]['delivery_status'] == 'reverted' %>
                       <td> <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s,data: { confirm: "Are you sure you want to verify this delivery?" } %>
                   <% elsif  @dispatch_summary[$i]['delivery_status'] == 'verified' %>
-                      <td> <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s %>
+                      <td> <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s , data: { confirm: "Are you sure you want to revert this delivery?" }  %>
                   <%else%>
                        
                   <% end %>

@@ -84,7 +84,7 @@
 
             <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
               <div class="col-md-3 col-sm-3 col-xs-3">
-                 <%= label_tag :transporter, "Transporter:" , {:style => "display: block; text-align: right;",:class => 'align-right control-label' } %>
+                 <%= label_tag :transporter, "Transporter:" , {:style => "display: block; text-align: left;",:class => 'align-left control-label' } %>
               </div>
               <div class="col-md-9 col-sm-9 col-xs-9">
                 <%= text_field_tag :transporter, nil, class: "form-control width-100per" ,:value => Transporter.find_by(id: @payment__request_items.first&.payment_request&.transporter_id)&.name , :name => "transporter_payment[transporter]", :required => true , :readonly => true %>
@@ -93,7 +93,7 @@
 
             <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
               <div class="col-md-3 col-sm-3 col-xs-3">
-                <%= label_tag :paid_amount, "Amount:", { :style => 'display: block; text-align: right',:class => ' control-label' } %>
+                <%= label_tag :paid_amount, "Amount:", { :style => 'display: block; text-align: left',:class => ' control-label' } %>
               </div>
                <div class="col-md-9 col-sm-9 col-xs-9">
                 <%= number_field_tag :paid_amount, '', min: 0, max: 9999999999999999, :step => 'any', class: "form-control number width-100per",  :name => "transporter_payment[paid_amount]", placeholder: '0.00' %>
@@ -119,7 +119,7 @@
 
             <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
               <div class="col-md-3 col-sm-3 col-xs-3">
-                <%= label_tag :cheque_no, "Check No:", { :style => 'display: block; text-align: right', :class => ' control-label' } %>
+                <%= label_tag :cheque_no, "Check No:", { :style => 'display: block; text-align: left', :class => ' control-label' } %>
                </div>
                <div class="col-md-9 col-sm-9 col-xs-9">
                   <%= text_field_tag :cheque_no, '',class: "form-control number width-100per",  :name => "transporter_payment[cheque_no]", :required => true  %>
@@ -129,7 +129,7 @@
          
               <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                  <%= label_tag :remark, "Remark:", { :style => 'display: block; text-align: right',:class => ' control-label',  :name => "transporter_payment[remark]" } %>
+                  <%= label_tag :remark, "Remark:", { :style => 'display: block; text-align: left',:class => ' control-label',  :name => "transporter_payment[remark]" } %>
                 </div>  
                <div class="col-md-9 col-sm-9 col-xs-9">
                   <%= text_area_tag :remark, '', :class => 'form-control width-100per'  %>
