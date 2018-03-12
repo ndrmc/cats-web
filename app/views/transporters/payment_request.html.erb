@@ -83,7 +83,7 @@
               <td><%=   %></td>
               <td><%= payment_request&.status %></td>
               <td> <%= link_to 'Process', "#" %>
-               <%= link_to 'Reject', '/transporters/reject_payment_request?reference_no=' + payment_request&.reference_no.to_s ,data: { confirm: "Are you sure you want to verify this delivery?" } %>
+               <%= link_to 'Reject', '/transporters/reject_payment_request?reference_no=' + payment_request&.reference_no.to_s ,data: { confirm: "Are you sure you want to reject this delivery?" } %>
               </td>
           </tr>
       <% end %>
