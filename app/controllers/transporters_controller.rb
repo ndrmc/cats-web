@@ -61,11 +61,10 @@ def transporter_fdp_detail
     :'transport_orders.operation_id' => params[:operation_id]).distinct.pluck(:requisition_no)
      @dispatch_summary = Transporter.fdp_allocations(params[:transporter_id], params[:operation_id], @requisitions)  
      @transporter = Transporter.find(params[:transporter_id])
-     @order_no = TransportOrder.find(params[:order_id]).order_no
+     @order_no = TransportOrder.find(params[:order_id])
      $transport_orders.each do | to |
        @transport_order << to if to['id'].to_i == params[:order_id].to_i
     end
- 
 end
 
 def transporter_verify_detail
@@ -77,6 +76,14 @@ def transporter_verify_detail
      @dispatch_summary = Transporter.fdp_verification(params[:transporter_id], params[:operation_id], @requisitions)  
      @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) }
      @transporter = Transporter.find(params[:transporter_id])
+     @order_no = TransportOrder.find(params[:order_id])
+end
+
+def dispatches_list_per_fdp
+  @transporter = Transporter.find(params[:transporter_id])
+  @operation = Operation.find(params[:operation_id])
+  @order_no = TransportOrder.find(params[:order_id])
+  @dispatches_list_per_fdp = Transporter.dispatches_list_per_fdp(params[:transporter_id], params[:operation_id], params[:requisition_no], params[:fdp_id])
      @order_no = TransportOrder.find(params[:order_id]).order_no
       $transport_orders.each do | to |
        @transport_order << to if to['id'].to_i == params[:order_id].to_i
