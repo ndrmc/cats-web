@@ -78,7 +78,7 @@ def transporter_verify_detail
      @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) ||
      hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:verified])  }
      @transporter = Transporter.find(params[:transporter_id])
-     @order_no = TransportOrder.find(params[:order_id]).order_no
+     @order_no = TransportOrder.find(params[:order_id])
       $transport_orders.each do | to |
        @transport_order << to if to['id'].to_i == params[:order_id].to_i
     end
