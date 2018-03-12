@@ -394,6 +394,7 @@ ActiveRecord::Schema.define(version: 20180310073616) do
     t.string   "dispatched_date_ec"
     t.integer  "dispatch_type_id"
     t.integer  "dispatch_type"
+    t.integer  "store_id"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
@@ -1024,7 +1025,6 @@ ActiveRecord::Schema.define(version: 20180310073616) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
-    t.decimal  "quantity",                         precision: 15, scale: 2
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -1035,6 +1035,7 @@ ActiveRecord::Schema.define(version: 20180310073616) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
@@ -1140,14 +1141,15 @@ ActiveRecord::Schema.define(version: 20180310073616) do
   create_table "requisition_items", force: :cascade do |t|
     t.integer  "requisition_id"
     t.integer  "fdp_id"
-    t.integer  "beneficiary_no", null: false
-    t.decimal  "amount",         null: false
+    t.integer  "beneficiary_no",     null: false
+    t.decimal  "amount",             null: false
     t.decimal  "contingency"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "unit_of_measure_id"
     t.index ["deleted_at"], name: "index_requisition_items_on_deleted_at", using: :btree
   end
 
