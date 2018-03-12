@@ -3,7 +3,7 @@
     <div class="ibox-content col-sm-12">
         <form method='GET' class='form-inline'>
           <label class="control-label ">Gin</label>
-          <input name="gin_number"></input>
+          <input name="gin_number" class='form-control'></input>
           <button class='btn btn-sm btn-primary' type='submit'>
             <i class="fa fa-search"></i>
             Search</button>
@@ -11,268 +11,257 @@
     </div>    
   </div>
 </div>
-<%= form_for(delivery , :html => {class: 'form-horizontal form-label-left input_mask'} ) do |f|  %>
+<%= form_for(delivery, :html=> {:id => 'delivery-form'} ) do |f| %>
 <div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
-      <div class="row col-md-12 col-sm-12 col-xs-12">
-        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-          <%= f.label :gin_number , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-          <%= f.text_field :gin_number,:value => @delivery.gin_number ,:class=>"col-md-6 col-sm-6 col-xs-6 " %>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-          <%= f.label :requisition_number , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-          <%= f.text_field :requisition_number,:value => @delivery.requisition_number ,:class=>"col-md-6 col-sm-6 col-xs-6" %>
-        </div>
-      </div>
-      <div class="row col-md-12 col-sm-12 col-xs-12">
-        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-          <%= f.label :operation_id , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-          <%= f.collection_select :operation_id,Operation.order(:name), :id, :name,
-                                  {include_blank: '--- Select ---'}, {:class=>"col-md-6 col-sm-6 col-xs-6",:required => true } %>
+  <div class="ibox float-e-margins col-sm-12">
+    <div class="ibox-content col-sm-12">
 
+      <% if delivery.errors.any? %>
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <%= pluralize(delivery.errors.count, "error") %>
+          prohibited this delivery from being saved.
         </div>
 
-        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-          <%= f.label :transporter_id , :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-
-          <%= f.collection_select :transporter_id, Transporter.order(:name), :id, :name,
-                                  {include_blank: '--- Select ---'}, {:class=>"col-md-6 col-sm-6 col-xs-6",:required => true } %>
+        <div class="panel-body">
+          <ul>
+            <% delivery.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+          </ul>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-    <div class="ibox-content col-md-12 col-sm-12 col-xs-12" style="margin-top:20px">
-      <div class="row col-md-12 col-sm-12 col-xs-12">
-          <%= render 'shared/fdp_selector', name: 'delivery[fdp_id]', required: true, fdpId: (@delivery.fdp_id ?  @delivery.fdp_id : nil)  %>
-      </div>
-    </div>
-  </div>
-</div>  
-
-
-  <div class="row">
-    <div class="wrapper wrapper-content">
-      <div class="ibox">
-        <div class="ibox-content">
-        <% if delivery.errors.any? %>
-        <div class="panel panel-danger">
-          <div class="panel-heading">
-            <%= pluralize(delivery.errors.count, "error") %>
-            prohibited this delivery from being saved.
-          </div>
-
-          <div class="panel-body">
-            <ul>
-              <% delivery.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-              <% end %>
-            </ul>
+      <% end %>
+      <input id="basic" name="basic" type="text" style="display:none" value="<%=params[:basic]%>" />
+    
+      <div class="row">
+        <div class="col-sm-6 m-0">
+          <div class="form-group">
+            <%= f.label :gin_number, "GIN Number" %> <span class="required">*</span>
+            <%= f.text_field :gin_number,:value => @delivery.gin_number, :class => 'form-control big-text-field', :autofocus => true, :required => true %>
           </div>
         </div>
+        <div class="col-sm-6">
+          <div class="form-group" id="requisition-input-group">
+            <%= f.label :requisition_number, "Requisition Number" %> <span class="required">*</span> 
+              <%= f.text_field :requisition_number,:value => @delivery.requisition_number ,:class=>"form-control big-text-field" %>
+          </div>
+        </div>  
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <%= f.label :operation_id %> <span class="required">*</span>
+             <%= f.collection_select :operation_id,Operation.order(:name), :id, :name,
+                                  {include_blank: '--- Select ---'}, {:class=>"form-control width-100per",:required => true } %>     
+          </div>
+        </div>
+        <div class="col-sm-6 m-0">
+          <div class="form-group">
+            <%= f.label :transporter_id %> <span class="required">*</span>
+            <%= f.collection_select :transporter_id, Transporter.order(:name), :id, :name,
+                                  {include_blank: '--- Select ---'}, {:class=>"form-control width-100per",:required => true } %>
+          </div>
+        </div>              
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <div class="row">
+        <% if (params[:fdp_id].present?) %>
+          <%= render 'shared/fdp_selector', name: 'delivery[fdp_id]', fdpId: params[:fdp_id], required: true  %>
+        <% else %>
+          <%= render 'shared/fdp_selector', name: 'delivery[fdp_id]', fdpId: (@delivery.fdp_id ?  @delivery.fdp_id : nil), required: true  %>
         <% end %>
-
-        
-        
-        
-        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-
-          <label class="control-label col-md-3 col-sm-3 col-xs-6">
-            Select FDP
-          </label>
-
-          <div class="col-md-6 col-sm-3 col-xs-6">
-            
-          </div>
-
-        </div>
       </div>
-
     </div>
   </div>
-  <br>
+
   <div class="ibox float-e-margins">
-    <div class="ibox-title">
-      Delivery Items</div>
     <div class="ibox-content">
       <table class="table">
-        <thead>
-          <tr>
+              <thead>
+                <tr>
+                  <th>Commodity</th>
+                  <th>Unit of Measure</th>
+                  <th>Sent Quantity</th>
+                  <th>Received Quantity</th>
+                  <th>Loss Quantity</th>
+                  <th>Loss Reason</th>
+                  <th></th>
+                </tr>
+              </thead>
 
-            <th>Commodity</th>
-            <th>Unit of Measure</th>
-            <th>Sent Quantity</th>
-            <th>Received Quantity</th>
-            <th>Loss Quantity</th>
-            <th>Loss Reason</th>
-            <th></th>
-          </tr>
-        </thead>
+              <tbody id="deliveryItemsTableBody">
 
-        <tbody id="detail_body">
-          <% delivery.delivery_details.each do |delivery_detail| %>
-          <%= fields_for 'delivery[delivery_details_attributes][]', delivery_detail, index: nil do |ff| %>
+                  <% delivery.delivery_details.each do |delivery_detail| %>
+                  <%= fields_for 'delivery[delivery_details_attributes][]', delivery_detail, index: nil do |ff| %>
+                  <tr class="delivery-line">
+                    <td>
+                      <input class="form_control" value="<%=Commodity.find(delivery_detail.commodity_id).name %>"/>
+                      <%= ff.text_field :commodity_id, :value => delivery_detail.commodity_id, class: 'hidden'%>
 
-          <tr>
-            <td>
-              <input class="form_control" value="<%=Commodity.find(delivery_detail.commodity_id).name %>"/>
-              <%= ff.text_field :commodity_id, :value => delivery_detail.commodity_id, class: 'hidden'%>
+                    </td>
+                    <td>
+                      <input class="form_control" value="<%=UnitOfMeasure.find(delivery_detail.uom_id).name %>"/>
 
-            </td>
-            <td>
-              <input class="form_control" value="<%=UnitOfMeasure.find(delivery_detail.uom_id).name %>"/>
+                      <%= ff.text_field :uom_id, :value => delivery_detail.uom_id, class: 'hidden'%>
+                    </td>
+                    <td>
+                      <%= ff.text_field :sent_quantity, :value => delivery_detail.sent_quantity , class: 'form_control'%>
+                    </td>
+                    <td>
+                      <%= ff.text_field :received_quantity , class: 'form_control'%>
+                    </td>
+                    <td>
+                      <%= ff.text_field :loss_quantity , class: 'form_control'%>
+                    </td>
+                    <td>
+                      <%= ff.text_field :loss_reason , class: 'form_control'%>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-danger btn-sm remove-detail">Remove</button>
+                    </td>
+                  </tr>
+                  <% end %>  
+                  <% end %>
+                  <tr>   
+                    <td>
+                      <%= select_tag "delivery[delivery_details_attributes][][commodity_id]]",  options_from_collection_for_select( Commodity.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control'} %>
+                    </td>
+                    <td>
+                      <%= select_tag "delivery[delivery_details_attributes][][uom_id]",  options_from_collection_for_select( UnitOfMeasure.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control'} %>
 
-              <%= ff.text_field :uom_id, :value => delivery_detail.uom_id, class: 'hidden'%>
-            </td>
-            <td>
-              <%= ff.text_field :sent_quantity, :value => delivery_detail.sent_quantity , class: 'form_control'%>
-            </td>
-            <td>
-              <%= ff.text_field :received_quantity , class: 'form_control'%>
-            </td>
-            <td>
-              <%= ff.text_field :loss_quantity , class: 'form_control'%>
-            </td>
-            <td>
-              <%= ff.text_field :loss_reason , class: 'form_control'%>
-            </td>
-            <td>
-              <button type="button" class="btn btn-danger btn-sm remove-detail">Remove</button>
-            </td>
-          </tr>
-          <% end %>
-          <%end%>
+                    </td>
+                    <td>
 
-          <tr>
-            <td>
-              <%= select_tag "delivery[delivery_details_attributes][][commodity_id]]",  options_from_collection_for_select( Commodity.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control'} %>
-            </td>
-            <td>
-              <%= select_tag "delivery[delivery_details_attributes][][uom_id]",  options_from_collection_for_select( UnitOfMeasure.all, 'id', 'name' ) , {:prompt => "-- Choose --", 'data-parsley-required' => 'true',  :class => 'form-control'} %>
+                      <input name="delivery[delivery_details_attributes][][sent_quantity]" type="number" class="form-control" data-parsley-required/>
 
-            </td>
-            <td>
+                    </td>
+                    <td>
 
-              <input name="delivery[delivery_details_attributes][][sent_quantity]" type="number" class="form-control" data-parsley-required/>
+                      <input name="delivery[delivery_details_attributes][][received_quantity]" type="number" class="form-control" data-parsley-required/>
 
-            </td>
-            <td>
+                    </td>
+                    <td>
 
-              <input name="delivery[delivery_details_attributes][][received_quantity]" type="number" class="form-control" data-parsley-required/>
+                      <input name="delivery[delivery_details_attributes][][loss_quantity]" type="number" class="form-control" data-parsley-required/>
 
-            </td>
-            <td>
+                    </td>
+                    <td>
 
-              <input name="delivery[delivery_details_attributes][][loss_quantity]" type="number" class="form-control" data-parsley-required/>
+                      <input name="delivery[delivery_details_attributes][][loss_reason]" type="text" class="form-control" data-parsley-required/>
 
-            </td>
-            <td>
-
-              <input name="delivery[delivery_details_attributes][][loss_reason]" type="text" class="form-control" data-parsley-required/>
-
-            </td>
-            <td>
-              <button href='#' type="button" class="btn btn-primary btn-sm" id='add-delivery-detail'>
-                Add
-              </button>
-            </td>
-          </tr>
-
-        </tbody>
-
-      </table>
-
+                    </td>
+                    <td>
+                      <button href='#' type="button" class="btn btn-primary btn-sm" id='add-delivery-detail'>
+                        Add
+                      </button>
+                    </td>
+                  </tr>
+              </tbody>
+            
+            </table>
     </div>
   </div>
-  <br>
-  <div class="ibox float-e-margins">
-    <div class="ibox-title">
-      Delivery Info</div>
-    <div class="ibox-content">
 
-      <div class="form-group">
-        <%= f.label :receiving_number , :class=>"control-label col-md-3 col-sm-3 col-xs-12 required" %>
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <div class="form-group col-md-12">
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <%= f.label :receiving_number , :class=>"control-label pull-right" %>
+        </div>
         <div class="col-md-9 col-sm-9 col-xs-12">
           <%= f.text_field :receiving_number, :class => 'form-control',:required => true %>
         </div>
       </div>
-      <br/>
-      <div class="form-group">
-        <%= f.label :received_by , :class=>"control-label col-md-3 col-sm-3 col-xs-12 required" %>
-
-        <div class="col-md-9 col-sm-9 col-xs-12">
-          <%= f.text_field :received_by , :class => 'form-control', :required => true %>
+      <div class="form-group col-md-12">
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <%= f.label :received_by , :class=>"control-label pull-right" %>
         </div>
-      </div>
-      <br/>
-      <div class="form-group">
-        <%= f.label :received_date , :class=>"control-label col-md-3 col-sm-3 col-xs-12" %>
-
+        <div class="col-md-9 col-sm-9 col-xs-12">
+        <%= f.text_field :received_by , :class => 'form-control', :required => true %>
+        </div>
+      </div>           
+      <div class="form-group col-md-12">
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <%= f.label :received_date , :class=>"control-label pull-right" %>
+        </div>
         <div class="col-md-9 col-sm-9 col-xs-12">
           <%= f.text_field :received_date, :class => 'form-control datepicker', :required => true %>
         </div>
       </div>
 
-      <br/>
-      <div class="actions">
-        <%= f.submit :class => 'btn btn-primary center' %>
+      <div class="form-group col-md-12">
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          
+        </div>
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <%= f.submit :class => 'btn btn-primary center' %>
+        </div>
       </div>
 
-      <% end %>
-      </div>
-    <div>
+      <div class="clearfix"></div>
+    </div>
   </div>
+
+
+
 </div>
 
-  <script type="text/javascript">
+<% end %>
 
-    $(function () {
-      $("#fdp_selector_region").addClass('col-sm-3'); 
-      // $("#fdp_selector_region").attr('style','padding-left:10px;padding-right:10px;'); 
-      $("#fdp_selector_zone").addClass('col-sm-3'); 
-      // $("#fdp_selector_zone").attr('style','padding-left:10px;padding-right:10px;'); 
-      $("#fdp_selector_woreda").addClass('col-sm-3'); 
-      // $("#fdp_selector_woreda").attr('style','padding-left:10px;padding-right:10px;'); 
-      $("#fdp_selector_fdp").addClass('col-sm-3'); 
-      // $("#fdp_selector_fdp").attr('style','padding-left:10px;padding-right:10px;'); 
-      
-      $("#add-delivery-detail").click(function (e) {
-        e.preventDefault();
 
-        var $this = $(this);
+<script type="text/javascript">
 
-        var $detailRow = $this.closest('tr');
+  $(function () {
+    $("#fdp_selector_region").addClass('col-sm-3'); 
+    // $("#fdp_selector_region").attr('style','padding-left:10px;padding-right:10px;'); 
+    $("#fdp_selector_zone").addClass('col-sm-3'); 
+    // $("#fdp_selector_zone").attr('style','padding-left:10px;padding-right:10px;'); 
+    $("#fdp_selector_woreda").addClass('col-sm-3'); 
+    // $("#fdp_selector_woreda").attr('style','padding-left:10px;padding-right:10px;'); 
+    $("#fdp_selector_fdp").addClass('col-sm-3'); 
+    // $("#fdp_selector_fdp").attr('style','padding-left:10px;padding-right:10px;'); 
+    
+    $("#add-delivery-detail").click(function (e) {
+      e.preventDefault();
 
-        var valid = true;
+      var $this = $(this);
 
-        $detailRow.find(':input').each(function () {
-          $(this).parsley().validate();
-          valid = $(this).parsley().isValid() && valid;
-        });
+      var $detailRow = $this.closest('tr');
 
-        if (!valid) {
-          return;
-        }
+      var valid = true;
 
-        var $newRow = $detailRow.clone();
-
-        $newRow.find(':input').attr('readonly', true).removeAttr('id');
-
-        $newRow.find(':button').text('Remove').addClass('btn-danger remove-detail')
-
-        $newRow.insertBefore($detailRow);
-
-        $detailRow.find(':input').val('');
+      $detailRow.find(':input').each(function () {
+        $(this).parsley().validate();
+        valid = $(this).parsley().isValid() && valid;
       });
 
-      $('#detail_body').on('click', '.remove-detail', function (e) {
-        $(e.target).closest('tr').fadeOut('slow', function () {
-          $(this).remove();
-        });
-      });
+      if (!valid) {
+        return;
+      }
 
+      var $newRow = $detailRow.clone();
+
+      $newRow.find(':input').attr('readonly', true).removeAttr('id');
+
+      $newRow.find(':button').text('Remove').addClass('btn-danger remove-detail')
+
+      $newRow.insertBefore($detailRow);
+
+      $detailRow.find(':input').val('');
     });
-  </script>
+
+    $('#detail_body').on('click', '.remove-detail', function (e) {
+      $(e.target).closest('tr').fadeOut('slow', function () {
+        $(this).remove();
+      });
+    });
+
+  });
+</script>
