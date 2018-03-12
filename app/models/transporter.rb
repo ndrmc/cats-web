@@ -127,15 +127,15 @@ class Transporter < ApplicationRecord
                 # delivery information
                  Delivery.joins(:delivery_details,:operation).where({:'deliveries.transporter_id' => transporter_id, :'deliveries.operation_id' => operation_id,
                 :'deliveries.requisition_number' => dispatch_item&.dispatch&.requisition_number,
-                :'deliveries.fdp_id' => dispatch_item&.dispatch&.fdp&.id }).where('delivery_details.received_quantity > 0').find_each do |delivery|
-                         @row['grn_no'] = delivery.receiving_number
+                :'deliveries.fdp_id' => dispatch_item&.dispatch&.fdp&.id ,:'deliveries.gin_number' => di.gin_no}).where('delivery_details.received_quantity > 0').find_each do |delivery|
+                         @row['grn_no'] = delivery.receiving_number     
                          @row['delivery_status'] = delivery.status
                          delivery.delivery_details.each do |dd|
                             # uom_id = delivery&.operation&.ration&.ration_items.where(commodity_id: dd.commodity_id)&.first&.unit_of_measure_id
                             if(dd.uom_id.present?)
-                                @row['Delivered_amount'] = UnitOfMeasure.find(dd.uom_id).to_ref(dd.received_quantity)
+                                @row['delivered_amount'] = UnitOfMeasure.find(dd.uom_id).to_ref(dd.received_quantity)
                             else
-                                @row['Delivered_amount'] = dd.received_quantity
+                                @row['delivered_amount'] = dd.received_quantity
                             end
                         end
                  end
@@ -156,7 +156,7 @@ class Transporter < ApplicationRecord
                        @dispatch_summary << @row
                 end
             end
-            @row['progress'] = ( @row['Delivered_amount'].to_f / @row['dispatched_amount'].to_f) * 100
+            @row['progress'] = ( @row['delivered_amount'].to_f / @row['dispatched_amount'].to_f) * 100
          
         end
         return @dispatch_summary
