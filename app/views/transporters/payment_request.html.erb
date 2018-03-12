@@ -12,7 +12,7 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'Cancel', '#',  :class => "btn btn-default"%>
+      <%= link_to 'Back', '/transporters/' + params[:transporter].to_s,  :class => "btn btn-default" %>
     </div>
   </div>
 </div>
@@ -69,7 +69,6 @@
             <th>Requested</th>
             <th>Verified </th>
             <th>status</th>
-            <th>Actions</th>
       </tr>
       </thead>
 
@@ -87,8 +86,6 @@
                <%= link_to 'Reject', '/transporters/reject_payment_request?reference_no=' + payment_request&.reference_no.to_s ,data: { confirm: "Are you sure you want to verify this delivery?" } %>
               </td>
           </tr>
-          
-       
       <% end %>
       </tbody>
     </table>

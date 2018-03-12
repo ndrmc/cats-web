@@ -62,7 +62,9 @@ class Transporter < ApplicationRecord
              @row = Hash.new
             @row['requisition_no'] = allocation&.requisition_no
             @row['commodity'] = allocation&.commodity&.name
+            @row['operation_id'] = allocation&.operation_id
             @row['operation'] = allocation&.operation&.name
+            @row['fdp_id'] = ri&.fdp&.id
             @row['fdp'] = ri&.fdp&.name
                 uom_id = allocation&.operation&.ration&.ration_items.where(commodity_id: allocation.commodity_id)&.first&.unit_of_measure_id
                 if(uom_id.present?)
@@ -159,5 +161,27 @@ class Transporter < ApplicationRecord
         end
         return @dispatch_summary
     end
+    
+   def self.dispatches_list_per_fdp (transporter_id, operation_id, requisition_no, fdp_id)
+        @dispatch_summary = []
+        #dispatch information
+        DispatchItem.joins(:dispatch, :commodity).where( {:'dispatches.transporter_id' => transporter_id, :'dispatches.operation_id' => operation_id, :'dispatches.requisition_number' => requisition_no, :'dispatches.fdp_id' =>  fdp_id } ).find_each do |di|       
 
+            @row = Hash.new
+            @row['gin_no'] = di.dispatch.gin_no
+            @row['commodity'] = di.commodity.name
+            @row['dispatch_date'] = di.dispatch.dispatch_date
+            @qty_in_ref = UnitOfMeasure.find(di.unit_of_measure_id).to_ref(di.quantity)
+            @row['dispatched_amount'] = @row['dispatched_amount'].to_f + @qty_in_ref
+            @row['delivered_amount'] = 0
+            # delivery information
+            Delivery.joins(:delivery_details).where({:'deliveries.transporter_id' => transporter_id , :'deliveries.operation_id' => operation_id, :'deliveries.requisition_number' => requisition_no, :'deliveries.fdp_id' =>  fdp_id }).where('delivery_details.received_quantity > 0').select(:id, :'delivery_details.received_quantity',:'delivery_details.uom_id').find_each do |delivery|
+                @qty_in_ref =  UnitOfMeasure.find(delivery.uom_id).to_ref(delivery.received_quantity)
+                @row['delivered_amount'] = @row['delivered_amount'] + @qty_in_ref
+            end
+            @row['progress'] = ( @row['delivered_amount'].to_f / @row['dispatched_amount'].to_f) * 100
+            @dispatch_summary << @row
+        end 
+        return @dispatch_summary       
+    end
 end

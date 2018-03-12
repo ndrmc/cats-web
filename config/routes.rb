@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   post '/transporters/processPayment/:id', to: 'transporters#processPayment'
   get '/transporters/payment_request', to: 'transporters#payment_request'
   get '/transporters/payment__request_items/:id', to: 'transporters#payment__request_items'
+  get '/transporters/dispatches_list_per_fdp', to: 'transporters#dispatches_list_per_fdp'
   get '/transporters/print_payment_request', to: 'transporters#print_payment_request'
   get '/transporters/reject_payment_request', to: 'transporters#reject_payment_request'
   get '/transporters/update_status_all', to: 'transporters#update_status_all'
