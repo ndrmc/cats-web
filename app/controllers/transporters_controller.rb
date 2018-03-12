@@ -78,7 +78,7 @@ def transporter_verify_detail
      @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) ||
      hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:verified])  }
      @transporter = Transporter.find(params[:transporter_id])
-     @order_no = TransportOrder.find(params[:order_id]).order_no
+     @order_no = TransportOrder.find(params[:order_id])
       $transport_orders.each do | to |
        @transport_order << to if to['id'].to_i == params[:order_id].to_i
     end
@@ -104,7 +104,7 @@ def reject_payment_request
   @payment_request = PaymentRequest.where(reference_no: @reference_no).first
   @payment_request.payment_request_items.each do | item |
     @delivery = Delivery.where(receiving_number: item.grn_no).first
-    @delivery.status = :verified
+    @delivery.status = Delivery.statuses[:verified]
     @delivery.save
     flag = 1
   end
@@ -129,6 +129,9 @@ def reject_payment_request
   end
   
 end
+def get_tariff (transport_id, fdp_id, requisition_no)
+    @tariff  = TransportOrderItem.includes(:transport_order).where(:'transport_orders.transporter_id' => transport_id, :fdp_id => fdp_id, :requisition_no => requisition_no).select('tariff').first
+end
 
 def processPayment
 
@@ -146,13 +149,16 @@ def processPayment
     @payment_request.remark = @remark
     @payment_request.transporter_id = @transporter_id
     @payment_request.status = :open
-    deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified)
-    if deliveries_with_status_verified.present?
-                    if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:payment_request_created]))  
+    @deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified)
+    if @deliveries_with_status_verified.present?
+                    if (@deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:payment_request_created]))  
                   
-                      deliveries_with_status_verified.each do |delivery|
+                     @deliveries_with_status_verified.each do |delivery|
                           delivery.delivery_details.each do |delivery_item|
-
+                          
+                          @tariff = get_tariff(  @transporter_id, delivery_item&.delivery&.fdp_id,delivery_item&.delivery&.requisition_number)
+                     
+                          
                           @payment_request_items = PaymentRequestItem.new
                           @payment_request_items.requisition_no = delivery_item&.delivery&.requisition_number
                           @payment_request_items.gin_no = delivery_item&.delivery&.gin_number
@@ -163,8 +169,8 @@ def processPayment
                           @payment_request_items.dispatched = delivery_item&.sent_quantity
                           @payment_request_items.received  = delivery_item&.received_quantity
                           @payment_request_items.loss = delivery_item&.loss_quantity
-                          @payment_request_items.tariff = 0
-                          @payment_request_items.freightCharge = 0
+                          @payment_request_items.tariff =  @tariff
+                          @payment_request_items.freightCharge =  @tariff.to_s.to_d * (delivery_item&.received_quantity - delivery_item&.loss_quantity.to_s.to_d)
                           
                           @payment_request.payment_request_items << @payment_request_items
                       end

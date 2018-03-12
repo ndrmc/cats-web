@@ -26,7 +26,7 @@
             <th>GRN</th>
             <th>Commodity</th>
             <th>Source Hub </th>
-            <th>FDP </th>
+            <th>FDP</th>
             <th>Dispatched</th>
             <th>Received</th>
             <th>Loss</th>
@@ -47,8 +47,8 @@
               <td><%= payment_request_item&.fdp&.name %></td>
               <td><%= payment_request_item&.dispatched %></td>
               <td><%= payment_request_item&.received %></td>
-              <td><%= payment_request_item&.loss %></td>
-              <td><%= payment_request_item&.tariff %></td>
+              <td><%= payment_request_item&.loss.to_s.to_d  %></td>
+              <td><%= payment_request_item&.tariff.to_s.to_d %></td>
               <td><%= payment_request_item&.freightCharge %></td>
           </tr>
           
