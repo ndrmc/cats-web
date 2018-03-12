@@ -12,7 +12,7 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'Cancel', '#',  :class => "btn btn-default"%>
+      <%= link_to 'Back', '/transporters/' + params[:transporter].to_s,  :class => "btn btn-default" %>
     </div>
   </div>
 </div>
@@ -69,7 +69,6 @@
             <th>Requested</th>
             <th>Verified </th>
             <th>status</th>
-            <th>Actions</th>
       </tr>
       </thead>
 
@@ -83,13 +82,8 @@
               <td><%= payment_request&.amount_requested %></td>
               <td><%=   %></td>
               <td><%= payment_request&.status %></td>
-              <td> <%= link_to 'Process', "#" %>
-               <%= link_to 'Reject', '#'%>
-              </td>
-          </tr>
-          
-       
-      <% end %>
+          </tr>   
+          <% end %>
       </tbody>
     </table>
 
