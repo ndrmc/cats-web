@@ -132,6 +132,8 @@ class Transporter < ApplicationRecord
                          @row['delivery_status'] = delivery.status
                          delivery.delivery_details.each do |dd|
                             # uom_id = delivery&.operation&.ration&.ration_items.where(commodity_id: dd.commodity_id)&.first&.unit_of_measure_id
+                            @row['delivery_detail_id'] = dd.id
+                            @row['market_price'] = dd.market_price
                             if(dd.uom_id.present?)
                                 @row['delivered_amount'] = UnitOfMeasure.find(dd.uom_id).to_ref(dd.received_quantity)
                             else
@@ -175,7 +177,7 @@ class Transporter < ApplicationRecord
             @row['dispatched_amount'] = @row['dispatched_amount'].to_f + @qty_in_ref
             @row['delivered_amount'] = 0
             # delivery information
-            Delivery.joins(:delivery_details).where({:'deliveries.transporter_id' => transporter_id , :'deliveries.operation_id' => operation_id, :'deliveries.requisition_number' => requisition_no, :'deliveries.fdp_id' =>  fdp_id }).where('delivery_details.received_quantity > 0').select(:id, :'delivery_details.received_quantity',:'delivery_details.uom_id').find_each do |delivery|
+            Delivery.joins(:delivery_details).where({:'deliveries.transporter_id' => transporter_id , :'deliveries.operation_id' => operation_id, :'deliveries.requisition_number' => requisition_no, :'deliveries.fdp_id' =>  fdp_id,:'deliveries.gin_number' => di.dispatch.gin_no }).where('delivery_details.received_quantity > 0').select(:id, :'delivery_details.received_quantity',:'delivery_details.uom_id').find_each do |delivery|
                 @qty_in_ref =  UnitOfMeasure.find(delivery.uom_id).to_ref(delivery.received_quantity)
                 @row['delivered_amount'] = @row['delivered_amount'] + @qty_in_ref
             end

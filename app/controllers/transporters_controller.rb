@@ -85,13 +85,26 @@ def transporter_verify_detail
   
 end
 
+def set_market_price
+  @delivery_detail = DeliveryDetail.find(transporter_params['delivery_detail_id'])
+  @delivery_detail.market_price = transporter_params['market_price']
+  respond_to do |format|
+    if(@delivery_detail.save)
+      flash[:notice] = "Market price is saved successfully."
+      format.html {  redirect_to request.referrer  }
+    else
+      flash[:alert] = "Market price not saved."
+      format.html {  redirect_to request.referrer  }
+    end    
+  end
+end
+
 def dispatches_list_per_fdp
   @transport_order =[]
   @transporter = Transporter.find(params[:transporter_id])
   @operation = Operation.find(params[:operation_id])
   @order_no = TransportOrder.find(params[:order_id])
   @dispatches_list_per_fdp = Transporter.dispatches_list_per_fdp(params[:transporter_id], params[:operation_id], params[:requisition_no], params[:fdp_id])
-  @order_no = TransportOrder.find(params[:order_id])
   $transport_orders.each do | to |
     @transport_order << to if to['id'].to_i == params[:order_id].to_i
   end
@@ -233,6 +246,7 @@ end
 def payment__request_items
   @id = params[:id]
   @amount_paid = 0
+  @payment_request = PaymentRequest.find(@id)
   @payment__request_items = PaymentRequestItem.where(payment_request_id: @id)
   if @payment__request_items.present?
     @payment_request_id = @id
@@ -374,6 +388,6 @@ end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def transporter_params
-    params.require(:transporter).permit(:name, :code, :ownership_type_id, :vehicle_count, :lift_capacity, :capital, :employees, :contact, :contact_phone, :remark, :status)
+    params.require(:transporter).permit(:name, :code, :ownership_type_id, :vehicle_count, :lift_capacity, :capital, :employees, :contact, :contact_phone, :remark, :status, :delivery_detail_id, :market_price)
   end
 end
