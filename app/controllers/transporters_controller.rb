@@ -1,4 +1,5 @@
 class TransportersController < ApplicationController
+  require 'humanize'
   before_action :set_transporter, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   # GET /transporters
@@ -196,12 +197,35 @@ def print_payment_request
       @received = @payment_requested.sum(:received)
       @dispatched = @payment_requested.sum(:dispatched )
       @freight_charge = @payment_requested.sum(:freightCharge)
+      @loss_quantity = @payment_requested.sum(:loss)
       @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
        respond_to do |format|
             format.html
             format.pdf do
                 pdf = PaymentRequestPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name)
                 send_data pdf.render, filename: "payment_request.pdf",
+                type: "application/pdf",
+                disposition: "inline"
+            end
+            
+        end
+end
+
+def print_payment_request_letter
+     transporter_id = params[:transporter_id]
+      @payment_requested =  PaymentRequestItem.includes(:payment_request).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open)
+    
+      @received = @payment_requested.sum(:received)
+      @dispatched = @payment_requested.sum(:dispatched )
+      @freight_charge = @payment_requested.sum(:freightCharge)
+      @loss_quantity = @payment_requested.sum(:loss)
+      @freight_charge_in_words = @freight_charge.humanize(decimals_as: :digits)
+      @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
+       respond_to do |format|
+            format.html
+            format.pdf do
+                pdf = PaymentRequestLetterPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @freight_charge_in_words)
+                send_data pdf.render, filename: "payment_request_letter.pdf",
                 type: "application/pdf",
                 disposition: "inline"
             end
