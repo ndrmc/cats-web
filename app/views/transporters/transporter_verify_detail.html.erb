@@ -56,7 +56,7 @@
           Total Quantity:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-        
+           <%= @transport_order[0]['balance'] %>
         </div>
       </div>
     </div>
@@ -137,7 +137,7 @@
               <a  class="btn btn-default"  data-target="#set-market-price" data-toggle="modal" data-delivery-detail-id="<%= @dispatch_summary[$i]['delivery_detail_id'] %>" data-commodity="<%= @dispatch_summary[$i]['commodity'] %>"  data-market-price="<%= @dispatch_summary[$i]['market_price'] %>"> Set Market Price </a>
               <% if  @dispatch_summary[$i]['grn_no'].present? %>
                   <% if (!@dispatch_summary[$i]['delivery_status'].present?) || @dispatch_summary[$i]['delivery_status'] == 'draft' || @dispatch_summary[$i]['delivery_status'] == 'reverted' %>
-                       <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s, method: :post, data: { confirm: 'Are you sure?' } %>
+                      <td> <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s, data: { confirm: 'Are you sure you want to verify this delivery?' } %> </td>
                   <% elsif  @dispatch_summary[$i]['delivery_status'] == 'verified' %>
                       <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s , data: { confirm: "Are you sure you want to revert this delivery?" }  %>
                   <%else%>
