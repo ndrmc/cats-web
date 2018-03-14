@@ -46,7 +46,7 @@ class Transporter < ApplicationRecord
                 select(:id, :'delivery_details.received_quantity',:'delivery_details.uom_id').find_each do |delivery|
                        
                        @qty_in_ref =   UnitOfMeasure.find(delivery.uom_id).to_ref(delivery.received_quantity)
-                        @qtl = UnitOfMeasure.find_by(name: 'qtl')
+                        @qtl = UnitOfMeasure.find_by(name: 'Quintal')
                         unit_to_be_changed = UnitOfMeasure.find_by(uom_type: 'ref').name
                         @qty_in_ref =  @qtl.convert_to(unit_to_be_changed,   @qty_in_ref)
                        @amount_requested = @amount_requested  + (@qty_in_ref * to_item.tariff)
