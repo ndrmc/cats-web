@@ -43,13 +43,17 @@ class Transporter < ApplicationRecord
                  Delivery.joins(:delivery_details).where({:'deliveries.transporter_id' => transporter_id,
                 :'deliveries.requisition_number' => to_item.requisition_no,
                 :'deliveries.fdp_id' =>  to_item&.fdp_id, :'deliveries.status' => :verified }).where('delivery_details.received_quantity > 0').
-                select(:id, :'delivery_details.received_quantity',:'delivery_details.uom_id').find_each do |delivery|
+                select(:id, :'delivery_details.received_quantity',:'delivery_details.uom_id',:'delivery_details.loss_quantity',
+                :'delivery_details.market_price').find_each do |delivery|
                        
                        @qty_in_ref =   UnitOfMeasure.find(delivery.uom_id).to_ref(delivery.received_quantity)
                         @qtl = UnitOfMeasure.find_by(name: 'Quintal')
                         unit_to_be_changed = UnitOfMeasure.find_by(uom_type: 'ref').name
                         @qty_in_ref =  @qtl.convert_to(unit_to_be_changed,   @qty_in_ref)
-                       @amount_requested = @amount_requested  + (@qty_in_ref * to_item.tariff)
+
+                        @loss_amount = delivery.loss_quantity.to_f * delivery.market_price.to_f
+                        @loss_amount =  @qtl.convert_to(unit_to_be_changed, @loss_amount)
+                        @amount_requested = @amount_requested  + (@qty_in_ref * to_item.tariff) -  @loss_amount
                     end
                 end
          end
