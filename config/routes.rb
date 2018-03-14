@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   get '/transporters/print_payment_request', to: 'transporters#print_payment_request'
   get '/transporters/reject_payment_request', to: 'transporters#reject_payment_request'
   get '/transporters/update_status_all', to: 'transporters#update_status_all'
+  post '/transporters/set_market_price', to: 'transporters#set_market_price'
   resources :transporters
   resources :transport_orders
   get '/transport_orders/print/:id', to: 'transport_orders#print'
