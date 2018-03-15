@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180313090849) do
+ActiveRecord::Schema.define(version: 20180314080815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -807,6 +807,7 @@ ActiveRecord::Schema.define(version: 20180313090849) do
     t.datetime "deleted_at"
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+    t.integer  "transport_order_id"
     t.index ["commodity_id"], name: "index_payment_request_items_on_commodity_id", using: :btree
     t.index ["fdp_id"], name: "index_payment_request_items_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_payment_request_items_on_hub_id", using: :btree
@@ -1608,6 +1609,7 @@ ActiveRecord::Schema.define(version: 20180313090849) do
   add_foreign_key "regional_requests", "rations"
   add_foreign_key "stock_movements", "commodities"
   add_foreign_key "stock_movements", "projects"
+  add_foreign_key "stock_movements", "unit_of_measures"
   add_foreign_key "stock_movements", "unit_of_measures"
   add_foreign_key "transporter_payments", "payment_requests"
   add_foreign_key "users_departments", "departments"
