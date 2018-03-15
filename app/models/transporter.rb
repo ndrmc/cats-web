@@ -51,9 +51,9 @@ class Transporter < ApplicationRecord
                         unit_to_be_changed = UnitOfMeasure.find_by(uom_type: 'ref').name
                         @qty_in_ref =  @qtl.convert_to(unit_to_be_changed,   @qty_in_ref)
 
-                        @loss_amount = delivery.loss_quantity.to_f * delivery.market_price.to_f
-                        @loss_amount =  @qtl.convert_to(unit_to_be_changed, @loss_amount)
-                        @amount_requested = @amount_requested  + (@qty_in_ref * to_item.tariff) -  @loss_amount
+                        @loss_amount = @qtl.convert_to(unit_to_be_changed, delivery.loss_quantity.to_f)
+                        @loss_cost = @loss_amount * delivery.market_price.to_f 
+                        @amount_requested = @amount_requested  + (@qty_in_ref * to_item.tariff) -  @loss_cost
                     end
                 end
          end
