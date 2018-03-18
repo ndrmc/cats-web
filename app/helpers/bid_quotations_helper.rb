@@ -1,0 +1,2 @@
+module BidQuotationsHelper
+end
