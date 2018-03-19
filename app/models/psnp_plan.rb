@@ -36,4 +36,12 @@ class PsnpPlan < ApplicationRecord
     end
   end
 
+def total_beneficiaries
+  self.psnp_plan_items.sum(:beneficiary)
+end
+
+def self.current_plan
+  PsnpPlan.where(status: :published).last
+end
+
 end
