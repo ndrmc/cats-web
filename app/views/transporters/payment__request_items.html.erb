@@ -108,33 +108,31 @@
             <th>Commodity</th>
             <th>Source Hub </th>
             <th>FDP</th>
-            <th>Dispatched</th>
-            <th>Received</th>
-            <th>Loss</th>
-            <th>Tariff</th>
-            <th>Freight Charge</th>
+            <th>Dispatched (QTL)</th>
+            <th>Received (QTL)</th>
+            <th>Loss (QTL)</th>
+            <th>Tariff (ETB)</th>
+            <th>Freight Charge (ETB)</th>
       </tr>
       </thead>
 
       <tbody>
-          <% @payment__request_items.each do |payment_request_item| %>
+        <% @payment__request_items.each do |payment_request_item| %>
           <tr>
-              <td><%= payment_request_item&.payment_request&.reference_no  %></td>
-              <td><%= payment_request_item&.requisition_no %></td>
-              <td><%= payment_request_item&.gin_no %></td>
-              <td><%= payment_request_item&.grn_no %></td>
-              <td><%= payment_request_item&.commodity&.name %></td>
-              <td><%= payment_request_item&.hub&.name %></td>
-              <td><%= payment_request_item&.fdp&.name %></td>
-              <td><%= payment_request_item&.dispatched %></td>
-              <td><%= payment_request_item&.received %></td>
-              <td><%= payment_request_item&.loss.to_s.to_d  %></td>
-              <td><%= payment_request_item&.tariff.to_s.to_d %></td>
-              <td><%= payment_request_item&.freightCharge %></td>
-          </tr>
-          
-       
-      <% end %>
+              <td><%= payment_request_item[:reference_no]  %></td>
+              <td><%= payment_request_item[:requisition_no] %></td>
+              <td><%= payment_request_item[:gin_no] %></td>
+              <td><%= payment_request_item[:grn_no] %></td>
+              <td><%= payment_request_item[:commodity] %></td>
+              <td><%= payment_request_item[:hub] %></td>
+              <td><%= payment_request_item[:fdp] %></td>
+              <td><%= payment_request_item[:dispatched] %></td>
+              <td><%= payment_request_item[:received] %></td>
+              <td><%= payment_request_item[:loss]  %></td>
+              <td><%= payment_request_item[:tariff] %></td>
+              <td><%= payment_request_item[:freightCharge] %></td>
+          </tr>       
+        <% end %>
       </tbody>
     </table>
 
@@ -155,7 +153,7 @@
       <form name="transporter_payment" role="form" method="POST" enctype="multipart/form-data" action="/transporter_payments" class="form-inline" style="display: inline;margin-top: 15px">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 
-      <%= hidden_field_tag :payment_request_id, @payment__request_items.first&.payment_request&.id, class: "",  :name => "transporter_payment[payment_request_id]", :required => true, :display => false  %>
+      <%= hidden_field_tag :payment_request_id, @payment_request&.id, class: "",  :name => "transporter_payment[payment_request_id]", :required => true, :display => false  %>
       <%= hidden_field_tag :paid_amount, @amount_paid, class: "",  :name => "transporter_payment[paid_amount]", :required => true, :display => false  %>
 
       <div class="modal-body col-md-12 col-sm-12 col-xs-12">
@@ -164,7 +162,7 @@
             <%= label_tag :transporter, "Transporter:" , {:style => "display: block; text-align: left;",:class => 'align-left control-label' } %>
 
             <div class="">
-              <%= text_field_tag :transporter, nil, class: "form-control width-100per" ,:value => Transporter.find_by(id: @payment__request_items.first&.payment_request&.transporter_id)&.name , :name => "transporter_payment[transporter]", :required => true , :readonly => true %>
+              <%= text_field_tag :transporter, nil, class: "form-control width-100per" ,:value => Transporter.find_by(id: @payment_request&.transporter_id)&.name , :name => "transporter_payment[transporter]", :required => true , :readonly => true %>
             </div>
            </div>
 
