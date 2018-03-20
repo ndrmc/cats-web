@@ -3,6 +3,21 @@
     <h2><%= t(:welcome) %>
       <%= current_user.name %></h2>
   </div>
+  <div class="pull-right">
+        <% if request.host == 'demo.catsapps.org' %> <!--18.216.117.202 -->
+            
+                    <span class="label label-danger pull-right">Demo Server</span>
+           
+        <% elsif request.host == 'cats.catsapps.org' %> <!-- 52.15.48.26 -->
+           
+                    <span class="label label-primary pull-right">Main Server</span>
+           
+        <% else %>
+           
+                    <span class="label label-danger pull-right"><%= request.host %></span> 
+           
+        <% end %>
+  </div>
 </div>
 <div class="wrapper wrapper-content">
   <div class="row">
