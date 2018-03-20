@@ -88,7 +88,7 @@ Rails.application.routes.draw do
 
   get 'warehouse_selections/get_by_region'
   resources :warehouse_selections
-  
+  resources :bid_quotations
 
   #get 'locations(/:parent_id)', to: 'locations#index', as: :locations
   #post 'locations', to: 'locations#create', as: :locations
