@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   delete 'stock_movements/stock_movement_destroy_receive/:id', to: 'stock_movements#stock_movement_destroy_receive'
   resources :stock_movements
 
-  get '/transport_requisitions/print', to: 'transport_requisitions#print'
+  get '/transport_requisitions/print/:id', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
   resources :transport_requisitions
