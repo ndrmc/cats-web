@@ -1,9 +1,9 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
-    <h2>Edit Delivery</h2>
+    <h2>Edit Bid Quotation</h2>
     <ol class="breadcrumb">
       <li>
-        <a href="#">Delivery</a>
+        <a href="#">Bid Quotation</a>
       </li>
       <li class="active">
         <strong>Edit</strong>
@@ -12,10 +12,10 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'Back', deliveries_path,  :class => "btn btn-default"%>
+      <%= link_to 'Cancel', bid_quotations_path,  :class => "btn btn-default"%>
     </div>
   </div>
 </div>
 
-<%= render 'form', delivery: @delivery %>
+<%= render 'form', bid_quotation: @bid_quotation %>
 

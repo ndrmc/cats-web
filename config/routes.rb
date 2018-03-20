@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   delete 'stock_movements/stock_movement_destroy_receive/:id', to: 'stock_movements#stock_movement_destroy_receive'
   resources :stock_movements
 
-  get '/transport_requisitions/print', to: 'transport_requisitions#print'
+  get '/transport_requisitions/print/:id', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
   resources :transport_requisitions
@@ -63,14 +63,18 @@ Rails.application.routes.draw do
    resources :permissions
   resources :departments
   resources :role_types
-  get 'transporters/update_status', do: 'transporters#update_status'
+  get 'transporters/update_status', to: 'transporters#update_status'
   get 'transporters/transporter_fdp_detail', to: 'transporters#transporter_fdp_detail'
   get 'transporters/transporter_verify_detail', to: 'transporters#transporter_verify_detail'
   post '/transporters/processPayment/:id', to: 'transporters#processPayment'
   get '/transporters/payment_request', to: 'transporters#payment_request'
   get '/transporters/payment__request_items/:id', to: 'transporters#payment__request_items'
+  get '/transporters/dispatches_list_per_fdp', to: 'transporters#dispatches_list_per_fdp'
   get '/transporters/print_payment_request', to: 'transporters#print_payment_request'
-
+  get 'transporters/print_payment_request_letter', to: 'transporters#print_payment_request_letter'
+  get '/transporters/reject_payment_request', to: 'transporters#reject_payment_request'
+  get '/transporters/update_status_all', to: 'transporters#update_status_all'
+  post '/transporters/set_market_price', to: 'transporters#set_market_price'
   resources :transporters
   resources :transport_orders
   get '/transport_orders/print/:id', to: 'transport_orders#print'
@@ -84,7 +88,10 @@ Rails.application.routes.draw do
 
   get 'warehouse_selections/get_by_region'
   resources :warehouse_selections
-  
+  put '/bid_quotations/update_tariff/:id', to: 'bid_quotations#update_tariff'
+  delete '/bid_quotations/delete_bid_quuotation_detail/:id', to: 'bid_quotations#delete_bid_quuotation_detail'
+  resources :bid_quotations
+  resources :bid_quotation_details
 
   #get 'locations(/:parent_id)', to: 'locations#index', as: :locations
   #post 'locations', to: 'locations#create', as: :locations

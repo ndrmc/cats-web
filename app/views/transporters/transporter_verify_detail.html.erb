@@ -13,8 +13,22 @@
       </li>
     </ol>
   </div>
-  <div class="col-sm-4">
-    
+  <div class="title-action">
+      <%= link_to 'Back', '/transporters/' + @transporter.id.to_s,  :class => "btn btn-default"%>
+      <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Action
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                              <li>
+                                <%= link_to 'Verify all', '/transporters/update_status_all?transporter_id=' + @transporter.id.to_s + '&type=verify&order_no=' + @order_no.to_s, data: { confirm: 'Are you sure you want to verify deliveries ?' } %>
+                              </li>                     
+                              <li>                    
+                                <%= link_to 'Revert all','/transporters/update_status_all?transporter_id=' + @transporter.id.to_s + '&type=revert&order_no=' + @order_no.to_s, data: { confirm: 'Are you sure you want to revert deliveries ?' } %>
+                              </li>
+                             
+                            </ul>
+                          </div>
   </div>
 </div>
 
@@ -34,7 +48,7 @@
           Transport Order:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-          <%= @order_no %>
+          <%= @order_no.order_no %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -42,7 +56,7 @@
           Total Quantity:
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
-        
+           <%= @transport_order[0]['balance'] unless @transport_order.blank? %>
         </div>
       </div>
     </div>
@@ -52,7 +66,7 @@
           Estimated Payment:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-           <%= @transport_order[0]['est_payment'] %>
+           <%= @transport_order[0]['est_payment'] unless @transport_order.blank?  %>
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -60,7 +74,7 @@
           Outstanding Payment:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-           <%= @transport_order[0]['est_payment'] -  @transport_order[0]['paid_amount'] %> 
+           <%= (@transport_order[0]['est_payment']  unless @transport_order.blank?)  -  (@transport_order[0]['paid_amount'] unless @transport_order.blank? ) %> 
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -68,7 +82,7 @@
           Confirmed Delivery:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-       <%= @transport_order[0]['confirmed_delivery'] %> 
+       <%= @transport_order[0]['confirmed_delivery'] unless @transport_order.blank?  %> 
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -76,7 +90,7 @@
           Paid Amount:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-        <%= @transport_order[0]['paid_amount'] %>
+        <%= @transport_order[0]['paid_amount'] unless @transport_order.blank?  %>
         </div>
       </div>
     </div>
@@ -99,6 +113,7 @@
             <th>Allocated (<%= user_unit %>)</th>
             <th>Dispatched (<%= user_unit %>) </th>
             <th>Delivered (<%= user_unit %>)</th>
+            <th>Loss</th>
             <th>Actions</th>
       </tr>
       </thead>
@@ -116,16 +131,20 @@
               <td><%= @dispatch_summary[$i]['hub'] %></td>
               <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['allocated_amount']), precision: 2) %></td>
               <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched_amount']), precision: 2) %></td>
-              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['Delivered_amount']), precision: 2) %></td></td>
-            
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['delivered_amount']), precision: 2) %></td></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched_amount']), precision: 2).to_f - number_with_precision(to_user_unit(@dispatch_summary[$i]['delivered_amount']), precision: 2).to_f %></td>
+              <td>
+              <a  class="btn btn-default"  data-target="#set-market-price" data-toggle="modal" data-delivery-detail-id="<%= @dispatch_summary[$i]['delivery_detail_id'] %>" data-commodity="<%= @dispatch_summary[$i]['commodity'] %>"  data-market-price="<%= @dispatch_summary[$i]['market_price'] %>"> Set Market Price </a>
               <% if  @dispatch_summary[$i]['grn_no'].present? %>
                   <% if (!@dispatch_summary[$i]['delivery_status'].present?) || @dispatch_summary[$i]['delivery_status'] == 'draft' || @dispatch_summary[$i]['delivery_status'] == 'reverted' %>
-                      <td> <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s %>
+                      <%= link_to 'Verify', "/transporters/update_status?status=" +  Delivery.statuses[:verified].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s, data: { confirm: 'Are you sure you want to verify this delivery?' } %>
                   <% elsif  @dispatch_summary[$i]['delivery_status'] == 'verified' %>
-                      <td> <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s %>
+                      <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s , data: { confirm: "Are you sure you want to revert this delivery?" }  %>
+                  <%else%>
+                      <%= link_to 'Revert', "/transporters/update_status?status=" +  Delivery.statuses[:reverted].to_s + "&grn_no=" +   @dispatch_summary[$i]['grn_no'].to_s, method: :post, data: { confirm: 'Are you sure?' } %> 
                   <% end %>
-              <% end %>
-              </td>
+              <% end %>    
+              </td>          
           </tr>
           <% $i = $i + 1 %>
         <% end %>
@@ -135,3 +154,64 @@
 
   </div>
 </div>
+
+
+<div class="modal inmodal" id="set-market-price" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">Commodity Current Market Price</h4>
+      </div>
+      <form name="set_market_price" role="form" method="POST" enctype="multipart/form-data" action="/transporters/set_market_price" class="form-inline" style="display: inline;margin-top: 15px">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <%= hidden_field_tag :delivery_detail_id, '', class: "",  :name => "transporter[delivery_detail_id]", :required => true, :display => false  %>
+
+      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :commodity, "Commodity:" , {:style => "display: block; text-align: left;",:class => 'align-left control-label' } %>
+
+            <div class="">
+              <%= text_field_tag :commodity, nil, class: "form-control width-100per" ,:value => '', :name => "transporter[commodity]", :readonly => true %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :market_price, "Market Price:", { :style => 'display: block; text-align: left',:class => ' control-label' } %>
+
+              <div class="">
+                <%= number_field_tag :market_price, '', min: 0, max: 9999999999999999, :step => 'any', class: "form-control number width-100per",  :name => "transporter[market_price]" %>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+
+      $('#set-market-price').on('shown.bs.modal', function (e) {
+          e.preventDefault(); 
+
+          var deliveryDetailId = $( e.relatedTarget ).data('delivery-detail-id'); 
+          var commodity = $( e.relatedTarget ).data('commodity'); 
+          var marketPrice = $( e.relatedTarget ).data('market-price'); 
+          console.log('Delivery Detail ID: ' + deliveryDetailId);
+          $('#delivery_detail_id').val(deliveryDetailId);
+          $('#commodity').val(commodity);
+          $('#market_price').val(marketPrice);
+      });
+  });
+</script>
