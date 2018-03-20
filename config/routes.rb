@@ -88,7 +88,10 @@ Rails.application.routes.draw do
 
   get 'warehouse_selections/get_by_region'
   resources :warehouse_selections
+  put '/bid_quotations/update_tariff/:id', to: 'bid_quotations#update_tariff'
+  delete '/bid_quotations/delete_bid_quuotation_detail/:id', to: 'bid_quotations#delete_bid_quuotation_detail'
   resources :bid_quotations
+  resources :bid_quotation_details
 
   #get 'locations(/:parent_id)', to: 'locations#index', as: :locations
   #post 'locations', to: 'locations#create', as: :locations
