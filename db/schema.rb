@@ -1281,6 +1281,10 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "updated_at",                  null: false
   end
 
+  create_table "tests", id: :integer, force: :cascade do |t|
+    t.text "name", null: false
+  end
+
   create_table "transport_order_items", force: :cascade do |t|
     t.integer  "transport_order_id"
     t.integer  "fdp_id"
