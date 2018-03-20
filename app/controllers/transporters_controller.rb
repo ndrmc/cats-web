@@ -43,14 +43,20 @@ class TransportersController < ApplicationController
       requisition_nos = to.transport_order_items.map { |toi| toi.requisition_no }
       fdp_ids = to.transport_order_items.map { |toi| toi.fdp_id }
       DeliveryDetail.joins(:delivery).where(:'deliveries.transporter_id' => to.transporter_id, :'deliveries.status' => :verified, :'deliveries.requisition_number' => requisition_nos, :'deliveries.fdp_id' => fdp_ids).each do |dd|
-        received_qty += UnitOfMeasure.find(dd.uom_id.to_i).to_ref(dd.received_quantity.to_f)
+        received_qty += UnitOfMeasure.find(dd.uom_id.to_i).to_ref(dd.received_quantity.to_f) 
       end     
+
+
+      pr_ids = PaymentRequest.includes(:payment_request_items).where(transporter_id: params[:id], status: :closed, :'payment_request_items.transport_order_id' => to.id).map { |pri| pri.id }
+      
+      @paid_amount = TransporterPayment.where(:payment_request_id => pr_ids).where('status > 1').sum(:paid_amount)
+
       tio_filtered = @transport_order_items.select {|i| i.transport_order_id == to.id}
       balance = 0
       est_payment = 0
       tio_filtered.each { |a| balance+=a.quantity }
       tio_filtered.each { |a| est_payment+=a.delivery_price }
-      $transport_orders << {'id' => to.id, 'order_no' => to.order_no, 'operation_id' => to.operation_id, 'operation' => to.operation.name, 'balance' => balance,'confirmed_delivery' => received_qty, 'est_payment' => est_payment, 'paid_amount' => 0 }
+      $transport_orders << {'id' => to.id, 'order_no' => to.order_no, 'operation_id' => to.operation_id, 'operation' => to.operation.name, 'balance' => balance,'confirmed_delivery' => received_qty, 'est_payment' => est_payment, 'paid_amount' => @paid_amount }
     end
 end
 
@@ -175,7 +181,8 @@ def processPayment
                           delivery.delivery_details.each do |delivery_item|
                           
                           @tariff = get_tariff(  @transporter_id, delivery_item&.delivery&.fdp_id,delivery_item&.delivery&.requisition_number)
-                     
+                          
+                          @transport_order_id = TransportOrder.includes(:transport_order_items).where(transporter_id: @transporter_id, :'transport_order_items.fdp_id' => delivery&.fdp_id, :'transport_order_items.requisition_no' => delivery&.requisition_number).first.transport_order_id
                           
                           @payment_request_items = PaymentRequestItem.new
                           @payment_request_items.requisition_no = delivery_item&.delivery&.requisition_number
@@ -189,7 +196,8 @@ def processPayment
                           @payment_request_items.loss = delivery_item&.loss_quantity
                           @payment_request_items.tariff =  @tariff&.tariff
                           @payment_request_items.freightCharge = @tariff&.tariff.to_s.to_d * delivery_item&.received_quantity.to_s.to_d
-                          
+                          @payment_request_items.transport_order_id = @transport_order_id
+
                           @payment_request.payment_request_items << @payment_request_items
                       end
                     end
