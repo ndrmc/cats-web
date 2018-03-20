@@ -40,8 +40,8 @@
           <h5>PSNP/FSCD beneficiareis</h5>
         </div>
         <div class="ibox-content">
-          <h1 class="no-margins"> NO DATA AVAILABLE </h1>
-          <small>FSCD program</small>
+          <h1 class="no-margins"> <%= ActiveSupport::NumberHelper.number_to_delimited(@psnp_plan.total_beneficiaries) unless @psnp_plan.blank? %> </h1>
+          <small><%= @psnp_plan.name unless @psnp_plan.blank?  %>  FSCD program</small>
         </div>
       </div>
     </div>
