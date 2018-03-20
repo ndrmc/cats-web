@@ -78,7 +78,7 @@ gem 'pundit'
 gem 'toastr-rails', '~> 1.0', '>= 1.0.3'
 
 
-gem 'rails-assets-sweetalert2', source: 'http://insecure.rails-assets.org'
+gem 'rails-assets-sweetalert2', source: 'https://rails-assets.org'
 
 gem "paranoia", "~> 2.2"
 
