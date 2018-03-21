@@ -71,8 +71,8 @@
           <% @bid_quotation_item = BidQuotationDetail.find(bid_quotation_detail.id) %>
           <tr>      
                     <td><%=  bid_quotation_detail&.warehouse&.name  %></td>
-                    <td><%=  bid_quotation_detail&.location&.parent.parent.name %> </td>
-                    <td><%=  bid_quotation_detail&.location&.parent.name %> </td>
+                    <td><%=  bid_quotation_detail&.location&.parent&.parent&.name %> </td>
+                    <td><%=  bid_quotation_detail&.location&.parent&.name %> </td>
                      <td><%=  bid_quotation_detail&.location&.name %> </td>
                     <td><%=  best_in_place @bid_quotation_item, :tariff, url: '/bid_quotations/update_tariff/' + @bid_quotation_item.id.to_s %>
                         <td>
