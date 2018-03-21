@@ -124,4 +124,5 @@ gem 'rack-mini-profiler'
 gem 'dalli'
 gem 'prawn-print'
 gem 'humanize'
+gem 'best_in_place'
 

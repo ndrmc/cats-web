@@ -13,7 +13,7 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
-      <%= link_to 'Cancel', locations_path(@location.parent_id),  :class => "btn btn-default"%>
+      <%= link_to 'Cancel', '/en/locations/' + @location.parent_id.to_s,  :class => "btn btn-default"%>
     </div>
   </div>
 </div>
