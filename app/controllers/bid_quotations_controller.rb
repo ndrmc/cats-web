@@ -4,11 +4,7 @@ class BidQuotationsController < ApplicationController
   # GET /bid_quotations
   # GET /bid_quotations.json
   def index
-    if params[:transporter].present?
-      @bid_quotations_details = BidQuotationDetail.includes(:bid_quotation).where(:'bid_quotations.transporter_id' => params[:transporter])
-      return
-    end
-
+    
     if params[:transporter].present? && params[:bid].present?
       filter_map = {:'bid_quotations.transporter_id' => params[:transporter], :'bid_quotations.bid_id' => params[:bid]}
       @bid_quotations_details =  BidQuotationDetail.includes(:bid_quotation).where( filter_map )
