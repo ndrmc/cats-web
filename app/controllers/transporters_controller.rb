@@ -191,7 +191,7 @@ def processPayment
                           @payment_request_items.received  = delivery_item&.received_quantity
                           @payment_request_items.loss = delivery_item&.loss_quantity
                           @payment_request_items.tariff =  @tariff&.tariff
-                          @payment_request_items.freightCharge = (@tariff&.tariff.to_s.to_d * delivery_item&.received_quantity.to_s.to_d * 10) - (delivery_item.lossquantity * 10 * delivery_item.market_price)
+                          @payment_request_items.freightCharge = (@tariff&.tariff.to_s.to_d * delivery_item&.received_quantity.to_s.to_d * 10) - (delivery_item.loss_quantity * 10 * delivery_item.market_price)
                           @payment_request_items.transport_order_id = @transport_order_id
 
                           @payment_request.payment_request_items << @payment_request_items
