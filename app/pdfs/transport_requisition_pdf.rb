@@ -1,7 +1,7 @@
 require 'prawn/table'
 class TransportRequisitionPdf < PdfReport
-    def initialize(tr_id)
-        super top_margin: 50, :page_size => "A4", :page_layout => :landscape
+    def initialize(tr_id, reason_for_idps, cc_letter_to)
+        super top_margin: 50, :page_size => "A4", :page_layout => :portrait
         @transport_requisition = TransportRequisition.find(tr_id)
         @list_of_tris = TransportRequisition.joins(transport_requisition_items: [:commodity, :requisition, fdp: :location]).find(tr_id).transport_requisition_items
         @operation = Operation.includes(:program).find(@transport_requisition.operation_id)
@@ -38,9 +38,13 @@ class TransportRequisitionPdf < PdfReport
         text "\n"
         text "\n"
         text "Remark:- Allocated for " + @operation.program.name
+        text reason_for_idps
         text "Date of req " + Time.now.strftime("%d-%b-%Y")
         text "Received Date " + Time.now.strftime("%d-%b-%Y")
         text "For the Month of " + @operation.round.to_s + " round " + Date::MONTHNAMES[@operation.month] + " " + @operation.year
+        text "\n"
+        text "\n"
+        text cc_letter_to
         text "\n\n"
         text "Requested by: ...................................................    Certified by: ..................................................."
         footer "Commodity Allocation and Tracking System"
@@ -70,7 +74,7 @@ class TransportRequisitionPdf < PdfReport
             ref = @tri_struct.find {|x| x[:requisition_id].to_s == item[:requisition_id].to_s}
             total_allocation = total_allocation + amount_in_qtl
             row_no = row_no + 1
-            [row_no, ref[:commodity_name],ref[:requisition_no],"-",amount_in_qtl,"-",ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"] 
+            [row_no, ref[:commodity_name],ref[:requisition_no],"-",amount_in_qtl,"-",ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
         end
     end    
 end

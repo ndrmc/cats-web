@@ -1,0 +1,29 @@
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <%= form_for(bid_quotation) do |f| %>
+        <% if bid_quotation.errors.any? %>
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <%= pluralize(bid_quotation.errors.count, "error") %> prohibited this bid_quotation from being saved.
+            </div>
+
+            <div class="panel-body">
+              <ul>
+                <% bid_quotation.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+      
+      <div class="actions">
+        <%= f.submit :class => 'btn btn-primary' %>
+      </div>
+  <% end %>
+
+    </div>
+  </div>
+</div>

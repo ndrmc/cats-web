@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   delete 'stock_movements/stock_movement_destroy_receive/:id', to: 'stock_movements#stock_movement_destroy_receive'
   resources :stock_movements
 
-  get '/transport_requisitions/print', to: 'transport_requisitions#print'
+  get '/transport_requisitions/print/:id', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
   resources :transport_requisitions
@@ -88,7 +88,10 @@ Rails.application.routes.draw do
 
   get 'warehouse_selections/get_by_region'
   resources :warehouse_selections
+  put '/bid_quotations/update_tariff/:id', to: 'bid_quotations#update_tariff'
+  delete '/bid_quotations/delete_bid_quuotation_detail/:id', to: 'bid_quotations#delete_bid_quuotation_detail'
   resources :bid_quotations
+  resources :bid_quotation_details
 
   #get 'locations(/:parent_id)', to: 'locations#index', as: :locations
   #post 'locations', to: 'locations#create', as: :locations

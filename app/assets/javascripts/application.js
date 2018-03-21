@@ -12,6 +12,8 @@
 //
 //= require jquery/jquery-2.1.1.js
 //= require jquery_ujs
+//= require jquery.purr
+//= require best_in_place
 //= require jquery.fix-clone
 //= require parsley.min
 //= require bootstrap-sprockets
@@ -39,7 +41,7 @@
 //= require underscore-min
 
 //= require Chart.min
-
+//
 //= require_tree .
 
 $(document).ready(function() {
