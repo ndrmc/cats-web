@@ -49,7 +49,7 @@ class BidQuotationsController < ApplicationController
         if @bid_quotation.save
             
           BidQuotationDetail.new(bid_quotation: @bid_quotation, location_id: @bid_quotation_detail_params[:location_id],
-          warehouse_id: @bid_quotation_detail_params[:warehouse_id], tariff: @bid_quotation_detail_params[:tariff_qty]).save
+          warehouse_id: @bid_quotation_detail_params[:warehouse_id], tariff: @bid_quotation_detail_params[:tariff]).save
 
           format.html { redirect_to  request.referrer, notice: 'Bid Quotation was successfully created.' }
           format.json { render json: {}, status: 200 }

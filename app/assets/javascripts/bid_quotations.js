@@ -37,7 +37,7 @@ $(document).ready(function() {
 						bid_quotation_details: {
 			            location_id: woreda,
 			            warehouse_id: warehouse,
-			            tariff_qty: tariff
+			            tariff: tariff
 						}
 		        	}	            
 		        },
