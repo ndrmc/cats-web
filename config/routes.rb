@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-
- 
-
  
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
@@ -249,4 +246,5 @@ Rails.application.routes.draw do
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/queries"
   resources :queries
 end
+
 end

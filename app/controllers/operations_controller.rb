@@ -1,6 +1,7 @@
 class OperationsController < ApplicationController
   before_action :set_operation, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  skip_before_filter :authenticate_user!
 
   # GET /operations
   # GET /operations.json
