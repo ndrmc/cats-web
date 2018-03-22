@@ -13,12 +13,14 @@ class PaymentRequestLetterPdf  < PdfReport
         header ""
         font Rails.root.join("app/assets/fonts/gfzemenu.ttf")
         move_down 15
-        text "ለ ፋይናንስ ዕቃና አገልግሎት ግዥ ኬዝ ቲም"
-        text "ከ አደጋ ምላሽ የሎጅስቲክ አስተዳደር ኬዝ ቲም"
+        text "ቀን ..................... ዓ.ም."
+        text "<u>የውስጥ መፃፃፊያ</u>", size: 30, style: :bold
+        text "<font size='18'>ለ:- በጀት እና ፋይናንስ ዳይሬክቶሬት </font>"
+        text "<font size='18'>ከ:- ሎጅስቲክስ ዳይሬክቶሬት ስለ ሎጅስቲክስ ዳይሬክቶሬት </font>"
         
         move_down 20
      
-        text "ጉዳዩ:- የማጓጓዣ ሂሳብ ክፍያ ይመለከታል"
+        text "<font size='24'>ጉዳዩ:- የማጓጓዣ ሂሳብ ክፍያ ይመለከታል</font>"
         move_down 5
        
         payment_request_letter
@@ -34,6 +36,8 @@ class PaymentRequestLetterPdf  < PdfReport
         text     "ስለሆነም ሠነዶቹን አጣርተን ባዘጋጀነው የሂሳብ ማሳያ ሠንጠረዥ መሠረት ላጎደለው #{@loss_quantity} ኩንታል የዕርዳታ እህል ብር ________ ()"
         text     "ተቀንሶ የተጣራ ብር #{@freight_charge}(#{@freight_charge_in_words}) እንዲከፈለው እያሳሰብን የበኩላችሁን አጣርታችሁ ክፍያውን እንድትፈፅሙ #{@payment_requested.count} ሠነዶችን በዚህ ሽኚ ማስታወሻ የላክን መሆኑን እንገልጻለን::" 
        
+        text "#{@transporter} የኮሚሽኑን #{@received} ኩንታል የዕርዳታ እህል #{@commodity_list.to_s} ወደ ተለያዩ ዕደላ ጣቢያዎች ያጓጓዘበት ሂሳብ እንዲከፈለው  #{@payment_requested.count} ሠነዶችን አቅርቧል::"
+
         text "\n"
         text "\n"
         text "\n"
