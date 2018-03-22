@@ -1,8 +1,9 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
      <div class="ibox-title">
-                        <h4><%=@operation.name%> <span class='badge badge-info'><%= Location.find(@request.region_id).name%></span></h4>
-                       
+                        <h4><%=@operation.name%> <span class='badge badge-info'><%= Location.find(@request.region_id).name%></span> 
+                         <a  class = "btn btn-sm btn-primary pull-right" href="/requisitions/<%= @request.id %>">View All</a>
+                       </h4>
      </div>
     <div class="ibox-content">         
        

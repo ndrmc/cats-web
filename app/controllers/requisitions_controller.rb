@@ -11,6 +11,11 @@ class RequisitionsController < ApplicationController
       @requisitions = []
     end
   end
+ def show
+    @request = RegionalRequest.find(params[:id])
+    @operation = Operation.find(@request.operation_id)
+    @requisitions = Requisition.where({request_id: @request.id})  
+ end
 
   def print
     @requisition_items = RequisitionItem.includes(:fdp, requisition: [:commodity, ration: :ration_items, operation: :program]).where(:'requisitions.id' => params[:id]).where("beneficiary_no > 0")

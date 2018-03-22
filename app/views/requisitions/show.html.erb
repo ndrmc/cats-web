@@ -1,47 +1,72 @@
-    <p>
-      <strong>Requisition no:</strong>
-      <%= @requisition.requisition_no %>
-    </p>
 
-    <p>
-      <strong>Operation:</strong>
-      <%= @requisition.operation_id %>
-    </p>
+<% user_unit = UnitOfMeasure.find(current_user.default_uom).code %>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Requisition</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Home</a>
+      </li>
+      <li class="active">
+        <strong>View All Requisition</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <a  class = "btn btn-default" href='/requisitions/summary/' <%= @request.id.to_s  %>>Back</a>
+    </div>
+  </div>
+</div>
 
-    <p>
-      <strong>Commodity:</strong>
-      <%= @requisition.commodity_id %>
-    </p>
+<div class="row">
 
-    <p>
-      <strong>Region:</strong>
-      <%= @requisition.region_id %>
-    </p>
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content col-sm-12">
 
-    <p>
-      <strong>Zone:</strong>
-      <%= @requisition.zone_id %>
-    </p>
 
-    <p>
-      <strong>Ration:</strong>
-      <%= @requisition.ration_id %>
-    </p>
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+            <th>Region</th>
+            <th>Zone</th>
+            <th>Woreda</th>
+            <th>Destination</th>
+            <th>Requisition No</th>
+            <th>Item</th>
+            <th>Beneficiary No. </th>
+            <th>Amount Allocated  (<%= user_unit %>)</th>
+          </tr>
+        </thead>
 
-    <p>
-      <strong>Requested by:</strong>
-      <%= @requisition.requested_by %>
-    </p>
+        <tbody>
+          <% @requisitions.each do |requisition|%>
+          <% requisition.requisition_items.each do |requisition_item| %>
+          <tr>
+            <% location = Location.find(Fdp.find(requisition_item.fdp_id)&.location_id) %>
+            <td> <%= Location.find(requisition_item&.requisition&.region_id)&.name  %> </td>
+            <td> <%= Location.find(requisition_item&.requisition&.zone_id)&.name   %> </td>
+            <td> <%= location&.name %> </td>
+            <td> <%= Fdp.find(requisition_item.fdp_id)&.name  %> </td>
+            <td> <%= requisition&.requisition_no %>
+            <td> <%= Commodity.find(requisition_item&.requisition&.commodity_id)&.name  %> </td>
+            <td> <%=  requisition_item.beneficiary_no %> </td>
+            <td> <%=  ActionController::Base.helpers.number_with_delimiter number_with_precision(user_uom_preference(requisition_item.amount,requisition_item&.requisition&.ration&.ration_items.where(commodity: requisition.commodity_id)&.first&.unit_of_measure_id)) %> </td>
+            
+          </tr>           
+<% end %>
+          <% end %>
+        </tbody>
+      </table>
 
-    <p>
-      <strong>Requested on:</strong>
-      <%= @requisition.requested_on %>
-    </p>
+    </div>
+  </div>
+  
+</div>
 
-    <p>
-      <strong>Status:</strong>
-      <%= @requisition.status %>
-    </p>
-
-<%= link_to 'Edit', edit_requisition_path(@requisition) %> |
-<%= link_to 'Back', requisitions_path %>
+</div>
