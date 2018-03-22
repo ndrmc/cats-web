@@ -181,6 +181,7 @@ Rails.application.routes.draw do
   get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
   get '/requisitions/summary/:request_id', to: 'requisitions#summary'
+  get '/requisitions/export_requisition_to_excel/:id', to: 'requisitions#export_requisition_to_excel'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
   get '/requisitions/print', to: 'requisitions#print'
   get '/requisitions/print_rrd', to: 'requisitions#print_rrd'
