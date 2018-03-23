@@ -1,6 +1,6 @@
 class BidsController < ApplicationController
 
-  before_action :set_bid, only: [:show, :edit, :update, :destroy, :transporter_quotes, :generate_winners]
+  before_action :set_bid, only: [:show, :edit, :update, :destroy, :transporter_quotes, :generate_winners, :regenerate_bid]
   include BidsHelper
 
   # GET /bids
@@ -247,6 +247,25 @@ class BidsController < ApplicationController
   end
     
   end
+def regenerate_bid
+       if @bid.status == 'active' 
+            @result = regenerate_bid_winners(params[:id])
+            respond_to do |format|
+                if @result
+                  format.html { redirect_to framework_tender_path(@bid.framework_tender_id), notice: 'Bid winners were successfully reseted.' }
+                  format.json { render :show, status: :ok, location: @bid } 
+                else
+                  format.html { render :edit }
+                  format.json { render json: @bid.errors, status: :unprocessable_entity }
+                end
+            end
+        else
+          respond_to do |format|
+              flash[:error] = "Bid was not reseted."
+              format.html {  redirect_to request.referrer }
+      end
+       end
+end
 
 
     def transporter_quotes
