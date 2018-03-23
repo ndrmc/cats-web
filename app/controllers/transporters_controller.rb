@@ -241,7 +241,7 @@ def print_payment_request
 end
 
 def print_payment_request_letter
-     payment_request_id = params[:payment_request_id]
+     payment_request_id = params[:id]
       @payment_requested =  PaymentRequestItem.includes(:payment_request, :commodity).where(:'payment_requests.id' => payment_request_id, :'payment_requests.status' => :open)
     
       @received = @payment_requested.sum(:received)
@@ -250,11 +250,15 @@ def print_payment_request_letter
       @loss_quantity = @payment_requested.sum(:loss)
       @freight_charge_in_words = @freight_charge.humanize(decimals_as: :digits)
       @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
-      @commodity_list = @payment_requested.map{ |pr| pr.commodity.name }.uniq!
+      @commodity_list = @payment_requested.uniq{|x| x.commodity.name}
+      @commodity_string = ""
+      @commodity_list.each do |cl|
+        @commodity_string += "/" + cl.commodity.name
+      end
        respond_to do |format|
             format.html
             format.pdf do
-                pdf = PaymentRequestLetterPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @freight_charge_in_words, @commodity_list)
+                pdf = PaymentRequestLetterPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @freight_charge_in_words, @commodity_string)
                 send_data pdf.render, filename: "payment_request_letter.pdf",
                 type: "application/pdf",
                 disposition: "inline"

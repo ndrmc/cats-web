@@ -1,6 +1,6 @@
 class PaymentRequestLetterPdf  < PdfReport
     def initialize(payment_requested, dispatched, received,freight_charge,transporter, current_user, 
-        loss_quantity, freight_charge_in_words)
+        loss_quantity, freight_charge_in_words, commodity_string)
         super(top_margin: 50)
         @payment_requested = payment_requested
         @dispatched = dispatched
@@ -10,17 +10,18 @@ class PaymentRequestLetterPdf  < PdfReport
         @user =  current_user
         @loss_quantity = loss_quantity
          @freight_charge_in_words =  freight_charge_in_words
+         @commodity_string = commodity_string
         header ""
         font Rails.root.join("app/assets/fonts/gfzemenu.ttf")
         move_down 15
         text "ቀን ..................... ዓ.ም."
-        text "<u>የውስጥ መፃፃፊያ</u>", size: 30, style: :bold
-        text "<font size='18'>ለ:- በጀት እና ፋይናንስ ዳይሬክቶሬት </font>"
-        text "<font size='18'>ከ:- ሎጅስቲክስ ዳይሬክቶሬት ስለ ሎጅስቲክስ ዳይሬክቶሬት </font>"
+        text "የውስጥ መፃፃፊያ"
+        text "ለ:- በጀት እና ፋይናንስ ዳይሬክቶሬት"
+        text "ከ:- ሎጅስቲክስ ዳይሬክቶሬት ስለ ሎጅስቲክስ ዳይሬክቶሬት"
         
         move_down 20
      
-        text "<font size='24'>ጉዳዩ:- የማጓጓዣ ሂሳብ ክፍያ ይመለከታል</font>"
+        text "ጉዳዩ:- የማጓጓዣ ሂሳብ ክፍያ ይመለከታል"
         move_down 5
        
         payment_request_letter
@@ -30,13 +31,14 @@ class PaymentRequestLetterPdf  < PdfReport
 
      def payment_request_letter
         bounding_box([bounds.left, bounds.top - 175 ], :width => bounds.width, :height => bounds.height - 173) do
-       
-        
-        text "#{@transporter} የዘርፉን #{@received} ኩንታል የዕርዳታ እህል ወደ ተለያዩ ዕደላ ጣቢያዎች ያጓጓዘበት ሂሳብ እንዲከፈለው  #{@payment_requested.count} ሠነዶችን አቅርቧል::"
-        text     "ስለሆነም ሠነዶቹን አጣርተን ባዘጋጀነው የሂሳብ ማሳያ ሠንጠረዥ መሠረት ላጎደለው #{@loss_quantity} ኩንታል የዕርዳታ እህል ብር ________ ()"
+
+        text "#{@transporter} የኮሚሽኑን #{@received} ኩንታል የዕርዳታ እህል #{@commodity_string.to_s} ወደ ተለያዩ ዕደላ ጣቢያዎች ያጓጓዘበት ሂሳብ እንዲከፈለው  #{@payment_requested.count} ሠነዶችን አቅርቧል::"
+
+        text "ስለሆነም የቀረቡትን የማጓጓዣ ኪራይ መጠየቅያ ሰነዶችን በሠንጠረዥ መዝግበን የላክንላችሁ ሲሆን፤ "
+
+        text "ላጎደለው #{@loss_quantity} ኩንታል የዕርዳታ እህል #{@commodity_string.to_s} ብር ________ ()"
+
         text     "ተቀንሶ የተጣራ ብር #{@freight_charge}(#{@freight_charge_in_words}) እንዲከፈለው እያሳሰብን የበኩላችሁን አጣርታችሁ ክፍያውን እንድትፈፅሙ #{@payment_requested.count} ሠነዶችን በዚህ ሽኚ ማስታወሻ የላክን መሆኑን እንገልጻለን::" 
-       
-        text "#{@transporter} የኮሚሽኑን #{@received} ኩንታል የዕርዳታ እህል #{@commodity_list.to_s} ወደ ተለያዩ ዕደላ ጣቢያዎች ያጓጓዘበት ሂሳብ እንዲከፈለው  #{@payment_requested.count} ሠነዶችን አቅርቧል::"
 
         text "\n"
         text "\n"
