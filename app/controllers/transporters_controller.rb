@@ -1,5 +1,6 @@
 class TransportersController < ApplicationController
   require 'humanize'
+  include Number
   before_action :set_transporter, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   # GET /transporters
@@ -198,6 +199,7 @@ def processPayment
                           @payment_request_items.dispatched = delivery_item&.sent_quantity
                           @payment_request_items.received  = delivery_item&.received_quantity
                           @payment_request_items.loss = delivery_item&.loss_quantity
+                          @payment_request_items.market_price = delivery_item&.market_price
                           @payment_request_items.tariff =  @tariff&.tariff
                           @payment_request_items.freightCharge = (@tariff&.tariff.to_s.to_d * delivery_item&.received_quantity.to_s.to_d * 10) - (delivery_item.loss_quantity * 10 * delivery_item.market_price)
                           @payment_request_items.transport_order_id = @transport_order_id
@@ -244,11 +246,26 @@ def print_payment_request_letter
      payment_request_id = params[:id]
       @payment_requested =  PaymentRequestItem.includes(:payment_request, :commodity).where(:'payment_requests.id' => payment_request_id, :'payment_requests.status' => :open)
     
-      @received = @payment_requested.sum(:received)
-      @dispatched = @payment_requested.sum(:dispatched )
+      @loss_quantity = 0
+      @loss_charge = 0
+      @received = 0
+      @dispatched = 0
+      @payment_requested.each do |pri|        
+        @qtl = UnitOfMeasure.find_by(name: 'Quintal')
+        if (pri.unit_of_measure_id?)
+          @unit_to_be_changed = UnitOfMeasure.find_by(id: pri.unit_of_measure_id).name
+        else
+          @unit_to_be_changed = UnitOfMeasure.find_by(code: 'MT').name
+        end
+        @dispatched += @qtl.convert_to(@unit_to_be_changed, pri.dispatched)
+        @received += @qtl.convert_to(@unit_to_be_changed, pri.received)
+        @loss_quantity += @qtl.convert_to(@unit_to_be_changed, pri.loss)
+        @loss_charge += @qtl.convert_to(@unit_to_be_changed, pri.loss) * pri.market_price
+      end
       @freight_charge = @payment_requested.sum(:freightCharge)
-      @loss_quantity = @payment_requested.sum(:loss)
-      @freight_charge_in_words = @freight_charge.humanize(decimals_as: :digits)
+      @loss_charge_in_words = num_to_am_words_wrapper(@loss_charge)
+      # @freight_charge_in_words = @freight_charge.humanize(decimals_as: :digits)
+      @freight_charge_in_words = num_to_am_words_wrapper(@payment_requested.sum(:freightCharge))
       @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
       @commodity_list = @payment_requested.uniq{|x| x.commodity.name}
       @commodity_string = ""
@@ -258,7 +275,7 @@ def print_payment_request_letter
        respond_to do |format|
             format.html
             format.pdf do
-                pdf = PaymentRequestLetterPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @freight_charge_in_words, @commodity_string)
+                pdf = PaymentRequestLetterPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @freight_charge_in_words, @commodity_string, @loss_charge_in_words, @loss_charge)
                 send_data pdf.render, filename: "payment_request_letter.pdf",
                 type: "application/pdf",
                 disposition: "inline"
