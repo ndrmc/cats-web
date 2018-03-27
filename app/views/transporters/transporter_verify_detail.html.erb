@@ -21,10 +21,10 @@
                             </button>
                             <ul class="dropdown-menu pull-right">
                               <li>
-                                <%= link_to 'Verify all', '/transporters/update_status_all?transporter_id=' + @transporter.id.to_s + '&type=verify&order_no=' + @order_no.to_s, data: { confirm: 'Are you sure you want to verify deliveries ?' } %>
+                                <%= link_to 'Verify all', '/transporters/update_status_all?transporter_id=' + @transporter.id.to_s + '&type=verify&order_no=' + @order_no.id.to_s, data: { confirm: 'Are you sure you want to verify deliveries ?' } %>
                               </li>                     
                               <li>                    
-                                <%= link_to 'Revert all','/transporters/update_status_all?transporter_id=' + @transporter.id.to_s + '&type=revert&order_no=' + @order_no.to_s, data: { confirm: 'Are you sure you want to revert deliveries ?' } %>
+                                <%= link_to 'Revert all','/transporters/update_status_all?transporter_id=' + @transporter.id.to_s + '&type=revert&order_no=' + @order_no.id.to_s, data: { confirm: 'Are you sure you want to revert deliveries ?' } %>
                               </li>
                              
                             </ul>

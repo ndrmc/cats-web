@@ -76,7 +76,8 @@ end
 
 def transporter_verify_detail
   @transport_order =[]
-
+  @transporter = Transporter.find(params[:transporter_id])
+  @order_no = TransportOrder.find(params[:order_id])
    @requisitions = TransportOrderItem.joins(transport_order: [:operation])
     .where(:'transport_orders.id' => params[:order_id], 
     :'transport_orders.transporter_id' => params[:transporter_id], 
@@ -84,8 +85,7 @@ def transporter_verify_detail
      @dispatch_summary = Transporter.fdp_verification(params[:transporter_id], params[:operation_id], @requisitions)  
      @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) ||
      hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:verified])  ||  hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:reverted])  }
-     @transporter = Transporter.find(params[:transporter_id])
-     @order_no = TransportOrder.find(params[:order_id])
+     
      if  $transport_orders.present?
       $transport_orders.each do | to |
        @transport_order << to if to['id'].to_i == params[:order_id].to_i
@@ -297,11 +297,16 @@ end
 def update_status_all
   @transporter_id = params[:transporter_id]
   @status_type = params[:type]
-  @order_no =params[:order_no]
+  @order_no = params[:order_no]
+  @transport_order = TransportOrder.find(params[:order_no])
   @count = 0
+  @requisitions = TransportOrderItem.joins(transport_order: [:operation])
+  .where(:'transport_orders.id' => @transport_order.id, 
+  :'transport_orders.transporter_id' => params[:transporter_id], 
+  :'transport_orders.operation_id' => @transport_order.operation_id).pluck(:requisition_no)
  if params[:type].present?
   if @status_type == 'verify'
-        deliveries_with_status_verified =  Delivery.where('deliveries.transporter_id = ?', @transporter_id).where('status = ? or status = ?',Delivery.statuses[:draft], Delivery.statuses[:reverted])
+        deliveries_with_status_verified =  Delivery.where('deliveries.transporter_id = ?', @transporter_id).where('deliveries.requisition_number IN (?)', @requisitions).where('status = ? or status = ?',Delivery.statuses[:draft], Delivery.statuses[:reverted])
                 if deliveries_with_status_verified.present?
                   deliveries_with_status_verified.each do |delivery|
                     delivery.delivery_details.each do |item|
@@ -333,7 +338,7 @@ def update_status_all
                 end
         end
   elsif @status_type == 'revert'
-        deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified)
+        deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified).where('deliveries.requisition_number IN (?)', @requisitions)
         if deliveries_with_status_verified.present?
                         if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:draft]))  
                                respond_to do |format|
