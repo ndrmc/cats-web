@@ -74,7 +74,7 @@ class WarehouseAllocationsController < ApplicationController
     .where("beneficiary_no > 0")
     @warehouse_allocations = []
     @requisition_items.each do |requisition_detail|
-      @requisition = Requisition.includes(ration: :ration_items).find(requisition_detail.requisition_id) 
+      @requisition = Requisition.includes(ration: :ration_items).find(requisition_detail.requisition_id)
       @uom_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id
       target_unit = UnitOfMeasure.find_by(name: "Quintal")
       current_unit = UnitOfMeasure.find(@uom_id)
