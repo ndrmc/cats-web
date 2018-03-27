@@ -186,7 +186,7 @@ def processPayment
 
                           @tariff = get_tariff(  @transporter_id, delivery_item&.delivery&.fdp_id,delivery_item&.delivery&.requisition_number)
                           
-                          @transport_order_id = TransportOrder.includes(:transport_order_items).where(transporter_id: @transporter_id, :'transport_order_items.fdp_id' => delivery&.fdp_id, :'transport_order_items.requisition_no' => delivery&.requisition_number).first.transport_order_id
+                          @transport_order_id = TransportOrder.includes(:transport_order_items).where(transporter_id: @transporter_id, :'transport_order_items.fdp_id' => delivery&.fdp_id, :'transport_order_items.requisition_no' => delivery&.requisition_number).first.id
                           
                           @payment_request_items = PaymentRequestItem.new
                           @payment_request_items.requisition_no = delivery_item&.delivery&.requisition_number

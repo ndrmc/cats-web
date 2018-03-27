@@ -16,7 +16,6 @@ module Cats
     config.assets.paths << Rails.root.join('node_modules')
 
     config.generators.javascript_engine :js
-    config.middleware.insert 0, Rack::UTF8Sanitizer
 
     def load_console(app = self)
       super
