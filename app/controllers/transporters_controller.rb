@@ -218,16 +218,34 @@ def processPayment
 end
 def print_payment_request
       transporter_id = params[:transporter_id]
-      @payment_requested =  PaymentRequestItem.includes(:payment_request).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open)
-      @received = @payment_requested.sum(:received)
-      @dispatched = @payment_requested.sum(:dispatched )
-      @freight_charge = @payment_requested.sum(:freightCharge)
-      @loss_quantity = @payment_requested.sum(:loss)
-      @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
+      @received = 0
+      @dispatched = 0
+      @loss_quantity = 0
+      @loss_charge = 0
+      @payment_requested = []
+      PaymentRequestItem.includes(:payment_request, :fdp, :hub).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open).each do |pri|
+        target_unit = UnitOfMeasure.find_by(name: "Quintal")
+        current_unit = UnitOfMeasure.find(pri&.unit_of_measure_id)
+        received_in_quintal = target_unit.convert_to(current_unit.name, pri&.received.to_f)
+        dispatched_in_quintal = target_unit.convert_to(current_unit.name, pri&.dispatched.to_f)
+        shortage_in_quintal = target_unit.convert_to(current_unit.name, pri&.loss.to_f)
+        shortage_in_birr = shortage_in_quintal * pri.market_price
+
+        @received += received_in_quintal
+        @dispatched += dispatched_in_quintal
+        @loss_quantity += shortage_in_quintal
+        @loss_charge += shortage_in_birr
+
+        ltcd = "09/2010"
+        @payment_requested << { requisition_no: pri&.requisition_no, reference_no: pri&.payment_request&.reference_no, gin_no: pri&.gin_no, grn_no: pri&.grn_no, ltcd: ltcd, commodity: pri&.commodity&.name, source: pri&.hub&.name, destination: pri&.fdp&.name, received_qty: received_in_quintal, tariff: pri&.tariff, shortage_qty: shortage_in_quintal, shortage_birr: shortage_in_birr, freight_charge: pri&.freightCharge }
+      end
+      @payment_requested_obj = PaymentRequestItem.includes(:payment_request, :fdp, :hub).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open)
+      @freight_charge = @payment_requested_obj.sum(:freightCharge)
+      @transporter = Transporter.find_by(id: @payment_requested_obj.first&.payment_request&.transporter_id)&.name
        respond_to do |format|
             format.html
             format.pdf do
-                pdf = PaymentRequestPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name)
+                pdf = PaymentRequestPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @loss_charge)
                 send_data pdf.render, filename: "payment_request.pdf",
                 type: "application/pdf",
                 disposition: "inline"
