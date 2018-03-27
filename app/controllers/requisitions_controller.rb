@@ -287,6 +287,21 @@ class RequisitionsController < ApplicationController
       end
     end
   end
+
+  def export_requisition_to_excel
+    @request_allocations = []
+    @request = RegionalRequest.find(params[:id])
+    @requisitions = RequisitionItem.includes( requisition: :commodity, fdp: :location).where({:'requisitions.request_id' => params[:id]}).where('beneficiary_no > 0').each do |ri|
+      @requisition = Requisition.includes(ration: :ration_items).find(ri.requisition_id) 
+      @uom_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id
+      target_unit = UnitOfMeasure.find_by(name: "Quintal")
+      current_unit = UnitOfMeasure.find(@uom_id)
+      quantity_in_ref = target_unit.convert_to(current_unit.name, ri.amount.to_f)
+
+      @request_allocations << { region: ri.fdp.location.parent.parent.name, zone: ri.fdp.location.parent.name, woreda: ri.fdp.location.name, fdp: ri.fdp.name, requisition_no: ri.requisition.requisition_no, beneficiary_no: ri.beneficiary_no, commodity: ri.requisition.commodity.name, amount: quantity_in_ref }
+    end
+  end
+
   private
   def authorize_requisition
     authorize Requisition

@@ -61,4 +61,23 @@ module BidsHelper
         records = BidQuotation.joins(:bid_quotation_details).where(:bid_id => params[:id]).select(:id, 'bid_quotation_details.id AS bid_quotation_detail_id', :transporter_id, :bid_id, 'bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff').order('bid_quotation_details.location_id', 'bid_quotation_details.warehouse_id', 'bid_quotation_details.tariff')
         return @result
     end
+
+    def regenerate_bid_winners(id)
+       @result = false
+        @bid_quotations = BidQuotation.where(:bid_id => id)
+        @bid_quotations.each do |bid_quotation|
+            if bid_quotation&.bid_quotation_details.update_all(rank: nil)
+                @bid = Bid.find(id)
+                @bid.status = :draft
+                @bid.save
+                @result = true
+            else
+               @result = false
+            end
+        end
+        
+        
+        return  @result
+    end
+    
 end
