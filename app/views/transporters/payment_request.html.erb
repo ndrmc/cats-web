@@ -75,7 +75,7 @@
       <tbody>
           <% @payment_requests.each do |payment_request| %>
           <tr>
-              <td><%= link_to payment_request&.reference_no, '/transporters/payment__request_items/' + payment_request.id.to_s %></td>
+              <td><%= link_to payment_request&.reference_no, '/transporters/payment_request_items/' + payment_request.id.to_s %></td>
               <td><%= payment_request&.transporter&.name %></td>
               <td><%= payment_request&.payment_date ?  payment_request&.payment_date.strftime('%d/%m/%Y') : '-' %></td>
               <td><%= Contract.find_by(:transporter_id => payment_request&.transporter&.id)&.contract_no %></td>
