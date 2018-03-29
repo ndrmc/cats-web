@@ -121,7 +121,7 @@
     <% end %>
     <ul class="nav nav-second-level collapse">
     <% if policy(Transporter).index? %>
-      <li class="<%= 'active' if is_active_controller('transporters')  %>">
+      <li class="<%= 'active' if(is_active_controller('transporters') || is_active_controller('transporter_payments'))  %>">
         <%= link_to 'Transporters', transporters_path %>
       </li>
       <%end%>

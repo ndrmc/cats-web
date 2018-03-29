@@ -5,10 +5,9 @@
   <div class="col-sm-8">
 
     <div class="title-action">
-    <% if @payment__request_items.present? && @payment_request&.status == 'open' %>
-        <a  class="btn btn-default"  data-target="#pay-transporter" data-toggle="modal"> <span class="glyphicon glyphicon-usd"> </span>Pay</a>
-    <% end %>
-    
+      <% if @payment_request_items.present? && @payment_request&.status == 'open' %>
+        <a  class="btn btn-primary"  data-target="#pay-transporter" data-toggle="modal"> <span class="glyphicon glyphicon-usd"> </span>Pay</a>
+      <% end %>    
       <%= link_to 'Back', '/transporters/payment_request',  :class => "btn btn-default"%>
     </div>
   </div>
@@ -49,46 +48,23 @@
           <%= @payment_request&.payment_date&.to_formatted_s(:long_ordinal) %>
         </div>
       </div>
-      <div class="form-group col-md-12 col-sm-12 col-xs-12">
-        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
-          Total Quantity:
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-6">
-        
-        </div>
-      </div>
+      
     </div>
     <div class="col-sm-7">
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
         <div class="col-md-4 col-sm-4 col-xs-4 text-right">
-          Estimated Payment:
+          Total Delivered:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-           
+          <%= @payment_request_items.map { |h| h[:received] }.sum() %> QTL
         </div>
       </div>
       <div class="form-group col-md-12 col-sm-12 col-xs-12">
         <div class="col-md-4 col-sm-4 col-xs-4 text-right">
-          Outstanding Payment:
+          Total Payment:
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-           
-        </div>
-      </div>
-      <div class="form-group col-md-12 col-sm-12 col-xs-12">
-        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
-          Confirmed Delivery:
-        </div>
-        <div class="col-md-8 col-sm-8 col-xs-8">
-
-        </div>
-      </div>
-      <div class="form-group col-md-12 col-sm-12 col-xs-12">
-        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
-          Paid Amount:
-        </div>
-        <div class="col-md-8 col-sm-8 col-xs-8">
-
+           <%= @payment_request_items.map { |h| h[:freightCharge] }.sum() %> ETB
         </div>
       </div>
     </div>
@@ -108,16 +84,16 @@
             <th>Commodity</th>
             <th>Source Hub </th>
             <th>FDP</th>
-            <th>Dispatched (QTL)</th>
-            <th>Received (QTL)</th>
-            <th>Loss (QTL)</th>
-            <th>Tariff (ETB)</th>
-            <th>Freight Charge (ETB)</th>
+            <th>Dispatched [QTL]</th>
+            <th>Received [QTL]</th>
+            <th>Loss [QTL]</th>
+            <th>Tariff [ETB]</th>
+            <th>Freight Charge [ETB]</th>
       </tr>
       </thead>
 
       <tbody>
-        <% @payment__request_items.each do |payment_request_item| %>
+          <% @payment_request_items.each do |payment_request_item| %>
           <tr>
               <td><%= payment_request_item[:reference_no]  %></td>
               <td><%= payment_request_item[:requisition_no] %></td>
@@ -131,8 +107,10 @@
               <td><%= payment_request_item[:loss]  %></td>
               <td><%= payment_request_item[:tariff] %></td>
               <td><%= payment_request_item[:freightCharge] %></td>
-          </tr>       
-        <% end %>
+          </tr>
+          
+       
+      <% end %>
       </tbody>
     </table>
 
@@ -167,7 +145,7 @@
            </div>
 
            <div class="col-md-6 col-sm-6 col-xs-6">
-              <%= label_tag :paid_amount, "Amount:", { :style => 'display: block; text-align: left',:class => ' control-label' } %>
+              <%= label_tag :paid_amount, "Payable Amount [ETB]:", { :style => 'display: block; text-align: left',:class => ' control-label' } %>
 
               <div class="">
                 <%= number_field_tag :paid_amount, @amount_paid, min: 0, max: 9999999999999999, :step => 'any', class: "form-control number width-100per",  :name => "transporter_payment[paid_amount]", disabled: true %>
