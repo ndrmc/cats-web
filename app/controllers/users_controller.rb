@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :roles, :updateRoles, :user_profile, :updateDepartments, :updatePermissions,:updateUserPreference]
-  include Administrated
+  include Administrated 
 
   # GET /users
   # GET /users.json
@@ -37,11 +37,13 @@ class UsersController < ApplicationController
   end
 
   def user_preference
+     
     @user = User.find(params[:id])
+
   end
   
   def updateUserPreference
-
+   
     user = User.find(@user.id)
     user.calendar = params[:calendar]
     user.language = params[:language]
