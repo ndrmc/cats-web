@@ -146,6 +146,7 @@ class Transporter < ApplicationRecord
                             else
                                 @row['delivered_amount'] = dd.received_quantity
                             end
+                            @row['market_price'] = dd.market_price
                         end
                  end
 
@@ -166,7 +167,11 @@ class Transporter < ApplicationRecord
                 end
             end
             @row['progress'] = ( @row['delivered_amount'].to_f / @row['dispatched_amount'].to_f) * 100
-         
+            @row['can_verify'] = true
+            @row['loss_amount'] = @row['dispatched_amount'].to_f - @row['delivered_amount'].to_f
+            if (@row['loss_amount'] > 1 && (! (@row['market_price'].present?)))
+                @row['can_verify'] = false
+            end
         end
         return @dispatch_summary
     end

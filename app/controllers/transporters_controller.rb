@@ -42,7 +42,8 @@ class TransportersController < ApplicationController
       received_qty = 0
       requisition_nos = to.transport_order_items.map { |toi| toi.requisition_no }
       fdp_ids = to.transport_order_items.map { |toi| toi.fdp_id }
-      DeliveryDetail.joins(:delivery).where(:'deliveries.transporter_id' => to.transporter_id, :'deliveries.status' => :verified, :'deliveries.requisition_number' => requisition_nos, :'deliveries.fdp_id' => fdp_ids).each do |dd|
+
+      DeliveryDetail.joins(:delivery).where(:'deliveries.transporter_id' => to.transporter_id,:'deliveries.requisition_number' => requisition_nos, :'deliveries.fdp_id' => fdp_ids).where('deliveries.status > 0').each do |dd|
         received_qty += UnitOfMeasure.find(dd.uom_id.to_i).to_ref(dd.received_quantity.to_f) 
       end     
 
@@ -179,7 +180,9 @@ def processPayment
                   
                      @deliveries_with_status_verified.each do |delivery|
                           delivery.delivery_details.each do |delivery_item|
-                          
+                            
+                          received_qty = UnitOfMeasure.find(delivery_item&.uom_id.to_i).to_ref(delivery_item&.received_quantity.to_f)
+
                           @tariff = get_tariff(  @transporter_id, delivery_item&.delivery&.fdp_id,delivery_item&.delivery&.requisition_number)
                           
                           @transport_order_id = TransportOrder.includes(:transport_order_items).where(transporter_id: @transporter_id, :'transport_order_items.fdp_id' => delivery&.fdp_id, :'transport_order_items.requisition_no' => delivery&.requisition_number).first.transport_order_id
@@ -191,11 +194,12 @@ def processPayment
                           @payment_request_items.fdp_id = delivery_item&.delivery&.fdp_id
                           @payment_request_items.hub_id = Dispatch.find_by(gin_no: delivery_item&.delivery&.gin_number)&.hub_id
                           @payment_request_items.commodity_id = delivery_item&.commodity_id
+                          @payment_request_items.unit_of_measure_id = delivery_item&.uom_id
                           @payment_request_items.dispatched = delivery_item&.sent_quantity
                           @payment_request_items.received  = delivery_item&.received_quantity
                           @payment_request_items.loss = delivery_item&.loss_quantity
                           @payment_request_items.tariff =  @tariff&.tariff
-                          @payment_request_items.freightCharge = @tariff&.tariff.to_s.to_d * delivery_item&.received_quantity.to_s.to_d
+                          @payment_request_items.freightCharge = (@tariff&.tariff.to_s.to_d * delivery_item&.received_quantity.to_s.to_d * 10) - (delivery_item.loss_quantity * 10 * delivery_item.market_price)
                           @payment_request_items.transport_order_id = @transport_order_id
 
                           @payment_request.payment_request_items << @payment_request_items
@@ -297,18 +301,34 @@ def payment_request
   
 end
 
-def payment__request_items
+def payment_request_items
   @id = params[:id]
   @amount_paid = 0
   @payment_request = PaymentRequest.find(@id)
-  @payment__request_items = PaymentRequestItem.where(payment_request_id: @id)
-  if @payment__request_items.present?
+  # @payment_request_items = PaymentRequestItem.where(payment_request_id: @id)
+  
+  @payment_request_items = []
+  PaymentRequestItem.where(payment_request_id: @id).each do |pri|
+
+    @qtl = UnitOfMeasure.find_by(name: 'Quintal')
+    if (pri.unit_of_measure_id?)
+      @unit_to_be_changed = UnitOfMeasure.find_by(id: pri.unit_of_measure_id).name
+    else
+      @unit_to_be_changed = UnitOfMeasure.find_by(code: 'MT').name
+    end
+    dispatched = @qtl.convert_to(@unit_to_be_changed, pri.dispatched)
+    received = @qtl.convert_to(@unit_to_be_changed, pri.received)
+    loss = @qtl.convert_to(@unit_to_be_changed, pri.loss)
+
+    @amount_paid += pri.freightCharge
+
+    @payment_request_items << { reference_no: @payment_request.reference_no, requisition_no: pri.requisition_no, gin_no: pri.gin_no, grn_no: pri.grn_no, commodity: pri&.commodity&.name, hub: pri&.hub&.name, fdp: pri&.fdp&.name, dispatched: dispatched, received: received, loss: loss, tariff: pri.tariff, freightCharge: pri.freightCharge }
+  end
+
+  if @payment_request_items.present?
     @payment_request_id = @id
-    @referenceNo =  @payment__request_items&.first&.payment_request&.reference_no
-    @transporter = Transporter.find(@payment__request_items&.first&.payment_request&.transporter_id)
-    @amount_paid = @payment__request_items.sum(:freightCharge)
-  else
-    @payment__request_items = []
+    @referenceNo =  @payment_request&.reference_no
+    @transporter = Transporter.find(@payment_request&.transporter_id)
   end
 end
 
