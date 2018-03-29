@@ -136,6 +136,14 @@
                   <% @dispatch.dispatch_items.each do |dispatch_line| %>
                   
                   <tr class="dispatch-line">
+                  <td style="display: none;">
+                     
+                        <input name="dispatch[dispatch_items[][commodity_category_id]]" id="commodity-category-select" value="<%= dispatch_line&.commodity&.commodity_category&.id %>"/>
+                        </td>
+                        <td style="display: none;">
+                        <input name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" value="<%= dispatch_line&.commodity&.id %>"/>
+                      
+                      </td>
                     <td>
                       <select name="dispatch[dispatch_items[][organization_id]]" class="form-control" readonly>
                         <option value="<%= dispatch_line&.organization&.id %>"><%= dispatch_line&.organization&.name %></option>
@@ -163,11 +171,15 @@
                   </tr>
                     
                   <% end %>
-                  <tr>   
-                      <div style="display: none;">
+                  <tr>  
+                     <td style="display: none;">
+                     
                         <input name="dispatch[dispatch_items[][commodity_category_id]]" id="commodity-category-select" value=""/>
+                        </td>
+                        <td style="display: none;">
                         <input name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" value=""/>
-                      </div>
+                      
+                    </td>
                       <td>
                         <%= select_tag 'dispatch[dispatch_items[][organization_id]]',  options_from_collection_for_select( Organization.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control', :id => 'donor_select'} %>
                       </td>                      
