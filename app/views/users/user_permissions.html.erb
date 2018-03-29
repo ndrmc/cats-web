@@ -1,5 +1,5 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-  <div class="col-sm-4">
+  <div class="col-sm-6">
     <h2>Manage permission for <em><%= @user.name %></em></h2>
     <ol class="breadcrumb">
       <li>
@@ -10,7 +10,7 @@
       </li>
     </ol>
   </div>
-  <div class="col-sm-8">
+  <div class="col-sm-6">
     <div class="title-action">
       <%= link_to 'Cancel', "/users/#{@user.id}",  :class => "btn btn-default"%>
     </div>
@@ -26,25 +26,41 @@
 
  <%= form_tag "/users/#{@user.id}/updatePermissions", method: :put do %>
 
-         <table class="table table-bordered cats-datatable" id="tbl">
-         <thead>
+      <table class="table table-bordered cats-datatable" id="tbl">
+        <thead>
           <tr>
-             <th></th>
-             <th>Name</th>
+             <th>Activity</th>
+             <th>Guest</th>
+             <th>Clerk</th>
+             <th>Manager</th>
+             <th>Admin</th>
           </tr>
-         </thead>
+        </thead>
         
-          <tbody>
-            <% @all_permissions.each do |permission| %>
-              <tr>
-                <td>
-                  <%= check_box_tag "permissions[#{permission.id}]", 1 , @user.permissions.include?(permission)  %>
-                </td>
-                <td><%= permission.name %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+        <tbody>
+          <% @unique_permissions.each do |permission| %>
+            <tr>
+              <td><%= permission %></td>
+              <td>
+                <% guest_permission = @all_permissions.where(name: permission, user_type: :guest).first %>
+                <%= check_box_tag "permissions[#{guest_permission.id}]", 1 , @user.permissions.include?(guest_permission)  %>
+              </td>
+              <td>
+                <% clerk_permission = @all_permissions.where(name: permission, user_type: :clerk).first %>
+                <%= check_box_tag "permissions[#{clerk_permission.id}]", 1 , @user.permissions.include?(clerk_permission)  %>
+              </td>
+              <td>
+                <% manager_permission = @all_permissions.where(name: permission, user_type: :manager).first %>
+                <%= check_box_tag "permissions[#{manager_permission.id}]", 1 , @user.permissions.include?(manager_permission)  %>
+              </td>
+              <td>
+                <% admin_permission = @all_permissions.where(name: permission, user_type: :admin).first %>
+                <%= check_box_tag "permissions[#{admin_permission.id}]", 1 , @user.permissions.include?(admin_permission)  %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
 
           <div class="actions">
           <%= submit_tag 'Save Changes', :class => 'btn btn-primary' %>
