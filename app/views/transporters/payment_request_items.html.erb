@@ -9,7 +9,20 @@
         <a  class="btn btn-primary"  data-target="#pay-transporter" data-toggle="modal"> <span class="glyphicon glyphicon-usd"> </span>Pay</a>
       <% end %>    
       <%= link_to 'Back', '/transporters/payment_request',  :class => "btn btn-default"%>
-    </div>
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+          <li>
+              <%= link_to 'Print', "/transporters/print_payment_request/#{@payment_request.id}?format=pdf", class: ""%>
+          </li>
+          <li>
+              <%= link_to 'Print letter', "/transporters/print_payment_request_letter/#{@payment_request.id}?format=pdf", class: ""%>
+          </li>
+        </ul>
+      </div>
+    </div>    
   </div>
 </div>
 
