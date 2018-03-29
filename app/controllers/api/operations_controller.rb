@@ -1,5 +1,5 @@
 class Api::OperationsController < Api::ApiController
-  before_action :set_todo, only: [:update, :destroy]
+  before_action :set_operation, only: [:update, :destroy]
 
   def index
     render json: Operation.all
@@ -96,6 +96,11 @@ class Api::OperationsController < Api::ApiController
       end
       @requisitions_map[region] = @requisition_summary_region
     end
+  end
+
+  def destroy
+    @operation.destroy
+    head :no_content
   end
 
   private

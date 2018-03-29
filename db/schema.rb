@@ -10,37 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180314080815) do
+ActiveRecord::Schema.define(version: 20180328193939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                       null: false
     t.integer  "code"
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_accounts_on_deleted_at", using: :btree
     t.index ["name", "code"], name: "index_accounts_on_name_and_code", using: :btree
   end
 
   create_table "adjustments", force: :cascade do |t|
-    t.integer  "stock_take_id",         null: false
-    t.integer  "stock_take_item_id",    null: false
-    t.integer  "commodity_id",          null: false
-    t.integer  "commodity_category_id", null: false
-    t.decimal  "amount",                null: false
-    t.integer  "adjustment_type",       null: false
+    t.integer  "stock_take_id",                        null: false
+    t.integer  "stock_take_item_id",                   null: false
+    t.integer  "commodity_id",                         null: false
+    t.integer  "commodity_category_id",                null: false
+    t.decimal  "amount",                               null: false
+    t.integer  "adjustment_type",                      null: false
     t.string   "reason"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "is_dirty",              default: true, null: false
   end
 
   create_table "bid_plan_items", force: :cascade do |t|
@@ -49,25 +51,27 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "store_id"
     t.decimal  "quantity"
     t.integer  "unit_of_measure_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",           default: true, null: false
     t.index ["deleted_at"], name: "index_bid_plan_items_on_deleted_at", using: :btree
   end
 
   create_table "bid_plans", force: :cascade do |t|
-    t.string   "year",        null: false
+    t.string   "year",                       null: false
     t.integer  "half_year"
     t.integer  "program_id"
     t.string   "code"
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_bid_plans_on_deleted_at", using: :btree
   end
 
@@ -80,9 +84,10 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.integer  "rank"
+    t.boolean  "is_dirty",         default: true, null: false
     t.index ["bid_quotation_id"], name: "index_bid_quotation_details_on_bid_quotation_id", using: :btree
     t.index ["location_id"], name: "index_bid_quotation_details_on_location_id", using: :btree
     t.index ["warehouse_id"], name: "index_bid_quotation_details_on_warehouse_id", using: :btree
@@ -95,8 +100,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "is_dirty",           default: true, null: false
     t.index ["bid_id"], name: "index_bid_quotations_on_bid_id", using: :btree
     t.index ["transporter_id"], name: "index_bid_quotations_on_transporter_id", using: :btree
   end
@@ -105,11 +111,12 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "bid_id"
     t.integer  "transporter_id"
     t.decimal  "bid_bond_amount"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",        default: true, null: false
     t.index ["deleted_at"], name: "index_bid_submissions_on_deleted_at", using: :btree
   end
 
@@ -119,11 +126,12 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "store_id"
     t.integer  "destination_id"
     t.decimal  "tariff_amount"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",       default: true, null: false
     t.index ["deleted_at"], name: "index_bid_winners_on_deleted_at", using: :btree
   end
 
@@ -140,15 +148,16 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
+    t.boolean  "is_dirty",                                     default: true, null: false
   end
 
   create_table "commodities", force: :cascade do |t|
-    t.string   "name",                  null: false
+    t.string   "name",                                 null: false
     t.string   "name_am"
     t.string   "long_name"
-    t.string   "code",                  null: false
+    t.string   "code",                                 null: false
     t.string   "code_am"
     t.text     "description"
     t.boolean  "hazardous"
@@ -157,27 +166,29 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.float    "max_temperature"
     t.integer  "commodity_category_id"
     t.integer  "uom_category_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",              default: true, null: false
     t.index ["code"], name: "index_commodities_on_code", unique: true, using: :btree
     t.index ["deleted_at"], name: "index_commodities_on_deleted_at", using: :btree
   end
 
   create_table "commodity_categories", force: :cascade do |t|
-    t.string   "name",            null: false
-    t.string   "code",            null: false
+    t.string   "name",                           null: false
+    t.string   "code",                           null: false
     t.string   "code_am"
     t.string   "description"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "ancestry"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "uom_category_id"
+    t.boolean  "is_dirty",        default: true, null: false
     t.index ["ancestry"], name: "index_commodity_categories_on_ancestry", using: :btree
     t.index ["code"], name: "index_commodity_categories_on_code", unique: true, using: :btree
     t.index ["deleted_at"], name: "index_commodity_categories_on_deleted_at", using: :btree
@@ -193,14 +204,15 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.string   "code"
+    t.boolean  "is_dirty",    default: true,  null: false
   end
 
   create_table "contracts", force: :cascade do |t|
-    t.string   "contract_no",     null: false
+    t.string   "contract_no",                    null: false
     t.integer  "transporter_id"
     t.text     "description"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
@@ -208,6 +220,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.boolean  "signed"
     t.datetime "last_printed_at"
     t.integer  "printed_copies"
+    t.boolean  "is_dirty",        default: true, null: false
     t.index ["deleted_at"], name: "index_contracts_on_deleted_at", using: :btree
   end
 
@@ -223,19 +236,21 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "updated_at",                        null: false
     t.integer  "hrd_id"
     t.datetime "pledged_date"
+    t.boolean  "is_dirty",          default: true,  null: false
     t.index ["donor_id"], name: "index_contributions_on_donor_id", using: :btree
     t.index ["hrd_id"], name: "index_contributions_on_hrd_id", using: :btree
   end
 
   create_table "currencies", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                       null: false
     t.string   "symbol"
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_currencies_on_deleted_at", using: :btree
     t.index ["name"], name: "index_currencies_on_name", unique: true, using: :btree
   end
@@ -260,6 +275,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "updated_at",                         null: false
     t.string   "delivery_id_guid"
     t.string   "received_date_ec"
+    t.boolean  "is_dirty",           default: true,  null: false
     t.index ["receiving_number"], name: "index_deliveries_on_receiving_number", unique: true, using: :btree
   end
 
@@ -279,6 +295,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.decimal  "loss_quantity"
     t.string   "loss_reason"
     t.decimal  "market_price"
+    t.boolean  "is_dirty",             default: true,  null: false
   end
 
   create_table "delivery_imports", force: :cascade do |t|
@@ -323,6 +340,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.boolean  "imported"
+    t.boolean  "is_dirty",              default: true,  null: false
   end
 
   create_table "department_permissions", force: :cascade do |t|
@@ -331,8 +349,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "is_dirty",      default: true, null: false
     t.index ["department_id"], name: "index_department_permissions_on_department_id", using: :btree
     t.index ["permission_id"], name: "index_department_permissions_on_permission_id", using: :btree
   end
@@ -343,8 +362,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "is_dirty",    default: true, null: false
   end
 
   create_table "dispatch_items", force: :cascade do |t|
@@ -362,6 +382,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.string   "guid_ref"
     t.integer  "organization_id"
     t.integer  "unit_of_measure_id"
+    t.boolean  "is_dirty",              default: true,  null: false
     t.index ["commodity_category_id"], name: "index_dispatch_items_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_dispatch_items_on_commodity_id", using: :btree
     t.index ["dispatch_id"], name: "index_dispatch_items_on_dispatch_id", using: :btree
@@ -395,6 +416,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.string   "dispatched_date_ec"
     t.integer  "dispatch_type_id"
     t.integer  "dispatch_type"
+    t.boolean  "is_dirty",                                default: true,  null: false
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
@@ -403,16 +425,17 @@ ActiveRecord::Schema.define(version: 20180314080815) do
   end
 
   create_table "donors", force: :cascade do |t|
-    t.string   "name",        null: false
-    t.string   "code",        null: false
+    t.string   "name",                       null: false
+    t.string   "code",                       null: false
     t.boolean  "responsible"
     t.boolean  "source"
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["code"], name: "index_donors_on_code", unique: true, using: :btree
     t.index ["deleted_at"], name: "index_donors_on_deleted_at", using: :btree
   end
@@ -428,18 +451,20 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.boolean  "is_dirty",    default: true,  null: false
   end
 
   create_table "fdp_contacts", force: :cascade do |t|
-    t.string   "full_name",   null: false
+    t.string   "full_name",                  null: false
     t.string   "mobile"
     t.string   "email"
     t.integer  "fdp_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_fdp_contacts_on_deleted_at", using: :btree
   end
 
@@ -457,6 +482,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.boolean  "is_dirty",          default: true,  null: false
     t.index ["commodity_id"], name: "index_fdp_operations_logs_on_commodity_id", using: :btree
     t.index ["fdp_id"], name: "index_fdp_operations_logs_on_fdp_id", using: :btree
     t.index ["location_id"], name: "index_fdp_operations_logs_on_location_id", using: :btree
@@ -465,14 +491,14 @@ ActiveRecord::Schema.define(version: 20180314080815) do
   end
 
   create_table "fdps", force: :cascade do |t|
-    t.string   "name",                                  null: false
+    t.string   "name",                                                 null: false
     t.string   "description"
     t.decimal  "lat",         precision: 15, scale: 13
     t.decimal  "lon",         precision: 15, scale: 13
     t.boolean  "active"
     t.integer  "location_id"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
@@ -480,6 +506,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.string   "woreda"
     t.string   "zone"
     t.string   "region"
+    t.boolean  "is_dirty",                              default: true, null: false
     t.index ["deleted_at"], name: "index_fdps_on_deleted_at", using: :btree
   end
 
@@ -493,70 +520,75 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "certified_by"
+    t.boolean  "is_dirty",       default: true, null: false
   end
 
   create_table "fscd_annual_plans", force: :cascade do |t|
-    t.string   "name",                    null: false
+    t.string   "name",                       null: false
     t.string   "code"
     t.string   "year"
     t.integer  "duration"
-    t.integer  "status",      default: 0, null: false
+    t.integer  "status",      default: 0,    null: false
     t.boolean  "archive"
     t.integer  "ration_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_fscd_annual_plans_on_deleted_at", using: :btree
     t.index ["year"], name: "index_fscd_annual_plans_on_year", unique: true, using: :btree
   end
 
   create_table "fscd_plan_items", force: :cascade do |t|
-    t.integer  "beneficiary_no",      null: false
+    t.integer  "beneficiary_no",                     null: false
     t.integer  "fscd_annual_plan_id"
-    t.integer  "woreda_id",           null: false
+    t.integer  "woreda_id",                          null: false
     t.integer  "starting_month"
     t.integer  "food_ratio"
     t.integer  "cash_ratio"
     t.boolean  "contingency"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",            default: true, null: false
     t.index ["deleted_at"], name: "index_fscd_plan_items_on_deleted_at", using: :btree
   end
 
   create_table "fund_sources", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                       null: false
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_fund_sources_on_deleted_at", using: :btree
     t.index ["name"], name: "index_fund_sources_on_name", unique: true, using: :btree
   end
 
   create_table "fund_types", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                       null: false
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_fund_types_on_deleted_at", using: :btree
     t.index ["name"], name: "index_fund_types_on_name", unique: true, using: :btree
   end
 
   create_table "gift_certificates", force: :cascade do |t|
-    t.string   "reference_no",                                                null: false
+    t.string   "reference_no",                                                   null: false
     t.date     "gift_date"
     t.string   "vessel"
     t.integer  "organization_id"
@@ -564,14 +596,14 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "program_id"
     t.integer  "mode_of_transport_id"
     t.string   "port_name"
-    t.integer  "status",                                          default: 0, null: false
+    t.integer  "status",                                          default: 0,    null: false
     t.string   "customs_declaration_no"
     t.string   "purchase_year"
     t.date     "expiry_date"
     t.integer  "fund_type_id"
     t.string   "account_no"
-    t.datetime "created_at",                                                  null: false
-    t.datetime "updated_at",                                                  null: false
+    t.datetime "created_at",                                                     null: false
+    t.datetime "updated_at",                                                     null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
@@ -582,6 +614,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "fund_source_id"
     t.integer  "currency_id"
     t.integer  "commodity_id"
+    t.boolean  "is_dirty",                                        default: true, null: false
     t.index ["deleted_at"], name: "index_gift_certificates_on_deleted_at", using: :btree
     t.index ["reference_no"], name: "index_gift_certificates_on_reference_no", unique: true, using: :btree
   end
@@ -618,6 +651,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.boolean  "imported"
+    t.boolean  "is_dirty",               default: true,  null: false
   end
 
   create_table "grn_imports", force: :cascade do |t|
@@ -651,6 +685,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "updated_at",                           null: false
     t.string   "commodity_source"
     t.boolean  "imported"
+    t.boolean  "is_dirty",             default: true,  null: false
   end
 
   create_table "hrd_items", force: :cascade do |t|
@@ -659,45 +694,48 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "duration"
     t.integer  "starting_month"
     t.integer  "beneficiary"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "region_id"
     t.integer  "zone_id"
+    t.boolean  "is_dirty",       default: true, null: false
     t.index ["deleted_at"], name: "index_hrd_items_on_deleted_at", using: :btree
   end
 
   create_table "hrds", force: :cascade do |t|
-    t.integer  "year_gc",                 null: false
-    t.integer  "status",      default: 0, null: false
+    t.integer  "year_gc",                    null: false
+    t.integer  "status",      default: 0,    null: false
     t.integer  "month_from"
     t.integer  "duration"
     t.integer  "season_id"
     t.integer  "ration_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "year_ec"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_hrds_on_deleted_at", using: :btree
     t.index ["year_gc", "season_id"], name: "index_hrds_on_year_gc_and_season_id", unique: true, using: :btree
   end
 
   create_table "hubs", force: :cascade do |t|
-    t.string   "name",                                  null: false
+    t.string   "name",                                                 null: false
     t.string   "description"
     t.decimal  "lat",         precision: 15, scale: 13
     t.decimal  "lon",         precision: 15, scale: 13
     t.integer  "location_id"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.string   "address"
+    t.boolean  "is_dirty",                              default: true, null: false
     t.index ["deleted_at"], name: "index_hubs_on_deleted_at", using: :btree
     t.index ["name"], name: "index_hubs_on_name", unique: true, using: :btree
   end
@@ -712,13 +750,14 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.boolean  "is_dirty",    default: true,  null: false
   end
 
   create_table "locations", force: :cascade do |t|
-    t.string   "name",           null: false
+    t.string   "name",                          null: false
     t.string   "code"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.string   "ancestry"
     t.integer  "location_type"
     t.integer  "created_by"
@@ -726,18 +765,20 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.integer  "parent_node_id"
     t.integer  "warehouse_id"
+    t.boolean  "is_dirty",       default: true, null: false
     t.index ["ancestry"], name: "index_locations_on_ancestry", using: :btree
     t.index ["deleted_at"], name: "index_locations_on_deleted_at", using: :btree
   end
 
   create_table "mode_of_transports", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                       null: false
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_mode_of_transports_on_deleted_at", using: :btree
     t.index ["name"], name: "index_mode_of_transports_on_name", unique: true, using: :btree
   end
@@ -746,7 +787,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "program_id"
     t.integer  "hrd_id"
     t.integer  "fscd_annual_plan_id"
-    t.string   "name",                            null: false
+    t.string   "name",                               null: false
     t.text     "descripiton"
     t.string   "year"
     t.integer  "round"
@@ -755,30 +796,28 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.date     "expected_end"
     t.date     "actual_start"
     t.date     "actual_end"
-    t.integer  "status",              default: 0, null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.integer  "status",              default: 0,    null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "ration_id"
     t.jsonb    "document"
+    t.boolean  "is_dirty",            default: true, null: false
     t.index ["deleted_at"], name: "index_operations_on_deleted_at", using: :btree
   end
 
-  create_table "orders", force: :cascade do |t|
-    t.json "info", null: false
-  end
-
   create_table "organizations", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                       null: false
     t.string   "long_name"
     t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_organizations_on_deleted_at", using: :btree
   end
 
@@ -791,6 +830,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.boolean  "is_dirty",    default: true,  null: false
   end
 
   create_table "payment_request_items", force: :cascade do |t|
@@ -809,9 +849,10 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                                 null: false
+    t.datetime "updated_at",                                                 null: false
     t.integer  "transport_order_id"
+    t.boolean  "is_dirty",                                    default: true, null: false
     t.index ["commodity_id"], name: "index_payment_request_items_on_commodity_id", using: :btree
     t.index ["fdp_id"], name: "index_payment_request_items_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_payment_request_items_on_hub_id", using: :btree
@@ -827,9 +868,10 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
     t.datetime "payment_date"
+    t.boolean  "is_dirty",                                  default: true, null: false
     t.index ["reference_no"], name: "index_payment_requests_on_reference_no", unique: true, using: :btree
     t.index ["transporter_id"], name: "index_payment_requests_on_transporter_id", using: :btree
   end
@@ -840,8 +882,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "is_dirty",    default: true, null: false
   end
 
   create_table "permissions", force: :cascade do |t|
@@ -850,8 +893,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "is_dirty",    default: true, null: false
   end
 
   create_table "posting_items", force: :cascade do |t|
@@ -881,6 +925,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
+    t.boolean  "is_dirty",              default: true,  null: false
   end
 
   create_table "postings", force: :cascade do |t|
@@ -896,17 +941,19 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.boolean  "is_dirty",            default: true,  null: false
   end
 
   create_table "programs", force: :cascade do |t|
-    t.string   "name",        null: false
-    t.string   "code",        null: false
+    t.string   "name",                       null: false
+    t.string   "code",                       null: false
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["code"], name: "index_programs_on_code", unique: true, using: :btree
     t.index ["deleted_at"], name: "index_programs_on_deleted_at", using: :btree
   end
@@ -922,9 +969,10 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "fdp_id"
     t.integer  "project_id"
     t.datetime "deleted_at"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.boolean  "draft"
+    t.boolean  "is_dirty",           default: true, null: false
   end
 
   create_table "projects", force: :cascade do |t|
@@ -948,6 +996,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.boolean  "archived"
     t.integer  "commodity_categories_id"
     t.integer  "program_id"
+    t.boolean  "is_dirty",                default: true,  null: false
     t.index ["commodity_categories_id"], name: "index_projects_on_commodity_categories_id", using: :btree
     t.index ["program_id"], name: "index_projects_on_program_id", using: :btree
     t.index ["project_code"], name: "index_projects_on_project_code", using: :btree
@@ -969,6 +1018,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+    t.boolean  "is_dirty",       default: true,  null: false
   end
 
   create_table "psnp_plans", force: :cascade do |t|
@@ -984,6 +1034,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.boolean  "is_dirty",    default: true,  null: false
     t.index ["year_gc"], name: "index_psnp_plans_on_year_gc", using: :btree
   end
 
@@ -993,36 +1044,39 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "destination_id"
     t.decimal  "tariff_quote"
     t.text     "remark"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",          default: true, null: false
     t.index ["deleted_at"], name: "index_quotations_on_deleted_at", using: :btree
   end
 
   create_table "ration_items", force: :cascade do |t|
-    t.decimal  "amount",             null: false
+    t.decimal  "amount",                            null: false
     t.integer  "ration_id"
     t.integer  "unit_of_measure_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "commodity_id"
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",           default: true, null: false
     t.index ["deleted_at"], name: "index_ration_items_on_deleted_at", using: :btree
   end
 
   create_table "rations", force: :cascade do |t|
-    t.string   "reference_no", null: false
+    t.string   "reference_no",                null: false
     t.string   "description"
     t.boolean  "current"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",     default: true, null: false
     t.index ["deleted_at"], name: "index_rations_on_deleted_at", using: :btree
     t.index ["reference_no"], name: "index_rations_on_reference_no", unique: true, using: :btree
   end
@@ -1042,6 +1096,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
+    t.boolean  "is_dirty",                                                  default: true,  null: false
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
@@ -1066,6 +1121,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.string   "receive_item_id",       limit: 36,                 null: false
     t.string   "project_name"
     t.string   "si_value"
+    t.boolean  "is_dirty",                         default: true,  null: false
   end
 
   create_table "receipts", force: :cascade do |t|
@@ -1103,6 +1159,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "donor_id"
     t.integer  "receipt_type"
     t.integer  "receipt_type_id"
+    t.boolean  "is_dirty",                           default: true,  null: false
     t.index ["commodity_source_id"], name: "index_receipts_on_commodity_source_id", using: :btree
     t.index ["hub_id"], name: "index_receipts_on_hub_id", using: :btree
     t.index ["program_id"], name: "index_receipts_on_program_id", using: :btree
@@ -1119,8 +1176,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "is_dirty",                default: true, null: false
     t.index ["fdp_id"], name: "index_regional_request_items_on_fdp_id", using: :btree
     t.index ["regional_request_id"], name: "index_regional_request_items_on_regional_request_id", using: :btree
   end
@@ -1136,9 +1194,10 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.boolean  "generated"
+    t.boolean  "is_dirty",         default: true, null: false
     t.index ["operation_id"], name: "index_regional_requests_on_operation_id", using: :btree
     t.index ["program_id"], name: "index_regional_requests_on_program_id", using: :btree
     t.index ["ration_id"], name: "index_regional_requests_on_ration_id", using: :btree
@@ -1147,19 +1206,20 @@ ActiveRecord::Schema.define(version: 20180314080815) do
   create_table "requisition_items", force: :cascade do |t|
     t.integer  "requisition_id"
     t.integer  "fdp_id"
-    t.integer  "beneficiary_no", null: false
-    t.decimal  "amount",         null: false
+    t.integer  "beneficiary_no",                null: false
+    t.decimal  "amount",                        null: false
     t.decimal  "contingency"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",       default: true, null: false
     t.index ["deleted_at"], name: "index_requisition_items_on_deleted_at", using: :btree
   end
 
   create_table "requisitions", force: :cascade do |t|
-    t.string   "requisition_no",             null: false
+    t.string   "requisition_no",                null: false
     t.integer  "operation_id"
     t.integer  "commodity_id"
     t.integer  "region_id"
@@ -1167,13 +1227,14 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "ration_id"
     t.string   "requested_by"
     t.date     "requested_on"
-    t.integer  "status",         default: 0, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "status",         default: 0,    null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.integer  "request_id",                 null: false
+    t.integer  "request_id",                    null: false
+    t.boolean  "is_dirty",       default: true, null: false
     t.index ["deleted_at"], name: "index_requisitions_on_deleted_at", using: :btree
     t.index ["requisition_no"], name: "index_requisitions_on_requisition_no", unique: true, using: :btree
   end
@@ -1187,21 +1248,23 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",      default: true, null: false
     t.index ["deleted_at"], name: "index_roles_on_deleted_at", using: :btree
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
   create_table "seasons", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",                       null: false
     t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "month_from"
     t.integer  "month_to"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_seasons_on_deleted_at", using: :btree
     t.index ["name"], name: "index_seasons_on_name", unique: true, using: :btree
   end
@@ -1222,29 +1285,31 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at",                                                      null: false
+    t.datetime "updated_at",                                                      null: false
     t.integer  "status"
     t.string   "reference_no"
     t.string   "requisition_no"
+    t.boolean  "is_dirty",                                         default: true, null: false
     t.index ["commodity_id"], name: "index_stock_movements_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_stock_movements_on_project_id", using: :btree
     t.index ["unit_of_measure_id"], name: "index_stock_movements_on_unit_of_measure_id", using: :btree
   end
 
   create_table "stock_take_items", force: :cascade do |t|
-    t.integer  "commodity_id",          null: false
-    t.integer  "commodity_category_id", null: false
-    t.decimal  "theoretical_amount",    null: false
-    t.decimal  "actual_amount",         null: false
-    t.integer  "stock_take_id",         null: false
+    t.integer  "commodity_id",                         null: false
+    t.integer  "commodity_category_id",                null: false
+    t.decimal  "theoretical_amount",                   null: false
+    t.decimal  "actual_amount",                        null: false
+    t.integer  "stock_take_id",                        null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.integer  "donor_id",              null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.integer  "donor_id",                             null: false
     t.integer  "project_id"
+    t.boolean  "is_dirty",              default: true, null: false
   end
 
   create_table "stock_takes", force: :cascade do |t|
@@ -1260,18 +1325,20 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "updated_at",                   null: false
     t.boolean  "draft",         default: true
     t.string   "title",                        null: false
+    t.boolean  "is_dirty",      default: true, null: false
   end
 
   create_table "stores", force: :cascade do |t|
-    t.string   "name",              null: false
+    t.string   "name",                             null: false
     t.boolean  "temporary"
     t.integer  "warehouse_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.string   "store_keeper_name"
+    t.boolean  "is_dirty",          default: true, null: false
     t.index ["deleted_at"], name: "index_stores_on_deleted_at", using: :btree
     t.index ["name", "warehouse_id"], name: "index_stores_on_name_and_warehouse_id", unique: true, using: :btree
   end
@@ -1284,6 +1351,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.boolean  "is_dirty",    default: true,  null: false
   end
 
   create_table "transport_order_items", force: :cascade do |t|
@@ -1295,12 +1363,13 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "unit_of_measure_id"
     t.decimal  "tariff"
     t.string   "requisition_no"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "transport_requisition_item_id"
+    t.boolean  "is_dirty",                      default: true, null: false
     t.index ["deleted_at"], name: "index_transport_order_items_on_deleted_at", using: :btree
   end
 
@@ -1317,13 +1386,14 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.date     "end_date"
     t.string   "performance_bond_receipt"
     t.decimal  "performance_bond_amount"
-    t.integer  "printed_copies",           default: 0, null: false
-    t.integer  "status",                   default: 0, null: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.integer  "printed_copies",           default: 0,    null: false
+    t.integer  "status",                   default: 0,    null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",                 default: true, null: false
     t.index ["deleted_at"], name: "index_transport_orders_on_deleted_at", using: :btree
   end
 
@@ -1334,11 +1404,12 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "commodity_id"
     t.decimal  "quantity"
     t.boolean  "has_transport_order"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",                 default: true, null: false
     t.index ["deleted_at"], name: "index_transport_requisition_items_on_deleted_at", using: :btree
   end
 
@@ -1347,8 +1418,8 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "operation_id"
     t.date     "created_date"
     t.text     "description"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.integer  "created_by_id"
     t.integer  "modified_by"
     t.datetime "deleted_at"
@@ -1356,6 +1427,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "certified_by_id"
     t.string   "certified_date"
     t.integer  "status"
+    t.boolean  "is_dirty",         default: true, null: false
     t.index ["deleted_at"], name: "index_transport_requisitions_on_deleted_at", using: :btree
   end
 
@@ -1369,11 +1441,12 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.string   "phone"
     t.string   "mobile"
     t.string   "email"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",       default: true, null: false
     t.index ["deleted_at"], name: "index_transporter_addresses_on_deleted_at", using: :btree
   end
 
@@ -1392,14 +1465,15 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                                 null: false
+    t.datetime "updated_at",                                                 null: false
+    t.boolean  "is_dirty",                                    default: true, null: false
     t.index ["payment_request_id"], name: "index_transporter_payments_on_payment_request_id", using: :btree
   end
 
   create_table "transporters", force: :cascade do |t|
-    t.string   "name",                          null: false
-    t.string   "code",                          null: false
+    t.string   "name",                             null: false
+    t.string   "code",                             null: false
     t.integer  "vehicle_count"
     t.decimal  "lift_capacity"
     t.decimal  "capital"
@@ -1407,39 +1481,42 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.string   "contact"
     t.string   "contact_phone"
     t.text     "remark"
-    t.integer  "status",            default: 0, null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.integer  "status",            default: 0,    null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "ownership_type_id"
+    t.boolean  "is_dirty",          default: true, null: false
     t.index ["deleted_at"], name: "index_transporters_on_deleted_at", using: :btree
   end
 
   create_table "unit_of_measures", force: :cascade do |t|
-    t.string   "name",                                                null: false
+    t.string   "name",                                                   null: false
     t.string   "description"
-    t.string   "code",                                                null: false
-    t.integer  "uom_type",                                default: 0, null: false
-    t.decimal  "ratio",           precision: 8, scale: 2,             null: false
+    t.string   "code",                                                   null: false
+    t.integer  "uom_type",                                default: 0,    null: false
+    t.decimal  "ratio",           precision: 8, scale: 2,                null: false
     t.integer  "uom_category_id"
-    t.datetime "created_at",                                          null: false
-    t.datetime "updated_at",                                          null: false
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",                                default: true, null: false
     t.index ["code"], name: "index_unit_of_measures_on_code", unique: true, using: :btree
     t.index ["deleted_at"], name: "index_unit_of_measures_on_deleted_at", using: :btree
   end
 
   create_table "uom_categories", force: :cascade do |t|
-    t.string   "name",        null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.string   "name",                       null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_uom_categories_on_deleted_at", using: :btree
   end
 
@@ -1452,6 +1529,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.datetime "deleted_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.boolean  "is_dirty",    default: true,  null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -1486,6 +1564,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "location_id"
     t.integer  "hub_id"
     t.integer  "department_id"
+    t.boolean  "is_dirty",               default: true, null: false
     t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
     t.index ["department_id"], name: "index_users_on_department_id", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -1500,8 +1579,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "is_dirty",      default: true, null: false
     t.index ["department_id"], name: "index_users_departments_on_department_id", using: :btree
     t.index ["user_id"], name: "index_users_departments_on_user_id", using: :btree
   end
@@ -1512,8 +1592,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "is_dirty",      default: true, null: false
     t.index ["permission_id"], name: "index_users_permissions_on_permission_id", using: :btree
     t.index ["user_id"], name: "index_users_permissions_on_user_id", using: :btree
   end
@@ -1524,6 +1605,7 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "user_id"
     t.integer  "role_id"
     t.datetime "deleted_at"
+    t.boolean  "is_dirty",    default: true, null: false
     t.index ["deleted_at"], name: "index_users_roles_on_deleted_at", using: :btree
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
@@ -1540,8 +1622,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "is_dirty",                default: true, null: false
   end
 
   create_table "warehouse_allocations", force: :cascade do |t|
@@ -1551,8 +1634,9 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "is_dirty",     default: true, null: false
   end
 
   create_table "warehouse_selections", force: :cascade do |t|
@@ -1564,24 +1648,26 @@ ActiveRecord::Schema.define(version: 20180314080815) do
     t.integer  "modified_by"
     t.boolean  "deleted"
     t.datetime "deleted_at"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.boolean  "is_dirty",            default: true, null: false
   end
 
   create_table "warehouses", force: :cascade do |t|
-    t.string   "name",                                      null: false
+    t.string   "name",                                                     null: false
     t.string   "description"
     t.integer  "hub_id"
     t.integer  "location_id"
     t.integer  "organization_id"
     t.decimal  "lat",             precision: 15, scale: 13
     t.decimal  "lon",             precision: 15, scale: 13
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.string   "address"
+    t.boolean  "is_dirty",                                  default: true, null: false
     t.index ["deleted_at"], name: "index_warehouses_on_deleted_at", using: :btree
   end
 
