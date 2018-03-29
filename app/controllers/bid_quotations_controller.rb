@@ -4,11 +4,7 @@ class BidQuotationsController < ApplicationController
   # GET /bid_quotations
   # GET /bid_quotations.json
   def index
-    if params[:transporter].present?
-      @bid_quotations_details = BidQuotationDetail.includes(:bid_quotation).where(:'bid_quotations.transporter_id' => params[:transporter])
-      return
-    end
-
+    
     if params[:transporter].present? && params[:bid].present?
       filter_map = {:'bid_quotations.transporter_id' => params[:transporter], :'bid_quotations.bid_id' => params[:bid]}
       @bid_quotations_details =  BidQuotationDetail.includes(:bid_quotation).where( filter_map )
@@ -49,7 +45,7 @@ class BidQuotationsController < ApplicationController
         if @bid_quotation.save
             
           BidQuotationDetail.new(bid_quotation: @bid_quotation, location_id: @bid_quotation_detail_params[:location_id],
-          warehouse_id: @bid_quotation_detail_params[:warehouse_id], tariff: @bid_quotation_detail_params[:tariff_qty]).save
+          warehouse_id: @bid_quotation_detail_params[:warehouse_id], tariff: @bid_quotation_detail_params[:tariff]).save
 
           format.html { redirect_to  request.referrer, notice: 'Bid Quotation was successfully created.' }
           format.json { render json: {}, status: 200 }

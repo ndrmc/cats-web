@@ -24,7 +24,9 @@ class RequisitionPolicy < ApplicationPolicy
     @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
   end
 
-  
+  def export_requisition_to_excel?
+    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+  end
 
  
   def update?

@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-
- 
-
  
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
@@ -49,6 +46,7 @@ Rails.application.routes.draw do
    get '/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
    delete '/bids/remove_bid_quotation/:id', to: 'bids#remove_bid_quotation'
    post '/bids/:id/generate_winners', to: 'bids#generate_winners'
+   post '/bids/:id/regenerate_bid', to: 'bids#regenerate_bid'
    get 'bids/view_bid_winners/:id', to: 'bids#view_bid_winners'
    get 'bids/contracts/:id', to: 'bids#contracts'
    get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
@@ -68,7 +66,7 @@ Rails.application.routes.draw do
   get 'transporters/transporter_verify_detail', to: 'transporters#transporter_verify_detail'
   post '/transporters/processPayment/:id', to: 'transporters#processPayment'
   get '/transporters/payment_request', to: 'transporters#payment_request'
-  get '/transporters/payment__request_items/:id', to: 'transporters#payment__request_items'
+  get '/transporters/payment_request_items/:id', to: 'transporters#payment_request_items'
   get '/transporters/dispatches_list_per_fdp', to: 'transporters#dispatches_list_per_fdp'
   get '/transporters/print_payment_request', to: 'transporters#print_payment_request'
   get 'transporters/print_payment_request_letter', to: 'transporters#print_payment_request_letter'
@@ -184,6 +182,7 @@ Rails.application.routes.draw do
   get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
   get '/requisitions/summary/:request_id', to: 'requisitions#summary'
+  get '/requisitions/export_requisition_to_excel/:id', to: 'requisitions#export_requisition_to_excel'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
   get '/requisitions/print', to: 'requisitions#print'
   get '/requisitions/print_rrd', to: 'requisitions#print_rrd'
@@ -249,4 +248,5 @@ Rails.application.routes.draw do
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/queries"
   resources :queries
 end
+
 end

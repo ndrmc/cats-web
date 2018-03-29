@@ -48,12 +48,6 @@ class PermissionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to permissions_url
   end
-
-  test "permision name must be unique" do
-    duplicated_permission = @permission.dup
-    @permission.save
-    assert_not duplicated_permission.valid?
-  end
   
   test "permission name must not be blank" do
     new_permission = Permission.new(name: ' ')
