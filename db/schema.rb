@@ -763,12 +763,7 @@ ActiveRecord::Schema.define(version: 20180326111754) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "ration_id"
-    t.jsonb    "document"
     t.index ["deleted_at"], name: "index_operations_on_deleted_at", using: :btree
-  end
-
-  create_table "orders", force: :cascade do |t|
-    t.json "info", null: false
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -855,6 +850,7 @@ ActiveRecord::Schema.define(version: 20180326111754) do
     t.datetime "deleted_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "user_type"
   end
 
   create_table "posting_items", force: :cascade do |t|

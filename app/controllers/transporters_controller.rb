@@ -78,7 +78,8 @@ end
 
 def transporter_verify_detail
   @transport_order =[]
-
+  @transporter = Transporter.find(params[:transporter_id])
+  @order_no = TransportOrder.find(params[:order_id])
    @requisitions = TransportOrderItem.joins(transport_order: [:operation])
     .where(:'transport_orders.id' => params[:order_id], 
     :'transport_orders.transporter_id' => params[:transporter_id], 
@@ -86,8 +87,7 @@ def transporter_verify_detail
      @dispatch_summary = Transporter.fdp_verification(params[:transporter_id], params[:operation_id], @requisitions)  
      @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) ||
      hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:verified])  ||  hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:reverted])  }
-     @transporter = Transporter.find(params[:transporter_id])
-     @order_no = TransportOrder.find(params[:order_id])
+     
      if  $transport_orders.present?
       $transport_orders.each do | to |
        @transport_order << to if to['id'].to_i == params[:order_id].to_i
@@ -223,17 +223,36 @@ def processPayment
   
 end
 def print_payment_request
-      payment_request_id = params[:payment_request_id]
-      @payment_requested =  PaymentRequestItem.includes(:payment_request).where(:'payment_requests.id' => payment_request_id, :'payment_requests.status' => :open)
-      @received = @payment_requested.sum(:received)
-      @dispatched = @payment_requested.sum(:dispatched )
-      @freight_charge = @payment_requested.sum(:freightCharge)
-      @loss_quantity = @payment_requested.sum(:loss)
-      @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
+      transporter_id = params[:transporter_id]
+      @received = 0
+      @dispatched = 0
+      @loss_quantity = 0
+      @loss_charge = 0
+      @payment_requested = []
+      PaymentRequestItem.includes(:payment_request, :fdp, :hub).where(:'payment_requests.id' => payment_request_id, :'payment_requests.status' => :open).each do |pri|
+        target_unit = UnitOfMeasure.find_by(name: "Quintal")
+        current_unit = UnitOfMeasure.find(pri&.unit_of_measure_id)
+        received_in_quintal = target_unit.convert_to(current_unit.name, pri&.received.to_f)
+        dispatched_in_quintal = target_unit.convert_to(current_unit.name, pri&.dispatched.to_f)
+        shortage_in_quintal = target_unit.convert_to(current_unit.name, pri&.loss.to_f)
+        shortage_in_birr = shortage_in_quintal * pri.market_price
+
+        @received += received_in_quintal
+        @dispatched += dispatched_in_quintal
+        @loss_quantity += shortage_in_quintal
+        @loss_charge += shortage_in_birr
+
+        ltcd = "09/2010"
+        @payment_requested << { requisition_no: pri&.requisition_no, reference_no: pri&.payment_request&.reference_no, gin_no: pri&.gin_no, grn_no: pri&.grn_no, ltcd: ltcd, commodity: pri&.commodity&.name, source: pri&.hub&.name, destination: pri&.fdp&.name, received_qty: received_in_quintal, tariff: pri&.tariff, shortage_qty: shortage_in_quintal, shortage_birr: shortage_in_birr, freight_charge: pri&.freightCharge }
+      end
+      @payment_requested_obj = PaymentRequestItem.includes(:payment_request, :fdp, :hub).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open)
+      @freight_charge = @payment_requested_obj.sum(:freightCharge)
+      @transporter = Transporter.find_by(id: @payment_requested_obj.first&.payment_request&.transporter_id)&.name
+
        respond_to do |format|
             format.html
             format.pdf do
-                pdf = PaymentRequestPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name)
+                pdf = PaymentRequestPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @loss_charge)
                 send_data pdf.render, filename: "payment_request.pdf",
                 type: "application/pdf",
                 disposition: "inline"
@@ -339,43 +358,48 @@ end
 def update_status_all
   @transporter_id = params[:transporter_id]
   @status_type = params[:type]
-  @order_no =params[:order_no]
+  @order_no = params[:order_no]
+  @transport_order = TransportOrder.find(params[:order_no])
   @count = 0
+  @requisitions = TransportOrderItem.joins(transport_order: [:operation])
+  .where(:'transport_orders.id' => @transport_order.id, 
+  :'transport_orders.transporter_id' => params[:transporter_id], 
+  :'transport_orders.operation_id' => @transport_order.operation_id).pluck(:requisition_no)
  if params[:type].present?
   if @status_type == 'verify'
-    deliveries_with_status_verified =  Delivery.where('deliveries.transporter_id = ?', @transporter_id).where('status = ? or status = ?',Delivery.statuses[:draft], Delivery.statuses[:reverted])
-      if deliveries_with_status_verified.present?
-        deliveries_with_status_verified.each do |delivery|
-          delivery.delivery_details.each do |item|
-                if item.sent_quantity.to_f == (item.received_quantity.to_f + item.loss_quantity.to_f)
-                      item.delivery.update(:'status' => Delivery.statuses[:verified])
+        deliveries_with_status_verified =  Delivery.where('deliveries.transporter_id = ?', @transporter_id).where('deliveries.requisition_number IN (?)', @requisitions).where('status = ? or status = ?',Delivery.statuses[:draft], Delivery.statuses[:reverted])
+                if deliveries_with_status_verified.present?
+                  deliveries_with_status_verified.each do |delivery|
+                    delivery.delivery_details.each do |item|
+                          if item.sent_quantity.to_f == (item.received_quantity.to_f + item.loss_quantity.to_f)
+                                item.delivery.update(:'status' => Delivery.statuses[:verified])
+                          else
+                                @count = @count + 1
+                          end 
+                      end
+                end
+                if @count > 0
+                        
+                             respond_to do |format|
+                             flash[:alert] =  @count.to_s + "  payment request(s) are not updated"
+                             flash[:notice] =  "Payment request has been verified"
+                             format.html {  redirect_to request.referrer }
+                             end
+                      else
+                             respond_to do |format|
+                             flash[:notice] =  "Payment request has been verified"
+                             format.html {  redirect_to request.referrer }
+                             end        
+                      end
+                        
                 else
-                      @count = @count + 1
-                end 
-            end
-      end
-      if @count > 0
-              
                     respond_to do |format|
-                    flash[:alert] =  @count.to_s + "  payment request(s) are not updated"
-                    flash[:notice] =  "Payment request has been verified"
+                    flash[:alert] = "There are no deliveries to be verified."
                     format.html {  redirect_to request.referrer }
-                    end
-            else
-                    respond_to do |format|
-                    flash[:notice] =  "Payment request has been verified"
-                    format.html {  redirect_to request.referrer }
-                    end        
-            end
-              
-      else
-          respond_to do |format|
-          flash[:alert] = "There are no deliveries to be verified."
-          format.html {  redirect_to request.referrer }
-      end
-    end
+                end
+        end
   elsif @status_type == 'revert'
-        deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified)
+        deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified).where('deliveries.requisition_number IN (?)', @requisitions)
         if deliveries_with_status_verified.present?
                         if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:draft]))  
                                respond_to do |format|
