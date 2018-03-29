@@ -46,6 +46,8 @@ GEM
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
+    apipie-rails (0.5.7)
+      rails (>= 4.1)
     arel (7.1.4)
     autoprefixer-rails (6.7.7)
       execjs
@@ -300,6 +302,7 @@ PLATFORMS
 DEPENDENCIES
   ancestry
   annotate
+  apipie-rails
   axlsx (= 2.1.0.pre)
   axlsx_rails
   bcrypt

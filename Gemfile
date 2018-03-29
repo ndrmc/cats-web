@@ -126,3 +126,4 @@ gem 'prawn-print'
 gem 'humanize'
 gem 'best_in_place'
 
+gem 'apipie-rails'
