@@ -10,7 +10,7 @@ class PaymentRequestPdf  < PdfReport
         header "Payment Request for transporter: " + "#{@transporter}"
         
         payment_request
-        
+                
         footer "Commodity Allocation and Tracking System"
     end
 
