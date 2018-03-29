@@ -1613,7 +1613,6 @@ ActiveRecord::Schema.define(version: 20180328132359) do
   add_foreign_key "stock_movements", "commodities"
   add_foreign_key "stock_movements", "projects"
   add_foreign_key "stock_movements", "unit_of_measures"
-  add_foreign_key "stock_movements", "unit_of_measures"
   add_foreign_key "transporter_payments", "payment_requests"
   add_foreign_key "users_departments", "departments"
   add_foreign_key "users_departments", "users"
