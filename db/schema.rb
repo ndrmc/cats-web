@@ -395,7 +395,6 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.string   "dispatched_date_ec"
     t.integer  "dispatch_type_id"
     t.integer  "dispatch_type"
-    t.integer  "store_id"
     t.index ["fdp_id"], name: "index_dispatches_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_dispatches_on_hub_id", using: :btree
     t.index ["operation_id"], name: "index_dispatches_on_operation_id", using: :btree
@@ -763,6 +762,7 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "ration_id"
+    t.jsonb    "document"
     t.index ["deleted_at"], name: "index_operations_on_deleted_at", using: :btree
   end
 
@@ -808,8 +808,6 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
     t.integer  "transport_order_id"
-    t.integer  "unit_of_measure_id"
-    t.decimal  "market_price"
     t.index ["commodity_id"], name: "index_payment_request_items_on_commodity_id", using: :btree
     t.index ["fdp_id"], name: "index_payment_request_items_on_fdp_id", using: :btree
     t.index ["hub_id"], name: "index_payment_request_items_on_hub_id", using: :btree

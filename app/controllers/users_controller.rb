@@ -12,8 +12,9 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @all_departments = Department.where(id: @user.users_departments.pluck(:department_id))
-    @all_permissions = Permission.where(id: @user.users_permissions.pluck(:permission_id))
+    @user = User.find(params[:id])
+    @all_permissions = Permission.all
+    @unique_permissions = Permission.pluck(:name).uniq!
   end
 
   # GET /users/new
@@ -64,6 +65,7 @@ class UsersController < ApplicationController
   def user_permissions
     @user = User.find(params[:user_id])
     @all_permissions = Permission.all
+    @unique_permissions = Permission.pluck(:name).uniq!
   end
 
 
@@ -115,16 +117,21 @@ class UsersController < ApplicationController
 
   def updatePermissions
     puts @user.id
-    new_permissions = params.require(:permissions)
-    UsersPermission.where(user_id: @user.id).destroy_all
 
-    new_permissions.each do |permission|
-      _permission = UsersPermission.new ({
-                                           permission_id: permission.to_i,
-                                           user_id: @user.id
-      })
-      _permission.modified_by = current_user.id
-      _permission.save
+    if(params[:permissions].present?)
+      new_permissions = params.require(:permissions)
+      UsersPermission.where(user_id: @user.id).destroy_all
+
+      new_permissions.each do |permission|
+        _permission = UsersPermission.new ({
+                                            permission_id: permission.to_i,
+                                            user_id: @user.id
+        })
+        _permission.modified_by = current_user.id
+        _permission.save
+      end
+    else
+      UsersPermission.where(user_id: @user.id).destroy_all
     end
 
     redirect_to @user, success: 'User profile was successfully updated.'
