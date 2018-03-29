@@ -46,6 +46,7 @@ Rails.application.routes.draw do
    get '/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
    delete '/bids/remove_bid_quotation/:id', to: 'bids#remove_bid_quotation'
    post '/bids/:id/generate_winners', to: 'bids#generate_winners'
+   post '/bids/:id/regenerate_bid', to: 'bids#regenerate_bid'
    get 'bids/view_bid_winners/:id', to: 'bids#view_bid_winners'
    get 'bids/contracts/:id', to: 'bids#contracts'
    get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
