@@ -200,38 +200,141 @@ end
 
 if Permission.count == 0 
   
-  Permission.create(name: 'HRD', description: '')
-  Permission.create(name: 'Gift Certificate', description: '')
-  Permission.create(name: 'Receipts', description: '')
-  Permission.create(name: 'Receipt Plan', description: '')
-  Permission.create(name: 'Bid Plan', description: '')
-  Permission.create(name: 'Project', description: '')
-  Permission.create(name: 'Ration', description: '')
+  Permission.create(name: 'HRD', user_type: 0, description: '')
+  Permission.create(name: 'HRD', user_type: 1, description: '')
+  Permission.create(name: 'HRD', user_type: 2, description: '')
+  Permission.create(name: 'HRD', user_type: 3, description: '')
 
-  Permission.create(name: 'Dispatch', description: '')
-  Permission.create(name: 'Need Assessment', description: '')
-  Permission.create(name: 'Commodity', description: '')
-  Permission.create(name: 'Warehouses', description: '')
-  Permission.create(name: 'PSNP Annual Plan', description: '')
+  Permission.create(name: 'Gift Certificate', user_type: 0, description: '')
+  Permission.create(name: 'Gift Certificate', user_type: 1, description: '')
+  Permission.create(name: 'Gift Certificate', user_type: 2, description: '')
+  Permission.create(name: 'Gift Certificate', user_type: 3, description: '')
 
-  Permission.create(name: 'Delivery', description: '')
-  Permission.create(name: 'Transfers', description: '')
-  Permission.create(name: 'Donor', description: '')
-  Permission.create(name: 'Organizations', description: '')
-  Permission.create(name: 'Unit of Measurements', description: '')
+  Permission.create(name: 'Receipts', user_type: 0, description: '')
+  Permission.create(name: 'Receipts', user_type: 1, description: '')
+  Permission.create(name: 'Receipts', user_type: 2, description: '')
+  Permission.create(name: 'Receipts', user_type: 3, description: '')
+
+  Permission.create(name: 'Receipt Plan', user_type: 0, description: '')
+  Permission.create(name: 'Receipt Plan', user_type: 1, description: '')
+  Permission.create(name: 'Receipt Plan', user_type: 2, description: '')
+  Permission.create(name: 'Receipt Plan', user_type: 3, description: '')
+
+  Permission.create(name: 'Bid Plan', user_type: 0, description: '')
+  Permission.create(name: 'Bid Plan', user_type: 1, description: '')
+  Permission.create(name: 'Bid Plan', user_type: 2, description: '')
+  Permission.create(name: 'Bid Plan', user_type: 3, description: '')
+
+  Permission.create(name: 'Project', user_type: 0, description: '')
+  Permission.create(name: 'Project', user_type: 1, description: '')
+  Permission.create(name: 'Project', user_type: 2, description: '')
+  Permission.create(name: 'Project', user_type: 3, description: '')
+
+  Permission.create(name: 'Ration', user_type: 0, description: '')
+  Permission.create(name: 'Ration', user_type: 1, description: '')
+  Permission.create(name: 'Ration', user_type: 2, description: '')
+  Permission.create(name: 'Ration', user_type: 3, description: '')
+
+  Permission.create(name: 'Dispatch', user_type: 0, description: '')
+  Permission.create(name: 'Dispatch', user_type: 1, description: '')
+  Permission.create(name: 'Dispatch', user_type: 2, description: '')
+  Permission.create(name: 'Dispatch', user_type: 3, description: '')
+
+  Permission.create(name: 'Need Assessment', user_type: 0, description: '')
+  Permission.create(name: 'Need Assessment', user_type: 1, description: '')
+  Permission.create(name: 'Need Assessment', user_type: 2, description: '')
+  Permission.create(name: 'Need Assessment', user_type: 3, description: '')
+
+  Permission.create(name: 'Commodity', user_type: 0, description: '')
+  Permission.create(name: 'Commodity', user_type: 1, description: '')
+  Permission.create(name: 'Commodity', user_type: 2, description: '')
+  Permission.create(name: 'Commodity', user_type: 3, description: '')
+
+  Permission.create(name: 'Warehouses', user_type: 0, description: '')
+  Permission.create(name: 'Warehouses', user_type: 1, description: '')
+  Permission.create(name: 'Warehouses', user_type: 2, description: '')
+  Permission.create(name: 'Warehouses', user_type: 3, description: '')
+
+  Permission.create(name: 'PSNP Annual Plan', user_type: 0, description: '')
+  Permission.create(name: 'PSNP Annual Plan', user_type: 1, description: '')
+  Permission.create(name: 'PSNP Annual Plan', user_type: 2, description: '')
+  Permission.create(name: 'PSNP Annual Plan', user_type: 3, description: '')
+
+  Permission.create(name: 'Delivery', user_type: 0, description: '')
+  Permission.create(name: 'Delivery', user_type: 1, description: '')
+  Permission.create(name: 'Delivery', user_type: 2, description: '')
+  Permission.create(name: 'Delivery', user_type: 3, description: '')
+
+  Permission.create(name: 'Transfers', user_type: 0, description: '')
+  Permission.create(name: 'Transfers', user_type: 1, description: '')
+  Permission.create(name: 'Transfers', user_type: 2, description: '')
+  Permission.create(name: 'Transfers', user_type: 3, description: '')
+
+  Permission.create(name: 'Donor', user_type: 0, description: '')
+  Permission.create(name: 'Donor', user_type: 1, description: '')
+  Permission.create(name: 'Donor', user_type: 2, description: '')
+  Permission.create(name: 'Donor', user_type: 3, description: '')
+
+  Permission.create(name: 'Organizations', user_type: 0, description: '')
+  Permission.create(name: 'Organizations', user_type: 1, description: '')
+  Permission.create(name: 'Organizations', user_type: 2, description: '')
+  Permission.create(name: 'Organizations', user_type: 3, description: '')
+
+  Permission.create(name: 'Unit of Measurements', user_type: 0, description: '')
+  Permission.create(name: 'Unit of Measurements', user_type: 1, description: '')
+  Permission.create(name: 'Unit of Measurements', user_type: 2, description: '')
+  Permission.create(name: 'Unit of Measurements', user_type: 3, description: '')
  
-  Permission.create(name: 'Operation', description: '')
-  Permission.create(name: 'Currencies', description: '')
-  Permission.create(name: 'FDP', description: '')
-  Permission.create(name: 'locations', description: '')
-  Permission.create(name: 'Programs', description: '')
+  Permission.create(name: 'Operation', user_type: 0, description: '')
+  Permission.create(name: 'Operation', user_type: 1, description: '')
+  Permission.create(name: 'Operation', user_type: 2, description: '')
+  Permission.create(name: 'Operation', user_type: 3, description: '')
 
-  Permission.create(name: 'Regional Requests', description: '')
-  Permission.create(name: 'Requisition', description: '')
-  Permission.create(name: 'Settings', description: '')
-  Permission.create(name: 'Transporters', description: '')
-  Permission.create(name: 'StockTakes', description: '')
+  Permission.create(name: 'Currencies', user_type: 0, description: '')
+  Permission.create(name: 'Currencies', user_type: 1, description: '')
+  Permission.create(name: 'Currencies', user_type: 2, description: '')
+  Permission.create(name: 'Currencies', user_type: 3, description: '')
 
+  Permission.create(name: 'FDP', user_type: 0, description: '')
+  Permission.create(name: 'FDP', user_type: 1, description: '')
+  Permission.create(name: 'FDP', user_type: 2, description: '')
+  Permission.create(name: 'FDP', user_type: 3, description: '')
+
+  Permission.create(name: 'locations', user_type: 0, description: '')
+  Permission.create(name: 'locations', user_type: 1, description: '')
+  Permission.create(name: 'locations', user_type: 2, description: '')
+  Permission.create(name: 'locations', user_type: 3, description: '')
+
+  Permission.create(name: 'Programs', user_type: 0, description: '')
+  Permission.create(name: 'Programs', user_type: 1, description: '')
+  Permission.create(name: 'Programs', user_type: 2, description: '')
+  Permission.create(name: 'Programs', user_type: 3, description: '')
+
+  Permission.create(name: 'Regional Requests', user_type: 0, description: '')
+  Permission.create(name: 'Regional Requests', user_type: 1, description: '')
+  Permission.create(name: 'Regional Requests', user_type: 2, description: '')
+  Permission.create(name: 'Regional Requests', user_type: 3, description: '')
+
+  Permission.create(name: 'Requisition', user_type: 0, description: '')
+  Permission.create(name: 'Requisition', user_type: 1, description: '')
+  Permission.create(name: 'Requisition', user_type: 2, description: '')
+  Permission.create(name: 'Requisition', user_type: 3, description: '')
+
+  Permission.create(name: 'Settings', user_type: 0, description: '')
+  Permission.create(name: 'Settings', user_type: 1, description: '')
+  Permission.create(name: 'Settings', user_type: 2, description: '')
+  Permission.create(name: 'Settings', user_type: 3, description: '')
+
+  Permission.create(name: 'Transporters', user_type: 0, description: '')
+  Permission.create(name: 'Transporters', user_type: 1, description: '')
+  Permission.create(name: 'Transporters', user_type: 2, description: '')
+  Permission.create(name: 'Transporters', user_type: 3, description: '')
+
+  Permission.create(name: 'StockTakes', user_type: 0, description: '')
+  Permission.create(name: 'StockTakes', user_type: 1, description: '')
+  Permission.create(name: 'StockTakes', user_type: 2, description: '')
+  Permission.create(name: 'StockTakes', user_type: 3, description: '')
+  
   puts "Permissions created"
 
 end
