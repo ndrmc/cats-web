@@ -19,31 +19,44 @@
 # below each fixture, per the syntax in the comments below
 #
 permission1:
+    id: 1
     name: 'permission 1'
 #
 permission2:
+    id: 2
     name: 'permission 2'
 Dispatch:
+    id: 3
     name: 'Dispatch'
 project:
+    id: 4
     name: 'Project'
 Requisition:
+    id: 5
     name: 'Requisition'
 delivery:
+    id: 6
     name: 'Delivery'
 hrd:
+    id: 7
     name: HRD
 gift_certificate:
+    id: 8
     name: 'Gift Certificate'
 psnp_plan:
+    id: 9
     name: 'PSNP Annual Plan'
 ration:
+    id: 10
     name: Ration
 Receipts: 
+    id: 11
     name: 'Receipts'
 Location:
+    id: 12
     name: 'locations'
 StockTake:
+    id: 13
     name: 'StockTake'
 
 

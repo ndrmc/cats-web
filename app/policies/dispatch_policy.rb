@@ -1,45 +1,53 @@
 class DispatchPolicy < ApplicationPolicy
 
-   
-
     def index?
-       @current_user.has_permission('Dispatch') 
+       permission = Permission.where(name: 'Dispatch', user_type: :guest).first
+       @current_user.has_permission(permission.id)
     end
 
     def basic?
-        @current_user.has_permission('Dispatch') 
+        permission = Permission.where(name: 'Dispatch', user_type: :guest).first
+        @current_user.has_permission(permission.id)
     end
 
     def new?
-       @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Dispatch', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def create?
-         @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Dispatch', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def edit?
-         @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Dispatch', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def update?
-        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Dispatch', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def dispatch_report?
-        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Dispatch', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def dispatch_report_generate?
-        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Dispatch', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
     
     def check_stock?
-        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Dispatch', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def validate_quantity?
-        @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Dispatch', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 end
 

@@ -4,64 +4,78 @@ class RequisitionPolicy < ApplicationPolicy
 
 
   def index?
-    @current_user.has_permission('Requisition')
+    permission = Permission.where(name: 'Requisition', user_type: :guest).first
+    @current_user.has_permission(permission.id)
   end
 
   def print?
-    @current_user.has_permission('Requisition')
+    permission = Permission.where(name: 'Requisition', user_type: :guest).first
+    @current_user.has_permission(permission.id)
   end
 
   def print_rrd?
-    @current_user.has_permission('Requisition')
+    permission = Permission.where(name: 'Requisition', user_type: :guest).first
+    @current_user.has_permission(permission.id)
   end
 
   def new?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
 
   def edit?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   def export_requisition_to_excel?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
  
   def update?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   
   def destroy?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
 
   def get_requisiton_by_number?
-      @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
 
   def prepare?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   def generate?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   def add_requisition?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   def summary?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['guest','admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :guest).first
+    @current_user.has_permission(permission.id)
   end
 
   def delete_regional_requests_fdps_with_zero_ben_no?
-    @current_user.has_permission('Requisition') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
 end
