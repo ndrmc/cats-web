@@ -252,6 +252,7 @@ Rails.application.routes.draw do
   namespace :api do    
     resources :operations
     resources :accounts
+    resources :adjustments
   end
 
 end
