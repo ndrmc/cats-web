@@ -1,16 +1,18 @@
 class PaymentRequestPdf  < PdfReport
-        def initialize(payment_requested, dispatched, received,freight_charge,transporter, current_user)
-        super(top_margin: 50)
+        def initialize(payment_requested, dispatched, received,freight_charge,transporter, current_user, loss_quantity, loss_charge)
+        super top_margin: 50, :page_size => "A4", :page_layout => :landscape
         @payment_requested = payment_requested
         @dispatched = dispatched
         @received = received
         @freight_charge = freight_charge
         @transporter = transporter
         @user =  current_user
+        @loss_quantity = loss_quantity
+        @loss_charge = loss_charge
         header "Payment Request for transporter: " + "#{@transporter}"
         
         payment_request
-        
+                
         footer "Commodity Allocation and Tracking System"
     end
 
@@ -23,15 +25,17 @@ class PaymentRequestPdf  < PdfReport
         self.header = true
         end
         move_down  10
-        text "Total allocated: " 
+        # text "Total allocated: " 
         move_down 1
-        text "Total dispatched: " + @dispatched.to_s
+        text "Total dispatched: " + @dispatched.to_s + " QTL"
         move_down 1
-        text "Total delivered: " + @received.to_s
+        text "Total delivered: " + @received.to_s + " QTL"
         move_down 1
-        text "Total Loss: " 
+        text "Total Loss: " + @loss_quantity.to_s + " QTL"
         move_down 1
-        text "Total Freight Charge: " + @freight_charge.to_s
+        text "Total Loss Charge: " + @loss_charge.to_s + " ETB"
+        move_down 1
+        text "Total Freight Charge: " + @freight_charge.to_s + " ETB"
         text "\n"
         text "\n"
         text "\n"
@@ -43,11 +47,11 @@ class PaymentRequestPdf  < PdfReport
     def payment_request_items
         @count = 0
         dynamic_data = []
-        dynamic_data = ["Item","Reference No","Req.No","G.R.N","Commodity", "Source","Destination","Received Qty","Tariff","Loss","Freight Chanrge"]
+        dynamic_data = ["Item no","Req.No","Reference No","Issue No.","G.R.N No.","LTCD","Commodity", "Source","Destination","Received Qty","Tariff","Shortage Qtl.", "Shortage Birr","Freight Charge"]
         [dynamic_data] +
        @payment_requested.map do |detail|
-             @count =+1
-                     [@count,detail&.payment_request&.reference_no, detail&.requisition_no,detail&.grn_no,detail&.commodity&.name,detail&.hub&.name, detail&.fdp&.name, detail&.received,detail&.tariff, "",detail&.freightCharge ]
+            @count += 1
+            [@count, detail[:requisition_no], detail[:reference_no], detail[:gin_no], detail[:grn_no], detail[:ltcd], detail[:commodity], detail[:source], detail[:destination], detail[:received_qty], detail[:tariff], detail[:shortage_qty], detail[:shortage_birr],detail[:freight_charge] ]
         end
        
     end   
