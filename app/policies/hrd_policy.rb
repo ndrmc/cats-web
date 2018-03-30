@@ -2,59 +2,73 @@ class HrdPolicy < ApplicationPolicy
     
 
     def index?
-        @current_user.has_permission('HRD')
+        permission = Permission.where(name: 'HRD', user_type: :guest).first
+        @current_user.has_permission(permission&.id)
     end
     
     def show?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['guest', 'admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :guest).first
+        @current_user.has_permission(permission&.id)
     end
     
     def new?
-       @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end
 
     def create?
-         @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end
 
     def edit?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end
     
     def update?
-         @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end
 
     def archive?
-         @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end
 
     def hrd_items?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end
 
     def update_hrd_item?
-      @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end
 
      def edit_hrd_form?
-       @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end 
 
     def new_hrd_item?
-       @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end 
 
     def save_hrd_item?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end 
 
     def remove_hrd_id?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end
 
     def download_hrd_items?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'HRD', user_type: :clerk).first
+        @current_user.has_permission(permission&.id)
     end 
 
 end

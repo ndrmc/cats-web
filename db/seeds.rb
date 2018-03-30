@@ -236,6 +236,27 @@ if Permission.count == 0
 
 end
 
+if Permission.where(name: 'FrameworkTender').count == 0
+  Permission.create(name: 'FrameworkTender', user_type: 0, description: '')
+  Permission.create(name: 'FrameworkTender', user_type: 1, description: '')
+  Permission.create(name: 'FrameworkTender', user_type: 2, description: '')
+  Permission.create(name: 'FrameworkTender', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Bid').count == 0
+  Permission.create(name: 'Bid', user_type: 0, description: '')
+  Permission.create(name: 'Bid', user_type: 1, description: '')
+  Permission.create(name: 'Bid', user_type: 2, description: '')
+  Permission.create(name: 'Bid', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'BidQuotation').count == 0
+  Permission.create(name: 'BidQuotation', user_type: 0, description: '')
+  Permission.create(name: 'BidQuotation', user_type: 1, description: '')
+  Permission.create(name: 'BidQuotation', user_type: 2, description: '')
+  Permission.create(name: 'BidQuotation', user_type: 3, description: '')
+end
+
 if Department.count == 0
   Department.create(name: 'Early warning')
   Department.create(name: 'FSCD')

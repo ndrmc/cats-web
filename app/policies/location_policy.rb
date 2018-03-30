@@ -1,36 +1,42 @@
 class LocationPolicy < ApplicationPolicy
   
   def index?
-     @current_user.has_permission('locations')
+     permission = Permission.where(name: 'locations', user_type: :guest).first
+     @current_user.has_permission(permission.id)
   end
 
  
   def show?
-     @current_user.has_permission('locations') && @current_user.user_type_in([ 'admin','manager'])
+    permission = Permission.where(name: 'locations', user_type: :manager).first
+    @current_user.has_permission(permission.id)
   end
 
 
   def create?
-    @current_user.has_permission('locations') && @current_user.user_type_in(['admin',  'manager'])
-   
+    permission = Permission.where(name: 'locations', user_type: :manager).first
+    @current_user.has_permission(permission.id)
   end
 
   
   def edit?
-    @current_user.has_permission('locations') && @current_user.user_type_in(['admin', 'manager'])
+    permission = Permission.where(name: 'locations', user_type: :manager).first
+    @current_user.has_permission(permission.id)
   end
 
   def update?
-    @current_user.has_permission('locations') && @current_user.user_type_in([ 'admin', 'manager'])
+    permission = Permission.where(name: 'locations', user_type: :manager).first
+    @current_user.has_permission(permission.id)
   end
 
  
   def destroy?
-    @current_user.has_permission('locations') && @current_user.user_type_in([ 'admin',  'manager'])
+    permission = Permission.where(name: 'locations', user_type: :manager).first
+    @current_user.has_permission(permission.id)
   end
 
   def children?
-    @current_user.has_permission('locations') && @current_user.user_type_in([ 'admin',  'cleark',  'manager']) 
+    permission = Permission.where(name: 'locations', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 end
 

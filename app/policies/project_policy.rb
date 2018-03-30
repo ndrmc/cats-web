@@ -1,56 +1,67 @@
 class ProjectPolicy < ApplicationPolicy
 
   def index?
-    @current_user.has_permission('Project')
+    permission = Permission.where(name: 'Project', user_type: :guest).first
+    @current_user.has_permission(permission.id)
   end
 
   
   def show?
-    @current_user.has_permission('Project') && @current_user.user_type_in(['guest','admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Project', user_type: :guest).first
+    @current_user.has_permission(permission.id)
   end
 
   
   def new?
-     @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Project', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   
   def edit?
-     @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Project', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   # POST /projects
   # POST /projects.json
   def create?
-     @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Project', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update?
-     @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Project', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy?
-     @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'Project', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
     def archive?
-     @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+      permission = Permission.where(name: 'Project', user_type: :clerk).first
+      @current_user.has_permission(permission.id)
     end
     
     def unarchive?
-        @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+      permission = Permission.where(name: 'Project', user_type: :clerk).first
+      @current_user.has_permission(permission.id)
     end
 
     def get_commodities?
-      @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+      permission = Permission.where(name: 'Project', user_type: :clerk).first
+      @current_user.has_permission(permission.id)
     end
 
     def get_commodity_source_code?
-      @current_user.has_permission('Project') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+      permission = Permission.where(name: 'Project', user_type: :clerk).first
+      @current_user.has_permission(permission.id)
     end
 
 end

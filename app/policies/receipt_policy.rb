@@ -1,25 +1,30 @@
 class ReceiptPolicy < ApplicationPolicy
 
     def index?
-        @current_user.has_permission('Receipts')
+        permission = Permission.where(name: 'Receipts', user_type: :guest).first
+        @current_user.has_permission(permission.id)
     end
 
 
     def new?
-        @current_user.has_permission('Receipts') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Receipts', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
 
     def create?
-        @current_user.has_permission('Receipts') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Receipts', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def edit?
-        @current_user.has_permission('Receipts') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Receipts', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def update?
-        @current_user.has_permission('Receipts') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'Receipts', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
 end

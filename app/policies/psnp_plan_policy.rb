@@ -2,27 +2,33 @@ class PsnpPlanPolicy < ApplicationPolicy
     
     
   def index?
-     @current_user.has_permission('PSNP Annual Plan')
+     permission = Permission.where(name: 'PSNP Annual Plan', user_type: :guest).first
+     @current_user.has_permission(permission.id)
   end
 
   def show?
-    @current_user.has_permission('PSNP Annual Plan') && @current_user.user_type_in(['guest', 'admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'PSNP Annual Plan', user_type: :guest).first
+    @current_user.has_permission(permission.id)
   end
 
   def psnp_plan_items?
-    @current_user.has_permission('PSNP Annual Plan') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'PSNP Annual Plan', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   def new_psnp_plan_item?
-    @current_user.has_permission('PSNP Annual Plan') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'PSNP Annual Plan', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   def save_psnp_plan_item?
-    @current_user.has_permission('PSNP Annual Plan') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'PSNP Annual Plan', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
   def remove_psnp_plan_id?
-    @current_user.has_permission('PSNP Annual Plan') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+    permission = Permission.where(name: 'PSNP Annual Plan', user_type: :clerk).first
+    @current_user.has_permission(permission.id)
   end
 
 

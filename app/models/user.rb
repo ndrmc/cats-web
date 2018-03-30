@@ -92,8 +92,8 @@ enum keyboard: {am: 'am',en: 'en'}
 enum language: {am: 'am',or: 'or',en: 'en'} , _prefix: :language
 
 
-    def has_permission(permission)
-         self.permissions.where(name: permission).count > 0 ? true : false
+    def has_permission(permission_id)
+         self.permissions.where(id: permission_id).count > 0 ? true : false
          
     end
 

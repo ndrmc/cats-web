@@ -2,27 +2,33 @@ class ProjectCodeAllocationPolicy < ApplicationPolicy
     
 
     def index?
-        @current_user.has_permission('ProjectCodeAllocation')
+        permission = Permission.where(name: 'ProjectCodeAllocation', user_type: :guest).first
+        @current_user.has_permission(permission.id)
     end
     
     def show?
-        @current_user.has_permission('ProjectCodeAllocation') && @current_user.user_type_in(['guest', 'admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'ProjectCodeAllocation', user_type: :guest).first
+        @current_user.has_permission(permission.id)
     end
     
     def new?
-       @current_user.has_permission('ProjectCodeAllocation') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'ProjectCodeAllocation', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def create?
-         @current_user.has_permission('ProjectCodeAllocation') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'ProjectCodeAllocation', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
     def edit?
-        @current_user.has_permission('ProjectCodeAllocation') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'ProjectCodeAllocation', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
     
     def update?
-         @current_user.has_permission('ProjectCodeAllocation') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        permission = Permission.where(name: 'ProjectCodeAllocation', user_type: :clerk).first
+        @current_user.has_permission(permission.id)
     end
 
 end
