@@ -43,7 +43,7 @@ class PsnpPlansController < ApplicationController
   end
 
   def save_psnp_plan_item
-    @psnp_plan_item = PsnpPlanItem.new(params.permit(:psnp_plan_id, :woreda_id,  :beneficiary, :starting_month, :duration, :cash_ratio,:kind_ratio))
+    @psnp_plan_item = PsnpPlanItem.new(params.permit(:psnp_plan_id, :woreda_id,  :beneficiary, :starting_month, :duration, :cash_ratio,:kind_ratio,:duration_public_work,:beneficiary_public_work,:cash_ratio_public_work,:kind_ratio_beneficiary_public_work))
     if @psnp_plan_item.save
       render partial: 'psnp_plan_item_row'
     else
@@ -71,7 +71,8 @@ class PsnpPlansController < ApplicationController
     @psnp_plan_item = PsnpPlanItem.find(params[:id])
     params.delete :id
     respond_to do |format|
-      if @psnp_plan_item.update( params.permit(:starting_month, :duration, :beneficiary, :cash_ratio, :kind_ratio ))
+      if @psnp_plan_item.update( params.permit(:starting_month, :duration, :beneficiary, :cash_ratio, :kind_ratio,:duration_public_work,
+      :beneficiary_public_work,:cash_ratio_public_work,:kind_ratio_beneficiary_public_work))
         format.json { render json: { :successful => true }}
       else
 

@@ -58,8 +58,10 @@
                             <tr> 
                                 <th>Woreda</th>
                                 <th>Starting Month</th>
-                                <th>Duration</th>
-                                <th>Number of Beneficiaries</th>
+                                <th>Duration (PW)</th>
+                                <th>No of Beneficiaries (PW)</th>
+                                <th>Duration (PDS)</th>
+                                <th>No of Beneficiaries (PDS)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -68,6 +70,8 @@
                                 <tr id="psnp_plan-item-<%= item.id %>">
                                     <td><%= item.woreda.name  %></td>
                                     <td id="starting-month-<%= item.id %>"><%= Date::MONTHNAMES[item.starting_month] %></td>
+                                    <td id="duration-PDS-<%= item.id %>"><%= item.duration_public_work %></td>
+                                    <td id="beneficiary-PDS-<%= item.id %>"><%= item.beneficiary_public_work %></td>
                                     <td id="duration-<%= item.id %>"><%= item.duration %></td>
                                     <td id="beneficiary-<%= item.id %>"><%= item.beneficiary %></td>
                                     <td>
@@ -158,7 +162,7 @@
 </div>
 
 <div class="modal inmodal" id="new-psnp_plan-item" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
+  <div style="width: 50%;" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
@@ -235,6 +239,8 @@
                     $('#starting-month-' + psnp_plan_item.id ).text( MONTHNAMES[psnp_plan_item['starting_month']]);
                     $('#beneficiary-' + psnp_plan_item.id ).text( psnp_plan_item['beneficiary']);
 
+                    $('#duration-PDS-' + psnp_plan_item.id ).text(psnp_plan_item['duration_public_work']);
+                    $('#beneficiary-PDS-' + psnp_plan_item.id ).text( psnp_plan_item['beneficiary_public_work']);
                     $('#edit-psnp_plan-item').modal('hide'); 
                 }
                 else {
