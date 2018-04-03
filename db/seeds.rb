@@ -313,3 +313,10 @@ if (Journal.where(:name => 'Internal Movement').present? == false)
   puts "Added Internal Movement to Journal"
 end
 
+if PaymentType.count == 0
+  PaymentType.create(name: 'Commercial Bank of Ethiopia')
+  PaymentType.create(name: 'Dashen Bank')
+  PaymentType.create(name: 'Wegagen Bank')
+  PaymentType.create(name: 'United Bank')
+end
+

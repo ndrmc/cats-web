@@ -14,10 +14,20 @@ class RequisitionsController < ApplicationController
 
   def print
     @requisition_items = RequisitionItem.includes(:fdp, requisition: [:commodity, ration: :ration_items, operation: :program]).where(:'requisitions.id' => params[:id]).where("beneficiary_no > 0")
+    @total_beneficiary_no = RequisitionItem.where(:requisition_id => params[:id]).where("beneficiary_no > 0").sum(:beneficiary_no)
+    # @requisition = @requisition_items.first.requisition
+    # @uom_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id   
+    # target_unit = UnitOfMeasure.find_by(name: "Quintal")
+    # current_unit = UnitOfMeasure.find(@uom_id)
+    
+    @total_amount = RequisitionItem.where(:requisition_id => params[:id]).where("beneficiary_no > 0").sum(:amount)
+    # RequisitionItem.where(:requisition_id => params[:id]).where("beneficiary_no > 0").each do |ri|
+    #   @total_amount += target_unit.convert_to(current_unit.name, ri.amount.to_f) 
+    # end
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = RequisitionPdf.new(@requisition_items)
+          pdf = RequisitionPdf.new(@requisition_items, @total_beneficiary_no, @total_amount)
           send_data pdf.render, filename: "requisition_#{@requisition_items.first.requisition.id}.pdf",
           type: "application/pdf",
           disposition: "inline"
@@ -59,7 +69,16 @@ class RequisitionsController < ApplicationController
   # PATCH/PUT /requisitions/1
   # PATCH/PUT /requisitions/1.json
   def update
-    respond_to do |format|
+    requisition = Requisition.find_by_requisition_no requisition_params[:requisition_no]
+    if requisition.present?
+     if @requisition.update(update_requisition_params)
+        respond_to do |format|
+        format.html { redirect_to edit_requisition_path(@requisition), notice: 'Requisition number exisits but the other parameters were successfully updated.' }
+        format.json { render :edit, status: :ok, location: @requisition }
+        end
+      end
+    else
+      respond_to do |format|
       if @requisition.update(requisition_params)
         format.html { redirect_to edit_requisition_path(@requisition), notice: 'Requisition was successfully updated.' }
         format.json { render :edit, status: :ok, location: @requisition }
@@ -68,6 +87,9 @@ class RequisitionsController < ApplicationController
         format.json { render json: @requisition.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+    
   end
 
   # DELETE /requisitions/1
@@ -98,6 +120,14 @@ class RequisitionsController < ApplicationController
   # PREPARE /requisitions/prepare?request_id=1
   def prepare
     @request = RegionalRequest.find(params[:request_id])
+    @zero_beneficiary_nos = @request.regional_request_items.where('number_of_beneficiaries < 1')
+    if (@zero_beneficiary_nos.present?)
+       respond_to do |format|
+            flash[:error] = "Can not create requisition as there are zones with zero beneficiary number."
+            format.html {  redirect_to request.referrer }
+      end
+    end
+    
     @requests_per_zone = @request.regional_request_items.group_by { |ri| Fdp.find(ri.fdp_id).location.ancestors.find { |a| a.location_type == 'zone' } }
     @operation = Operation.find(@request.operation_id)
 
@@ -107,6 +137,23 @@ class RequisitionsController < ApplicationController
       @commodities << Commodity.find(ration_item.commodity_id)
     end
   end
+
+ def delete_regional_requests_fdps_with_zero_ben_no
+    @request = RegionalRequest.find(params[:id])
+    @zero_beneficiary_nos = @request.regional_request_items.where('number_of_beneficiaries < 1')
+    if (@zero_beneficiary_nos.delete_all)
+      respond_to do |format|
+            flash[:notice] = "FDPs with zero beneficiary numbers have been deleted."
+            format.html {  redirect_to request.referrer }
+      end
+    else
+        respond_to do |format|
+            flash[:alert] = "Operation was unsuccessful."
+            format.html {  redirect_to request.referrer }
+      end
+    end
+    
+ end
 
   def generate
 
@@ -240,6 +287,21 @@ class RequisitionsController < ApplicationController
       end
     end
   end
+
+  def export_requisition_to_excel
+    @request_allocations = []
+    @request = RegionalRequest.find(params[:id])
+    @requisitions = RequisitionItem.includes( requisition: :commodity, fdp: :location).where({:'requisitions.request_id' => params[:id]}).where('beneficiary_no > 0').each do |ri|
+      @requisition = Requisition.includes(ration: :ration_items).find(ri.requisition_id) 
+      @uom_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id
+      target_unit = UnitOfMeasure.find_by(name: "Quintal")
+      current_unit = UnitOfMeasure.find(@uom_id)
+      quantity_in_ref = target_unit.convert_to(current_unit.name, ri.amount.to_f)
+
+      @request_allocations << { region: ri.fdp.location.parent.parent.name, zone: ri.fdp.location.parent.name, woreda: ri.fdp.location.name, fdp: ri.fdp.name, requisition_no: ri.requisition.requisition_no, beneficiary_no: ri.beneficiary_no, commodity: ri.requisition.commodity.name, amount: quantity_in_ref }
+    end
+  end
+
   private
   def authorize_requisition
     authorize Requisition
@@ -253,6 +315,10 @@ class RequisitionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def requisition_params
     params.require(:requisition).permit(:requisition_no, :operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status)
+  end
+
+  def update_requisition_params
+    params.require(:requisition).permit(:operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status)
   end
 
 end

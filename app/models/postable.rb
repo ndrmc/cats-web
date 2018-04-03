@@ -213,62 +213,59 @@ module Postable
       received_amount_in_ref = UnitOfMeasure.find(delivery_detail.uom_id).to_ref(delivery_detail.received_quantity)
       sent_amount_in_ref = UnitOfMeasure.find(delivery_detail.uom_id).to_ref(delivery_detail.sent_quantity)
       debit = PostingItem.new({
-                                account_id: dispatched_account.id,
-                                journal_id: delivery_journal.id,
-                                fdp_id: self.fdp_id,
-                                batch_id: 1,
-                                program_id: Operation.find(self.operation_id).program_id,
-                                operation_id: self.operation_id,
-                                commodity_id: delivery_detail.commodity_id,
-                                commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
-                                quantity: -received_amount_in_ref
+        account_id: dispatched_account.id,
+        journal_id: delivery_journal.id,
+        fdp_id: self.fdp_id,
+        batch_id: 1,
+        program_id: Operation.find(self.operation_id).program_id,
+        operation_id: self.operation_id,
+        commodity_id: delivery_detail.commodity_id,
+        commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
+        quantity: -sent_amount_in_ref
 
-      })
-
+      })      
       posting_items << debit
-      credit = PostingItem.new({
-                                 account_id: delivery_account.id,
-                                 journal_id: delivery_journal.id,
-                                 fdp_id: self.fdp_id,
-                                 batch_id: 1,
-                                 program_id: Operation.find(self.operation_id).program_id,
-                                 operation_id: self.operation_id,
-                                 commodity_id: delivery_detail.commodity_id,
-                                 commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
-                                 quantity: received_amount_in_ref
-      })
-      posting_items << credit
 
-      # do loss accounting if received quantity not equal to sent quantity (three legged posting)
-      if received_amount_in_ref > sent_amount_in_ref #stock gain
-        gain_credit =PostingItem.new({
-                                       account_id: stock_account.id,
-                                       journal_id: delivery_journal.id,
-                                       fdp_id: self.fdp_id,
-                                       batch_id: 1,
-                                       program_id: Operation.find(self.operation_id).program_id,
-                                       operation_id: self.operation_id,
-                                       commodity_id: delivery_detail.commodity_id,
-                                       commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
-                                       quantity: received_amount_in_ref - sent_amount_in_ref
+      # If loss is there, it turn into three-legged posting, if not credit delivery account
+      if received_amount_in_ref < sent_amount_in_ref
+        credit = PostingItem.new({
+          account_id: delivery_account.id,
+          journal_id: delivery_journal.id,
+          fdp_id: self.fdp_id,
+          batch_id: 1,
+          program_id: Operation.find(self.operation_id).program_id,
+          operation_id: self.operation_id,
+          commodity_id: delivery_detail.commodity_id,
+          commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
+          quantity: received_amount_in_ref
         })
-        posting_items << gain_credit
-
-      elsif received_amount_in_ref < sent_amount_in_ref #loss
+        posting_items << credit
         loss_credit =PostingItem.new({
-                                       account_id: lost_account.id,
-                                       journal_id: delivery_journal.id,
-                                       fdp_id: self.fdp_id,
-                                       batch_id: 1,
-                                       program_id: Operation.find(self.operation_id).program_id,
-                                       operation_id: self.operation_id,
-                                       commodity_id: delivery_detail.commodity_id,
-                                       commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
-                                       quantity: sent_amount_in_ref - received_amount_in_ref
+          account_id: lost_account.id,
+          journal_id: delivery_journal.id,
+          fdp_id: self.fdp_id,
+          batch_id: 1,
+          program_id: Operation.find(self.operation_id).program_id,
+          operation_id: self.operation_id,
+          commodity_id: delivery_detail.commodity_id,
+          commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
+          quantity: sent_amount_in_ref - received_amount_in_ref
         })
         posting_items << loss_credit
+      else
+        credit = PostingItem.new({
+          account_id: delivery_account.id,
+          journal_id: delivery_journal.id,
+          fdp_id: self.fdp_id,
+          batch_id: 1,
+          program_id: Operation.find(self.operation_id).program_id,
+          operation_id: self.operation_id,
+          commodity_id: delivery_detail.commodity_id,
+          commodity_category_id: Commodity.find(delivery_detail.commodity_id).commodity_category_id,
+          quantity: received_amount_in_ref
+        })
+        posting_items << credit
       end
-
     end
     post( Posting.document_types[:delivery], self.id, Posting.posting_types[:normal], posting_items)
   end

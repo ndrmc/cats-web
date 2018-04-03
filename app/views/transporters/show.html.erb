@@ -1,3 +1,4 @@
+<% user_unit = UnitOfMeasure.find(current_user.default_uom).code %>
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
     <h2>Transporter Summary</h2>
@@ -19,63 +20,99 @@
         <% if policy(Transporter).edit? %>
           <%= link_to 'Edit', edit_transporter_path(@transporter),  :class => "btn btn-default"%>
       <% end %>
+
+      <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
+                                  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                  <li>
+                                    <a data-transporter-id="<%= @transporter.id %>" data-target="#add-payment-request" data-toggle="modal">
+                                    Process payment
+                                    </a>
+                                    
+                                  </li>                     
+                                  <li>                    
+                                   <%= link_to 'Payment Request List', '/transporters/payment_request?transporter=' + @transporter.id.to_s %>  
+                                  </li>
+                                  <li>                    
+                                   <%= link_to 'Cheque List', '/en/transporter_payments' %>  
+                                  </li>
+                                  <li>
+                                      <%= link_to 'Contracts', "", class: ""%>
+                                  </li>
+                                </ul>
+                        </div>
+
     </div>
   </div>
 </div>
 
-<div class="wrapper wrapper-content">
-  <div class="row m-b-lg m-t-lg">
-    <div class="col-md-6">
-
-      <div class="">
-        <div>
-          <h2 class="no-margins">
-            <%= @transporter.name %>
-          </h2>
-          <h4>Code:
-            <%= @transporter.code %></h4>
-          <p>Registered since:
-            <%= time_ago_in_words(@transporter.created_at) %></p>
-          <small>
-            <%= @transporter.remark %>
-          </small>
-        </div>
+<div class="row" style="margin-top: 20px">
+  <div class="col-lg-6">
+    <div class="ibox">
+      <div class="ibox-content" style="min-height: 170px;">
+        <h2 class="no-margins">
+          <%= @transporter.name %>
+        </h2>
+        <h4>Code:
+          <%= @transporter.code %></h4>
+        <p>Registered since:
+          <%= time_ago_in_words(@transporter.created_at) %></p>
+        <small>
+          <%= @transporter.remark %>
+        </small>
       </div>
-
-    </div>
-
-    <div class="col-md-3">
-      <table class="table small m-b-xs">
-        <tbody>
-          <tr>
-            <td>
-              <strong><%= @transporter.vehicle_count %></strong>
-              Vehicles (trucks)
-            </td>
-            <td>
-              <strong><%= @transporter.employees %></strong>
-              Employees
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <strong>61</strong>
-              <a href="#">Pending delivery notes</a>
-            </td>
-            <td>
-              <strong>2</strong>
-              <a href="#">Pending invoices</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-md-3">
-      <small>Total amount of commodity moved</small>
-      <h2 class="no-margins">26,480.7 mt</h2>
-      <div id="sparkline1"></div>
     </div>
   </div>
+  <div class="col-lg-3">
+    <div class="ibox">
+      <div class="ibox-content" style="min-height: 170px;">
+        <table class="table small m-b-xs">
+          <tbody>
+            <tr>
+              <td>
+                <strong><%= @transporter.vehicle_count %></strong>
+                Vehicles (trucks)
+              </td>
+              <td>
+                <strong><%= @transporter.employees %></strong>
+                Employees
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong><%= @delivery_count%></strong>
+                <a href="#">Pending delivery notes</a>
+              </td>
+              <td>
+                <strong><%=@invoice_count%></strong>
+                <a href="#">Pending invoices</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong><%= $transport_orders.uniq{|x| x['order_no']}.length %></strong>
+                <a href="#"> active Transport orders</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="ibox">
+      <div class="ibox-content" style="min-height: 170px;">
+        <small>Total amount of commodity moved</small>
+        <h2 class="no-margins"><%= @delivery_sum  %> (<%= user_unit %>)</h2>
+        <div id="sparkline1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="">
   <div class="row">
     <div class="col-lg-3">
       <div class="ibox">
@@ -97,24 +134,7 @@
         </div>
       </div>
 
-      <div class="ibox">
-        <div class="ibox-content">
-          <h3>Comment</h3>
-
-          <p class="small">
-            Add comment for this transporter. Please be as specific as possible
-          </p>
-
-          <div class="form-group">
-            <label>Comment</label>
-            <textarea class="form-control" placeholder="Your comment" rows="3"></textarea>
-          </div>
-            <% if policy(Transporter).edit? %>
-          <button class="btn btn-primary btn-block">Add Comment</button>
-          <% end %>
-
-        </div>
-      </div>
+      
 
     </div>
 
@@ -177,24 +197,128 @@
         </div>
 
       </div>
-
-      <div class="ibox float-e-margins">
+  </div>
+      <div class="ibox float-e-margins" style="margin-left: 20px; margin-right: 20px">
         <div class="ibox-title">
           <h5>Outstanding invoices & payment requests
           </h5>
-          <div class="ibox-tools">
-            <a class="collapse-link">
-              <i class="fa fa-chevron-up"></i>
-            </a>
-          </div>
+          
         </div>
+        <%if !$transport_orders.present? %>
         <div class="ibox-content" style="display: block;">
-          <h2>No outstanding invoices and payments</h2>
-        </div>
+          <h2>No outstanding invoices and payments</h2></div>
+          <% else %>
+          <div class="ibox-content" style="display: block;">
+              <table class="table cats-datatable">
+                   <thead>
+                    <tr>       
+                        <th>Transport Order #</th>
+                        <th>Operation</th>
+                        <th>Total Quantity (MT)</th>
+                        <th>Confirmed Delivery</th>
+                        <th>Estimated Payment</th>
+                        <th>Paid Amount</th>
+                        <th>Outstanding Payment</th>
+                        <th>Actions</th>
+                       
+                    </tr>
+                  </thead>
+
+              <tbody>
+              <% $transport_orders.each do |transport_order| %>
+                    <tr>
+                        <td> <%= transport_order['order_no'] %></td>
+                        <td> <%= transport_order['operation'] %></td>
+                        <td> <%= transport_order['balance'] %></td>
+                        <td> <%= transport_order['confirmed_delivery'] %> </td>
+                        <td> <%= transport_order['est_payment'] %></td>
+                        <td> <%= transport_order['paid_amount'] %> </td>
+                        <td> <%= transport_order['est_payment'].to_f - transport_order['paid_amount'].to_f %> </td>
+                        <td>
+                          <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Action
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right">
+                              <li>
+                                <%= link_to 'FDP', '/transporters/transporter_fdp_detail?transporter_id=' + @transporter.id.to_s + '&operation_id=' + transport_order['operation_id'].to_s + "&order_id=" + transport_order['id'].to_s %>
+                              </li>                     
+                              <li>                    
+                                <%= link_to 'Verify', '/transporters/transporter_verify_detail?transporter_id=' + @transporter['id'].to_s + '&operation_id=' + transport_order['operation_id'].to_s + "&order_id=" + transport_order['id'].to_s %>  
+                              </li>
+                              <li>
+                                  <%= link_to 'Close', "", class: "", method: :delete, data: { confirm: 'Are you sure you want to close this Transport Order?' } %>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>                 
+                    </tr>
+          <% end %>
+        </tbody>
+      </table>
+          <% end %>
       </div>
 
-    </div>
+    
 
   </div>
 
+</div>
+
+
+
+<div class="modal inmodal" id="add-payment-request" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title"><%= @transporter.name %></h4>
+      </div>
+      <form role="form" method="POST" enctype="multipart/form-data" action="/transporters/processPayment/<%= @transporter.id %>" class="form-inline" style="display: inline;margin-top: 15px">
+
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">  
+          <div class="col-md-3 col-sm-3 col-xs-3">
+              <%= label_tag :reference_no, "Reference No:", { :class => ' control-label'} %>
+          </div>
+          <div class="col-md-8 col-sm-8 col-xs-8">
+            <%= text_field_tag :reference_no, nil, class: "form-control width-100per" %>
+          </div>  
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">  
+          <div class="text-truncate col-md-3 col-sm-3 col-xs-3">
+              <%= label_tag :request_date, "Request Date:", { :class => ' control-label'} %>
+          </div>
+          <div class="col-md-8 col-sm-8 col-xs-8">
+            <%= text_field_tag :request_date, nil, :class => 'form-control datepicker width-100per', :required => true  %>
+          </div>
+        </div>  
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <div class="col-md-3 col-sm-3 col-xs-3">
+            <%= label_tag :amount_requested, "Amount Requested:", { :class => ' control-label', :required => true } %>
+          </div>
+          <div class="col-md-8 col-sm-8 col-xs-8">
+            <%= number_field_tag :amount_requested, @amount_requested, min: 0, max: 9999999999999999, :step => 'any', class: "form-control number width-100per", placeholder: '0.00' %>
+          </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">  
+          <div class="col-md-3 col-sm-3 col-xs-3">
+            <%= label_tag :remark, "Remark:", { :class => ' control-label', :required => true } %>
+          </div>  
+          <div class="col-md-8 col-sm-8 col-xs-8">
+            <%= text_area_tag :remark, '', :class => 'form-control width-100per ',  size: "5x5" %>
+          </div>
+        </div>
+        <div class="modal-footer col-md-12 col-sm-12 col-xs-12">
+          <button type="submit" id="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

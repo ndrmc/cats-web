@@ -191,6 +191,11 @@
                     <%= link_to 'Generate Bid Winners', '/bids/' + bid.id.to_s + '/generate_winners', method: :post, data: { confirm: 'This action will close the bid. Are you sure you want to generate winners?' } %>
                   </li>
                    <% end %>
+                   <% if (bid.status == 'active')%>
+                      <li>
+                    <%= link_to 'Reset Bid Winners', '/bids/' + bid.id.to_s + '/regenerate_bid', method: :post, data: { confirm: 'This will reset bid winners for this Bid. Are you sure?' } %>
+                    </li>
+                   <%end%>
                   <li>
                     <a href="/bids/view_bid_winners/<%= bid.id %>"> View Bid Winners </a>
                   </li>

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  transporter: one
+  reference_no: MyString
+  amount_requested: 
+  amount_requested: 
+  remark: MyString
+  status: 1
+
+two:
+  transporter: two
+  reference_no: MyString2
+  amount_requested: 
+  amount_requested: 
+  remark: MyString
+  status: 1

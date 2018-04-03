@@ -1,0 +1,87 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Bid Quotations</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Bid Quotations</strong>
+      </li>
+    </ol>
+    
+  </div>
+
+<div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Back', 'bids/transporter_quotes/' + params[:bid].to_s ,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <%= form_tag( bid_quotations_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+          <div class="form-group">
+            <%= label_tag :transporter, "Transporter", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :bid_id, "Bid", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :bid_id,  options_from_collection_for_select( Bid.all, 'id', 'bid_number',
+              params[:bid]) , { :prompt => "-- Choose --", :class => 'form-control col-md-6 data-parsley-required' }  %>
+            </div>
+          </div>
+          
+         
+
+          <div class="form-group">
+            <label for=""></label>
+            <div>
+              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+            </div>
+          </div>
+
+      <% end %>
+  </div>
+</div>
+
+     <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+                        <th>Souce warehouse</th>
+                        <th>Region </th>
+                        <th>Zone</th>
+                        <th>Destination</th>
+                        <th>Tariff</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @bid_quotations_details.each do |bid_quotation_detail| %>
+          <% @bid_quotation_item = BidQuotationDetail.find(bid_quotation_detail.id) %>
+          <tr>      
+                    <td><%=  bid_quotation_detail&.warehouse&.name  %></td>
+                    <td><%=  bid_quotation_detail&.location&.parent&.parent&.name %> </td>
+                    <td><%=  bid_quotation_detail&.location&.parent&.name %> </td>
+                     <td><%=  bid_quotation_detail&.location&.name %> </td>
+                    <td><%=  best_in_place @bid_quotation_item, :tariff, url: '/bid_quotations/update_tariff/' + @bid_quotation_item.id.to_s %>
+                        <td>
+              <%= link_to 'Delete', '/bid_quotations/delete_bid_quuotation_detail/' + @bid_quotation_item.id.to_s, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+

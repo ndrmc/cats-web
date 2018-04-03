@@ -21,22 +21,22 @@ unit_of_measure_1:
     name:  mt     
     description: 'Meteric Ton'
     code: 'MT'       
-    uom_type: :big
-    ratio: 1000
+    uom_type: :ref
+    ratio: 1
     uom_category: uom_category_1
 unit_of_measure_2:
     id: 2
     name:  kg 
     description: 'kg'
     code: 'kg'       
-    uom_type: :ref
-    ratio: 1
+    uom_type: :small
+    ratio: 1000
     uom_category: uom_category_1
 unit_of_measure_3:
     id: 3
     name:  qtl
     description: 'qtl'
     code: 'qt'       
-    uom_type: :big
+    uom_type: :small
     ratio: 100
     uom_category: uom_category_1

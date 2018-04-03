@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
-
  
-
-  
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
   resources :warehouse_allocations
@@ -20,6 +17,8 @@ Rails.application.routes.draw do
 
  scope "(:locale)", locale: /en|am/ do
 
+  get 'transporter_payments/update_status', to: 'transporter_payments#update_status'
+  resources :transporter_payments
   resources :project_code_allocations
   post '/project_code_allocations/create_for_requisition', to: 'project_code_allocations#create_for_requisition'
   delete '/project_code_allocations/destroy_project_code_allocations/:id', to: 'project_code_allocations#destroy_project_code_allocations'
@@ -35,7 +34,7 @@ Rails.application.routes.draw do
   delete 'stock_movements/stock_movement_destroy_receive/:id', to: 'stock_movements#stock_movement_destroy_receive'
   resources :stock_movements
 
-  get '/transport_requisitions/print', to: 'transport_requisitions#print'
+  get '/transport_requisitions/print/:id', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
   resources :transport_requisitions
@@ -47,6 +46,7 @@ Rails.application.routes.draw do
    get '/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
    delete '/bids/remove_bid_quotation/:id', to: 'bids#remove_bid_quotation'
    post '/bids/:id/generate_winners', to: 'bids#generate_winners'
+   post '/bids/:id/regenerate_bid', to: 'bids#regenerate_bid'
    get 'bids/view_bid_winners/:id', to: 'bids#view_bid_winners'
    get 'bids/contracts/:id', to: 'bids#contracts'
    get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
@@ -61,6 +61,18 @@ Rails.application.routes.draw do
    resources :permissions
   resources :departments
   resources :role_types
+  get 'transporters/update_status', to: 'transporters#update_status'
+  get 'transporters/transporter_fdp_detail', to: 'transporters#transporter_fdp_detail'
+  get 'transporters/transporter_verify_detail', to: 'transporters#transporter_verify_detail'
+  post '/transporters/processPayment/:id', to: 'transporters#processPayment'
+  get '/transporters/payment_request', to: 'transporters#payment_request'
+  get '/transporters/payment_request_items/:id', to: 'transporters#payment_request_items'
+  get '/transporters/dispatches_list_per_fdp', to: 'transporters#dispatches_list_per_fdp'
+  get '/transporters/print_payment_request/:id', to: 'transporters#print_payment_request'
+  get 'transporters/print_payment_request_letter/:id', to: 'transporters#print_payment_request_letter'
+  get '/transporters/reject_payment_request', to: 'transporters#reject_payment_request'
+  get '/transporters/update_status_all', to: 'transporters#update_status_all'
+  post '/transporters/set_market_price', to: 'transporters#set_market_price'
   resources :transporters
   resources :transport_orders
   get '/transport_orders/print/:id', to: 'transport_orders#print'
@@ -74,7 +86,10 @@ Rails.application.routes.draw do
 
   get 'warehouse_selections/get_by_region'
   resources :warehouse_selections
-  
+  put '/bid_quotations/update_tariff/:id', to: 'bid_quotations#update_tariff'
+  delete '/bid_quotations/delete_bid_quuotation_detail/:id', to: 'bid_quotations#delete_bid_quuotation_detail'
+  resources :bid_quotations
+  resources :bid_quotation_details
 
   #get 'locations(/:parent_id)', to: 'locations#index', as: :locations
   #post 'locations', to: 'locations#create', as: :locations
@@ -168,9 +183,11 @@ Rails.application.routes.draw do
   get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
   get '/requisitions/summary/:request_id', to: 'requisitions#summary'
+  get '/requisitions/export_requisition_to_excel/:id', to: 'requisitions#export_requisition_to_excel'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
   get '/requisitions/print', to: 'requisitions#print'
   get '/requisitions/print_rrd', to: 'requisitions#print_rrd'
+  delete '/requisitions/delete_regional_requests_fdps_with_zero_ben_no/:id', to: 'requisitions#delete_regional_requests_fdps_with_zero_ben_no'
 
   resources :requisitions
   get '/gift_certificates/gift_certificate_report', to: 'gift_certificates#gift_certificate_report'
@@ -213,6 +230,9 @@ Rails.application.routes.draw do
   resources :stock_takes
   resources :stock_take_items
   resources :adjustments
+  resources :payment_requests
+  resources :payment_request_items
+  
 
   get'/stock_reports', to: 'stock_reports#index'
   get '/stock_reports/stock_status_by_project_code', to: 'stock_reports#stock_status_by_project_code'
@@ -229,4 +249,5 @@ Rails.application.routes.draw do
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/queries"
   resources :queries
 end
+
 end

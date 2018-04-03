@@ -80,7 +80,7 @@ class Dispatch < ApplicationRecord
 
     def self.fdp_dispatches (dispatch_filter)
         @dispatches = []
-        Dispatch.joins( :transporter, dispatch_items: [:unit_of_measure, :commodity] ).where( dispatch_filter ).find_each do |dispatch|
+        Dispatch.joins( :transporter, dispatch_items: [:unit_of_measure, :commodity] ).where( dispatch_filter ).distinct.find_each do |dispatch|
             @gin_row = Hash.new
             @gin_row['id'] = dispatch.id
             @gin_row['gin_no'] = dispatch.gin_no
@@ -88,7 +88,7 @@ class Dispatch < ApplicationRecord
             dispatch.dispatch_items.find_each do |di|
                 @qty_in_ref = UnitOfMeasure.find(di.unit_of_measure_id).to_ref(di.quantity)
                 @gin_qty = @gin_qty + @qty_in_ref
-                @gin_row['commodity'] = di.commodity.name
+                @gin_row['commodity'] = di&.commodity&.name
             end
             @gin_row['dispatch_qty'] = @gin_qty
             @gin_row['uom'] = 'MT'

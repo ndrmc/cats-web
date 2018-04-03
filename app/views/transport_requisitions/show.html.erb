@@ -14,10 +14,9 @@
     </ol>
   </div>
   <div class="col-sm-4">
-    <%= link_to '/transport_requisitions/print?format=pdf&id=' + @transport_requisition.id.to_s, :class => "btn btn-default"  do %>
-        <i class="fa fa-print"></i> 
+    <a class="btn btn-default pull-right" data-tr-id="<%= @transport_requisition.id.to_s %>" data-target="#print-tr" data-toggle="modal">
         Print
-    <% end %>
+    </a>
   </div>
 </div>
 
@@ -406,6 +405,54 @@
           <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal inmodal" id="print-tr" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">Print Transport Requisition</h4>
+      </div>
+
+      <form role="form" method="GET" enctype="multipart/form-data" action="/transport_requisitions/print/<%= @transport_requisition.id.to_s %>" class="form-inline" style="display: inline;margin-top: 15px">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <%= hidden_field_tag :format, "pdf", class: "", :name => "format", :required => true, :display => false  %>
+        <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+          <% if(@transport_requisition&.operation&.program&.code=='IDPS') %>
+          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12"> 
+            <div class="col-md-12 col-sm-12 col-xs-12">          
+              <%= label_tag :reason_for_idps, "Reason for IDPs", { :class => ' control-label'} %>
+              <div class="">
+                <input id="reason_for_idps" name="reason_for_idps" type="text" class="form-control" placeholder="" value="" style="width:100%;">
+              </div>
+            </div>
+          </div>
+          <% end %>
+          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-12 col-sm-12 col-xs-12">          
+              <%= label_tag :cc_letter_to, "CC Letter to", { :class => ' control-label'} %>
+              <div class="">
+                <textarea id="cc_letter_to" name="cc_letter_to" type="text" class="form-control" placeholder="" value="" style="width:100%;"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-6">    
+            <button type="submit" id="submit" class="btn btn-primary">Print</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

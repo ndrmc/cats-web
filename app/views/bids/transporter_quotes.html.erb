@@ -142,10 +142,20 @@
           <% @transporters.each do |transporter| %>
           <tr>
                         
-                       <td> <%= transporter&.transporter&.name %> </td>
+                       <td> <%= link_to transporter&.transporter&.name, '/bid_quotations?transporter=' + transporter.transporter_id.to_s + '&bid=' + transporter&.bid_id.to_s %> </td>
                        <td><%= transporter&.destination_count %> </td>
                        <td> <a href="#"  data-toggle="modal" data-transporter_id= "<%= transporter&.transporter&.id %>" data-id="<%= transporter&.bid_id %>" class="rfq-modal" data-target="#rfq-modal">Update</a>  </td>&middot;
-                       <td> <%= link_to "Remove",  {:controller => "bids", :action => "remove_bid_quotation", :id => transporter&.bid_id, :transporter_id => transporter&.transporter_id }, method: :delete , data: { confirm: 'Are you sure?' } %> </td>
+                       <td> <%= link_to "Remove",  {:controller => "bids", :action => "remove_bid_quotation", :id => transporter&.bid_id, :transporter_id => transporter&.transporter_id }, method: :delete , data: { confirm: 'Are you sure?' } %> </td>&middot;
+                       <td>
+                       
+                        <% if (@framework_tender&.status == 'open') %>
+                            <a class="add-transpoter-quote" data-transporter-name="<%= transporter&.transporter&.name %>" data-transporter-id= "<%= transporter&.transporter&.id %>" data-bid-id="<%= transporter&.bid_id %>" data-ft-id="<%= @framework_tender_id %>" data-target="#add-transpoter-quote" data-toggle="modal">
+                                 Add Transporter Quote
+                            </a>
+                          <% end %>
+                       
+                       
+                        </td>
                        
              
             </td>
@@ -205,6 +215,122 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+
+
+
+
+<div class="modal inmodal" id="add-transpoter-quote" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">Add Quote for</h4>
+      </div>
+      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">      
+          <div class="col-md-6 col-sm-6 col-xs-6">
+               <%= label_tag :region, "Region", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :region,  options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region] ) , {:required => false , :prompt => "-- Select a Region --", :class => 'form-control width-100per' }  %>
+            </div>
+          </div>    
+
+          <div class="col-md-6 col-sm-6 col-xs-6">
+
+             <%= label_tag :zone, "Zone", { :class => ' control-label', :required => true } %>
+
+              <div class="">
+                <%= select_tag :zone, options_from_collection_for_select([], "id", "name", params[:zone]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "region",
+                  "data-option-url" => "/locations/#{:region}/children",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              </div>
+            </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :woreda, "Woreda", { :class => ' control-label', :required => true } %>
+
+              <div class="">
+                <%= select_tag :woreda, options_from_collection_for_select([], "id", "name", params[:woreda]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "zone",
+                  "data-option-url" => "/locations/#{:zone}/children",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              </div>
+            </div>
+       
+        
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Select a Hub --", :class => 'form-control width-100per' }  %>
+            </div>
+         </div>
+      </div>
+
+          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :warehouse, "Warehouse", { :class => ' control-label', :required => true } %>
+
+              <div class="">
+                <%= select_tag :warehouse, options_from_collection_for_select([], "id", "name", params[:warehouse]),
+                  :required => true , :class => 'form-control width-100per', :style => 'min-width: 80px',
+                  "data-option-dependent" => true,
+                  "data-option-observed" => "hub",
+                  "data-option-url" => "/warehouses/#{:hub}.json",
+                  "data-option-key-method" => :id,
+                  "data-option-value-method" => :name %>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <label class='control-label'>Tariff</label> <br>
+                <%= number_field_tag :tariff, '', min: 0, max: 9999999999999999, :step => 'any', class: "number", placeholder: '0.00' %>
+                </div>
+            </div>
+      
+      
+          
+        <div class="spinner col-md-12 col-sm-12 col-xs-12">
+            
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <div class="pll-right" style="width:inherit;"> 
+           Add more
+            <%= check_box_tag 'keep_creating', false %>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 colxs-6">
+             <div class="form-group">
+            <input  type="hidden" name="bid_id" id="bid_id" value="" />
+            <input  type="hidden" name="transporter_id" id="transporter_id" value="" />
+          <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="save-ws-btn" data-ftid=<%= params[:id] %>>Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <script>
 $(document).on("click", ".rfq-modal",function(){
   var bid_id = $(this).data('id');
@@ -212,6 +338,22 @@ $(document).on("click", ".rfq-modal",function(){
   $(".form-group #bid_id").val(bid_id);
   $(".form-group #transporter").val(transporter_id);
   $('select[name=transporter]').val(transporter_id)
-   $('select[name=transporter]').attr('disabled', true)
+  $('select[name=transporter]').attr('disabled', true)
 });
+
+$(document).on("click", ".add-transpoter-quote",function(){
+  var bid_id = $(this).data('bid-id');
+  var transporter_id = $(this).data('transporter-id');
+  var transporter_name = $(this).data('transporter-name');
+  $(".form-group #bid_id").val(bid_id);
+  $(".form-group #transporter_id").val(transporter_id);
+
+
+  $('#modal-title').append(': ' + transporter_name);
+  $('#add-transpoter-quote .spinner').show(); 
+  $('#add-transpoter-quote .form-container').hide(); 
+
+});
+
+
 </script>
