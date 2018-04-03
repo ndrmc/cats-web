@@ -1,42 +1,36 @@
 class OperationPolicy < ApplicationPolicy
   
   def index?
-      @current_user.permission('Operation', User.user_types[:guest])
+    @current_user.permission('Operation', :guest)
   end
 
 
   def show?
-    permission = Permission.where(name: 'Operation', user_type: :guest).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Operation', :guest)
   end
 
  
   def new?
-    permission = Permission.where(name: 'Operation', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Operation', :clerk)
   end
 
   
   def edit?
-    permission = Permission.where(name: 'Operation', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Operation', :clerk)
   end
 
   
   def create?
-    permission = Permission.where(name: 'Operation', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Operation', :clerk)
   end
 
   def update?
-    permission = Permission.where(name: 'Operation', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Operation', :clerk)
   end
 
 
   def destroy?
-    permission = Permission.where(name: 'Operation', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Operation', :clerk)
   end
 end
 

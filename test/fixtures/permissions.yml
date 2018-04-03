@@ -21,49 +21,96 @@
 permission1:
     id: 1
     name: 'permission 1'
+    user_type: 0
 #
 permission2:
     id: 2
     name: 'permission 2'
-Dispatch:
-    id: 3
+    user_type: 1
+Dispatch1:
     name: 'Dispatch'
-project:
-    id: 4
+    user_type: 0
+Dispatch2:
+    name: 'Dispatch'
+    user_type: 1
+Dispatch3:
+    name: 'Dispatch'
+    user_type: 2
+Dispatch4:
+    name: 'Dispatch'
+    user_type: 3
+project1:
     name: 'Project'
-Requisition:
-    id: 5
+    user_type: 0
+project2:
+    name: 'Project'
+    user_type: 1
+project3:
+    name: 'Project'
+    user_type: 2
+project4:
+    name: 'Project'
+    user_type: 3
+Requisition1:
     name: 'Requisition'
-delivery:
-    id: 6
+    user_type: 0
+Requisition2:
+    name: 'Requisition'
+    user_type: 1
+Requisition3:
+    name: 'Requisition'
+    user_type: 2
+Requisition4:
+    name: 'Requisition'
+    user_type: 3
+delivery1:
     name: 'Delivery'
-hrd:
-    id: 7
+    user_type: 0
+delivery2:
+    name: 'Delivery'
+    user_type: 1
+delivery3:
+    name: 'Delivery'
+    user_type: 2
+delivery4:
+    name: 'Delivery'
+    user_type: 3
+hrd1:
     name: HRD
+    user_type: 0
+hrd2:
+    name: HRD
+    user_type: 1
+hrd3:
+    name: HRD
+    user_type: 2
+hrd4:
+    name: HRD
+    user_type: 3
 operation2:
     name: 'Operation'
-    user_type: 2
+    user_type: 0
 operation3:
     name: 'Operation'
-    user_type: 3
+    user_type: 1
 operation4:
     name: 'Operation'
-    user_type: 4
+    user_type: 2
 operation5:
     name: 'Operation'
-    user_type: 5
+    user_type: 3
 gift_certificate2:
     name: 'Gift Certificate'
-    user_type: 2
+    user_type: 0
 gift_certificate3:
     name: 'Gift Certificate'
-    user_type: 3
+    user_type: 1
 gift_certificate4:
     name: 'Gift Certificate'
-    user_type: 4
+    user_type: 2
 gift_certificate5:
     name: 'Gift Certificate'
-    user_type: 5
+    user_type: 3
 FrameworkTender2:
     name: 'FrameworkTender'
     user_type: 2
@@ -72,42 +119,69 @@ FrameworkTender3:
     user_type: 3
 FrameworkTender4:
     name: 'FrameworkTender'
-    user_type: 4
+    user_type: 3
 FrameworkTender5:
     name: 'FrameworkTender'
-    user_type: 5
+    user_type: 3
 psnp_plan2:
     name: 'PSNP Annual Plan'
-    user_type: 2
+    user_type: 0
 psnp_plan3:
     name: 'PSNP Annual Plan'
-    user_type: 3
+    user_type: 1
 psnp_plan4:
     name: 'PSNP Annual Plan'
-    user_type: 4
+    user_type: 2
 psnp_plan5:
     name: 'PSNP Annual Plan'
-    user_type: 5
+    user_type: 3
 ration2:
     name: Ration
-    user_type: 2
+    user_type: 0
 ration3:
     name: Ration
-    user_type: 3
+    user_type: 1
 ration4:
     name: Ration
-    user_type: 4
+    user_type: 2
 ration5:
     name: Ration
-    user_type: 5
-Receipts: 
-    id: 11
+    user_type: 3
+Receipts1: 
     name: 'Receipts'
-Location:
-    id: 12
+    user_type: 0
+Receipts2: 
+    name: 'Receipts'
+    user_type: 1
+Receipts3: 
+    name: 'Receipts'
+    user_type: 2
+Receipts4: 
+    name: 'Receipts'
+    user_type: 3
+Location1:
     name: 'locations'
-StockTake:
-    id: 13
+    user_type: 0
+Location2:
+    name: 'locations'
+    user_type: 1
+Location3:
+    name: 'locations'
+    user_type: 2
+Location4:
+    name: 'locations'
+    user_type: 3
+StockTake1:
     name: 'StockTake'
+    user_type: 0
+StockTake2:
+    name: 'StockTake'
+    user_type: 1
+StockTake3:
+    name: 'StockTake'
+    user_type: 2
+StockTake4:
+    name: 'StockTake'
+    user_type: 3
 
 

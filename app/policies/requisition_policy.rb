@@ -4,77 +4,64 @@ class RequisitionPolicy < ApplicationPolicy
 
 
   def index?
-      @current_user.permission('Requisition', User.user_types[:guest])
+    @current_user.permission('Requisition', :guest)
   end
 
   def print?
-    permission = Permission.where(name: 'Requisition', user_type: :guest).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :guest)
   end
 
   def print_rrd?
-    permission = Permission.where(name: 'Requisition', user_type: :guest).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :guest)
   end
 
   def new?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
 
   def edit?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
   def export_requisition_to_excel?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
  
   def update?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
   
   def destroy?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
 
   def get_requisiton_by_number?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
 
   def prepare?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
   def generate?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
   def add_requisition?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
   def summary?
-    permission = Permission.where(name: 'Requisition', user_type: :guest).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :guest)
   end
 
   def delete_regional_requests_fdps_with_zero_ben_no?
-    permission = Permission.where(name: 'Requisition', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Requisition', :clerk)
   end
 
 end

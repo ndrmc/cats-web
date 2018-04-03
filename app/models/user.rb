@@ -102,7 +102,7 @@ enum language: {am: 'am',or: 'or',en: 'en'} , _prefix: :language
     end
 
     def permission(permission, user_type)    
-      return  self.permissions.where(name: 'Ration', user_type: 2).count > 0 ? true : false
+      return  self.permissions.where(name: permission, user_type: user_type).count > 0 ? true : false
     end
     
 end

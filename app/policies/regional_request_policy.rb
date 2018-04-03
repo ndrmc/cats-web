@@ -2,67 +2,56 @@ class RegionalRequestPolicy < ApplicationPolicy
 
 
   def index?
-    @current_user.permission('Regional Requests', User.user_types[:guest])
+    @current_user.permission('Regional Requests', :guest)
   end
 
 
   def show?
-    permission = Permission.where(name: 'Regional Requests', user_type: :guest).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :guest)
   end
 
   
   def new?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end
 
   def edit?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end
 
  
   def create?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end
 
  
   def update?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end
 
  
   def destroy?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end
 
   def add_fdp_to_request?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end
   
   def destroy_regional_request_item?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end
 
   def update_regional_request_item?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end
 
   def request_items?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end
 
   def upload_requests?
-    permission = Permission.where(name: 'Regional Requests', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Regional Requests', :clerk)
   end 
   
 end

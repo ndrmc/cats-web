@@ -1,47 +1,41 @@
 class DeliveryPolicy < ApplicationPolicy
   
   def index?
-    @current_user.permission('Delivery', User.user_types[:guest])
+    @current_user.permission('Delivery', :guest)
   end
 
   # GET /deliveries/1
   # GET /deliveries/1.json
   def show?
-    permission = Permission.where(name: 'Delivery', user_type: :guest).first
-    @current_user.has_permission(permission.id) 
+    @current_user.permission('Delivery', :guest)
   end
 
   # GET /deliveries/new
   def new?
-    permission = Permission.where(name: 'Delivery', user_type: :clerk).first
-    @current_user.has_permission(permission.id) 
+    @current_user.permission('Delivery', :clerk)
   end
 
   # GET /deliveries/1/edit
   def edit?
-    permission = Permission.where(name: 'Delivery', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Delivery', :clerk)
   end
 
   # POST /deliveries
   # POST /deliveries.json
   def create?
-    permission = Permission.where(name: 'Delivery', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Delivery', :clerk)
   end
 
   # PATCH/PUT /deliveries/1
   # PATCH/PUT /deliveries/1.json
   def update?
-    permission = Permission.where(name: 'Delivery', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Delivery', :clerk)
   end
 
   # DELETE /deliveries/1
   # DELETE /deliveries/1.json
   def destroy?
-    permission = Permission.where(name: 'Delivery', user_type: :clerk).first
-    @current_user.has_permission(permission.id)
+    @current_user.permission('Delivery', :clerk)
   end
 
 end
