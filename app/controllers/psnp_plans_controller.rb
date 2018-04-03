@@ -13,7 +13,8 @@ class PsnpPlansController < ApplicationController
   def show
     @psnp_plan = PsnpPlan.find params[:id]
     #@contributions = Contribution.where( psnp_plan_id: @psnp_plan.id)
-    @beneficiaries_by_region = @psnp_plan.psnp_plan_items.group('region_id' ).select( 'region_id, SUM(beneficiary) as total_beneficiaries')
+    @beneficiaries_by_region = @psnp_plan.psnp_plan_items.group('region_id' ).select( 'region_id,
+     SUM(coalesce(beneficiary_public_work ,0) + beneficiary) as total_beneficiaries')
      respond_to do |format|
             format.html
             format.pdf do
