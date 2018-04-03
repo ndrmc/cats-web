@@ -68,8 +68,8 @@ Rails.application.routes.draw do
   get '/transporters/payment_request', to: 'transporters#payment_request'
   get '/transporters/payment_request_items/:id', to: 'transporters#payment_request_items'
   get '/transporters/dispatches_list_per_fdp', to: 'transporters#dispatches_list_per_fdp'
-  get '/transporters/print_payment_request', to: 'transporters#print_payment_request'
-  get 'transporters/print_payment_request_letter', to: 'transporters#print_payment_request_letter'
+  get '/transporters/print_payment_request/:id', to: 'transporters#print_payment_request'
+  get 'transporters/print_payment_request_letter/:id', to: 'transporters#print_payment_request_letter'
   get '/transporters/reject_payment_request', to: 'transporters#reject_payment_request'
   get '/transporters/update_status_all', to: 'transporters#update_status_all'
   post '/transporters/set_market_price', to: 'transporters#set_market_price'
@@ -175,6 +175,7 @@ Rails.application.routes.draw do
   post '/dispatches/check_stock', to: 'dispatches#check_stock' 
   post '/dispatches/validate_quantity', to: 'dispatches#validate_quantity'
   get '/dispatches/basic', to: 'dispatches#basic'
+  get '/dispatches/get_hub_warehouse', to: 'dispatches#get_hub_warehouse'  
   resources :dispatches
  
 

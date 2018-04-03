@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20180328132359) do
+ActiveRecord::Schema.define(version: 20180330113514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -764,6 +763,7 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "ration_id"
+    t.jsonb    "document"
     t.index ["deleted_at"], name: "index_operations_on_deleted_at", using: :btree
   end
 
@@ -965,10 +965,14 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.integer  "kind_ratio"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",        default: false
+    t.boolean  "deleted",                            default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.integer  "duration_public_work"
+    t.integer  "beneficiary_public_work"
+    t.integer  "cash_ratio_public_work"
+    t.integer  "kind_ratio_beneficiary_public_work"
   end
 
   create_table "psnp_plans", force: :cascade do |t|
