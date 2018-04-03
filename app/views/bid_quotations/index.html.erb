@@ -70,13 +70,22 @@
           <% @bid_quotations_details.each do |bid_quotation_detail| %>
           <% @bid_quotation_item = BidQuotationDetail.find(bid_quotation_detail.id) %>
           <tr>      
-                    <td><%=  bid_quotation_detail&.warehouse&.name  %></td>
-                    <td><%=  bid_quotation_detail&.location&.parent&.parent&.name %> </td>
-                    <td><%=  bid_quotation_detail&.location&.parent&.name %> </td>
-                     <td><%=  bid_quotation_detail&.location&.name %> </td>
-                    <td><%=  best_in_place @bid_quotation_item, :tariff, url: '/bid_quotations/update_tariff/' + @bid_quotation_item.id.to_s %>
-                        <td>
-              <%= link_to 'Delete', '/bid_quotations/delete_bid_quuotation_detail/' + @bid_quotation_item.id.to_s, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <td><%=  bid_quotation_detail&.warehouse&.name  %></td>
+            <td><%=  bid_quotation_detail&.location&.parent&.parent&.name %> </td>
+            <td><%=  bid_quotation_detail&.location&.parent&.name %> </td>
+              <td><%=  bid_quotation_detail&.location&.name %> </td>
+            <td>
+              <%= 
+              if policy(BidQuotation).update_tariff?
+                best_in_place @bid_quotation_item, :tariff, url: '/bid_quotations/update_tariff/' + @bid_quotation_item.id.to_s 
+              else 
+                bid_quotation_detail&.tariff
+              end 
+              %>
+            <td>
+              <% if policy(BidQuotation).update_tariff? %>
+                <%= link_to 'Delete', '/bid_quotations/delete_bid_quuotation_detail/' + @bid_quotation_item.id.to_s, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

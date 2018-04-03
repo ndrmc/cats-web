@@ -16,34 +16,159 @@
 users_permissions_project:
         user: admin
         permission: project
-users_permissions_requistion:
+users_permissions_requistion1:
         user: admin
-        permission: Requisition
-users_permissions_dispatch:
+        permission: Requisition1
+users_permissions_requistion2:
         user: admin
-        permission: Dispatch
-users_permissions_receipts:
+        permission: Requisition2
+users_permissions_requistion3:
         user: admin
-        permission: Receipts
-users_permissions_delivery:
+        permission: Requisition3
+users_permissions_requistion4:
         user: admin
-        permission: delivery
-
-user_permission_hrd:
+        permission: Requisition4
+users_permissions_dispatch1:
         user: admin
-        permission: hrd
-user_permission_gift_certificate:
+        permission: Dispatch1
+users_permissions_dispatch2:
         user: admin
-        permission: gift_certificate
-user_permission_psnp_plan:
+        permission: Dispatch2
+users_permissions_dispatch3:
         user: admin
-        permission: psnp_plan
-user_permission_ration:
+        permission: Dispatch3
+users_permissions_dispatch4:
         user: admin
-        permission: ration
-user_permission_location:
+        permission: Dispatch4
+users_permissions_receipts1:
         user: admin
-        permission: Location
-user_permission_stock_take:
+        permission: Receipts1
+users_permissions_receipts2:
         user: admin
-        permission: StockTake
+        permission: Receipts2
+users_permissions_receipts3:
+        user: admin
+        permission: Receipts3
+users_permissions_receipts4:
+        user: admin
+        permission: Receipts4
+users_permissions_delivery1:
+        user: admin
+        permission: delivery1
+users_permissions_delivery2:
+        user: admin
+        permission: delivery2
+users_permissions_delivery3:
+        user: admin
+        permission: delivery3
+users_permissions_delivery4:
+        user: admin
+        permission: delivery4
+user_permission_hrd1:
+        user: admin
+        permission: hrd1
+user_permission_hrd2:
+        user: admin
+        permission: hrd2
+user_permission_hrd3:
+        user: admin
+        permission: hrd3
+user_permission_hrd4:
+        user: admin
+        permission: hrd4
+user_permission_operation2:
+        user: admin
+        permission: operation2
+user_permission_operation3:
+        user: admin
+        permission: operation3
+user_permission_operation3:
+        user: admin
+        permission: operation4
+user_permission_operation4:
+        user: admin
+        permission: operation5
+user_permission_gift_certificate2:
+        user: admin
+        permission: gift_certificate2
+user_permission_gift_certificate3:
+        user: admin
+        permission: gift_certificate3
+user_permission_gift_certificate4:
+        user: admin
+        permission: gift_certificate4
+user_permission_gift_certificate5:
+        user: admin
+        permission: gift_certificate5
+user_permission_FrameworkTender2:
+        user: admin
+        permission: FrameworkTender2
+user_permission_FrameworkTender3:
+        user: admin
+        permission: FrameworkTender3
+user_permission_FrameworkTender4:
+        user: admin
+        permission: FrameworkTender4
+user_permission_FrameworkTender5:
+        user: admin
+        permission: FrameworkTender5
+user_permission_psnp_plan2:
+        user: admin
+        permission: psnp_plan2
+user_permission_psnp_plan3:
+        user: admin
+        permission: psnp_plan3
+user_permission_psnp_plan4:
+        user: admin
+        permission: psnp_plan4
+user_permission_psnp_plan5:
+        user: admin
+        permission: psnp_plan5
+user_permission_ration2:
+        user: admin
+        permission: ration2
+user_permission_ration3:
+        user: admin
+        permission: ration3
+user_permission_ration4:
+        user: admin
+        permission: ration4
+user_permission_ration5:
+        user: admin
+        permission: ration5
+user_permission_location1:
+        user: admin
+        permission: Location1
+user_permission_location2:
+        user: admin
+        permission: Location2
+user_permission_location3:
+        user: admin
+        permission: Location3
+user_permission_location4:
+        user: admin
+        permission: Location4
+user_permission_stock_take1:
+        user: admin
+        permission: StockTake1
+user_permission_stock_take2:
+        user: admin
+        permission: StockTake2
+user_permission_stock_take3:
+        user: admin
+        permission: StockTake3
+user_permission_stock_take4:
+        user: admin
+        permission: StockTake4
+user_permission_project1:
+        user: admin
+        permission: project1
+user_permission_project2:
+        user: admin
+        permission: project2
+user_permission_project3:
+        user: admin
+        permission: project3
+user_permission_project4:
+        user: admin
+        permission: project4

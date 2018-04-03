@@ -25,9 +25,11 @@
             <%= link_to  t(:receipt_plan) , projects_path %>
           </li>
           <%end%>
+          <% if policy(FrameworkTender).index? %>
           <li class="<%= 'active' if is_active_controller('framework_tenders') %>">
             <%= link_to t(:framework_tender), framework_tenders_path %>
           </li>
+          <%end%>
           <%if policy(Ration).index? %>
           <li class="<%= 'active' if is_active_controller('rations') || is_active_controller('ration_items')  %>">
             <%= link_to t(:ration), rations_path %>
