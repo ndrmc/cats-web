@@ -92,6 +92,35 @@ class DispatchesController < ApplicationController
             format.json { render :json => @stock.to_json }
         end
     end
+
+    def get_hub_warehouse    
+        @fdp_id = dispatch_params["fdp_id"]
+        @requisition_no = dispatch_params["requisition_number"]
+        @requisition = Requisition.where(:requisition_no => @requisition_no).first
+        @data = []
+        ProjectCodeAllocation.includes(:hub, :warehouse, :store, project: :organization).where(:requisition_id => @requisition.id).each do |pca|
+            @data << { 'hub_id' => pca&.hub_id, 'hub' => pca&.hub&.name, 'warehouse_id' => pca&.warehouse_id, 'warehouse' => pca&.warehouse&.name, 'store_id' => pca&.store_id, 'store' => pca&.store&.name, 'project_id' => pca&.project_id, 'project' => pca&.project&.project_code, 'donor_id' => pca&.project&.organization_id, 'donor' => pca&.organization&.name }        
+        end
+
+        if (@data.empty?)
+            WarehouseAllocationItem.includes(:hub, :warehouse).where(:requisition_id => @requisition.id, :fdp_id => @fdp_id).each do |wai|
+                @data << { 'hub_id' => wai&.hub_id, 'hub' => wai&.hub&.name, 'warehouse_id' => wai&.warehouse_id, 'warehouse' => wai&.warehouse&.name, 'store_id' => '', 'store' => '', 'project_id' => '', 'project' => '', 'donor_id' => '', 'donor' => '' }        
+            end
+        end
+
+        if (@data.empty?)
+            @zone = Fdp.includes(:location).find(@fdp_id).location.parent
+            if(@zone.warehouse_id.present?)
+                @warehouse = Warehouse.includes(:hub).find(@zone.warehouse_id)
+                @data << { 'hub_id' => @warehouse&.hub_id, 'hub' => @warehouse&.hub&.name, 'warehouse_id' => @warehouse&.id, 'warehouse' => @warehouse&.name, 'store_id' => '', 'store' => '', 'project_id' => '', 'project' => '', 'donor_id' => '', 'donor' => '' }
+            end
+        end
+
+        respond_to do |format|
+            format.html
+            format.json { render :json => @data.to_json }
+        end
+    end
     
     def dispatch_report
 
@@ -117,6 +146,7 @@ class DispatchesController < ApplicationController
             @region = @zone&.parent
         end
         @dispatch = Dispatch.new
+        @stores = Store.order(:name)
     end
 
     def create 

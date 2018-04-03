@@ -1,36 +1,35 @@
 class LocationPolicy < ApplicationPolicy
   
   def index?
-     @current_user.has_permission('locations')
+    @current_user.permission('locations', :guest)
   end
 
  
   def show?
-     @current_user.has_permission('locations') && @current_user.user_type_in([ 'admin','manager'])
+    @current_user.permission('locations', :manager)
   end
 
 
   def create?
-    @current_user.has_permission('locations') && @current_user.user_type_in(['admin',  'manager'])
-   
+    @current_user.permission('locations', :manager)
   end
 
   
   def edit?
-    @current_user.has_permission('locations') && @current_user.user_type_in(['admin', 'manager'])
+    @current_user.permission('locations', :manager)
   end
 
   def update?
-    @current_user.has_permission('locations') && @current_user.user_type_in([ 'admin', 'manager'])
+    @current_user.permission('locations', :manager)
   end
 
  
   def destroy?
-    @current_user.has_permission('locations') && @current_user.user_type_in([ 'admin',  'manager'])
+    @current_user.permission('locations', :manager)
   end
 
   def children?
-    @current_user.has_permission('locations') && @current_user.user_type_in([ 'admin',  'cleark',  'manager']) 
+    @current_user.permission('locations', :clerk)
   end
 end
 

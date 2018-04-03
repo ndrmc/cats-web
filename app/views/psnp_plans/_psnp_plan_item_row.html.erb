@@ -1,8 +1,11 @@
 <tr id="psnp_plan-item-<%= @psnp_plan_item.id %>">
     <td><%= @psnp_plan_item.woreda.name  %></td>
     <td id="starting-month-<%= @psnp_plan_item.id %>"><%= Date::MONTHNAMES[@psnp_plan_item.starting_month] %></td>
+    <td id="duration-PDS<%= @psnp_plan_item.id %>"><%= @psnp_plan_item.duration_public_work %></td>
+    <td id="beneficiary-PDS<%= @psnp_plan_item.id %>"><%= @psnp_plan_item.beneficiary_public_work %></td>
     <td id="duration-<%= @psnp_plan_item.id %>"><%= @psnp_plan_item.duration %></td>
     <td id="beneficiary-<%= @psnp_plan_item.id %>"><%= @psnp_plan_item.beneficiary %></td>
+   
     <td>
       <a href="#" data-toggle="modal" data-target="#edit-psnp_plan-item" data-psnp_plan-item-id="<%= @psnp_plan_item.id %>">edit</a>
       <a onclick="remove_psnp_item(<%= @psnp_plan_item.id %>);" data-confir="Are you sure?" >delete</a>
