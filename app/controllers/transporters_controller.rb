@@ -1,5 +1,6 @@
 class TransportersController < ApplicationController
   require 'humanize'
+  include Number
   before_action :set_transporter, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   # GET /transporters
@@ -42,7 +43,8 @@ class TransportersController < ApplicationController
       received_qty = 0
       requisition_nos = to.transport_order_items.map { |toi| toi.requisition_no }
       fdp_ids = to.transport_order_items.map { |toi| toi.fdp_id }
-      DeliveryDetail.joins(:delivery).where(:'deliveries.transporter_id' => to.transporter_id, :'deliveries.status' => :verified, :'deliveries.requisition_number' => requisition_nos, :'deliveries.fdp_id' => fdp_ids).each do |dd|
+
+      DeliveryDetail.joins(:delivery).where(:'deliveries.transporter_id' => to.transporter_id,:'deliveries.requisition_number' => requisition_nos, :'deliveries.fdp_id' => fdp_ids).where('deliveries.status > 0').each do |dd|
         received_qty += UnitOfMeasure.find(dd.uom_id.to_i).to_ref(dd.received_quantity.to_f) 
       end     
 
@@ -76,7 +78,8 @@ end
 
 def transporter_verify_detail
   @transport_order =[]
-
+  @transporter = Transporter.find(params[:transporter_id])
+  @order_no = TransportOrder.find(params[:order_id])
    @requisitions = TransportOrderItem.joins(transport_order: [:operation])
     .where(:'transport_orders.id' => params[:order_id], 
     :'transport_orders.transporter_id' => params[:transporter_id], 
@@ -84,8 +87,7 @@ def transporter_verify_detail
      @dispatch_summary = Transporter.fdp_verification(params[:transporter_id], params[:operation_id], @requisitions)  
      @dispatch_summary = @dispatch_summary.select { |hash| hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:draft]) ||
      hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:verified])  ||  hash['delivery_status'] == Delivery.statuses.key(Delivery.statuses[:reverted])  }
-     @transporter = Transporter.find(params[:transporter_id])
-     @order_no = TransportOrder.find(params[:order_id])
+     
      if  $transport_orders.present?
       $transport_orders.each do | to |
        @transport_order << to if to['id'].to_i == params[:order_id].to_i
@@ -179,10 +181,12 @@ def processPayment
                   
                      @deliveries_with_status_verified.each do |delivery|
                           delivery.delivery_details.each do |delivery_item|
-                          
+                            
+                          received_qty = UnitOfMeasure.find(delivery_item&.uom_id.to_i).to_ref(delivery_item&.received_quantity.to_f)
+
                           @tariff = get_tariff(  @transporter_id, delivery_item&.delivery&.fdp_id,delivery_item&.delivery&.requisition_number)
                           
-                          @transport_order_id = TransportOrder.includes(:transport_order_items).where(transporter_id: @transporter_id, :'transport_order_items.fdp_id' => delivery&.fdp_id, :'transport_order_items.requisition_no' => delivery&.requisition_number).first.transport_order_id
+                          @transport_order_id = TransportOrder.includes(:transport_order_items).where(transporter_id: @transporter_id, :'transport_order_items.fdp_id' => delivery&.fdp_id, :'transport_order_items.requisition_no' => delivery&.requisition_number).first.id
                           
                           @payment_request_items = PaymentRequestItem.new
                           @payment_request_items.requisition_no = delivery_item&.delivery&.requisition_number
@@ -191,11 +195,13 @@ def processPayment
                           @payment_request_items.fdp_id = delivery_item&.delivery&.fdp_id
                           @payment_request_items.hub_id = Dispatch.find_by(gin_no: delivery_item&.delivery&.gin_number)&.hub_id
                           @payment_request_items.commodity_id = delivery_item&.commodity_id
+                          @payment_request_items.unit_of_measure_id = delivery_item&.uom_id
                           @payment_request_items.dispatched = delivery_item&.sent_quantity
                           @payment_request_items.received  = delivery_item&.received_quantity
                           @payment_request_items.loss = delivery_item&.loss_quantity
+                          @payment_request_items.market_price = delivery_item&.market_price
                           @payment_request_items.tariff =  @tariff&.tariff
-                          @payment_request_items.freightCharge = @tariff&.tariff.to_s.to_d * delivery_item&.received_quantity.to_s.to_d
+                          @payment_request_items.freightCharge = (@tariff&.tariff.to_s.to_d * delivery_item&.received_quantity.to_s.to_d * 10) - (delivery_item.loss_quantity * 10 * delivery_item.market_price)
                           @payment_request_items.transport_order_id = @transport_order_id
 
                           @payment_request.payment_request_items << @payment_request_items
@@ -218,16 +224,35 @@ def processPayment
 end
 def print_payment_request
       transporter_id = params[:transporter_id]
-      @payment_requested =  PaymentRequestItem.includes(:payment_request).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open)
-      @received = @payment_requested.sum(:received)
-      @dispatched = @payment_requested.sum(:dispatched )
-      @freight_charge = @payment_requested.sum(:freightCharge)
-      @loss_quantity = @payment_requested.sum(:loss)
-      @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
+      @received = 0
+      @dispatched = 0
+      @loss_quantity = 0
+      @loss_charge = 0
+      @payment_requested = []
+      PaymentRequestItem.includes(:payment_request, :fdp, :hub).where(:'payment_requests.id' => payment_request_id, :'payment_requests.status' => :open).each do |pri|
+        target_unit = UnitOfMeasure.find_by(name: "Quintal")
+        current_unit = UnitOfMeasure.find(pri&.unit_of_measure_id)
+        received_in_quintal = target_unit.convert_to(current_unit.name, pri&.received.to_f)
+        dispatched_in_quintal = target_unit.convert_to(current_unit.name, pri&.dispatched.to_f)
+        shortage_in_quintal = target_unit.convert_to(current_unit.name, pri&.loss.to_f)
+        shortage_in_birr = shortage_in_quintal * pri.market_price
+
+        @received += received_in_quintal
+        @dispatched += dispatched_in_quintal
+        @loss_quantity += shortage_in_quintal
+        @loss_charge += shortage_in_birr
+
+        ltcd = "09/2010"
+        @payment_requested << { requisition_no: pri&.requisition_no, reference_no: pri&.payment_request&.reference_no, gin_no: pri&.gin_no, grn_no: pri&.grn_no, ltcd: ltcd, commodity: pri&.commodity&.name, source: pri&.hub&.name, destination: pri&.fdp&.name, received_qty: received_in_quintal, tariff: pri&.tariff, shortage_qty: shortage_in_quintal, shortage_birr: shortage_in_birr, freight_charge: pri&.freightCharge }
+      end
+      @payment_requested_obj = PaymentRequestItem.includes(:payment_request, :fdp, :hub).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open)
+      @freight_charge = @payment_requested_obj.sum(:freightCharge)
+      @transporter = Transporter.find_by(id: @payment_requested_obj.first&.payment_request&.transporter_id)&.name
+
        respond_to do |format|
             format.html
             format.pdf do
-                pdf = PaymentRequestPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name)
+                pdf = PaymentRequestPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @loss_charge)
                 send_data pdf.render, filename: "payment_request.pdf",
                 type: "application/pdf",
                 disposition: "inline"
@@ -237,19 +262,39 @@ def print_payment_request
 end
 
 def print_payment_request_letter
-     transporter_id = params[:transporter_id]
-      @payment_requested =  PaymentRequestItem.includes(:payment_request).where(:'payment_requests.transporter_id' => transporter_id, :'payment_requests.status' => :open)
+     payment_request_id = params[:id]
+      @payment_requested =  PaymentRequestItem.includes(:payment_request, :commodity).where(:'payment_requests.id' => payment_request_id, :'payment_requests.status' => :open)
     
-      @received = @payment_requested.sum(:received)
-      @dispatched = @payment_requested.sum(:dispatched )
+      @loss_quantity = 0
+      @loss_charge = 0
+      @received = 0
+      @dispatched = 0
+      @payment_requested.each do |pri|        
+        @qtl = UnitOfMeasure.find_by(name: 'Quintal')
+        if (pri.unit_of_measure_id?)
+          @unit_to_be_changed = UnitOfMeasure.find_by(id: pri.unit_of_measure_id).name
+        else
+          @unit_to_be_changed = UnitOfMeasure.find_by(code: 'MT').name
+        end
+        @dispatched += @qtl.convert_to(@unit_to_be_changed, pri.dispatched)
+        @received += @qtl.convert_to(@unit_to_be_changed, pri.received)
+        @loss_quantity += @qtl.convert_to(@unit_to_be_changed, pri.loss)
+        @loss_charge += @qtl.convert_to(@unit_to_be_changed, pri.loss) * pri.market_price
+      end
       @freight_charge = @payment_requested.sum(:freightCharge)
-      @loss_quantity = @payment_requested.sum(:loss)
-      @freight_charge_in_words = @freight_charge.humanize(decimals_as: :digits)
+      @loss_charge_in_words = num_to_am_words_wrapper(@loss_charge)
+      # @freight_charge_in_words = @freight_charge.humanize(decimals_as: :digits)
+      @freight_charge_in_words = num_to_am_words_wrapper(@payment_requested.sum(:freightCharge))
       @transporter = Transporter.find_by(id: @payment_requested.first&.payment_request&.transporter_id)&.name
+      @commodity_list = @payment_requested.uniq{|x| x.commodity.name}
+      @commodity_string = ""
+      @commodity_list.each do |cl|
+        @commodity_string += "/" + cl.commodity.name
+      end
        respond_to do |format|
             format.html
             format.pdf do
-                pdf = PaymentRequestLetterPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @freight_charge_in_words)
+                pdf = PaymentRequestLetterPdf.new(@payment_requested,@dispatched,@received,@freight_charge, @transporter, @current_user.first_name, @loss_quantity, @freight_charge_in_words, @commodity_string, @loss_charge_in_words, @loss_charge)
                 send_data pdf.render, filename: "payment_request_letter.pdf",
                 type: "application/pdf",
                 disposition: "inline"
@@ -279,29 +324,50 @@ def payment_request
   
 end
 
-def payment__request_items
+def payment_request_items
   @id = params[:id]
   @amount_paid = 0
   @payment_request = PaymentRequest.find(@id)
-  @payment__request_items = PaymentRequestItem.where(payment_request_id: @id)
-  if @payment__request_items.present?
+  # @payment_request_items = PaymentRequestItem.where(payment_request_id: @id)
+  
+  @payment_request_items = []
+  PaymentRequestItem.where(payment_request_id: @id).each do |pri|
+
+    @qtl = UnitOfMeasure.find_by(name: 'Quintal')
+    if (pri.unit_of_measure_id?)
+      @unit_to_be_changed = UnitOfMeasure.find_by(id: pri.unit_of_measure_id).name
+    else
+      @unit_to_be_changed = UnitOfMeasure.find_by(code: 'MT').name
+    end
+    dispatched = @qtl.convert_to(@unit_to_be_changed, pri.dispatched)
+    received = @qtl.convert_to(@unit_to_be_changed, pri.received)
+    loss = @qtl.convert_to(@unit_to_be_changed, pri.loss)
+
+    @amount_paid += pri.freightCharge
+
+    @payment_request_items << { reference_no: @payment_request.reference_no, requisition_no: pri.requisition_no, gin_no: pri.gin_no, grn_no: pri.grn_no, commodity: pri&.commodity&.name, hub: pri&.hub&.name, fdp: pri&.fdp&.name, dispatched: dispatched, received: received, loss: loss, tariff: pri.tariff, freightCharge: pri.freightCharge }
+  end
+
+  if @payment_request_items.present?
     @payment_request_id = @id
-    @referenceNo =  @payment__request_items&.first&.payment_request&.reference_no
-    @transporter = Transporter.find(@payment__request_items&.first&.payment_request&.transporter_id)
-    @amount_paid = @payment__request_items.sum(:freightCharge)
-  else
-    @payment__request_items = []
+    @referenceNo =  @payment_request&.reference_no
+    @transporter = Transporter.find(@payment_request&.transporter_id)
   end
 end
 
 def update_status_all
   @transporter_id = params[:transporter_id]
   @status_type = params[:type]
-  @order_no =params[:order_no]
+  @order_no = params[:order_no]
+  @transport_order = TransportOrder.find(params[:order_no])
   @count = 0
+  @requisitions = TransportOrderItem.joins(transport_order: [:operation])
+  .where(:'transport_orders.id' => @transport_order.id, 
+  :'transport_orders.transporter_id' => params[:transporter_id], 
+  :'transport_orders.operation_id' => @transport_order.operation_id).pluck(:requisition_no)
  if params[:type].present?
   if @status_type == 'verify'
-        deliveries_with_status_verified =  Delivery.where('deliveries.transporter_id = ?', @transporter_id).where('status = ? or status = ?',Delivery.statuses[:draft], Delivery.statuses[:reverted])
+        deliveries_with_status_verified =  Delivery.where('deliveries.transporter_id = ?', @transporter_id).where('deliveries.requisition_number IN (?)', @requisitions).where('status = ? or status = ?',Delivery.statuses[:draft], Delivery.statuses[:reverted])
                 if deliveries_with_status_verified.present?
                   deliveries_with_status_verified.each do |delivery|
                     delivery.delivery_details.each do |item|
@@ -333,7 +399,7 @@ def update_status_all
                 end
         end
   elsif @status_type == 'revert'
-        deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified)
+        deliveries_with_status_verified =  Delivery.where(:'deliveries.transporter_id' => @transporter_id , :'status' => :verified).where('deliveries.requisition_number IN (?)', @requisitions)
         if deliveries_with_status_verified.present?
                         if (deliveries_with_status_verified.update_all(:'status' => Delivery.statuses[:draft]))  
                                respond_to do |format|

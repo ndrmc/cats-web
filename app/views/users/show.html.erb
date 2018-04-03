@@ -185,39 +185,6 @@
 
 
 
-
-
-
-
-<div class="wrapper wrapper-content">
-  <div class="ibox float-e-margins">
-   <div class="ibox-title">
-          <h5>Department</h5>
-          <div class="pull-right">
-          <%= link_to 'Join / Leave Department',  {:controller => "users", :action => "user_departments", :user_id => @user.id }, :class => "btn btn-success btn-sm" %>
-   </div>
-   </div>
-
-    <div class="ibox-content">
-
- 
-
-  
-        <table class="table table-bordered">
-          <tbody>
-            <% @all_departments.each do |department| %>
-              <tr>
-               
-                <td><%= department.name %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-    </div>
-  </div>
-</div>
-
-
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
 
@@ -230,31 +197,41 @@
    </div>
     <div class="ibox-content">
 
-    
-
-  
-
-     
-
-
-        <table class="table table-bordered">
-          <tbody>
-            <% @all_permissions.each do |permission| %>
-              <tr>
-                <td>
-                 
-                  <%= permission.name %>
-                </td>
-               
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-
-       
-
-     
-
+    <table class="table table-bordered cats-datatable" id="tbl">
+        <thead>
+          <tr>
+             <th>Activity</th>
+             <th>Guest</th>
+             <th>Clerk</th>
+             <th>Manager</th>
+             <th>Admin</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <% @unique_permissions.each do |permission| %>
+            <tr>
+              <td><%= permission %></td>
+              <td>
+                <% guest_permission = @all_permissions.where(name: permission, user_type: :guest).first %>
+                <%= check_box_tag "permissions[#{guest_permission.id}]", 1 , @user.permissions.include?(guest_permission), :disabled => true %>
+              </td>
+              <td>
+                <% clerk_permission = @all_permissions.where(name: permission, user_type: :clerk).first %>
+                <%= check_box_tag "permissions[#{clerk_permission.id}]", 1 , @user.permissions.include?(clerk_permission), :disabled => true  %>
+              </td>
+              <td>
+                <% manager_permission = @all_permissions.where(name: permission, user_type: :manager).first %>
+                <%= check_box_tag "permissions[#{manager_permission.id}]", 1 , @user.permissions.include?(manager_permission), :disabled => true  %>
+              </td>
+              <td>
+                <% admin_permission = @all_permissions.where(name: permission, user_type: :admin).first %>
+                <%= check_box_tag "permissions[#{admin_permission.id}]", 1 , @user.permissions.include?(admin_permission), :disabled => true  %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
 
     </div>
   </div>

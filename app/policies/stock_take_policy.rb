@@ -1,36 +1,36 @@
 class StockTakePolicy < ApplicationPolicy
 
     def index?
-         @current_user.has_permission('StockTake')
+        @current_user.permission('StockTake', :guest)
     end
 
     def show?
-         @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('StockTake', :clerk)
     end
 
      def edit?
-         @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('StockTake', :clerk)
     end
 
     def new?
-         @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('StockTake', :clerk)
     end
 
     def create?
-        @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('StockTake', :clerk)
     end
 
     def post_stock_take?
-        @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('StockTake', :clerk)
     end
     
 
     def update?
-         @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('StockTake', :clerk)
     end
 
     def destroy?
-        @current_user.has_permission('StockTake') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('StockTake', :clerk)
     end
     
 

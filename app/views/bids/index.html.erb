@@ -12,9 +12,13 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Bid).new? %>
       <%= link_to 'New Bid', new_bid_path, :class => "btn btn-primary"%>
       &middot;
+    <% end %>
+    <% if policy(Bid).contracts? %>
       <%= link_to 'Contracts', '/en/framework_tenders/contracts/' + @framework_tender.id.to_s, :class => "btn btn-info"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -23,11 +27,6 @@
  <div class="ibox-title">
    <h3> <strong> Framework Tender: <%= @framework_tender.year.to_s + '/' + @framework_tender.half_year.to_s %> </strong> </h3></div>
   <div class="ibox-content col-md-12 col-sm-12 col-xs-12">
- 
-
-
-
-  
     <div class="col-sm-1">
       <% if (@framework_tender&.status == 'approved') %>
         <span class="label label-primary"><%= @framework_tender&.status %></span>
@@ -117,10 +116,6 @@
         </div>
       </div>
     </div>
-
-
-
-
 </div>
 </div>
 
@@ -172,49 +167,61 @@
                 </button>
                 <ul class="dropdown-menu pull-right">
                   <li>
+                  <% if policy(Bid).edit? %>
                     <%= link_to 'Edit', edit_bid_path(bid) %>
+                  <% end %>
                   </li>                  
                   <li>
+                  <% if policy(Bid).request_for_quotations? %>
                     <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx"> Download RFQ </a>
+                  <% end %>
                   </li>
                   <li>
+                  <% if policy(Bid).upload_rfq? %>
                     <a href="#" class='rfq-modal' data-toggle="modal" data-id="<%= bid.id %>" data-target="#rfq-modal">Upload RFQ</a>
+                  <% end %>
                   </li>
                   <li>
+                  <% if policy(Bid).generate_winners? %>
                     <%= link_to 'Generate Bid Winners', '/bids/' + bid.id.to_s + '/generate_winners', method: :post, data: { confirm: 'This action will close the bid. Are you sure you want to generate winners?' } %>
+                  <% end %>
                   </li>
                   <li>
+                  <% if policy(Bid).view_bid_winners? %>
                     <a href="/bids/view_bid_winners/<%= bid.id %>"> View Bid Winners </a>
+                  <% end %>
                   </li>
                   <li>
+                  <% if policy(Bid).destroy? %>
                     <%= link_to 'Delete', bid, method: :delete, data: { confirm: 'Are you sure?' } %>
+                  <% end %>
                   </li>
                 </ul>
               </div>
-               <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu pull-right">
-                      <li>
-                       <%= link_to 'Approve', 'bids/update_status/' + bid.id.to_s + "/" +  "approved" %> 
-                      </li>
-                     
-                      <li>
-                       <%= link_to 'Cancel', 'bids/update_status/' + bid.id.to_s + "/" +  "canceled" %> 
-                      </li>
+              <% if policy(Bid).update_status? %>
+              <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Status
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                  <li>
+                    <%= link_to 'Approve', 'bids/update_status/' + bid.id.to_s + "/" +  "approved" %> 
+                  </li>
+                  
+                  <li>
+                    <%= link_to 'Cancel', 'bids/update_status/' + bid.id.to_s + "/" +  "canceled" %> 
+                  </li>
 
-                      <li>
-                       <%= link_to 'Close', 'bids/update_status/' + bid.id.to_s + "/" +  "closed" %> 
-                      </li>
+                  <li>
+                    <%= link_to 'Close', 'bids/update_status/' + bid.id.to_s + "/" +  "closed" %> 
+                  </li>
 
-                      <li>
-                       <%= link_to 'Archive', 'bids/update_status/' + bid.id.to_s + "/" +  "archived" %> 
-                      </li>
-                    </ul>
-                  </div>
-
-
+                  <li>
+                    <%= link_to 'Archive', 'bids/update_status/' + bid.id.to_s + "/" +  "archived" %> 
+                  </li>
+                </ul>
+              </div>
+              <% end %>
             </td>
           </tr>
           <% end %>

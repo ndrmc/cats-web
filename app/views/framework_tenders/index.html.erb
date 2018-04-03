@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(FrameworkTender).new? %>
       <%= link_to 'New Framework Tender', new_framework_tender_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -24,24 +26,24 @@
       <table class="table table-striped cats-datatable">
         <thead>
           <tr>
-                        <th>Year</th>
-                        <th>Half year</th>
-                        <th>Starting month</th>
-                        <th>Ending month</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+            <th>Year</th>
+            <th>Half year</th>
+            <th>Starting month</th>
+            <th>Ending month</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
           <% @framework_tenders.each do |framework_tender| %>
           <tr>
-                        <td>
-                         <% if framework_tender.status != 'archived' %>
-                           <%= link_to framework_tender.year, framework_tender_path(framework_tender.id) %>
-                        <% else %>
-                           <%=  framework_tender.year %>
-                        <% end %>
+              <td>
+              <% if framework_tender.status != 'archived' %>
+                  <%= link_to framework_tender.year, framework_tender_path(framework_tender.id) %>
+              <% else %>
+                  <%=  framework_tender.year %>
+              <% end %>
               </td>
                         <td><%= framework_tender.half_year
               %></td>
@@ -54,10 +56,12 @@
               %></td>                        
 
                         <td>
-              
-              <%= link_to 'Edit', edit_framework_tender_path(framework_tender), :class => "btn btn-warning" %> &middot;
-              <%= link_to 'Delete', framework_tender, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
-              
+              <% if policy(FrameworkTender).edit? %>
+                <%= link_to 'Edit', edit_framework_tender_path(framework_tender), :class => "btn btn-warning" %> &middot;
+              <% end %>
+              <% if policy(FrameworkTender).destroy? %>
+                <%= link_to 'Delete', framework_tender, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %> &middot;
+              <% end %>
               <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">More...
                       <span class="caret"></span>
@@ -71,13 +75,15 @@
                           <%= link_to 'Bids', framework_tender_path(framework_tender.id) %>
                         <% end %> 
                       </li>
+                      <% if policy(FrameworkTender).update_status? %>
                        <li>
-                           <% if framework_tender.status == 'open' %>
-                                      <%= link_to 'Close', '/framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "closed", :data => {:confirm => 'Do you want to close it?'} %>    
-                              <% else %>
-                                    <%= link_to 'Re-open', '/framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "open", :data => {:confirm => 'Re-open?'} %> 
-                              <% end %>
+                          <% if framework_tender.status == 'open' %>
+                            <%= link_to 'Close', '/framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "closed", :data => {:confirm => 'Do you want to close it?'} %>    
+                          <% else %>
+                            <%= link_to 'Re-open', '/framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "open", :data => {:confirm => 'Re-open?'} %> 
+                          <% end %>
                          </li>
+                      <% end %>
                     </ul>
                   </div>
             </td>
