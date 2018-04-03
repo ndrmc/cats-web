@@ -33,7 +33,10 @@
                                     
                                   </li>                     
                                   <li>                    
-                                   <%= link_to 'Payment history', '/transporters/payment_request?transporter=' + @transporter.id.to_s %>  
+                                   <%= link_to 'Payment Request List', '/transporters/payment_request?transporter=' + @transporter.id.to_s %>  
+                                  </li>
+                                  <li>                    
+                                   <%= link_to 'Cheque List', '/en/transporter_payments' %>  
                                   </li>
                                   <li>
                                       <%= link_to 'Contracts', "", class: ""%>

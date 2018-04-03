@@ -320,4 +320,3 @@ if PaymentType.count == 0
   PaymentType.create(name: 'United Bank')
 end
 
-

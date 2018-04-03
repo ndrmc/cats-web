@@ -19,5 +19,6 @@ class Permission < ApplicationRecord
     has_many :department_permissions
 
     validates :name, presence: true
-    validates :name, uniqueness: true
+
+    enum user_type: [:guest, :clerk, :manager, :admin]
 end

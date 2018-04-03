@@ -17,6 +17,4 @@ class BidQuotation < ApplicationRecord
   belongs_to :bid
   belongs_to :transporter
   has_many :bid_quotation_details, dependent: :destroy
-
-  validates_numericality_of :tariff, greater_than_or_equal_to: 0, only_decimal: true, allow_nil: true
 end
