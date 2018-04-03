@@ -1,8 +1,7 @@
 class ReceiptPolicy < ApplicationPolicy
 
     def index?
-        permission = Permission.where(name: 'Receipts', user_type: :guest).first
-        @current_user.has_permission(permission.id)
+       @current_user.permission('Receipts', User.user_types[:guest])
     end
 
 

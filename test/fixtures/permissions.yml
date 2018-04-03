@@ -40,15 +40,66 @@ delivery:
 hrd:
     id: 7
     name: HRD
-gift_certificate:
-    id: 8
+operation2:
+    name: 'Operation'
+    user_type: 2
+operation3:
+    name: 'Operation'
+    user_type: 3
+operation4:
+    name: 'Operation'
+    user_type: 4
+operation5:
+    name: 'Operation'
+    user_type: 5
+gift_certificate2:
     name: 'Gift Certificate'
-psnp_plan:
-    id: 9
+    user_type: 2
+gift_certificate3:
+    name: 'Gift Certificate'
+    user_type: 3
+gift_certificate4:
+    name: 'Gift Certificate'
+    user_type: 4
+gift_certificate5:
+    name: 'Gift Certificate'
+    user_type: 5
+FrameworkTender2:
+    name: 'FrameworkTender'
+    user_type: 2
+FrameworkTender3:
+    name: 'FrameworkTender'
+    user_type: 3
+FrameworkTender4:
+    name: 'FrameworkTender'
+    user_type: 4
+FrameworkTender5:
+    name: 'FrameworkTender'
+    user_type: 5
+psnp_plan2:
     name: 'PSNP Annual Plan'
-ration:
-    id: 10
+    user_type: 2
+psnp_plan3:
+    name: 'PSNP Annual Plan'
+    user_type: 3
+psnp_plan4:
+    name: 'PSNP Annual Plan'
+    user_type: 4
+psnp_plan5:
+    name: 'PSNP Annual Plan'
+    user_type: 5
+ration2:
     name: Ration
+    user_type: 2
+ration3:
+    name: Ration
+    user_type: 3
+ration4:
+    name: Ration
+    user_type: 4
+ration5:
+    name: Ration
+    user_type: 5
 Receipts: 
     id: 11
     name: 'Receipts'

@@ -1,8 +1,7 @@
 class DeliveryPolicy < ApplicationPolicy
   
   def index?
-    permission = Permission.where(name: 'Delivery', user_type: :guest).first
-    @current_user.has_permission(permission.id) 
+    @current_user.permission('Delivery', User.user_types[:guest])
   end
 
   # GET /deliveries/1

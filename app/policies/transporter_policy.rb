@@ -2,8 +2,7 @@ class TransporterPolicy < ApplicationPolicy
      
  
   def index?
-     permission = Permission.where(name: 'Transporters', user_type: :guest).first
-     @current_user.has_permission(permission.id)
+     @current_user.permission('Transporters', User.user_types[:guest])
   end
 
   def show?

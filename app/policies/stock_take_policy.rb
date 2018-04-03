@@ -1,8 +1,7 @@
 class StockTakePolicy < ApplicationPolicy
 
     def index?
-         permission = Permission.where(name: 'StockTake', user_type: :guest).first
-         @current_user.has_permission(permission.id)
+         @current_user.permission('StockTake', User.user_types[:guest])
     end
 
     def show?

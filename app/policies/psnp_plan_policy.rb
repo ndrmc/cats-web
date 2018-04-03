@@ -2,8 +2,7 @@ class PsnpPlanPolicy < ApplicationPolicy
     
     
   def index?
-     permission = Permission.where(name: 'PSNP Annual Plan', user_type: :guest).first
-     @current_user.has_permission(permission.id)
+     @current_user.permission('PSNP Annual Plan', User.user_types[:guest])
   end
 
   def show?

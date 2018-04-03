@@ -4,8 +4,7 @@ class RequisitionPolicy < ApplicationPolicy
 
 
   def index?
-    permission = Permission.where(name: 'Requisition', user_type: :guest).first
-    @current_user.has_permission(permission.id)
+      @current_user.permission('Requisition', User.user_types[:guest])
   end
 
   def print?

@@ -32,15 +32,66 @@ users_permissions_delivery:
 user_permission_hrd:
         user: admin
         permission: hrd
-user_permission_gift_certificate:
+user_permission_operation2:
         user: admin
-        permission: gift_certificate
-user_permission_psnp_plan:
+        permission: operation2
+user_permission_operation3:
         user: admin
-        permission: psnp_plan
-user_permission_ration:
+        permission: operation3
+user_permission_operation3:
         user: admin
-        permission: ration
+        permission: operation4
+user_permission_operation4:
+        user: admin
+        permission: operation5
+user_permission_gift_certificate2:
+        user: admin
+        permission: gift_certificate2
+user_permission_gift_certificate3:
+        user: admin
+        permission: gift_certificate3
+user_permission_gift_certificate4:
+        user: admin
+        permission: gift_certificate4
+user_permission_gift_certificate5:
+        user: admin
+        permission: gift_certificate5
+user_permission_FrameworkTender2:
+        user: admin
+        permission: FrameworkTender2
+user_permission_FrameworkTender3:
+        user: admin
+        permission: FrameworkTender3
+user_permission_FrameworkTender4:
+        user: admin
+        permission: FrameworkTender4
+user_permission_FrameworkTender5:
+        user: admin
+        permission: FrameworkTender5
+user_permission_psnp_plan2:
+        user: admin
+        permission: psnp_plan2
+user_permission_psnp_plan3:
+        user: admin
+        permission: psnp_plan3
+user_permission_psnp_plan4:
+        user: admin
+        permission: psnp_plan4
+user_permission_psnp_plan5:
+        user: admin
+        permission: psnp_plan5
+user_permission_ration2:
+        user: admin
+        permission: ration2
+user_permission_ration3:
+        user: admin
+        permission: ration3
+user_permission_ration4:
+        user: admin
+        permission: ration4
+user_permission_ration5:
+        user: admin
+        permission: ration5
 user_permission_location:
         user: admin
         permission: Location
