@@ -1,10 +1,11 @@
 require 'prawn/table'
 class TransportRequisitionPdf < PdfReport
     def initialize(tr_id, reason_for_idps, cc_letter_to)
-        super top_margin: 50, :page_size => "A4", :page_layout => :portrait
+        super top_margin: 50, :page_size => "A4", :position => :center, :page_layout => :landscape
         @transport_requisition = TransportRequisition.find(tr_id)
         @list_of_tris = TransportRequisition.joins(transport_requisition_items: [:commodity, :requisition, fdp: :location]).find(tr_id).transport_requisition_items
         @operation = Operation.includes(:program).find(@transport_requisition.operation_id)
+        @reason_for_idps = reason_for_idps
         @tri_struct = []
         @list_of_tris.find_each do |tri|
          tri_full = OpenStruct.new
@@ -28,7 +29,9 @@ class TransportRequisitionPdf < PdfReport
 
         @aggr_tri = tri_full_list.group_by { |h| h[:requisition_id] }.map do |a,b| 
             {:requisition_id => a.to_s, :quantity => b.map {|h1| h1[:quantity]}.inject(:+)} 
-          end
+        end
+
+        @cc_letter_to = cc_letter_to
 
         header "Transport Requisition Form"
         text "Date " + Time.now.strftime("%d-%b-%Y"), :align => :right
@@ -37,16 +40,10 @@ class TransportRequisitionPdf < PdfReport
         transport_requisitions
         text "\n"
         text "\n"
-        text "Remark:- Allocated for " + @operation.program.name
-        text reason_for_idps
-        text "Date of req " + Time.now.strftime("%d-%b-%Y")
-        text "Received Date " + Time.now.strftime("%d-%b-%Y")
-        text "For the Month of " + @operation.round.to_s + " round " + Date::MONTHNAMES[@operation.month] + " " + @operation.year
+        remark_section
         text "\n"
         text "\n"
-        text cc_letter_to
-        text "\n\n"
-        text "Requested by: ...................................................    Certified by: ..................................................."
+        signature_section
         footer "Commodity Allocation and Tracking System"
     end
 
@@ -56,6 +53,58 @@ class TransportRequisitionPdf < PdfReport
         # columns(1..3).align = :right
         self.row_colors = ["DDDDDD", "FFFFFF"]
         self.header = true
+        end
+    end
+
+    def signature_section
+        table_data = [
+            [
+                {
+                    :content => "Requested by: ................................................",
+                    :padding_left => 30
+                },
+                {
+                    :content => "Certified by: ................................................",
+                    :padding_left => 100
+                }
+            ]
+        ]
+
+        table(table_data, :width => 500, :cell_style => { :inline_format => true }) do |t|
+            t.cells.border_width = 0
+        end
+    end
+
+    def remark_section
+        table_data = [
+            [{:content => "<b><u>Remark:</u></b>", :colspan => 2, :align => :center}],
+            [
+                {
+                    :content => "For Information\n" +
+                                "Information Center /LCT/\n" +
+                                "Addis Ababa\n\n\n" +
+                                "CC\n" +
+                                @cc_letter_to,
+                                # "Mekele Central Ware House\n" +
+                                # "<u>Mekele<u>",
+                    :width => 100,
+                    :padding_left => 30
+                },
+                {
+                    :content => "Allocated for " + @operation.program.name + "\n" +
+                                @reason_for_idps + "\n" +
+                                "Date of req " + Time.now.strftime("%d-%b-%Y") + "\n" +
+                                "Received Date " + Time.now.strftime("%d-%b-%Y") + "\n" +
+                                "For the Month of " + @operation.round.to_s + " round " + Date::MONTHNAMES[@operation.month] + " " + @operation.year,
+                    :width => 100,
+                    :padding_left => 75
+                }
+            ]
+        ]
+
+        table(table_data, :width => 500, :cell_style => { :inline_format => true }) do |t|
+            t.cells.border_width = 0
+            # t.cells.padding = 0
         end
     end
 
