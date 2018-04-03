@@ -13,6 +13,7 @@ class WarehousesController < ApplicationController
   def show
     hub = Hub.find(params[:id])
     respond_to do |format|
+      format.html { render :show }
       format.json { render :json => hub.warehouses }
     end
   end
