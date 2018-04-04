@@ -4,8 +4,12 @@
     <td><%= contribution&.pledged_date&.strftime("%F") %></td>
     <td><%= contribution.amount %><%= contribution.contribution_type == 'cash' ? ' USD' : ' mt' %></td>
     <td>
+    <% if policy(Contribution).edit? %>
         <a href="#" data-toggle="modal" data-target="#contribution-modal" data-contribution-id="<%= contribution.id %>">edit</a> 
         &middot; 
+    <% end %>
+    <% if policy(Contribution).destroy? %>
         <a href="#" class="delete-contribution" data-contribution-id="<%= contribution.id %>">delete</a>
+    <% end %>
     </td>
 </tr>

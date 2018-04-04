@@ -7,6 +7,7 @@
       <strong>Description:</strong>
       <%= @role_type.description %>
     </p>
-
+<% if policy(RoleType).edit? %>
 <%= link_to 'Edit', edit_role_type_path(@role_type) %> |
+<% end %>
 <%= link_to 'Back', role_types_path %>

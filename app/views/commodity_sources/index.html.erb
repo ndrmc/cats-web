@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(CommoditySource).new? %>
       <%= link_to 'New Commodity Source', new_commodity_source_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -38,8 +40,12 @@
                         <td><%= commodity_source.name
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_commodity_source_path(commodity_source) %> &middot;
-              <%= link_to 'Delete', commodity_source, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(CommoditySource).edit? %>
+                <%= link_to 'Edit', edit_commodity_source_path(commodity_source) %> &middot;
+              <% end %>
+              <% if policy(CommoditySource).destroy? %>
+                <%= link_to 'Delete', commodity_source, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

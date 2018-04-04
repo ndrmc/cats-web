@@ -73,12 +73,18 @@
               <td>
               <% if warehouse_allocation[:status] == :allocated %>                 
                 <% if warehouse_allocation[:edited] %>
-                  <%= link_to 'Reset', '/warehouse_allocations/reset_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to reset warehouse allocations of FDPs to their default warehouses. All the updates you made will be lost. Are you sure?" }, :class => "btn btn-warning" %>
-                  &middot;
-                <% end %>   
-                <%= link_to 'Close', '/warehouse_allocations/close_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to close this warehouse allocation. You will not be able to edit it after you close it. Are you sure?" }, :class => "btn btn-default" %>
+                  <% if policy(WarehouseAllocation).reset_allocation? %>
+                    <%= link_to 'Reset', '/warehouse_allocations/reset_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to reset warehouse allocations of FDPs to their default warehouses. All the updates you made will be lost. Are you sure?" }, :class => "btn btn-warning" %>
+                    &middot;
+                  <% end %>
+                <% end %>  
+                <% if policy(WarehouseAllocation).close_allocation? %> 
+                  <%= link_to 'Close', '/warehouse_allocations/close_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to close this warehouse allocation. You will not be able to edit it after you close it. Are you sure?" }, :class => "btn btn-default" %>
+                <% end %>
               <% elsif warehouse_allocation[:status] == :ready %>
-                <%= link_to 'Allocate', '/warehouse_allocations/generate?' + {operation: params[:operation], region: warehouse_allocation[:region_id]}.to_param, method: :post, data: { confirm: "All #{warehouse_allocation[:region_name]} FDPs under this operation will be warehouse allocated according to their default settings. Are you sure?" }, :class => "btn btn-primary" %>
+                <% if policy(WarehouseAllocation).generate? %> 
+                  <%= link_to 'Allocate', '/warehouse_allocations/generate?' + {operation: params[:operation], region: warehouse_allocation[:region_id]}.to_param, method: :post, data: { confirm: "All #{warehouse_allocation[:region_name]} FDPs under this operation will be warehouse allocated according to their default settings. Are you sure?" }, :class => "btn btn-primary" %>
+                <% end %>
               <% end %>           
               </td>
             </tr>

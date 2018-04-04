@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-7">
     <div class="title-action">
+    <% if policy(CommodityCategory).new? %>
       <%= link_to 'New Commodity Category', new_commodity_category_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -44,8 +46,12 @@
             <td><%= commodity_category.code_am %></td>
             <td><%= commodity_category.description %></td>
             <td>
+            <% if policy(CommodityCategory).edit? %>
               <%= link_to 'Edit', edit_commodity_category_path(commodity_category) %> &middot;
+            <% end %>
+            <% if policy(CommodityCategory).destroy? %>
               <%= link_to 'Delete', commodity_category, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% end %>
             </td>
           </tr>
           <% end %>

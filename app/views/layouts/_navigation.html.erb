@@ -67,12 +67,16 @@
         <%= link_to t(:request_allocation), requisitions_url %></a>
       </li>
       <%end%>
+      <%if policy(WarehouseAllocation).index? %>
       <li class="<%= 'active' if is_active_controller('warehouse_allocations')  %>">
         <%= link_to t(:warehouse_allocation), warehouse_allocations_url %>
       </li>
+      <% end %>
+      <%if policy(TransportRequisition).index? %>
       <li>
         <%= link_to t(:transport_requisition), transport_requisitions_url %>
       </li>
+      <% end %>
     </ul>
   </li>
 
@@ -89,19 +93,20 @@
       <%end%>
       </li>
       <li class="<%= 'active' if is_active_controller('project_code_allocations')  %>">
-      <% #if policy(ProjectCodeAllocation).index? %>
+      <%if policy(ProjectCodeAllocation).index? %>
             <%= link_to t(:stock_reserve), project_code_allocations_path %>
-      <% #end %>
+      <% end %>
       </li>
        <% if policy(Dispatch).index? %>
       <li class="<%= 'active' if is_active_controller('dispatches')  %>">
             <%= link_to t(:dispatch), "/dispatches/basic" %>
       </li>
       <%end%>      
+      <%if policy(ProjectCodeAllocation).index? %>
        <li class="<%= 'active' if is_active_controller('stock_movements')  %>">
         <%= link_to t(:stock_movements), '/stock_movements/' %>
       </li>
-
+      <% end %>
       <%if policy(StockTake).index? %>
       <li class="<%= 'active' if is_active_controller('stock_takes')  %>">
         <%= link_to t(:adjustment), stock_takes_url %>
@@ -122,22 +127,18 @@
     <span class="fa arrow"></span>
     <% end %>
     <ul class="nav nav-second-level collapse">
-    <% if policy(Transporter).index? %>
+      <% if policy(Transporter).index? %>
       <li class="<%= 'active' if(is_active_controller('transporters') || is_active_controller('transporter_payments'))  %>">
         <%= link_to 'Transporters', transporters_path %>
       </li>
       <%end%>
+      <%if policy(TransportOrder).index? %>
       <li>
         <%= link_to t(:transport_order), transport_orders_url %>
       </li>
+      <% end %>
       <li>
         <a href="#"><%= t(:contract_admin)%></a>
-      </li>
-      <li>
-        <a href="#"><%= t(:payment_request)%></a>
-      </li>
-      <li>
-        <a href="#"><%= t(:payment_tracking)%></a>
       </li>
     </ul>
   </li>

@@ -16,6 +16,7 @@
       <%= @journal.code %>
     </p>
 
-
-<%= link_to 'Edit', edit_journal_path(@journal) %> |
+<% if policy(Journal).edit? %>
+  <%= link_to 'Edit', edit_journal_path(@journal) %> |
+<% end %>
 <%= link_to 'Back', journals_path %>

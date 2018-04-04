@@ -48,10 +48,15 @@
                         <td><%= transporter_payment.status
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_transporter_payment_path(transporter_payment) %> &middot;
-              <%= link_to 'Delete', transporter_payment, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(TransporterPayment).edit? %>
+                <%= link_to 'Edit', edit_transporter_payment_path(transporter_payment) %> &middot;
+              <% end %>
+              <% if policy(TransporterPayment).destroy? %>
+                <%= link_to 'Delete', transporter_payment, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
               <td>
                 <% if transporter_payment.status.present? %>
+                  <% if policy(TransporterPayment).update_status? %>
                             <div class="btn-group">
                                 <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Update Status
                                   <span class="caret"></span>
@@ -74,6 +79,7 @@
                               <%end %>
                                 </ul>
                         </div>
+                    <% end %>
                 <%end%>
                         </td>   
             </td>
