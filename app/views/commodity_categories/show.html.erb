@@ -17,6 +17,9 @@
       <strong>Description:</strong>
       <%= @commodity_category.description %>
     </p>
-
-<%= link_to 'Edit', edit_commodity_category_path(@commodity_category) %> |
-<%= link_to 'Back', commodity_categories_path %>
+<% if policy(CommodityCategory).edit? %>
+  <%= link_to 'Edit', edit_commodity_category_path(@commodity_category) %> |
+<% end %>
+<% if policy(CommodityCategory).destroy? %>
+  <%= link_to 'Back', commodity_categories_path %>
+<% end %>

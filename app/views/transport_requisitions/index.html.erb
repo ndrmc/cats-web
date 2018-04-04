@@ -12,9 +12,11 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(TransportRequisition).new? %>
       <a class="btn btn-primary" data-target="#new-transport-requisition" data-toggle="modal">
           New Transport Requisition
       </a>
+    <% end %>
     </div>
   </div>
 </div>

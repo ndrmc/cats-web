@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(TransporterAddress).new? %>
       <%= link_to 'New Transporter Address', new_transporter_address_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -41,8 +43,12 @@
                         <td><%= transporter_address.email
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_transporter_address_path(transporter_address) %> &middot;
-              <%= link_to 'Delete', transporter_address, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(TransporterAddress).edit? %>
+                <%= link_to 'Edit', edit_transporter_address_path(transporter_address) %> &middot;
+              <% end %>
+              <% if policy(TransporterAddress).destroy? %>
+                <%= link_to 'Delete', transporter_address, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

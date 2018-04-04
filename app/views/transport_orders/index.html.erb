@@ -73,15 +73,19 @@
         <tbody>
           <% @transport_orders.each do |transport_order| %>
           <tr>      
-                    <td>    <%= link_to transport_order.order_no, transport_order_path(transport_order.id) %>
-                    <td> <%= transport_order&.transporter&.name %></td>
-                    <td> <%= transport_order&.location&.name  %></td>
-                    <td> <%= transport_order&.transport_order_items.count(:fdp_id) %> </td>
-                    <td> <%= number_with_delimiter(transport_order&.transport_order_items.sum(:quantity)) %></td>
-                    <td> <%= transport_order.status %> </td>
-                        <td>
+            <td>    <%= link_to transport_order.order_no, transport_order_path(transport_order.id) %>
+            <td> <%= transport_order&.transporter&.name %></td>
+            <td> <%= transport_order&.location&.name  %></td>
+            <td> <%= transport_order&.transport_order_items.count(:fdp_id) %> </td>
+            <td> <%= number_with_delimiter(transport_order&.transport_order_items.sum(:quantity)) %></td>
+            <td> <%= transport_order.status %> </td>
+            <td>
+            <% if policy(TransportOrder).edit? %>
               <%= link_to 'Edit', edit_transport_order_path(transport_order) %> &middot;
+            <% end %>
+            <% if policy(TransportOrder).destroy? %>
               <%= link_to 'Delete', transport_order, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% end %>
             </td>
           </tr>
           <% end %>

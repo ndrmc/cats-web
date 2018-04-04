@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(UnitOfMeasure).new? %>
       <%= link_to 'New Unit Of Measure', new_unit_of_measure_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -48,8 +50,12 @@
             <td><%= unit_of_measure.ratio%></td>
             <td><%= unit_of_measure&.uom_category&.name%></td>
             <td>
+            <% if policy(UnitOfMeasure).edit? %>
               <%= link_to 'Edit', edit_unit_of_measure_path(unit_of_measure) %> &middot;
+            <% end %>
+            <% if policy(UnitOfMeasure).destroy? %>
               <%= link_to 'Delete', unit_of_measure, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% end %>
             </td>
           </tr>
           <% end %>

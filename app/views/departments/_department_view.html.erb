@@ -10,9 +10,9 @@
         <div class="ibox-title">
           <h5>Basic information</h5>
           <div class="ibox-tools">
-          
+          <% if policy(Department).edit? %>
             <%= link_to 'Edit', edit_department_path(@department),  :class => "btn btn-success btn-xs"%>
-           
+          <% end%>
           </div>
         </div>
 

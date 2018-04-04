@@ -7,6 +7,7 @@
       <strong>Description:</strong>
       <%= @permission.description %>
     </p>
-
-<%= link_to 'Edit', edit_permission_path(@permission) %> |
+<% if policy(Permission).edit? %>
+  <%= link_to 'Edit', edit_permission_path(@permission) %> |
+<% end %>
 <%= link_to 'Back', permissions_path %>
