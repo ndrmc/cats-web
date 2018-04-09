@@ -57,6 +57,14 @@
               <%= f.text_field :requested_on, :class => 'datepicker', :disabled => true %>
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
+            <%= f.label :contingency, :class=>"control-label col-md-3 col-sm-3 col-xs-6"%>
+              <%= f.text_field :contingency, :value=> ActionController::Base.helpers.number_with_delimiter(@contingency), :disabled => true %>
+          </div>
+          <div class="form-group col-md-6 col-sm-6 col-xs-12">
+            <%= f.label :amount, :class=>"control-label col-md-3 col-sm-3 col-xs-6"%>
+              <%= f.text_field :amount, :value=> ActionController::Base.helpers.number_with_delimiter(@amount), :disabled => true %>
+          </div>
+          <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :status , :class=>"control-label col-md-3 col-sm-3 col-xs-6"%>
               <%= f.collection_select :status, Requisition.statuses, :first, :first,{include_blank: 'Select Status'} %>
           </div>
@@ -107,10 +115,10 @@
               </td>
               <td>
                
-                <%= ActionController::Base.helpers.number_with_delimiter(user_uom_preference(ri.amount,ri&.requisition&.ration&.ration_items&.first&.unit_of_measure_id)) %>
+                <%= number_with_precision(user_uom_preference(ri.amount,ri&.requisition&.ration&.ration_items&.first&.unit_of_measure_id), precision: 2, delimiter: ",") %>
               </td>
               <td>
-                <%= ri.contingency %>
+                <%= number_with_precision(ri.contingency , precision: 2, delimiter: ",") %>
               </td>
             
             </tr>

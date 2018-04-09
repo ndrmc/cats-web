@@ -62,6 +62,8 @@ class RequisitionsController < ApplicationController
 
   # GET /requisitions/1/edit
   def edit
+    @contingency = RequisitionItem.where(requisition_id: params[:id]).sum(:contingency)
+    @amount = RequisitionItem.where(requisition_id: params[:id]).sum(:amount)
   end
 
 
@@ -156,7 +158,7 @@ class RequisitionsController < ApplicationController
  end
 
   def generate
-
+    psnp_contingency = 0.05
     @request = RegionalRequest.find(params[:request_id])
     if(!@request.generated)
       @operation = Operation.find(@request.operation_id)
@@ -172,10 +174,13 @@ class RequisitionsController < ApplicationController
 
           @requests_per_zone[Integer(zone_id)].each do |request_item|
 
+            amount =  @ration_items.select { |hash| hash[:commodity_id] == Integer(commodity_id) }.first.amount*request_item[:number_of_beneficiaries]
+
             requisition_item = RequisitionItem.new({
                                                      fdp_id: request_item[:fdp_id],
                                                      beneficiary_no: request_item[:number_of_beneficiaries],
-                                                     amount: @ration_items.select { |hash| hash[:commodity_id] == Integer(commodity_id) }.first.amount*request_item[:number_of_beneficiaries]
+                                                     amount: amount,
+                                                     contingency: amount * psnp_contingency
             })
             @requisition_items << requisition_item
 
