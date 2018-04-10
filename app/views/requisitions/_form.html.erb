@@ -115,7 +115,7 @@
               </td>
               <td>
                
-                <%= number_with_precision(user_uom_preference(ri.amount,ri&.requisition&.ration&.ration_items&.first&.unit_of_measure_id), precision: 2, delimiter: ",") %>
+                <%= number_with_precision(user_uom_preference(ri.amout_without_contingency,ri&.requisition&.ration&.ration_items&.first&.unit_of_measure_id), precision: 2, delimiter: ",") %>
               </td>
               <td>
                 <%= number_with_precision(ri.contingency , precision: 2, delimiter: ",") %>
