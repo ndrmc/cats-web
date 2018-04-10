@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Currency).new? %>
       <%= link_to 'New Currency', new_currency_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -40,9 +42,13 @@
             <td><%= currency.name %></td>
             <td><%= currency.description %></td>
             <td>
+            <% if policy(Currency).edit? %>
               <%= link_to 'Edit', edit_currency_path(currency) %>
               &middot;
+            <% end %>
+            <% if policy(Currency).destroy? %>
               <%= link_to 'Delete', currency, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% end %>
             </td>
           </tr>
           <% end %>

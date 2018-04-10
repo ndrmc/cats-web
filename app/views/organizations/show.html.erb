@@ -12,6 +12,7 @@
       <strong>Description:</strong>
       <%= @organization.description %>
     </p>
-
+<% if policy(Organization).edit? %>
 <%= link_to 'Edit', edit_organization_path(@organization) %> |
+<% end %>
 <%= link_to 'Back', organizations_path %>

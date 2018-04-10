@@ -14,9 +14,11 @@
     </ol>
   </div>
   <div class="col-sm-4">
+  <% if policy(TransportRequisition).print? %>
     <a class="btn btn-default pull-right" data-tr-id="<%= @transport_requisition.id.to_s %>" data-target="#print-tr" data-toggle="modal">
         Print
     </a>
+  <% end %>
   </div>
 </div>
 
@@ -325,9 +327,11 @@
                         <%= woreda['total_qty'] %>
                       </td>
                       <td>
+                      <% if policy(TransportOrder).new? %>
                         <a class="create_to_btn" data-target="#new-to-for-exceptions" data-toggle="modal" data-woreda="<%= woreda['woreda_id'] %>" data-woreda-name="<%= woreda['woreda_name'] %>" data-tr="<%= @transport_requisition.id %>">
                             Create TO
                         </a>
+                      <% end %>
                       </td>
                     </tr>
                     <% end %>

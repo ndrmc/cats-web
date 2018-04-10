@@ -12,6 +12,7 @@
       <strong>Email:</strong>
       <%= @transporter_address.email %>
     </p>
-
+<% if policy(TransporterAddress).edit? %>
 <%= link_to 'Edit', edit_transporter_address_path(@transporter_address) %> |
+<% end %>
 <%= link_to 'Back', transporter_addresses_path %>

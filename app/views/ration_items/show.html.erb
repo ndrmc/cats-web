@@ -2,6 +2,7 @@
       <strong>Amount:</strong>
       <%= @ration_item.amount %>
     </p>
-
+<% if policy(RationItem).edit? %>
 <%= link_to 'Edit', edit_ration_item_path(@ration_item) %> |
+<% end %>
 <%= link_to 'Back', ration_items_path %>

@@ -257,6 +257,195 @@ if Permission.where(name: 'BidQuotation').count == 0
   Permission.create(name: 'BidQuotation', user_type: 3, description: '')
 end
 
+if Permission.where(name: 'Adjustment').count == 0
+  Permission.create(name: 'Adjustment', user_type: 0, description: '')
+  Permission.create(name: 'Adjustment', user_type: 1, description: '')
+  Permission.create(name: 'Adjustment', user_type: 2, description: '')
+  Permission.create(name: 'Adjustment', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Commodity').count == 0
+  Permission.create(name: 'Commodity', user_type: 0, description: '')
+  Permission.create(name: 'Commodity', user_type: 1, description: '')
+  Permission.create(name: 'Commodity', user_type: 2, description: '')
+  Permission.create(name: 'Commodity', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'CommodityCategory').count == 0
+  Permission.create(name: 'CommodityCategory', user_type: 0, description: '')
+  Permission.create(name: 'CommodityCategory', user_type: 1, description: '')
+  Permission.create(name: 'CommodityCategory', user_type: 2, description: '')
+  Permission.create(name: 'CommodityCategory', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'CommoditySource').count == 0
+  Permission.create(name: 'CommoditySource', user_type: 0, description: '')
+  Permission.create(name: 'CommoditySource', user_type: 1, description: '')
+  Permission.create(name: 'CommoditySource', user_type: 2, description: '')
+  Permission.create(name: 'CommoditySource', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Contribution').count == 0
+  Permission.create(name: 'Contribution', user_type: 0, description: '')
+  Permission.create(name: 'Contribution', user_type: 1, description: '')
+  Permission.create(name: 'Contribution', user_type: 2, description: '')
+  Permission.create(name: 'Contribution', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Currency').count == 0
+  Permission.create(name: 'Currency', user_type: 0, description: '')
+  Permission.create(name: 'Currency', user_type: 1, description: '')
+  Permission.create(name: 'Currency', user_type: 2, description: '')
+  Permission.create(name: 'Currency', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Department').count == 0
+  Permission.create(name: 'Department', user_type: 0, description: '')
+  Permission.create(name: 'Department', user_type: 1, description: '')
+  Permission.create(name: 'Department', user_type: 2, description: '')
+  Permission.create(name: 'Department', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Donor').count == 0
+  Permission.create(name: 'Donor', user_type: 0, description: '')
+  Permission.create(name: 'Donor', user_type: 1, description: '')
+  Permission.create(name: 'Donor', user_type: 2, description: '')
+  Permission.create(name: 'Donor', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'FdpContact').count == 0
+  Permission.create(name: 'FdpContact', user_type: 0, description: '')
+  Permission.create(name: 'FdpContact', user_type: 1, description: '')
+  Permission.create(name: 'FdpContact', user_type: 2, description: '')
+  Permission.create(name: 'FdpContact', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Fdp').count == 0
+  Permission.create(name: 'Fdp', user_type: 0, description: '')
+  Permission.create(name: 'Fdp', user_type: 1, description: '')
+  Permission.create(name: 'Fdp', user_type: 2, description: '')
+  Permission.create(name: 'Fdp', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Hub').count == 0
+  Permission.create(name: 'Hub', user_type: 0, description: '')
+  Permission.create(name: 'Hub', user_type: 1, description: '')
+  Permission.create(name: 'Hub', user_type: 2, description: '')
+  Permission.create(name: 'Hub', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Journal').count == 0
+  Permission.create(name: 'Journal', user_type: 0, description: '')
+  Permission.create(name: 'Journal', user_type: 1, description: '')
+  Permission.create(name: 'Journal', user_type: 2, description: '')
+  Permission.create(name: 'Journal', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Organization').count == 0
+  Permission.create(name: 'Organization', user_type: 0, description: '')
+  Permission.create(name: 'Organization', user_type: 1, description: '')
+  Permission.create(name: 'Organization', user_type: 2, description: '')
+  Permission.create(name: 'Organization', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Permission').count == 0
+  Permission.create(name: 'Permission', user_type: 0, description: '')
+  Permission.create(name: 'Permission', user_type: 1, description: '')
+  Permission.create(name: 'Permission', user_type: 2, description: '')
+  Permission.create(name: 'Permission', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Program').count == 0
+  Permission.create(name: 'Program', user_type: 0, description: '')
+  Permission.create(name: 'Program', user_type: 1, description: '')
+  Permission.create(name: 'Program', user_type: 2, description: '')
+  Permission.create(name: 'Program', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'RationItem').count == 0
+  Permission.create(name: 'RationItem', user_type: 0, description: '')
+  Permission.create(name: 'RationItem', user_type: 1, description: '')
+  Permission.create(name: 'RationItem', user_type: 2, description: '')
+  Permission.create(name: 'RationItem', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'RoleType').count == 0
+  Permission.create(name: 'RoleType', user_type: 0, description: '')
+  Permission.create(name: 'RoleType', user_type: 1, description: '')
+  Permission.create(name: 'RoleType', user_type: 2, description: '')
+  Permission.create(name: 'RoleType', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'Role').count == 0
+  Permission.create(name: 'Role', user_type: 0, description: '')
+  Permission.create(name: 'Role', user_type: 1, description: '')
+  Permission.create(name: 'Role', user_type: 2, description: '')
+  Permission.create(name: 'Role', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'StockMovement').count == 0
+  Permission.create(name: 'StockMovement', user_type: 0, description: '')
+  Permission.create(name: 'StockMovement', user_type: 1, description: '')
+  Permission.create(name: 'StockMovement', user_type: 2, description: '')
+  Permission.create(name: 'StockMovement', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'StockTakeItem').count == 0
+  Permission.create(name: 'StockTakeItem', user_type: 0, description: '')
+  Permission.create(name: 'StockTakeItem', user_type: 1, description: '')
+  Permission.create(name: 'StockTakeItem', user_type: 2, description: '')
+  Permission.create(name: 'StockTakeItem', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'TransportOrder').count == 0
+  Permission.create(name: 'TransportOrder', user_type: 0, description: '')
+  Permission.create(name: 'TransportOrder', user_type: 1, description: '')
+  Permission.create(name: 'TransportOrder', user_type: 2, description: '')
+  Permission.create(name: 'TransportOrder', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'TransportRequisition').count == 0
+  Permission.create(name: 'TransportRequisition', user_type: 0, description: '')
+  Permission.create(name: 'TransportRequisition', user_type: 1, description: '')
+  Permission.create(name: 'TransportRequisition', user_type: 2, description: '')
+  Permission.create(name: 'TransportRequisition', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'TransporterAddress').count == 0
+  Permission.create(name: 'TransporterAddress', user_type: 0, description: '')
+  Permission.create(name: 'TransporterAddress', user_type: 1, description: '')
+  Permission.create(name: 'TransporterAddress', user_type: 2, description: '')
+  Permission.create(name: 'TransporterAddress', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'TransporterPayment').count == 0
+  Permission.create(name: 'TransporterPayment', user_type: 0, description: '')
+  Permission.create(name: 'TransporterPayment', user_type: 1, description: '')
+  Permission.create(name: 'TransporterPayment', user_type: 2, description: '')
+  Permission.create(name: 'TransporterPayment', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'UnitOfMeasure').count == 0
+  Permission.create(name: 'UnitOfMeasure', user_type: 0, description: '')
+  Permission.create(name: 'UnitOfMeasure', user_type: 1, description: '')
+  Permission.create(name: 'UnitOfMeasure', user_type: 2, description: '')
+  Permission.create(name: 'UnitOfMeasure', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'WarehouseAllocation').count == 0
+  Permission.create(name: 'WarehouseAllocation', user_type: 0, description: '')
+  Permission.create(name: 'WarehouseAllocation', user_type: 1, description: '')
+  Permission.create(name: 'WarehouseAllocation', user_type: 2, description: '')
+  Permission.create(name: 'WarehouseAllocation', user_type: 3, description: '')
+end
+
+if Permission.where(name: 'WarehouseSelection').count == 0
+  Permission.create(name: 'WarehouseSelection', user_type: 0, description: '')
+  Permission.create(name: 'WarehouseSelection', user_type: 1, description: '')
+  Permission.create(name: 'WarehouseSelection', user_type: 2, description: '')
+  Permission.create(name: 'WarehouseSelection', user_type: 3, description: '')
+end
+
 if Department.count == 0
   Department.create(name: 'Early warning')
   Department.create(name: 'FSCD')

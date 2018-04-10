@@ -17,14 +17,19 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu pull-right">
-         
+        <% if policy(TransportOrder).revert? %>
           <li><%= link_to "Revert TO", '' %></li>
+        <% end %>
+        <% if policy(TransportOrder).destroy? %>
           <li><%= link_to "Delete", '' %></li>
+        <% end %>
           <li> 
-              <%= link_to "/transport_orders/print/" + @transport_order.id.to_s + "?format=pdf",  :class => "btn btn-default"  do %>
-                <i class="fa fa-print"></i> 
-                Print
-              <% end %>
+        <% if policy(TransportOrder).destroy? %>
+          <%= link_to "/transport_orders/print/" + @transport_order.id.to_s + "?format=pdf",  :class => "btn btn-default"  do %>
+            <i class="fa fa-print"></i> 
+            Print
+          <% end %>
+        <% end %>
           </li>
         </ul>
         <div></div>

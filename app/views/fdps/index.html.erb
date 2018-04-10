@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Fdp).new? %>
       <%= link_to 'New Fdp', new_fdp_path, :class => "btn btn-primary" %>
+    <% end %>
     </div>
   </div>
 </div>
@@ -46,8 +48,12 @@
 
               <td><%= fdp.active %></td>
               <td>
+              <% if policy(Fdp).edit? %>
                 <%= link_to 'Edit', edit_fdp_path(fdp) %> &middot;
+              <% end %>
+              <% if policy(Fdp).destroy? %>
                 <%= link_to 'Delete', fdp, method: :delete, data: {confirm: 'Are you sure?'} %>
+              <% end %>
               </td>
             </tr>
         <% end %>

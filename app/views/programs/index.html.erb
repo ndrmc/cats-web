@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Program).new? %>
       <%= link_to 'New Program', new_program_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -43,9 +45,13 @@
               <td><%= program.code %></td>
               <td><%= program.description %></td>
               <td>
+              <% if policy(Program).edit? %>
                 <%= link_to 'Edit', edit_program_path(program) %>
                 &middot;
+              <% end %>
+              <% if policy(Program).destroy? %>
                 <%= link_to 'Delete', program, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
               </td>
             </tr>
             <% end %>

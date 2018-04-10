@@ -19,6 +19,7 @@
     </p>
 
    
-
+<% if policy(FdpContact).edit? %>
 <%= link_to 'Edit', edit_fdp_contact_path(@fdp_contact) %> |
+<% end %>
 <%= link_to 'Back', fdp_contacts_path %>

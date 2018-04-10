@@ -2,6 +2,7 @@
       <strong>Name:</strong>
       <%= @commodity_source.name %>
     </p>
-
+<% if policy(CommoditySource).edit? %>
 <%= link_to 'Edit', edit_commodity_source_path(@commodity_source) %> |
+<% end %>
 <%= link_to 'Back', commodity_sources_path %>

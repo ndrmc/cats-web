@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Hub).new? %>
       <%= link_to 'New Hub', new_hub_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -45,8 +47,12 @@
             <td><%= hub.lon %> </td>
             <td>
               <%= link_to 'View', hub_path(hub) %> &middot;
-              <%= link_to 'Edit', edit_hub_path(hub) %> &middot;
-              <%= link_to 'Delete', hub, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(Hub).edit? %>
+                <%= link_to 'Edit', edit_hub_path(hub) %> &middot;
+              <% end %>
+              <% if policy(Hub).destroy? %>
+                <%= link_to 'Delete', hub, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

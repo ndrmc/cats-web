@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(StockTake).new? %>
       <%= link_to 'New Stock Adjustment', new_stock_take_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -45,10 +47,14 @@
               <td><%= stock_take.date%></td>
               <td><span class="badge badge-info"><%= stock_take.draft ? 'Draft' : 'Posted'%></span></td>
               <td>                
-                <% if stock_take.draft %>                  
-                  <%= link_to 'Edit', edit_stock_take_path(stock_take) %> &middot;
+                <% if stock_take.draft %>  
+                  <% if policy(StockTake).edit? %>                
+                    <%= link_to 'Edit', edit_stock_take_path(stock_take) %> &middot;
+                  <% end %>
+                  <% if policy(StockTake).destroy? %>
                     <%= link_to 'Delete', stock_take, method: :delete, data: { confirm: 'Are you sure you want to delete this stock adjustment?' } %>
                   <% end %>
+                <% end %>
               </td>
             </tr>
             <% end %>
