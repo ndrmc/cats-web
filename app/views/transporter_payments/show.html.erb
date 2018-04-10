@@ -52,6 +52,7 @@
       <strong>Status:</strong>
       <%= @transporter_payment.status %>
     </p>
-
-<%= link_to 'Edit', edit_transporter_payment_path(@transporter_payment) %> |
+<% if policy(TransporterPayment).edit? %>
+  <%= link_to 'Edit', edit_transporter_payment_path(@transporter_payment) %> |
+<% end %>
 <%= link_to 'Back', transporter_payments_path %>

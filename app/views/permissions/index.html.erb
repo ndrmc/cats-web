@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Permission).new? %>
       <%= link_to 'New Permission', new_permission_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -38,8 +40,12 @@
                         <td><%= permission.description
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_permission_path(permission) %> &middot;
-              <%= link_to 'Delete', permission, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(Permission).edit? %>
+                <%= link_to 'Edit', edit_permission_path(permission) %> &middot;
+              <% end %>
+              <% if policy(Permission).destroy? %>
+                <%= link_to 'Delete', permission, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

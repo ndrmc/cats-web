@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Role).new? %>
       <%= link_to 'New Role', new_role_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -38,8 +40,12 @@
                         <td><%= role.name
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_role_path(role) %> &middot;
-              <%= link_to 'Delete', role, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(Role).edit? %>
+                <%= link_to 'Edit', edit_role_path(role) %> &middot;
+              <% end %>
+              <% if policy(Role).destroy? %>
+                <%= link_to 'Delete', role, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Donor).new? %>
       <%= link_to 'New Donor', new_donor_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -41,8 +43,12 @@
                     <td><%= donor.source %></td>
                     <td><%= donor.description %></td>
                 <td>
+        <% if policy(Donor).edit? %>
           <%= link_to 'Edit', edit_donor_path(donor) %> &middot;
+        <% end %>
+        <% if policy(Donor).destroy? %>
           <%= link_to 'Delete', donor, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% end %>
         </td>
       </tr>
       <% end %>

@@ -52,7 +52,9 @@
                    
                     <p class='hidden'><%=f.number_field :id%></p>                
                     <p>
+                    <% if policy(Adjustment).update? %>
                         <%= f.submit 'Update Reason', :class=> 'btn btn-primary pull-right' %>
+                    <% end %>
                     </p>
                     <% end %>
                 </div>
