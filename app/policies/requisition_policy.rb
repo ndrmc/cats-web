@@ -40,7 +40,7 @@ class RequisitionPolicy < ApplicationPolicy
 
 
   def get_requisiton_by_number?
-    @current_user.permission('Requisition', :clerk)
+    @current_user.permission('Requisition', :guest)
   end
 
 
