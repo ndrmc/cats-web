@@ -152,6 +152,14 @@
                   <% @dispatch.dispatch_items.each do |dispatch_line| %>
                   
                   <tr class="dispatch-line">
+                  <td style="display: none;">
+                     
+                        <input name="dispatch[dispatch_items[][commodity_category_id]]" id="commodity-category-select" value="<%= dispatch_line&.commodity&.commodity_category&.id %>"/>
+                        </td>
+                        <td style="display: none;">
+                        <input name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" value="<%= dispatch_line&.commodity&.id %>"/>
+                      
+                      </td>
                     <td>
                       <select name="dispatch[dispatch_items[][organization_id]]" class="form-control" readonly>
                         <option value="<%= dispatch_line&.organization&.id %>"><%= dispatch_line&.organization&.name %></option>
@@ -179,11 +187,15 @@
                   </tr>
                     
                   <% end %>
-                  <tr>   
-                      <div style="display: none;">
+                  <tr>  
+                     <td style="display: none;">
+                     
                         <input name="dispatch[dispatch_items[][commodity_category_id]]" id="commodity-category-select" value=""/>
+                        </td>
+                        <td style="display: none;">
                         <input name="dispatch[dispatch_items[][commodity_id]]" id="commodity-select" value=""/>
-                      </div>
+                      
+                    </td>
                       <td>
                         <%= select_tag 'dispatch[dispatch_items[][organization_id]]',  options_from_collection_for_select( Organization.all, 'id', 'name' ) , { :prompt => "-- Choose --",  'data-parsley-required' => 'true', :class => 'form-control', :id => 'donor_select'} %>
                       </td>                      
@@ -368,6 +380,7 @@
               if( null !== commodity_id) {
                   $("#commodity_id_select").val( commodity_id); 
               }
+
               if( null !== commodity_category_id) {
                   $("#commodity_category_id_select").val( commodity_category_id); 
               }
@@ -410,7 +423,7 @@
         var project = $("#dispatch_project_select").find('option:selected').val();
         var unit = $("#uom-select").find('option:selected').val();
         var quantity = $("#quantity-di").val();
-        var requisitionNo = $('#req_no_input').val();
+
         var $this = $(this); 
 
         var $dispatchLineForm = $this.closest('tr'); 
@@ -435,7 +448,7 @@
           return;
         }
 
-        var flag = validate_quantity(this, hub, warehouse, project, quantity, unit, requisitionNo);
+        var flag = validate_quantity(this, hub, warehouse, project, quantity, unit);
         console.log("validate quantity: ");
         console.log(flag);
     }); 
@@ -460,6 +473,109 @@
 
     $('#commodity-category-select').change( function() { 
       var val = $(this).val();
+
+      if( val === '' ) {
+        return; 
+      }
+
+
+      $("#commodity-select > option").addClass('hidden'); 
+      $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
+
+      $("#commodity-select > option:first").removeClass('hidden'); 
+    
+      
+    
+    
+  });
+
+  $(".fdp-selector-disptach").change(function () {
+    var fdpId = $(this).val();
+    var requisitionNo = $('#req_no_input').val();
+
+    populateHubWarehouse(fdpId, requisitionNo);
+  });
+  
+  function populateHubWarehouse(fdpId, requisitionNo)
+  {
+    if( fdpId!="" && fdpId!=null && requisitionNo!="" && requisitionNo!=null)
+    {
+      $.ajax({
+        url:'/en/dispatches/get_hub_warehouse',
+        type:'GET',
+        dataType:'json',
+        data:{
+          dispatch: {
+            fdp_id: fdpId,
+            requisition_number: requisitionNo
+          }	            
+        },
+        before: function() {
+        
+        },
+        success:function(data){
+          var hubOptions = '';
+          var warehouseOptions = '';
+          var storeOptions = '';
+          var projectOptions = '';
+          var donorOptions = '';
+          for(var d in data)
+          {
+            if(data[d]['hub_id']!='' && data[d]['hub_id']!=null)
+              hubOptions += '<option value="' + data[d]['hub_id'] + '">' + data[d]['hub'] + '</option>';
+            if(data[d]['warehouse_id']!='' && data[d]['warehouse_id']!=null)
+              warehouseOptions += '<option value="' + data[d]['warehouse_id'] + '">' + data[d]['warehouse'] + '</option>';
+            if(data[d]['store_id']!='' && data[d]['store_id']!=null)
+              storeOptions += '<option value="' + data[d]['store_id'] + '">' + data[d]['store'] + '</option>';
+            if(data[d]['project_id']!='' && data[d]['project_id']!=null)
+              projectOptions += '<option value="' + data[d]['project_id'] + '">' + data[d]['project'] + '</option>';
+            if(data[d]['donor_id']!='' && data[d]['donor_id']!=null)
+              donorOptions += '<option value="' + data[d]['donor_id'] + '">' + data[d]['donor'] + '</option>';
+          }
+          if(hubOptions!='' && hubOptions!=null)
+            $('#dispatch_hub_id').html(hubOptions); 
+          else
+          {
+            var allHubs = <%= @hubs.to_json.html_safe %>
+            var options = $.map(allHubs, function (val) {
+              return '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+            options.unshift(EMPTY_OPTION);
+            $('#dispatch_hub_id').html(options);
+          }
+          if(warehouseOptions!='' && warehouseOptions!=null)
+            $('#dispatch_warehouse_id').html(warehouseOptions); 
+          else
+            $('#dispatch_warehouse_id').html('');
+          if(storeOptions!='' && storeOptions!=null)
+            $('#store').html(storeOptions); 
+          else
+            $('#store').html('');
+          if(donorOptions!='' && donorOptions!=null)
+            $('#donor_select').html(donorOptions); 
+          else
+          {
+            var allDonors = <%= @donors.to_json.html_safe %>
+            var options = $.map(allDonors, function (val) {
+              return '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+            options.unshift(EMPTY_OPTION);
+            $('#donor_select').html(options);
+          }
+          if(projectOptions!='' && projectOptions!=null)
+            $('#dispatch_project_select').html(projectOptions);    
+          else
+            $('#dispatch_project_select').html('');
+        },
+        error:function(data){
+            console.log(data);
+        }
+      });
+    }
+    else{
+      
+    }
+  }
 
       if( val === '' ) {
         return; 

@@ -88,10 +88,10 @@
             <td>
               <% if(requisition.project_code_allocations.present?) %>
                 
-                <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate</a>
+                <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-uom-category-id="<%= requisition.commodity.uom_category_id %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate</a>
                 <%= link_to 'Reset', '/project_code_allocations/destroy_project_code_allocations/' + requisition.id.to_s , method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-default" %>
               <% else %>
-                <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate</a>
+                <a class="btn btn-primary allocate_pc_to_requisition" data-target="#allocate_pc_to_requisition_modal" data-toggle="modal" data-commodity-id="<%= requisition.commodity_id %>" data-commodity="<%= requisition.commodity.name %>" data-requested-amount="<%=  @requested_amount_to_ref.sum.round(2) %>" data-uom-category-id="<%= requisition.commodity.uom_category_id %>" data-commodity-category-id="<%= requisition.commodity.commodity_category_id %>" data-requisition-id="<%= requisition.id %>" data-operation-id="<%= requisition.operation_id %>">Allocate</a>
               <% end %>              
               
             </td>
@@ -214,7 +214,8 @@ $(document).ready(function() {
     var commodityCategoryId = $(this).attr("data-commodity-category-id");
     var requisitionId = $(this).attr("data-requisition-id");
     var operationId = $(this).attr("data-operation-id");
-
+    var commodityUOMId = $(this).attr("data-uom-category-id");
+    
     $('#commodity_lable').val(commodity);
     $('#requested_amount_lable').val(requested_amount);
     $('#requisition_id').val(requisitionId);
@@ -239,10 +240,10 @@ $(document).ready(function() {
     $('#allocate_pc_to_requisition_modal #project').html(proj_options);
 
     var allUnitOfMeasures = <%= @unit_of_measures.to_json.html_safe %>
-    if ('' === commodityCategoryId)
+    if ('' === commodityUOMId)
       return;
     var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
-      return elem.uom_category_id == commodityCategoryId
+      return elem.uom_category_id == commodityUOMId
     });
     var options = $.map(unitOfMeasuresInCategory, function (val) {
       return '<option value="' + val.id + '">' + val.name + '</option>';

@@ -12,7 +12,7 @@ class HrdsController < ApplicationController
     def show
         @hrd = Hrd.find params[:id]
         @contributions = Contribution.where( hrd_id: @hrd.id)
-        @beneficiaries_by_region = @hrd.hrd_items.group('region_id' ).select( 'region_id, SUM(beneficiary) as total_beneficiaries')
+        @beneficiaries_by_region = @hrd.hrd_items.group('region_id' ).select( 'region_id, SUM(duration * beneficiary) as total_beneficiaries')
         respond_to do |format|
             format.html
             format.pdf do

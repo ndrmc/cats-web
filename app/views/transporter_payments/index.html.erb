@@ -1,0 +1,93 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Transporter Payments</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Lookups</a>
+      </li>
+      <li class="active">
+        <strong>Transporter Payments</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+                        <th>Transporter</th>
+                        <th>Reference No</th>
+                        <th>Cheque no</th>
+                        <th>Voucher no</th>
+                        <th>Bank name</th>
+                        <th>Paid amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @transporter_payments.each do |transporter_payment| %>
+          <tr>
+                     <td> <%= Transporter.find_by(id: transporter_payment&.payment_request&.transporter_id)&.name %></td>
+                        <td><%= transporter_payment&.payment_request&.reference_no
+              %></td>
+                        <td><%= transporter_payment.cheque_no
+              %></td>
+                        <td><%= transporter_payment.voucher_no
+              %></td>
+                        <td><%= transporter_payment.bank_name
+              %></td>
+                        <td><%= transporter_payment.paid_amount
+              %></td>
+                        
+                        <td><%= transporter_payment.status
+              %></td>
+                        <td>
+              <% if policy(TransporterPayment).edit? %>
+                <%= link_to 'Edit', edit_transporter_payment_path(transporter_payment) %> &middot;
+              <% end %>
+              <% if policy(TransporterPayment).destroy? %>
+                <%= link_to 'Delete', transporter_payment, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
+              <td>
+                <% if transporter_payment.status.present? %>
+                  <% if policy(TransporterPayment).update_status? %>
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Update Status
+                                  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                 
+                                <% if transporter_payment.status == 'open' %>                  
+                                  <li>                    
+                                      <%= link_to 'Approve', '/transporter_payments/update_status?status=' + TransporterPayment.statuses[:approved].to_s + "&transporter_payment_id=" + transporter_payment&.id.to_s %>  
+                                  </li>
+                                <% elsif transporter_payment.status == 'approved' %>   
+                                  <li>
+                                      <%= link_to 'Pay',  '/transporter_payments/update_status?status=' + TransporterPayment.statuses[:paid].to_s + "&transporter_payment_id=" + transporter_payment&.id.to_s %>   
+                                  </li>
+                               <% elsif transporter_payment.status == 'Pay' %>   
+                                  <li>
+                                      <%= link_to 'close', '/transporter_payments/update_status?status=' + TransporterPayment.statuses[:close].to_s + "&transporter_payment_id=" + transporter_payment&id.to_s %>   , class: "", method: :delete, data: { confirm: 'Are you sure you want to close this Payment Request?' } %>
+                                  </li>
+                              
+                              <%end %>
+                                </ul>
+                        </div>
+                    <% end %>
+                <%end%>
+                        </td>   
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

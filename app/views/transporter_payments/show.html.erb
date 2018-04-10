@@ -1,0 +1,58 @@
+    <p>
+      <strong>Payment requests:</strong>
+      <%= @transporter_payment.payment_request %>
+    </p>
+
+    <p>
+      <strong>Cheque no:</strong>
+      <%= @transporter_payment.cheque_no %>
+    </p>
+
+    <p>
+      <strong>Voucher no:</strong>
+      <%= @transporter_payment.voucher_no %>
+    </p>
+
+    <p>
+      <strong>Bank name:</strong>
+      <%= @transporter_payment.bank_name %>
+    </p>
+
+    <p>
+      <strong>Paid amount:</strong>
+      <%= @transporter_payment.paid_amount %>
+    </p>
+
+    <p>
+      <strong>Prepared by:</strong>
+      <%= @transporter_payment.prepared_by %>
+    </p>
+
+    <p>
+      <strong>Approved by:</strong>
+      <%= @transporter_payment.approved_by %>
+    </p>
+
+    <p>
+      <strong>Approved date:</strong>
+      <%= @transporter_payment.approved_date %>
+    </p>
+
+    <p>
+      <strong>Datetime:</strong>
+      <%= @transporter_payment.datetime %>
+    </p>
+
+    <p>
+      <strong>Payment date:</strong>
+      <%= @transporter_payment.payment_date %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= @transporter_payment.status %>
+    </p>
+<% if policy(TransporterPayment).edit? %>
+  <%= link_to 'Edit', edit_transporter_payment_path(@transporter_payment) %> |
+<% end %>
+<%= link_to 'Back', transporter_payments_path %>

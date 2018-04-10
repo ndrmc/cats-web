@@ -1,5 +1,5 @@
 class WarehouseAllocationsController < ApplicationController
-  before_action :set_warehouse_allocation, only: [:show, :edit, :update, :destroy]
+  before_action :set_warehouse_allocation, only: [:edit, :update, :destroy]
 
   # GET /warehouse_allocations
   # GET /warehouse_allocations.json
@@ -66,6 +66,24 @@ class WarehouseAllocationsController < ApplicationController
   # GET /warehouse_allocations/1
   # GET /warehouse_allocations/1.json
   def show
+    region_id = params[:id]
+    operation_id = params[:operation]
+
+    @requisition_items = RequisitionItem.joins(requisition: :commodity, fdp: :location)
+    .where('requisitions.operation_id' => operation_id, 'requisitions.region_id' => region_id)
+    .where("beneficiary_no > 0")
+    @warehouse_allocations = []
+    @requisition_items.each do |requisition_detail|
+      @requisition = Requisition.includes(ration: :ration_items).find(requisition_detail.requisition_id)
+      @uom_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id
+      target_unit = UnitOfMeasure.find_by(name: "Quintal")
+      current_unit = UnitOfMeasure.find(@uom_id)
+      quantity_in_ref = target_unit.convert_to(current_unit.name, requisition_detail.amount.to_f)
+
+        @wai = WarehouseAllocationItem.includes(:fdp, :requisition, :warehouse, :hub).where(:fdp_id => requisition_detail.fdp_id, :requisition_id => requisition_detail.requisition.id).first 
+        
+        @warehouse_allocations << { region: requisition_detail.fdp.location.parent.parent.name, warehouse: @wai.warehouse.name, zone: requisition_detail.fdp.location.parent.name, woreda: requisition_detail.fdp.location.name, fdp: requisition_detail.fdp.name, requisition_no: requisition_detail.requisition.requisition_no, commodity: requisition_detail.requisition.commodity.name, allocated: quantity_in_ref }
+      end 
   end
 
   # GET /warehouse_allocations/new

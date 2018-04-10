@@ -2,59 +2,59 @@ class HrdPolicy < ApplicationPolicy
     
 
     def index?
-        @current_user.has_permission('HRD')
+        @current_user.permission('HRD', :guest)
     end
     
     def show?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['guest', 'admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :guest)
     end
     
     def new?
-       @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end
 
     def create?
-         @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end
 
     def edit?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end
     
     def update?
-         @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end
 
     def archive?
-         @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end
 
     def hrd_items?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end
 
     def update_hrd_item?
-      @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end
 
      def edit_hrd_form?
-       @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end 
 
     def new_hrd_item?
-       @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end 
 
     def save_hrd_item?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end 
 
     def remove_hrd_id?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end
 
     def download_hrd_items?
-        @current_user.has_permission('HRD') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
+        @current_user.permission('HRD', :clerk)
     end 
 
 end

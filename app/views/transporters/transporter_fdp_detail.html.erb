@@ -1,0 +1,126 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-8">
+    <h2><%= @transporter&.name %></h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <%= link_to 'Transporters', transporters_path %>
+      </li>
+      <li class="active">
+        <strong><%= @transporter.code %></strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-4">
+    <%= link_to 'Back', '/transporters/' + @transporter.id.to_s, :class => "btn btn-default pull-right", :style => "margin-top: 30px"%>
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px; margin-bottom: 20px;">
+    <div class="col-sm-5">
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Transporter Code:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @transporter&.code %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Transport Order:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @order_no.order_no %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Total Quantity:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+           <%= @transport_order[0]['balance'] %>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-7">
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Estimated Payment:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+           <%= @transport_order[0]['est_payment'] %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Outstanding Payment:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+           <%= @transport_order[0]['est_payment'] -  @transport_order[0]['paid_amount'] %> 
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Confirmed Delivery:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+       <%= @transport_order[0]['confirmed_delivery'] %> 
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Paid Amount:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+        <%= @transport_order[0]['paid_amount'] %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<% user_unit = UnitOfMeasure.find(current_user.default_uom).code %>
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+    <h2> Transporter Summary </h2>
+    <table class="table table-striped cats-datatable">
+      <thead>
+      <tr>
+            <th>FDP</th>
+            <th>Operation</th>
+            <th>Requisition</th>
+            <th>Commodity</th>
+            <th>Allocated (<%= user_unit %>)</th>
+            <th>Dispatched (<%= user_unit %>) </th>
+            <th>Delivered (<%= user_unit %>)</th>
+            <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% if @dispatch_summary.present? %>
+        <% $i = 0 %>
+        <% while $i < @dispatch_summary.count  do %>
+          <tr>
+              <td><%= @dispatch_summary[$i]['fdp'] %></td>
+              <td><%= @dispatch_summary[$i]['operation'] %></td>
+              <td><%= @dispatch_summary[$i]['requisition_no'] %></td>
+              <td><%= @dispatch_summary[$i]['commodity'] %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['allocated_amount']), precision: 2) %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched_amount']), precision: 2) %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['delivered_amount']), precision: 2) %></td>
+              <td><%= link_to 'GINs', '/transporters/dispatches_list_per_fdp?transporter_id=' + @transporter.id.to_s + '&operation_id=' + @dispatch_summary[$i]['operation_id'].to_s + '&fdp_id=' + @dispatch_summary[$i]['fdp_id'].to_s + '&requisition_no=' + @dispatch_summary[$i]['requisition_no'] +'&order_id=' + @order_no.id.to_s %></td>
+          </tr>
+          <% $i = $i + 1 %>
+        <% end %>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>

@@ -118,9 +118,11 @@
       </div>
       <div class="col-md-6 col-sm-6 col-xs-6 text-right">
         <% if (@framework_tender&.status == 'open') %>
-          <a class="btn btn-primary" data-ft-id="<%= @framework_tender_id %>" data-target="#add-warehouse-assignment" data-toggle="modal">
-              Add Warehouse Assignment
-          </a>
+          <% if policy(WarehouseSelection).new? %> 
+            <a class="btn btn-primary" data-ft-id="<%= @framework_tender_id %>" data-target="#add-warehouse-assignment" data-toggle="modal">
+                Add Warehouse Assignment
+            </a>
+          <% end %>
         <% end %>
       </div>
     </div>
@@ -147,8 +149,10 @@
             <td><%= warehouse_selection.warehouse_name %></td>
             <td><%= warehouse_selection.estimated_qty %></td>
             <td>
-              <% if (@framework_tender&.status == 'draft') %>
-                <%= link_to 'Remove', warehouse_selection, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if (@framework_tender&.status == 'open') %>
+                <% if policy(WarehouseSelection).destroy? %> 
+                  <%= link_to 'Remove', warehouse_selection, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <% end %>
               <% end %>
             </td>
           </tr>

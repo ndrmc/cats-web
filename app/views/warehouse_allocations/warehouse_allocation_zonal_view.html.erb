@@ -13,7 +13,8 @@
 
   <div class="col-sm-8">
     <div class="title-action">
-       <a  class = "btn btn-default" href="/warehouse_allocations?operation=<%= params['operation'] %>">Back</a>
+      <a  class = "btn btn-primary" href="/warehouse_allocations/<%= params['region'] %>?operation=<%= params['operation'] %>">View All</a>
+      <a  class = "btn btn-default" href="/warehouse_allocations?operation=<%= params['operation'] %>">Back</a>
     </div>
   </div>
 </div>
@@ -55,14 +56,14 @@
   <div class="ibox float-e-margins">
   <% @requisition_items.each do |zone , requisition_details| %>
     <div class="ibox-title">
-                <h5><%= Location.find(zone).name %></h5>
-                <div class="ibox-tools">
-        
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                </div>
-            </div>
+      <h5><%= Location.find(zone).name %></h5>
+      <div class="ibox-tools">
+
+          <a class="collapse-link">
+              <i class="fa fa-chevron-up"></i>
+          </a>
+      </div>
+    </div>
 
     <div class="ibox-content">
       <table class="table table-striped  cats-datatable">

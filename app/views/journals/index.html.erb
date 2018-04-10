@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Journal).new? %>
       <%= link_to 'New Journal', new_journal_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -52,8 +54,12 @@
               %></td>
             
             <td>
+            <% if policy(Journal).edit? %>
               <%= link_to 'Edit', edit_journal_path(journal) %> &middot;
+            <% end %>
+            <% if policy(Journal).destroy? %>
               <%= link_to 'Delete', journal, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% end %>
             </td>
           </tr>
           <% end %>

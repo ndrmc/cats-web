@@ -16,10 +16,10 @@
   <div class="col-sm-8">
     <div class="title-action">
       <%= link_to 'Back', departments_path,  :class => "btn btn-default"%>
-     
+     <% if policy(Department).destroy? %>
       <%= link_to 'Delete', @department, method: :delete, :class => "btn btn-danger", data: { title: 'Delete Department', confirm: 'Are you sure you want to delete this Department? This will affect all associated records which depend on this department.', commit: 'Yes
       delete!' } %>
-     
+     <% end %>
     </div>
   </div>
 </div>

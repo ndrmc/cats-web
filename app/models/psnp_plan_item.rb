@@ -28,14 +28,23 @@ class PsnpPlanItem < ApplicationRecord
   validate :duration_ratio
 
   def duration_ratio
-    if(self.cash_ratio!=nil || self.kind_ratio!=nil)
+    if(self.cash_ratio_public_work!=nil || self.kind_ratio_beneficiary_public_work!=nil)
+      if self.cash_ratio_public_work + self.kind_ratio_beneficiary_public_work != self.duration_public_work
+        errors.add(:duration, "should be equal to the sum of cash and kind ratio for public work")
+        return false
+      end
+    end
+
+     if(self.cash_ratio!=nil || self.kind_ratio!=nil)
       if self.cash_ratio + self.kind_ratio != self.duration
         errors.add(:duration, "should be equal to the sum of cash and kind ratio")
         return false
       end
     end
+
     return true
   end
+
 
   def woreda
     if @woreda

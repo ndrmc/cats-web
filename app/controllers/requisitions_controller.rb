@@ -71,9 +71,11 @@ class RequisitionsController < ApplicationController
   def update
     requisition = Requisition.find_by_requisition_no requisition_params[:requisition_no]
     if requisition.present?
-       respond_to do |format|
-        format.html { redirect_to requisitions_url, alert: 'Requisition number exists.' }
+     if @requisition.update(update_requisition_params)
+        respond_to do |format|
+        format.html { redirect_to edit_requisition_path(@requisition), notice: 'Requisition number exisits but the other parameters were successfully updated.' }
         format.json { render :edit, status: :ok, location: @requisition }
+        end
       end
     else
       respond_to do |format|
@@ -285,6 +287,21 @@ class RequisitionsController < ApplicationController
       end
     end
   end
+
+  def export_requisition_to_excel
+    @request_allocations = []
+    @request = RegionalRequest.find(params[:id])
+    @requisitions = RequisitionItem.includes( requisition: :commodity, fdp: :location).where({:'requisitions.request_id' => params[:id]}).where('beneficiary_no > 0').each do |ri|
+      @requisition = Requisition.includes(ration: :ration_items).find(ri.requisition_id) 
+      @uom_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id
+      target_unit = UnitOfMeasure.find_by(name: "Quintal")
+      current_unit = UnitOfMeasure.find(@uom_id)
+      quantity_in_ref = target_unit.convert_to(current_unit.name, ri.amount.to_f)
+
+      @request_allocations << { region: ri.fdp.location.parent.parent.name, zone: ri.fdp.location.parent.name, woreda: ri.fdp.location.name, fdp: ri.fdp.name, requisition_no: ri.requisition.requisition_no, beneficiary_no: ri.beneficiary_no, commodity: ri.requisition.commodity.name, amount: quantity_in_ref }
+    end
+  end
+
   private
   def authorize_requisition
     authorize Requisition
@@ -298,6 +315,10 @@ class RequisitionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def requisition_params
     params.require(:requisition).permit(:requisition_no, :operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status)
+  end
+
+  def update_requisition_params
+    params.require(:requisition).permit(:operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status)
   end
 
 end

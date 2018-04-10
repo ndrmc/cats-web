@@ -17,6 +17,7 @@
       <strong>Warehouse:</strong>
       <%= @store.warehouse_id %>
     </p>
-
+<% if policy(Store).edit? %> 
 <%= link_to 'Edit', edit_store_path(@store) %> |
+<% end %>
 <%= link_to 'Back', warehouse_stores_path(@store.warehouse_id,@store) %>

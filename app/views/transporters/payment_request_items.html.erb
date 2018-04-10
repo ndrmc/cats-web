@@ -1,0 +1,213 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Payment Request : <%= @referenceNo %></h2>
+  </div>
+  <div class="col-sm-8">
+
+    <div class="title-action">
+      <% if @payment_request_items.present? && @payment_request&.status == 'open' %>
+        <a  class="btn btn-primary"  data-target="#pay-transporter" data-toggle="modal"> <span class="glyphicon glyphicon-usd"> </span>Pay</a>
+      <% end %>    
+      <%= link_to 'Back', '/transporters/payment_request',  :class => "btn btn-default"%>
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" aria-expanded="true">Tasks
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+          <li>
+              <%= link_to 'Print', "/transporters/print_payment_request/#{@payment_request.id}?format=pdf", class: ""%>
+          </li>
+          <li>
+              <%= link_to 'Print letter', "/transporters/print_payment_request_letter/#{@payment_request.id}?format=pdf", class: ""%>
+          </li>
+        </ul>
+      </div>
+    </div>    
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+  <div class="ibox-content col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px; margin-bottom: 20px;">
+    <div class="col-sm-12">
+      <div class="col-sm-6">
+        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+          <h3><%= @transporter.name %></h3>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <% if (@payment_request&.status == 'open') %>
+          <span class="label label-primary"><%= @payment_request&.status %></span>
+        <% elsif (@payment_request&.status == 'closed') %>
+          <span class="label label-default"><%= @payment_request&.status %></span>
+        <% else %>
+          <span class="label label-default"><%= @payment_request&.status %></span>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Transporter Code:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @transporter&.code %>
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+          Requested Date:
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+          <%= @payment_request&.payment_date&.to_formatted_s(:long_ordinal) %>
+        </div>
+      </div>
+      
+    </div>
+    <div class="col-sm-7">
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Total Delivered:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+          <%= @payment_request_items.map { |h| h[:received] }.sum() %> QTL
+        </div>
+      </div>
+      <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-4 col-xs-4 text-right">
+          Total Payment:
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+           <%= @payment_request_items.map { |h| h[:freightCharge] }.sum() %> ETB
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+    <table class="table table-striped cats-datatable">
+      <thead>
+      <tr>
+            <th>Reference No</th>
+            <th>Requisition No</th>
+            <th>GIN</th>
+            <th>GRN</th>
+            <th>Commodity</th>
+            <th>Source Hub </th>
+            <th>FDP</th>
+            <th>Dispatched [QTL]</th>
+            <th>Received [QTL]</th>
+            <th>Loss [QTL]</th>
+            <th>Tariff [ETB]</th>
+            <th>Freight Charge [ETB]</th>
+      </tr>
+      </thead>
+
+      <tbody>
+          <% @payment_request_items.each do |payment_request_item| %>
+          <tr>
+              <td><%= payment_request_item[:reference_no]  %></td>
+              <td><%= payment_request_item[:requisition_no] %></td>
+              <td><%= payment_request_item[:gin_no] %></td>
+              <td><%= payment_request_item[:grn_no] %></td>
+              <td><%= payment_request_item[:commodity] %></td>
+              <td><%= payment_request_item[:hub] %></td>
+              <td><%= payment_request_item[:fdp] %></td>
+              <td><%= payment_request_item[:dispatched] %></td>
+              <td><%= payment_request_item[:received] %></td>
+              <td><%= payment_request_item[:loss]  %></td>
+              <td><%= payment_request_item[:tariff] %></td>
+              <td><%= payment_request_item[:freightCharge] %></td>
+          </tr>
+          
+       
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+</div>
+
+<div class="modal inmodal" id="pay-transporter" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">Pay Transporter</h4>
+      </div>
+      <form name="transporter_payment" role="form" method="POST" enctype="multipart/form-data" action="/transporter_payments" class="form-inline" style="display: inline;margin-top: 15px">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <%= hidden_field_tag :payment_request_id, @payment_request&.id, class: "",  :name => "transporter_payment[payment_request_id]", :required => true, :display => false  %>
+      <%= hidden_field_tag :paid_amount, @amount_paid, class: "",  :name => "transporter_payment[paid_amount]", :required => true, :display => false  %>
+
+      <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :transporter, "Transporter:" , {:style => "display: block; text-align: left;",:class => 'align-left control-label' } %>
+
+            <div class="">
+              <%= text_field_tag :transporter, nil, class: "form-control width-100per" ,:value => Transporter.find_by(id: @payment_request&.transporter_id)&.name , :name => "transporter_payment[transporter]", :required => true , :readonly => true %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :paid_amount, "Payable Amount [ETB]:", { :style => 'display: block; text-align: left',:class => ' control-label' } %>
+
+              <div class="">
+                <%= number_field_tag :paid_amount, @amount_paid, min: 0, max: 9999999999999999, :step => 'any', class: "form-control number width-100per",  :name => "transporter_payment[paid_amount]", disabled: true %>
+              </div>
+            </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :payment_date, "Payment Date:", { :class => ' control-label'} %>
+
+            <div class="">
+              <%= text_field_tag :payment_date, nil, :class => 'form-control datepicker', :name => "transporter_payment[payment_date]", :required => true  %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :bank_name, "Bank Name:", {:class => ' control-label' } %>
+
+              <div class="">
+                <%= select_tag  :bank_name,  options_from_collection_for_select( PaymentType.all, 'name', 'name', params[:bank_name] ) , {:required => true , :prompt => "-- Select a Payment Type --",:name => "transporter_payment[bank_name]", :class => 'form-control width-100per' }  %>  
+              </div>
+            </div>
+        </div>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <%= label_tag :cheque_no, "Check No:", { :style => 'display: block; text-align: left', :class => ' control-label' } %>
+
+            <div class="">
+              <%= text_field_tag :cheque_no, '',class: "form-control number width-100per",  :name => "transporter_payment[cheque_no]", :required => true  %>
+            </div>
+           </div>
+
+           <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :remark, "Remark:", { :style => 'display: block; text-align: left',:class => ' control-label',  :name => "transporter_payment[remark]" } %>
+
+              <div class="">
+                <%= text_area_tag :remark, '', :class => 'form-control width-100per'  %>
+              </div>
+            </div>
+        </div>
+        <div class="spinner col-md-12 col-sm-12 col-xs-12">
+            
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="submit" id="submit" class="btn btn-primary"><span class="glyphicon glyphicon-usd"> </span>Pay</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

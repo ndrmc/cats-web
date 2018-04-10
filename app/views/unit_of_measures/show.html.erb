@@ -27,6 +27,7 @@
       <strong>Uom category:</strong>
       <%= @unit_of_measure.uom_category_id %>
     </p>
-
-<%= link_to 'Edit', edit_unit_of_measure_path(@unit_of_measure) %> |
+<% if policy(UnitOfMeasure).edit? %>
+  <%= link_to 'Edit', edit_unit_of_measure_path(@unit_of_measure) %> |
+<% end %>
 <%= link_to 'Back', unit_of_measures_path %>

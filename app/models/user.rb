@@ -84,7 +84,7 @@ def self.cache_find(id)
 end
 
 def flush_cache
-  Rails.cache.delete([self.class.name, id])
+  Rails.cache.delete([UnitOfMeasure.name, id])
 end
 
 enum calendar: {ec: 'ec',gc: 'gc'}  
@@ -92,8 +92,8 @@ enum keyboard: {am: 'am',en: 'en'}
 enum language: {am: 'am',or: 'or',en: 'en'} , _prefix: :language
 
 
-    def has_permission(permission)
-         self.permissions.where(name: permission).count > 0 ? true : false
+    def has_permission(permission_id)
+         self.permissions.where(id: permission_id).count > 0 ? true : false
          
     end
 
@@ -101,4 +101,8 @@ enum language: {am: 'am',or: 'or',en: 'en'} , _prefix: :language
         users_types.include?(self.user_types)
     end
 
+    def permission(permission, user_type)    
+      return  self.permissions.where(name: permission, user_type: user_type).count > 0 ? true : false
+    end
+    
 end

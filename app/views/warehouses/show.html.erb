@@ -41,8 +41,9 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="m-b-md">
-
-                  <%= link_to 'Edit', edit_warehouse_path(@warehouse),  :class => "btn btn-default pull-right"%>
+                  <% if policy(Warehouse).edit? %> 
+                    <%= link_to 'Edit', edit_warehouse_path(@warehouse),  :class => "btn btn-default pull-right"%>
+                  <% end %>
                   <h2><%= @warehouse.name %></h2>
                   <h4> <%= @warehouse.description%></h4>
                   <br/>
@@ -121,8 +122,12 @@
                                     <td><%= store.warehouse.name%></td>
                                     <td><%= store.warehouse.hub.name%></td>
                                     <td>
+                                    <% if policy(Store).edit? %> 
                                       <%= link_to 'Edit', edit_store_path(store) %> &middot;
+                                    <% end %>
+                                    <% if policy(Store).destroy? %> 
                                       <%= link_to 'Delete', store, method: :delete, data: { confirm: 'Are you sure?' } %>
+                                    <% end %>
                                     </td>
                                   </tr>
                               <% end %>
@@ -131,7 +136,9 @@
                           </div>
                           <div class="col-sm-8">
                             <div class="title-action">
+                            <% if policy(Store).new? %> 
                               <%= link_to 'New Store', new_warehouse_store_path(@warehouse), :class => "btn btn-primary"%>
+                            <% end %>
                             </div>
                           </div>
                         </div>

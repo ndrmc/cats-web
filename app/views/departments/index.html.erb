@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Department).new? %>
       <%= link_to 'New Department', new_department_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -41,8 +43,12 @@
                         <td><%= department.description
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_department_path(department) %> &middot;
-              <%= link_to 'Delete', department, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(Department).edit? %>
+                <%= link_to 'Edit', edit_department_path(department) %> &middot;
+              <% end%>
+              <% if policy(Department).destroy? %>
+                <%= link_to 'Delete', department, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

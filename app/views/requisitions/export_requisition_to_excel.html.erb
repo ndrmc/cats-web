@@ -1,0 +1,60 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-6">
+    <h2>View All Allocations of Request [<%= @request.reference_number %>]</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Home</a>
+      </li>
+      <li class="active">
+        <strong>View All Allocations of Request</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-6">
+    <div class="title-action">
+      <a  class = "btn btn-default" href="/requisitions/summary/<%= @request.id.to_s %>">Back</a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+            <th>Region</th>            
+            <th>Zone</th>
+            <th>Woreda</th>
+            <th>Destination</th>
+            <th>Requisition No</th>
+            <th>Beneficiary No</th>
+            <th>Item</th>
+            <th>Amount Allocated in Quintals</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @request_allocations.each do |ra| %>
+            <tr>
+                <td> <%=  ra[:region] %> </td>            
+                <td> <%=  ra[:zone] %> </td>
+                <td> <%=  ra[:woreda] %> </td>
+                <td> <%=  ra[:fdp] %> </td>
+                <td> <%=  ra[:requisition_no] %> </td>
+                <td> <%=  ra[:beneficiary_no] %> </td>
+                <td> <%=  ra[:commodity] %> </td>
+                <td> <%=  ra[:amount].round(2) %> </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  
+</div>
+
+</div>

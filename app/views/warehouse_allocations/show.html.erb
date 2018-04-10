@@ -1,33 +1,67 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Warehouse allocation</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Home</a>
+      </li>
+      <li class="active">
+        <strong>View All Warehouse allocations</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+      <a class = "btn btn-default" href="/warehouse_allocations/warehouse_allocation_zonal_view?operation=<%= params['operation'] %>&region=<%= params['region'] %>">Back</a>
+    </div>
+  </div>
+</div>
 
-    <p>
-      <strong>Operation:</strong>
-      <%= @warehouse_allocation.operation_id %>
-    </p>
+<div class="row">
 
-    <p>
-      <strong>Region:</strong>
-      <%= @warehouse_allocation.region_id %>
-    </p>
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content col-sm-12">
 
-    <p>
-      <strong>Status:</strong>
-      <%= @warehouse_allocation.status %>
-    </p>
 
-    <p>
-      <strong>Created by:</strong>
-      <%= @warehouse_allocation.created_by %>
-    </p>
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+            <th>Region</th>
+            <th>Warehouse</th>
+            <th>Zone</th>
+            <th>Woreda</th>
+            <th>Destination</th>
+            <th>Requisition No</th>
+            <th>Item</th>
+            <th>Amount Allocated in Quintals</th>
+          </tr>
+        </thead>
 
-    <p>
-      <strong>Modified by:</strong>
-      <%= @warehouse_allocation.modified_by %>
-    </p>
+        <tbody>
+          <% @warehouse_allocations.each do |wa| %>
+          <tr>
+            <td> <%=  wa[:region] %> </td>
+            <td> <%=  wa[:warehouse] %> </td>
+            <td> <%=  wa[:zone] %> </td>
+            <td> <%=  wa[:woreda] %> </td>
+            <td> <%=  wa[:fdp] %> </td>
+            <td> <%=  wa[:requisition_no] %> </td>
+            <td> <%=  wa[:commodity] %> </td>
+            <td> <%=  wa[:allocated] %> </td>
+          </tr>           
 
-    <p>
-      <strong>Deleted at:</strong>
-      <%= @warehouse_allocation.deleted_at %>
-    </p>
+          <% end %>
+        </tbody>
+      </table>
 
-<%= link_to 'Edit', edit_warehouse_allocation_path(@warehouse_allocation) %> |
-<%= link_to 'Back', warehouse_allocations_path %>
+    </div>
+  </div>
+  
+</div>
+
+</div>

@@ -66,4 +66,15 @@ namespace :upgrade do
     end
   end
 
+  desc "Populate user_type column on permissions table"
+  task :permission do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "cats:permission:populate_permission_user_type"
+        end
+      end
+    end
+  end
+
 end

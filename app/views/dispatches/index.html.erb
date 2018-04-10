@@ -124,7 +124,7 @@
   </div>
 </div>
 
-
+<% user_unit = UnitOfMeasure.find(current_user.default_uom).code %>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
     <h2> FDP Allocations </h2>
@@ -133,9 +133,9 @@
       <tr>
             <th>Requisition Number</th>
             <th>Commodity</th>
-            <th>Allocated (MT)</th>
-            <th>Dispatched (MT)</th>
-            <th>Remaining (MT)</th>
+            <th>Allocated (<%= user_unit %>)</th>
+            <th>Dispatched (<%= user_unit %>)</th>
+            <th>Remaining (<%= user_unit %>)</th>
             <th>Progress</th>
             <th>Actions</th>
       </tr>
@@ -148,9 +148,9 @@
           <tr>
               <td><%= @dispatch_summary[$i]['requisition_no'] %></td>
               <td><%= @dispatch_summary[$i]['commodity'] %></td>
-              <td><%= number_with_precision(@dispatch_summary[$i]['allocated'], precision: 2) %></td>
-              <td><%= number_with_precision(@dispatch_summary[$i]['dispatched'], precision: 2) %></td>
-              <td><%= number_with_precision((@dispatch_summary[$i]['allocated'] - @dispatch_summary[$i]['dispatched']), precision: 2) %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['allocated']), precision: 2) %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['dispatched']), precision: 2) %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatch_summary[$i]['allocated']) - to_user_unit(@dispatch_summary[$i]['dispatched']), precision: 2) %></td>
               <td><%= number_to_percentage(@dispatch_summary[$i]['progress'], precision: 2) %></td>
               <td><%= link_to 'Dispatch', '/en/dispatches/new?requisition_no=' + @dispatch_summary[$i]['requisition_no'].to_s + '&operation_id=' + params[:operation].to_s + '&hub_id=' + params[:hub].to_s + '&warehouse_id=' + params[:warehouse].to_s + '&fdp_id=' + params[:fdp].to_s, :class => "btn btn-primary"%></td>
           </tr>
@@ -171,7 +171,7 @@
       <tr>
             <th>GIN No.</th>
             <th>Commodity</th>
-            <th>Dispatched Qty. (MT)</th>
+            <th>Dispatched Qty. (<%= user_unit %>)</th>
             <th>Transporter</th>
             <th>Dispatch Date</th>
       </tr>
@@ -184,7 +184,7 @@
           <tr>
               <td><%= link_to @dispatches[$i]['gin_no'], edit_dispatch_path(@dispatches[$i]['id'])  %></td>
               <td><%= @dispatches[$i]['commodity'] %></td>
-              <td><%= number_with_precision(@dispatches[$i]['dispatch_qty'], precision: 2) %></td>
+              <td><%= number_with_precision(to_user_unit(@dispatches[$i]['dispatch_qty']), precision: 2) %></td>
               <td><%= @dispatches[$i]['transporter'] %></td>
               <td><%= @dispatches[$i]['dispatch_date'].to_formatted_s(:long_ordinal) %></td>
           </tr>

@@ -1,3 +1,4 @@
+<% unit = UnitOfMeasure.find(current_user.default_uom).code %>
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-sm-4">
     <h2><%= @hrd.name %></h2>
@@ -93,7 +94,7 @@
                             <td>Region</td>
                             <td class="text-right"> Number of Beneficiaries</td>
                             <% @hrd.ration.ration_items.each do |item| %>
-                              <td class="text-right"><%= item.commodity.name %></td>
+                              <td class="text-right"><%= item.commodity.name + "(" + unit +")"%> </td>
                             <% end %>
                             <td class="text-right">Total</td>
                         </tr>
@@ -104,8 +105,7 @@
                                 <td><%= Location.find(aggregate.region_id).name %></td>
                                 <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter aggregate.total_beneficiaries %></td>
                                 <% @hrd.ration.ration_items.each do |item| %>
-                                  <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter(user_uom_preference(item.amount * aggregate.total_beneficiaries)) %></td>
-                                 <!--  <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter(item.amount * aggregate.total_beneficiaries) %></td> -->
+                                  <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter number_with_precision(user_uom_preference(item.amount * aggregate.total_beneficiaries, item.unit_of_measure_id), precision: 2) %></td>
                                 <% end %>
                                 <td class="text-right"><%= ActionController::Base.helpers.number_with_delimiter(@hrd.ration.ration_items.inject(0) { |result, ration_item| result + ration_item.amount } * aggregate.total_beneficiaries)  %></td>
                             </tr>

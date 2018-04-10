@@ -1,9 +1,13 @@
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins">
-     <div class="ibox-title">
-                        <h4><%=@operation.name%> <span class='badge badge-info'><%= Location.find(@request.region_id).name%></span></h4>
-                       
-     </div>
+    <div class="ibox-title col-sm-12">
+      <div class="col-sm-6">
+        <h4><%=@operation.name%> <span class='badge badge-info'><%= Location.find(@request.region_id).name%></span></h4>
+      </div>
+      <div class="col-sm-6">
+        <a  class = "btn btn-primary pull-right" href="/requisitions/export_requisition_to_excel/<%= @request.id.to_s %>">View All</a>       
+      </div>                
+    </div>
     <div class="ibox-content">         
        
               
