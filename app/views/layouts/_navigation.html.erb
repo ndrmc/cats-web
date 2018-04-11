@@ -102,7 +102,7 @@
             <%= link_to t(:dispatch), "/dispatches/basic" %>
       </li>
       <%end%>      
-      <%if policy(ProjectCodeAllocation).index? %>
+      <%if policy(StockMovement).index? %>
        <li class="<%= 'active' if is_active_controller('stock_movements')  %>">
         <%= link_to t(:stock_movements), '/stock_movements/' %>
       </li>
