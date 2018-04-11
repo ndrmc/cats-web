@@ -1,18 +1,17 @@
 version: '2'
-
 services:
-  webapp_setup:
+  app:
     build: .
-    environment:
-     - PASSENGER_APP_ENV=stage
-    entrypoint: ./setup.sh
-
-  webapp:
-    container_name: catsweb
-    build: .
-    depends_on:
-     - webapp_setup
-    environment:
-     - PASSENGER_APP_ENV=stage
+    command: bundle exec puma -C config/puma.rb
+    volumes:
+      - /var/www/cats-web
+    expose:
+      - "3000"
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    links:
+      - app
     ports:
-     - "80:80"
+      - "80:80"
