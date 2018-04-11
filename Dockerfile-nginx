@@ -17,7 +17,7 @@ RUN mkdir log
 COPY public public/
  
 # Copy Nginx config template
-COPY config/nginx.conf /tmp/cats-web.nginx
+COPY config/nginx-docker.conf /tmp/cats-web.nginx
  
 # substitute variable references in the Nginx config template for real values from the environment
 # put the final config in its place

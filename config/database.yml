@@ -103,3 +103,12 @@ test:
 #  database: cats_stage
 #  username: postgres
 #  password: cats
+
+
+docker:
+ <<: *default
+ host: 10.66.157.57
+ port: 5432
+ database: cats_development
+ username: cats
+ password: cats
