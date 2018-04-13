@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Organization).new? %>
       <%= link_to 'New Organization', new_organization_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -45,8 +47,12 @@
                         <td><%= organization.description
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_organization_path(organization) %> &middot;
-              <%= link_to 'Delete', organization, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(Organization).edit? %>
+                <%= link_to 'Edit', edit_organization_path(organization) %> &middot;
+              <% end %>
+              <% if policy(Organization).destroy? %>
+                <%= link_to 'Delete', organization, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

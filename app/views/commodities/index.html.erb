@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(Commodity).new? %>
       <%= link_to 'New Commodity', new_commodity_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -41,7 +43,11 @@
           <tbody>
             <% @commodities.each do |commodity| %>
             <tr>
-              <td><%= link_to commodity.name, edit_commodity_path(commodity) %></td>
+              <td>
+                <% if policy(Commodity).edit? %>
+                  <%= link_to commodity.name, edit_commodity_path(commodity) %>
+                <% end%> 
+                </td>
               <td><%= commodity.code%></td>
               <td><%= commodity.description%></td>
             <td>
@@ -52,8 +58,12 @@
             <td>
               <%= commodity.uom_category ? commodity.uom_category.name : '-'%></td>
             <td>
+            <% if policy(Commodity).edit? %>
               <%= link_to 'Edit', edit_commodity_path(commodity) %> &middot;
+            <% end %>
+            <% if policy(Commodity).destroy? %>
               <%= link_to 'Delete', commodity, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% end %>
             </td>
           </tr>
           <% end %>

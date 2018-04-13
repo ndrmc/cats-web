@@ -12,6 +12,7 @@
       <strong>Description:</strong>
       <%= @program.description %>
     </p>
-
-<%= link_to 'Edit', edit_program_path(@program) %> |
+<% if policy(Program).edit? %>
+  <%= link_to 'Edit', edit_program_path(@program) %> |
+<% end %>
 <%= link_to 'Back', programs_path %>

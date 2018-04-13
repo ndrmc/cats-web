@@ -1,30 +1,102 @@
 <%= form_tag  '',  :id => 'edit_psnp_plan_item_form'  do  %>
-    <div class="form-group">
-        <label for="woreda">Woreda</label>
-        <input name='woreda' value="<%= @psnp_plan_item.woreda.name %>" readonly type="text" class="form-control" autofocus>
-    </div>
+ <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+    <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+                <label for="woreda">Woreda</label>
+                <input name='woreda' value="<%= @psnp_plan_item.woreda.name %>" readonly type="text" class="form-control" autofocus>
+            </div>
+        </div>
 
+        <div class="col-md-6 col-sm-6 col-xs-6">
+                     <div class="form-group">
+                            <label for="starting_month">Starting Month</label>
+                            <%= select_tag 'starting_month',  options_for_select( Date::MONTHNAMES[1..-1].map.with_index { |e, i | [e, i + 1] }, @psnp_plan_item.starting_month) , { :required => true, :prompt => "-- Choose --", :class => 'psnp_plan-item-form-field form-control' }  %>
+
+        </div>
+        </div>
+    </div>
     <input type="hidden" name="id" value="<%= @psnp_plan_item.id %>" class="psnp_plan-item-form-field" />
 
-    <div class="form-group">
-        <label for="starting_month">Starting Month</label>
-        <%= select_tag 'starting_month',  options_for_select( Date::MONTHNAMES[1..-1].map.with_index { |e, i | [e, i + 1] }, @psnp_plan_item.starting_month) , { :required => true, :prompt => "-- Choose --", :class => 'psnp_plan-item-form-field form-control' }  %>
+   
+    
+     <h3> <i class="glyphicon glyphicon-plus-sign-alt"></i> Public Work </h3>
+     <hr>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <div class="col-md-6 col-sm-6 col-xs-6">
 
+            <div class="form-group">
+                <label for="duration_public_work">Duration</label>
+                <input name='duration_public_work' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.duration_public_work %>"  >
+            </div>
+
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group">
+                    <label for="cash_ratio_public_work">Month of cash</label>
+                    <input name='cash_ratio_public_work' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.cash_ratio_public_work %>"  >
+            </div>
+            </div>
+        </div>
+
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+          <div class="col-md-6 col-sm-6 col-xs-6">
+                     <div class="form-group">
+                        <label for="beneficiary_public_work">No of Beneficiaries</label>
+                        <input name='beneficiary_public_work'  type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.beneficiary_public_work %>" >
+                    </div>
+          </div>
+
+           <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="form-group">
+                    <label for="kind_ratio_beneficiary_public_work">Month of Food</label>
+                    <input name='kind_ratio_beneficiary_public_work' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.kind_ratio_beneficiary_public_work %>"  >
+               </div>
+          </div>
+
+
+        </div>
+        <hr class="hr-dark">
+        <h3> <span style='font-weight: bold;'> Public Direct Support</span> </h3>
+         <hr>
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">  
+             <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                <label for="duration">Duration</label>
+                <input name='duration' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.duration %>"  >
+            </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group">
+                    <label for="cash_ratio">Month of cash</label>
+                    <input name='cash_ratio' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.cash_ratio %>"  >
+            </div>
+           
+
+             </div>
+
+        </div>
+
+        <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">  
+             <div class="col-md-6 col-sm-6 col-xs-6">
+                     <div class="form-group">
+                        <label for="beneficiary">No of Beneficiaries</label>
+                        <input name='beneficiary'  type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.beneficiary %>" >
+                    </div>
+          </div>
+
+           <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="form-group">
+                    <label for="kind_ratio">Month of Food</label>
+                    <input name='kind_ratio' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.kind_ratio %>"  >
+               </div>
+          </div>
+             
+        </div>
     </div>
-    <div class="form-group">
-        <label for="duration">Duration</label>
-        <input name='duration' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.duration %>"  >
-    </div>
-    <div class="form-group">
-      <label for="cash_ratio">Cash Ratio</label>
-      <input name='cash_ratio' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.cash_ratio %>"  >
-    </div>
-    <div class="form-group">
-      <label for="kind_ratio">Kind Ratio</label>
-      <input name='kind_ratio' type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.kind_ratio %>"  >
-    </div>
-    <div class="form-group">
-        <label for="beneficiary">Number of Beneficiaries</label>
-        <input name='beneficiary'  type="number" class="form-control psnp_plan-item-form-field" value="<%= @psnp_plan_item.beneficiary %>" >
-    </div>
+
+    
+    
+   
 <% end %>

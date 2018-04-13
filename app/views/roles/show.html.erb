@@ -2,6 +2,7 @@
       <strong>Name:</strong>
       <%= @role.name %>
     </p>
-
-<%= link_to 'Edit', edit_role_path(@role) %> |
+<% if policy(Role).edit? %>
+  <%= link_to 'Edit', edit_role_path(@role) %> |
+<% end %>
 <%= link_to 'Back', roles_path %>

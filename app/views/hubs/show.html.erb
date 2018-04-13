@@ -81,7 +81,9 @@
               <div class="panel-heading">
                
                         <div class="title-action">
+                        <% if policy(Warehouse).new? %>
                           <%= link_to 'New Warehouse', new_hub_warehouse_path(@hub), :class => "btn btn-primary"%>
+                        <% end %>
                         </div>
                       
                 <div class="panel-options">
@@ -120,8 +122,12 @@
                                   <%end%>
                                 </td>
                                 <td>
+                                <% if policy(Warehouse).edit? %>
                                   <%= link_to 'Edit', edit_warehouse_path(hub_warehouse) %> &middot;
+                                <% end %>
+                                <% if policy(Warehouse).destroy? %>
                                   <%= link_to 'Delete', warehouse_path(hub_warehouse), method: :delete, data: { confirm: 'Are you sure?' } %>
+                                <% end %>
                                 </td>
                               </tr>
                           <% end %>
@@ -153,8 +159,12 @@
                                 <td><%= store.warehouse.name%></td>
                                 <td><%= store.warehouse.hub.name%></td>
                                 <td>
+                                <% if policy(Store).edit? %>
                                   <%= link_to 'Edit', edit_store_path(store) %> &middot;
+                                <% end %>
+                                <% if policy(Store).destroy? %>
                                   <%= link_to 'Delete', store, method: :delete, data: { confirm: 'Are you sure?' } %>
+                                <% end %>
                                 </td>
                               </tr>
                           <% end %>

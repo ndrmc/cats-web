@@ -111,6 +111,58 @@ class TransportRequisitionPdf < PdfReport
         end
     end
 
+    def signature_section
+        table_data = [
+            [
+                {
+                    :content => "Requested by: ................................................",
+                    :padding_left => 30
+                },
+                {
+                    :content => "Certified by: ................................................",
+                    :padding_left => 100
+                }
+            ]
+        ]
+
+        table(table_data, :width => 500, :cell_style => { :inline_format => true }) do |t|
+            t.cells.border_width = 0
+        end
+    end
+
+    def remark_section
+        table_data = [
+            [{:content => "<b><u>Remark:</u></b>", :colspan => 2, :align => :center}],
+            [
+                {
+                    :content => "For Information\n" +
+                                "Information Center /LCT/\n" +
+                                "Addis Ababa\n\n\n" +
+                                "CC\n" +
+                                @cc_letter_to,
+                                # "Mekele Central Ware House\n" +
+                                # "<u>Mekele<u>",
+                    :width => 100,
+                    :padding_left => 30
+                },
+                {
+                    :content => "Allocated for " + @operation.program.name + "\n" +
+                                @reason_for_idps + "\n" +
+                                "Date of req " + Time.now.strftime("%d-%b-%Y") + "\n" +
+                                "Received Date " + Time.now.strftime("%d-%b-%Y") + "\n" +
+                                "For the Month of " + @operation.round.to_s + " round " + Date::MONTHNAMES[@operation.month] + " " + @operation.year,
+                    :width => 100,
+                    :padding_left => 75
+                }
+            ]
+        ]
+
+        table(table_data, :width => 500, :cell_style => { :inline_format => true }) do |t|
+            t.cells.border_width = 0
+            # t.cells.padding = 0
+        end
+    end
+
     def transport_requisition_items
         dynamic_data = []
         dynamic_data = ["No","Items","Req.No","Donor","Amount(QTL)", "Warehouse","Region","Zone","Woreda","Destination"]
