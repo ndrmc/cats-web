@@ -362,6 +362,13 @@ if Permission.where(name: 'Program').count == 0
   Permission.create(name: 'Program', user_type: 3, description: '')
 end
 
+if Permission.where(name: 'ProjectCodeAllocation').count == 0
+  Permission.create(name: 'ProjectCodeAllocation', user_type: 0, description: '')
+  Permission.create(name: 'ProjectCodeAllocation', user_type: 1, description: '')
+  Permission.create(name: 'ProjectCodeAllocation', user_type: 2, description: '')
+  Permission.create(name: 'ProjectCodeAllocation', user_type: 3, description: '')
+end
+
 if Permission.where(name: 'RationItem').count == 0
   Permission.create(name: 'RationItem', user_type: 0, description: '')
   Permission.create(name: 'RationItem', user_type: 1, description: '')
