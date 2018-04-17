@@ -67,9 +67,20 @@ class DispatchesController < ApplicationController
         @project_id = dispatch_params["proj_id"]
         @quantity = dispatch_params["quantity"]
         @unit = dispatch_params["unit"]
+        @requisition_no = dispatch_params["requisition_number"]
+        @requisition = Requisition.where(:requisition_no => @requisition_no).first
+        @project_code_allocation = ProjectCodeAllocation.where(:requisition_id => @requisition.id, :project_id => @project_id).first
+        @allocated = 0
+        if ( @project_code_allocation.present? )
+            target_unit = UnitOfMeasure.find_by(code: "MT")
+            current_unit = UnitOfMeasure.find(@project_code_allocation.unit_of_measure_id)
+            @allocated = target_unit.convert_to(current_unit.name, @project_code_allocation.amount)
+        end
+
         stock_account = Account.find_by({'code': :stock})
         @stock = PostingItem.where(account_id: stock_account.id, hub_id: @hub_id, warehouse_id: @warehouse_id, project_id: @project_id).sum(:quantity)
         quantity_in_ref = UnitOfMeasure.find(@unit.to_i).to_ref(@quantity.to_f)
+        @stock += @allocated
         @flag = false
         if(quantity_in_ref < @stock)
             @flag = true
@@ -84,9 +95,17 @@ class DispatchesController < ApplicationController
         @hub_id = dispatch_params["hub_id"]
         @warehouse_id = dispatch_params["warehouse_id"]
         @project_id = dispatch_params["proj_id"]
+        @requisition_no = dispatch_params["requisition_number"]
+        @requisition = Requisition.where(:requisition_no => @requisition_no).first
+        @project_code_allocation = ProjectCodeAllocation.where(:requisition_id => @requisition.id, :project_id => @project_id).first
+        @allocated = 0
+        if ( @project_code_allocation.present? )
+            @allocated = UnitOfMeasure.find(@project_code_allocation.unit_of_measure_id).to_ref(@project_code_allocation.amount)
+        end
+        
         stock_account = Account.find_by({'code': :stock})
         @stock = PostingItem.where(account_id: stock_account.id, hub_id: @hub_id, warehouse_id: @warehouse_id, project_id: @project_id).sum(:quantity)
-        
+        @stock = @stock + @allocated
         respond_to do |format|
             format.html
             format.json { render :json => @stock.to_json }
@@ -99,7 +118,7 @@ class DispatchesController < ApplicationController
         @requisition = Requisition.where(:requisition_no => @requisition_no).first
         @data = []
         ProjectCodeAllocation.includes(:hub, :warehouse, :store, project: :organization).where(:requisition_id => @requisition.id).each do |pca|
-            @data << { 'hub_id' => pca&.hub_id, 'hub' => pca&.hub&.name, 'warehouse_id' => pca&.warehouse_id, 'warehouse' => pca&.warehouse&.name, 'store_id' => pca&.store_id, 'store' => pca&.store&.name, 'project_id' => pca&.project_id, 'project' => pca&.project&.project_code, 'donor_id' => pca&.project&.organization_id, 'donor' => pca&.organization&.name }        
+            @data << { 'hub_id' => pca&.hub_id, 'hub' => pca&.hub&.name, 'warehouse_id' => pca&.warehouse_id, 'warehouse' => pca&.warehouse&.name, 'store_id' => pca&.store_id, 'store' => pca&.store&.name, 'project_id' => pca&.project_id, 'project' => pca&.project&.project_code, 'donor_id' => pca&.project&.organization_id, 'donor' => pca&.project&.organization&.name }        
         end
 
         if (@data.empty?)
