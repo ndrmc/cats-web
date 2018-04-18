@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180330113514) do
+ActiveRecord::Schema.define(version: 20180418132607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -463,6 +463,51 @@ ActiveRecord::Schema.define(version: 20180330113514) do
     t.index ["location_id"], name: "index_fdp_operations_logs_on_location_id", using: :btree
     t.index ["operation_id"], name: "index_fdp_operations_logs_on_operation_id", using: :btree
     t.index ["requisition_id"], name: "index_fdp_operations_logs_on_requisition_id", using: :btree
+  end
+
+  create_table "fdp_receipt_details", force: :cascade do |t|
+    t.integer  "fdp_receipt_id"
+    t.string   "receiving_number",                   null: false
+    t.integer  "transporter_id",                     null: false
+    t.integer  "fdp_id",                             null: false
+    t.integer  "zone_id"
+    t.integer  "gin_number",                         null: false
+    t.string   "requisition_number",                 null: false
+    t.integer  "commodity_id"
+    t.integer  "uom_id"
+    t.decimal  "sent_quantity"
+    t.decimal  "received_quantity"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",            default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  create_table "fdp_receipts", force: :cascade do |t|
+    t.integer  "operation_id"
+    t.integer  "region_id"
+    t.integer  "reporting_period"
+    t.integer  "uploaded_by"
+    t.string   "received_by",                       null: false
+    t.date     "received_date",                     null: false
+    t.integer  "status"
+    t.text     "remark"
+    t.string   "prepared_by"
+    t.string   "approved_by"
+    t.string   "prepared_by_title"
+    t.string   "approved_by_title"
+    t.date     "prepared_date"
+    t.date     "approved_date"
+    t.string   "prepared_by_phone"
+    t.string   "approved_by_phone"
+    t.integer  "created_by"
+    t.integer  "modified_by"
+    t.boolean  "deleted",           default: false
+    t.datetime "deleted_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "fdps", force: :cascade do |t|
@@ -1305,6 +1350,7 @@ ActiveRecord::Schema.define(version: 20180330113514) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "transport_requisition_item_id"
+    t.integer  "warehouse_id"
     t.index ["deleted_at"], name: "index_transport_order_items_on_deleted_at", using: :btree
   end
 
