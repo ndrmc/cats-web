@@ -52,6 +52,11 @@ class RequisitionPolicy < ApplicationPolicy
     @current_user.permission('Requisition', :clerk)
   end
 
+  def contingency?
+    @current_user.permission('Requisition', :clerk)
+  end
+  
+
   def add_requisition?
     @current_user.permission('Requisition', :clerk)
   end

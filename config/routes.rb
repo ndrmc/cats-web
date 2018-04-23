@@ -182,6 +182,7 @@ Rails.application.routes.draw do
   get '/requisitions/get_requisiton_by_number'
   get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
+  post '/requisitions/contingency/:request_id', to: 'requisitions#contingency'
   get '/requisitions/summary/:request_id', to: 'requisitions#summary'
   get '/requisitions/export_requisition_to_excel/:id', to: 'requisitions#export_requisition_to_excel'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'

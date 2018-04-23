@@ -22,7 +22,20 @@
         <i class="fa fa-print"></i> 
         Print Invoice
       <% end %>
-
+<%if policy(Requisition).contingency? %>
+      <% if @contingency.to_f < 1 %>
+       <%= link_to '/requisitions/contingency/' + @requisition.id.to_s + "?type=generate", method: :post, :class => "btn btn-default"  do %>
+        <i class="glyphicon glyphicon-plus-sign"></i> 
+        Contingency
+      <% end %>
+    <% else %>
+      
+       <%= link_to '/requisitions/contingency/' + @requisition.id.to_s + "?type=cancel",method: :post,  :class => "btn btn-default"  do %>
+        <i class="glyphicon glyphicon-minus-sign"></i> 
+        Remove contingency
+      <% end %>
+    <% end %>
+<% end %>
     </div>
   </div>
 </div>
