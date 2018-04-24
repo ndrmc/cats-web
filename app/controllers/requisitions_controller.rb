@@ -62,6 +62,8 @@ class RequisitionsController < ApplicationController
 
   # GET /requisitions/1/edit
   def edit
+    @contingency = RequisitionItem.where(requisition_id: params[:id]).sum(:contingency)
+    @amount = RequisitionItem.where(requisition_id: params[:id]).sum(:amount)
   end
 
 
@@ -155,8 +157,49 @@ class RequisitionsController < ApplicationController
     
  end
 
-  def generate
+def contingency
+  psnp_contingency = 0.05
+  flag = 0
+  @requisition = Requisition.find_by(id: params[:request_id])
+  if params[:type] == 'generate'
+  @requisition.requisition_items.each do |item|
+    item.contingency = item.amount * psnp_contingency
+    item.transaction do
+    item.save
+    flag = 1
+      end
+  end
+else
+  psnp_contingency = 0
+  @requisition.requisition_items.each do |item|
+    item.contingency = item.amount * psnp_contingency
+    item.transaction do
+    item.save
+    flag = 1
+      end
+  end
+end
 
+  if flag 
+   respond_to do |format|
+            flash[:notice] = "contingency has been created for this requsition."
+            format.html {  redirect_to request.referrer }
+      end
+  else
+      respond_to do |format|
+            flash[:alert] = "contingency has not been created for this requsition."
+            format.html {  redirect_to request.referrer }
+      end
+  end
+
+end
+
+  def generate
+    psnp_contingency = 0.05
+    
+    if params[:contingency] == "0"
+      psnp_contingency = 0
+    end
     @request = RegionalRequest.find(params[:request_id])
     if(!@request.generated)
       @operation = Operation.find(@request.operation_id)
@@ -172,10 +215,13 @@ class RequisitionsController < ApplicationController
 
           @requests_per_zone[Integer(zone_id)].each do |request_item|
 
+            amount =  @ration_items.select { |hash| hash[:commodity_id] == Integer(commodity_id) }.first.amount*request_item[:number_of_beneficiaries]
+
             requisition_item = RequisitionItem.new({
                                                      fdp_id: request_item[:fdp_id],
                                                      beneficiary_no: request_item[:number_of_beneficiaries],
-                                                     amount: @ration_items.select { |hash| hash[:commodity_id] == Integer(commodity_id) }.first.amount*request_item[:number_of_beneficiaries]
+                                                     amount: amount,
+                                                     contingency: amount * psnp_contingency
             })
             @requisition_items << requisition_item
 
@@ -314,7 +360,7 @@ class RequisitionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def requisition_params
-    params.require(:requisition).permit(:requisition_no, :operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status)
+    params.require(:requisition).permit(:requisition_no, :operation_id, :commodity_id, :region_id, :zone_id, :ration_id, :requested_by, :requested_on, :status, :contingency)
   end
 
   def update_requisition_params
