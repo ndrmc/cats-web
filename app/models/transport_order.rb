@@ -82,10 +82,6 @@ class TransportOrder < ApplicationRecord
 	      .find_each do |tr_item|
 	        @woreda = Location.find(woreda_id)
 	        @requisition = Requisition.find(tr_item.requisition_id)
-puts "====================================================================="
-		puts 	@warehouse_id  = WarehouseAllocationItem.where(requisition_id: tr_item.requisition_id , fdp_id: tr_item.fdp_id).select('warehouse_id').limit(1)
-
-puts "=================================================================================="
 	        @transport_order = TransportOrder.where({:transporter_id => transporter_id, :operation_id => @transport_requisition.operation_id}).where.not({status: [:closed, :canceled, :archived] }).first
 	        if (@transport_order.present?)
 	          @new_to_detail = TransportOrderItem.new(transport_order_id: @transport_order.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity, unit_of_measure_id: @uom.id, tariff: tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: tr_item.id, warehouse_id: @warehouse_id)
