@@ -10,7 +10,14 @@
                             <div class="ibox-content">
 
                             <input name="operation_id" value="<%=@operation.id%>" type="hidden"></input>
+                           
                                 <div class="panel-body">
+                               
+                                <label class="category-select" style="font-style: italic; font-weight: bold">
+                                <%= hidden_field_tag('contingency','0')%>
+                                 <%= check_box_tag "contingency" ,1,checked = false, :style => "width: 50px; height: 18px" %>
+                                 Please ckeck this if you need a 5% contingency to be calculated to this region
+                                 </label>
                                     <div class="panel-group" id="accordion">
                                     <% @requests_per_zone.each do |zonal_req|%>
                                         <div class="panel panel-default">
