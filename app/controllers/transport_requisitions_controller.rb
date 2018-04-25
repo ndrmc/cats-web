@@ -64,10 +64,11 @@ class TransportRequisitionsController < ApplicationController
   # POST /transport_requisitions
   # POST /transport_requisitions.json
   def create
-    @bid_id = transport_requisition_params['bid_id']
 
+    @bid_id = transport_requisition_params['bid_id']
+    @request_ids = transport_requisition_params['request_id']
     @result = false
-    result = TransportRequisition.generate_tr(transport_requisition_params, current_user.id)
+    result = TransportRequisition.generate_tr(transport_requisition_params, current_user.id,@request_ids)
     if (result.present?)
       @result = TransportOrder.generate_transport_order(result.id, @bid_id, current_user.id)
     end
@@ -128,6 +129,20 @@ class TransportRequisitionsController < ApplicationController
     end
   end
 
+  def rrd_reference_list
+    @operation_id = params[:operation_id]
+    @region_id = params[:region_id]
+
+  
+    @regional_request_references = RegionalRequest.where(operation_id: @operation_id, region_id: @region_id).all 
+
+    respond_to do |format|
+     format.js
+     format.html
+    end
+
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_transport_requisition
@@ -136,6 +151,6 @@ class TransportRequisitionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transport_requisition_params
-      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at, :bid_id, :tr_id, :transporter_id, :tariff)
+      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at, :bid_id, :tr_id, :transporter_id, :tariff, request_id: [])
     end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180330113514) do
+ActiveRecord::Schema.define(version: 20180418132607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1305,6 +1305,7 @@ ActiveRecord::Schema.define(version: 20180330113514) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "transport_requisition_item_id"
+    t.integer  "warehouse_id"
     t.index ["deleted_at"], name: "index_transport_order_items_on_deleted_at", using: :btree
   end
 

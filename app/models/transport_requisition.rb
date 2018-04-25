@@ -23,10 +23,12 @@ class TransportRequisition < ApplicationRecord
   belongs_to :certified_by, :class_name => 'User', :foreign_key => 'certified_by_id'
   has_many :transport_order_items
 
-  def self.generate_tr (transport_requisition_params, current_user_id)
+  attr_accessor :request_id
+  def self.generate_tr (transport_requisition_params, current_user_id,request_ids)
     
-    @requisitions = Requisition.includes(:requisition_items, operation: [ration: :ration_items]).where({:operation_id =>transport_requisition_params[:operation_id], :region_id => transport_requisition_params[:location_id], :status => :approved})      
-      if @requisitions.count > 0
+    @requisitions = Requisition.includes(:requisition_items, operation: [ration: :ration_items]).where({:operation_id =>transport_requisition_params[:operation_id], :region_id => transport_requisition_params[:location_id], :status => :approved, :request_id => request_ids})      
+
+       if @requisitions.count > 0
         transport_requisition_params.delete("bid_id")
         transport_requisition_params["created_by_id"] = current_user_id
         transport_requisition_params["certified_by_id"] = current_user_id
