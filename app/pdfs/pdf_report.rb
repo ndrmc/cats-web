@@ -38,7 +38,7 @@ class PdfReport < Prawn::Document
                                         :size => 8}
           move_down 50
           text "Printed at: " + Time.now.strftime('%c')
-          text "Prepared by: " + "#{@user}", align: :right
+         
       end
     end
 

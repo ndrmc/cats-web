@@ -1,0 +1,8 @@
+
+<% references.each do |reference| %>
+<%= check_box_tag 'reference', reference.id,false, class: 'checkbox_reference' %>
+<%= reference.reference_number %>
+<br>
+<% end %>
+<br>
+<br>

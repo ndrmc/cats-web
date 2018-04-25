@@ -142,7 +142,7 @@
           <tr>
                     <td> <%= transport_order_item&.requisition_no %></td>
                     <td> <%= Location.find_by(id: transport_order_item&.fdp&.location_id)&.name %></td>
-                    <td> <%= Warehouse.find_by(id: transport_order_item&.store&.warehouse_id)&.name  %></td>
+                    <td> <%= Warehouse.find_by(id: transport_order_item&.warehouse_id)&.name  %></td>
                     <td> <%= transport_order_item&.fdp&.name %> </td>
                     <td> <%= transport_order_item&.commodity&.name %> </td>
                     <td> <%= number_with_delimiter(transport_order_item&.quantity) %> </td>
