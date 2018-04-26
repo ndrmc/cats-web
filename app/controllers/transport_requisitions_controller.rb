@@ -1,6 +1,6 @@
 class TransportRequisitionsController < ApplicationController  
   before_action :set_transport_requisition, only: [:edit, :update, :destroy]
-
+ include ReferenceHelper
   # GET /transport_requisitions
   # GET /transport_requisitions.json
   def index
@@ -29,11 +29,14 @@ class TransportRequisitionsController < ApplicationController
     # end
 
     @transport_requisition = TransportRequisition.find(params[:id])
+    @transport_requsition_items =  @transport_requisition.transport_requisition_items
+    @requisition_ids = @transport_requsition_items.map{|r|r.requisition_id }.uniq
+    @reference_numbers = get_reference_numbers_by_requisition_id(@requisition_ids)
 
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = TransportRequisitionPdf.new(params[:id], params[:reason_for_idps], params[:cc_letter_to])
+          pdf = TransportRequisitionPdf.new(params[:id], params[:reason_for_idps], params[:cc_letter_to], @reference_numbers)
           send_data pdf.render, filename: "trasnport_requisition_#{@transport_requisition.id}.pdf",
           type: "application/pdf",
           disposition: "inline"

@@ -33,6 +33,7 @@ class Requisition < ApplicationRecord
   belongs_to :zone, :class_name => 'Location', :foreign_key => 'zone_id'
   belongs_to :commodity
   belongs_to :ration
+  belongs_to :regional_request, :class_name => 'RegionalRequest'
   has_many :requisition_items
   has_many :project_code_allocations
 

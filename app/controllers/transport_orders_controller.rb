@@ -1,6 +1,6 @@
 class TransportOrdersController < ApplicationController
   before_action :set_transport_order, only: [:show, :edit, :update, :destroy]
-
+ include ReferenceHelper
   # GET /transport_orders
   # GET /transport_orders.json
   def index
@@ -75,6 +75,7 @@ class TransportOrdersController < ApplicationController
 
   def print
     @transport_order = TransportOrder.includes(:transporter, :contract, :bid).find(params[:id])
+  
     @zones = []
     @commodities = []
     @requisitions = []
@@ -93,10 +94,13 @@ class TransportOrdersController < ApplicationController
       end
     end
     @transport_order_items = TransportOrderItem.includes(:commodity, fdp: :location).where(:transport_order_id => params[:id])
+      @requistion_ids = @transport_order_items.map{|r| r.requisition_no}.uniq
+      @references = get_reference_numbers_by_requisition_no(@requistion_ids)
+ 
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones, @commodities, @requisitions)
+          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones, @commodities, @requisitions,@references)
           send_data pdf.render, filename: "transport_order_#{@transport_order&.id}.pdf",
           type: "application/pdf",
           disposition: "inline"

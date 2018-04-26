@@ -1,12 +1,13 @@
 require 'prawn/table'
 class TransportOrderPdf < PdfReport
-    def initialize(transport_order, transport_order_items, zones, commodities, requisitions)
+    def initialize(transport_order, transport_order_items, zones, commodities, requisitions, references)
         super(top_margin: 50)
         @transport_order = transport_order
         @transport_order_items = transport_order_items
         @zones = zones
         @commodities = commodities
         @requisitions = requisitions
+        @references = references
         header "Transport Order"
         text "<b>Order No.</b> <u> #{@transport_order.order_no}</u>", :align => :center, :inline_format => true
         text "\n\n<b>I. <u>TRANSACTION DETAILS</u></b>", :inline_format => true
@@ -20,12 +21,13 @@ class TransportOrderPdf < PdfReport
                  ["Zone:","#{@zones.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date    }"],
                  ["Commodity:","#{@commodities.to_s}", "  " * 3 ,"Bid Document No:","#{@transport_order&.bid&.bid_number}"],
                  ["Donor:","", "  " * 2 ,"Performance Bond Receipt #",""],
-                 ["RequisitionNo:","#{@requisitions.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date}"]
+                 ["RequisitionNo:","#{@requisitions.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date}"],
+                 ["Reference:","#{ @references.to_s}"]
         ]
         table(t, :cell_style => {:border_width => 0})   
          
 
-        text "\n\n\n<b>II. <u>COMMODITY DETAILS</u></b>", :inline_format => true
+        text "\n\n<b>II. <u>COMMODITY DETAILS</u></b>", :inline_format => true
         transport_orders
         text "\n\n\n<b>III. <u>APPROVING CERTIFICATE</u></b>", :inline_format => true
         text "\n<b>For Consigner                                                                           For Transporting Agency</b>", :inline_format => true
