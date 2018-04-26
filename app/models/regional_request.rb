@@ -25,7 +25,7 @@ class RegionalRequest < ApplicationRecord
     belongs_to :location, class_name: 'Location', foreign_key: 'region_id'
 
     has_many :regional_request_items
-
+    has_many :requisitions,  :class_name => 'Requisition', :foreign_key => 'request_id'
     def region 
         Location.find region_id
     end

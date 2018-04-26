@@ -1,6 +1,6 @@
 require 'prawn/table'
 class TransportRequisitionPdf < PdfReport
-    def initialize(tr_id, reason_for_idps, cc_letter_to)
+    def initialize(tr_id, reason_for_idps, cc_letter_to,  reference_numbers)
         super top_margin: 50, :page_size => "A4", :position => :center, :page_layout => :landscape
         @transport_requisition = TransportRequisition.find(tr_id)
         @list_of_tris = TransportRequisition.joins(transport_requisition_items: [:commodity, :requisition, fdp: :location]).find(tr_id).transport_requisition_items
@@ -33,10 +33,12 @@ class TransportRequisitionPdf < PdfReport
         end
 
         @cc_letter_to = cc_letter_to
+        @reference_numbers  =  reference_numbers
 
         header "Transport Requisition Form"
         text "Date " + Time.now.strftime("%d-%b-%Y"), :align => :right
         text "No " + @transport_requisition.reference_number, :align => :right
+        text "Reference No " + @reference_numbers.to_s, :align => :right
         text "\n"
         transport_requisitions
         text "\n"
@@ -147,7 +149,7 @@ class TransportRequisitionPdf < PdfReport
                 },
                 {
                     :content => "Allocated for " + @operation.program.name + "\n" +
-                                @reason_for_idps + "\n" +
+                                @reason_for_idps.to_s + "\n" +
                                 "Date of req " + Time.now.strftime("%d-%b-%Y") + "\n" +
                                 "Received Date " + Time.now.strftime("%d-%b-%Y") + "\n" +
                                 "For the Month of " + @operation.round.to_s + " round " + Date::MONTHNAMES[@operation.month] + " " + @operation.year,
