@@ -134,6 +134,7 @@ class TransportRequisitionPdf < PdfReport
 
     def remark_section
         table_data = [
+          
             [{:content => "<b><u>Remark:</u></b>", :colspan => 2, :align => :center}],
             [
                 {
@@ -171,6 +172,7 @@ class TransportRequisitionPdf < PdfReport
         dynamic_data = ["No","Items","Req.No","Donor","Amount(QTL)", "Warehouse","Region","Zone","Woreda","Destination"]
         total_allocation = 0.00
         row_no = 0
+        $sum = 0
         result = [dynamic_data] +
         @aggr_tri.map do |item|
             target_unit = UnitOfMeasure.where(:code => "QTL").first
@@ -183,9 +185,10 @@ class TransportRequisitionPdf < PdfReport
             ref = @tri_struct.find {|x| x[:requisition_id].to_s == item[:requisition_id].to_s}
             total_allocation = total_allocation + amount_in_qtl
             row_no = row_no + 1
+            $sum = $sum + @total_amount
             [row_no, ref[:commodity_name],ref[:requisition_no],"-",amount_in_qtl,"-",ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
         end 
         
-        result = result + [["Total", "-", "-", "-", @total_amount.round(2), "-", "-", "-", "-", "-"]]
+        result = result + [["Total", "-", "-", "-", $sum.round(2), "-", "-", "-", "-", "-"]]
     end    
 end
