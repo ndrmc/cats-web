@@ -1,7 +1,7 @@
 require 'prawn/table'
 class TransportRequisitionPdf < PdfReport
-    def initialize(tr_id, reason_for_idps, cc_letter_to,  reference_numbers)
-        super top_margin: 50, :page_size => "A4", :position => :center, :page_layout => :landscape
+    def initialize(tr_id, reason_for_idps, cc_letter_to,  reference_numbers, project)
+        super top_margin: 50, :page_size => "A4", :position => :center, :page_layout => :portrait
         @transport_requisition = TransportRequisition.find(tr_id)
         @list_of_tris = TransportRequisition.joins(transport_requisition_items: [:commodity, :requisition, fdp: :location]).find(tr_id).transport_requisition_items
         @operation = Operation.includes(:program).find(@transport_requisition.operation_id)
@@ -34,7 +34,7 @@ class TransportRequisitionPdf < PdfReport
 
         @cc_letter_to = cc_letter_to
         @reference_numbers  =  reference_numbers
-
+        @project = project
         header "Transport Requisition Form"
         text "Date " + Time.now.strftime("%d-%b-%Y"), :align => :right
         text "No " + @transport_requisition.reference_number, :align => :right
@@ -152,6 +152,7 @@ class TransportRequisitionPdf < PdfReport
                                 @reason_for_idps.to_s + "\n" +
                                 "Date of req " + Time.now.strftime("%d-%b-%Y") + "\n" +
                                 "Received Date " + Time.now.strftime("%d-%b-%Y") + "\n" +
+                                @project.to_s + "\n" +
                                 "For the Month of " + @operation.round.to_s + " round " + Date::MONTHNAMES[@operation.month] + " " + @operation.year,
                     :width => 100,
                     :padding_left => 75

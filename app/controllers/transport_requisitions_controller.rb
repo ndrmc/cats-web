@@ -32,11 +32,23 @@ class TransportRequisitionsController < ApplicationController
     @transport_requsition_items =  @transport_requisition.transport_requisition_items
     @requisition_ids = @transport_requsition_items.map{|r|r.requisition_id }.uniq
     @reference_numbers = get_reference_numbers_by_requisition_id(@requisition_ids)
+    project = []
+    @transport_requsition_items.each do |item |
+       project_id = ProjectCodeAllocation.where(requisition_id: item.requisition_id,fdp_id: item.fdp_id).pluck(:project_id)
 
+    if project_id.present?
+       project_code = Project.find(project_id[0]).project_code
+       temp = { Commodity.find(item.commodity_id).name => project_code }
+       if !project.include?(temp)
+          project << temp
+       end
+end
+    end
+  
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = TransportRequisitionPdf.new(params[:id], params[:reason_for_idps], params[:cc_letter_to], @reference_numbers)
+          pdf = TransportRequisitionPdf.new(params[:id], params[:reason_for_idps], params[:cc_letter_to], @reference_numbers,project)
           send_data pdf.render, filename: "trasnport_requisition_#{@transport_requisition.id}.pdf",
           type: "application/pdf",
           disposition: "inline"
