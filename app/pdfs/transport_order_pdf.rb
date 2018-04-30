@@ -1,13 +1,18 @@
 require 'prawn/table'
+require 'to_words'
 class TransportOrderPdf < PdfReport
-    def initialize(transport_order, transport_order_items, zones, commodities, requisitions, references)
+    def initialize(transport_order, transport_order_items, zones, region,commodities, requisitions, references)
         super(top_margin: 50)
         @transport_order = transport_order
         @transport_order_items = transport_order_items
         @zones = zones
+         @region = region
         @commodities = commodities
         @requisitions = requisitions
         @references = references
+
+       
+
         header "Transport Order"
         text "<b>Order No.</b> <u> #{@transport_order.order_no}</u>", :align => :center, :inline_format => true
         text "\n\n<b>I. <u>TRANSACTION DETAILS</u></b>", :inline_format => true
@@ -17,17 +22,17 @@ class TransportOrderPdf < PdfReport
         t = [
              
                  ["Transporter:","#{@transport_order&.transporter&.name}"],
-                 ["Region:","Sample Region Name","   " * 2, "Requisition Dispatch Date:","#{@transport_order&.start_date}"],
+                 ["Region:", "#{@region}" , " " * 2, "Requisition Dispatch Date:","#{@transport_order&.start_date}"],
                  ["Zone:","#{@zones.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date    }"],
                  ["Commodity:","#{@commodities.to_s}", "  " * 3 ,"Bid Document No:","#{@transport_order&.bid&.bid_number}"],
-                 ["Donor:","", "  " * 2 ,"Performance Bond Receipt #",""],
+                 ["Donor:", "#{$donor.to_s}", "  " * 2 ,"Performance Bond Receipt #",""],
                  ["RequisitionNo:","#{@requisitions.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date}"],
                  ["Reference:","#{ @references.to_s}"]
         ]
         table(t, :cell_style => {:border_width => 0})   
          
 
-        text "\n\n<b>II. <u>COMMODITY DETAILS</u></b>", :inline_format => true
+        text "\n<b>II. <u>COMMODITY DETAILS</u></b>", :inline_format => true
         transport_orders
         text "\n\n\n<b>III. <u>APPROVING CERTIFICATE</u></b>", :inline_format => true
         text "\n<b>For Consigner                                                                           For Transporting Agency</b>", :inline_format => true
@@ -39,7 +44,7 @@ class TransportOrderPdf < PdfReport
     end
 
     def transport_orders
-         bounding_box([bounds.left, bounds.top - 320 ], :width => bounds.width, :height => bounds.height - 200) do
+         bounding_box([bounds.left, bounds.top - 350 ], :width => bounds.width, :height => bounds.height - 300) do
         table transport_order_items do
         row(0).font_style = :bold
         columns(1..3).align = :right
@@ -54,13 +59,32 @@ class TransportOrderPdf < PdfReport
         dynamic_data = []
         dynamic_data = ["No","Woreda","Destination","Origin warehouse","Commodity", "Quantity Qtl", "Tariff / Qtl", "Total Amount in Birr"]
         @count = 0
-        [dynamic_data] +
+        $donor = []
+        @amount_total = 0
+        @birr_total = 0
+       result = [dynamic_data] +
         @transport_order_items.map do |item|
+            requisition_id = Requisition.find_by(requisition_no: item.requisition_no)&.id
+             project_id = ProjectCodeAllocation.where(requisition_id: requisition_id,fdp_id: item.fdp_id).limit(1).pluck(:project_id)
+              warehouse_id = WarehouseAllocationItem.where(requisition_id: requisition_id,fdp_id: item.fdp_id).limit(1).pluck(:warehouse_id)
+             
+             if project_id.present? 
+                organization_id =  Project.find(project_id[0].to_i).organization_id
+                $donor << Organization.find(organization_id).name
+             end
+              if warehouse_id.present?
+                     @warehouse = Warehouse.find_by(id: warehouse_id[0].to_i)&.name
+                end
+
             @count += 1
             target_unit = UnitOfMeasure.find_by(name: "Quintal")
             current_unit = UnitOfMeasure.find(item.unit_of_measure_id)
             amount_in_qtl = target_unit.convert_to(current_unit.name, item.quantity)
-            [@count, item.fdp.location.name,item.fdp.name,  Warehouse.find_by(id: item&.warehouse_id)&.name ,item.commodity.name, amount_in_qtl.round(2), item.tariff, (amount_in_qtl*item.tariff).round(2)]       
+            @amount_total = @amount_total + (amount_in_qtl)
+            @birr_total = @birr_total + (amount_in_qtl*item.tariff)
+            [@count, item.fdp.location.name,item.fdp.name,  @warehouse ,item.commodity.name, amount_in_qtl.round(2), item.tariff, (amount_in_qtl*item.tariff).round(2)]       
         end
+        result = result + [["Total", "-", "-",  "-", "", @amount_total.round(2), "-",@birr_total.round(2)]]
+        result = result + [[{:content => "Amount in words: " + @birr_total.humanize, :colspan => 8}]]
     end    
 end
