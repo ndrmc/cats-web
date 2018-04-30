@@ -75,7 +75,8 @@ class TransportOrdersController < ApplicationController
 
   def print
     @transport_order = TransportOrder.includes(:transporter, :contract, :bid).find(params[:id])
-  
+ 
+    @region = Location.find(@transport_order.location_id)&.name
     @zones = []
     @commodities = []
     @requisitions = []
@@ -100,7 +101,7 @@ class TransportOrdersController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones, @commodities, @requisitions,@references)
+          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones,  @region,@commodities, @requisitions,@references)
           send_data pdf.render, filename: "transport_order_#{@transport_order&.id}.pdf",
           type: "application/pdf",
           disposition: "inline"
