@@ -9,6 +9,8 @@ class TransportRequisitionPdf < PdfReport
         @tri_struct = []
         @total_amount = 0
         @list_of_tris.find_each do |tri|
+         project_id = ProjectCodeAllocation.where(requisition_id: tri.requisition_id,fdp_id: tri.fdp_id).limit(1).pluck(:project_id)
+         warehouse_id = WarehouseAllocationItem.where(requisition_id: tri.requisition_id,fdp_id: tri.fdp_id).limit(1).pluck(:warehouse_id)
          tri_full = OpenStruct.new
           tri_full.tri_id = tri.id
           tri_full.commodity_id = tri.commodity_id
@@ -16,6 +18,15 @@ class TransportRequisitionPdf < PdfReport
           tri_full.requisition_id = tri.requisition_id
           tri_full.requisition_no = tri.requisition.requisition_no
           tri_full.quantity = tri.quantity
+          if warehouse_id.present?
+            tri_warehouse = Warehouse.find(warehouse_id[0].to_i).name
+          end
+
+          if project_id.present? 
+             organization_id =  Project.find(project_id[0].to_i).organization_id
+             tri_full.donor = Organization.find(organization_id).name
+          end
+            
           tri_full.fdp_id = tri.fdp_id
           tri_full.fdp_name = tri.fdp.name
           tri_full.woreda_id = tri.fdp.location_id
@@ -186,7 +197,7 @@ class TransportRequisitionPdf < PdfReport
             total_allocation = total_allocation + amount_in_qtl
             row_no = row_no + 1
             $sum = $sum + @total_amount
-            [row_no, ref[:commodity_name],ref[:requisition_no],"-",amount_in_qtl,"-",ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
+            [row_no, ref[:commodity_name],ref[:requisition_no],ref[:donor],amount_in_qtl,ref["tri_warehouse"],ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
         end 
         
         result = result + [["Total", "-", "-", "-", $sum.round(2), "-", "-", "-", "-", "-"]]
