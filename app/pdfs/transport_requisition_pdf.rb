@@ -1,7 +1,7 @@
 require 'prawn/table'
 class TransportRequisitionPdf < PdfReport
-    def initialize(tr_id, reason_for_idps, cc_letter_to,  reference_numbers)
-        super top_margin: 50, :page_size => "A4", :position => :center, :page_layout => :landscape
+    def initialize(tr_id, reason_for_idps, cc_letter_to,  reference_numbers, project)
+        super top_margin: 50, :page_size => "A4", :position => :center, :page_layout => :portrait
         @transport_requisition = TransportRequisition.find(tr_id)
         @list_of_tris = TransportRequisition.joins(transport_requisition_items: [:commodity, :requisition, fdp: :location]).find(tr_id).transport_requisition_items
         @operation = Operation.includes(:program).find(@transport_requisition.operation_id)
@@ -9,6 +9,8 @@ class TransportRequisitionPdf < PdfReport
         @tri_struct = []
         @total_amount = 0
         @list_of_tris.find_each do |tri|
+         project_id = ProjectCodeAllocation.where(requisition_id: tri.requisition_id,fdp_id: tri.fdp_id).limit(1).pluck(:project_id)
+         warehouse_id = WarehouseAllocationItem.where(requisition_id: tri.requisition_id,fdp_id: tri.fdp_id).limit(1).pluck(:warehouse_id)
          tri_full = OpenStruct.new
           tri_full.tri_id = tri.id
           tri_full.commodity_id = tri.commodity_id
@@ -16,6 +18,15 @@ class TransportRequisitionPdf < PdfReport
           tri_full.requisition_id = tri.requisition_id
           tri_full.requisition_no = tri.requisition.requisition_no
           tri_full.quantity = tri.quantity
+          if warehouse_id.present?
+            tri_warehouse = Warehouse.find(warehouse_id[0].to_i).name
+          end
+
+          if project_id.present? 
+             organization_id =  Project.find(project_id[0].to_i).organization_id
+             tri_full.donor = Organization.find(organization_id).name
+          end
+            
           tri_full.fdp_id = tri.fdp_id
           tri_full.fdp_name = tri.fdp.name
           tri_full.woreda_id = tri.fdp.location_id
@@ -34,7 +45,7 @@ class TransportRequisitionPdf < PdfReport
 
         @cc_letter_to = cc_letter_to
         @reference_numbers  =  reference_numbers
-
+        @project = project
         header "Transport Requisition Form"
         text "Date " + Time.now.strftime("%d-%b-%Y"), :align => :right
         text "No " + @transport_requisition.reference_number, :align => :right
@@ -134,6 +145,7 @@ class TransportRequisitionPdf < PdfReport
 
     def remark_section
         table_data = [
+          
             [{:content => "<b><u>Remark:</u></b>", :colspan => 2, :align => :center}],
             [
                 {
@@ -152,6 +164,7 @@ class TransportRequisitionPdf < PdfReport
                                 @reason_for_idps.to_s + "\n" +
                                 "Date of req " + Time.now.strftime("%d-%b-%Y") + "\n" +
                                 "Received Date " + Time.now.strftime("%d-%b-%Y") + "\n" +
+                                @project.to_s + "\n" +
                                 "For the Month of " + @operation.round.to_s + " round " + Date::MONTHNAMES[@operation.month] + " " + @operation.year,
                     :width => 100,
                     :padding_left => 75
@@ -170,6 +183,7 @@ class TransportRequisitionPdf < PdfReport
         dynamic_data = ["No","Items","Req.No","Donor","Amount(QTL)", "Warehouse","Region","Zone","Woreda","Destination"]
         total_allocation = 0.00
         row_no = 0
+        $sum = 0
         result = [dynamic_data] +
         @aggr_tri.map do |item|
             target_unit = UnitOfMeasure.where(:code => "QTL").first
@@ -182,9 +196,10 @@ class TransportRequisitionPdf < PdfReport
             ref = @tri_struct.find {|x| x[:requisition_id].to_s == item[:requisition_id].to_s}
             total_allocation = total_allocation + amount_in_qtl
             row_no = row_no + 1
-            [row_no, ref[:commodity_name],ref[:requisition_no],"-",amount_in_qtl,"-",ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
+            $sum = $sum + @total_amount
+            [row_no, ref[:commodity_name],ref[:requisition_no],ref[:donor],amount_in_qtl,ref["tri_warehouse"],ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
         end 
         
-        result = result + [["Total", "-", "-", "-", @total_amount.round(2), "-", "-", "-", "-", "-"]]
+        result = result + [["Total", "-", "-", "-", $sum.round(2), "-", "-", "-", "-", "-"]]
     end    
 end
