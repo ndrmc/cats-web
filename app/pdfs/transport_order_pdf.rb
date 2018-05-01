@@ -65,7 +65,7 @@ class TransportOrderPdf < PdfReport
        result = [dynamic_data] +
         @transport_order_items.map do |item|
             requisition_id = Requisition.find_by(requisition_no: item.requisition_no)&.id
-             project_id = ProjectCodeAllocation.where(requisition_id: requisition_id,fdp_id: item.fdp_id).limit(1).pluck(:project_id)
+             project_id = ProjectCodeAllocation.where(requisition_id: requisition_id).limit(1).pluck(:project_id)
               warehouse_id = WarehouseAllocationItem.where(requisition_id: requisition_id,fdp_id: item.fdp_id).limit(1).pluck(:warehouse_id)
              
              if project_id.present? 
