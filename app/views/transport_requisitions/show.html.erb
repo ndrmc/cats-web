@@ -176,7 +176,7 @@
                         <%= tri[1] %>
                       </td>
                       <td>
-                        N/A
+                        <%= Warehouse.find_by(id: WarehouseAllocationItem.find_by(requisition_id: tri[0][0])&.warehouse_id)&.name %>
                       </td>
                       <td>
                         <%= tri[0][3] %>
