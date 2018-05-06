@@ -1,5 +1,5 @@
 class TransportOrdersController < ApplicationController
-  before_action :set_transport_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_transport_order, only: [:show, :edit, :update, :destroy, :move]
  include ReferenceHelper
   # GET /transport_orders
   # GET /transport_orders.json
@@ -108,6 +108,18 @@ class TransportOrdersController < ApplicationController
       end      
     end
   end
+ def move
+   puts "================this is in move======="
+   puts params[:transporter]
+   puts params[:att]
+   puts "======================="
+   @transport_order_items_ids = params[:att]
+   TransportOrder.move_transport_order(params[:transporter], @transport_order_items_ids,current_user.id)
+   respond_to do |format|
+        format.html { redirect_to @transport_order, notice: 'Transport order was successfully moved to the new transporter.' }
+        format.json { render :show, status: :created, location: @transport_order }
+      end
+ end
 
   private
     # Use callbacks to share common setup or constraints between actions.
