@@ -140,6 +140,7 @@ Rails.application.routes.draw do
   resources :accounts
   resources :journals
   resources :fdps
+  post 'fdps/unarchive_fdp/:id', to: 'fdps#unarchive_fdp'
   resources :fdp_contacts
   get 'fdps/location/:location_id', to: 'fdps#get_by_location'
 
@@ -201,6 +202,7 @@ Rails.application.routes.draw do
   post '/regional_requests/add_fdp_to_request'
   post '/regional_requests/update_regional_request_item'
   delete '/regional_requests/destroy_regional_request_item/:id', to: 'regional_requests#destroy_regional_request_item'
+  post '/regional_requests/hide_regional_request_item/:id', to: 'regional_requests#hide_regional_request_item'
   get '/regional_requests/request_items/:id', to: 'regional_requests#request_items'
   post '/regional_requests/upload_requests/:id', to: 'regional_requests#upload_requests'
   
