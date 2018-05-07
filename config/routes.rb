@@ -76,6 +76,7 @@ Rails.application.routes.draw do
   resources :transporters
   resources :transport_orders
   get '/transport_orders/print/:id', to: 'transport_orders#print'
+  post '/transport_orders/move/:id', to: 'transport_orders#move'
   resources :transporter_addresses  
   get 'setting/index'
   devise_for :users
