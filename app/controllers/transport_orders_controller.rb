@@ -109,11 +109,7 @@ class TransportOrdersController < ApplicationController
     end
   end
  def move
-   puts "================this is in move======="
-   puts params[:transporter]
-   puts params[:att]
-   puts "======================="
-   @transport_order_items_ids = params[:att]
+    @transport_order_items_ids = params[:att].split ","
    TransportOrder.move_transport_order(params[:transporter], @transport_order_items_ids,current_user.id)
    respond_to do |format|
         format.html { redirect_to @transport_order, notice: 'Transport order was successfully moved to the new transporter.' }
