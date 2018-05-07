@@ -61,11 +61,23 @@ class FdpsController < ApplicationController
     @fdp.hide_fdp = false
       if (@fdp.save)
         respond_to do |format|
-          format.html { redirect_to fdps_url, notice: 'Fdp was successfully destroyed.' }
+          format.html { redirect_to fdps_url, notice: 'Fdp was successfully unarchived.' }
           format.json { head :no_content }
         end
     end
   end
+
+   def archive_fdp
+    @fdp = Fdp.unscoped.find(params[:id])
+    @fdp.hide_fdp = true
+      if (@fdp.save)
+        respond_to do |format|
+          format.html { redirect_to fdps_url, notice: 'Fdp was successfully archived.' }
+          format.json { head :no_content }
+        end
+    end
+  end
+
 
   # DELETE /fdps/1
   # DELETE /fdps/1.json

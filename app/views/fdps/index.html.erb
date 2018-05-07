@@ -56,6 +56,11 @@
                 <% if fdp.hide_fdp %>
                      &middot;
                     <%= link_to 'Unarchive', '/fdps/unarchive_fdp/' + fdp.id.to_s, method: :post, data: {confirm: 'This will unhide this fdp. Are you sure?'} %>
+                <% else %>
+
+                     &middot;
+                    <%= link_to 'archive', '/fdps/archive_fdp/' + fdp.id.to_s, method: :post, data: {confirm: 'This will hide this fdp. Are you sure?'} %>
+
                 <% end %>
               <% end %>
               </td>
