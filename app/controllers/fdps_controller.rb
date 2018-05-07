@@ -8,7 +8,7 @@ class FdpsController < ApplicationController
   # GET /fdps
   # GET /fdps.json
   def index
-    @fdps = Fdp.all   
+    @fdps = Fdp.unscoped.all   
   end
 
   # GET /fdps/1
@@ -53,6 +53,17 @@ class FdpsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @fdp.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+   def unarchive_fdp
+    @fdp = Fdp.unscoped.find(params[:id])
+    @fdp.hide_fdp = false
+      if (@fdp.save)
+        respond_to do |format|
+          format.html { redirect_to fdps_url, notice: 'Fdp was successfully destroyed.' }
+          format.json { head :no_content }
+        end
     end
   end
 

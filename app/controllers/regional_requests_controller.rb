@@ -154,6 +154,19 @@ class RegionalRequestsController < ApplicationController
     end
   end
 
+  def hide_regional_request_item
+
+    regional_request_item = RegionalRequestItem.find params[:id]
+   
+    fdp = Fdp.find regional_request_item.fdp_id
+    fdp.hide_fdp = true
+    if regional_request_item.destroy && fdp.save
+    respond_to do |format|
+      format.json { render json: {item_id: regional_request_item.id} }
+    end
+  end
+  end
+
   def update_regional_request_item
     regional_request_item = RegionalRequestItem.find params[:id]
     regional_request_item.number_of_beneficiaries = params[:new_beneficiaries_value]
