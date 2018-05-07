@@ -125,7 +125,7 @@ class TransportOrder < ApplicationRecord
 					@new_to.save
 					@new_to.order_no = "TRN-ORD-" + @new_to.id.to_s 
 					@new_to.save        
-					@new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: to_item.fdp_id, commodity_id: to_item.commodity_id, quantity: to_item.quantity, unit_of_measure_id: @uom.id, tariff: to_item.tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: to_item.id,warehouse_id: @warehouse_id)
+					@new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: to_item.fdp_id, commodity_id: to_item.commodity_id, quantity: to_item.quantity, unit_of_measure_id: @uom.id, tariff: to_item.tariff, requisition_no: to_item.requisition_no, created_by: user_id, transport_requisition_item_id: to_item.id,warehouse_id: @warehouse_id)
 					@new_to_detail.save
 					to_item.destroy
 			end
