@@ -101,5 +101,37 @@ class TransportOrder < ApplicationRecord
 	      end
 	    return true
   	end
+	
+	def self.move_transport_order(transporter_id, list_of_ids,user_id)
+		@uom = UnitOfMeasure.where(:code => 'MT').first
+		TransportOrderItem.includes(:transport_order).where(:id => list_of_ids).find_each do |to_item|
+			 @transport_order = TransportOrder.where({:transporter_id => transporter_id, :operation_id => to_item&.transport_order&.operation_id}).where.not({status: [:closed, :canceled, :archived] }).first
+	        if (@transport_order.present?)
+				@transport_order_item = TransportOrderItem.where(:transport_order_id => @transport_order.id, :fdp_id => to_item.fdp_id,:commodity_id => to_item.commodity_id, :tariff => to_item.tariff,:unit_of_measure_id => to_item.unit_of_measure_id).first
+				if (@transport_order_item.present?)
+						@transport_order_item.quantity = @transport_order_item.quantity + to_item.quantity
+
+						@transport_order_item.save
+						to_item.destroy
+				else
+					@new_to_detail = TransportOrderItem.new(transport_order_id: @transport_order.id, fdp_id: to_item.fdp_id, commodity_id: to_item.commodity_id, quantity: to_item.quantity, unit_of_measure_id: @uom.id, tariff: to_item.tariff, requisition_no: to_item.requisition_no, created_by: user_id, transport_requisition_item_id: to_item.id,warehouse_id: to_item.warehouse_id)
+					
+	          		@new_to_detail.save
+					to_item.destroy
+				end
+				
+			else
+					 @new_to = TransportOrder.new(order_no: SecureRandom.uuid, transporter_id: transporter_id, operation_id: to_item&.transport_order&.operation_id, location_id: to_item&.transport_order&.location_id, order_date: Time.current, created_date: Time.current, start_date: 3.days.from_now, end_date: 13.days.from_now, printed_copies: 0, status: 0, created_by: user_id)
+					@new_to.save
+					@new_to.order_no = "TRN-ORD-" + @new_to.id.to_s 
+					@new_to.save        
+					@new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: to_item.fdp_id, commodity_id: to_item.commodity_id, quantity: to_item.quantity, unit_of_measure_id: @uom.id, tariff: to_item.tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: to_item.id,warehouse_id: @warehouse_id)
+					@new_to_detail.save
+					to_item.destroy
+			end
+		end
+		return true
+	end
+	
 
 end
