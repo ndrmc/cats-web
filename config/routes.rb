@@ -141,6 +141,7 @@ Rails.application.routes.draw do
   resources :journals
   resources :fdps
   post 'fdps/unarchive_fdp/:id', to: 'fdps#unarchive_fdp'
+  post 'fdps/archive_fdp/:id', to: 'fdps#archive_fdp'
   resources :fdp_contacts
   get 'fdps/location/:location_id', to: 'fdps#get_by_location'
 
