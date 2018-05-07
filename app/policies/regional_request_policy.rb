@@ -42,6 +42,11 @@ class RegionalRequestPolicy < ApplicationPolicy
     @current_user.permission('Regional Requests', :clerk)
   end
 
+  def hide_regional_request_item?
+    @current_user.permission('Regional Requests', :guest)
+  end
+  
+
   def update_regional_request_item?
     @current_user.permission('Regional Requests', :clerk)
   end

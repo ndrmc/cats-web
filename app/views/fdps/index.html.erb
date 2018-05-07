@@ -53,6 +53,10 @@
               <% end %>
               <% if policy(Fdp).destroy? %>
                 <%= link_to 'Delete', fdp, method: :delete, data: {confirm: 'Are you sure?'} %>
+                <% if fdp.hide_fdp %>
+                     &middot;
+                    <%= link_to 'Unarchive', '/fdps/unarchive_fdp/' + fdp.id.to_s, method: :post, data: {confirm: 'This will unhide this fdp. Are you sure?'} %>
+                <% end %>
               <% end %>
               </td>
             </tr>
