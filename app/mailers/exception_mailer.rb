@@ -1,5 +1,4 @@
-class ExceptionMailer << ActionMailer::Base
-  default from: "dfantaw@gmail.com"
+class ExceptionMailer << ApplicationMailer
 end
 
 
