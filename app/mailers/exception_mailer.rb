@@ -1,4 +1,4 @@
-class ExceptionMailer << ApplicationMailer
+class ExceptionMailer < ApplicationMailer
 end
 
 
