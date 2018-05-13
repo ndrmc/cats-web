@@ -34,24 +34,24 @@ class TransportOrderPdf < PdfReport
 
         text "\n<b>II. <u>COMMODITY DETAILS</u></b>", :inline_format => true
         transport_orders
-        text "\n\n\n<b>III. <u>APPROVING CERTIFICATE</u></b>", :inline_format => true
-        text "\n<b>For Consigner                                                                           For Transporting Agency</b>", :inline_format => true
-        text "Name: __________________________                                    Name: ________________________", :inline_format => true
-        text "Signature: _____________________                                        Signature: ___________________", :inline_format => true
-        text "Date: __________________________                                      Date: ________________________", :inline_format => true
+        
         footer "Commodity Allocation and Tracking System\nCopy Distribution\nOriginal:- Consignee; 1st Copy:- Carrier; 2nd Copy:- Finance Services; 3rd Copy:- Legal Services; 4th Copy:- Retained as Copy"
         
     end
 
     def transport_orders
-         bounding_box([bounds.left, bounds.top - 350 ], :width => bounds.width, :height => bounds.height - 300) do
+         bounding_box([bounds.left, bounds.top - 315 ], :width => bounds.width, :height => bounds.height - 400) do
         table transport_order_items do
         row(0).font_style = :bold
         columns(1..3).align = :right
         self.row_colors = ["DDDDDD", "FFFFFF"]
         self.header = true
     end
-    
+    text "\n\n\n<b>III. <u>APPROVING CERTIFICATE</u></b>", :inline_format => true
+        text "\n<b>For Consigner                                                                           For Transporting Agency</b>", :inline_format => true
+        text "Name: __________________________                                    Name: ________________________", :inline_format => true
+        text "Signature: _____________________                                        Signature: ___________________", :inline_format => true
+        text "Date: __________________________                                      Date: ________________________", :inline_format => true
     end
     end
 
