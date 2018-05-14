@@ -76,7 +76,8 @@ def gift_certificate_generate
         @toal_estimated_price_in_usd = @gift_certificate.where(:currency_id => @usd_currency_id).sum(:estimated_price)
         @toal_estimated_price_in_birr = @gift_certificate.where(:currency_id => @eth_currency_id).sum(:estimated_price) 
         @total_estimated_tax = @gift_certificate.sum(:estimated_tax)
-
+        
+      
       else
          @gift_certificate = []
       end
@@ -94,12 +95,43 @@ def gift_certificate_generate
   end
   
  def gift_certificate_report
-
  end
+ 
 
+ def gift_certificate_finance_generate
+        filter_map = {}
+       if params[:gift_date ].present?
+        dates = params[:gift_date].split(' - ').map { |d| Date.parse d }
+        filter_map[:gift_date] = dates[0]..dates[1]
+        @gift_certificate = GiftCertificate.where(filter_map).distinct
+        @usd_currency_id = Currency.find_by(symbol: 'USD')
+        @eth_currency_id = Currency.find_by(symbol: 'ETB')
+        @toal_weight_in_MT = @gift_certificate.sum(:amount)
+        @toal_estimated_price_in_usd = @gift_certificate.where(:currency_id => @usd_currency_id).sum(:estimated_price)
+        @toal_estimated_price_in_birr = @gift_certificate.where(:currency_id => @eth_currency_id).sum(:estimated_price) 
+        @total_estimated_tax = @gift_certificate.sum(:estimated_tax)
+         @gift_certificate =  @gift_certificate.sort_by{ |h| CommodityCategory.find(Commodity.find(h.commodity_id).commodity_category_id).name}
+        
+      else
+         @gift_certificate = []
+      end
+
+    respond_to do |format|
+            format.html
+            format.pdf do
+            pdf = GiftCertificateFinancePdf.new(@gift_certificate,Organization,Commodity, Currency, dates[0],dates[1],@toal_weight_in_MT,@toal_estimated_price_in_usd,@toal_estimated_price_in_birr,@total_estimated_tax)
+            send_data pdf.render, filename: "gift_certificate_finance.pdf",
+            type: "application/pdf",
+            disposition: "inline"
+            end
+        end
+
+  end
+ def gift_certificate_finance_report
+ end
   private
   def authorize_gift_certificate
-    authorize GiftCertificate
+  #  authorize GiftCertificate
   end
   
     # Use callbacks to share common setup or constraints between actions.

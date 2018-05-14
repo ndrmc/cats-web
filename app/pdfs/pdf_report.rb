@@ -31,16 +31,18 @@ class PdfReport < Prawn::Document
          move_down 5
          image "#{Rails.root}/public/assets/CATS_Blue.png", height: 20
          text title, size: 8, align: :center
+          text "Printed at: " + Time.now.strftime('%c')
+         end
+    end
          number_pages "Page <page> of <total>", 
                                        {:start_count_at => 1,
                                         :at => [bounds.right - 60, 0],
-                                        :align => :right,
+                                        :align => :left,
                                         :size => 8}
           move_down 50
-          text "Printed at: " + Time.now.strftime('%c')
          
-      end
-    end
+         
+      
 
     
 

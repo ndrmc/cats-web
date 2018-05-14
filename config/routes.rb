@@ -193,6 +193,8 @@ Rails.application.routes.draw do
   resources :requisitions
   get '/gift_certificates/gift_certificate_report', to: 'gift_certificates#gift_certificate_report'
   post '/gift_certificates/gift_certificate_generate', to: 'gift_certificates#gift_certificate_generate'
+  get 'gift_certificates/gift_certificate_finance_report', to: 'gift_certificates#gift_certificate_finance_report'
+  post 'gift_certificates/gift_certificate_finance_generate', to: 'gift_certificates#gift_certificate_finance_generate'
   resources :gift_certificates
   
 
