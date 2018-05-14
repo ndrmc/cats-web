@@ -10,9 +10,19 @@ class TransportOrderPdf < PdfReport
         @commodities = commodities
         @requisitions = requisitions
         @references = references
-
+        donor = []
        
-
+         @transport_order_items.map do |item|
+            requisition_id = Requisition.find_by(requisition_no: item.requisition_no)&.id
+             project_id = ProjectCodeAllocation.where(requisition_id: requisition_id).limit(1).pluck(:project_id)
+             if project_id.present? 
+                organization_id =  Project.find(project_id[0].to_i).organization_id
+                org = Organization.find(organization_id).name
+                if !donor.include? org
+                     donor << org 
+                end
+             end
+        end
         header "Transport Order"
         text "<b>Order No.</b> <u> #{@transport_order.order_no}</u>", :align => :center, :inline_format => true
         text "\n\n<b>I. <u>TRANSACTION DETAILS</u></b>", :inline_format => true
@@ -25,7 +35,7 @@ class TransportOrderPdf < PdfReport
                  ["Region:", "#{@region}" , " " * 2, "Requisition Dispatch Date:","#{@transport_order&.start_date}"],
                  ["Zone:","#{@zones.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date    }"],
                  ["Commodity:","#{@commodities.to_s}", "  " * 3 ,"Bid Document No:","#{@transport_order&.bid&.bid_number}"],
-                 ["Donor:", "#{$donor.to_s}", "  " * 2 ,"Performance Bond Receipt #",""],
+                 ["Donor:", "#{donor.to_s}", "  " * 2 ,"Performance Bond Receipt #","#{@transport_order&.performance_bond_receipt}"],
                  ["RequisitionNo:","#{@requisitions.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date}"],
                  ["Reference:","#{ @references.to_s}"]
         ]
@@ -59,7 +69,7 @@ class TransportOrderPdf < PdfReport
         dynamic_data = []
         dynamic_data = ["No","Woreda","Destination","Origin warehouse","Commodity", "Quantity Qtl", "Tariff / Qtl", "Total Amount in Birr"]
         @count = 0
-        $donor = []
+       
         @amount_total = 0
         @birr_total = 0
        result = [dynamic_data] +
@@ -67,15 +77,9 @@ class TransportOrderPdf < PdfReport
             requisition_id = Requisition.find_by(requisition_no: item.requisition_no)&.id
              project_id = ProjectCodeAllocation.where(requisition_id: requisition_id).limit(1).pluck(:project_id)
               warehouse_id = WarehouseAllocationItem.where(requisition_id: requisition_id,fdp_id: item.fdp_id).limit(1).pluck(:warehouse_id)
-             
-             if project_id.present? 
-                organization_id =  Project.find(project_id[0].to_i).organization_id
-                $donor << Organization.find(organization_id).name
-             end
               if warehouse_id.present?
                      @warehouse = Warehouse.find_by(id: warehouse_id[0].to_i)&.name
                 end
-
             @count += 1
             target_unit = UnitOfMeasure.find_by(name: "Quintal")
             current_unit = UnitOfMeasure.find(item.unit_of_measure_id)
