@@ -418,6 +418,7 @@
 
     $("#add-dispatch-line").click( function(e) { 
         e.preventDefault(); 
+         var requisitionNo = $('#req_no_input').val();
         var hub = $('#dispatch_hub_id').val();
         var warehouse = $('#dispatch_warehouse_id').val();
         var project = $("#dispatch_project_select").find('option:selected').val();
@@ -448,7 +449,7 @@
           return;
         }
 
-        var flag = validate_quantity(this, hub, warehouse, project, quantity, unit);
+        var flag = validate_quantity(this, hub, warehouse, project, quantity, unit, requisitionNo);
         console.log("validate quantity: ");
         console.log(flag);
     }); 
@@ -473,7 +474,7 @@
 
     $('#commodity-category-select').change( function() { 
       var val = $(this).val();
-
+     
       if( val === '' ) {
         return; 
       }
@@ -488,7 +489,7 @@
     
     
   });
-
+/*
   $(".fdp-selector-disptach").change(function () {
     var fdpId = $(this).val();
     var requisitionNo = $('#req_no_input').val();
@@ -779,7 +780,7 @@
     else{
       
     }
-  }
+  } 
 
   function GetUnique(inputArray)
   {
@@ -793,7 +794,7 @@
     }
     return outputArray;
   }
-
+*/
   function validate_quantity(node, hub, warehouse, project, quantity, unit, requisitionNo)
   {
     if( hub!="" && warehouse!="" && project!="" && quantity!="" && unit!="")

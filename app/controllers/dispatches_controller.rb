@@ -68,6 +68,8 @@ class DispatchesController < ApplicationController
         @quantity = dispatch_params["quantity"]
         @unit = dispatch_params["unit"]
         @requisition_no = dispatch_params["requisition_number"]
+       
+
         @requisition = Requisition.where(:requisition_no => @requisition_no).first
         @project_code_allocation = ProjectCodeAllocation.where(:requisition_id => @requisition.id, :project_id => @project_id).first
         @allocated = 0
