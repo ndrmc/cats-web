@@ -66,7 +66,7 @@ class RegionalRequestsController < ApplicationController
           fdp_locations = @regional_request.region.descendants.map { |d| d.id}.push @regional_request.region_id
         end
 
-        fdp_ids_in_region = Fdp.where( location_id: fdp_locations).map { |l| l.id}
+        fdp_ids_in_region = Fdp.where(hide_fdp: false, location_id: fdp_locations).map { |l| l.id}
 
         @previous_regional_request = RegionalRequest.where("id < ? AND region_id = ?", @regional_request.id, @regional_request.region_id).order('id desc').limit(1)[0]
 
