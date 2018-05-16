@@ -8,7 +8,7 @@ class FdpsController < ApplicationController
   # GET /fdps
   # GET /fdps.json
   def index
-    @fdps = Fdp.unscoped.all   
+    @fdps = Fdp.all   
   end
 
   # GET /fdps/1
@@ -57,7 +57,7 @@ class FdpsController < ApplicationController
   end
 
    def unarchive_fdp
-    @fdp = Fdp.unscoped.find(params[:id])
+    @fdp = Fdp.find(params[:id])
     @fdp.hide_fdp = false
       if (@fdp.save)
         respond_to do |format|
@@ -68,7 +68,7 @@ class FdpsController < ApplicationController
   end
 
    def archive_fdp
-    @fdp = Fdp.unscoped.find(params[:id])
+    @fdp = Fdp.find(params[:id])
     @fdp.hide_fdp = true
       if (@fdp.save)
         respond_to do |format|

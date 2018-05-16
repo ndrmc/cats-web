@@ -31,7 +31,7 @@ class Fdp < ApplicationRecord
   after_validation :reverse_geocode
   validates :name, presence: true
 
-  default_scope { where(:hide_fdp => false ) }
+  #default_scope { where(:hide_fdp => false ) }
   #attr_reader :zone, :woreda, :region
 
 =begin
