@@ -35,8 +35,16 @@ class FdpPolicy < ApplicationPolicy
     # DELETE /fdps/1
     # DELETE /fdps/1.json
     def destroy?
+      @current_user.permission('Fdp', :admin)
+    end
+    
+    def archive_fdp?
       @current_user.permission('Fdp', :clerk)
     end
-  
+
+    def unarchive_fdp?
+       @current_user.permission('Fdp', :clerk)
+    end
+    
   end
   
