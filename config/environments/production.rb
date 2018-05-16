@@ -87,23 +87,6 @@ Rails.application.configure do
   config.secret_key_base = ENV['SECRET_KEY_BASE']
 
 
-Rails.application.config.middleware.use ExceptionNotification::Rack,
-  :email => {
-    :deliver_with => :deliver, # Rails >= 4.2.1 do not need this option since it defaults to :deliver_now
-    :email_prefix => "[PREFIX] ",
-    :sender_address => %{"notifier" <dfantaw@gmail.com>},
-    :exception_recipients => %w{dawit.demissie@wfp.org}
-  }
 
-  config.action_mailer.delivery_method = :smtp
-# SMTP settings for gmail
-config.action_mailer.smtp_settings = {
- :address              => "smtp.gmail.com",
- :port                 => 587,
- :user_name            => ENV['gmail_username'],
- :password             => ENV['gmail_password'],
- :authentication       => "plain",
-:enable_starttls_auto => true
-}
 
 end
