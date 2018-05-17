@@ -179,6 +179,7 @@ Rails.application.routes.draw do
   post '/dispatches/validate_quantity', to: 'dispatches#validate_quantity'
   get '/dispatches/basic', to: 'dispatches#basic'
   get '/dispatches/get_hub_warehouse', to: 'dispatches#get_hub_warehouse'  
+  post 'dispatches/dispatch_report'
   resources :dispatches
  
 
