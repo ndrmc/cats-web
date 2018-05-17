@@ -144,6 +144,24 @@ class DispatchesController < ApplicationController
     end
     
     def dispatch_report
+             filter_map = {}
+      if params[:hub].present?
+        filter_map = {hub_id: params[:hub]}
+        hub = Hub.find(params[:hub])
+      if params[:dispatch_date ].present?
+        dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
+        filter_map[:dispatched_date] = dates[0]..dates[1]
+      end
+            @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation] })
+            .where(:'dispatches.hub_id' => params[:hub]).where("dispatches.dispatch_date >= ? AND dispatches.dispatch_date <= ? ",dates[0],dates[1])
+            @date_min = dates[0]
+            @date_max = dates[1]
+            @hub = hub.name
+        
+      else
+         @dispatch = []
+      end
+
 
     end
     
