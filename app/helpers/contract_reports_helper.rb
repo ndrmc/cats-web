@@ -1,0 +1,2 @@
+module ContractReportsHelper
+end
