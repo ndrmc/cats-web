@@ -53,7 +53,8 @@ Rails.application.routes.draw do
    get 'bids/sign_contract/:id', to: 'bids#sign_contract'
    
    get'/contract_reports', to: 'contract_reports#index'
-   get '/contract_reports/transport_order'
+   post '/contract_reports/transport_order'
+   post 'contract_reports/transport_order_pdf'
    get '/contract_reports/bids/:operation_id', to: 'contract_reports#get_by_operation'
    resources :framework_tenders
    

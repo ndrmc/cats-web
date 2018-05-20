@@ -9,7 +9,7 @@
 </div>
 <div class="ibox float-e-margins">
   <div class="ibox-content contract-report-form">
-      <%= form_tag( "/contract_reports/transport_order" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+      <%= form_tag( "/contract_reports/transport_order" ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'POST'}) do %>
         <div class="form-group">
            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
 
@@ -27,6 +27,8 @@
           <label for=""></label>
           <div>
               <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+
+              <input type="submit" name="pdf_filter" formaction='/contract_reports/transport_order_pdf?format=pdf' value="Print Report" class="btn btn-sm btn-primary" formtarget="_blank"/>
           </div>
         </div>
 
@@ -41,7 +43,7 @@
   <div class="ibox-content">
     <p>
       <strong> Bid RefNo: </strong>
-      <%= Bid.find_by(id: @transport_order&.bid_id)&.bid_number %>
+      <%= Bid.find_by(id: $transport_order&.bid_id)&.bid_number %>
     </p>
     <p>
       <strong> LTCD RefNo:</strong>
@@ -49,7 +51,7 @@
     </p>
     <p>
       <strong> Region:</strong>
-      <%= Location.find_by(id: @transport_order&.location_id)&.name %>
+      <%= Location.find_by(id: $transport_order&.location_id)&.name %>
     </p>
     <table class="table table-striped">
       <thead>
@@ -71,8 +73,8 @@
       <tbody>  
       <%@i=0%>
       <%@sum_total=0%>
-       <% if @transport_order_items.present? %>
-        <% @transport_order_items.each_pair do |transporter, detail| %>
+       <% if $transport_order_items.present? %>
+        <% $transport_order_items.each_pair do |transporter, detail| %>
         <%@sum_total=0%>
             <tr>
                  
