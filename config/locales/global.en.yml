@@ -62,6 +62,7 @@ en:
   contract: "Contract"
   transport_order: "Transport Order"
   contract_admin: "Contract Administration"
+  contract_result: "Contract Reports"
   payment_request: "Payment Request"
   region: "Region"
   request: "Request"
