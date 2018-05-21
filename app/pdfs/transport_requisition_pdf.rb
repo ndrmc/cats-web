@@ -52,6 +52,7 @@ class TransportRequisitionPdf < PdfReport
         text "No " + @transport_requisition.reference_number, :align => :right
         text "Reference No " + @reference_numbers.to_s, :align => :right
         text "\n"
+          bounding_box([bounds.left, bounds.top - 120 ], :width => bounds.width, :height => bounds.height - 200) do
         transport_requisitions
         text "\n"
         text "\n"
@@ -59,17 +60,24 @@ class TransportRequisitionPdf < PdfReport
         text "\n"
         text "\n"
         signature_section
+        end
         footer "Commodity Allocation and Tracking System"
     end
 
     def transport_requisitions
+       
         table transport_requisition_items do
             row(0).font_style = :bold
             row(-1).font_style = :bold
             # columns(1..3).align = :right
             self.row_colors = ["DDDDDD", "FFFFFF"]
             self.header = true
-        end
+            columns(2..8).width = 50
+            columns(9).width = 70
+            columns(7).width = 60
+            columns(5).width = 70
+        end     
+     
     end
 
     def signature_section
@@ -166,7 +174,7 @@ class TransportRequisitionPdf < PdfReport
                                 "Date of req " + Time.now.strftime("%d-%b-%Y") + "\n" +
                                 "Received Date " + Time.now.strftime("%d-%b-%Y") + "\n" +
                                 @project.to_s + "\n" +
-                                "For the Month of " + @operation.round.to_s + " round " + Date::MONTHNAMES[@operation.month] + " " + @operation.year,
+                                "For  " + @operation.name,
                     :width => 100,
                     :padding_left => 75
                 }
@@ -185,6 +193,12 @@ class TransportRequisitionPdf < PdfReport
         total_allocation = 0.00
         row_no = 0
         $sum = 0
+        @donor = ""
+        if @operation.program.name == "Relief"
+            @donor = "NDRMC"
+        elsif @operation.program.name == "FSCD"
+            @donor = "FSCD"
+        end
         result = [dynamic_data] +
         @aggr_tri.map do |item|
             target_unit = UnitOfMeasure.where(:code => "QTL").first
@@ -198,7 +212,7 @@ class TransportRequisitionPdf < PdfReport
             total_allocation = total_allocation + amount_in_qtl
             row_no = row_no + 1
             $sum = $sum + @total_amount
-            [row_no, ref[:commodity_name],ref[:requisition_no],ref[:donor],amount_in_qtl,ref[:warehouse],ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
+            [row_no, ref[:commodity_name],ref[:requisition_no],@donor,amount_in_qtl,ref[:warehouse],ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
         end 
         
         result = result + [["Total", "-", "-", "-", $sum.round(2), "-", "-", "-", "-", "-"]]
