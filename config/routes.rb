@@ -52,7 +52,12 @@ Rails.application.routes.draw do
    get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
    get 'bids/sign_contract/:id', to: 'bids#sign_contract'
    
+   get'/contract_reports', to: 'contract_reports#index'
+   post '/contract_reports/transport_order'
+   post 'contract_reports/transport_order_pdf'
+   get '/contract_reports/bids/:operation_id', to: 'contract_reports#get_by_operation'
    resources :framework_tenders
+   
    get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'   
    get 'framework_tenders/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
 
