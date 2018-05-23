@@ -453,6 +453,14 @@ if Permission.where(name: 'WarehouseSelection').count == 0
   Permission.create(name: 'WarehouseSelection', user_type: 3, description: '')
 end
 
+
+if Permission.where(name: 'Store').count == 0
+  Permission.create(name: 'Store', user_type: 0, description: '')
+  Permission.create(name: 'Store', user_type: 1, description: '')
+  Permission.create(name: 'Store', user_type: 2, description: '')
+  Permission.create(name: 'Store', user_type: 3, description: '')
+end
+
 if Department.count == 0
   Department.create(name: 'Early warning')
   Department.create(name: 'FSCD')
@@ -536,4 +544,6 @@ if PaymentType.count == 0
   PaymentType.create(name: 'Wegagen Bank')
   PaymentType.create(name: 'United Bank')
 end
+
+
 
