@@ -8,6 +8,7 @@ class StoresControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:admin)
     @warehouse =warehouses(:warehouse1)
     @store = stores(:store_1)
+    @hub = hubs(:hub1)
   end
 
   test "should get index" do
@@ -25,7 +26,7 @@ class StoresControllerTest < ActionDispatch::IntegrationTest
       post stores_url, params: { store: { name: 'store 3', warehouse_id: @warehouse.id, store_keeper_name: 'abebe' },warehouse_id: @warehouse.id }
     end
 
-    assert_redirected_to  warehouse_path(@warehouse)
+    assert_redirected_to  hub_path(@hub)
   end
 
   test "should show store" do
@@ -40,7 +41,7 @@ class StoresControllerTest < ActionDispatch::IntegrationTest
 
   test "should update store" do
     patch store_url('en',@store), params: { store: {  name: 'store 4', warehouse_id: 1, store_keeper_name: 'mola' } }
-    assert_redirected_to warehouse_path(@warehouse)
+    assert_redirected_to hub_path(@hub)
   end
 
   test "should destroy store" do
