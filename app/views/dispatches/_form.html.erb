@@ -123,9 +123,18 @@
         </div>
         <div class="col-sm-4">
           <div class="form-group">
-            <%= label_tag :store, "Store", { :class => ' control-label'} %>
+            <%= label_tag :store_id, "Store", { :class => ' control-label'} %>
+            <% if (params[:warehouse_id].present?)
+                @stores = []
+                @stores = Store.where(:warehouse_id => params[:warehouse_id])
+              elsif (@dispatch.warehouse_id.present?)
+                @stores = []
+                @stores = Store.where(:warehouse_id => @dispatch.warehouse_id)
+              else 
+                @stores = []
+              end %>
             <div class="">
-              <%= select_tag  :store,  options_from_collection_for_select( [], 'id', 'name', params[:store] ) , {:class => 'form-control width-100per', name: 'project_code_allocation[store]' }  %>
+              <%= select_tag  'dispatch[store_id]',  options_from_collection_for_select( @stores, 'id', 'name', @dispatch.store_id ), {:prompt => "-- Select Store --" , :class => 'form-control width-100per' }  %>
             </div>
           </div>
         </div>
@@ -1015,7 +1024,7 @@
       return '<option value="' + val.id + '">' + val.name + '</option>';
     });
     stores_options.unshift('<option value="">Select Store</option>');
-    $('#store').html(stores_options);
+    $('#dispatch_store_id').html(stores_options);
   });
 
   $('#donor_select').change(function(){

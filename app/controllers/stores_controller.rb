@@ -30,10 +30,11 @@ class StoresController < ApplicationController
     @store = Store.new(store_params)
     @store.warehouse_id=params[:warehouse_id]
     @warehouse= Warehouse.find(@store.warehouse_id)
+    @hub = Hub.find(@warehouse.hub_id)
     @store.created_by = current_user.id
     respond_to do |format|
       if @store.save
-        format.html { redirect_to warehouse_path(@warehouse), notice: 'Store was successfully created.' }
+        format.html { redirect_to hub_path(@hub), notice: 'Store was successfully created.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }

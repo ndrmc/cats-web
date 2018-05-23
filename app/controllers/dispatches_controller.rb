@@ -302,6 +302,7 @@ class DispatchesController < ApplicationController
                 :plate_number, 
                 :trailer_plate_number, 
                 :storekeeper_name,
+                :store_id,
                 :drivers_name, 
                 :remark,
                 :dispatch_items => [:id, :commodity_category_id, :commodity_id, :quantity,:unit_of_measure_id, :organization_id, :project_id]
