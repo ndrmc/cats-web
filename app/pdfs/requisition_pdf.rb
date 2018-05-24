@@ -1,12 +1,14 @@
 require 'prawn/table'
 class RequisitionPdf < PdfReport
-    def initialize(requisition_item_obj, total_beneficiary_no, total_amount)
+    def initialize(requisition_item_obj, total_beneficiary_no, total_amount, references)
         super(top_margin: 50)
         @requisition_item_objs = requisition_item_obj
         @requisition = @requisition_item_objs.first.requisition
         @total_beneficiary_no = total_beneficiary_no
         @total_amount = total_amount
-        header "#{@requisition.operation.program.name} Program \t\t-\t\t Allocation for #{@requisition.operation.name}"
+        @references = references
+        header "Allocation for #{Operation.find(@requisition.operation_id).name} "
+       
         requisitions
         
         footer "Commodity Allocation and Tracking System"
@@ -24,6 +26,7 @@ class RequisitionPdf < PdfReport
         text "Total Beneficiaries: " + ActiveSupport::NumberHelper.number_to_currency(@total_beneficiary_no.to_s,precision: 2, :unit=> '')  
         move_down 1
         text "Total Amount: " + ActiveSupport::NumberHelper.number_to_currency(@total_amount.to_s,precision: 2, :unit=> '') + UnitOfMeasure.find(@uom_id).name
+        text "Reference No " +  @references.to_s
         text "\n"
         text "\n"
         text "\n"

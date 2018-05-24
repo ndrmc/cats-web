@@ -66,7 +66,7 @@ class RegionalRequestsController < ApplicationController
           fdp_locations = @regional_request.region.descendants.map { |d| d.id}.push @regional_request.region_id
         end
 
-        fdp_ids_in_region = Fdp.where( location_id: fdp_locations).map { |l| l.id}
+        fdp_ids_in_region = Fdp.where(hide_fdp: false, location_id: fdp_locations).map { |l| l.id}
 
         @previous_regional_request = RegionalRequest.where("id < ? AND region_id = ?", @regional_request.id, @regional_request.region_id).order('id desc').limit(1)[0]
 
@@ -152,6 +152,19 @@ class RegionalRequestsController < ApplicationController
     respond_to do |format|
       format.json { render json: {item_id: regional_request_item.id} }
     end
+  end
+
+  def hide_regional_request_item
+
+    regional_request_item = RegionalRequestItem.find params[:id]
+   
+    fdp = Fdp.find regional_request_item.fdp_id
+    fdp.hide_fdp = true
+    if regional_request_item.destroy && fdp.save
+    respond_to do |format|
+      format.json { render json: {item_id: regional_request_item.id} }
+    end
+  end
   end
 
   def update_regional_request_item

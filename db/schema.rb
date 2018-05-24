@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180328132359) do
+
+ActiveRecord::Schema.define(version: 20180506094524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -466,14 +467,14 @@ ActiveRecord::Schema.define(version: 20180328132359) do
   end
 
   create_table "fdps", force: :cascade do |t|
-    t.string   "name",                                  null: false
+    t.string   "name",                                                  null: false
     t.string   "description"
     t.decimal  "lat",         precision: 15, scale: 13
     t.decimal  "lon",         precision: 15, scale: 13
     t.boolean  "active"
     t.integer  "location_id"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
@@ -481,6 +482,7 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.string   "woreda"
     t.string   "zone"
     t.string   "region"
+    t.boolean  "hide_fdp",                              default: false
     t.index ["deleted_at"], name: "index_fdps_on_deleted_at", using: :btree
   end
 
@@ -964,10 +966,14 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.integer  "kind_ratio"
     t.integer  "created_by"
     t.integer  "modified_by"
-    t.boolean  "deleted",        default: false
+    t.boolean  "deleted",                            default: false
     t.datetime "deleted_at"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.integer  "duration_public_work"
+    t.integer  "beneficiary_public_work"
+    t.integer  "cash_ratio_public_work"
+    t.integer  "kind_ratio_beneficiary_public_work"
   end
 
   create_table "psnp_plans", force: :cascade do |t|
@@ -1030,7 +1036,6 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.integer  "receipt_id"
     t.integer  "commodity_category_id"
     t.integer  "commodity_id"
-    t.decimal  "quantity",                         precision: 15, scale: 2
     t.integer  "project_id"
     t.integer  "created_by"
     t.integer  "modified_by"
@@ -1041,6 +1046,7 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.integer  "unit_of_measure_id"
     t.string   "receive_id",            limit: 36,                                          null: false
     t.string   "receive_item_id",       limit: 36,                                          null: false
+    t.decimal  "quantity",                         precision: 15, scale: 2
     t.index ["commodity_category_id"], name: "index_receipt_lines_on_commodity_category_id", using: :btree
     t.index ["commodity_id"], name: "index_receipt_lines_on_commodity_id", using: :btree
     t.index ["project_id"], name: "index_receipt_lines_on_project_id", using: :btree
@@ -1146,14 +1152,15 @@ ActiveRecord::Schema.define(version: 20180328132359) do
   create_table "requisition_items", force: :cascade do |t|
     t.integer  "requisition_id"
     t.integer  "fdp_id"
-    t.integer  "beneficiary_no", null: false
-    t.decimal  "amount",         null: false
+    t.integer  "beneficiary_no",     null: false
+    t.decimal  "amount",             null: false
     t.decimal  "contingency"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
+    t.integer  "unit_of_measure_id"
     t.index ["deleted_at"], name: "index_requisition_items_on_deleted_at", using: :btree
   end
 
@@ -1300,6 +1307,7 @@ ActiveRecord::Schema.define(version: 20180328132359) do
     t.integer  "modified_by"
     t.datetime "deleted_at"
     t.integer  "transport_requisition_item_id"
+    t.integer  "warehouse_id"
     t.index ["deleted_at"], name: "index_transport_order_items_on_deleted_at", using: :btree
   end
 

@@ -12,7 +12,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(WarehouseSelection).new? %> 
       <%= link_to 'New Warehouse Selection', new_warehouse_selection_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -64,8 +66,12 @@
                         <td><%= warehouse_selection.deleted_at
               %></td>
                         <td>
-              <%= link_to 'Edit', edit_warehouse_selection_path(warehouse_selection) %> &middot;
-              <%= link_to 'Delete', warehouse_selection, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(WarehouseSelection).edit? %> 
+                <%= link_to 'Edit', edit_warehouse_selection_path(warehouse_selection) %> &middot;
+              <% end %>
+              <% if policy(WarehouseSelection).destroy? %> 
+                <%= link_to 'Delete', warehouse_selection, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

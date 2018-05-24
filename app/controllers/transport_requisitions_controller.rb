@@ -1,6 +1,6 @@
 class TransportRequisitionsController < ApplicationController  
   before_action :set_transport_requisition, only: [:edit, :update, :destroy]
-
+ include ReferenceHelper
   # GET /transport_requisitions
   # GET /transport_requisitions.json
   def index
@@ -29,11 +29,26 @@ class TransportRequisitionsController < ApplicationController
     # end
 
     @transport_requisition = TransportRequisition.find(params[:id])
+    @transport_requsition_items =  @transport_requisition.transport_requisition_items
+    @requisition_ids = @transport_requsition_items.map{|r|r.requisition_id }.uniq
+    @reference_numbers = get_reference_numbers_by_requisition_id(@requisition_ids)
+    project = []
+    @transport_requsition_items.each do |item |
+       project_id = ProjectCodeAllocation.where(requisition_id: item.requisition_id,fdp_id: item.fdp_id).pluck(:project_id)
 
+    if project_id.present?
+       project_code = Project.find(project_id[0]).project_code
+       temp = { Commodity.find(item.commodity_id).name => project_code }
+       if !project.include?(temp)
+          project << temp
+       end
+end
+    end
+  
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = TransportRequisitionPdf.new(params[:id], params[:reason_for_idps], params[:cc_letter_to])
+          pdf = TransportRequisitionPdf.new(params[:id], params[:reason_for_idps], params[:cc_letter_to], @reference_numbers,project)
           send_data pdf.render, filename: "trasnport_requisition_#{@transport_requisition.id}.pdf",
           type: "application/pdf",
           disposition: "inline"
@@ -64,10 +79,11 @@ class TransportRequisitionsController < ApplicationController
   # POST /transport_requisitions
   # POST /transport_requisitions.json
   def create
-    @bid_id = transport_requisition_params['bid_id']
 
+    @bid_id = transport_requisition_params['bid_id']
+    @request_ids = transport_requisition_params['request_id']
     @result = false
-    result = TransportRequisition.generate_tr(transport_requisition_params, current_user.id)
+    result = TransportRequisition.generate_tr(transport_requisition_params, current_user.id,@request_ids)
     if (result.present?)
       @result = TransportOrder.generate_transport_order(result.id, @bid_id, current_user.id)
     end
@@ -128,6 +144,20 @@ class TransportRequisitionsController < ApplicationController
     end
   end
 
+  def rrd_reference_list
+    @operation_id = params[:operation_id]
+    @region_id = params[:region_id]
+
+  
+    @regional_request_references = RegionalRequest.where(operation_id: @operation_id, region_id: @region_id).all 
+
+    respond_to do |format|
+     format.js
+     format.html
+    end
+
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_transport_requisition
@@ -136,6 +166,6 @@ class TransportRequisitionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transport_requisition_params
-      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at, :bid_id, :tr_id, :transporter_id, :tariff)
+      params.require(:transport_requisition).permit(:reference_number, :location_id, :operation_id, :certified_by, :certified_date, :description, :status, :deleted_by, :deleted_at, :bid_id, :tr_id, :transporter_id, :tariff, request_id: [])
     end
 end

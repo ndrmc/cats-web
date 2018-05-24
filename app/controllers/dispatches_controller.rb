@@ -67,9 +67,22 @@ class DispatchesController < ApplicationController
         @project_id = dispatch_params["proj_id"]
         @quantity = dispatch_params["quantity"]
         @unit = dispatch_params["unit"]
+        @requisition_no = dispatch_params["requisition_number"]
+       
+
+        @requisition = Requisition.where(:requisition_no => @requisition_no).first
+        @project_code_allocation = ProjectCodeAllocation.where(:requisition_id => @requisition.id, :project_id => @project_id).first
+        @allocated = 0
+        if ( @project_code_allocation.present? )
+            target_unit = UnitOfMeasure.find_by(code: "MT")
+            current_unit = UnitOfMeasure.find(@project_code_allocation.unit_of_measure_id)
+            @allocated = target_unit.convert_to(current_unit.name, @project_code_allocation.amount)
+        end
+
         stock_account = Account.find_by({'code': :stock})
         @stock = PostingItem.where(account_id: stock_account.id, hub_id: @hub_id, warehouse_id: @warehouse_id, project_id: @project_id).sum(:quantity)
         quantity_in_ref = UnitOfMeasure.find(@unit.to_i).to_ref(@quantity.to_f)
+        @stock += @allocated
         @flag = false
         if(quantity_in_ref < @stock)
             @flag = true
@@ -84,16 +97,71 @@ class DispatchesController < ApplicationController
         @hub_id = dispatch_params["hub_id"]
         @warehouse_id = dispatch_params["warehouse_id"]
         @project_id = dispatch_params["proj_id"]
+        @requisition_no = dispatch_params["requisition_number"]
+        @requisition = Requisition.where(:requisition_no => @requisition_no).first
+        @project_code_allocation = ProjectCodeAllocation.where(:requisition_id => @requisition.id, :project_id => @project_id).first
+        @allocated = 0
+        if ( @project_code_allocation.present? )
+            @allocated = UnitOfMeasure.find(@project_code_allocation.unit_of_measure_id).to_ref(@project_code_allocation.amount)
+        end
+        
         stock_account = Account.find_by({'code': :stock})
         @stock = PostingItem.where(account_id: stock_account.id, hub_id: @hub_id, warehouse_id: @warehouse_id, project_id: @project_id).sum(:quantity)
-        
+        @stock = @stock + @allocated
         respond_to do |format|
             format.html
             format.json { render :json => @stock.to_json }
         end
     end
+
+    def get_hub_warehouse    
+        @fdp_id = dispatch_params["fdp_id"]
+        @requisition_no = dispatch_params["requisition_number"]
+        @requisition = Requisition.where(:requisition_no => @requisition_no).first
+        @data = []
+        ProjectCodeAllocation.includes(:hub, :warehouse, :store, project: :organization).where(:requisition_id => @requisition.id).each do |pca|
+            @data << { 'hub_id' => pca&.hub_id, 'hub' => pca&.hub&.name, 'warehouse_id' => pca&.warehouse_id, 'warehouse' => pca&.warehouse&.name, 'store_id' => pca&.store_id, 'store' => pca&.store&.name, 'project_id' => pca&.project_id, 'project' => pca&.project&.project_code, 'donor_id' => pca&.project&.organization_id, 'donor' => pca&.project&.organization&.name }        
+        end
+
+        if (@data.empty?)
+            WarehouseAllocationItem.includes(:hub, :warehouse).where(:requisition_id => @requisition.id, :fdp_id => @fdp_id).each do |wai|
+                @data << { 'hub_id' => wai&.hub_id, 'hub' => wai&.hub&.name, 'warehouse_id' => wai&.warehouse_id, 'warehouse' => wai&.warehouse&.name, 'store_id' => '', 'store' => '', 'project_id' => '', 'project' => '', 'donor_id' => '', 'donor' => '' }        
+            end
+        end
+
+        if (@data.empty?)
+            @zone = Fdp.includes(:location).find(@fdp_id).location.parent
+            if(@zone.warehouse_id.present?)
+                @warehouse = Warehouse.includes(:hub).find(@zone.warehouse_id)
+                @data << { 'hub_id' => @warehouse&.hub_id, 'hub' => @warehouse&.hub&.name, 'warehouse_id' => @warehouse&.id, 'warehouse' => @warehouse&.name, 'store_id' => '', 'store' => '', 'project_id' => '', 'project' => '', 'donor_id' => '', 'donor' => '' }
+            end
+        end
+
+        respond_to do |format|
+            format.html
+            format.json { render :json => @data.to_json }
+        end
+    end
     
     def dispatch_report
+             filter_map = {}
+      if params[:hub].present?
+        filter_map = {hub_id: params[:hub]}
+        hub = Hub.find(params[:hub])
+      if params[:dispatch_date ].present?
+        dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
+        filter_map[:dispatched_date] = dates[0]..dates[1]
+      end
+            @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation] })
+            .where(:'dispatches.hub_id' => params[:hub]).where("dispatches.dispatch_date >= ? AND dispatches.dispatch_date <= ? ",dates[0],dates[1])
+            @date_min = dates[0]
+            @date_max = dates[1]
+            @hub = hub.name
+        
+      else
+         @dispatch = []
+      end
+
 
     end
     
@@ -117,6 +185,7 @@ class DispatchesController < ApplicationController
             @region = @zone&.parent
         end
         @dispatch = Dispatch.new
+        @stores = Store.order(:name)
     end
 
     def create 
@@ -233,6 +302,7 @@ class DispatchesController < ApplicationController
                 :plate_number, 
                 :trailer_plate_number, 
                 :storekeeper_name,
+                :store_id,
                 :drivers_name, 
                 :remark,
                 :dispatch_items => [:id, :commodity_category_id, :commodity_id, :quantity,:unit_of_measure_id, :organization_id, :project_id]

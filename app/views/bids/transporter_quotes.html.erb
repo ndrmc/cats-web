@@ -140,24 +140,27 @@
 
         <tbody>
           <% @transporters.each do |transporter| %>
-          <tr>
-                        
-                       <td> <%= link_to transporter&.transporter&.name, '/bid_quotations?transporter=' + transporter.transporter_id.to_s + '&bid=' + transporter&.bid_id.to_s %> </td>
-                       <td><%= transporter&.destination_count %> </td>
-                       <td> <a href="#"  data-toggle="modal" data-transporter_id= "<%= transporter&.transporter&.id %>" data-id="<%= transporter&.bid_id %>" class="rfq-modal" data-target="#rfq-modal">Update</a>  </td>&middot;
-                       <td> <%= link_to "Remove",  {:controller => "bids", :action => "remove_bid_quotation", :id => transporter&.bid_id, :transporter_id => transporter&.transporter_id }, method: :delete , data: { confirm: 'Are you sure?' } %> </td>&middot;
-                       <td>
-                       
-                        <% if (@framework_tender&.status == 'open') %>
-                            <a class="add-transpoter-quote" data-transporter-name="<%= transporter&.transporter&.name %>" data-transporter-id= "<%= transporter&.transporter&.id %>" data-bid-id="<%= transporter&.bid_id %>" data-ft-id="<%= @framework_tender_id %>" data-target="#add-transpoter-quote" data-toggle="modal">
-                                 Add Transporter Quote
-                            </a>
-                          <% end %>
-                       
-                       
-                        </td>
-                       
-             
+          <tr>                        
+            <td> <%= link_to transporter&.transporter&.name, '/bid_quotations?transporter=' + transporter.transporter_id.to_s + '&bid=' + transporter&.bid_id.to_s %> </td>
+            <td><%= transporter&.destination_count %> </td>
+            <td> 
+            <% if policy(Bid).upload_rfq? %>
+            <a href="#"  data-toggle="modal" data-transporter_id= "<%= transporter&.transporter&.id %>" data-id="<%= transporter&.bid_id %>" class="rfq-modal" data-target="#rfq-modal">Update</a>  
+            <% end %>
+            </td>&middot;                       
+            <td> 
+            <% if policy(Bid).remove_bid_quotation? %>
+              <%= link_to "Remove",  {:controller => "bids", :action => "remove_bid_quotation", :id => transporter&.bid_id, :transporter_id => transporter&.transporter_id }, method: :delete , data: { confirm: 'Are you sure?' } %> 
+            <% end %>
+            </td>&middot;
+            <td>      
+            <% if policy(BidQuotation).create? %>                 
+              <% if (@framework_tender&.status == 'open') %>
+                <a class="add-transpoter-quote" data-transporter-name="<%= transporter&.transporter&.name %>" data-transporter-id= "<%= transporter&.transporter&.id %>" data-bid-id="<%= transporter&.bid_id %>" data-ft-id="<%= @framework_tender_id %>" data-target="#add-transpoter-quote" data-toggle="modal">
+                      Add Transporter Quote
+                </a>
+              <% end %>
+            <% end %>
             </td>
           </tr>
           <% end %>

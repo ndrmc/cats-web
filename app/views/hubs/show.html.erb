@@ -80,9 +80,7 @@
             <div class="panel blank-panel">
               <div class="panel-heading">
                
-                        <div class="title-action">
-                          <%= link_to 'New Warehouse', new_hub_warehouse_path(@hub), :class => "btn btn-primary"%>
-                        </div>
+              
                       
                 <div class="panel-options">
                   <ul class="nav nav-tabs">
@@ -120,8 +118,15 @@
                                   <%end%>
                                 </td>
                                 <td>
+                                <% if policy(Store).new? %>
+                                <%= link_to 'New store', new_warehouse_store_path(hub_warehouse), :class => "btn btn-primary"%>
+                                <% end %>
+                                <% if policy(Warehouse).edit? %>
                                   <%= link_to 'Edit', edit_warehouse_path(hub_warehouse) %> &middot;
+                                <% end %>
+                                <% if policy(Warehouse).destroy? %>
                                   <%= link_to 'Delete', warehouse_path(hub_warehouse), method: :delete, data: { confirm: 'Are you sure?' } %>
+                                <% end %>
                                 </td>
                               </tr>
                           <% end %>
@@ -132,6 +137,7 @@
                     </div>
                   </div>
                   <div id="tab-2" class="tab-pane">
+                  <div class=""title-action>  </div>
                     <div class="panel-body">
                       <div>
                         <table class="table table-striped">
@@ -153,8 +159,13 @@
                                 <td><%= store.warehouse.name%></td>
                                 <td><%= store.warehouse.hub.name%></td>
                                 <td>
+                                
+                                <% if policy(Store).edit? %>
                                   <%= link_to 'Edit', edit_store_path(store) %> &middot;
+                                <% end %>
+                                <% if policy(Store).destroy? %>
                                   <%= link_to 'Delete', store, method: :delete, data: { confirm: 'Are you sure?' } %>
+                                <% end %>
                                 </td>
                               </tr>
                           <% end %>

@@ -14,9 +14,11 @@
     </ol>
   </div>
   <div class="col-sm-4">
+  <% if policy(TransportRequisition).print? %>
     <a class="btn btn-default pull-right" data-tr-id="<%= @transport_requisition.id.to_s %>" data-target="#print-tr" data-toggle="modal">
         Print
     </a>
+  <% end %>
   </div>
 </div>
 
@@ -174,7 +176,7 @@
                         <%= tri[1] %>
                       </td>
                       <td>
-                        N/A
+                        <%= Warehouse.find_by(id: WarehouseAllocationItem.find_by(requisition_id: tri[0][0])&.warehouse_id)&.name %>
                       </td>
                       <td>
                         <%= tri[0][3] %>
@@ -211,28 +213,30 @@
                     .each do |tri| %>
                     <tr>
                       <td>                             
-                        <%= tri.fdp.location.parent.name %>
+                        <%= tri&.fdp&.location&.parent&.name %>
                       </td>
                       <td>
-                        <%= tri.fdp.location.name %>
+                        <%= tri&.fdp&.location&.name %>
                       </td>
                       <td>
-                        <%= tri.fdp.name %>
+                        <%= tri&.fdp&.name %>
                       </td>
                       <td>
-                        <% if tri.transport_order_items.present? %>
-                          <% tri.transport_order_items.find_each do |toi| %>
-                            <p><%= link_to toi.transport_order.transporter.name, transporter_path(toi.transport_order.transporter) %></p>
+                        <% if tri&.transport_order_items.present? %>
+                          <% tri&.transport_order_items.each do |toi| %>
+                            <% if toi&.transport_order&.transporter.present? %>
+                              <p><%= link_to toi&.transport_order&.transporter&.name, transporter_path(toi&.transport_order&.transporter) %></p>
+                            <% end %>
                           <% end %>
                         <% else%>
                           N/A
                         <% end %>
                       </td>
                       <td>
-                        <%= tri.commodity.name %>
+                        <%= tri&.commodity&.name %>
                       </td>
                       <td>
-                        <%= tri.quantity %>
+                        <%= tri&.quantity %>
                       </td>
                     </tr>
                     <% end %>
@@ -255,14 +259,16 @@
                       <th>Contract No.</th>
                       <th>Bid No.</th>
                       <th>No. of Destinations</th>
-                      <th>Total Quantity</th>
+                      <th>Total Quantity</th> 
                     </tr>
                   </thead>
                   <tbody>
-                    <% @transport_orders.each do |tos| %>
+                    <% @transport_orders.each do |tos| %>                    
                     <tr>
-                      <td>                           
-                        <%= link_to tos.transporter.name, transporter_path(tos.transporter) %>
+                      <td>     
+                        <% if tos.transporter.present? %>                      
+                          <%= link_to tos.transporter.name, transporter_path(tos.transporter) %>
+                        <% end %>
                       </td>
                       <td>
                         <% if tos.contract.present? %>
@@ -279,7 +285,7 @@
                       <% end %>
                       </td>
                       <td>
-                        <%= tos.transport_order_items.count %>
+                        <%= tos&.transport_order_items&.count %>
                       </td>
                       <td>
                         <%= tos.transport_order_items.sum(:quantity) %>
@@ -321,9 +327,11 @@
                         <%= woreda['total_qty'] %>
                       </td>
                       <td>
+                      <% if policy(TransportOrder).new? %>
                         <a class="create_to_btn" data-target="#new-to-for-exceptions" data-toggle="modal" data-woreda="<%= woreda['woreda_id'] %>" data-woreda-name="<%= woreda['woreda_name'] %>" data-tr="<%= @transport_requisition.id %>">
                             Create TO
                         </a>
+                      <% end %>
                       </td>
                     </tr>
                     <% end %>

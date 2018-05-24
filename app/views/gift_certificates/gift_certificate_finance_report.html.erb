@@ -1,0 +1,53 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Receipt Report</h2>
+   
+  </div>
+   <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', gift_certificates_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+
+<div class="ibox float-e-margins border-bottom">
+  <div class="ibox-content">
+      <%= form_tag( 'gift_certificate_finance_generate?format=pdf' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'POST'}) do %>
+       
+    
+        <div class="form-group">
+          <%= label_tag :gift_date, "Gift Date", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= text_field_tag  :gift_date, params[:gift_date], { :required => true,  id: 'gift-date-picker',class: 'form-control'}  %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+              <input type="submit" name="filter" value="Generate report" class="btn btn-sm btn-primary" />
+          </div>
+        </div>
+
+        <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $( function() { 
+    $('#gift-date-picker').daterangepicker(
+      {
+          locale: {
+            format: 'DD/MM/YYYY'
+          },
+          maxDate: '0', 
+          autoUpdateInput: false
+      }, 
+      function( start, end  ) { 
+        $('#gift-date-picker').val( start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY')); 
+      }
+    ); 
+  });
+  </script>

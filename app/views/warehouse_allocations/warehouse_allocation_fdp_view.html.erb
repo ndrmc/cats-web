@@ -72,9 +72,11 @@
     <div class="ibox-title">
                 <h5> <%=  Location.find(woreda).name %> </h5>
                 <div class="ibox-tools">
+                  <% if policy(WarehouseAllocation).change_wa_woreda? %> 
                     <a data-woreda-name = "<%= Location.find(woreda).name %>" data-woreda-id = "<%= woreda %>" data-operation = "<%= params['operation'] %>" data-requisition-id = "<%= requisition_details.first.requisition_id %>" data-requisition = "<%= requisition_details.first.requisition.requisition_no %>" data-target="#change-warehouse-allocation" data-toggle="modal" data-level="woreda" class="btn btn-sm btn-primary">
                       Change for Woreda
                     </a>
+                  <% end %>
                     <a class="collapse-link">
                         <i class="fa fa-chevron-up"></i>
                     </a>
@@ -105,9 +107,11 @@
             <td> <%=  @wai&.hub&.name  %> </td> 
             <td> <%=  @wai&.warehouse&.name  %> </td>                    
             <td> 
+            <% if policy(WarehouseAllocation).change_wai? %> 
               <a data-wai-id="<%= @wai.id %>" data-woreda-name = "<%= @wai&.fdp&.location&.name %>" data-fdp-name = "<%= @wai&.fdp&.name %>" data-hub = "<%= @wai&.hub&.id %>" data-warehouse = "<%= @wai&.warehouse&.id %>" data-hub-name = "<%= @wai&.hub&.name %>" data-warehouse-name = "<%= @wai&.warehouse&.name %>" data-requisition = "<%= @wai&.requisition&.requisition_no %>" data-target="#change-warehouse-allocation" data-toggle="modal" data-level="fdp">
                 Change
               </a>
+            <% end %>
             </td>
           </tr>           
 

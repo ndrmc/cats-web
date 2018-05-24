@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   delete 'stock_movements/delete_dispatch/:id', to: 'stock_movements#delete_dispatch'
   delete 'stock_movements/stock_movement_destroy_receive/:id', to: 'stock_movements#stock_movement_destroy_receive'
   resources :stock_movements
-
+  get 'transport_requisitions/rrd_reference_list'
   get '/transport_requisitions/print/:id', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
@@ -52,7 +52,12 @@ Rails.application.routes.draw do
    get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
    get 'bids/sign_contract/:id', to: 'bids#sign_contract'
    
+   get'/contract_reports', to: 'contract_reports#index'
+   post '/contract_reports/transport_order'
+   post 'contract_reports/transport_order_pdf'
+   get '/contract_reports/bids/:operation_id', to: 'contract_reports#get_by_operation'
    resources :framework_tenders
+   
    get 'framework_tenders/update_status/:id/:status', to: 'framework_tenders#update_status'   
    get 'framework_tenders/bids/transporter_quotes/:id', to: 'bids#transporter_quotes'
 
@@ -76,6 +81,7 @@ Rails.application.routes.draw do
   resources :transporters
   resources :transport_orders
   get '/transport_orders/print/:id', to: 'transport_orders#print'
+  post '/transport_orders/move/:id', to: 'transport_orders#move'
   resources :transporter_addresses  
   get 'setting/index'
   devise_for :users
@@ -140,6 +146,8 @@ Rails.application.routes.draw do
   resources :accounts
   resources :journals
   resources :fdps
+  post 'fdps/unarchive_fdp/:id', to: 'fdps#unarchive_fdp'
+  post 'fdps/archive_fdp/:id', to: 'fdps#archive_fdp'
   resources :fdp_contacts
   get 'fdps/location/:location_id', to: 'fdps#get_by_location'
 
@@ -175,12 +183,15 @@ Rails.application.routes.draw do
   post '/dispatches/check_stock', to: 'dispatches#check_stock' 
   post '/dispatches/validate_quantity', to: 'dispatches#validate_quantity'
   get '/dispatches/basic', to: 'dispatches#basic'
+  get '/dispatches/get_hub_warehouse', to: 'dispatches#get_hub_warehouse'  
+  post 'dispatches/dispatch_report'
   resources :dispatches
  
 
   get '/requisitions/get_requisiton_by_number'
   get '/requisitions/prepare/:request_id', to: 'requisitions#prepare'
   post '/requisitions/prepare/:request_id', to: 'requisitions#generate'
+  post '/requisitions/contingency/:request_id', to: 'requisitions#contingency'
   get '/requisitions/summary/:request_id', to: 'requisitions#summary'
   get '/requisitions/export_requisition_to_excel/:id', to: 'requisitions#export_requisition_to_excel'
   get '/requisitions/add_requisition', to: 'requisitions#add_requisition'
@@ -191,6 +202,8 @@ Rails.application.routes.draw do
   resources :requisitions
   get '/gift_certificates/gift_certificate_report', to: 'gift_certificates#gift_certificate_report'
   post '/gift_certificates/gift_certificate_generate', to: 'gift_certificates#gift_certificate_generate'
+  get 'gift_certificates/gift_certificate_finance_report', to: 'gift_certificates#gift_certificate_finance_report'
+  post 'gift_certificates/gift_certificate_finance_generate', to: 'gift_certificates#gift_certificate_finance_generate'
   resources :gift_certificates
   
 
@@ -199,6 +212,7 @@ Rails.application.routes.draw do
   post '/regional_requests/add_fdp_to_request'
   post '/regional_requests/update_regional_request_item'
   delete '/regional_requests/destroy_regional_request_item/:id', to: 'regional_requests#destroy_regional_request_item'
+  post '/regional_requests/hide_regional_request_item/:id', to: 'regional_requests#hide_regional_request_item'
   get '/regional_requests/request_items/:id', to: 'regional_requests#request_items'
   post '/regional_requests/upload_requests/:id', to: 'regional_requests#upload_requests'
   

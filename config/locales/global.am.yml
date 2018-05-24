@@ -60,6 +60,7 @@ am:
   contract: "ስምምነት"
   transport_order: "የጉዞ ማዘዣ"
   contract_admin: "የስምምነት አስተዳደር"
+  contract_report: "contract report"
   payment_request: "የክፍያ መጠየቂያ"
   region: "ክልል"
   request: "መጠየቂያ"

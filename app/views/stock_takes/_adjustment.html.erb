@@ -6,6 +6,10 @@
                 <td><%=adjustment.amount%></td>
                 <td><%=adjustment.loss? ? 'Loss' : 'Gain' %></td>
                 <td><%=adjustment.reason %></td>
-                <td><%= link_to 'Update' , edit_adjustment_path(adjustment)%></td>
+                <td>
+                <% if policy(Adjustment).edit? %>
+                  <%= link_to 'Update' , edit_adjustment_path(adjustment)%>
+                <% end %>
+                </td>
               <% end %> 
 </tr> 

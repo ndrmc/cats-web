@@ -1,20 +1,35 @@
 class TransportOrdersController < ApplicationController
-  before_action :set_transport_order, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_transport_order, only: [:show, :edit, :update, :destroy, :move]
+ include ReferenceHelper
   # GET /transport_orders
   # GET /transport_orders.json
   def index
+     @result=nil
      if params[:order_no].present?
       @transport_orders = TransportOrder.where(order_no: params[:order_no]).includes(:bid, :location)
+       @result = 'Order No: ' + params[:order_no]
       return
     end
-
-    if params[:transporter].present? && params[:operation].present?
-      filter_map = {transporter_id: params[:transporter], operation_id: params[:operation]}
-      @transport_orders = TransportOrder.where( filter_map ).includes(:bid, :location)
+   
+    if params[:reference_no].present?
+      @list_of_requistion_nos = RegionalRequest.includes(:requisitions).where(:reference_number => params[:reference_no]).pluck(:'requisitions.requisition_no')
+      
+      @transport_orders = TransportOrder.joins(:bid, :location, :transport_order_items).where('transport_order_items.requisition_no IN (?)',@list_of_requistion_nos).uniq
+       @result = params[:reference_no]
+    elsif params[:requisition_no].present?
+      @transport_orders = TransportOrder.joins(:bid, :location, :transport_order_items).where('transport_order_items.requisition_no IN (?)', params[:requisition_no]).uniq
+       @result = 'Requisition No: ' + params[:requisition_no]
+    elsif params[:transporter].present? && params[:operation].present?
+      @transport_orders = TransportOrder.where(:transporter => params[:transporter] ,:operation => params[:operation]).includes(:bid, :location)
+       @result = 'Transporter: ' + params[:transporter] + " and Operation: " + params[:operation]
     else
       @transport_orders = TransportOrder.all.includes(:bid, :location)
+       @result = 'No filtering - all'
     end
+    
+    
+
+    
   end
 
   # GET /transport_orders/1
@@ -75,6 +90,8 @@ class TransportOrdersController < ApplicationController
 
   def print
     @transport_order = TransportOrder.includes(:transporter, :contract, :bid).find(params[:id])
+ 
+    @region = Location.find(@transport_order.location_id)&.name
     @zones = []
     @commodities = []
     @requisitions = []
@@ -93,16 +110,27 @@ class TransportOrdersController < ApplicationController
       end
     end
     @transport_order_items = TransportOrderItem.includes(:commodity, fdp: :location).where(:transport_order_id => params[:id])
+      @requistion_ids = @transport_order_items.map{|r| r.requisition_no}.uniq
+      @references = get_reference_numbers_by_requisition_no(@requistion_ids)
+ 
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones, @commodities, @requisitions)
+          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones,  @region,@commodities, @requisitions,@references)
           send_data pdf.render, filename: "transport_order_#{@transport_order&.id}.pdf",
           type: "application/pdf",
           disposition: "inline"
       end      
     end
   end
+ def move
+    @transport_order_items_ids = params[:att].split ","
+   TransportOrder.move_transport_order(params[:transporter], @transport_order_items_ids,current_user.id)
+   respond_to do |format|
+        format.html { redirect_to @transport_order, notice: 'Transport order was successfully moved to the new transporter.' }
+        format.json { render :show, status: :created, location: @transport_order }
+      end
+ end
 
   private
     # Use callbacks to share common setup or constraints between actions.

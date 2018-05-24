@@ -1,8 +1,12 @@
 <%= form_for(dispatch, :html=> {:id => 'dispatch-form'} ) do |f| %>
-<% @projects = Project.includes(commodity: :commodity_category).where('archived = ? OR archived IS NULL',false)%>
-<% @commodities = Commodity.all%>
-<% @commodity_categories = CommodityCategory.all%>
-<% @uoms = UnitOfMeasure.all%>
+<% @projects = Project.includes(commodity: :commodity_category).where('archived = ? OR archived IS NULL',false).order('created_by DESC')%>
+<% @commodities = Commodity.order(:name)%>
+<% @commodity_categories = CommodityCategory.order(:name)%>
+<% @uoms = UnitOfMeasure.order(:name)%>
+<% @donors = Organization.order(:name)%>
+<% @hubs = Hub.order(:name)%>
+<% @stores = Store.order(:name)%>
+
 <div class="wrapper wrapper-content">
   <div class="ibox float-e-margins col-sm-12">
     <div class="ibox-content col-sm-12">
@@ -64,9 +68,26 @@
             <%= f.text_field :dispatch_date, :class => 'form-control datepicker', :required => true  %>
           </div>
         </div>              
-      </div>
+      </div>      
+    </div>
+  </div>
+  
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
       <div class="row">
-        <div class="col-sm-6">
+        <% if (params[:fdp_id].present?) %>
+          <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: params[:fdp_id], required: true  %>
+        <% else %>
+          <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: (@dispatch.fdp ?  @dispatch.fdp.id : nil), required: true  %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <div class="row">
+        <div class="col-sm-4">
           <div class="form-group">
             <%= f.label :hub %> <span class="required">*</span>
             <% if (params[:hub_id].present?) %>
@@ -79,7 +100,7 @@
             
           </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <div class="form-group">
             <%= f.label :warehouse_id  %> <span class="required">*</span>
             <% if (params[:hub_id].present?)
@@ -100,19 +121,23 @@
               "data-option-value-method" => :name %>
           </div>
         </div>
-      </div>
-      
-    </div>
-  </div>
-
-  <div class="ibox float-e-margins">
-    <div class="ibox-content">
-      <div class="row">
-        <% if (params[:fdp_id].present?) %>
-          <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: params[:fdp_id], required: true  %>
-        <% else %>
-          <%= render 'shared/fdp_selector', name: 'dispatch[fdp_id]', fdpId: (@dispatch.fdp ?  @dispatch.fdp.id : nil), required: true  %>
-        <% end %>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <%= label_tag :store_id, "Store", { :class => ' control-label'} %>
+            <% if (params[:warehouse_id].present?)
+                @stores = []
+                @stores = Store.where(:warehouse_id => params[:warehouse_id])
+              elsif (@dispatch.warehouse_id.present?)
+                @stores = []
+                @stores = Store.where(:warehouse_id => @dispatch.warehouse_id)
+              else 
+                
+              end %>
+            <div class="">
+              <%= select_tag  'dispatch[store_id]',  options_from_collection_for_select( @stores, 'id', 'name', @dispatch.store_id ), {:prompt => "-- Select Store --" , :class => 'form-control width-100per' }  %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -285,193 +310,501 @@
 
 <script type="text/javascript">
 
-          var REMOVE_dispatchLINE_BTN = '<a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>';
-          var EMPTY_OPTION = '<option value="">-- Choose --</option>';
-          
-          $( function() { 
+  var REMOVE_dispatchLINE_BTN = '<a href="#" class="remove-dispatch-line"><i class="fa fa-times"></i></a>';
+  var EMPTY_OPTION = '<option value="">-- Choose --</option>';
+  
+  $( function() { 
 
-              $("#fdp_selector_region").addClass('col-sm-3'); 
-              $("#fdp_selector_zone").addClass('col-sm-3'); 
-              $("#fdp_selector_woreda").addClass('col-sm-3'); 
-              $("#fdp_selector_fdp").addClass('col-sm-3'); 
+    $("#fdp_selector_region").addClass('col-sm-3'); 
+    $("#fdp_selector_zone").addClass('col-sm-3'); 
+    $("#fdp_selector_woreda").addClass('col-sm-3'); 
+    $("#fdp_selector_fdp").addClass('col-sm-3'); 
 
-              var req_no = $('#req_no_input').val();
-              if (req_no == '' || req_no == '')
-              {
-                $("#requisition-input-group i.fa-times").removeClass('hidden'); 
-                $("#requisition-input-group i.fa-check").addClass('hidden'); 
+    var req_no = $('#req_no_input').val();
+    if (req_no == '' || req_no == '')
+    {
+      $("#requisition-input-group i.fa-times").removeClass('hidden'); 
+      $("#requisition-input-group i.fa-check").addClass('hidden'); 
+    }
+    else{
+      $.getJSON( '/requisitions/get_requisiton_by_number', 
+          { requisition_no: $('#req_no_input').val()}, 
+          function(data) { 
+
+            if(data!="" && data!=null)
+            {
+              $("#requisition-input-group i.fa-check").removeClass('hidden'); 
+              $("#requisition-input-group i.fa-times").addClass('hidden'); 
+              console.log("Commodity id: " + data.requisition.commodity_id);    
+              $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
+              var donor_id = $("#donor_select").find('option:selected').val();
+              var commodity_id = data.requisition.commodity_id;
+              updateProjects(donor_id,commodity_id);
+              var operation_id = data.requisition.operation_id; 
+              if( null !== operation_id) {                         
+                  $("#dispatch_operation_id").val( operation_id); 
               }
-              else{
-                $.getJSON( '/requisitions/get_requisiton_by_number', 
-                    { requisition_no: $('#req_no_input').val()}, 
-                    function(data) { 
 
-                      if(data!="" && data!=null)
-                      {
-                        $("#requisition-input-group i.fa-check").removeClass('hidden'); 
-                        $("#requisition-input-group i.fa-times").addClass('hidden'); 
-                        console.log("Commodity id: " + data.requisition.commodity_id);    
-                        $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
-                        var donor_id = $("#donor_select").find('option:selected').val();
-                        var commodity_id = data.requisition.commodity_id;
-                        updateProjects(donor_id,commodity_id);
-                        var operation_id = data.requisition.operation_id; 
-                        if( null !== operation_id) {                         
-                            $("#dispatch_operation_id").val( operation_id); 
-                        }
+              var region_id = data.requisition.region_id; 
 
-                        var region_id = data.requisition.region_id; 
+              if( null !== region_id) { 
+                
+                $("select[name=region]:first").val(region_id).change(); 
 
-                        if( null !== region_id) { 
-                          
-                          $("select[name=region]:first").val(region_id).change(); 
+                var zone_id = data.requisition.zone_id; 
 
-                          var zone_id = data.requisition.zone_id; 
-
-                          if( null !== zone_id ) { 
-                            $("select[name=zone]:first").data('value', zone_id);
-                          }  
-                        }
-                      }
-                      
-                    }
-                )
-                .error(function(event, jqxhr, exception) {
-                    $("#requisition-input-group i.fa-times").removeClass('hidden'); 
-                    $("#requisition-input-group i.fa-check").addClass('hidden'); 
-                    $('#req_no_input').attr("data-commodity", "");
-                    var commodity_id = "";
-                    var donor_id = $("#donor_select").find('option:selected').val();
-                    $('#uom-select').html("");
-                    updateProjects(donor_id,commodity_id);
-                });
+                if( null !== zone_id ) { 
+                  $("select[name=zone]:first").data('value', zone_id);
+                }  
               }
+            }
+            
+          }
+      )
+      .error(function(event, jqxhr, exception) {
+          $("#requisition-input-group i.fa-times").removeClass('hidden'); 
+          $("#requisition-input-group i.fa-check").addClass('hidden'); 
+          $('#req_no_input').attr("data-commodity", "");
+          var commodity_id = "";
+          var donor_id = $("#donor_select").find('option:selected').val();
+          $('#uom-select').html("");
+          updateProjects(donor_id,commodity_id);
+      });
+    }
+    
+    $('#req_no_input').keyup( $.debounce( 500, function() { 
+      $.getJSON( '/requisitions/get_requisiton_by_number', 
+          { requisition_no: $(this).val()}, 
+          function(data) { 
+            console.log(data);
+            if(data.requisition!="" && data.requisition!=null)
+            {
+              var operation_id = data.requisition.operation_id; 
+              if( null !== operation_id) { 
+                $("#dispatch_operation_id").val( operation_id); 
+              }
+
+              var commodity_id = data.requisition.commodity_id;
+              var commodity_category_id = data.commodity_category_id
+              if( null !== commodity_id) {
+                  $("#commodity_id_select").val( commodity_id); 
+              }
+
+              if( null !== commodity_category_id) {
+                  $("#commodity_category_id_select").val( commodity_category_id); 
+              }
+              $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
+              var donor_id = $("#donor_select").find('option:selected').val();
+              updateProjects(donor_id,commodity_id);
               
-              $('#req_no_input').keyup( $.debounce( 500, function() { 
-                $.getJSON( '/requisitions/get_requisiton_by_number', 
-                    { requisition_no: $(this).val()}, 
-                    function(data) { 
-                      console.log(data);
-                      if(data.requisition!="" && data.requisition!=null)
-                      {
-                        var operation_id = data.requisition.operation_id; 
-                        if( null !== operation_id) { 
-                          $("#dispatch_operation_id").val( operation_id); 
-                        }
+              var region_id = data.requisition.region_id; 
 
-                        var commodity_id = data.requisition.commodity_id;
-                        var commodity_category_id = data.commodity_category_id
-                        if( null !== commodity_id) {
-                            $("#commodity_id_select").val( commodity_id); 
-                        }
-                        if( null !== commodity_category_id) {
-                            $("#commodity_category_id_select").val( commodity_category_id); 
-                        }
-                        $('#req_no_input').attr("data-commodity", data.requisition.commodity_id);
-                        var donor_id = $("#donor_select").find('option:selected').val();
-                        updateProjects(donor_id,commodity_id);
-                        
-                        var region_id = data.requisition.region_id; 
+              if( null !== region_id) { 
+                
+                $("select[name=region]:first").val(region_id).change(); 
 
-                        if( null !== region_id) { 
-                          
-                          $("select[name=region]:first").val(region_id).change(); 
+                var zone_id = data.requisition.zone_id; 
 
-                          var zone_id = data.requisition.zone_id; 
+                if( null !== zone_id ) { 
+                  $("select[name=zone]:first").data('value', zone_id);
+                }  
+              }
+              $("#requisition-input-group i.fa-check").removeClass('hidden'); 
+              $("#requisition-input-group i.fa-times").addClass('hidden'); 
+            }
+          }
+      )
+      .error(function(event, jqxhr, exception) {
+          $("#requisition-input-group i.fa-times").removeClass('hidden'); 
+          $("#requisition-input-group i.fa-check").addClass('hidden'); 
+          $('#req_no_input').attr("data-commodity", "");
+          var commodity_id = "";
+          var donor_id = $("#donor_select").find('option:selected').val();
+          $('#uom-select').html("");
+          updateProjects(donor_id,commodity_id);
+      });
+    }));
 
-                          if( null !== zone_id ) { 
-                            $("select[name=zone]:first").data('value', zone_id);
-                          }  
-                        }
-                        $("#requisition-input-group i.fa-check").removeClass('hidden'); 
-                        $("#requisition-input-group i.fa-times").addClass('hidden'); 
-                      }
-                    }
-                )
-                .error(function(event, jqxhr, exception) {
-                    $("#requisition-input-group i.fa-times").removeClass('hidden'); 
-                    $("#requisition-input-group i.fa-check").addClass('hidden'); 
-                    $('#req_no_input').attr("data-commodity", "");
-                    var commodity_id = "";
-                    var donor_id = $("#donor_select").find('option:selected').val();
-                    $('#uom-select').html("");
-                    updateProjects(donor_id,commodity_id);
-                });
-              }));
+    $("#add-dispatch-line").click( function(e) { 
+        e.preventDefault(); 
+         var requisitionNo = $('#req_no_input').val();
+        var hub = $('#dispatch_hub_id').val();
+        var warehouse = $('#dispatch_warehouse_id').val();
+        var project = $("#dispatch_project_select").find('option:selected').val();
+        var unit = $("#uom-select").find('option:selected').val();
+        var quantity = $("#quantity-di").val();
 
-              $("#add-dispatch-line").click( function(e) { 
-                  e.preventDefault(); 
-                  var hub = $('#dispatch_hub_id').val();
-                  var warehouse = $('#dispatch_warehouse_id').val();
-                  var project = $("#dispatch_project_select").find('option:selected').val();
-                  var unit = $("#uom-select").find('option:selected').val();
-                  var quantity = $("#quantity-di").val();
+        var $this = $(this); 
 
-                  var $this = $(this); 
+        var $dispatchLineForm = $this.closest('tr'); 
 
-                  var $dispatchLineForm = $this.closest('tr'); 
+        var valid = true; 
 
-                  var valid = true; 
+        $dispatchLineForm.find(':input').each( function() { 
+            $(this).parsley().validate(); 
+            valid = $(this).parsley().isValid() && valid; 
+        });
 
-                  $dispatchLineForm.find(':input').each( function() { 
-                      $(this).parsley().validate(); 
-                      valid = $(this).parsley().isValid() && valid; 
-                  });
+        if( !valid ) {
+          return; 
+        }
 
-                  if( !valid ) {
-                    return; 
-                  }
+        if(quantity <= 0)
+        {
+          $("#qunaity-limit").removeClass("label label-primary");
+          $("#qunaity-limit").addClass("label label-danger");
+          $("#qunaity-limit").html("");
+          $("#qunaity-limit").html("Quantity must be greater than zero(0)!");
+          return;
+        }
 
-                  if(quantity <= 0)
-                  {
-                    $("#qunaity-limit").removeClass("label label-primary");
-                    $("#qunaity-limit").addClass("label label-danger");
-                    $("#qunaity-limit").html("");
-                    $("#qunaity-limit").html("Quantity must be greater than zero(0)!");
-                    return;
-                  }
+        var flag = validate_quantity(this, hub, warehouse, project, quantity, unit, requisitionNo);
+        console.log("validate quantity: ");
+        console.log(flag);
+    }); 
 
-                  var flag = validate_quantity(this, hub, warehouse, project, quantity, unit);
-                  console.log("validate quantity: ");
-                  console.log(flag);
-              }); 
+    $('#dispatchItemsTableBody').on('click', '.remove-dispatch-line', function(e) { 
+        $(e.target).closest( 'tr').fadeOut('slow', function(){
+          $(this).remove();
+        });
+    });
 
-              $('#dispatchItemsTableBody').on('click', '.remove-dispatch-line', function(e) { 
-                  $(e.target).closest( 'tr').fadeOut('slow', function(){
-                    $(this).remove();
-                  });
-              });
+    $('#submit-dispatch').click( function(e) { 
 
-              $('#submit-dispatch').click( function(e) { 
+        if( $('.dispatch-line').length === 0 ) { 
+          toastr.error("You need to atleast add one commodity."); 
 
-                  if( $('.dispatch-line').length === 0 ) { 
-                    toastr.error("You need to atleast add one commodity."); 
+          e.preventDefault();
+          return; 
+        }
 
-                    e.preventDefault();
-                    return; 
-                  }
-
-              });
+    });
 
 
-              $('#commodity-category-select').change( function() { 
-                var val = $(this).val();
-
-                if( val === '' ) {
-                  return; 
-                }
-
-
-                $("#commodity-select > option").addClass('hidden'); 
-                $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
-
-                $("#commodity-select > option:first").removeClass('hidden'); 
+    $('#commodity-category-select').change( function() { 
+      var val = $(this).val();
+     
+      if( val === '' ) {
+        return; 
+      }
 
 
+      $("#commodity-select > option").addClass('hidden'); 
+      $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
 
-              });
+      $("#commodity-select > option:first").removeClass('hidden'); 
+    
+      
+    
+    
+  });
+/*
+  $(".fdp-selector-disptach").change(function () {
+    var fdpId = $(this).val();
+    var requisitionNo = $('#req_no_input').val();
 
-  function validate_quantity(node, hub, warehouse, project, quantity, unit)
+    populateHubWarehouse(fdpId, requisitionNo);
+  });
+  
+  function populateHubWarehouse(fdpId, requisitionNo)
+  {
+    if( fdpId!="" && fdpId!=null && requisitionNo!="" && requisitionNo!=null)
+    {
+      $.ajax({
+        url:'/en/dispatches/get_hub_warehouse',
+        type:'GET',
+        dataType:'json',
+        data:{
+          dispatch: {
+            fdp_id: fdpId,
+            requisition_number: requisitionNo
+          }	            
+        },
+        before: function() {
+        
+        },
+        success:function(data){
+          var hubOptions = '';
+          var warehouseOptions = '';
+          var storeOptions = '';
+          var projectOptions = '';
+          var donorOptions = '';
+          for(var d in data)
+          {
+            if(data[d]['hub_id']!='' && data[d]['hub_id']!=null)
+              hubOptions += '<option value="' + data[d]['hub_id'] + '">' + data[d]['hub'] + '</option>';
+            if(data[d]['warehouse_id']!='' && data[d]['warehouse_id']!=null)
+              warehouseOptions += '<option value="' + data[d]['warehouse_id'] + '">' + data[d]['warehouse'] + '</option>';
+            if(data[d]['store_id']!='' && data[d]['store_id']!=null)
+              storeOptions += '<option value="' + data[d]['store_id'] + '">' + data[d]['store'] + '</option>';
+            if(data[d]['project_id']!='' && data[d]['project_id']!=null)
+              projectOptions += '<option value="' + data[d]['project_id'] + '">' + data[d]['project'] + '</option>';
+            if(data[d]['donor_id']!='' && data[d]['donor_id']!=null)
+              donorOptions += '<option value="' + data[d]['donor_id'] + '">' + data[d]['donor'] + '</option>';
+          }
+          if(hubOptions!='' && hubOptions!=null)
+            $('#dispatch_hub_id').html(hubOptions); 
+          else
+          {
+            var allHubs = <%= @hubs.to_json.html_safe %>
+            var options = $.map(allHubs, function (val) {
+              return '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+            options.unshift(EMPTY_OPTION);
+            $('#dispatch_hub_id').html(options);
+          }
+          if(warehouseOptions!='' && warehouseOptions!=null)
+            $('#dispatch_warehouse_id').html(warehouseOptions); 
+          else
+            $('#dispatch_warehouse_id').html('');
+          if(storeOptions!='' && storeOptions!=null)
+            $('#store').html(storeOptions); 
+          else
+            $('#store').html('');
+          if(donorOptions!='' && donorOptions!=null)
+            $('#donor_select').html(donorOptions); 
+          else
+          {
+            var allDonors = <%= @donors.to_json.html_safe %>
+            var options = $.map(allDonors, function (val) {
+              return '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+            options.unshift(EMPTY_OPTION);
+            $('#donor_select').html(options);
+          }
+          if(projectOptions!='' && projectOptions!=null)
+            $('#dispatch_project_select').html(projectOptions);    
+          else
+            $('#dispatch_project_select').html('');
+        },
+        error:function(data){
+            console.log(data);
+        }
+      });
+    }
+    else{
+      
+    }
+  }
+
+      if( val === '' ) {
+        return; 
+      }
+
+
+      $("#commodity-select > option").addClass('hidden'); 
+      $("#commodity-select > option.cc-" + val).removeClass('hidden'); 
+
+      $("#commodity-select > option:first").removeClass('hidden'); 
+    
+      
+    
+    
+  });
+
+  $(".fdp-selector-disptach").change(function () {
+    var fdpId = $(this).val();
+    var requisitionNo = $('#req_no_input').val();
+
+    populateHubWarehouse(fdpId, requisitionNo);
+  });
+  
+  function populateHubWarehouse(fdpId, requisitionNo)
+  {
+    if( fdpId!="" && fdpId!=null && requisitionNo!="" && requisitionNo!=null)
+    {
+      $.ajax({
+        url:'/en/dispatches/get_hub_warehouse',
+        type:'GET',
+        dataType:'json',
+        data:{
+          dispatch: {
+            fdp_id: fdpId,
+            requisition_number: requisitionNo
+          }	            
+        },
+        before: function() {
+        
+        },
+        success:function(data){
+          var hubOptions = '';
+          var warehouseOptions = '';
+          var storeOptions = '';
+          var projectOptions = '';
+          var donorOptions = '';
+          var hubArray = [];
+          var warehouseArray = [];
+          for(var d in data)
+          {
+            if(data[d]['hub_id']!='' && data[d]['hub_id']!=null)
+            {
+              if ((jQuery.inArray(data[d]['hub_id'], hubArray)) == -1)
+              {
+                hubArray.push(data[d]['hub_id']);
+                hubOptions += '<option value="' + data[d]['hub_id'] + '">' + data[d]['hub'] + '</option>';
+              }              
+            }              
+            if(data[d]['warehouse_id']!='' && data[d]['warehouse_id']!=null)
+            {
+              if ((jQuery.inArray(data[d]['warehouse_id'], warehouseArray)) == -1)
+              {
+                warehouseArray.push(data[d]['warehouse_id']);
+                warehouseOptions += '<option value="' + data[d]['warehouse_id'] + '">' + data[d]['warehouse'] + '</option>';
+              }  
+            }              
+            if(data[d]['store_id']!='' && data[d]['store_id']!=null)
+              storeOptions += '<option value="' + data[d]['store_id'] + '">' + data[d]['store'] + '</option>';
+            if(data[d]['project_id']!='' && data[d]['project_id']!=null)
+              projectOptions += '<option value="' + data[d]['project_id'] + '">' + data[d]['project'] + '</option>';
+            if(data[d]['donor_id']!='' && data[d]['donor_id']!=null)
+              donorOptions += '<option value="' + data[d]['donor_id'] + '">' + data[d]['donor'] + '</option>';
+          }
+          if(hubOptions!='' && hubOptions!=null)
+            $('#dispatch_hub_id').html(hubOptions); 
+          else
+          {
+            var allHubs = <%= @hubs.to_json.html_safe %>
+            var options = $.map(allHubs, function (val) {
+              return '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+            options.unshift(EMPTY_OPTION);
+            $('#dispatch_hub_id').html(options);
+          }
+          if(warehouseOptions!='' && warehouseOptions!=null)
+            $('#dispatch_warehouse_id').html(warehouseOptions); 
+          else
+            $('#dispatch_warehouse_id').html('');
+          if(data[0]['warehouse_id']!='' && data[0]['warehouse_id']!=null && data[0]['store_id']!='' && data[0]['store_id']!=null)
+          {
+            var allStores = <%= @stores.to_json.html_safe %>
+            var storesInWarehouse = $.grep(allStores, function (elem) {
+              return elem.warehouse_id == data[0]['warehouse_id']
+            });
+            var options = $.map(storesInWarehouse, function (val) {
+              if (val.id == data[0]['store_id'])
+                return '<option selected="selected" value="' + val.id + '" style="background-color:#1ab394;">' + val.name + '</option>';
+              else
+                return '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+            options.unshift(EMPTY_OPTION);
+            $('#store').html(options);
+          }            
+          else
+            $('#store').html('');
+          if(data[0]['donor_id']!='' && data[0]['donor_id'])
+          {
+            var allDonors = <%= @donors.to_json.html_safe %>
+            var donorOptions = $.map(allDonors, function (val) {
+              if (val.id == data[0]['donor_id'])
+                return '<option selected="selected" value="' + val.id + '" style="background-color:#1ab394;">' + val.name + '</option>';
+              else
+                return '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+            donorOptions.unshift(EMPTY_OPTION);
+            $('#donor_select').html(donorOptions); 
+          }            
+          else
+          {
+            var allDonors = <%= @donors.to_json.html_safe %>
+            var options = $.map(allDonors, function (val) {
+              return '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+            options.unshift(EMPTY_OPTION);
+            $('#donor_select').html(options);
+          }
+          if(data[0]['donor_id']!='' && data[0]['donor_id'] && data[0]['project_id']!='' && data[0]['project_id']!=null)
+          {
+            var commodity_id = $('#req_no_input').attr("data-commodity");
+            var allProjects = <%= @projects.to_json.html_safe %>
+            var commodities = <%= @commodities.to_json.html_safe %>
+            var commodity = $.grep(commodities, function (elem) {
+                return elem.id == commodity_id;
+            });
+            commodity = commodity[0];
+            var commodity_category_id = commodity["commodity_category_id"];
+            console.log("commodity_category_id:");
+            console.log(commodity_category_id);
+            var sibling_commodities = $.grep(commodities, function (elem) {
+                return elem.commodity_category_id == commodity_category_id;
+            });
+            console.log("sibling_commodities:");
+            console.log(sibling_commodities);
+            var sibling_commodity_ids = $.map( sibling_commodities, function( sc ) {
+              return sc["id"];
+            });
+            var projectsOfDonor = $.grep(allProjects, function (elem) {
+              return elem.organization_id == data[0]['donor_id']  && $.inArray(elem.commodity_id, sibling_commodity_ids) !== -1
+            });
+            var projectOptions = $.map(projectsOfDonor, function (val) {
+              if (val.id == data[0]['project_id'])
+                return '<option selected="selected" value="' + val.id + '" style="background-color:#1ab394;">' + val.project_code + '</option>';
+              else
+                return '<option value="' + val.id + '">' + val.project_code + '</option>';
+            });
+            projectOptions.unshift(EMPTY_OPTION);
+            $('#dispatch_project_select').html(projectOptions);  
+
+            var allProjects = <%= @projects.to_json.html_safe %>
+            var project = $.grep(allProjects, function (elem) {
+              return elem.id == data[0]['project_id']
+            });
+            var commodities = <%= @commodities.to_json.html_safe %>
+            var commodity = $.grep(commodities, function (elem) {
+                return elem.id == project[0].commodity_id
+            });
+            var commodity = commodity[0]; 
+            $('#commodity_di').val(commodity["name"]);  
+
+            var commodity_categories = <%= @commodity_categories.to_json.html_safe %>
+            var commodity_category = $.grep(commodity_categories, function (elem) {
+                return elem.id == commodity["commodity_category_id"]
+            });
+            commodity_category = commodity_category[0];
+            $('#commodity-category-select').val(commodity_category["id"]);
+            var allUnitOfMeasures = <%= @uoms.to_json.html_safe %>
+            if ('' === commodity_category)
+              return;
+            var unitOfMeasuresInCategory = $.grep(allUnitOfMeasures, function (elem) {
+              return elem.uom_category_id == commodity_category["uom_category_id"]
+            });
+            var options = $.map(unitOfMeasuresInCategory, function (val) {
+              return '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+            options.unshift(EMPTY_OPTION);
+
+            $('#uom-select').html(options);
+            check_stock(data[0]['hub_id'], data[0]['warehouse_id'], data[0]['project_id']);
+          }            
+          else
+            $('#dispatch_project_select').html('');
+
+          
+          
+        },
+        error:function(data){
+            console.log(data);
+        }
+      });
+    }
+    else{
+      
+    }
+  } 
+
+  function GetUnique(inputArray)
+  {
+    var outputArray = [];
+    for (var i = 0; i < inputArray.length; i++)
+    {
+      if ((jQuery.inArray(inputArray[i], outputArray)) == -1)
+      {
+        outputArray.push(inputArray[i]);
+      }
+    }
+    return outputArray;
+  }
+*/
+  function validate_quantity(node, hub, warehouse, project, quantity, unit, requisitionNo)
   {
     if( hub!="" && warehouse!="" && project!="" && quantity!="" && unit!="")
     {
@@ -485,7 +818,8 @@
                 warehouse_id: warehouse,
 						    proj_id: project,
                 quantity: quantity,
-                unit: unit
+                unit: unit,
+                requisition_number: requisitionNo
 		        	}	            
 		        },
 		        before: function() {
@@ -529,6 +863,7 @@
 
   function check_stock(hub, warehouse, project)
   {
+    var requisitionNo = $('#req_no_input').val();
     if( hub!="" && hub!=null && warehouse!="" && warehouse!=null && project!="" && project!=null)
     {
       $.ajax({
@@ -539,7 +874,8 @@
 		        	dispatch: {
 		        		hub_id: hub,
                 warehouse_id: warehouse,
-						    proj_id: project
+						    proj_id: project,
+                requisition_number: requisitionNo
 		        	}	            
 		        },
 		        before: function() {
@@ -556,7 +892,7 @@
                   $("#qunaity-limit").addClass("label label-danger");
                 }
                 $("#qunaity-limit").html("");
-                $("#qunaity-limit").html("Available stock " + data + " MT");             
+                $("#qunaity-limit").html("Available stock " + data + " MT");            
 		        },
 		        error:function(data){
 		            console.log(data);
@@ -571,6 +907,7 @@
     }
   }
 
+  
 
   function updateProjects(donor_id, commodity_id){        
     if (donor_id === '')
@@ -678,6 +1015,17 @@
       console.log("Hub = " + hub + " --- Warehouse = " + warehouse + " --- project = " + projectId);
       check_stock(hub, warehouse, projectId);
     }
+    
+    var allStores = <%= @stores.to_json.html_safe %>
+    var storeByWarehouse = $.grep(allStores, function (elem) {
+      return elem.warehouse_id == warehouse;
+    });
+    var stores_options = $.map(storeByWarehouse, function (val) {
+      return '<option value="' + val.id + '">' + val.name + '</option>';
+    });
+   
+    stores_options.unshift('<option value="">Select Store</option>');
+    $('#dispatch_store_id').html(stores_options);
   });
 
   $('#donor_select').change(function(){

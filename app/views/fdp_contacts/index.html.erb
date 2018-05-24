@@ -15,7 +15,9 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(FdpContact).new? %>
       <%= link_to 'New Fdp Contact', new_fdp_contact_path, :class => "btn btn-primary"%>
+    <% end %>
     </div>
   </div>
 </div>
@@ -50,8 +52,12 @@
                         
                        
                         <td>
-              <%= link_to 'Edit', edit_fdp_contact_path(fdp_contact) %> &middot;
-              <%= link_to 'Delete', fdp_contact, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% if policy(FdpContact).edit? %>
+                <%= link_to 'Edit', edit_fdp_contact_path(fdp_contact) %> &middot;
+              <% end %>
+              <% if policy(FdpContact).destroy? %>
+                <%= link_to 'Delete', fdp_contact, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </td>
           </tr>
           <% end %>

@@ -67,7 +67,8 @@ class UnitOfMeasure < ApplicationRecord
     target_unit = UnitOfMeasure.find_by(name: unit)
 
     if target_unit.uom_category != self.uom_category
-      raise StandardError, "Can only convert to measurment units in the same category"
+      return value_in_unit
+      #raise StandardError, "Can only convert to measurment units in the same category"
     end
 
     incoming_ref_value = target_unit.to_ref(value_in_unit)

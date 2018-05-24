@@ -17,15 +17,23 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu pull-right">
-         
+        <% if policy(TransportOrder).revert? %>
           <li><%= link_to "Revert TO", '' %></li>
+        <% end %>
+        <% if policy(TransportOrder).destroy? %>
           <li><%= link_to "Delete", '' %></li>
+        <% end %>
           <li> 
-              <%= link_to "/transport_orders/print/" + @transport_order.id.to_s + "?format=pdf",  :class => "btn btn-default"  do %>
-                <i class="fa fa-print"></i> 
-                Print
-              <% end %>
+        <% if policy(TransportOrder).destroy? %>
+          <%= link_to "/transport_orders/print/" + @transport_order.id.to_s + "?format=pdf",  :class => "btn btn-default"  do %>
+            <i class="fa fa-print"></i> 
+            Print
+          <% end %>
+        <% end %>
           </li>
+           <% if policy(TransportOrder).destroy? %>
+          <li><a href="#" class='tr-modal' data-toggle="modal"  data-target="#tr-modal">Move Transport Order(s)</a></li>
+        <% end %>
         </ul>
         <div></div>
       </div>
@@ -117,9 +125,9 @@
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
-      <table class="table table-striped">
+      <table class="table table-striped" id="tbl">
         <thead>
-          <tr>       
+          <tr>          <th></th>
                         <th>Requiistion Number</th>
                         <th>Woreda</th>
                         <th>Source Warehouse</th>
@@ -135,9 +143,10 @@
         <tbody>
           <% @transport_order_items.each do |transport_order_item| %>
           <tr>
+                    <td> <%= check_box_tag(transport_order_item.id.to_s,transport_order_item.id,false,class: 'transport_orders') %></td>
                     <td> <%= transport_order_item&.requisition_no %></td>
-                    <td> <%= Location.find_by(id: transport_order_item&.fdp.location_id).name %></td>
-                    <td> <%= Warehouse.find_by(id: transport_order_item&.store&.warehouse_id)&.name  %></td>
+                    <td> <%= Location.find_by(id: transport_order_item&.fdp&.location_id)&.name %></td>
+                    <td> <%= Warehouse.find_by(id: transport_order_item&.warehouse_id)&.name  %></td>
                     <td> <%= transport_order_item&.fdp&.name %> </td>
                     <td> <%= transport_order_item&.commodity&.name %> </td>
                     <td> <%= number_with_delimiter(transport_order_item&.quantity) %> </td>
@@ -153,3 +162,71 @@
       </table>
       </div>
     </div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="tr-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Select Transporter</h4>
+      </div>
+      <div class="modal-body">
+    
+
+     <form role="form" method="POST" enctype="multipart/form-data" action="/transport_orders/move/<%= @transport_order&.id.to_s %>" >
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div class="form-group">
+          <label for="transporter">Transporter
+            <span class="required">*</span>
+          </label>
+          <div>
+            <%= select("transporter", "transporter_id", Transporter.all.collect{|t| [t.name, t.id ]}, {prompt: '-- Choose --'}, {:class => 'form-control', :required => true, :name => 'transporter', :id => 'transporter_id' }) %>
+          </div>
+        </div>
+
+      <div class="form-group">
+        <div>
+        <br>
+             <input  type="hidden" name="att" id="att" value="" />
+            <input type="submit" id="btnFormSubmit" class="btn btn-primary" value="Move" />
+        </div>
+      </div>
+
+   
+        
+      </form>
+
+
+      </div>
+    
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+
+var checkedAttr = [];
+
+$(document).on("click", ".tr-modal",function(){
+ 
+  $(".form-group #att").val(checkedAttr);
+});
+
+$('input[type="checkbox"]').change(function(){
+
+if ($(this).is(':checked'))
+      {
+        checkedAttr.push($(this).val());
+      }
+  else
+    {
+          index =   checkedAttr.indexOf($(this).val())
+          if (index > -1){checkedAttr.splice(index,1);}
+    }
+       console.log("checkedAttr:", checkedAttr);
+});
+ 
+ 
+ 
+</script>

@@ -19,7 +19,21 @@ $(document).ready(function() {
 	});
 
     $('#save-tr-btn').on('click', function (e) {
-    	
+		var refs = []
+    	var references = $('.checkbox_reference:checkbox:checked');
+		for (var i=0 ;i<references.length;i++){
+			refs.push(references[i].value);
+		}
+		if (references.length < 1)
+		{
+			
+			 $('#new-transport-requisition .spinner').attr('style', 'color:#f00').html("Error: Select at least one Reference Number.");
+		    $('#new-transport-requisition .spinner').fadeIn();
+		    $('#new-transport-requisition .spinner').delay(3000).fadeOut();
+		    $('#save-tr-btn').prop('disabled', false);
+			return;
+					
+		}
     	var operation = $('#operation_tr').val();     	
         var region = $('#region_tr').val();
         var bid = $('#bid_tr').val()
@@ -38,7 +52,7 @@ $(document).ready(function() {
 		        		operation_id: operation,
 			            location_id: region,
 			            bid_id: bid,
-
+						request_id: refs,
 			            description: desc
 		        	}	            
 		        },

@@ -37,7 +37,7 @@ class PsnpPlan < ApplicationRecord
   end
 
 def total_beneficiaries
-  self.psnp_plan_items.sum(:beneficiary)
+  self.psnp_plan_items.sum(:beneficiary) + self.psnp_plan_items.sum(:beneficiary_public_work)
 end
 
 def self.current_plan

@@ -12,9 +12,11 @@
   </div>
   <div class="col-sm-8">
     <div class="title-action">
+    <% if policy(TransportRequisition).new? %>
       <a class="btn btn-primary" data-target="#new-transport-requisition" data-toggle="modal">
           New Transport Requisition
       </a>
+    <% end %>
     </div>
   </div>
 </div>
@@ -89,6 +91,13 @@
             <%= select_tag  'region_tr',  options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Select a Region --", :class => 'form-control width-100per' }  %>
           </div>
         </div>
+        
+          
+          <div id="references">
+            
+          </div>
+        
+        
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
           <%= label_tag :bid, "Bid", { :class => ' control-label'} %>
           <div class="">
@@ -120,3 +129,17 @@
     </div>
   </div>
 </div>
+
+<script>
+
+$("#operation_tr, #region_tr").on('change', function(e) { 
+    $.get( '/transport_requisitions/rrd_reference_list', 
+          { operation_id: $('#operation_tr').val(), region_id: $('#region_tr').val()}, 
+          function(data) {              
+            })
+      .error(function(event, jqxhr, exception) {
+         alert(exception)
+      });
+    
+});
+</script>
