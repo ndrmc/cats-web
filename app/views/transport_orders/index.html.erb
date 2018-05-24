@@ -19,18 +19,21 @@
     <div class="ibox-content">
 
       <%= form_tag( transport_orders_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+
+          
+
           <div class="form-group">
             <%= label_tag :transporter, "Transporter", { :class => ' control-label', :required => true } %>
 
             <div class="">
-              <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+              <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control col-md-2 data-parsley-required' }  %>
             </div>
           </div>
           <div class="form-group">
             <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:style => 'width: 77%',:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-2 data-parsley-required' }  %>
             </div>
           </div>
           
@@ -38,14 +41,29 @@
           <%= label_tag :order_no, "Order No", { :class => ' control-label'} %>
 
           <div class="">
-            <%= text_field_tag  :order_no, params[:order_no], { class: 'form-control'}  %>
+            <%= text_field_tag  :order_no, params[:order_no], {:size => '61%', class: 'form-control'}  %>
           </div>
         </div>
+        <div class="form-group">
+          <%= label_tag :reference_no, "Reference No", { :class => ' control-label '} %>
+
+          <div class="">
+            <%= text_field_tag  :reference_no, params[:reference_no], { :size => '61%', class: 'form-control input-large'}  %>
+          </div>
+          </div>
+
+          <div class="form-group">
+          <%= label_tag :requisition_no, "Requisition No", { :class => ' control-label '} %>
+
+          <div class="">
+            <%= text_field_tag  :requisition_no, params[:requisition_no], { :size => '61%', class: 'form-control input-large'}  %>
+          </div>
+          </div>
 
           <div class="form-group">
             <label for=""></label>
             <div>
-              <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+              <input data-toggle="tooltip" data-placement="top" title="Use 'Order No, Refrence No or Requisition No independently' or 'Trandporter and operation together' as per thier priority" type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
             </div>
           </div>
 
@@ -53,6 +71,14 @@
 
     </div>
 
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+    <% if @result.present? && !@result.nil? %>
+      Search Result for <%= @result %>
+    <% end %>
+    </div>
+  
 
   <div class="ibox float-e-margins">
     <div class="ibox-content">
