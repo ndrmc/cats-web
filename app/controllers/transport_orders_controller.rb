@@ -23,8 +23,8 @@ class TransportOrdersController < ApplicationController
       @transport_orders = TransportOrder.where(:transporter => params[:transporter] ,:operation => params[:operation]).includes(:bid, :location)
        @result = 'Transporter: ' + params[:transporter] + " and Operation: " + params[:operation]
     else
-      @transport_orders = TransportOrder.all.includes(:bid, :location)
-       @result = 'No filtering - all'
+      @transport_orders = [] #TransportOrder.all.includes(:bid, :location)
+       @result = ''
     end
     
     
