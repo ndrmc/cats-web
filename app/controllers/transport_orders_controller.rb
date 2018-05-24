@@ -4,17 +4,32 @@ class TransportOrdersController < ApplicationController
   # GET /transport_orders
   # GET /transport_orders.json
   def index
+     @result=nil
      if params[:order_no].present?
       @transport_orders = TransportOrder.where(order_no: params[:order_no]).includes(:bid, :location)
+       @result = 'Order No: ' + params[:order_no]
       return
     end
-
-    if params[:transporter].present? && params[:operation].present?
-      filter_map = {transporter_id: params[:transporter], operation_id: params[:operation]}
-      @transport_orders = TransportOrder.where( filter_map ).includes(:bid, :location)
+   
+    if params[:reference_no].present?
+      @list_of_requistion_nos = RegionalRequest.includes(:requisitions).where(:reference_number => params[:reference_no]).pluck(:'requisitions.requisition_no')
+      
+      @transport_orders = TransportOrder.joins(:bid, :location, :transport_order_items).where('transport_order_items.requisition_no IN (?)',@list_of_requistion_nos).uniq
+       @result = params[:reference_no]
+    elsif params[:requisition_no].present?
+      @transport_orders = TransportOrder.joins(:bid, :location, :transport_order_items).where('transport_order_items.requisition_no IN (?)', params[:requisition_no]).uniq
+       @result = 'Requisition No: ' + params[:requisition_no]
+    elsif params[:transporter].present? && params[:operation].present?
+      @transport_orders = TransportOrder.where(:transporter => params[:transporter] ,:operation => params[:operation]).includes(:bid, :location)
+       @result = 'Transporter: ' + params[:transporter] + " and Operation: " + params[:operation]
     else
       @transport_orders = TransportOrder.all.includes(:bid, :location)
+       @result = 'No filtering - all'
     end
+    
+    
+
+    
   end
 
   # GET /transport_orders/1
