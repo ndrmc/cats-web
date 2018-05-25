@@ -8,7 +8,16 @@ class FdpsController < ApplicationController
   # GET /fdps
   # GET /fdps.json
   def index
-    @fdps = Fdp.all   
+    @user = User.find(current_user.id)
+    if @user.present? && @user.first_name != 'Administrator'
+       fdp_locations = Location.find_by(id: @user.location_id).descendants.where( location_type: :woreda).map { |d| d.id}
+      @fdps = Fdp.where( location_id: fdp_locations).all
+    else
+      @fdps = Fdp.all  
+    end
+
+
+     
   end
 
   # GET /fdps/1

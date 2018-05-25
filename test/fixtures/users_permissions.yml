@@ -172,3 +172,15 @@ user_permission_project3:
 user_permission_project4:
         user: admin
         permission: project4
+user_permission_user_acount1:
+        user: admin
+        permission: UserAccount1
+user_permission_user_acount2:
+        user: admin
+        permission: UserAccount2
+user_permission_user_acount3:
+        user: admin
+        permission: UserAccount3
+user_permission_user_acount4:
+        user: admin
+        permission: UserAccount4

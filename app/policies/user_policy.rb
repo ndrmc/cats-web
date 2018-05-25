@@ -3,27 +3,27 @@ class UserPolicy < ApplicationPolicy
 
 def index?
 
-  return true
+ @current_user.permission('UserAccount', :admin)
 end
 
 def new?
-    return true
+    @current_user.permission('UserAccount', :admin)
 end
 
-def roles
-    return true
+def roles?
+    @current_user.permission('UserAccount', :admin)
 end
 
-def create
-    return true
+def create?
+    @current_user.permission('UserAccount', :admin)
 end
 
-def update
-   return true
+def update?
+   @current_user.permission('UserAccount', :admin)
 end
 
-def updateRoles
-   return true
+def updateRoles?
+   @current_user.permission('UserAccount', :admin)
 end
 
 end
