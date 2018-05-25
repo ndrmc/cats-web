@@ -20,7 +20,7 @@ class TransportOrdersController < ApplicationController
       @transport_orders = TransportOrder.joins(:bid, :location, :transport_order_items).where('transport_order_items.requisition_no IN (?)', params[:requisition_no]).uniq
        @result = 'Requisition No: ' + params[:requisition_no]
     elsif params[:transporter].present? && params[:operation].present?
-      @transport_orders = TransportOrder.where(:transporter => params[:transporter] ,:operation => params[:operation]).includes(:bid, :location)
+      @transport_orders = TransportOrder.where(:transporter_id => params[:transporter] ,:operation_id => params[:operation]).includes(:bid, :location)
        @result = 'Transporter: ' + params[:transporter] + " and Operation: " + params[:operation]
     else
       @transport_orders = [] #TransportOrder.all.includes(:bid, :location)
