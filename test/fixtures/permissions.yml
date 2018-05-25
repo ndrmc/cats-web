@@ -183,5 +183,17 @@ StockTake3:
 StockTake4:
     name: 'StockTake'
     user_type: 3
+UserAccount1:
+    name: 'UserAccount'
+    user_type: 0
+UserAccount2:
+    name: 'UserAccount'
+    user_type: 1
+UserAccount3:
+    name: 'UserAccount'
+    user_type: 2
+UserAccount4:
+    name: 'UserAccount'
+    user_type: 3
 
 
