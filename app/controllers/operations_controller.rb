@@ -158,6 +158,36 @@ class OperationsController < ApplicationController
     end
   end
 
+def archive
+     @operation = Operation.find params[:id] 
+
+            respond_to do |format|
+            if @operation.update_columns(:archived => true) 
+                format.html { redirect_to operations_url, notice: 'Operation was successfully archived.' }
+            else
+                format.html { 
+                    flash[:error] = "Operation failed! Please try again shortly."
+                    redirect_to projects_url 
+                }
+            end
+        end
+end
+
+ def unarchive
+     @operation = Operation.find params[:id] 
+
+            respond_to do |format|
+            if @operation.update_columns(:archived => false) 
+                format.html { redirect_to operations_url, notice: 'Project was successfully activated.' }
+            else
+                format.html { 
+                    flash[:error] = "Operation failed! Please try again shortly."
+                    redirect_to projects_url 
+                }
+            end
+        end
+end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
