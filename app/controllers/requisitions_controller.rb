@@ -61,6 +61,7 @@ class RequisitionsController < ApplicationController
   def edit
     @contingency = RequisitionItem.where(requisition_id: params[:id]).sum(:contingency)
     @amount = RequisitionItem.where(requisition_id: params[:id]).sum(:amount)
+    @program = @requisition.operation&.program&.name
   end
 
 
