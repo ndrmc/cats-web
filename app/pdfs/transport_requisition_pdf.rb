@@ -208,6 +208,10 @@ class TransportRequisitionPdf < PdfReport
             amount_in_qtl = target_unit.convert_to(current_unit.name, item[:quantity])
             amount_in_qtl = amount_in_qtl.round(2)
             @total_amount = amount_in_qtl
+
+            if @operation.program.name == "IDPs"
+                amount_in_qtl = item[:quantity]
+            end
             # ref = @tri_struct.where(:requsition_id => item[:requisition_id]).first
             # ref = @tri_struct.select {|tri| tri[:requsition_id] == item[:requisition_id] }
             ref = @tri_struct.find {|x| x[:requisition_id].to_s == item[:requisition_id].to_s}
