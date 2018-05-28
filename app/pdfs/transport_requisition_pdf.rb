@@ -198,6 +198,8 @@ class TransportRequisitionPdf < PdfReport
             @donor = "NDRMC"
         elsif @operation.program.name == "FSCD"
             @donor = "FSCD"
+        elsif @operation.program.name == "IDPs"
+            @donor = "NDRMC"
         end
         result = [dynamic_data] +
         @aggr_tri.map do |item|
