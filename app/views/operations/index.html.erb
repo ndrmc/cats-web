@@ -57,6 +57,9 @@
                 <th>Actions</th>
               </tr>
             </thead>
+             <%
+                       can_edit_operation = policy(Operation).edit?
+          %>
             <tbody>
               <% @operations.each do |operation| %>
               <tr>
@@ -110,7 +113,23 @@
                         <a href="#">Close</a>
                       </li>
                       <li>
-                        <a href="#">Archive</a>
+                        <% if can_edit_operation %>                           
+
+                              <% if !operation.archived  %>
+                                
+                                <%= link_to "operations/#{operation.id}/archive"  , method: :post, :class => "btn btn-danger btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                                        <i class="fa fa-archive"></i>   
+                                    Archive     
+                                <% end %>
+                              <%else%>
+                                <%= link_to "operations/#{operation.id}/unarchive"  , method: :post, :class => "btn btn-warning btn-sm", :data=> { :confirm => "Are you sure?" }  do %>
+                                        <i class="fa fa-thumbs-o-up"></i>   
+                                    Activate     
+                                <% end %>
+                              <% end %>
+
+                  
+                        <%end%>  
                       </li>
                     </ul>
                   </div>

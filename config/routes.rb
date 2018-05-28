@@ -142,6 +142,8 @@ Rails.application.routes.draw do
 
   resources :warehouses
   resources :stores
+  post '/operations/:id/archive', to: 'operations#archive'
+  post '/operations/:id/unarchive', to: 'operations#unarchive'
   resources :operations
   resources :accounts
   resources :journals
