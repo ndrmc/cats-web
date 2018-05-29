@@ -9,7 +9,7 @@ class RegionalRequestPdf < PdfReport
          bounding_box([bounds.left, bounds.top - 120], :width  => bounds.width, :height => bounds.height - 200) do
         regional_requests
         end
-        text "\n\n\n\n\n\n\n Prepared by: ...................................................    Certified by: ..................................................."
+        
         footer "Commodity Allocation and Tracking System"
     end
 
@@ -22,14 +22,14 @@ class RegionalRequestPdf < PdfReport
     end
      move_down  10
        text "Total Beneficiaries: " + ActiveSupport::NumberHelper.number_to_currency(@total_beneficiary_no.to_s.to_s,precision: 2, :unit=> '')
-       
+       text "\n Prepared by: ...................................................    Certified by: ..................................................."
     end
 
     def regional_request_item
         dynamic_data = []
         dynamic_data = ["Zone","Woreda","FDP","Beneficiaries"]
         [dynamic_data] +
-        @request_item_objs.map do |item|
+        @request_item_objs.sort_by{|z| [z.fdp.location.parent.name,z.fdp.location.name,z.fdp.name ]}.map do |item|
             [item.fdp.location.parent.name,item.fdp.location.name, item.fdp.name, item.number_of_beneficiaries]       
         end
        
