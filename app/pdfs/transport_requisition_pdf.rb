@@ -19,8 +19,10 @@ class TransportRequisitionPdf < PdfReport
           tri_full.requisition_id = tri.requisition_id
           tri_full.requisition_no = tri.requisition.requisition_no
           tri_full.quantity = tri.quantity
-          if warehouse_id.present?
-            tri_full.warehouse = Warehouse.find(warehouse_id[0].to_i).name
+          if warehouse_id.present? 
+              if warehouse_id[0].to_i > 0
+                 tri_full.warehouse = Warehouse.find(warehouse_id[0].to_i).name
+              end
           end
 
           if project_id.present? 
