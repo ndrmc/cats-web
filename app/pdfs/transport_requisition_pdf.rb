@@ -53,8 +53,8 @@ class TransportRequisitionPdf < PdfReport
         text "Date " + Time.now.strftime("%d-%b-%Y"), :align => :right
         text "No " + @transport_requisition.reference_number, :align => :right
         text "Reference No " + @reference_numbers.to_s, :align => :right
-        text "\n"
-          bounding_box([bounds.left, bounds.top - 120 ], :width => bounds.width, :height => bounds.height - 200) do
+       
+          bounding_box([bounds.left, bounds.top - 130 ], :width => bounds.width, :height => bounds.height - 200) do
         transport_requisitions
         text "\n"
         text "\n"
@@ -101,39 +101,7 @@ class TransportRequisitionPdf < PdfReport
         end
     end
 
-    def remark_section
-        table_data = [
-            [{:content => "<b><u>Remark:</u></b>", :colspan => 2, :align => :center}],
-            [
-                {
-                    :content => "For Information\n" +
-                                "Information Center /LCT/\n" +
-                                "Addis Ababa\n\n\n" +
-                                "CC\n" +
-                                @cc_letter_to,
-                                # "Mekele Central Ware House\n" +
-                                # "<u>Mekele<u>",
-                    :width => 100,
-                    :padding_left => 30
-                },
-                {
-                    :content => @operation.name + "\n" +
-                                "Allocated for " + @operation.program.name + "\n" +
-                                @reason_for_idps + "\n" +
-                                "Date of req " + Time.now.strftime("%d-%b-%Y") + "\n" +
-                                "Received Date " + Time.now.strftime("%d-%b-%Y") + "\n" +
-                                "For the Month of " + @operation.round.to_s + " round " + Date::MONTHNAMES[@operation.month] + " " + @operation.year,
-                    :width => 100,
-                    :padding_left => 75
-                }
-            ]
-        ]
-
-        table(table_data, :width => 500, :cell_style => { :inline_format => true }) do |t|
-            t.cells.border_width = 0
-            # t.cells.padding = 0
-        end
-    end
+    
 
     def signature_section
         table_data = [
@@ -175,7 +143,7 @@ class TransportRequisitionPdf < PdfReport
                                 @reason_for_idps.to_s + "\n" +
                                 "Date of req " + Time.now.strftime("%d-%b-%Y") + "\n" +
                                 "Received Date " + Time.now.strftime("%d-%b-%Y") + "\n" +
-                                @project.to_s + "\n" +
+                                
                                 "For  " + @operation.name,
                     :width => 100,
                     :padding_left => 75
