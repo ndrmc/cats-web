@@ -41,11 +41,11 @@ class TransportOrder < ApplicationRecord
 			@woreda = Location.find(Fdp.find(tr_item.fdp_id).location_id)
 			@requisition = Requisition.find(tr_item.requisition_id)
 
-			@warehouse_ids = BidQuotation.joins(:bid_quotation_details).where(:bid_id => bid_id, :'bid_quotation_details.location_id' => @woreda.id, :'bid_quotation_details.rank' => 1).select(:'bid_quotation_details.warehouse_id').distinct
+			# @warehouse_ids = BidQuotation.joins(:bid_quotation_details).where(:bid_id => bid_id, :'bid_quotation_details.location_id' => @woreda.id, :'bid_quotation_details.rank' => 1).select(:'bid_quotation_details.warehouse_id').distinct
 
-			@warehouse_ids.each do |warehouse_id|
-			@bid_quotations = BidQuotation.joins(:bid_quotation_details).where(:bid_id => bid_id,:'bid_quotation_details.warehouse_id' => warehouse_id, :'bid_quotation_details.location_id' => @woreda.id, :'bid_quotation_details.rank' => 1).select(:'bid_quotation_details.id', :transporter_id, :'bid_quotation_details.location_id', :'bid_quotation_details.warehouse_id', :'bid_quotation_details.tariff')# bid quotation for each warehouse
-
+			# @warehouse_ids.each do |warehouse_id|
+		
+			@bid_quotations = BidQuotation.joins(:bid_quotation_details).where(:bid_id => bid_id,:'bid_quotation_details.location_id' => @woreda.id, :'bid_quotation_details.rank' => 1).select(:'bid_quotation_details.id', :transporter_id, :'bid_quotation_details.location_id', :'bid_quotation_details.warehouse_id', :'bid_quotation_details.tariff')# bid quotation for each warehouse
 			@bid_quotations.each do |bid_quotation|
 				@transport_order = TransportOrder.where({:transporter_id => bid_quotation.transporter_id, :bid_id => bid_id, :operation_id => @transport_requisition.operation_id}).first
 				if (@transport_order.present?)
@@ -53,6 +53,7 @@ class TransportOrder < ApplicationRecord
 					@new_to_detail.save
 					tr_item.has_transport_order = true
 					tr_item.save
+
 				else
 					@new_to = TransportOrder.new(order_no: SecureRandom.uuid, transporter_id: bid_quotation.transporter_id, bid_id: bid_id, operation_id: @transport_requisition.operation_id, location_id: @woreda.parent.parent_node_id, order_date: Time.current, created_date: Time.current, start_date: 3.days.from_now, end_date: 13.days.from_now, printed_copies: 0, status: 0, created_by: user_id)
 					@new_to.save
@@ -62,10 +63,11 @@ class TransportOrder < ApplicationRecord
 					@new_to_detail.save
 					tr_item.has_transport_order = true
 					tr_item.save
+
 				end
 			end
 			
-			end
+			
 		end
 		return true
 	end
@@ -84,7 +86,7 @@ class TransportOrder < ApplicationRecord
 	        @requisition = Requisition.find(tr_item.requisition_id)
 	        @transport_order = TransportOrder.where({:transporter_id => transporter_id, :operation_id => @transport_requisition.operation_id}).where.not({status: [:closed, :canceled, :archived] }).first
 	        if (@transport_order.present?)
-	          @new_to_detail = TransportOrderItem.new(transport_order_id: @transport_order.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity, unit_of_measure_id: @uom.id, tariff: tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: tr_item.id, warehouse_id: @warehouse_id)
+	          @new_to_detail = TransportOrderItem.new(transport_order_id: @transport_order.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity, unit_of_measure_id: @uom.id, tariff: tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: tr_item.id)
 	          @new_to_detail.save
 	          tr_item.has_transport_order = true
 	          tr_item.save
@@ -93,7 +95,7 @@ class TransportOrder < ApplicationRecord
 	          @new_to.save
 	          @new_to.order_no = "TRN-ORD-" + @new_to.id.to_s 
 	          @new_to.save        
-	          @new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity, unit_of_measure_id: @uom.id, tariff: tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: tr_item.id,warehouse_id: @warehouse_id)
+	          @new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: tr_item.fdp_id, commodity_id: tr_item.commodity_id, quantity: tr_item.quantity, unit_of_measure_id: @uom.id, tariff: tariff, requisition_no: @requisition.requisition_no, created_by: user_id, transport_requisition_item_id: tr_item.id)
 	          @new_to_detail.save
 	          tr_item.has_transport_order = true
 	          tr_item.save
@@ -125,7 +127,7 @@ class TransportOrder < ApplicationRecord
 					@new_to.save
 					@new_to.order_no = "TRN-ORD-" + @new_to.id.to_s 
 					@new_to.save        
-					@new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: to_item.fdp_id, commodity_id: to_item.commodity_id, quantity: to_item.quantity, unit_of_measure_id: @uom.id, tariff: to_item.tariff, requisition_no: to_item.requisition_no, created_by: user_id, transport_requisition_item_id: to_item.id,warehouse_id: @warehouse_id)
+					@new_to_detail = TransportOrderItem.new(transport_order_id: @new_to.id, fdp_id: to_item.fdp_id, commodity_id: to_item.commodity_id, quantity: to_item.quantity, unit_of_measure_id: @uom.id, tariff: to_item.tariff, requisition_no: to_item.requisition_no, created_by: user_id, transport_requisition_item_id: to_item.id)
 					@new_to_detail.save
 					to_item.destroy
 			end

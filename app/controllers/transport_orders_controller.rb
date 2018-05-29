@@ -10,7 +10,11 @@ class TransportOrdersController < ApplicationController
        @result = 'Order No: ' + params[:order_no]
       return
     end
-   
+   if params[:operation].present? && !params[:transporter].present?
+     @transport_orders = TransportOrder.where(:operation_id => params[:operation]).includes(:bid, :location)
+       @result = "Operation: " + Operation.find(params[:operation])&.name
+     return 
+   end
     if params[:reference_no].present?
       @list_of_requistion_nos = RegionalRequest.includes(:requisitions).where(:reference_number => params[:reference_no]).pluck(:'requisitions.requisition_no')
       
@@ -21,7 +25,7 @@ class TransportOrdersController < ApplicationController
        @result = 'Requisition No: ' + params[:requisition_no]
     elsif params[:transporter].present? && params[:operation].present?
       @transport_orders = TransportOrder.where(:transporter_id => params[:transporter] ,:operation_id => params[:operation]).includes(:bid, :location)
-       @result = 'Transporter: ' + params[:transporter] + " and Operation: " + params[:operation]
+       @result = 'Transporter: ' + Transporter.find(params[:transporter])&.name + " and Operation: " + Operation.find(params[:operation])&.name
     else
       @transport_orders = [] #TransportOrder.all.includes(:bid, :location)
        @result = ''
