@@ -74,10 +74,13 @@ class TransportRequisitionPdf < PdfReport
             # columns(1..3).align = :right
             self.row_colors = ["DDDDDD", "FFFFFF"]
             self.header = true
-            columns(2..8).width = 50
-            columns(9).width = 70
-            columns(7).width = 60
-            columns(5).width = 70
+            columns(0).width = 30
+            columns(1).width = 40
+            columns(2..4).width = 50
+            columns(5).width = 40
+            columns(6..8).width = 50
+            
+            
         end     
      
     end
@@ -159,7 +162,7 @@ class TransportRequisitionPdf < PdfReport
 
     def transport_requisition_items
         dynamic_data = []
-        dynamic_data = ["No","Items","Req.No","Donor","Amount(QTL)", "Warehouse","Region","Zone","Woreda","Destination"]
+        dynamic_data = ["No","Items","Req.No","Donor","Amount", "Unit", "W.House","Region","Zone","Woreda","Destination"]
         total_allocation = 0.00
         row_no = 0
         $sum = 0
@@ -178,17 +181,26 @@ class TransportRequisitionPdf < PdfReport
             amount_in_qtl = target_unit.convert_to(current_unit.name, item[:quantity])
             amount_in_qtl = amount_in_qtl.round(2)
             @total_amount = amount_in_qtl
-
-            if @operation.program.name == "IDPs"
-                amount_in_qtl = item[:quantity]
-            end
+             
             # ref = @tri_struct.where(:requsition_id => item[:requisition_id]).first
             # ref = @tri_struct.select {|tri| tri[:requsition_id] == item[:requisition_id] }
             ref = @tri_struct.find {|x| x[:requisition_id].to_s == item[:requisition_id].to_s}
+            
+           
+            @uom_id = @operation.ration.ration_items.where(commodity_id: ref[:commodity_id]).first&.unit_of_measure_id
+            
+            @uom_name = UnitOfMeasure.find_by(id: @uom_id)&.code
+
+
+            if @operation.program.name == "IDPs" && @uom_name != target_unit&.code
+                amount_in_qtl = item[:quantity].round
+            end
+
             total_allocation = total_allocation + amount_in_qtl
             row_no = row_no + 1
             $sum = $sum + @total_amount
-            [row_no, ref[:commodity_name],ref[:requisition_no],@donor,amount_in_qtl,ref[:warehouse],ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
+
+            [row_no, ref[:commodity_name],ref[:requisition_no],@donor,amount_in_qtl,@uom_name, ref[:warehouse],ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
         end 
         
         result = result + [["Total", "-", "-", "-", $sum.round(2), "-", "-", "-", "-", "-"]]
