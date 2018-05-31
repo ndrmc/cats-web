@@ -453,6 +453,22 @@ if Permission.where(name: 'WarehouseSelection').count == 0
   Permission.create(name: 'WarehouseSelection', user_type: 3, description: '')
 end
 
+
+if Permission.where(name: 'Store').count == 0
+  Permission.create(name: 'Store', user_type: 0, description: '')
+  Permission.create(name: 'Store', user_type: 1, description: '')
+  Permission.create(name: 'Store', user_type: 2, description: '')
+  Permission.create(name: 'Store', user_type: 3, description: '')
+end
+
+
+if Permission.where(name: 'UserAccount').count == 0
+  Permission.create(name: 'UserAccount', user_type: 0, description: '')
+  Permission.create(name: 'UserAccount', user_type: 1, description: '')
+  Permission.create(name: 'UserAccount', user_type: 2, description: '')
+  Permission.create(name: 'UserAccount', user_type: 3, description: '')
+end
+
 if Department.count == 0
   Department.create(name: 'Early warning')
   Department.create(name: 'FSCD')
@@ -478,6 +494,30 @@ if UsersPermission.count == 0
   end
   puts "Default permissisons for administrator created"
 end
+
+
+ users  = User.find_by(first_name: 'Administrator')
+ permissions = Permission.where(name: 'UserAccount')
+ 
+if permissions 
+  saved = false
+  user_permission_ids = UsersPermission.all.pluck(:permission_id)
+  permissions.each do |p|
+    if permissions.where(p.id.to_s + ' IN (?)', user_permission_ids).count < 1
+    user_permission =  UsersPermission.new({
+      user_id: users.id,
+      permission_id: p.id
+    })
+    user_permission.save!
+    saved = true
+  end
+end
+  if saved
+    puts "Default user permissisons for administrator created"
+  end
+  
+end
+
 
 if Supplier.count == 0
   Supplier.create(name: 'Abay International PLC')
@@ -536,4 +576,6 @@ if PaymentType.count == 0
   PaymentType.create(name: 'Wegagen Bank')
   PaymentType.create(name: 'United Bank')
 end
+
+
 

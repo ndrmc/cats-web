@@ -26,8 +26,9 @@ def gift_certificate
     end
      move_down 10
            text "Total Weight in MT: " + ActiveSupport::NumberHelper.number_to_currency(@total_weight_in_MT.to_s,precision: 2, :unit=> '')
-          
+           text "Total Estimated Price in USD:" +  ActiveSupport::NumberHelper.number_to_currency(@toal_estimated_price_in_usd.to_s, precision: 2)
            text "Total Estimated price in Birr:" +  ActiveSupport::NumberHelper.number_to_currency(@toal_estimated_price_in_birr.to_s, precision: 2,:unit=> 'ETB ')
+           text "Total Estimated Tax: " +  ActiveSupport::NumberHelper.number_to_currency(@total_estimated_tax.to_s, precision: 2,:unit=> 'ETB ')
          
         
 end
