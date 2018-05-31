@@ -53,7 +53,10 @@ class TransportOrderPdf < PdfReport
          bounding_box([bounds.left, bounds.top - 315 ], :width => bounds.width, :height => bounds.height - 400) do
         table transport_order_items do
         row(0).font_style = :bold
-        columns(1..3).align = :right
+        column(0).width = 40
+        column(3).width = 90
+        column(4).width = 60
+        column(7).width = 60
         self.row_colors = ["DDDDDD", "FFFFFF"]
         self.header = true
     end
@@ -86,9 +89,9 @@ class TransportOrderPdf < PdfReport
             amount_in_qtl = target_unit.convert_to(current_unit.name, item.quantity)
             @amount_total = @amount_total + (amount_in_qtl)
             @birr_total = @birr_total + (amount_in_qtl*item.tariff)
-            [@count, item.fdp.location.name,item.fdp.name,  @warehouse ,item.commodity.name, amount_in_qtl.round(2), item.tariff, (amount_in_qtl*item.tariff).round(2)]       
+            [@count, item.fdp.location.name,item.fdp.name,  @warehouse ,item.commodity.name, ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(amount_in_qtl.round(2))), item.tariff, ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision((amount_in_qtl*item.tariff).round(2)))]       
         end
-        result = result + [["Total", "-", "-",  "-", "", @amount_total.round(2), "-",@birr_total.round(2)]]
+        result = result + [["Total", "-", "-",  "-", "", ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(@amount_total.round(2))), "-",ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(@birr_total.round(2)))]]
         result = result + [[{:content => "Amount in words: " + @birr_total.humanize, :colspan => 8}]]
     end    
 end
