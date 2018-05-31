@@ -26,7 +26,7 @@
             <%= label_tag :transporter, "Transporter", { :class => ' control-label' } %>
 
             <div class="">
-              <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :style => 'width: 300px', :required => true, :prompt => "-- Choose --", :class => 'form-control data-parsley-required' }  %>
+              <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :style => 'width: 300px', :prompt => "-- Choose --", :class => 'form-control data-parsley-required' }  %>
             </div>
           </div>
           <div class="form-group">
