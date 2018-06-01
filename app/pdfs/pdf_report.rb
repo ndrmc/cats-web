@@ -5,7 +5,7 @@ class PdfReport < Prawn::Document
   TABLE_FONT_SIZE = 9
   TABLE_BORDER_STYLE = :grid
 
-  def initialize(default_prawn_options={:bottom_margin => [100]})
+  def initialize(default_prawn_options={})
     super(default_prawn_options)
     font_size 9
   end
@@ -25,10 +25,10 @@ class PdfReport < Prawn::Document
   
   def footer(title=nil)
     repeat :all do
-    
-      bounding_box [bounds.left, bounds.bottom + 72], width: bounds.width do
+   
+      bounding_box [bounds.left, bounds.bottom + 90], width: bounds.width do
          stroke_horizontal_rule 
-         move_down 5
+         move_down 2
          image "#{Rails.root}/public/assets/CATS_Blue.png", height: 20
          text title, size: 8, align: :center
           text "Printed at: " + Time.now.strftime('%c')
@@ -39,7 +39,7 @@ class PdfReport < Prawn::Document
                                         :at => [bounds.right - 60, 0],
                                         :align => :left,
                                         :size => 8}
-          move_down 50
+         
          
          
       
