@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   get '/transport_requisitions/print/:id', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
+  delete '/transport_requisitions/reverse_tr/:id', to: 'transport_requisitions#reverse_tr'
   resources :transport_requisitions
   
    resources :bids
