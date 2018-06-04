@@ -46,6 +46,7 @@
             <th>Total Qty.</th>
             <th>Created date</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
@@ -59,6 +60,9 @@
               <td><%= transport_requisition.total_qty  %></td>
               <td><%= transport_requisition.created_at.to_formatted_s(:long_ordinal) %></td>
               <td><%= transport_requisition.status %></td>
+              <td>
+                      <%=  link_to "Delete", "/transport_requisitions/reverse_tr/" + transport_requisition.id.to_s, data: {confirm: "It deletes all Transport Requisitions and related Transport orders. It also resets requisitions under this Transport Requisition to approved state. Irreversible!. Are you sure?"}, :title => "Transort Requisition and its detail tranport order will be deleted",method: :delete %>
+              </td>
             </tr>
           <% end %>
         </tbody>

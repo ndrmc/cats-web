@@ -157,7 +157,21 @@ end
     end
 
   end
-  
+  def reverse_tr
+    @requisition_id = params[:id]
+    @result = TransportRequisition.reverse_tr(@requisition_id)
+     respond_to do |format|
+     if @result
+        format.html { redirect_to request.referrer, notice: 'Transport Reqiuistion was successfully destroyed.' }
+      else
+        format.html { 
+                    flash[:error] = "Destroying transport requisitions failed!."
+                    redirect_to request.referrer 
+                }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_transport_requisition

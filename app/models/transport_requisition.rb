@@ -16,7 +16,7 @@
 
 class TransportRequisition < ApplicationRecord
   enum status: [:open, :closed]
-  has_many :transport_requisition_items
+  has_many :transport_requisition_items, dependent: :destroy
   belongs_to :operation
   belongs_to :location
   belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by_id'
@@ -59,5 +59,59 @@ class TransportRequisition < ApplicationRecord
         return nil
       end
   end
+
+ def self.reverse_tr(transport_requisition_id)
+    @transport_requisition_items_ids = TransportRequisitionItem.where(transport_requisition_id: transport_requisition_id ).pluck(:id).uniq
+    
+    @requistion_ids_to_be_updated = TransportRequisitionItem.where(transport_requisition_id: transport_requisition_id).pluck(:requisition_id).uniq
+
+    if @transport_requisition_items_ids.present?
+      @transport_order_ids_to_be_deleted = TransportOrderItem.where(transport_requisition_item_id: @transport_requisition_items_ids).pluck(:transport_order_id).uniq
+
+      if (@transport_order_ids_to_be_deleted.present?)
+         puts "============================================================"
+          puts "----------------" + transport_requisition_id + "------------"
+          puts "---------------With TO-----------------------------------"
+          puts "--------Transport Orders to be deleted:" + @transport_order_ids_to_be_deleted.to_s
+          # delete transport orders
+          TransportOrder.where(:id => @transport_order_ids_to_be_deleted).destroy_all
+          # befoer delteing TR , change status of requisitions to approved 
+          @requisitions = Requisition.where(:id => @requistion_ids_to_be_updated)
+          puts "Requisitions be updated: " + @requisitions.inspect
+          puts "Status: " +  Requisition.statuses[:approved].to_s
+          if @requisitions.present?
+              @requisitions.update_all(:status => Requisition.statuses[:approved]) 
+          end
+          # no tranport order found for this TR. so just delete the TR
+          @transport_requisition =  TransportRequisition.find(transport_requisition_id)
+           puts "Transport Requistions: " + @transport_requisition.inspect
+          @transport_requisition.destroy
+          puts "================It is successfuly destroyed=================="
+          puts "============================================================="
+      else
+          puts "============================================================"
+          puts "----------------" + transport_requisition_id + "------------"
+          puts "---------------Without TO-----------------------------------"
+          # befoer delteing TR , change status of requisitions to approved 
+          @requisitions = Requisition.where(:id => @requistion_ids_to_be_updated)
+          puts "Requisitions be updated: " + @requisitions.inspect
+          puts "Status: " +  Requisition.statuses[:approved].to_s
+          if @requisitions.present?
+              @requisitions.update_all(:status => Requisition.statuses[:approved])
+          end
+          # no tranport order found for this TR. so just delete the TR
+          @transport_requisition =  TransportRequisition.find(transport_requisition_id)
+          puts "Transport Requistions: " + @transport_requisition.inspect
+          @transport_requisition.destroy
+          puts "================It is successfuly destroyed=================="
+          puts "============================================================="
+      end
+      
+    else
+        # tranport requsition not found
+        return 0
+    end
+    return 1 # 
+ end
 
 end
