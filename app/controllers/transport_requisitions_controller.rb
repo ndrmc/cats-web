@@ -149,7 +149,7 @@ end
     @region_id = params[:region_id]
 
   
-    @regional_request_references = RegionalRequest.where(operation_id: @operation_id, region_id: @region_id).all 
+    @regional_request_references = RegionalRequest.includes(:requisitions).where(:'regional_requests.operation_id' => @operation_id, :'regional_requests.region_id' => @region_id,:'requisitions.status' => Requisition.statuses[:approved]).all 
 
     respond_to do |format|
      format.js
