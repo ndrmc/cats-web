@@ -318,7 +318,7 @@
                     <% @woredas_wo_winner.each do |woreda| %>
                     <tr>
                       <td>
-                      <%= woreda['zone_name'] %>                      
+                      <%= Location.find_by(id: woreda['woreda_id'])&.parent&.name %>                      
                       </td>
                       <td>                             
                         <%= woreda['woreda_name'] %>
