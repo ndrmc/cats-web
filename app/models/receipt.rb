@@ -52,5 +52,7 @@ class Receipt < ApplicationRecord
     after_update :reverse
     after_destroy :reverse
     validates :grn_no, uniqueness: true
+    # attr_accessor :skip_transporter_validation
+    # validates :transporter_id, presence: true, unless: :skip_transporter_validation
     enum receipt_type: [:regular, :transfer, :swap]
 end

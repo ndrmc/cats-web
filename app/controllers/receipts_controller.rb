@@ -107,6 +107,19 @@ end
     @receipt.commodity_source_id = 1
   end
 
+  def get_commoidty_source
+   
+    @project = Project.find(params[:project_id])
+    @commodity_source = CommoditySource.find(@project.commodity_source_id).name
+    @local_purchase = false
+    if @commodity_source == "Local Purchase"
+        @local_purchase = true
+    end
+   respond_to do |format|
+            format.html
+            format.json { render :json => @local_purchase.to_json }
+        end
+  end
 
   def create
     authorize Receipt
