@@ -340,10 +340,35 @@
           var categoryId = $(this).find('option:selected').data('category-id');
           console.log("categoryId: " + categoryId);
           updateCommodityAndUnit(projectId, categoryId);
+
+          $.ajax({
+              url:'/en/receipts/get_commoidty_source',
+              type:'GET',
+	        dataType:'json',
+              data: {project_id: projectId},            
+              success:function(data){
+                console.log(data);
+                 
+                  if(data){
+                    var element = document.getElementById("receipt_transporter_id");
+                    $("#receipt_transporter_id").prop('selectedIndex',0);
+                    element.setAttribute("disabled","disabled")
+                   
+                  }
+                  else{
+                   var element = document.getElementById("receipt_transporter_id");
+                    element.removeAttribute("disabled")
+                  }
+                 
+              },
+              error:function(data){
+                  alert("this is the error :"+ data.local_purchase)
+                  console.log(data);
+              }
+          });
         });
 
-      
-      
+   
      
 
       updateProjects(<%=@receipt.donor_id%>);
