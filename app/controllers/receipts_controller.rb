@@ -32,42 +32,75 @@ def show
 
   
 end
-
-def receipt_report_generate
+def receipt_report_items
 
   if params[:hub].present?
-       filter_map = {hub_id: params[:hub]}
-
-      if params[:received_date ].present?
-        dates = params[:received_date].split(' - ').map { |d| Date.parse d }
-
-        filter_map[:received_date] = dates[0]..dates[1]
+       filter_map = {'receipts.hub_id': params[:hub]}
+          if params[:received_date].present?
+            dates = params[:received_date].split(' - ').map { |d| Date.parse d }
+            filter_map[:'receipts.received_date'] = dates[0]..dates[1]
+            @date_min = dates[0]
+            @date_max = dates[1]
+          end
       end
-      if params[:status ]
-        filter_map[:draft ] = params[:status ] == 'Draft'
-      end
-      @receipts = ReceiptLine.includes(:unit_of_measure, :project, :commodity, receipt: [:hub, :organization]).select(:'hubs.name AS hub', :'receipts.grn_no', :'receipts.plate_no', :'receipts.waybill_no', :'commodities.name AS commodity', :quantity, :'unit_of_measures.name AS unit', :'projects.project_code', :'organizations.name AS donor').where(:'receipts.hub_id' => params[:hub]).where("receipts.received_date >= ? AND receipts.received_date <= ?", dates[0], dates[1])
-      
-    else
-      @receipts = []
+     
+      @receipts = ReceiptLine.joins(:unit_of_measure, :project, :commodity, receipt: [:organization,:transporter]).select('receipts.received_date,receipts.grn_no,receipts.waybill_no,
+      organizations.name AS donor',
+      'projects.project_code',
+      'transporters.name as transporter',
+      'receipts.plate_no as plate_no',
+      'receipts.trailer_plate_no as trailer_plate_no',
+      'receipts.delivered_by',
+      'receipt_lines.commodity_category_id as commodity_class_id',
+      'commodities.name as commodity_name',
+      'quantity', 
+      'unit_of_measures.name AS unit',
+      'storekeeper_name',
+      'receipts.store_id'
+      ).where(filter_map) 
+
+       @hub = Hub.find_by(id: params[:hub])
+
+      respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{@hub&.name} - " + Time.now.strftime('%m/%d/%Y') + ".xlsx\""
+      }
     end
 
-    hub = Hub.find(params[:hub])
-    respond_to do |format|
-            format.html
-            format.pdf do
-            pdf = ReceiptPdf.new(@receipts,dates[0],dates[1],hub.name)
-            send_data pdf.render, filename: "receipt_.pdf",
-            type: "application/pdf",
-            disposition: "inline"
-            end
-        end
- 
+    
 end
 
 def receipt_report
+       
+       if params[:hub].present?
+       filter_map = {'receipts.hub_id': params[:hub]}
+          if params[:received_date].present?
+            dates = params[:received_date].split(' - ').map { |d| Date.parse d }
+            filter_map[:'receipts.received_date'] = dates[0]..dates[1]
+            @date_min = dates[0]
+            @date_max = dates[1]
+          end
+      end
+     
+      @receipts = ReceiptLine.joins(:unit_of_measure, :project, :commodity, receipt: [:organization,:transporter]).select('receipts.received_date,receipts.grn_no,receipts.waybill_no,
+      organizations.name AS donor',
+      'projects.project_code',
+      'transporters.name as transporter',
+      'receipts.plate_no as plate_no',
+      'receipts.trailer_plate_no as trailer_plate_no',
+      'receipts.delivered_by',
+      'receipt_lines.commodity_category_id as commodity_class_id',
+      'commodities.name as commodity_name',
+      'quantity', 
+      'unit_of_measures.name AS unit',
+      'storekeeper_name',
+      'receipts.store_id'
+      ).where(filter_map) 
 
+       @hub = Hub.find_by(id: params[:hub])
 end
+
+
 
 def check_stock    
   @hub_id = receipt_params["hub_id"]
