@@ -35,9 +35,7 @@ class ContractReportsController < ApplicationController
         respond_to do |format|
             format.html
             format.pdf do
-            puts "==============================="
-            puts $transport_order_items
-            puts "================================"
+          
             pdf = TransportOrderByTransporterPdf.new($transport_order_items, $transport_order)
             send_data pdf.render, filename: "transport_order_by_transporter_pdf.pdf",
             type: "application/pdf",
@@ -48,7 +46,7 @@ class ContractReportsController < ApplicationController
     end
 
     def get_by_operation
-    @bids = Bid.includes(:transport_orders).where( :'transport_orders.operation_id' => params[:operation_id] ).map{ |r| [r.bid_number, r.id]} 
+    @bids = Bid.includes(:transport_orders).where( :'transport_orders.operation_id' => params[:operation_id] ).map{ |r| [r.bid_number, r.id, Location.find(r.region_id)&.name]} 
     respond_to do |format|
         format.json { render json:   @bids  }
         end
