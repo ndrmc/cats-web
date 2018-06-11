@@ -51,7 +51,7 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
                 receipt&.transporter ,
                 receipt&.plate_no ,
                 receipt&.trailer_plate_no ,
-                receipt&.delivered_by ,
+                receipt&.drivers_name,
                 CommodityCategory.find(receipt&.commodity_class_id).name ,
                 receipt&.commodity_name ,
                 receipt&.quantity ,
