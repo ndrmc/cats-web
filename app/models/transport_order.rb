@@ -29,7 +29,7 @@ class TransportOrder < ApplicationRecord
 	belongs_to :operation
 	belongs_to :transporter
 	belongs_to :contract
-	has_many :transport_order_items
+	has_many :transport_order_items, dependent: :destroy
 	belongs_to :bid
 	belongs_to :location
 
@@ -40,12 +40,12 @@ class TransportOrder < ApplicationRecord
 		.find_each do |tr_item|
 			@woreda = Location.find(Fdp.find(tr_item.fdp_id).location_id)
 			@requisition = Requisition.find(tr_item.requisition_id)
-
-			# @warehouse_ids = BidQuotation.joins(:bid_quotation_details).where(:bid_id => bid_id, :'bid_quotation_details.location_id' => @woreda.id, :'bid_quotation_details.rank' => 1).select(:'bid_quotation_details.warehouse_id').distinct
-
+			
+			@warehouse_ids = WarehouseAllocationItem.where(requisition_id: tr_item.requisition_id).pluck(:warehouse_id)
+			
 			# @warehouse_ids.each do |warehouse_id|
 		
-			@bid_quotations = BidQuotation.joins(:bid_quotation_details).where(:bid_id => bid_id,:'bid_quotation_details.location_id' => @woreda.id, :'bid_quotation_details.rank' => 1).select(:'bid_quotation_details.id', :transporter_id, :'bid_quotation_details.location_id', :'bid_quotation_details.warehouse_id', :'bid_quotation_details.tariff')# bid quotation for each warehouse
+			@bid_quotations = BidQuotation.joins(:bid_quotation_details).where(:bid_id => bid_id,:'bid_quotation_details.location_id' => @woreda.id, :'bid_quotation_details.warehouse_id' => @warehouse_ids, :'bid_quotation_details.rank' => 1).select(:'bid_quotation_details.id', :transporter_id, :'bid_quotation_details.location_id', :'bid_quotation_details.warehouse_id', :'bid_quotation_details.tariff')# bid quotation for each warehouse
 			@bid_quotations.each do |bid_quotation|
 				@transport_order = TransportOrder.where({:transporter_id => bid_quotation.transporter_id, :bid_id => bid_id, :operation_id => @transport_requisition.operation_id}).first
 				if (@transport_order.present?)

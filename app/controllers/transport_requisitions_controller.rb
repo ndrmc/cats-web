@@ -60,8 +60,7 @@ end
   # GET /transport_requisitions/1.json
   def show   
 
-    @woredas_wo_winner = TransportRequisitionItem.joins('INNER JOIN transport_requisitions ON transport_requisitions.id = transport_requisition_items.transport_requisition_id INNER JOIN fdps ON fdps.id = transport_requisition_items.fdp_id INNER JOIN locations AS woreda ON woreda.id = fdps.location_id INNER JOIN locations AS zone ON zone.id = woreda.parent_node_id').where('transport_requisition_items.transport_requisition_id = ' + params[:id] + ' AND transport_requisition_items.has_transport_order = false').group('woreda.id, woreda.name, zone.id, zone.name').select('SUM(transport_requisition_items.quantity) AS total_qty, woreda.id AS woreda_id, woreda.name AS woreda_name, zone.id AS zone_id, zone.name AS zone_name').to_a
-
+    @woredas_wo_winner = TransportRequisitionItem.joins('INNER JOIN transport_requisitions ON transport_requisitions.id = transport_requisition_items.transport_requisition_id INNER JOIN fdps ON fdps.id = transport_requisition_items.fdp_id INNER JOIN locations AS woreda ON woreda.id = fdps.location_id').where('transport_requisition_items.transport_requisition_id = ' + params[:id] + ' AND transport_requisition_items.has_transport_order = false').group('woreda.id, woreda.name').select('SUM(transport_requisition_items.quantity) AS total_qty, woreda.id AS woreda_id, woreda.name AS woreda_name').to_a
     @transport_orders = TransportOrder.includes(:transporter, :bid, :contract, transport_order_items: [transport_requisition_item: :transport_requisition]).where(:'transport_requisition_items.transport_requisition_id' => params[:id])
     @transport_requisition = TransportRequisition.includes(operation: :program, transport_requisition_items: [:commodity, fdp: :location, transport_order_items: [transport_order: :transporter], requisition: [:region, :zone] ]).find(params[:id])
     @tri_aggregate_by_zone = TransportRequisitionItem.includes(:commodity, fdp: :location, requisition: [:region, :zone]).where(:transport_requisition_id => params[:id]).group(:requisition_id, :'requisitions.requisition_no', :'commodities.name', :'regions_requisitions.name', :'zones_requisitions.name').sum(:quantity)
@@ -149,7 +148,7 @@ end
     @region_id = params[:region_id]
 
   
-    @regional_request_references = RegionalRequest.where(operation_id: @operation_id, region_id: @region_id).all 
+    @regional_request_references = RegionalRequest.includes(:requisitions).where(:'regional_requests.operation_id' => @operation_id, :'regional_requests.region_id' => @region_id,:'requisitions.status' => Requisition.statuses[:approved]).all 
 
     respond_to do |format|
      format.js
@@ -157,7 +156,21 @@ end
     end
 
   end
-  
+  def reverse_tr
+    @requisition_id = params[:id]
+    @result = TransportRequisition.reverse_tr(@requisition_id)
+     respond_to do |format|
+     if @result
+        format.html { redirect_to request.referrer, notice: 'Transport Reqiuistion was successfully destroyed.' }
+      else
+        format.html { 
+                    flash[:error] = "Destroying transport requisitions failed!."
+                    redirect_to request.referrer 
+                }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_transport_requisition

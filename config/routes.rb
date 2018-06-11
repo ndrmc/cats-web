@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   get '/transport_requisitions/print/:id', to: 'transport_requisitions#print'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
+  delete '/transport_requisitions/reverse_tr/:id', to: 'transport_requisitions#reverse_tr'
   resources :transport_requisitions
   
    resources :bids
@@ -170,9 +171,10 @@ Rails.application.routes.draw do
   get 'ration_items/unitOfMeasureSelectForCommodity'
 
   get '/receipts/receipt_report', to: 'receipts#receipt_report'
-  post '/receipts/receipt_report_generate', to: 'receipts#receipt_report_generate'
   post '/receipts/check_stock', to: 'receipts#check_stock'
+  get '/receipts/get_commoidty_source', to: 'receipts#get_commoidty_source'
   get '/stock_movements/stock_movement_edit/:id', to: 'stock_movements#stock_movement_edit'
+  get '/receipts/receipt_report_items', to: 'receipts#receipt_report_items'
   resources :receipts
   
   get '/receipts/return_receipt_detail/:id', to: 'receipts#return_receipt_detail'

@@ -79,12 +79,15 @@ class TransportRequisitionPdf < PdfReport
             columns(2..4).width = 50
             columns(5).width = 40
             columns(6..8).width = 50
-            
-            
         end     
-     
-    end
+      move_down 10
+           text "Total sum in Quintal: " + ActiveSupport::NumberHelper.number_to_currency(@quintal_sum.to_s,precision: 2, :unit=> '')
+           text "Total sum in PC:" +  ActiveSupport::NumberHelper.number_to_currency(@pc_sum.to_s, precision: 2, :unit=> '')
+           text "Total sum in carton:" +  ActiveSupport::NumberHelper.number_to_currency(@carton_sum.to_s, precision: 2,:unit=> ' ')
+           text "Other: " +  ActiveSupport::NumberHelper.number_to_currency(@other_sum.to_s, precision: 2,:unit=> ' ')
 
+    end
+    
     def signature_section
         table_data = [
             [
@@ -174,10 +177,15 @@ class TransportRequisitionPdf < PdfReport
         elsif @operation.program.name == "IDPs"
             @donor = "NDRMC"
         end
+
+         target_unit = UnitOfMeasure.where(:code => "QTL").first
+         current_unit = UnitOfMeasure.where(:code => "MT").first
+         carton_unit = UnitOfMeasure.where(:code => "CTN").first
+         pc_unit = UnitOfMeasure.where(:code => "PCS").first
+         @carton_sum = @pc_sum = @quintal_sum = @other_sum = 0
         result = [dynamic_data] +
         @aggr_tri.map do |item|
-            target_unit = UnitOfMeasure.where(:code => "QTL").first
-            current_unit = UnitOfMeasure.where(:code => "MT").first
+           
             amount_in_qtl = target_unit.convert_to(current_unit.name, item[:quantity])
             amount_in_qtl = amount_in_qtl.round(2)
             @total_amount = amount_in_qtl
@@ -190,7 +198,7 @@ class TransportRequisitionPdf < PdfReport
             @uom_id = @operation.ration.ration_items.where(commodity_id: ref[:commodity_id]).first&.unit_of_measure_id
             
             @uom_name = UnitOfMeasure.find_by(id: @uom_id)&.code
-
+            
 
             if @operation.program.name == "IDPs" && @uom_name != target_unit&.code
                 amount_in_qtl = item[:quantity].round
@@ -198,11 +206,21 @@ class TransportRequisitionPdf < PdfReport
 
             total_allocation = total_allocation + amount_in_qtl
             row_no = row_no + 1
-            $sum = $sum + @total_amount
+            #$sum = $sum + @total_amount
+
+            if @uom_name ==  pc_unit&.code
+                @pc_sum = @pc_sum + amount_in_qtl
+            elsif @uom_name ==  carton_unit&.code
+                @carton_sum = @carton_sum + amount_in_qtl
+            elsif @uom_name == target_unit&.code
+                @quintal_sum = @quintal_sum + amount_in_qtl
+            else
+                @other_sum = @other_sum + amount_in_qtl
+            end
 
             [row_no, ref[:commodity_name],ref[:requisition_no],@donor,amount_in_qtl,@uom_name, ref[:warehouse],ref[:region_name],ref[:zone_name], "As per the attached list", "As per the attached list"]
         end 
         
-        result = result + [["Total", "-", "-", "-", $sum.round(2), "-", "-", "-", "-", "-"]]
+        
     end    
 end

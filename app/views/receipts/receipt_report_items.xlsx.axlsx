@@ -1,0 +1,64 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+
+  
+
+title_cell = style.add_style alignment: {horizontal: :center}, b: true, Sz: 20, bg_color: "000000", fg_color: "FF"
+title_cell_table = style.add_style alignment: {horizontal: :center}, b: true, Sz: 10, bg_color: "000000", fg_color: "FF"
+  
+data = style.add_style alignment: {horizontal: :left, wrap_text: true}
+
+
+ 
+
+  sheet = wb.add_worksheet(:name => 'Receipt Items') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
+  col_width = [10,5,10,10,10,15,10,10]
+  unlocked = sheet.styles.add_style(:locked => false )
+  
+   header     = sheet.styles.add_style :bg_color => "DD", :sz => 18, :b => true, :alignment => {:horizontal => :center}, :locked => true
+
+  sheet.add_row []
+  sheet.add_row []
+  sheet.add_row ["", @hub&.name.to_s + "  NDRMC Receive Detail Report as of " + @date_min.to_s + " - " + @date_max.to_s ,""], style: [nil,header]
+  sheet.add_row []
+  sheet.add_row ["Printed Date: " + Time.now.strftime("%m/%d/%y")],style: []
+  
+  sheet.merge_cells "B3:H3"  
+  sheet.column_widths *col_width
+  sheet.add_row ["Received Date",
+            "GRN",
+            "Waybill No. ",
+            "Donor/Supplier Name ",
+            "Project Code ",
+            "Transport Name ",
+            "Plate No ",
+            "Tailer No ",
+            "Delivery by",
+            "Commodity Class ",
+            "Commodity Type",
+            "Received Amount",
+            "Unit",
+            "Store keeper Name", "Store #" ],style: [ title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table, title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table, title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table]
+
+  receipt_items = @receipts.sort_by{|r| [r.project_code]}
+  receipt_items.each do |receipt|
+    
+    sheet.add_row [ receipt&.received_date.strftime("%b-%d-%Y") , 
+                receipt&.grn_no ,
+                receipt&.waybill_no ,
+                receipt&.donor ,
+                receipt&.project_code ,
+                receipt&.transporter ,
+                receipt&.plate_no ,
+                receipt&.trailer_plate_no ,
+                receipt&.delivered_by ,
+                CommodityCategory.find(receipt&.commodity_class_id).name ,
+                receipt&.commodity_name ,
+                receipt&.quantity ,
+                receipt&.unit ,
+                receipt&.storekeeper_name,
+                Store.find_by(id: receipt&.store_id)&.name], :style => [data, data, data, data, data, data, data, data,data, data, data, data,data, data, data, data,data]
+    
+  
+  end
+end
