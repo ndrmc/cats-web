@@ -40,7 +40,7 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
             "Unit",
             "Store keeper Name", "Store #" ],style: [ title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table, title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table, title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table]
 
-  receipt_items = @receipts.sort_by{|r| [r.grn_no]}
+  receipt_items = @receipts.sort_by{|r| [r.project_code]}
   receipt_items.each do |receipt|
     
     sheet.add_row [ receipt&.received_date.strftime("%b-%d-%Y") , 
