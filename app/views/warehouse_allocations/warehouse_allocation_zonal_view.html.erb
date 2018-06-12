@@ -13,7 +13,9 @@
 
   <div class="col-sm-8">
     <div class="title-action">
+      <% if policy(WarehouseAllocation).index? %>
       <a  class = "btn btn-primary" href="/warehouse_allocations/<%= params['region'] %>?operation=<%= params['operation'] %>">View All</a>
+     <% end %>
       <a  class = "btn btn-default" href="/warehouse_allocations?operation=<%= params['operation'] %>">Back</a>
     </div>
   </div>
