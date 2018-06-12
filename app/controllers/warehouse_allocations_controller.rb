@@ -1,8 +1,13 @@
 class WarehouseAllocationsController < ApplicationController
   before_action :set_warehouse_allocation, only: [:edit, :update, :destroy]
-
+  before_action :authorize_warehouse_allocation
   # GET /warehouse_allocations
   # GET /warehouse_allocations.json
+  def authorize_warehouse_allocation
+    authorize WarehouseAllocation
+  end
+
+
   def index
     if(params['operation'].present?)
       @warehouse_allocations = WarehouseAllocation.get_regions(params['operation'])
