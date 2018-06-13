@@ -14,10 +14,16 @@
     </ol>
   </div>
   <div class="col-sm-4">
+ 
+
   <% if policy(TransportRequisition).print? %>
+  <div class="btn-toolbar">
+           <a  class = "btn btn-primary pull-right" href="/transport_requisitions/rrd_by_refrence_no/<%= @transport_requisition.id.to_s %>">View All</a>
+  
     <a class="btn btn-default pull-right" data-tr-id="<%= @transport_requisition.id.to_s %>" data-target="#print-tr" data-toggle="modal">
         Print
     </a>
+    </div>
   <% end %>
   </div>
 </div>

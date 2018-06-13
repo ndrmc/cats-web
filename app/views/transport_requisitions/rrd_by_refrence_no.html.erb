@@ -1,0 +1,68 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Warehouse allocation</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Home</a>
+      </li>
+      <li class="active">
+        <strong>View All Warehouse allocations</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-sm-8">
+    <div class="title-action">
+     
+      <%= link_to 'Back', "/transport_requisitions/" + @tr_id.to_s,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+<div class="wrapper wrapper-content">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content col-sm-12">
+
+
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <table class="table table-striped cats-datatable">
+        <thead>
+          <tr>
+            <th>Region</th>
+            <th>Warehouse</th>
+            <th>Zone</th>
+            <th>Woreda</th>
+            <th>Destination</th>
+            <th>Requisition No</th>
+            <th>Item</th>
+            <th>Amount Allocated in Quintals</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @warehouse_allocations.each do |wa| %>
+          <tr>
+            <td> <%=  wa[:region] %> </td>
+            <td> <%=  wa[:warehouse] %> </td>
+            <td> <%=  wa[:zone] %> </td>
+            <td> <%=  wa[:woreda] %> </td>
+            <td> <%=  wa[:fdp] %> </td>
+            <td> <%=  wa[:requisition_no] %> </td>
+            <td> <%=  wa[:commodity] %> </td>
+            <td> <%=  wa[:allocated] %> </td>
+          </tr>           
+
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  
+</div>
+
+</div>

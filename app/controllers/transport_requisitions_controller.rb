@@ -12,6 +12,27 @@ class TransportRequisitionsController < ApplicationController
     @transport_requisitions = TransportRequisition.joins('INNER JOIN transport_requisition_items ON transport_requisitions.id = transport_requisition_items.transport_requisition_id INNER JOIN locations ON locations.id = transport_requisitions.location_id').select('transport_requisitions.id, transport_requisitions.operation_id, transport_requisitions.reference_number, transport_requisitions.reference_number, transport_requisitions.location_id, locations.name AS region_name, transport_requisitions.created_at, transport_requisitions.status, sum(transport_requisition_items.quantity) as total_qty, count(transport_requisition_items.id) as destinations').where('transport_requisitions.operation_id = ' + @operation_id.to_s).group('transport_requisitions.id, transport_requisitions.operation_id, transport_requisitions.reference_number, transport_requisitions.reference_number, transport_requisitions.location_id, locations.name, transport_requisitions.created_at, transport_requisitions.status').order('created_at DESC')
   end
 
+  def rrd_by_refrence_no
+    @tr_id = params[:id]
+    
+    @transport_requisition = TransportRequisitionItem.where(:transport_requisition_id => @tr_id).pluck(:requisition_id)
+    @requisition_items = RequisitionItem.joins(requisition: :commodity, fdp: :location)
+    .where('requisition_items.requisition_id' => @transport_requisition)
+    .where("beneficiary_no > 0")
+    @warehouse_allocations = []
+    @requisition_items.each do |requisition_detail|
+      @requisition = Requisition.includes(ration: :ration_items).find(requisition_detail.requisition_id)
+      @uom_id = @requisition.ration.ration_items.where(commodity_id: @requisition.commodity_id).first.unit_of_measure_id
+      target_unit = UnitOfMeasure.find_by(name: "Quintal")
+      current_unit = UnitOfMeasure.find(@uom_id)
+      quantity_in_ref = target_unit.convert_to(current_unit.name, requisition_detail.amount.to_f)
+
+        @wai = WarehouseAllocationItem.includes(:fdp, :requisition, :warehouse, :hub).where(:fdp_id => requisition_detail.fdp_id, :requisition_id => requisition_detail.requisition.id).first 
+        
+        @warehouse_allocations << { region: requisition_detail.fdp.location.parent.parent.name, warehouse: @wai.warehouse.name, zone: requisition_detail.fdp.location.parent.name, woreda: requisition_detail.fdp.location.name, fdp: requisition_detail.fdp.name, requisition_no: requisition_detail.requisition.requisition_no, commodity: requisition_detail.requisition.commodity.name, allocated: quantity_in_ref }
+      end 
+  end
+  
   def print
     
     # @transport_requisition_items = TransportRequisitionItem.joins(:commodity, :requisition, fdp: :location).group('locations.parent_node_id, commodities.id, commodities.name, requisitions.id, requisitions.requisition_no').select('transport_requisition_items.id, commodities.name AS commodity_name, requisitions.requisition_no, SUM(quantity) AS zone_allocated')
