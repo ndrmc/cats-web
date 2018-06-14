@@ -81,7 +81,7 @@
                   </div>
                 </td>
                 <td class="project-status">
-                  <span>Relief</span>
+                  <span><%= Program.find_by(id: operation.program_id)&.name %></span>
                 </td>
                 <td class="project-actions">
                   <a href="<%= operation_path(operation)%>" class="btn btn-white btn-sm">
