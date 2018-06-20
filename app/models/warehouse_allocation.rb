@@ -105,6 +105,30 @@ class WarehouseAllocation < ApplicationRecord
         return false
       end
     end
+
+    def self.reverse_allocation(warehouse_allocation_id)
+         if(warehouse_allocation_id.present?)
+              @old_warehouse_allocation = WarehouseAllocation.includes(:warehouse_allocation_items).find(warehouse_allocation_id)
+
+              WarehouseAllocation.includes(:warehouse_allocation_items).find(warehouse_allocation_id).warehouse_allocation_items.delete_all
+              WarehouseAllocation.find(warehouse_allocation_id).delete
+              return true
+        end
+        return false
+    end
+    
+    def self.check_warehouse_allocation_in_TR(operation_id, region_id)
+      @waerhouse_allocations_requisition_ids = WarehouseAllocation.includes(:warehouse_allocation_items).where(:operation_id => operation_id, :region_id => region_id).pluck('warehouse_allocation_items.requisition_id').uniq
+
+      @tr_requisition_ids =  TransportRequisition.includes(:transport_requisition_items) .where(location_id: region_id, operation_id: operation_id ).pluck('transport_requisition_items.requisition_id').uniq
+
+      puts "================================"
+      puts "Region id: " + region_id.to_s + "  " + ((@waerhouse_allocations_requisition_ids.to_a & @tr_requisition_ids.to_a).empty?).to_s
+      puts "================================"
+      #if they have at least one element in common,it returns false emplying TR is created
+      return (@waerhouse_allocations_requisition_ids.to_a & @tr_requisition_ids.to_a).empty?
+
+    end
 end
 
 

@@ -11,11 +11,17 @@ class WarehouseAllocationsController < ApplicationController
   def index
     if(params['operation'].present?)
       @warehouse_allocations = WarehouseAllocation.get_regions(params['operation'])
+      
     else
       @warehouse_allocations = []
     end
+   
   end
-
+  def is_tr_created_for_this_warehouse_allocatoin
+   
+       @result = WarehouseAllocation.check_warehouse_allocation_in_TR(warehouse_allocation_params[:operation_id],warehouse_allocation_params[:region_id])
+       render json: @result
+  end
   def generate
     respond_to do |format|
       if WarehouseAllocation.generate(params[:operation], params[:region])
@@ -27,7 +33,24 @@ class WarehouseAllocationsController < ApplicationController
       end
     end
   end
+  def reverse_allocation
+       if( params[:warehouse_allocation_id].present? )
+            @old_warehouse_allocation = WarehouseAllocation.find(params[:warehouse_allocation_id])
+             respond_to do |format|
+                if WarehouseAllocation.reverse_allocation(@old_warehouse_allocation.id)
+                    format.html { redirect_to request.referrer,  notice: 'Warehouse allocation was successfully reversed.' }
+                else
+                  format.html { redirect_to request.referrer,  alert: 'Warehouse allocation was successfully not reversed.' }
+                end
+            end
+       else
+         respond_to do |format|
+               format.html { redirect_to request.referrer,  alert: 'Warehouse allocation was successfully not reversed.' }
+          end
+       end
 
+  end
+  
   def reset_allocation
     if( params[:warehouse_allocation_id].present? )
       @old_warehouse_allocation = WarehouseAllocation.find(params[:warehouse_allocation_id])

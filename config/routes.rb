@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
  
+  get '/warehouse_allocations/is_tr_created_for_this_warehouse_allocatoin'
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
   resources :warehouse_allocations
+  post 'warehouse_allocations/reverse_allocation'
   post 'warehouse_allocations/generate', to: 'warehouse_allocations#generate'
   post 'warehouse_allocations/reset_allocation', to: 'warehouse_allocations#reset_allocation'
   post 'warehouse_allocations/close_allocation', to: 'warehouse_allocations#close_allocation'

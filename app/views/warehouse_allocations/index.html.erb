@@ -40,7 +40,7 @@
   <div class="ibox float-e-margins">
     <div class="ibox-content">
       <% if params['operation'].present? %>
-        <table class="table table-striped cats-datatable">
+        <table class="table table-striped cats-datatable" id="warehouse">
           <thead>
             <tr>
               <th>Region</th>
@@ -50,7 +50,7 @@
           </thead>
           <tbody>
             <% @warehouse_allocations.each do |warehouse_allocation| %>
-            <tr>
+            <tr id= <%= warehouse_allocation[:region_id] %> >
               <% if (params['operation'].present? && warehouse_allocation[:status] == :allocated) %>
                 <td> <%= link_to warehouse_allocation[:region_name] , '/warehouse_allocations/warehouse_allocation_zonal_view?operation=' +  params['operation'].to_s + '&region=' + warehouse_allocation[:region_id].to_s %></td>
               <%else%>
@@ -71,7 +71,11 @@
               <% end %>   
               </td>
               <td>
-              <% if warehouse_allocation[:status] == :allocated %>                 
+              <% if warehouse_allocation[:status] == :allocated %>      
+
+                   <%= link_to 'Reverse', '/warehouse_allocations/reverse_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to reverse warehouse allocations of FDPs. All the updates you made will be lost. Are you sure?" }, :class => "btn btn-warning",:id => "btn_" + warehouse_allocation[:region_id].to_s  %>
+                    &middot;
+
                 <% if warehouse_allocation[:edited] %>
                   <% if policy(WarehouseAllocation).reset_allocation? %>
                     <%= link_to 'Reset', '/warehouse_allocations/reset_allocation?' + {warehouse_allocation_id: warehouse_allocation[:warehouse_allocation_id]}.to_param, method: :post, data: { confirm: "You are about to reset warehouse allocations of FDPs to their default warehouses. All the updates you made will be lost. Are you sure?" }, :class => "btn btn-warning" %>
@@ -98,3 +102,51 @@
     </div>
 
 </div>
+<script>
+$(document).ready(function(){
+  toggle();
+})
+
+$("form").submit(function()
+{
+    toggle();
+})
+
+function toggle()
+{
+  var operation = "<%=params[:operation]%>"
+ 
+  $("#warehouse tr").each(function(){
+    if (this.id != "") {
+      var id = this.id
+     $.ajax({
+                url:'/warehouse_allocations/is_tr_created_for_this_warehouse_allocatoin',
+                type:'GET',
+                dataType:'json',
+                data:{
+                    warehouse_allocation: {
+                        operation_id: operation,
+                        region_id: this.id
+                    }
+                },
+                success:function(data){
+                  if (data){
+                        
+                        $('#btn_' + id).show()
+                    }
+                    else{
+                        
+                         $('#btn_' + id).hide()
+                    }
+                },
+                error:function(data){
+                  alert(data.responseText)
+                }
+     });
+    }
+  })
+}
+
+
+
+</script>
