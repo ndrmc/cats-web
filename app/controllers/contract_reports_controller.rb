@@ -11,9 +11,9 @@ class ContractReportsController < ApplicationController
         transport_order_items.unit_of_measure_id,
         transport_order_items.commodity_id as commodity_id, fdps.name, quantity, tariff, requisition_no,bids.bid_number')
 
-      
-         $transport_order = TransportOrder.find($transport_order_items&.first&.id)
-       
+        if $transport_order_items.present?
+                $transport_order = TransportOrder.find($transport_order_items&.first&.id)
+        end
         
 
         $transport_order_items = $transport_order_items.group_by(&:transporter)
@@ -33,7 +33,9 @@ class ContractReportsController < ApplicationController
                 transport_order_items.unit_of_measure_id,
                 transport_order_items.commodity_id as commodity_id, fdps.name, quantity, tariff, requisition_no,bids.bid_number')
 
-                 $transport_order = TransportOrder.find($transport_order_items&.first&.id)
+                 if $transport_order_items.present?
+                    $transport_order = TransportOrder.find($transport_order_items&.first&.id)
+                 end
 
                 $transport_order_items = $transport_order_items.group_by(&:transporter)
              
@@ -64,7 +66,9 @@ class ContractReportsController < ApplicationController
                 transport_order_items.unit_of_measure_id,
                 transport_order_items.commodity_id as commodity_id, fdps.name, quantity, tariff, requisition_no,bids.bid_number')
 
-                  $transport_order = TransportOrder.find($transport_order_items&.first&.id)
+                if $transport_order_items.present?
+                    $transport_order = TransportOrder.find($transport_order_items&.first&.id)
+                end
                
                 $transport_order_items = $transport_order_items.group_by(&:transporter)
                 
