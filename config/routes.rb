@@ -56,6 +56,7 @@ Rails.application.routes.draw do
    get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
    get 'bids/sign_contract/:id', to: 'bids#sign_contract'
    
+   get 'contract_reports/rrd_reference_list'
    get'/contract_reports', to: 'contract_reports#index'
    post '/contract_reports/transport_order'
    post '/contract_reports/transport_order_tariff_pdf'
