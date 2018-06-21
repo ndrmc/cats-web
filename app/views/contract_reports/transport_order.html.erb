@@ -18,8 +18,18 @@
             </div>
         </div>
       	<div class="form-group">
-          <%= label_tag :bid, "Bid Ref No", { :class => ' control-label', :required => true } %>
-            <%= select_tag(:bid,"", :prompt => "-- Choose --", :required => true, :class => 'form-control width-100per')   %> 
+          <%= label_tag :region, "Region", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  'region',  options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Select a Region --", :class => 'form-control width-100per' }  %>
+          </div>
+        </div>
+        <div class="form-group">
+        
+
+          <%= label_tag :reference_no, "Reference No", { :class => 'control-label'}%>
+          <div class="">
+            <%= select_tag(:reference,"",:prompt => "-- Choose --", :required =>true, :class => 'form-control width-100per') %>
+          </div>
         </div>
        
         
@@ -129,11 +139,30 @@
 <script type="text/javascript">
 var EMPTY_OPTION = '<option value="">-- Choose --</option>';
 $(document).ready(function(){
+
+    var request_id = '<%= params[:reference]%>'
+ 
+    $.get( '/contract_reports/rrd_reference_list', 
+          { operation_id: $('#operation').val(), region_id: $('#region').val()}, 
+          function(data) {   
+            $("#reference").html("");
+            $("#reference").append(EMPTY_OPTION);
+            $.each(data, function(index, value)
+            {
+              $("#reference").append("<option value='" + value[1] + "'>" + value[0] + "</option>")
+            })      
+            $("#reference > [value=" + request_id  + "]").attr("selected", "true");     
+            })
+      .error(function(event, jqxhr, exception) {
+         alert(exception)
+      });
+    
+
+
   var bid_id = '<%= params[:bid]%>'
   var operation_id = $("#operation").val();
   var url = '/contract_reports/bids/' + operation_id
   
-
   $.get(url, function(data) {
       $("#bid").html("");
       $("#bid").append( EMPTY_OPTION );
@@ -157,4 +186,24 @@ $(document).ready(function(){
       });
   });
 });
+
+$("#operation, #region").on('change', function(e) { 
+ 
+    $.get( '/contract_reports/rrd_reference_list', 
+          { operation_id: $('#operation').val(), region_id: $('#region').val()}, 
+          function(data) {   
+            $("#reference").html("");
+            $("#reference").append(EMPTY_OPTION);
+            $.each(data, function(index, value)
+            {
+              $("#reference").append("<option value='" + value[1] + "'>" + value[0] + "</option>")
+            })           
+            })
+      .error(function(event, jqxhr, exception) {
+         alert(exception)
+      });
+    
+});
+
+
 </script>
