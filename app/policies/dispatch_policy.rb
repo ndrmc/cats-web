@@ -32,6 +32,10 @@ class DispatchPolicy < ApplicationPolicy
         @current_user.permission('Dispatch', :clerk)
     end
     
+    def dispatch_report_items?
+        @current_user.permission('Dispatch', :clerk)
+    end
+
     def check_stock?
         @current_user.permission('Dispatch', :clerk)
     end
@@ -39,7 +43,7 @@ class DispatchPolicy < ApplicationPolicy
     def validate_quantity?
         @current_user.permission('Dispatch', :clerk)
     end
-
+    
     def get_hub_warehouse?
         @current_user.has_permission('Dispatch') && @current_user.user_type_in(['admin', 'cleark', 'manager'])
     end

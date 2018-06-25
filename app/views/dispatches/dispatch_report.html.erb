@@ -13,7 +13,7 @@
 
 <div class="ibox float-e-margins border-bottom">
   <div class="ibox-content">
-      <%= form_tag( '/dispatches/dispatch_report_generate?format=pdf' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'POST'}) do %>
+      <%= form_tag( '/dispatches/dispatch_report' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
        
         <div class="form-group">
           <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
@@ -34,10 +34,11 @@
         <div class="form-group">
           <label for=""></label>
           <div>
-              
-              <input type="submit" name="pdf_filter" formaction='/dispatches/dispatch_report' value="Generate report on screen" class="btn btn-sm btn-primary" />
+              <input type="submit" name="filter" value="Generate report on Screen" class="btn btn-sm btn-primary" />
 
-              <input type="submit" name="filter" value="Generate report on PDF" class="btn btn-sm btn-primary" />
+              <input type="submit" name="pdf_filter" formaction='/dispatches/dispatch_report_items.xlsx' value="Generate report on Excel" class="btn btn-sm btn-primary" />
+
+              
           </div>
         </div>
 
