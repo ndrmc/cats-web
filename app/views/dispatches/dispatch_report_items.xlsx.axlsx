@@ -62,7 +62,7 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
    
      
     sheet.add_row [ dispatch&.dispatch_date.strftime('%d/%m/%Y'), dispatch&.requisition_number,
-                    @operation.round,
+                    @operation&.name,
                     Location.find(fdp.location_id)&.parent&.parent&.name,
                     Location.find(fdp.location_id)&.parent&.name,
                     Location.find(fdp.location_id)&.name,
