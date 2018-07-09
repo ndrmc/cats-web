@@ -256,7 +256,7 @@ Rails.application.routes.draw do
   resources :payment_requests
   resources :payment_request_items
   
-
+  get'/stock_reports/dispatch_detail'
   get'/stock_reports', to: 'stock_reports#index'
   get '/stock_reports/stock_status_by_project_code', to: 'stock_reports#stock_status_by_project_code'
   get '/stock_reports/stock_status_by_commodity_type', to: 'stock_reports#stock_status_by_commodity_type'

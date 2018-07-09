@@ -1,0 +1,112 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-4">
+    <h2>Dispatch Report</h2>
+   
+  </div>
+   <div class="col-sm-8">
+    <div class="title-action">
+      <%= link_to 'Cancel', dispatches_path,  :class => "btn btn-default"%>
+    </div>
+  </div>
+</div>
+
+
+<div class="ibox float-e-margins border-bottom">
+  <div class="ibox-content">
+      <%= form_tag( '/stock_reports/dispatch_detail' ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
+       
+        <div class="form-group">
+          <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= label_tag :hub, "Hub", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
+          </div>
+        </div>
+       
+        
+        
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+              <input type="submit" name="filter" value="Generate report on Screen" class="btn btn-sm btn-primary" />
+              
+          </div>
+        </div>
+
+        <% end %>
+  </div>
+</div>
+
+<% if @dispatch.present? %>
+<div class="ibox float-e-margins">
+  <div class="ibox-content">
+    <h2> Dispatch report for <%= Operation.find_by(id: params[:operation])&.name %> - <%= Hub.find_by(id: params[:hub])&.name  %> </h2>
+    <table class="table table-striped cats-datatable">
+      <thead>
+      <tr>
+            <th>Project Code</th>
+            <th>GIN</th>
+            <th>Region </th>
+            <th>Zone </th>
+            <th>Woread </th>
+            <th>FDP </th>
+            <th>Commodity </th>
+            <th>Unit </th>
+            <th>Qantity</th>
+            <th>Donor </th>
+            <th>Transporter</th>
+            
+      </tr>
+      </thead>
+
+      <tbody>
+      <% if @dispatch.present? %>
+        <% $i = 0 %>
+        <%  @dispatch.each   do | dispatch |%>
+          <tr>
+              <td><%= dispatch&.project&.project_code %></td>
+              <td><%= dispatch&.dispatch&.gin_no%></td>
+              <td><%= dispatch&.dispatch&.fdp&.location&.parent&.parent&.name %></td>
+              <td><%= dispatch&.dispatch&.fdp&.location&.parent&.name %></td>
+              <td><%= dispatch&.dispatch&.fdp&.location&.name %></td>
+              <td><%= dispatch&.dispatch&.fdp&.name %></td>
+              <td><%= dispatch&.commodity&.name %></td>
+              <td><%= dispatch&.unit_of_measure&.name%></td>
+              <td><%= dispatch&.quantity%></td>
+              <td><%= dispatch&.organization&.name%></td>
+              <td><%= dispatch&.dispatch&.transporter&.name %></td>
+          </tr>
+          <% $i = $i + 1 %>
+        <% end %>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<% end %>
+
+<script type="text/javascript">
+  $( function() { 
+    $('#dispatch-date-picker').daterangepicker(
+      {
+          locale: {
+            format: 'DD/MM/YYYY'
+          },
+          maxDate: '0', 
+          autoUpdateInput: false
+      }, 
+      function( start, end  ) { 
+        $('#dispatch-date-picker').val( start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY')); 
+      }
+    ); 
+  });
+  </script>

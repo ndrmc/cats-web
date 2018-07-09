@@ -45,4 +45,7 @@ class StockReportsController < ApplicationController
     
   end
   
+  def dispatch_detail
+     @dispatch = Reports.new.dispatch_detail(params[:hub], params[:operation])
+  end
 end
