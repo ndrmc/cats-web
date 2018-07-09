@@ -37,7 +37,7 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
             "Plate No",
             "Trailer No",
             "Project code",
-            "Commodity Class ",
+            "Commodity Class ", 
             "Commodity Type",
             "Rounded Allocation",
             "Dispatch Amount",
@@ -61,10 +61,9 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
                         @qtl = UnitOfMeasure.find_by(name: 'Quintal')
    
      
-    sheet.add_row [ "", 
-                     "",
-                    "",
-                    "",
+    sheet.add_row [ dispatch&.dispatch_date.strftime('%d/%m/%Y'), dispatch&.requisition_number,
+                    @operation.round,
+                    Location.find(fdp.location_id)&.parent&.parent&.name,
                     Location.find(fdp.location_id)&.parent&.name,
                     Location.find(fdp.location_id)&.name,
                     Fdp.find(dispatch.fdp_id)&.name,
@@ -76,9 +75,9 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
                     CommodityCategory.find(dispatch&.commodity_category_id).name ,
                     
                     Commodity.find(dispatch&.commodity_id)&.name,
-                    allocated,
-                    dispatch&.quantity ,
-                    allocated.to_f - dispatch.quantity,
+                    number_with_delimiter(allocated,:delimiter => ','),
+                    number_with_delimiter( dispatch&.quantity,:delimiter => ','),
+                    number_with_delimiter(allocated.to_f - dispatch.quantity,:delimiter => ','),
                     UnitOfMeasure.find(dispatch&.unit_of_measure_id)&.name ,
                     dispatch&.storekeeper_name,
                     Store.find_by(id: dispatch&.store_id)&.name], :style => [data, data, data, data, data, data, data, data,data, data, data, data,data, data, data, data,data,data, data,data]
