@@ -149,4 +149,26 @@ class Reports
 		end		
 	end
 
+	def dispatch_detail(hub_id, operation_id)
+
+	  filter_map = {}
+      if operation_id.present?
+				filter_map = {'dispatches.operation_id': operation_id}
+			
+			if hub_id.present?
+				filter_map[:'dispatches.hub_id'] = hub_id
+				@hub = Hub.find(hub_id)&.name
+			end
+	  end
+
+		if filter_map.present?
+			@dispatch_items = DispatchItem.joins(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation] })
+            .where(filter_map).select('dispatches.dispatch_date,dispatches.requisition_number,dispatches.operation_id, dispatches.fdp_id as fdp_id,dispatches.gin_no, dispatch_items.dispatch_id, dispatch_items.organization_id, dispatches.transporter_id, dispatches.plate_number, dispatches.trailer_plate_number, dispatch_items.project_id,dispatch_items.commodity_category_id, dispatch_items.commodity_id, dispatch_items.quantity, dispatch_items.unit_of_measure_id,dispatches.storekeeper_name, dispatches.store_id')
+		else
+				@dispatch_items = []	
+		end
+		
+	end
+	
+
 end

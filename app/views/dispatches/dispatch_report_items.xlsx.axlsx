@@ -1,0 +1,87 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+
+  
+
+title_cell = style.add_style alignment: {horizontal: :center}, b: true, Sz: 20, bg_color: "000000", fg_color: "FF"
+title_cell_table = style.add_style alignment: {horizontal: :center}, b: true, Sz: 10, bg_color: "000000", fg_color: "FF"
+  
+data = style.add_style alignment: {horizontal: :left, wrap_text: true}
+
+
+ 
+
+  sheet = wb.add_worksheet(:name => 'Dispatch Items') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
+  col_width = [10,5,10,10,10,15,10,10]
+  unlocked = sheet.styles.add_style(:locked => false )
+  
+   header     = sheet.styles.add_style :bg_color => "DD", :sz => 18, :b => true, :alignment => {:horizontal => :center}, :locked => true
+
+  sheet.add_row []
+  sheet.add_row []
+  sheet.add_row ["", @hub&.to_s + "  NDRMC Dispatch Detail Report as of " + @date_min.to_s + " - " + @date_max.to_s ,""], style: [nil,header]
+  sheet.add_row []
+  sheet.add_row ["Printed Date: " + Time.now.strftime("%m/%d/%y")],style: []
+  
+  sheet.merge_cells "B3:H3"  
+  sheet.column_widths *col_width
+  sheet.add_row ["Dispatch Date",
+            "Requisition No.",
+            "Round",
+            "Region",
+            "Zone",
+            "Woreda ",
+            "FDP",
+            "Issue Ticket # ",
+            "Transporter",
+            "Plate No",
+            "Trailer No",
+            "Project code",
+            "Commodity Class ", 
+            "Commodity Type",
+            "Rounded Allocation",
+            "Dispatch Amount",
+            "Balance",
+            "Unit",
+            "Store keeper Name", "Store Number" ],style: [ title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table, title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table, title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table,title_cell_table,  title_cell_table, title_cell_table, title_cell_table,title_cell_table]
+
+  dispatch_items = @dispatch_items.sort_by{|d| [Project.find(d.project_id)&.project_code]}
+  dispatch_items.each do |dispatch|
+ 
+    fdp = Fdp.find(dispatch.fdp_id)
+    requisition_id = Requisition.find_by(requisition_no: dispatch&.requisition_number)&.id
+    allocated = RequisitionItem.find_by(fdp_id: dispatch.fdp_id, requisition_id: requisition_id)&.amount
+    if !allocated.present?
+      allocated = 0
+    end
+    
+                        @operation = Operation.find(dispatch&.operation_id)
+                        @commodity = Commodity.find(dispatch&.commodity_id)
+                        @uom_id = @operation&.ration&.ration_items.where(commodity_id: @commodity&.commodity_category_id)&.first&.unit_of_measure_id
+                        @qtl = UnitOfMeasure.find_by(name: 'Quintal')
+   
+     
+    sheet.add_row [ dispatch&.dispatch_date.strftime('%d/%m/%Y'), dispatch&.requisition_number,
+                    @operation&.name,
+                    Location.find(fdp.location_id)&.parent&.parent&.name,
+                    Location.find(fdp.location_id)&.parent&.name,
+                    Location.find(fdp.location_id)&.name,
+                    Fdp.find(dispatch.fdp_id)&.name,
+                    dispatch.gin_no,
+                    Transporter.find(dispatch.transporter_id)&.name,
+                    dispatch.plate_number,
+                    dispatch.trailer_plate_number,
+                    Project.find(dispatch.project_id)&.project_code,
+                    CommodityCategory.find(dispatch&.commodity_category_id).name ,
+                    
+                    Commodity.find(dispatch&.commodity_id)&.name,
+                    number_with_delimiter(allocated,:delimiter => ','),
+                    number_with_delimiter( dispatch&.quantity,:delimiter => ','),
+                    number_with_delimiter(allocated.to_f - dispatch.quantity,:delimiter => ','),
+                    UnitOfMeasure.find(dispatch&.unit_of_measure_id)&.name ,
+                    dispatch&.storekeeper_name,
+                    Store.find_by(id: dispatch&.store_id)&.name], :style => [data, data, data, data, data, data, data, data,data, data, data, data,data, data, data, data,data,data, data,data]
+    
+  
+  end
+end
