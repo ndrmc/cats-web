@@ -38,7 +38,7 @@ class TransportOrderPdf < PdfReport
                  ["Transporter:","#{@transport_order&.transporter&.name}"],
                  ["Region:", "#{@region}" , " " * 2, "Requisition Dispatch Date:","__________________"],
                  ["Zone:","#{@zones.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date    }"],
-                 ["Commodity:","#{@commodities.to_s}", "  " * 3 ,"Bid Document No:","#{@transport_order&.bid&.bid_number}"],
+                 ["Bid Document No:","#{@transport_order&.bid&.bid_number}"],
                  ["Donor:", "#{donor.to_s}", "  " * 2 ,"Performance Bond Receipt #","#{@transport_order&.performance_bond_receipt}"],
                  ["RequisitionNo:","#{@requisitions.to_s}", "  " * 2 ,"Transport Expiry Date:","__________________"],
                  ["Operation:","#{ @operation }"],
