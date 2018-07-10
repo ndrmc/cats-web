@@ -97,8 +97,7 @@ class TransportOrdersController < ApplicationController
  
     @region = Location.find(@transport_order.location_id)&.name
     @zones = []
-    @commodities = []
-    @requisitions = []
+    @requisitions = ""
     TransportOrderItem.where(:transport_order_id => params[:id])
     .find_each do |toi|
       @zone_name = Fdp.includes(:location).find(toi.fdp_id).location.parent.name
@@ -106,21 +105,23 @@ class TransportOrdersController < ApplicationController
         @zones << @zone_name
       end
       @commodity_name = Commodity.find(toi.commodity_id).name
-      if (!(@commodities.include?(@commodity_name)))
-        @commodities << @commodity_name
-      end
       if (!(@requisitions.include?(toi.requisition_no)))
-        @requisitions << toi.requisition_no
+        @requisitions += "#{@commodity_name}:#{toi.requisition_no}, "
       end
     end
     @transport_order_items = TransportOrderItem.includes(:commodity, fdp: :location).where(:transport_order_id => params[:id])
       @requistion_ids = @transport_order_items.map{|r| r.requisition_no}.uniq
       @references = get_reference_numbers_by_requisition_no(@requistion_ids)
+    
+    @contract_no = "N/A"
+    if (@transport_order&.bid&.bid_number.present? && @transport_order&.transporter&.code.present?)
+      @contract_no = "LTCD/#{@transport_order&.bid&.bid_number}/#{@transport_order&.transporter&.code}"
+    end
  
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones,  @region,@commodities, @requisitions,@references)
+          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones,  @region, @requisitions, @references, @contract_no)
           send_data pdf.render, filename: "transport_order_#{@transport_order&.id}.pdf",
           type: "application/pdf",
           disposition: "inline"

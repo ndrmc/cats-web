@@ -1,15 +1,15 @@
 require 'prawn/table'
 require 'to_words'
 class TransportOrderPdf < PdfReport
-    def initialize(transport_order, transport_order_items, zones, region,commodities, requisitions, references)
+    def initialize(transport_order, transport_order_items, zones, region, requisitions, references, contract_no)
         super(top_margin: 50)
         @transport_order = transport_order
         @transport_order_items = transport_order_items
         @zones = zones
         @region = region
-        @commodities = commodities
         @requisitions = requisitions
         @references = references
+        @contract_no = contract_no
         donor = []
         @A4_SIZE = 100.freeze
         @operation = Operation.find_by(id: @transport_order.operation_id)&.name
@@ -30,7 +30,7 @@ class TransportOrderPdf < PdfReport
        
         text "<b>Order No.</b> <u> #{@transport_order.order_no}</u>", :align => :center, :inline_format => true
         text "\n\n<b>I. <u>TRANSACTION DETAILS</u></b>", :inline_format => true
-        text "Contract Number: #{@transport_order&.contract&.contract_no}" , :align => :right
+        text "Contract Number: #{@contract_no}" , :align => :right
         text "Transpot Order Date: #{@transport_order&.order_date}", :align => :right
        
         t = [
