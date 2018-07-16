@@ -4,36 +4,41 @@ class TransportOrdersController < ApplicationController
   # GET /transport_orders
   # GET /transport_orders.json
   def index
-     @result=nil
-     if params[:order_no].present?
-      @transport_orders = TransportOrder.where(order_no: params[:order_no]).includes(:bid, :location)
-       @result = 'Order No: ' + params[:order_no]
-      return
+    @result = ""
+    @where_clause = "transport_orders.id IS NOT NULL"
+    if params[:order_no].present?
+      @where_clause += " and order_no = '#{params[:order_no]}'"
+      @result += "Order No: #{params[:order_no]} |"
     end
-   if params[:operation].present? && !params[:transporter].present?
-     @transport_orders = TransportOrder.where(:operation_id => params[:operation]).includes(:bid, :location)
-       @result = "Operation: " + Operation.find(params[:operation])&.name
-     return 
-   end
+    if params[:operation].present?
+      @where_clause += " and operation_id = #{params[:operation]}" 
+      @result += "Operation: #{Operation.find(params[:operation])&.name} |"
+    end
+    if params[:region].present? && !params[:region].present?
+      @where_clause += " and operation_id = #{params[:region]}" 
+      @result += "Region: #{Location.find(params[:region])&.name} |"
+    end
+    if params[:requisition_no].present?
+      @where_clause += " and transport_order_items.requisition_no = '#{params[:requisition_no]}'"
+      @result += "Requisition No: #{params[:requisition_no]} |"
+    end
+    if params[:transporter].present? 
+      @where_clause += " and transporter_id = #{params[:transporter]}" 
+      @result += "Transporter: #{Transporter.find(params[:transporter])&.name} |"
+    end
     if params[:reference_no].present?
       @list_of_requistion_nos = RegionalRequest.includes(:requisitions).where(:reference_number => params[:reference_no]).pluck(:'requisitions.requisition_no')
       
-      @transport_orders = TransportOrder.joins(:bid, :location, :transport_order_items).where('transport_order_items.requisition_no IN (?)',@list_of_requistion_nos).uniq
-       @result = params[:reference_no]
-    elsif params[:requisition_no].present?
-      @transport_orders = TransportOrder.joins(:bid, :location, :transport_order_items).where('transport_order_items.requisition_no IN (?)', params[:requisition_no]).uniq
-       @result = 'Requisition No: ' + params[:requisition_no]
-    elsif params[:transporter].present? && params[:operation].present?
-      @transport_orders = TransportOrder.where(:transporter_id => params[:transporter] ,:operation_id => params[:operation]).includes(:bid, :location)
-       @result = 'Transporter: ' + Transporter.find(params[:transporter])&.name + " and Operation: " + Operation.find(params[:operation])&.name
-    else
-      @transport_orders = [] #TransportOrder.all.includes(:bid, :location)
-       @result = ''
+      @where_clause += " and transport_order_items.requisition_no IN (#{@list_of_requistion_nos})"
+      @result += "Reference No.: #{params[:reference_no]}"
     end
     
-    
-
-    
+    @transport_orders = []
+    TransportOrder.joins(:location, :transporter, :transport_order_items).where(@where_clause).distinct.each do |to|
+      no_of_destinations = to&.transport_order_items.count(:fdp_id)
+      total_quantity = to&.transport_order_items.sum(:quantity)
+      @transport_orders << { id: to.id, order_no: to.order_no, transporter: to.transporter.name, region: to.location.name, no_of_destinations: no_of_destinations, total_quantity: total_quantity, status: to.status }
+    end
   end
 
   # GET /transport_orders/1
