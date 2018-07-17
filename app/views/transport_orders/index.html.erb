@@ -27,7 +27,7 @@
         <div class="form-group">
           <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
           <div class="">
-            <%= select_tag  :operation,  options_from_collection_for_select( Operation.where(archived: [nil,false]).order('name'), 'id', 'name', params[:operation] ) , { :style => 'width: 300px', :prompt => "-- Select Operation --", :class => 'form-control col-md-2' }  %>
+            <%= select_tag  :operation,  options_from_collection_for_select( Operation.where(archived: [nil,false]).order('created_at DESC'), 'id', 'name', params[:operation] ) , { :style => 'width: 300px', :prompt => "-- Select Operation --", :class => 'form-control col-md-2' }  %>
           </div>
         </div>
         <div class="form-group">
@@ -38,23 +38,23 @@
         </div>
         <br />
         <div class="form-group">
-          <%= label_tag :order_no, "Order No", { :class => ' control-label'} %>
-          <div class="">
-            <%= text_field_tag  :order_no, params[:order_no], { :style => 'width: 200px', class: 'form-control'}  %>
-          </div>
-        </div>
-        <div class="form-group">
           <%= label_tag :reference_no, "Reference No", { :class => ' control-label '} %>
           <div class="">
-            <%= text_field_tag  :reference_no, params[:reference_no], {  :style => 'width: 200px', class: 'form-control input-large'}  %>
+            <%= select_tag(:reference,"",:prompt => "-- Select Reference No --", :required =>false, :class => 'form-control width-100per') %>
           </div>
-        </div>
+        </div>      
         <div class="form-group">
           <%= label_tag :requisition_no, "Requisition No", { :class => ' control-label '} %>
           <div class="">
             <%= text_field_tag  :requisition_no, params[:requisition_no], { :style => 'width: 200px', class: 'form-control input-large'}  %>
           </div>
         </div>
+        <div class="form-group">
+          <%= label_tag :order_no, "Order No", { :class => ' control-label'} %>
+          <div class="">
+            <%= text_field_tag  :order_no, params[:order_no], { :style => 'width: 200px', class: 'form-control'}  %>
+          </div>
+        </div>  
         <div class="form-group">
           <label for=""></label>
           <div>
@@ -114,3 +114,21 @@
     </div>
   </div>
 </div>
+
+<script>
+  $("#operation, #region").on('change', function(e) {  
+    $.get( '/transport_orders/rrd_reference_list', 
+    { operation_id: $('#operation').val(), region_id: $('#region').val()}, 
+      function(data) {   
+        $("#reference").html("");
+        // $("#reference").append(EMPTY_OPTION);
+        $.each(data, function(index, value)
+        {
+          $("#reference").append("<option value='" + value[1] + "'>" + value[0] + "</option>")
+        })           
+    })
+    .error(function(event, jqxhr, exception) {
+        alert(exception)
+    });    
+  });
+</script>

@@ -141,6 +141,16 @@ class TransportOrdersController < ApplicationController
       end
  end
 
+def rrd_reference_list
+  @operation_id = params[:operation_id]
+  @region_id = params[:region_id]
+  @regional_request_references = RegionalRequest.includes(:requisitions).where(:'regional_requests.operation_id' => @operation_id, :'regional_requests.region_id' => @region_id).map{ |r| [r.reference_number, r.id]} 
+  
+  respond_to do |format|
+    format.json {render json: @regional_request_references}
+  end
+end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_transport_order

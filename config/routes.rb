@@ -85,9 +85,11 @@ Rails.application.routes.draw do
   get '/transporters/update_status_all', to: 'transporters#update_status_all'
   post '/transporters/set_market_price', to: 'transporters#set_market_price'
   resources :transporters
+  get '/transport_orders/rrd_reference_list', to: 'transport_orders#rrd_reference_list'
   resources :transport_orders
   get '/transport_orders/print/:id', to: 'transport_orders#print'
   post '/transport_orders/move/:id', to: 'transport_orders#move'
+  
   resources :transporter_addresses  
   get 'setting/index'
   devise_for :users
