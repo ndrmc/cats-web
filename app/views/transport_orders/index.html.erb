@@ -14,83 +14,54 @@
 </div>
 
 <div class="wrapper wrapper-content">
-
-   <div class="ibox float-e-margins">
+  <div class="ibox float-e-margins">
     <div class="ibox-content">
 
       <%= form_tag( transport_orders_path ,{ class: 'form-inline', style: 'display: inline-block;', role: 'form', method: 'GET'}) do %>
-
-          
-
-          <div class="input-group">
-            <%= label_tag :transporter, "Transporter", { :class => ' control-label' } %>
-
-            <div class="">
-              <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :style => 'width: 300px', :prompt => "-- Choose --", :class => 'form-control data-parsley-required' }  %>
-            </div>
+        <div class="input-group">
+          <%= label_tag :transporter, "Transporter", { :class => ' control-label' } %>
+          <div class="">
+            <%= select_tag  :transporter,  options_from_collection_for_select( Transporter.all, 'id', 'name', params[:transporter] ) , { :style => 'width: 300px', :prompt => "-- Select Transporter --", :class => 'form-control' }  %>
           </div>
-          <div class="form-group">
-            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
-
-            <div class="">
-              <%= select_tag  :operation,  options_from_collection_for_select( Operation.where(archived: [nil,false]).order('name'), 'id', 'name', params[:operation] ) , { :style => 'width: 300px', :required => true , :prompt => "-- Choose --", :class => 'form-control col-md-2 data-parsley-required' }  %>
-            </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  :operation,  options_from_collection_for_select( Operation.where(archived: [nil,false]).order('created_at DESC'), 'id', 'name', params[:operation] ) , { :style => 'width: 300px', :prompt => "-- Select Operation --", :class => 'form-control col-md-2' }  %>
           </div>
-          <div class="form-group">
-            <label for=""></label>
-            <div>
-              <input data-toggle="tooltip" data-placement="top" title="Use 'Order No, Refrence No or Requisition No independently' or 'Trandporter and operation together' as per thier priority" type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
-            </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :region, "Region", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  :region,  options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region] ) , {:prompt => "-- Select Region --", :class => 'form-control col-md-2' }  %>
           </div>
-
+        </div>
+        <br />
+        <div class="form-group">
+          <%= label_tag :reference_no, "Reference No", { :class => ' control-label '} %>
+          <div class="">
+            <%= select_tag(:reference,"",:prompt => "-- Select Reference No --", :required =>false, :class => 'form-control width-100per') %>
+          </div>
+        </div>      
+        <div class="form-group">
+          <%= label_tag :requisition_no, "Requisition No", { :class => ' control-label '} %>
+          <div class="">
+            <%= text_field_tag  :requisition_no, params[:requisition_no], { :style => 'width: 200px', class: 'form-control input-large'}  %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= label_tag :order_no, "Order No", { :class => ' control-label'} %>
+          <div class="">
+            <%= text_field_tag  :order_no, params[:order_no], { :style => 'width: 200px', class: 'form-control'}  %>
+          </div>
+        </div>  
+        <div class="form-group">
+          <label for=""></label>
+          <div>
+            <input data-toggle="tooltip" data-placement="top" title="Use 'Order No, Refrence No or Requisition No independently' or 'Trandporter and operation together' as per thier priority" type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
+          </div>
+        </div>
       <% end %>
-      <form method='GET' class = 'form-inline' style: 'display: inline-block;'> 
-          <div class="form-group">
-              <%= label_tag :order_no, "Order No", { :class => ' control-label'} %>
-
-                  <div class="">
-                    <%= text_field_tag  :order_no, params[:order_no], { :style => 'width: 200px', class: 'form-control'}  %>
-                 </div>
-         </div>
-      <div class="form-group">
-             <label for=""></label>
-            <div>
-                <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
-            </div>
-        </div>
-      </form>  
-      <form method='GET' class = 'form-inline' style: 'display: inline-block;'>   
-          <div class="form-group">
-              <%= label_tag :reference_no, "Reference No", { :class => ' control-label '} %>
-
-                  <div class="">
-                      <%= text_field_tag  :reference_no, params[:reference_no], {  :style => 'width: 200px', class: 'form-control input-large'}  %>
-                  </div>
-          </div>
-          <div class="form-group">
-             <label for=""></label>
-            <div>
-                <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
-            </div>
-        </div>
-      </form>  
-      <form method='GET' class = 'form-inline' style: 'display: inline-block;'>   
-          <div class="form-group">
-              <%= label_tag :requisition_no, "Requisition No", { :class => ' control-label '} %>
-
-                    <div class="">
-                         <%= text_field_tag  :requisition_no, params[:requisition_no], { :style => 'width: 200px', class: 'form-control input-large'}  %>
-                  </div>
-          </div>
-          <div class="form-group">
-             <label for=""></label>
-            <div>
-                <button class= 'btn btn-sm btn-primary' type= 'submit'> <i class="fa fa-search"></i> Search</button>
-            </div>
-        </div>
-      </form>
-          
-
     </div>
 
 
@@ -105,7 +76,7 @@
   <div class="ibox float-e-margins">
     <div class="ibox-content">
 
-      <table class="table table-striped">
+      <table class="cats-datatable table table-striped">
         <thead>
           <tr>       
                         <th>Transport Order No</th>
@@ -121,12 +92,12 @@
         <tbody>
           <% @transport_orders.each do |transport_order| %>
           <tr>      
-            <td>    <%= link_to transport_order.order_no, transport_order_path(transport_order.id) %>
-            <td> <%= transport_order&.transporter&.name %></td>
-            <td> <%= transport_order&.location&.name  %></td>
-            <td> <%= transport_order&.transport_order_items.count(:fdp_id) %> </td>
-            <td> <%= number_with_delimiter(transport_order&.transport_order_items.sum(:quantity)) %></td>
-            <td> <%= transport_order.status %> </td>
+            <td> <%= link_to transport_order[:order_no], transport_order_path(transport_order[:id]) %>
+            <td> <%= transport_order[:transporter] %></td>
+            <td> <%= transport_order[:region]  %></td>
+            <td> <%= transport_order[:no_of_destinations] %> </td>
+            <td> <%= transport_order[:total_quantity] %></td>
+            <td> <%= transport_order[:status] %> </td>
             <td>
             <% if policy(TransportOrder).edit? %>
               <%= link_to 'Edit', edit_transport_order_path(transport_order) %> &middot;
@@ -143,3 +114,21 @@
     </div>
   </div>
 </div>
+
+<script>
+  $("#operation, #region").on('change', function(e) {  
+    $.get( '/transport_orders/rrd_reference_list', 
+    { operation_id: $('#operation').val(), region_id: $('#region').val()}, 
+      function(data) {   
+        $("#reference").html("");
+        // $("#reference").append(EMPTY_OPTION);
+        $.each(data, function(index, value)
+        {
+          $("#reference").append("<option value='" + value[1] + "'>" + value[0] + "</option>")
+        })           
+    })
+    .error(function(event, jqxhr, exception) {
+        alert(exception)
+    });    
+  });
+</script>
