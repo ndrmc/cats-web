@@ -1,5 +1,5 @@
 class TransportOrdersController < ApplicationController
-  before_action :set_transport_order, only: [:show, :edit, :update, :destroy, :move]
+  before_action :set_transport_order, only: [:show, :edit, :update, :destroy, :move, :save_to_dates]
  include ReferenceHelper
   # GET /transport_orders
   # GET /transport_orders.json
@@ -94,6 +94,10 @@ class TransportOrdersController < ApplicationController
 
   def print
     @transport_order = TransportOrder.includes(:transporter, :contract, :bid).find(params[:id])
+
+    @transport_order.start_date = params[:transport_order][:start_date]
+    @transport_order.end_date = params[:transport_order][:end_date]
+    @transport_order.save
  
     @region = Location.find(@transport_order.location_id)&.name
     @zones = []

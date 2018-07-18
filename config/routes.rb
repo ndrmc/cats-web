@@ -86,8 +86,8 @@ Rails.application.routes.draw do
   post '/transporters/set_market_price', to: 'transporters#set_market_price'
   resources :transporters
   resources :transport_orders
-  get '/transport_orders/print/:id', to: 'transport_orders#print'
-  post '/transport_orders/move/:id', to: 'transport_orders#move'
+  post '/transport_orders/print/:id', to: 'transport_orders#print'
+  post '/transport_orders/move/:id', to: 'transport_orders#move'  
   resources :transporter_addresses  
   get 'setting/index'
   devise_for :users
