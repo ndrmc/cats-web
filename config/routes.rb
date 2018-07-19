@@ -89,7 +89,7 @@ Rails.application.routes.draw do
   get '/transport_orders/rrd_reference_list', to: 'transport_orders#rrd_reference_list'
   resources :transport_orders
 
-  get '/transport_orders/print/:id', to: 'transport_orders#print'
+  post '/transport_orders/print/:id', to: 'transport_orders#print'
   post '/transport_orders/move/:id', to: 'transport_orders#move'
   
 
