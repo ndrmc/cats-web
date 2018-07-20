@@ -1,39 +1,44 @@
 class TransportOrdersController < ApplicationController
-  before_action :set_transport_order, only: [:show, :edit, :update, :destroy, :move]
+  before_action :set_transport_order, only: [:show, :edit, :update, :destroy, :move, :save_to_dates]
  include ReferenceHelper
   # GET /transport_orders
   # GET /transport_orders.json
   def index
-     @result=nil
-     if params[:order_no].present?
-      @transport_orders = TransportOrder.where(order_no: params[:order_no]).includes(:bid, :location)
-       @result = 'Order No: ' + params[:order_no]
-      return
+    @result = ""
+    @where_clause = "transport_orders.id IS NOT NULL"
+    if params[:order_no].present?
+      @where_clause += " and order_no = '#{params[:order_no]}'"
+      @result += "Order No: #{params[:order_no]} |"
     end
-   if params[:operation].present? && !params[:transporter].present?
-     @transport_orders = TransportOrder.where(:operation_id => params[:operation]).includes(:bid, :location)
-       @result = "Operation: " + Operation.find(params[:operation])&.name
-     return 
-   end
+    if params[:operation].present?
+      @where_clause += " and operation_id = #{params[:operation]}" 
+      @result += "Operation: #{Operation.find(params[:operation])&.name} |"
+    end
+    if params[:region].present? && !params[:region].present?
+      @where_clause += " and operation_id = #{params[:region]}" 
+      @result += "Region: #{Location.find(params[:region])&.name} |"
+    end
+    if params[:requisition_no].present?
+      @where_clause += " and transport_order_items.requisition_no = '#{params[:requisition_no]}'"
+      @result += "Requisition No: #{params[:requisition_no]} |"
+    end
+    if params[:transporter].present? 
+      @where_clause += " and transporter_id = #{params[:transporter]}" 
+      @result += "Transporter: #{Transporter.find(params[:transporter])&.name} |"
+    end
     if params[:reference_no].present?
       @list_of_requistion_nos = RegionalRequest.includes(:requisitions).where(:reference_number => params[:reference_no]).pluck(:'requisitions.requisition_no')
       
-      @transport_orders = TransportOrder.joins(:bid, :location, :transport_order_items).where('transport_order_items.requisition_no IN (?)',@list_of_requistion_nos).uniq
-       @result = params[:reference_no]
-    elsif params[:requisition_no].present?
-      @transport_orders = TransportOrder.joins(:bid, :location, :transport_order_items).where('transport_order_items.requisition_no IN (?)', params[:requisition_no]).uniq
-       @result = 'Requisition No: ' + params[:requisition_no]
-    elsif params[:transporter].present? && params[:operation].present?
-      @transport_orders = TransportOrder.where(:transporter_id => params[:transporter] ,:operation_id => params[:operation]).includes(:bid, :location)
-       @result = 'Transporter: ' + Transporter.find(params[:transporter])&.name + " and Operation: " + Operation.find(params[:operation])&.name
-    else
-      @transport_orders = [] #TransportOrder.all.includes(:bid, :location)
-       @result = ''
+      @where_clause += " and transport_order_items.requisition_no IN (#{@list_of_requistion_nos})"
+      @result += "Reference No.: #{params[:reference_no]}"
     end
     
-    
-
-    
+    @transport_orders = []
+    TransportOrder.joins(:location, :transporter, :transport_order_items).where(@where_clause).distinct.each do |to|
+      no_of_destinations = to&.transport_order_items.count(:fdp_id)
+      total_quantity = to&.transport_order_items.sum(:quantity)
+      @transport_orders << { id: to.id, order_no: to.order_no, transporter: to.transporter.name, region: to.location.name, no_of_destinations: no_of_destinations, total_quantity: total_quantity, status: to.status }
+    end
   end
 
   # GET /transport_orders/1
@@ -94,11 +99,14 @@ class TransportOrdersController < ApplicationController
 
   def print
     @transport_order = TransportOrder.includes(:transporter, :contract, :bid).find(params[:id])
+
+    @transport_order.start_date = params[:transport_order][:start_date]
+    @transport_order.end_date = params[:transport_order][:end_date]
+    @transport_order.save
  
     @region = Location.find(@transport_order.location_id)&.name
     @zones = []
-    @commodities = []
-    @requisitions = []
+    @requisitions = ""
     TransportOrderItem.where(:transport_order_id => params[:id])
     .find_each do |toi|
       @zone_name = Fdp.includes(:location).find(toi.fdp_id).location.parent.name
@@ -106,21 +114,23 @@ class TransportOrdersController < ApplicationController
         @zones << @zone_name
       end
       @commodity_name = Commodity.find(toi.commodity_id).name
-      if (!(@commodities.include?(@commodity_name)))
-        @commodities << @commodity_name
-      end
       if (!(@requisitions.include?(toi.requisition_no)))
-        @requisitions << toi.requisition_no
+        @requisitions += "#{@commodity_name}:#{toi.requisition_no}, "
       end
     end
     @transport_order_items = TransportOrderItem.includes(:commodity, fdp: :location).where(:transport_order_id => params[:id])
       @requistion_ids = @transport_order_items.map{|r| r.requisition_no}.uniq
       @references = get_reference_numbers_by_requisition_no(@requistion_ids)
+    
+    @contract_no = "N/A"
+    if (@transport_order&.bid&.bid_number.present? && @transport_order&.transporter&.code.present?)
+      @contract_no = "LTCD/#{@transport_order&.bid&.bid_number}/#{@transport_order&.transporter&.code}"
+    end
  
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones,  @region,@commodities, @requisitions,@references)
+          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones,  @region, @requisitions, @references, @contract_no)
           send_data pdf.render, filename: "transport_order_#{@transport_order&.id}.pdf",
           type: "application/pdf",
           disposition: "inline"
@@ -135,6 +145,16 @@ class TransportOrdersController < ApplicationController
         format.json { render :show, status: :created, location: @transport_order }
       end
  end
+
+def rrd_reference_list
+  @operation_id = params[:operation_id]
+  @region_id = params[:region_id]
+  @regional_request_references = RegionalRequest.includes(:requisitions).where(:'regional_requests.operation_id' => @operation_id, :'regional_requests.region_id' => @region_id).map{ |r| [r.reference_number, r.id]} 
+  
+  respond_to do |format|
+    format.json {render json: @regional_request_references}
+  end
+end
 
   private
     # Use callbacks to share common setup or constraints between actions.
