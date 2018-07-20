@@ -6,12 +6,14 @@ class TransportRequisitionWithoutWinnerPdf < PdfReport
         @operation = operation
         @reference_numbers = reference_numbers
         header "Transport Requisition withou out transporters"
+         bounding_box([bounds.left, bounds.top -  100 ], :width => bounds.width, :height => bounds.height - 210) do
         text "Date " + Time.now.strftime("%d-%b-%Y"), :align => :right
         text "Reference No " + @reference_numbers.to_s, :align => :right
       
         
 
         transport_requisitions
+        end
         footer "Commodity Allocation and Tracking System"
     end
 
@@ -29,6 +31,7 @@ class TransportRequisitionWithoutWinnerPdf < PdfReport
             columns(5).width = 40
             columns(6..8).width = 50
         end    
+    
         move_down 10
            text "Operation: " + @operation&.name
            text "Total sum in Quintal: " + ActiveSupport::NumberHelper.number_to_currency(@quintal_sum.to_s,precision: 2, :unit=> '')
