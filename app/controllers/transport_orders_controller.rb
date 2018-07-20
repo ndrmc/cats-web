@@ -8,29 +8,36 @@ class TransportOrdersController < ApplicationController
     @where_clause = "transport_orders.id IS NOT NULL"
     if params[:order_no].present?
       @where_clause += " and order_no = '#{params[:order_no]}'"
-      @result += "Order No: #{params[:order_no]} |"
+      @result += "Order No: #{params[:order_no]} | "
     end
     if params[:operation].present?
       @where_clause += " and operation_id = #{params[:operation]}" 
-      @result += "Operation: #{Operation.find(params[:operation])&.name} |"
+      @result += "Operation: #{Operation.find(params[:operation])&.name} | "
     end
-    if params[:region].present? && !params[:region].present?
-      @where_clause += " and operation_id = #{params[:region]}" 
-      @result += "Region: #{Location.find(params[:region])&.name} |"
+    if params[:region].present?
+      @where_clause += " and location_id = #{params[:region]}" 
+      @result += "Region: #{Location.find(params[:region])&.name} | "
     end
     if params[:requisition_no].present?
       @where_clause += " and transport_order_items.requisition_no = '#{params[:requisition_no]}'"
-      @result += "Requisition No: #{params[:requisition_no]} |"
+      @result += "Requisition No: #{params[:requisition_no]} | "
     end
     if params[:transporter].present? 
       @where_clause += " and transporter_id = #{params[:transporter]}" 
-      @result += "Transporter: #{Transporter.find(params[:transporter])&.name} |"
+      @result += "Transporter: #{Transporter.find(params[:transporter])&.name} | "
     end
-    if params[:reference_no].present?
-      @list_of_requistion_nos = RegionalRequest.includes(:requisitions).where(:reference_number => params[:reference_no]).pluck(:'requisitions.requisition_no')
-      
-      @where_clause += " and transport_order_items.requisition_no IN (#{@list_of_requistion_nos})"
-      @result += "Reference No.: #{params[:reference_no]}"
+    if params[:reference].present?
+      @where_clause += " and transport_order_items.requisition_no IN ( "
+      @list_of_requistion_nos = RegionalRequest.includes(:requisitions).where(:reference_number => params[:reference]).pluck(:'requisitions.requisition_no')
+      @list_of_requistion_nos.each do |rn|
+        if @list_of_requistion_nos.first == rn
+          @where_clause += "'#{rn}'"
+        else
+          @where_clause += ", '#{rn}'"
+        end
+      end      
+      @where_clause += ")"
+      @result += "Reference No.: #{params[:reference]}"
     end
     
     @transport_orders = []

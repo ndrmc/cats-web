@@ -25,8 +25,8 @@ default: &default
 development:
   <<: *default
   database: cats_development
-  username: cats
-  password: cats
+  username: postgres
+  password: postgres
 
 import:
   <<: *default
