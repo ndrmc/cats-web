@@ -169,6 +169,95 @@ class Reports
 		end
 		
 	end
-	
+
+	def stock_status_by_store hub, warehouse, as_of_date
+		stock_account = Account.find_by({'code': :stock}).id
+		dispatched_account = Account.find_by({'code': :dispatched}).id
+		receipt_journal = Journal.find_by({'code': :goods_received}).id
+		good_issue_journal = Journal.find_by({'code': :goods_issue}).id
+
+		result = ActiveRecord::Base.connection
+		.exec_query("SELECT coalesce(prev.store, curr.store) store,
+		coalesce(prev.project_code, curr.project_code) project_code,
+		coalesce(prev.commodity_source, curr.commodity_source) commodity_source,
+		coalesce(prev.hub, curr.hub) hub,
+		coalesce(prev.warehouse, curr.warehouse) warehouse,
+		coalesce(prev.commodity_category, curr.commodity_category) commodity_category,
+		coalesce(prev.commodity, curr.commodity) commodity, 
+		prev.prev_balance, rece.receipt_balance, disp.dispatch_balance, curr.current_balance
+		FROM 
+		(SELECT pi.store_id, s.name AS store, pi.project_id, p.project_code AS project_code, 
+			 cs.name AS commodity_source, 
+			 pi.hub_id, h.name AS hub, 
+			pi.warehouse_id, w.name AS warehouse, 
+			 cc.name AS commodity_category, 
+			 pi.commodity_id, c.name AS commodity, SUM(pi.quantity) AS prev_balance
+			FROM posting_items pi
+			 LEFT JOIN stores s ON s.id = pi.store_id
+			LEFT JOIN projects p ON p.id = pi.project_id
+			LEFT JOIN commodity_sources cs ON cs.id = p.commodity_source_id
+			LEFT JOIN commodities c ON c.id = pi.commodity_id
+			 LEFT JOIN commodity_categories cc ON cc.id = c.commodity_category_id 
+			LEFT JOIN hubs h ON h.id = pi.hub_id
+			LEFT JOIN warehouses w ON w.id = pi.warehouse_id
+			WHERE pi.account_id = #{stock_account}
+			AND pi.hub_id = #{hub}
+			AND pi.warehouse_id = #{warehouse}
+			 AND pi.created_at < '#{as_of_date}'
+			GROUP BY pi.store_id, pi.project_id, pi.hub_id, pi.warehouse_id, pi.commodity_id, store, 
+				 commodity_source, hub, warehouse, commodity, project_code, commodity_category) prev
+		FULL OUTER JOIN
+		(SELECT pi.store_id, pi.project_id, pi.hub_id, pi.warehouse_id, pi.commodity_id,
+			SUM(pi.quantity) AS receipt_balance
+			FROM posting_items pi
+			 INNER JOIN postings po ON po.id = pi.posting_id
+			 INNER JOIN receipts ON receipts.id = po.document_id
+			 WHERE pi.account_id = #{stock_account}
+			 AND pi.journal_id = #{receipt_journal}
+			AND pi.hub_id = #{hub}
+			AND pi.warehouse_id = #{warehouse}
+			 AND receipts.received_date > '#{as_of_date}'
+			GROUP BY pi.store_id, pi.project_id, pi.hub_id, pi.warehouse_id, pi.commodity_id) rece
+		ON prev.project_id = rece.project_id AND prev.hub_id = rece.hub_id AND prev.warehouse_id = rece.warehouse_id
+		AND prev.commodity_id = rece.commodity_id
+		FULL OUTER JOIN
+		(SELECT pi.store_id, pi.project_id, pi.hub_id, pi.warehouse_id, pi.commodity_id,
+			SUM(pi.quantity) AS dispatch_balance
+			FROM posting_items pi
+			 INNER JOIN postings po ON po.id = pi.posting_id
+			 INNER JOIN dispatches ON dispatches.id = po.document_id
+			 WHERE pi.account_id = #{dispatched_account}
+			 AND pi.journal_id = #{good_issue_journal}
+			AND pi.hub_id = #{hub}
+			AND pi.warehouse_id = #{warehouse}
+			 AND dispatches.dispatch_date > '#{as_of_date}'
+			GROUP BY pi.store_id, pi.project_id, pi.hub_id, pi.warehouse_id, pi.commodity_id) disp
+		ON prev.project_id = disp.project_id AND prev.hub_id = disp.hub_id AND prev.warehouse_id = disp.warehouse_id
+		AND prev.commodity_id = disp.commodity_id
+		FULL OUTER JOIN
+		(SELECT pi.store_id, s.name AS store, pi.project_id, p.project_code AS project_code, 
+			 cs.name AS commodity_source, 
+			 pi.hub_id, h.name AS hub, 
+			pi.warehouse_id, w.name AS warehouse, 
+			 cc.name AS commodity_category, 
+			 pi.commodity_id, c.name AS commodity, SUM(pi.quantity) AS current_balance
+			FROM posting_items pi
+			 LEFT JOIN stores s ON s.id = pi.store_id
+			LEFT JOIN projects p ON p.id = pi.project_id
+			LEFT JOIN commodity_sources cs ON cs.id = p.commodity_source_id
+			LEFT JOIN commodities c ON c.id = pi.commodity_id
+			 LEFT JOIN commodity_categories cc ON cc.id = c.commodity_category_id 
+			LEFT JOIN hubs h ON h.id = pi.hub_id
+			LEFT JOIN warehouses w ON w.id = pi.warehouse_id
+			WHERE pi.account_id = #{stock_account}
+			AND pi.hub_id = #{hub}
+			AND pi.warehouse_id = #{warehouse}
+			GROUP BY pi.store_id, pi.project_id, pi.hub_id, pi.warehouse_id, pi.commodity_id, store, 
+				 commodity_source, hub, warehouse, commodity, project_code, commodity_category) curr
+		ON prev.project_id = curr.project_id AND prev.hub_id = curr.hub_id AND prev.warehouse_id = curr.warehouse_id
+		AND prev.commodity_id = curr.commodity_id")
+
+			
+	end	
 
 end
