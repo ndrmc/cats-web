@@ -47,6 +47,10 @@ class BidPolicy < ApplicationPolicy
     @current_user.permission('Bid', :clerk)
  end
 
+def download_rfq?
+    @current_user.permission('Bid', :clerk)
+end
+
  def upload_rfq?
     @current_user.permission('Bid', :clerk)
  end
