@@ -40,7 +40,7 @@ class WarehousesControllerTest < ActionDispatch::IntegrationTest
 
   test "should update warehouse" do
     patch warehouse_url(id: @warehouse.id), params: { warehouse: { name: 'WH 1', description: 'Des', location_id: 1, organization_id: 1, lat: 0, lon: 0  } }
-    assert_redirected_to warehouse_url(id: @warehouse.id)
+    assert_redirected_to warehouses_url
   end
 
   test "should destroy warehouse" do
