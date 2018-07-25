@@ -36,8 +36,10 @@ docx.table @won_locations, border_size: 4 do
   cell_style cells,      size: 18, margins: { top: 100, bottom: 0, left: 100, right: 100 }
 end
 docx.p
-docx.p '1) Total Amount to be transfered for Relief in Quintals:________'
-docx.p '2) Total Amount to be transfered fro PSNP in Quintals: ________'
+
+       
+docx.p '1) Total Amount to be transfered for Relief in Quintals: ' + @relif_amount_in_quintal.to_s
+docx.p '2) Total Amount to be transfered fro PSNP in Quintals:  ' + @psnp_amount_in_quintal.to_s
 docx.p '3) Grand Total in Quintals:                      '  +  @grand_total.to_s
 docx.p '4) Bid Submission Date: ' + @bid_submission_date.to_s + '    Time:________'
 docx.p '5) Bid Opening Date: '+ @bid_opening_date.to_s + '     Time: __________'

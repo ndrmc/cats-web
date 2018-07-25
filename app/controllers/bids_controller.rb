@@ -118,6 +118,8 @@ class BidsController < ApplicationController
        @bid_submission_date = @bid.start_date
        @bid_opening_date = @bid.opening_date
        @bid_reference_no = @bid.bid_number
+       @relif_amount_in_quintal = @bid.relif_amount_in_quintal
+       @psnp_amount_in_quintal =@bid.psnp_amount_in_quintal
        @warehouse_allocation_grouped =  @warehouse_allocation.group_by{ |wa| Warehouse.find_by(id: wa.warehouse_id)&.hub&.name}
        @warehouse_allocation_grouped .each_pair do |hub_name, warehouse_allocatoins|
           @qty = 0
@@ -433,6 +435,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bid_params
-      params.require(:bid).permit(:framework_tender_id, :region_id, :bid_number, :bid_bond_amount, :start_date, :closing_date, :opening_date, :status, :remark, :hub, :warehouse, :zone, :woreda)
+      params.require(:bid).permit(:framework_tender_id, :region_id, :bid_number, :bid_bond_amount, :start_date, :closing_date, :opening_date, :status, :remark, :hub, :warehouse, :zone, :woreda,:psnp_amount_in_quintal,:relif_amount_in_quintal)
     end
 end
