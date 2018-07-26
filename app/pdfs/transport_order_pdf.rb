@@ -1,15 +1,15 @@
 require 'prawn/table'
 require 'to_words'
 class TransportOrderPdf < PdfReport
-    def initialize(transport_order, transport_order_items, zones, region,commodities, requisitions, references)
+    def initialize(transport_order, transport_order_items, zones, region, requisitions, references, contract_no)
         super(top_margin: 50)
         @transport_order = transport_order
         @transport_order_items = transport_order_items
         @zones = zones
         @region = region
-        @commodities = commodities
         @requisitions = requisitions
         @references = references
+        @contract_no = contract_no
         donor = []
         @A4_SIZE = 100.freeze
         @operation = Operation.find_by(id: @transport_order.operation_id)&.name
@@ -30,17 +30,17 @@ class TransportOrderPdf < PdfReport
        
         text "<b>Order No.</b> <u> #{@transport_order.order_no}</u>", :align => :center, :inline_format => true
         text "\n\n<b>I. <u>TRANSACTION DETAILS</u></b>", :inline_format => true
-        text "Contract Number: #{@transport_order&.contract&.contract_no}" , :align => :right
+        text "Contract Number: #{@contract_no}" , :align => :right
         text "Transpot Order Date: #{@transport_order&.order_date}", :align => :right
        
         t = [
              
                  ["Transporter:","#{@transport_order&.transporter&.name}"],
-                 ["Region:", "#{@region}" , " " * 2, "Requisition Dispatch Date:","#{@transport_order&.start_date}"],
-                 ["Zone:","#{@zones.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date    }"],
-                 ["Commodity:","#{@commodities.to_s}", "  " * 3 ,"Bid Document No:","#{@transport_order&.bid&.bid_number}"],
+                 ["Region:", "#{@region}" , " " * 2, "Requisition Dispatch Date:","#{@transport_order&.start_date.to_formatted_s(:long_ordinal)}"],
+                 ["Zone:","#{@zones.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date.to_formatted_s(:long_ordinal)}"],
+                 ["Bid Document No:","#{@transport_order&.bid&.bid_number}"],
                  ["Donor:", "#{donor.to_s}", "  " * 2 ,"Performance Bond Receipt #","#{@transport_order&.performance_bond_receipt}"],
-                 ["RequisitionNo:","#{@requisitions.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date}"],
+                 ["RequisitionNo:","#{@requisitions.to_s}", "  " * 2 ],
                  ["Operation:","#{ @operation }"],
                  ["Reference:","#{ @references.to_s}"]
         ]

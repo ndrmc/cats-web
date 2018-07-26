@@ -14,10 +14,22 @@
     </ol>
   </div>
   <div class="col-sm-4">
+ 
+
   <% if policy(TransportRequisition).print? %>
+  <div class="btn-toolbar">
+           <a  class = "btn btn-primary pull-right" href="/transport_requisitions/rrd_by_refrence_no/<%= @transport_requisition.id.to_s %>">View All</a>
+  
     <a class="btn btn-default pull-right" data-tr-id="<%= @transport_requisition.id.to_s %>" data-target="#print-tr" data-toggle="modal">
         Print
     </a>
+
+  
+    <%= link_to "/transport_requisitions/print_transporters_without_winner/" + @transport_requisition.id.to_s + "?format=pdf",  :class => "btn btn-default"  do %>
+            <i class="fa fa-print"></i> 
+           Print Transporters without winners
+          <% end %>
+    </div>
   <% end %>
   </div>
 </div>

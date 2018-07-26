@@ -41,6 +41,10 @@ class WarehouseAllocationPolicy < ApplicationPolicy
         @current_user.permission('WarehouseAllocation', :clerk)
     end
 
+    def reverse_allocation?
+       @current_user.permission('WarehouseAllocation', :clerk)
+    end
+    
     def close_allocation?
         @current_user.permission('WarehouseAllocation', :clerk)
     end
@@ -54,12 +58,17 @@ class WarehouseAllocationPolicy < ApplicationPolicy
     end
 
     def warehouse_allocation_fdp_view?
-        @current_user.permission('WarehouseAllocation', :clerk)
+        @current_user.permission('WarehouseAllocation', :guest)
     end
 
     def warehouse_allocation_zonal_view?
-        @current_user.permission('WarehouseAllocation', :clerk)
+        @current_user.permission('WarehouseAllocation', :guest)
     end
+
+    def is_tr_created_for_this_warehouse_allocatoin?
+       @current_user.permission('WarehouseAllocation', :guest)
+    end
+
   end
   
   

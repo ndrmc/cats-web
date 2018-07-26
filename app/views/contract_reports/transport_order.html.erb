@@ -14,12 +14,22 @@
            <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :operation,  options_from_collection_for_select( Operation.all, 'id', 'name', params[:operation] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control width-100per' }  %>
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.where(archived: [nil,false]), 'id', 'name', params[:operation] ) , { :required => true, :prompt => "-- Choose --", :class => 'form-control width-100per' }  %>
             </div>
         </div>
       	<div class="form-group">
-          <%= label_tag :bid, "Bid Ref No", { :class => ' control-label', :required => true } %>
-            <%= select_tag(:bid,"", :prompt => "-- Choose --", :required => true, :class => 'form-control width-100per')   %> 
+          <%= label_tag :region, "Region", { :class => ' control-label'} %>
+          <div class="">
+            <%= select_tag  'region',  options_from_collection_for_select(Location.where({location_type: 'region'}), 'id', 'name', params[:region] ) , {:required => true , :prompt => "-- Select a Region --", :class => 'form-control width-100per' }  %>
+          </div>
+        </div>
+        <div class="form-group">
+        
+
+          <%= label_tag :reference_no, "Reference No", { :class => 'control-label'}%>
+          <div class="">
+            <%= select_tag(:reference,"",:prompt => "-- Choose --", :required =>true, :class => 'form-control width-100per') %>
+          </div>
         </div>
        
         
@@ -28,7 +38,10 @@
           <div>
               <input type="submit" name="filter" value="Go" class="btn btn-sm btn-primary" />
 
-              <input type="submit" name="pdf_filter" formaction='/contract_reports/transport_order_pdf?format=pdf' value="Print Report" class="btn btn-sm btn-primary" formtarget="_blank"/>
+              <input type="submit" name="pdf_filter" formaction='/contract_reports/transport_order_pdf?format=pdf' value="Winner Transport Order" class="btn btn-sm btn-primary" formtarget="_blank"/>
+
+              <input type="submit" name="pdf_filter_with_tariff" formaction='/contract_reports/transport_order_tariff_pdf?format=pdf' value="Winner Transport order with Tariff" class="btn btn-sm btn-primary" formtarget="_blank"/>
+
           </div>
         </div>
 
@@ -126,17 +139,36 @@
 <script type="text/javascript">
 var EMPTY_OPTION = '<option value="">-- Choose --</option>';
 $(document).ready(function(){
+
+    var request_id = '<%= params[:reference]%>'
+ 
+    $.get( '/contract_reports/rrd_reference_list', 
+          { operation_id: $('#operation').val(), region_id: $('#region').val()}, 
+          function(data) {   
+            $("#reference").html("");
+            $("#reference").append(EMPTY_OPTION);
+            $.each(data, function(index, value)
+            {
+              $("#reference").append("<option value='" + value[1] + "'>" + value[0] + "</option>")
+            })      
+            $("#reference > [value=" + request_id  + "]").attr("selected", "true");     
+            })
+      .error(function(event, jqxhr, exception) {
+         alert(exception)
+      });
+    
+
+
   var bid_id = '<%= params[:bid]%>'
   var operation_id = $("#operation").val();
   var url = '/contract_reports/bids/' + operation_id
   
-
   $.get(url, function(data) {
       $("#bid").html("");
       $("#bid").append( EMPTY_OPTION );
       $.each( data, function( index, value ) {
        
-        $("#bid").append( "<option value='" + value[1] + "'>" + value[0] + "</option>" );
+        $("#bid").append( "<option value='" + value[1] + "'>" + value[0] + "-" + value[2] + "</option>" );
       });
       $("#bid > [value=" + bid_id  + "]").attr("selected", "true");
   });
@@ -150,8 +182,28 @@ $(document).ready(function(){
       $("#bid").append( EMPTY_OPTION );
       $.each( data, function( index, value ) {
        
-        $("#bid").append( "<option value='" + value[1] + "'>" + value[0] + "</option>" );
+        $("#bid").append( "<option value='" + value[1] + "'>" + value[0] + "-" + value[2] + "</option>" );
       });
   });
 });
+
+$("#operation, #region").on('change', function(e) { 
+ 
+    $.get( '/contract_reports/rrd_reference_list', 
+          { operation_id: $('#operation').val(), region_id: $('#region').val()}, 
+          function(data) {   
+            $("#reference").html("");
+            $("#reference").append(EMPTY_OPTION);
+            $.each(data, function(index, value)
+            {
+              $("#reference").append("<option value='" + value[1] + "'>" + value[0] + "</option>")
+            })           
+            })
+      .error(function(event, jqxhr, exception) {
+         alert(exception)
+      });
+    
+});
+
+
 </script>

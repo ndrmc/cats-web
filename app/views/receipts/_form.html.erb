@@ -4,6 +4,7 @@
 <% @commodity_categories = CommodityCategory.all%>
 <% @uoms = UnitOfMeasure.all%>
 <% @warehouses = Warehouse.all %>
+<% @stores = Store.order(:name)%>
 <% @reference_unit =  UnitOfMeasure.find_by(:uom_type => UnitOfMeasure.uom_types[:ref]).name %>
 <div class="row">
   <div class="wrapper">
@@ -61,15 +62,38 @@
                       @warehouses.select{|w| w.hub_id == @receipt.hub_id}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'warehouse_select',:class => 'form-control', :required => true }%>              
             </div>
           </div>
-        </div>        
+        </div>     
         <div class="row">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <%= f.label :storekeeper_name, "Received By" %>
-              <span class="required">*</span>
-              <%= f.text_field :storekeeper_name, :class => 'form-control', :required => true %>
+            <div class="col-sm-6">
+              <div class="form-group">
+                  <%= label_tag :store_id, "Store", { :class => ' control-label'} %>
+                  <% if (params[:warehouse_id].present?)
+                      @stores = []
+                      @stores = Store.where(:warehouse_id => params[:warehouse_id])
+                    elsif (@receipt.warehouse_id.present?)
+                      @stores = []
+                      @stores = Store.where(:warehouse_id => @receipt.warehouse_id)
+                    else 
+                      
+                    end %>
+            <div class="">
+              <%= select_tag  'receipt[store_id]',  options_from_collection_for_select( @stores, 'id', 'name', @receipt.store_id ), {:prompt => "-- Select Store --" , :class => 'form-control width-100per' }  %>
             </div>
           </div>
+      </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <%= f.label :donor_id %>
+              <span class="required">*</span>
+              <%= f.collection_select :donor_id,
+                      Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'donor_select', :required => true }%>
+              </div>
+            
+          </div>
+
+        </div>   
+        <div class="row">
+          
           <div class="col-sm-6">
             <div class="form-group">
               <%= f.label :received_date %>
@@ -77,16 +101,15 @@
               <%= f.text_field :received_date, :class => 'form-control datepicker', :required => true  %>
             </div>
           </div>
-        </div>
-        <div class="row">
+
           <div class="col-sm-6">
-            <div class="form-group">
-              <%= f.label :donor_id %>
+              <div class="form-group">
+              <%= f.label :storekeeper_name, "Received By" %>
               <span class="required">*</span>
-              <%= f.collection_select :donor_id,
-                      Organization.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :id => 'donor_select', :required => true }%>
-            </div> 
+              <%= f.text_field :storekeeper_name, :class => 'form-control', :required => true %>
+            </div>
           </div> 
+
         </div>
       </div>
     </div>
@@ -285,19 +308,12 @@
       get_received_qty( $("#project_select").val(), $('#hub_select').val());
       
       }     
-   
-      
+     
+      $('#receipt_store_id').html("")
+       $('#receipt_store_id').html('<option value="">-- Select Store --</option>')
     });
 
     $(function () {
-
-     
-
-     
-
-     
-
-
 
       $('#hub_select').change(function(){
        
@@ -317,8 +333,8 @@
         warehouse_options.unshift(EMPTY_OPTION);
 
         $('#warehouse_select').html(warehouse_options);
-
-       
+        $('#receipt_store_id').html("")
+       $('#receipt_store_id').html('<option value="">-- Select Store --</option>')
         var project_id = $('#project_select').val();
         if (hub_id && project_id){
             get_received_qty(project_id, hub_id);
@@ -484,5 +500,18 @@
         }
       }
 
-
+$('#warehouse_select').change(function(){
+    
+    var warehouse = $(this).val();
+    var allStores = <%= @stores.to_json.html_safe %>
+    var storeByWarehouse = $.grep(allStores, function (elem) {
+      return elem.warehouse_id == warehouse;
+    });
+    var stores_options = $.map(storeByWarehouse, function (val) {
+      return '<option value="' + val.id + '">' + val.name + '</option>';
+    });
+   
+    stores_options.unshift('<option value="">-- Select Store --</option>');
+    $('#receipt_store_id').html(stores_options);
+  });
   </script>

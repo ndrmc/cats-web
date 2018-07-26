@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180528115449) do
+ActiveRecord::Schema.define(version: 20180725131501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(version: 20180528115449) do
     t.integer  "framework_tender_id"
     t.integer  "region_id"
     t.string   "bid_number"
-    t.decimal  "bid_bond_amount",     precision: 15, scale: 3
+    t.decimal  "bid_bond_amount",         precision: 15, scale: 3
     t.date     "start_date"
     t.date     "closing_date"
     t.date     "opening_date"
@@ -140,8 +140,10 @@ ActiveRecord::Schema.define(version: 20180528115449) do
     t.integer  "created_by"
     t.integer  "modified_by"
     t.datetime "deleted_at"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.decimal  "relif_amount_in_quintal"
+    t.decimal  "psnp_amount_in_quintal"
   end
 
   create_table "commodities", force: :cascade do |t|

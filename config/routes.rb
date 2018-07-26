@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
  
+  get '/warehouse_allocations/is_tr_created_for_this_warehouse_allocatoin'
   get '/warehouse_allocations/warehouse_allocation_zonal_view'
   get '/warehouse_allocations/warehouse_allocation_fdp_view'
   resources :warehouse_allocations
+  post 'warehouse_allocations/reverse_allocation'
   post 'warehouse_allocations/generate', to: 'warehouse_allocations#generate'
   post 'warehouse_allocations/reset_allocation', to: 'warehouse_allocations#reset_allocation'
   post 'warehouse_allocations/close_allocation', to: 'warehouse_allocations#close_allocation'
@@ -34,13 +36,16 @@ Rails.application.routes.draw do
   delete 'stock_movements/stock_movement_destroy_receive/:id', to: 'stock_movements#stock_movement_destroy_receive'
   resources :stock_movements
   get 'transport_requisitions/rrd_reference_list'
+  get 'transport_requisitions/rrd_by_refrence_no/:id', to: 'transport_requisitions#rrd_by_refrence_no'
   get '/transport_requisitions/print/:id', to: 'transport_requisitions#print'
+  get '/transport_requisitions/print_transporters_without_winner/:id', to: 'transport_requisitions#print_transporters_without_winner'
   get '/transport_requisitions/get_fdps_list', to: 'transport_requisitions#get_fdps_list'
   post '/transport_requisitions/create_to_for_exceptions', to: 'transport_requisitions#create_to_for_exceptions'
   delete '/transport_requisitions/reverse_tr/:id', to: 'transport_requisitions#reverse_tr'
   resources :transport_requisitions
   
    resources :bids
+   get '/bids/rfq_form/:id', to: 'bids#rfq_form'
    get '/bids/request_for_quotations/:id', to: 'bids#request_for_quotations'
    post 'bids/upload_rfq', to: 'bids#upload_rfq'
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
@@ -53,8 +58,10 @@ Rails.application.routes.draw do
    get 'bids/download_contract/:id', to: 'bids#download_contract', format: 'docx' 
    get 'bids/sign_contract/:id', to: 'bids#sign_contract'
    
+   get 'contract_reports/rrd_reference_list'
    get'/contract_reports', to: 'contract_reports#index'
    post '/contract_reports/transport_order'
+   post '/contract_reports/transport_order_tariff_pdf'
    post 'contract_reports/transport_order_pdf'
    get '/contract_reports/bids/:operation_id', to: 'contract_reports#get_by_operation'
    resources :framework_tenders
@@ -80,9 +87,13 @@ Rails.application.routes.draw do
   get '/transporters/update_status_all', to: 'transporters#update_status_all'
   post '/transporters/set_market_price', to: 'transporters#set_market_price'
   resources :transporters
+  get '/transport_orders/rrd_reference_list', to: 'transport_orders#rrd_reference_list'
   resources :transport_orders
-  get '/transport_orders/print/:id', to: 'transport_orders#print'
+
+  post '/transport_orders/print/:id', to: 'transport_orders#print'
   post '/transport_orders/move/:id', to: 'transport_orders#move'
+  
+
   resources :transporter_addresses  
   get 'setting/index'
   devise_for :users
@@ -182,6 +193,7 @@ Rails.application.routes.draw do
   get '/receipts/getProjectCodeStatus/:id', to: 'receipts#getProjectCodeStatus'
   get '/receipts/new/:id', to: 'receipts#new'
 
+  get '/dispatches/dispatch_report_items'
   get '/dispatches/dispatch_report', to: 'dispatches#dispatch_report'
   post '/dispatches/dispatch_report_generate', to: 'dispatches#dispatch_report_generate'
   post '/dispatches/check_stock', to: 'dispatches#check_stock' 
@@ -250,7 +262,7 @@ Rails.application.routes.draw do
   resources :payment_requests
   resources :payment_request_items
   
-
+  get'/stock_reports/dispatch_detail'
   get'/stock_reports', to: 'stock_reports#index'
   get '/stock_reports/stock_status_by_project_code', to: 'stock_reports#stock_status_by_project_code'
   get '/stock_reports/stock_status_by_commodity_type', to: 'stock_reports#stock_status_by_commodity_type'

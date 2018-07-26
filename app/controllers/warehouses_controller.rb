@@ -1,5 +1,5 @@
 class WarehousesController < ApplicationController
-  before_action :set_warehouse, only: [:show, :edit, :update, :destroy]
+  before_action :set_warehouse, only: [:edit, :update, :destroy]
 
   include Administrated
   # GET /warehouses
@@ -54,7 +54,7 @@ class WarehousesController < ApplicationController
     @warehouse.modified_by = current_user.id
     respond_to do |format|
       if @warehouse.update(warehouse_params)
-        format.html { redirect_to warehouse_path(@warehouse), notice: 'Store location was successfully updated.' }
+        format.html { redirect_to warehouses_path, notice: 'Store location was successfully updated.' }
         format.json { render :show, status: :ok, location: @warehouse }
       else
         format.html { render :edit }
