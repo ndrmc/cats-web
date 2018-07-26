@@ -179,12 +179,18 @@
                   <li>
                   <% if policy(Bid).download_contract? %>
                     <a href="/bids/request_for_quotations/<%= bid.id %>.xlsx"> Download RFQ </a>
+                   
                   <% end %>
                   </li>
                   
                   <li>
                   <% if policy(Bid).upload_rfq? %>
                     <a href="#" class='rfq-modal' data-toggle="modal" data-id="<%= bid.id %>" data-target="#rfq-modal">Upload RFQ</a>
+                  <% end %>
+                  </li>
+                  <li>
+                  <% if policy(Bid).download_rfq? %>
+                     <a href="/bids/rfq_form/<%= bid.id %>.docx"> RFQ Form </a>
                   <% end %>
                   </li>
 

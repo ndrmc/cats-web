@@ -1,0 +1,49 @@
+#-----------------------------------------------------
+# page settings
+#-----------------------------------------------------
+
+docx.page_numbers true do
+  align :center
+  label 'Page'
+end
+
+docx.font name: 'Courier New'
+
+docx.style id: 'AltFont', name: 'altFont', font: 'Palatino'
+
+docx.style id: 'IndentLeft', name: 'Indent Left', indent_left: 360
+
+docx.img Rails.root.to_s + '/public/assets/ndrmc.png' do
+    
+    width   50
+    height  50
+    align   :left
+    
+end
+
+docx.h2 'NATIONAL DISASTER RISK MANAGEMENT COMMISSION'
+docx.hr
+docx.h3 'REQUEST FOR QUOTATION'
+docx.p 'Bid RefNo: ' + @bid_reference_no.to_s, align: :right
+docx.p
+docx.p 'Transport quotation Delivery Datasheet for Region(s) __________________zones(s)_____________'
+docx.p 'Transporter name: ________________________________________________________'
+docx.p 'Address City:__________________Woreda:_______________Kebele:_________HouseNo:_________'
+docx.p 'TelephoneNo:___________________MobileNo: ____________________'
+docx.p
+docx.table @won_locations, border_size: 4 do
+  cell_style rows[0],    bold: true,   background: '3366cc', color: 'ffffff'
+  cell_style cells,      size: 18, margins: { top: 100, bottom: 0, left: 100, right: 100 }
+end
+docx.p
+
+       
+docx.p '1) Total Amount to be transfered for Relief in Quintals: ' + @relif_amount_in_quintal.to_s
+docx.p '2) Total Amount to be transfered fro PSNP in Quintals:  ' + @psnp_amount_in_quintal.to_s
+docx.p '3) Grand Total in Quintals:                      '  +  @grand_total.to_s
+docx.p '4) Bid Submission Date: ' + @bid_submission_date.to_s + '    Time:________'
+docx.p '5) Bid Opening Date: '+ @bid_opening_date.to_s + '     Time: __________'
+docx.p '6) Bid Bond Amount(in Birr):' + @bid_bond_amount.to_s
+docx.p
+docx.p '7) እያንዳንዱ ተጫራች ዋጋ የሚሰጠዉ በማ/ማቢያ ሳይሆን ወረዳን መሰረት ባደረገ መልኩ ሆኖ፡ለወረዳዉ የሰጠዉ ዋጋ በወረዳዉ ዉስጥ ለሚገኙት ማ/ጣቢያዎች ጭምር ስለሚያገለግል አሸናፊዉ ድርጅት በወረዳዉ ዉስጥ ለሚገኙት ማ/ጣቢያዎች የተመደበዉን ዕርዳታ አጋጉዞ ማድረስ ይጠበቅበታል
+8) መ/ቤቱ በሁኔታዉች ዘስገዳጁነት ምክንያት የጭነቱ ኩንታል መጠን መጨመርና መቀነስ ፡ እንዲሁም የ6 ወር የጊዜ ገደቡን ማራዘም ይቻላል፡፡'

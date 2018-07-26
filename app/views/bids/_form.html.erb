@@ -20,7 +20,7 @@
 
                 <div class="form-group hidden">
                             <%= f.label :framework_tender_id %>
-                <%= f.text_field :framework_tender_id, :class => 'form-control hidden' %>
+                <%= f.text_field :framework_tender_id, :class => 'form-control' %>
                         </div>
 
                  <div class="form-group">
@@ -38,6 +38,16 @@
                 <div class="form-group">
                             <%= f.label :bid_bond_amount %>
                 <%= f.number_field :bid_bond_amount, :class => 'form-control' , :required => true%>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :relif_amount_in_quintal %>
+                <%= f.number_field :relif_amount_in_quintal, :class => 'form-control' , :required => true%>
+                        </div>
+
+                <div class="form-group">
+                            <%= f.label :psnp_amount_in_quintal %>
+                <%= f.number_field :psnp_amount_in_quintal, :class => 'form-control' , :required => true%>
                         </div>
 
                 <div class="form-group">

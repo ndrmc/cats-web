@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   resources :transport_requisitions
   
    resources :bids
+   get '/bids/rfq_form/:id', to: 'bids#rfq_form'
    get '/bids/request_for_quotations/:id', to: 'bids#request_for_quotations'
    post 'bids/upload_rfq', to: 'bids#upload_rfq'
    get 'bids/update_status/:id/:status', to: 'bids#update_status'
