@@ -48,4 +48,8 @@ class StockReportsController < ApplicationController
   def dispatch_detail
      @dispatch = Reports.new.dispatch_detail(params[:hub], params[:operation])
   end
+
+  def stock_status_by_store
+    @stock_status = Reports.new.stock_status_by_store(params[:hub], params[:warehouse], params[:as_of_date])
+  end
 end
