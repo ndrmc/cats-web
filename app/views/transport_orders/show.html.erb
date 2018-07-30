@@ -25,10 +25,9 @@
         <% end %>
           <li> 
         <% if policy(TransportOrder).destroy? %>
-          <%= link_to "/transport_orders/print/" + @transport_order.id.to_s + "?format=pdf",  :class => "btn btn-default"  do %>
-            <i class="fa fa-print"></i> 
-            Print
-          <% end %>
+          <a class="btn btn-default" data-to-id="<%= @transport_order.id.to_s %>" data-target="#print-to" data-toggle="modal">
+            <i class="fa fa-print"></i> Print
+          </a>
         <% end %>
           </li>
            <% if policy(TransportOrder).destroy? %>
@@ -203,6 +202,59 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal inmodal" id="print-to" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 id='modal-title' class="modal-title">Print Transport Order</h4>
+      </div>
+      <form name="set_market_price" role="form" method="POST" enctype="multipart/form-data" action="/transport_orders/print/<%= params[:id].to_s %>?format=pdf" class="form-inline" style="display: inline;margin-top: 15px">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <%= hidden_field_tag :id, params[:id], class: "", :name => "id", :required => true, :display => false  %>
+        <div class="modal-body col-md-12 col-sm-12 col-xs-12">
+          <% if @transport_order.start_date.present? || @transport_order.end_date.present? %>
+            <div class="col-md-12 col-sm-12 col-xs-12 alert alert-warning">
+              WARNING! Make sure the TO has not been signed before you make changes to these dates as these dates need to be the same with the signed manual copy of the TO.
+            </div> 
+          <% end %>
+          <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">          
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :start_date, "Start Date", { :class => ' control-label'} %>
+
+              <div class="">
+                <%= text_field_tag :start_date, @transport_order.start_date, { :required => true, name: 'transport_order[start_date]', id: 'start_date',class: 'form-control datepicker'}  %>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <%= label_tag :end_date, "End Date", { :class => ' control-label', :required => true } %>
+
+              <div class="">
+                <%= text_field_tag :end_date, @transport_order.end_date, { :required => true, name: 'transport_order[end_date]', id: 'end_date',class: 'form-control datepicker'}  %>
+              </div>
+            </div>
+        </div>     
+        <div class="spinner col-md-12 col-sm-12 col-xs-12"></div> 
+      </div>
+      <div class="modal-footer">
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <div class="pll-right" style="width:inherit;"> 
+            
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 colxs-6">
+          <button type="submit" class="btn btn-primary">Print</button>
+          <button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>          
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script>
 

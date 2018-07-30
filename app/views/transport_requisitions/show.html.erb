@@ -23,6 +23,12 @@
     <a class="btn btn-default pull-right" data-tr-id="<%= @transport_requisition.id.to_s %>" data-target="#print-tr" data-toggle="modal">
         Print
     </a>
+
+  
+    <%= link_to "/transport_requisitions/print_transporters_without_winner/" + @transport_requisition.id.to_s + "?format=pdf",  :class => "btn btn-default"  do %>
+            <i class="fa fa-print"></i> 
+           Print Transporters without winners
+          <% end %>
     </div>
   <% end %>
   </div>
