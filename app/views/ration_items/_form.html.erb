@@ -30,7 +30,7 @@
           <div class="form-group">
             <%= f.label :commodity_id, :class => 'col-sm-2 control-label' %>
             <div class="col-sm-6">
-              <%= f.collection_select :commodity_id, CommodityCategory.order(:name), :id, :name,{include_blank: 'Select Commodity'}, {:class => 'form-control'} %>
+              <%= f.collection_select :commodity_id, Commodity.order(:name), :id, :name,{include_blank: 'Select Commodity'}, {:class => 'form-control'} %>
             </div>
           </div>
 

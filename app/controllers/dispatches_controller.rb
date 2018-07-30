@@ -155,9 +155,13 @@ class DispatchesController < ApplicationController
          @date_max = dates[1]
         filter_map[:'dispatches.dispatch_date'] = dates[0]..dates[1]
       end
+      
             @dispatch_items = DispatchItem.joins(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation] })
             .where(filter_map).select('dispatches.dispatch_date,dispatches.requisition_number,dispatches.operation_id, fdps.name as fdp, locations.name as woreda,operations.name as operation, dispatches.fdp_id as fdp_id,dispatches.gin_no, dispatches.transporter_id, transporters.name as transporter, dispatches.plate_number, dispatches.trailer_plate_number, dispatch_items.project_id,projects.project_code, dispatch_items.commodity_category_id, dispatch_items.commodity_id,commodities.name as commodity_name, dispatch_items.quantity, dispatch_items.unit_of_measure_id,unit_of_measures.name as unit, dispatches.storekeeper_name, dispatches.store_id')
-        
+            
+            @dispatch_items = @dispatch_items.sort_by{|d| [Project.find(d.project_id)&.project_code]}
+            @dispatch_items = @dispatch_items.group_by{ |e|[e.requisition_number,e.fdp_id] }
+           
       else
          @dispatch_items = []
       end
