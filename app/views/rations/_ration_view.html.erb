@@ -75,8 +75,10 @@
               <tr>
                 <%if policy(Ration).edit? %>
                   <td>
-                  <%= link_to ri.commodity.name, edit_ration_item_path(ri) %>
+                  <%= link_to ri.commodity&.name, edit_ration_item_path(ri) %>
                 </td>
+
+                
                 <%else%>
                   <td>
                   <%= ri.commodity.name %>

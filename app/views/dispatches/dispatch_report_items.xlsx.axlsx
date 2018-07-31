@@ -11,7 +11,8 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
 
  
 
-  sheet = wb.add_worksheet(:name => 'Dispatch Items') { |ws| ws.sheet_protection.password = 'pa55w0rd' }
+  sheet = wb.add_worksheet(:name => 'Dispatch Items') 
+  # { |ws| ws.sheet_protection.password = 'pa55w0rd' }
   col_width = [10,5,10,10,10,15,10,10]
   unlocked = sheet.styles.add_style(:locked => false )
   
@@ -27,7 +28,7 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
   sheet.column_widths *col_width
   sheet.add_row ["Dispatch Date",
             "Requisition No.",
-            "Round",
+            "Round/Month/Operation",
             "Region",
             "Zone",
             "Woreda ",
@@ -45,43 +46,64 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
             "Unit",
             "Store keeper Name", "Store Number" ],style: [ title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table, title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table, title_cell_table,  title_cell_table, title_cell_table, title_cell_table, title_cell_table,title_cell_table,  title_cell_table, title_cell_table, title_cell_table,title_cell_table]
 
-  dispatch_items = @dispatch_items.sort_by{|d| [Project.find(d.project_id)&.project_code]}
-  dispatch_items.each do |dispatch|
  
-    fdp = Fdp.find(dispatch.fdp_id)
-    requisition_id = Requisition.find_by(requisition_no: dispatch&.requisition_number)&.id
-    allocated = RequisitionItem.find_by(fdp_id: dispatch.fdp_id, requisition_id: requisition_id)&.amount
-    if !allocated.present?
-      allocated = 0
-    end
+  @sub_total_fdp = 0
+  @dispatch_items.each_pair do |group_1, items|
+            @new = true
+            allocated = RequisitionItem.joins(:requisition).where(fdp_id: group_1[1], 'requisitions.requisition_no': group_1[0]).pluck('amount').first
+            if !allocated.present?
+              allocated = 0
+            end
+           
+            
+            fdp = Fdp.find(group_1[1])
+            woreda = Location.find(fdp.location_id)
+
+            items.each do |dispatch|
+             @sub_total_fdp = @sub_total_fdp + dispatch&.quantity
+ 
     
+    
+                  if @new
                         @operation = Operation.find(dispatch&.operation_id)
                         @commodity = Commodity.find(dispatch&.commodity_id)
-                        @uom_id = @operation&.ration&.ration_items.where(commodity_id: @commodity&.commodity_category_id)&.first&.unit_of_measure_id
+                        @uom_id = @operation&.ration&.ration_items.joins(:commodity).where('commodities.commodity_category_id': @commodity&.commodity_category_id)&.first&.unit_of_measure_id
                         @qtl = UnitOfMeasure.find_by(name: 'Quintal')
-   
-     
+                        @unit = UnitOfMeasure.find(@uom_id)&.name
+                        allocated = @qtl.convert_to(@unit, allocated)
+                  end
     sheet.add_row [ dispatch&.dispatch_date.strftime('%d/%m/%Y'), dispatch&.requisition_number,
                     @operation&.name,
-                    Location.find(fdp.location_id)&.parent&.parent&.name,
-                    Location.find(fdp.location_id)&.parent&.name,
-                    Location.find(fdp.location_id)&.name,
-                    Fdp.find(dispatch.fdp_id)&.name,
+                    woreda&.parent&.parent&.name,
+                    woreda&.parent&.name,
+                    woreda&.name,
+                    fdp&.name,
                     dispatch.gin_no,
-                    Transporter.find(dispatch.transporter_id)&.name,
+                    dispatch.transporter,
                     dispatch.plate_number,
                     dispatch.trailer_plate_number,
-                    Project.find(dispatch.project_id)&.project_code,
+                    dispatch.project_code,
                     CommodityCategory.find(dispatch&.commodity_category_id).name ,
                     
-                    Commodity.find(dispatch&.commodity_id)&.name,
+                    dispatch&.commodity_name,
                     number_with_delimiter(allocated,:delimiter => ','),
                     number_with_delimiter( dispatch&.quantity,:delimiter => ','),
-                    number_with_delimiter(allocated.to_f - dispatch.quantity,:delimiter => ','),
-                    UnitOfMeasure.find(dispatch&.unit_of_measure_id)&.name ,
+                    number_with_delimiter(allocated - dispatch.quantity,:delimiter => ','),
+                    dispatch.unit,
                     dispatch&.storekeeper_name,
                     Store.find_by(id: dispatch&.store_id)&.name], :style => [data, data, data, data, data, data, data, data,data, data, data, data,data, data, data, data,data,data, data,data]
     
-  
+                     @new = false
+        end
+        
+         sheet.add_row ["Total allocated: " + allocated.to_s,"Total dispatched: " + @sub_total_fdp.to_s,"Balance:" + (allocated - @sub_total_fdp).to_s]
+         
+         sheet.add_row ["Percent completed: " + (ActionController::Base.helpers.number_with_precision(((@sub_total_fdp/(allocated )) * 100).to_s,precision: 2)).to_s + "%"]
+         
+
+         @sub_total_fdp = 0
+        
   end
+           
+        
 end
