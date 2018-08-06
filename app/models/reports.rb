@@ -37,7 +37,7 @@ class Reports
 		stock_account = Account.find_by({'code': :stock})
 		if( hub.present?  && warehouse.present? )
 	  		@result = ActiveRecord::Base.connection
-			.exec_query('select projects.project_code as project_code, commodity_sources.name as commodity_source, hubs.name as hub, warehouses.name as warehouse, commodities.name as commodity, sum(posting_items.quantity) as balance
+			.exec_query('select p.project_code as project_code, cs.name as commodity_source, h.name as hub, w.name as warehouse, c.name as commodity, sum(pi.quantity) as balance
 						from posting_items pi
 						inner join projects p on p.id = pi.project_id
 						inner join commodity_sources cs on cs.id = p.commodity_source_id
