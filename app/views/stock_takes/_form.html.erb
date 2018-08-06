@@ -26,29 +26,25 @@
         <div class="form-group">
           <%= f.label :hub_id %> <span class="required">*</span>
           <%= f.collection_select :hub_id,
-                    Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, { :class => 'form-control', :required => true }%>
+              Hub.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:id => 'hub_select' ,:class => 'form-control', :required => true }%>
         </div>
 
         <div class="form-group">
           <%= f.label :warehouse_id  %> <span class="required">*</span>
           <%= f.collection_select :warehouse_id,
-                  Warehouse.order(:name), :id, :name, {include_blank: '-- Choose --'}, { :class => 'form-control', :required => true }%>
+            @warehouses.select{|w| w.hub_id == params[:hub_id]}, :id, :name, {include_blank: '-- Choose --'}, {:id => 'warehouse_select',:class => 'form-control', :required => true }%>
         </div>
 
+        <div class="">
+          <%= select_tag  :store_id,  options_from_collection_for_select( @stores, 'id', 'name', params[:store_id] ), {:id => 'stock_store_id',:prompt => "-- Select Store --" , :class => 'form-control width-100per' }  %>
+        </div>      
         
-            <div class="form-group">
-              
-                  <%= f.label :store_no %>
-                  <%= f.number_field :store_no, :class => 'form-control' %>
-              
-              </div>          
-        
-            <div class="form-group">            
-                  <%= f.label :date %>
-                  <%= f.text_field :date, :class => 'form-control datepicker' %>            
-            </div>
+        <div class="form-group">            
+          <%= f.label :date %>
+          <%= f.text_field :date, :class => 'form-control datepicker' %>            
+        </div>
 
-      <div class="actions">
+        <div class="actions">
           <%= f.submit :class => 'btn btn-primary' %>
         </div>
     <% end %>
@@ -57,3 +53,45 @@
     </div>
   </div>
 </div>
+
+<script>
+$( function() {
+  $('#hub_select').change(function(){
+       
+    var hub_id = $(this).val();
+    
+    var warehouses = <%= @warehouses.to_json.html_safe %>
+    
+    var warehouses_in_hub = $.grep(warehouses, function (elem) {
+      return elem.hub_id == hub_id
+    });
+  
+
+    var warehouse_options = $.map(warehouses_in_hub, function (val) {
+      return '<option value="' + val.id + '">' + val.name + '</option>';
+    });
+
+    warehouse_options.unshift('<option value="">-- Select Warehouse --</option>');
+
+    $('#warehouse_select').html(warehouse_options);
+    $('#stock_store_id').html("")
+    $('#stock_store_id').html('<option value="">-- Select Store --</option>')
+        
+  });
+
+  $('#warehouse_select').change(function(){
+    
+    var warehouse = $(this).val();
+    var allStores = <%= @stores.to_json.html_safe %>
+    var storeByWarehouse = $.grep(allStores, function (elem) {
+      return elem.warehouse_id == warehouse;
+    });
+    var stores_options = $.map(storeByWarehouse, function (val) {
+      return '<option value="' + val.id + '">' + val.name + '</option>';
+    });
+   
+    stores_options.unshift('<option value="">-- Select Store --</option>');
+    $('#stock_store_id').html(stores_options);
+  });
+});
+</script>
