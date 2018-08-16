@@ -16,16 +16,22 @@ class StockTakesController < ApplicationController
   # GET /stock_takes/new
   def new
     @stock_take = StockTake.new
+    @stores = Store.order(:name)
+    @warehouses = Warehouse.all
   end
 
   # GET /stock_takes/1/edit
   def edit
+    @stores = Store.order(:name)
+    @warehouses = Warehouse.all
   end
 
   # POST /stock_takes
   # POST /stock_takes.json
   def create
     @stock_take = StockTake.new(stock_take_params)
+    @warehouses = Warehouse.all
+    @stores = Store.order(:name)
 
     respond_to do |format|
       if @stock_take.save
@@ -55,6 +61,8 @@ class StockTakesController < ApplicationController
   # PATCH/PUT /stock_takes/1
   # PATCH/PUT /stock_takes/1.json
   def update
+    @warehouses = Warehouse.all
+    @stores = Store.order(:name)
     respond_to do |format|
       if @stock_take.update(stock_take_params)
         format.html { redirect_to @stock_take, notice: 'Stock take was successfully updated.' }
