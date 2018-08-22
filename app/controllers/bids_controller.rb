@@ -97,8 +97,7 @@ class BidsController < ApplicationController
   end
   def rfq_form
 
-     @won_locations = [['No.', 'Hub', 'Warehouse(Origin)', 'Zone', 'Woreda(Destination)', 'Total Quintals','Tariff/Qtl(in birr)']]
-    @no = 1
+    
     set_bid
     @warehouse_allocation = []
     WarehouseSelection.where(framework_tender_id: @bid.framework_tender_id)
@@ -121,26 +120,12 @@ class BidsController < ApplicationController
        @relif_amount_in_quintal = @bid.relif_amount_in_quintal
        @psnp_amount_in_quintal =@bid.psnp_amount_in_quintal
        @warehouse_allocation_grouped =  @warehouse_allocation.group_by{ |wa| Warehouse.find_by(id: wa.warehouse_id)&.hub&.name}
-       @warehouse_allocation_grouped .each_pair do |hub_name, warehouse_allocatoins|
-          @qty = 0
-           @no = 1
-          warehouse_allocatoins.each do |ws|
-            @woreda = Location.find(ws.location_id)
-                  @warehouse = Warehouse.find(ws.warehouse_id)
-                  @row = [@no, @warehouse.hub.name, @warehouse.name, @woreda.parent.name, @woreda.name, ws.estimated_qty,'']
-                  @won_locations << @row
-                  @no = @no + 1
-                  @qty = @qty + ws.estimated_qty
-            end
-            @row = ['', '', '', '', 'Subtotal:' + hub_name.to_s, @qty ,'']
-            @won_locations << @row
-            @grand_total = @grand_total + @qty
-      end
+      
 
     file_name = "Frmework Tender RFQ for " +  @warehouse_allocation.first.framework_tender&.year.to_s + '-' +  @warehouse_allocation.first.framework_tender&.half_year.to_s + '-' + Location.find(@bid.region_id)&.name + '-' + @bid.bid_number
     respond_to do |format|
-      format.docx {
-        headers['Content-Disposition'] = "attachment; filename=\"#{file_name}.xlsx\""
+      format.xlsx {
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{file_name}.xlsx\""
       }
     end
      

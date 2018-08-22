@@ -25,6 +25,8 @@
 
 //= require sweetalert2
 
+//=require select2
+
 //= require moment.min.js
 
 //= require daterangepicker.js
