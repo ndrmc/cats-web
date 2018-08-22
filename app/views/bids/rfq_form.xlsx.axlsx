@@ -18,7 +18,7 @@ wb.styles do |style|
   sheet.add_row [""]
 
   sheet.add_row ["REQUEST FOR QUOTATION"]
-  sheet.add_row ["Bid RefNo: ",@bid_reference_no ]
+  sheet.add_row ["Bid RefNo: #{@bid_reference_no} "]
   sheet.add_row ["Transport quotation Delivery Datasheet for Region(s)_________zones(s)_____________"]
   sheet.add_row ["Address City:__________________Woreda:_______________Kebele:_________HouseNo:_________"]
   sheet.add_row ["TelephoneNo:___________________MobileNo: ____________________"]
@@ -63,13 +63,12 @@ wb.styles do |style|
  last_row = sheet.add_row 
  last_row = sheet.rows.index(last_row)
  
- sheet.add_row ["1) Total Amount to be transfered for Relief in Quintals: ",
-@relif_amount_in_quintal.to_s]
- sheet.add_row ["2) Total Amount to be transfered for PSNP in Quintals:  ", @psnp_amount_in_quintal.to_s]
- sheet.add_row ["3) Grand Total in Quintals: ", @grand_total.to_s]
- sheet.add_row ["4) Bid Submission Date: ", @bid_submission_date.to_s,  " Time:________"]
- sheet.add_row ["5) Bid Opening Date:",  @bid_opening_date.to_s , " Time: __________"]
- sheet.add_row ["6) Bid Bond Amount(in Birr):",  @bid_bond_amount.to_s]
+ sheet.add_row ["1) Total Amount to be transfered for Relief in Quintals: #{@relif_amount_in_quintal.to_s} "]
+ sheet.add_row ["2) Total Amount to be transfered for PSNP in Quintals: #{ @psnp_amount_in_quintal.to_s} "]
+ sheet.add_row ["3) Grand Total in Quintals: #{@grand_total.to_s}"]
+ sheet.add_row ["4) Bid Submission Date: #{@bid_submission_date.to_s} , Time:________"]
+ sheet.add_row ["5) Bid Opening Date: #{@bid_opening_date.to_s} , Time: __________"]
+ sheet.add_row ["6) Bid Bond Amount(in Birr): #{@bid_bond_amount.to_s}"]
  sheet.add_row [""]
 
 sheet.merge_cells("A#{last_row + 2}:G#{last_row + 2}")
