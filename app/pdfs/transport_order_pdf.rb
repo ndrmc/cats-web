@@ -25,8 +25,8 @@ class TransportOrderPdf < PdfReport
              end
         end
          header "Transport Order"
-         move_down 10
-        bounding_box([bounds.left, bounds.top -  100 ], :width => bounds.width, :height => bounds.height - 210) do
+         move_down 5
+        bounding_box([bounds.left, bounds.top -  80 ], :width => bounds.width, :height => bounds.height - 210) do
        
         text "<b>Order No.</b> <u> #{@transport_order.order_no}</u>", :align => :center, :inline_format => true
         text "\n\n<b>I. <u>TRANSACTION DETAILS</u></b>", :inline_format => true
@@ -35,16 +35,15 @@ class TransportOrderPdf < PdfReport
        
         t = [
              
-                 ["Transporter:","#{@transport_order&.transporter&.name}"],
-                 ["Region:", "#{@region}" , " " * 2, "Requisition Dispatch Date:","#{@transport_order&.start_date.to_formatted_s(:long_ordinal)}"],
-                 ["Zone:","#{@zones.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date.to_formatted_s(:long_ordinal)}"],
-                 ["Bid Document No:","#{@transport_order&.bid&.bid_number}"],
-                 ["Donor:", "#{donor.to_s}", "  " * 2 ,"Performance Bond Receipt #","#{@transport_order&.performance_bond_receipt}"],
-                 ["RequisitionNo:","#{@requisitions.to_s}", "  " * 2 ],
-                 ["Operation:","#{ @operation }"],
-                 ["Reference:","#{ @references.to_s}"]
+                 ["Transporter:","#{@transport_order&.transporter&.name}", " " * 2, "Requisition Dispatch Date:","#{@transport_order&.start_date.to_formatted_s(:long_ordinal)}"],
+                 ["Region:", "#{@region}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date.to_formatted_s(:long_ordinal)}"],
+                 ["Zone:","#{@zones.to_s}", " " * 2, "Performance Bond Receipt #","#{@transport_order&.performance_bond_receipt}"],
+                 ["Bid Document No:","#{@transport_order&.bid&.bid_number}", " " * 2,"Operation:","#{ @operation }" ],
+                 ["Donor:", "#{donor.to_s}", "  " * 2, "Reference:","#{ @references.to_s}"]
         ]
-        table(t, :column_widths => (@A4_SIZE), :cell_style => {:border_width => 0})   
+        table(t, :column_widths => (@A4_SIZE), :cell_style => {:border_width => 0})  
+        
+        text "RequisitionNo: #{@requisitions.to_s}"
          
 
         text "\n<b>II. <u>COMMODITY DETAILS</u></b>", :inline_format => true
