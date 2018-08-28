@@ -43,7 +43,7 @@ data = style.add_style alignment: {horizontal: :left, wrap_text: true}
   receipt_items = @receipts.sort_by{|r| [r.project_code]}
   receipt_items.each do |receipt|
     
-    sheet.add_row [ receipt&.received_date.strftime("%b-%d-%Y") , 
+    sheet.add_row [ receipt&.received_date&.strftime("%b-%d-%Y") , 
                 receipt&.grn_no ,
                 receipt&.waybill_no ,
                 receipt&.donor ,
