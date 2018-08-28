@@ -44,7 +44,7 @@ def receipt_report_items
           end
       end
      
-      @receipts = ReceiptLine.joins(:unit_of_measure, :project, :commodity, receipt: [:organization,:transporter]).select('receipts.received_date,receipts.grn_no,receipts.waybill_no,
+      @receipts = ReceiptLine.joins(:unit_of_measure, :project, :commodity).joins('inner join receipts  on receipts.id = receipt_lines.receipt_id  inner join organizations on organizations.id = receipts.donor_id  LEFT JOIN transporters on transporters.id = receipts.transporter_id').select('receipts.received_date,receipts.grn_no,receipts.waybill_no,
       organizations.name AS donor',
       'projects.project_code',
       'transporters.name as transporter',
@@ -82,7 +82,7 @@ def receipt_report
           end
       end
      
-      @receipts = ReceiptLine.joins(:unit_of_measure, :project, :commodity, receipt: [:organization,:transporter]).select('receipts.received_date,receipts.grn_no,receipts.waybill_no,
+      @receipts = ReceiptLine.joins(:unit_of_measure, :project, :commodity).joins('inner join receipts  on receipts.id = receipt_lines.receipt_id  inner join organizations on organizations.id = receipts.donor_id  LEFT JOIN transporters on transporters.id = receipts.transporter_id').select('receipts.received_date,receipts.grn_no,receipts.waybill_no,
       organizations.name AS donor',
       'projects.project_code',
       'transporters.name as transporter',
