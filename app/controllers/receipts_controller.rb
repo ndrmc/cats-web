@@ -33,7 +33,7 @@ def show
   
 end
 def receipt_report_items
-
+  
   if params[:hub].present?
        filter_map = {'receipts.hub_id': params[:hub]}
           if params[:received_date].present?
@@ -42,6 +42,10 @@ def receipt_report_items
             @date_min = dates[0]
             @date_max = dates[1]
           end
+        
+           if params[:project_code].present?
+             filter_map[:'projects.id'] = params[:project_code]
+           end
       end
      
       @receipts = ReceiptLine.joins(:unit_of_measure, :project, :commodity).joins('inner join receipts  on receipts.id = receipt_lines.receipt_id  inner join organizations on organizations.id = receipts.donor_id  LEFT JOIN transporters on transporters.id = receipts.transporter_id').select('receipts.received_date,receipts.grn_no,receipts.waybill_no,
@@ -72,6 +76,7 @@ end
 
 def receipt_report
        
+          
        if params[:hub].present?
        filter_map = {'receipts.hub_id': params[:hub]}
           if params[:received_date].present?
@@ -80,6 +85,10 @@ def receipt_report
             @date_min = dates[0]
             @date_max = dates[1]
           end
+
+           if params[:project_code].present?
+             filter_map[:'projects.id'] = params[:project_code]
+           end
       end
      
       @receipts = ReceiptLine.joins(:unit_of_measure, :project, :commodity).joins('inner join receipts  on receipts.id = receipt_lines.receipt_id  inner join organizations on organizations.id = receipts.donor_id  LEFT JOIN transporters on transporters.id = receipts.transporter_id').select('receipts.received_date,receipts.grn_no,receipts.waybill_no,
