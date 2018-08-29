@@ -22,11 +22,20 @@
             <%= select_tag  :hub,  options_from_collection_for_select( Hub.all, 'id', 'name', params[:hub] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-3 data-parsley-required' }  %>
           </div>
         </div>
+
+        <div class="form-group">
+          <%= label_tag :project_code, "Project Code", { :class => ' control-label'} %>
+
+          <div class="">
+            <%= select_tag  :project_code,  options_from_collection_for_select( Project.all, 'id', 'project_code', params[:project_code] ) , {:prompt => "-- Choose --", :include_blank => true, :class => 'form-control col-md-3 data-parsley-required' }  %>
+          </div>
+        </div>
+
         <div class="form-group">
           <%= label_tag :received_date, "Received Date", { :class => ' control-label'} %>
 
           <div class="">
-            <%= text_field_tag  :received_date, params[:received_date], { :required => true,  id: 'received-date-picker',class: 'form-control'}  %>
+            <%= text_field_tag  :received_date, params[:received_date], {   id: 'received-date-picker',class: 'form-control'}  %>
           </div>
         </div>
         
@@ -47,7 +56,7 @@
 </div>
 
 
-<% if (@date_min.present? && @date_max.present? && @hub.present?) %>
+<% if (@hub.present?) %>
 <div class="ibox float-e-margins">
   <div class="ibox-content">
     
@@ -120,4 +129,11 @@
       }
     ); 
   });
+
+ 
+$(document).ready(function(){
+  $('#project_code').select2();
+})
+
+
   </script>
