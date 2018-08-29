@@ -30,9 +30,17 @@
           </a>
         <% end %>
           </li>
-           <% if policy(TransportOrder).destroy? %>
+        <% if policy(TransportOrder).destroy? %>
           <li><a href="#" class='tr-modal' data-toggle="modal"  data-target="#tr-modal">Move Transport Order(s)</a></li>
         <% end %>
+          <li>
+            <% if policy(Bid).contracts? %>
+              <%= link_to 'Contracts', '/en/bids/contracts/' + @transport_order&.bid&.id.to_s %>
+            <% end %>
+          </li>
+          <li>
+            
+          </li>
         </ul>
         <div></div>
       </div>
