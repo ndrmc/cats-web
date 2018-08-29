@@ -25,26 +25,22 @@ class TransportOrderPdf < PdfReport
              end
         end
          header "Transport Order"
-         move_down 10
-        bounding_box([bounds.left, bounds.top -  100 ], :width => bounds.width, :height => bounds.height - 210) do
+         
+        bounding_box([bounds.left, bounds.top -  80 ], :width => bounds.width, :height => bounds.height - 210) do
        
         text "<b>Order No.</b> <u> #{@transport_order.order_no}</u>", :align => :center, :inline_format => true
         text "\n\n<b>I. <u>TRANSACTION DETAILS</u></b>", :inline_format => true
         text "Contract Number: #{@contract_no}" , :align => :right
         text "Transpot Order Date: #{@transport_order&.order_date}", :align => :right
        
-        t = [
-             
-                 ["Transporter:","#{@transport_order&.transporter&.name}"],
-                 ["Region:", "#{@region}" , " " * 2, "Requisition Dispatch Date:","#{@transport_order&.start_date.to_formatted_s(:long_ordinal)}"],
-                 ["Zone:","#{@zones.to_s}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date.to_formatted_s(:long_ordinal)}"],
-                 ["Bid Document No:","#{@transport_order&.bid&.bid_number}"],
-                 ["Donor:", "#{donor.to_s}", "  " * 2 ,"Performance Bond Receipt #","#{@transport_order&.performance_bond_receipt}"],
-                 ["RequisitionNo:","#{@requisitions.to_s}", "  " * 2 ],
-                 ["Operation:","#{ @operation }"],
-                 ["Reference:","#{ @references.to_s}"]
-        ]
-        table(t, :column_widths => (@A4_SIZE), :cell_style => {:border_width => 0})   
+        text "Transporter:#{@transport_order&.transporter&.name}",:inline_format => true
+        text "Region: #{@region}                                                                                                                  Requisition Dispatch Date: #{@transport_order&.start_date.to_formatted_s(:long_ordinal)}",:inline_format => true 
+        text "Zone: #{@zones.to_s}                                                                                                              Transport Expiry Date: #{@transport_order&.end_date.to_formatted_s(:long_ordinal)}",:inline_format => true 
+        text "Bid Document No: #{@transport_order&.bid&.bid_number}                                                                                                 Performance Bond Receipt: #{@transport_order&.performance_bond_receipt}", :inline_format => true 
+        text "RequisitionNo: #{@requisitions.to_s}", :inline_format => true 
+        text "Operation: #{ @operation }", :inline_format => true 
+        text "Reference: #{ @references.to_s}", :inline_format => true 
+         
          
 
         text "\n<b>II. <u>COMMODITY DETAILS</u></b>", :inline_format => true
@@ -65,11 +61,11 @@ class TransportOrderPdf < PdfReport
         
         table transport_order_items do
         row(0).font_style = :bold
-        column(0).width = 40
+        column(0).width = 20
         column(3).width = 90
         column(4).width = 60
         column(7).width = 60
-        self.row_colors = ["DDDDDD", "FFFFFF"]
+        # self.row_colors = ["DDDDDD", "FFFFFF"]
         self.header = true
     
 end
