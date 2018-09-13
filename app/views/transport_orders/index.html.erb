@@ -116,6 +116,9 @@
 </div>
 
 <script>
+$(document).ready(function(){
+  $('#operation').select2();
+})
   $("#operation, #region").on('change', function(e) {  
     $.get( '/transport_orders/rrd_reference_list', 
     { operation_id: $('#operation').val(), region_id: $('#region').val()}, 
