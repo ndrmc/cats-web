@@ -63,11 +63,7 @@ class TransportOrderByTransporterPdf < PdfReport
                             @total = @total + (@qty_in_qtl * to_detail.tariff)
                              t = [[@i,to_detail.requisition_no,@hub,Fdp.find(to_detail.fdp_id)&.location&.parent&.name,Fdp.find(to_detail.fdp_id)&.location&.name,Fdp.find(to_detail.fdp_id)&.name,Commodity.find_by(id: to_detail&.commodity_id)&.name,ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(@qty_in_qtl))]]
                             
-                            if @i.odd?
-                            table(t, :column_widths => 60,:cell_style => {:border_width => 1},:row_colors => ["DDDDDD", "FFFFFF"]) 
-                        else
                              table(t, :column_widths => 60,:cell_style => {:border_width => 1})
-                            end
                             
                         end
                        move_down 4
