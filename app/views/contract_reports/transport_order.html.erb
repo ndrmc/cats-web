@@ -139,7 +139,7 @@
 <script type="text/javascript">
 var EMPTY_OPTION = '<option value="">-- Choose --</option>';
 $(document).ready(function(){
-
+    $('#operation').select2();
     var request_id = '<%= params[:reference]%>'
  
     $.get( '/contract_reports/rrd_reference_list', 
