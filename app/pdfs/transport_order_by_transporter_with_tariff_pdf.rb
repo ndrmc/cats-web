@@ -67,12 +67,8 @@ class TransportOrderByTransporterWithTariffPdf < PdfReport
                              ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(to_detail.tariff)),
                              ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(@qty_in_qtl * to_detail.tariff))
                              ]]
-                            
-                            if @i.odd?
-                            table(t, :column_widths => 60,:cell_style => {:border_width => 1},:row_colors => ["DDDDDD", "FFFFFF"]) 
-                        else
+                             
                              table(t, :column_widths => 60,:cell_style => {:border_width => 1})
-                            end
                             
                         end
                        move_down 4

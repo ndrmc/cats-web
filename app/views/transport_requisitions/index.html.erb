@@ -135,7 +135,9 @@
 </div>
 
 <script>
-
+$(document).ready(function(){
+  $('#operation').select2();
+})
 $("#operation_tr, #region_tr").on('change', function(e) { 
     $.get( '/transport_requisitions/rrd_reference_list', 
           { operation_id: $('#operation_tr').val(), region_id: $('#region_tr').val()}, 
