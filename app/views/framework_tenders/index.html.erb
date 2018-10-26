@@ -39,7 +39,7 @@
           <% @framework_tenders.each do |framework_tender| %>
           <tr>
               <td>
-              <% if framework_tender.status != 'archived' %>
+              <% if framework_tender.status != 'archived' && policy(FrameworkTender).edit? %>
                   <%= link_to framework_tender.year, framework_tender_path(framework_tender.id) %>
               <% else %>
                   <%=  framework_tender.year %>
@@ -69,13 +69,13 @@
                     <ul class="dropdown-menu pull-right">
                       <li>
                        <%= link_to 'Warehouse Selection', '/en/warehouse_selections/' + framework_tender.id.to_s %>
-                      </li>                     
+                      </li>         
+                      <% if policy(FrameworkTender).update_status? %>            
                       <li>
                         <% if framework_tender.status != 'archived' %>
                           <%= link_to 'Bids', framework_tender_path(framework_tender.id) %>
                         <% end %> 
-                      </li>
-                      <% if policy(FrameworkTender).update_status? %>
+                      </li>                      
                        <li>
                           <% if framework_tender.status == 'open' %>
                             <%= link_to 'Close', '/framework_tenders/update_status/' + framework_tender.id.to_s + "/" +  "closed", :data => {:confirm => 'Do you want to close it?'} %>    
