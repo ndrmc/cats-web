@@ -25,15 +25,15 @@ class DispatchPolicy < ApplicationPolicy
     end
 
     def dispatch_report?
-        @current_user.permission('Dispatch', :clerk)
+        @current_user.permission('Dispatch', :admin)
     end
 
     def dispatch_report_generate?
-        @current_user.permission('Dispatch', :clerk)
+        @current_user.permission('Dispatch', :admin)
     end
     
     def dispatch_report_items?
-        @current_user.permission('Dispatch', :clerk)
+        @current_user.permission('Dispatch', :admin)
     end
 
     def check_stock?
