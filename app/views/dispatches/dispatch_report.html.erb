@@ -67,6 +67,7 @@
             <th>Donor </th>
             <th>Transporter</th>
             <th>Store Keeper</th>
+            <th>Store Number</th>
       </tr>
       </thead>
 
@@ -89,6 +90,7 @@
               <td><%= dispatch&.organization&.name%></td>
               <td><%= dispatch&.dispatch&.transporter&.name %></td>
               <td><%= dispatch&.dispatch&.storekeeper_name %></td>
+              <td><%= dispatch&.dispatch&.store&.name %></td>
           </tr>
           <% $i = $i + 1 %>
         <% end %>

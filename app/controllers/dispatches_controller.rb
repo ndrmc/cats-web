@@ -178,7 +178,7 @@ class DispatchesController < ApplicationController
         dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
         filter_map[:dispatch_date] = dates[0]..dates[1]
       end
-            @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation] })
+            @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation, :store] })
             .where(:'dispatches.hub_id' => params[:hub]).where("dispatches.dispatch_date >= ? AND dispatches.dispatch_date <= ? ",dates[0],dates[1])
             @date_min = dates[0]
             @date_max = dates[1]

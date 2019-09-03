@@ -38,6 +38,7 @@ class Dispatch < ApplicationRecord
     belongs_to :hub 
     belongs_to :warehouse 
     belongs_to :transporter
+    belongs_to :store
     
     has_many :dispatch_items
 
