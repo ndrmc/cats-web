@@ -53,6 +53,8 @@
     <table class="table table-striped cats-datatable">
       <thead>
       <tr>
+            <th>Dispatch Date</th>
+            <th>Requisition Number</th>
             <th>Project Code</th>
             <th>GIN</th>
             <th>Region </th>
@@ -64,7 +66,7 @@
             <th>Qantity</th>
             <th>Donor </th>
             <th>Transporter</th>
-            
+            <th>Store Keeper</th>
       </tr>
       </thead>
 
@@ -73,6 +75,8 @@
         <% $i = 0 %>
         <%  @dispatch.each   do | dispatch |%>
           <tr>
+              <td><%= dispatch&.dispatch&.dispatch_date.to_formatted_s(:long_ordinal) %></td>
+              <td><%= dispatch&.dispatch&.requisition_number %></td>
               <td><%= dispatch&.project&.project_code %></td>
               <td><%= dispatch&.dispatch&.gin_no%></td>
               <td><%= dispatch&.dispatch&.fdp&.location&.parent&.parent&.name %></td>
@@ -84,6 +88,7 @@
               <td><%= dispatch&.quantity%></td>
               <td><%= dispatch&.organization&.name%></td>
               <td><%= dispatch&.dispatch&.transporter&.name %></td>
+              <td><%= dispatch&.dispatch&.storekeeper_name %></td>
           </tr>
           <% $i = $i + 1 %>
         <% end %>
