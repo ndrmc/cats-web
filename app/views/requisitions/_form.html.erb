@@ -38,7 +38,12 @@
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :commodity_id, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>
-              <%= f.text_field :commodity_id, :value=> requisition.commodity_id ? Commodity.find(requisition.commodity_id).name : nil, :disabled => true %>
+            <% if @dispatch_count > 0 %>
+              <%= f.collection_select :commodity_id,
+                @commodity_list,:id,:name, {include_blank: true}, {class: 'col-md-6 col-sm-6 col-xs-12', :required => true } %>
+            <% else %>
+              <%= f.text_field :commodity_id, :value=> requisition.commodity_id ? Commodity.find(requisition.commodity_id).name : nil, :disabled => true %>     
+            <% end %>
           </div>
           <div class="form-group col-md-6 col-sm-6 col-xs-12">
             <%= f.label :region_id, :class=>"control-label col-md-3 col-sm-3 col-xs-6" %>

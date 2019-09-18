@@ -61,6 +61,8 @@ class RequisitionsController < ApplicationController
   def edit
     @contingency = RequisitionItem.where(requisition_id: params[:id]).sum(:contingency)
     @amount = RequisitionItem.where(requisition_id: params[:id]).sum(:amount)
+    @commodity_list = Commodity.where(commodity_category_id: @requisition.commodity.commodity_category.id).order(:name)
+    @dispatch_count = Dispatch.where(requisition_number: @requisition.requisition_no).count
   end
 
 
