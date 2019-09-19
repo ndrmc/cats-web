@@ -209,9 +209,7 @@
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label for="transporter">Transporter
-            <span class="required">*</span>
-          </label>
+          <label for="transporter">Transporter</label>
           <div>
             <%= f.collection_select :transporter_id,
                   Transporter.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => false } %>
