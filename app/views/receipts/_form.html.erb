@@ -214,7 +214,7 @@
           </label>
           <div>
             <%= f.collection_select :transporter_id,
-                  Transporter.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => true } %>
+                  Transporter.order(:name), :id, :name, {include_blank: '-- Choose --'}, {:class => 'form-control', :required => false } %>
           </div>
         </div>
 
