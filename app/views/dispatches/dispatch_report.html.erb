@@ -54,6 +54,7 @@
       <thead>
       <tr>
             <th>Dispatch Date</th>
+            <th>Operation</th>
             <th>Requisition Number</th>
             <th>Project Code</th>
             <th>GIN</th>
@@ -77,6 +78,7 @@
         <%  @dispatch.each   do | dispatch |%>
           <tr>
               <td><%= dispatch&.dispatch&.dispatch_date.to_formatted_s(:long_ordinal) %></td>
+              <td><%= dispatch&.dispatch&.operation&.name %></td>
               <td><%= dispatch&.dispatch&.requisition_number %></td>
               <td><%= dispatch&.project&.project_code %></td>
               <td><%= dispatch&.dispatch&.gin_no%></td>
