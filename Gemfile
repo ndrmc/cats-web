@@ -69,7 +69,7 @@ gem 'ancestry'
 
 
 # Devise for authentication
-gem 'devise', '~> 4.2.0'
+gem 'devise', '~> 4.7.1'
 
 gem 'rolify'
 
