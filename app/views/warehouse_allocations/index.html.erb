@@ -23,7 +23,7 @@
             <%= label_tag :operation, "Operation", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :operation,  options_from_collection_for_select( Operation.where(archived: [nil,false]).order('name'), 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-6 data-parsley-required' }  %>
+              <%= select_tag  :operation,  options_from_collection_for_select( Operation.where(archived: [nil,false]).order(created_at: :DESC), 'id', 'name', params[:operation] ) , {:required => true , :prompt => "-- Choose --", :class => 'form-control col-md-6 data-parsley-required' }  %>
             </div>
           </div>
           <div class="form-group">
@@ -105,6 +105,8 @@
 <script>
 $(document).ready(function(){
   toggle();
+
+  $('#operation').select2();
 })
 
 $("form").submit(function()
