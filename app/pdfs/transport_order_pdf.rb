@@ -1,15 +1,17 @@
 require 'prawn/table'
-require 'to_words'
+
 class TransportOrderPdf < PdfReport
-    def initialize(transport_order, transport_order_items, zones, region, requisitions, references, contract_no)
+    def initialize(transport_order, transport_order_items, transport_order_items_flat, zones, region, requisitions, references, contract_no, aggregated)
         super(top_margin: 50)
         @transport_order = transport_order
         @transport_order_items = transport_order_items
+        @transport_order_items_flat = transport_order_items_flat
         @zones = zones
         @region = region
         @requisitions = requisitions
         @references = references
         @contract_no = contract_no
+        @aggregated = aggregated
         donor = []
         @A4_SIZE = 100.freeze
         @operation = Operation.find_by(id: @transport_order.operation_id)&.name
@@ -64,9 +66,11 @@ class TransportOrderPdf < PdfReport
     end
 
     def transport_orders
-        
+        puts transport_order_items.to_s
         table transport_order_items do
         row(0).font_style = :bold
+        row(-1).font_style = :bold
+        row(-2).font_style = :bold
         column(0).width = 20
         column(3).width = 90
         column(4).width = 60
@@ -81,27 +85,11 @@ end
     def transport_order_items
         dynamic_data = []
         dynamic_data = ["No","Woreda","Destination","Origin warehouse","Commodity", "Quantity Qtl", "Tariff / Qtl", "Total Amount in Birr"]
-        @count = 0
-       
+        @count = 0       
         @amount_total = 0
         @birr_total = 0
-       result = [dynamic_data] +
-        @transport_order_items.map do |item|
-            requisition_id = Requisition.find_by(requisition_no: item.requisition_no)&.id
-             project_id = ProjectCodeAllocation.where(requisition_id: requisition_id).limit(1).pluck(:project_id)
-              warehouse_id = WarehouseAllocationItem.where(requisition_id: requisition_id,fdp_id: item.fdp_id).limit(1).pluck(:warehouse_id)
-              if warehouse_id.present?
-                     @warehouse = Warehouse.find_by(id: warehouse_id[0].to_i)&.name
-                end
-            @count += 1
-            target_unit = UnitOfMeasure.find_by(name: "Quintal")
-            current_unit = UnitOfMeasure.find(item.unit_of_measure_id)
-            amount_in_qtl = target_unit.convert_to(current_unit.name, item.quantity)
-            @amount_total = @amount_total + (amount_in_qtl)
-            @birr_total = @birr_total + (amount_in_qtl*item.tariff)
-            [@count, item.fdp.location.name,item.fdp.name,  @warehouse ,item.commodity.name, ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(amount_in_qtl.round(2))), item.tariff.round(2), ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision((amount_in_qtl*item.tariff).round(2)))]       
-        end
-        result = result + [["Total", "-", "-",  "-", "", ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(@amount_total.round(2))), "-",ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(@birr_total.round(2)))]]
-        result = result + [[{:content => "Amount in words: " + @birr_total.humanize, :colspan => 8}]]
+       result = [dynamic_data] + @transport_order_items_flat
+        result = result + [["", "", "", "", "Total", ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(@aggregated['amount_total'].round(2).to_s)), "-",ActionController::Base.helpers.number_with_delimiter(ActionController::Base.helpers.number_with_precision(@aggregated['birr_total'].round(2).to_s))]]
+        result = result + [[{:content => "Amount in words: " + @aggregated['birr_total_inwords'].to_s, :colspan => 8}]]
     end    
 end
