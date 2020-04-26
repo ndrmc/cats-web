@@ -1,3 +1,5 @@
+require 'humanize'
+
 class TransportOrdersController < ApplicationController
   before_action :set_transport_order, only: [:show, :edit, :update, :destroy, :move, :save_to_dates]
  include ReferenceHelper
@@ -125,9 +127,36 @@ class TransportOrdersController < ApplicationController
         @requisitions += "#{@commodity_name}:#{toi.requisition_no}, "
       end
     end
+    @transport_order_items_flat = []
+    @count = 0
+    @amount_total = 0
+    @birr_total = 0
     @transport_order_items = TransportOrderItem.includes(:commodity, fdp: :location).where(:transport_order_id => params[:id])
-      @requistion_ids = @transport_order_items.map{|r| r.requisition_no}.uniq
-      @references = get_reference_numbers_by_requisition_no(@requistion_ids)
+    @transport_order_items.map do |item|
+      requisition_id = Requisition.find_by(requisition_no: item.requisition_no)&.id
+      # project_id = ProjectCodeAllocation.where(requisition_id: requisition_id).limit(1).pluck(:project_id)
+      warehouse_id = WarehouseAllocationItem.where(requisition_id: requisition_id,fdp_id: item.fdp_id).limit(1).pluck(:warehouse_id)
+      if warehouse_id.present?
+        @warehouse = Warehouse.find_by(id: warehouse_id[0].to_i)&.name
+      end
+      @count += 1
+      target_unit = UnitOfMeasure.find_by(name: "Quintal")
+      current_unit = UnitOfMeasure.find(item.unit_of_measure_id)
+      amount_in_qtl = target_unit.convert_to(current_unit.name, item.quantity)
+      @amount_total = @amount_total + (amount_in_qtl)
+      @birr_total = @birr_total + (amount_in_qtl*item.tariff)
+      @transport_order_items_flat = @transport_order_items_flat << [@count, item.fdp.location.name, item.fdp.name, @warehouse,item.commodity.name, amount_in_qtl, item.tariff.round(2), (amount_in_qtl*item.tariff).round(2)]  
+    end
+    @split_birr_total = @birr_total.divmod 1
+    puts "split_birr_total: " + @split_birr_total[1].round(2).to_s
+    @integer = @split_birr_total[0].humanize + ' birr and'
+    @fraction = (@split_birr_total[1]*100).to_i.humanize + ' cents'
+    @birr_total_in_words = @integer.to_s + ' ' + @fraction.to_s
+    @aggregated = {'amount_total' => @amount_total, 'birr_total' => @birr_total, 'birr_total_inwords' => @birr_total_in_words.humanize} 
+
+    
+    @requistion_ids = @transport_order_items.map{|r| r.requisition_no}.uniq
+    @references = get_reference_numbers_by_requisition_no(@requistion_ids)
     
     @contract_no = "N/A"
     if (@transport_order&.bid&.bid_number.present? && @transport_order&.transporter&.code.present?)
@@ -137,14 +166,15 @@ class TransportOrdersController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @zones,  @region, @requisitions, @references, @contract_no)
+          pdf = TransportOrderPdf.new(@transport_order, @transport_order_items, @transport_order_items_flat, @zones,  @region, @requisitions, @references, @contract_no, @aggregated)
           send_data pdf.render, filename: "transport_order_#{@transport_order&.id}.pdf",
           type: "application/pdf",
           disposition: "inline"
       end      
     end
   end
- def move
+
+  def move
     @transport_order_items_ids = params[:att].split ","
    TransportOrder.move_transport_order(params[:transporter], @transport_order_items_ids,current_user.id)
    respond_to do |format|
