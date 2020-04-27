@@ -1,7 +1,7 @@
 require 'prawn/table'
 
 class TransportOrderPdf < PdfReport
-    def initialize(transport_order, transport_order_items, transport_order_items_flat, zones, region, requisitions, references, contract_no, aggregated)
+    def initialize(transport_order, transport_order_items, transport_order_items_flat, zones, region, requisitions, references, contract_no, aggregated, start_date_eth, end_date_eth)
         super(top_margin: 50)
         @transport_order = transport_order
         @transport_order_items = transport_order_items
@@ -12,6 +12,8 @@ class TransportOrderPdf < PdfReport
         @references = references
         @contract_no = contract_no
         @aggregated = aggregated
+        @start_date_eth = start_date_eth
+        @end_date_eth = end_date_eth
         donor = []
         @A4_SIZE = 100.freeze
         @operation = Operation.find_by(id: @transport_order.operation_id)&.name
@@ -40,8 +42,8 @@ class TransportOrderPdf < PdfReport
 
         t = [
              
-                 ["Transporter:","#{@transport_order&.transporter&.name}", " " * 2, "Requisition Dispatch Date:","#{@transport_order&.start_date.to_formatted_s(:long_ordinal)}"],
-                 ["Region:", "#{@region}", "  " * 2 ,"Transport Expiry Date:","#{@transport_order&.end_date.to_formatted_s(:long_ordinal)}"],
+                 ["Transporter:","#{@transport_order&.transporter&.name}", " " * 2, "Requisition Dispatch Date:","#{@start_date_eth}"],
+                 ["Region:", "#{@region}", "  " * 2 ,"Transport Expiry Date:","#{@end_date_eth}"],
                  ["Zone:","#{@zones.to_s}", " " * 2, "Performance Bond Receipt #","#{@transport_order&.performance_bond_receipt}"],
                  ["Bid Document No:","#{@transport_order&.bid&.bid_number}", " " * 2,"Operation:","#{ @operation }" ],
                  ["Donor:", "#{donor.to_s}", "  " * 2, "Reference:","#{ @references.to_s}"]
