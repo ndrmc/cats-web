@@ -1,6 +1,7 @@
 class DeliveriesController < ApplicationController
   before_action :set_delivery, only: [:show, :edit, :update, :destroy]
   before_action :authorize_delivery
+  include DateHelper
   # GET /deliveries
   # GET /deliveries.json
   def index
@@ -79,11 +80,10 @@ class DeliveriesController < ApplicationController
 
   # POST /deliveries
   # POST /deliveries.json
-  def create
-
-    
-
-    @delivery = Delivery.new(delivery_params)
+  def create  
+    dp = delivery_params
+    dp[:received_date] = toGregorian(dp[:received_date].to_s)
+    @delivery = Delivery.new(dp)
     @delivery.created_by = current_user.id
     @delivery.status = :draft
     respond_to do |format|
@@ -100,15 +100,14 @@ class DeliveriesController < ApplicationController
   # PATCH/PUT /deliveries/1
   # PATCH/PUT /deliveries/1.json
   def update
-
-  
-
+    dp = delivery_params
+    dp[:received_date] = toGregorian(dp[:received_date].to_s)
     @delivery = Delivery.find(params[:id]);
     @delivery.delivery_details.destroy_all
     @delivery.modified_by = current_user.id
 
     respond_to do |format|
-      if @delivery.update(delivery_params)
+      if @delivery.update(dp)
         format.html { redirect_to edit_delivery_url(@delivery), notice: 'Delivery was successfully updated.' }
         format.json { render :edit, status: :ok, location: @delivery }
       else
