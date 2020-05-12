@@ -154,9 +154,8 @@ class TransportOrdersController < ApplicationController
       @transport_order_items_flat = @transport_order_items_flat << [@count, item.fdp.location.name, item.fdp.name, @warehouse,item.commodity.name, amount_in_qtl, item.tariff.round(2), (amount_in_qtl*item.tariff).round(2)]  
     end
     @split_birr_total = @birr_total.divmod 1
-    puts "split_birr_total: " + @split_birr_total[1].round(2).to_s
     @integer = @split_birr_total[0].humanize + ' birr and'
-    @fraction = (@split_birr_total[1]*100).to_i.humanize + ' cents'
+    @fraction = (@split_birr_total[1].round(2)*100).to_i.humanize + ' cents'
     @birr_total_in_words = @integer.to_s + ' ' + @fraction.to_s
     @aggregated = {'amount_total' => @amount_total, 'birr_total' => @birr_total, 'birr_total_inwords' => @birr_total_in_words.humanize} 
 
