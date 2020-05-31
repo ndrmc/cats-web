@@ -165,14 +165,14 @@ $(document).ready(function() {
     $('.custom_datepicker').calendarsPicker({
 
         calendar: $.calendars.instance('ethiopian', 'am'),
-        format: 'dd/mm/yyyy',
+        format: 'yyyy-mm-dd',
 
         onSelect: function(dateText, inst) {
 
             var dateAsObject = $(this).calendarsPicker('getDate');
             var jd = dateAsObject[0].toJD();
-            var date_gc = $.calendars.instance('gregorian').fromJD(jd);
-            $(this).val(date_gc.formatDate('dd/mm/yyyy'));
+            var date_gc = $.calendars.instance('ethiopian').fromJD(jd);
+            $(this).val(date_gc.formatDate('yyyy-mm-dd'));
 
         }
     });

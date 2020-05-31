@@ -39,3 +39,7 @@
 	height: 50px !important;
 	background-color: #fff !important;
  }
+
+ .calendars-popup {
+	 z-index: 999999 !important;
+ }

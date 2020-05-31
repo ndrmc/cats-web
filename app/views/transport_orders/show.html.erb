@@ -235,7 +235,7 @@
               <%= label_tag :start_date, "Start Date", { :class => ' control-label'} %>
 
               <div class="">
-                <%= text_field_tag :start_date, @transport_order.start_date, { :required => true, name: 'transport_order[start_date]', id: 'start_date',class: 'form-control datepicker'}  %>
+                <%= text_field_tag :start_date, @start_date_eth, { :required => true, name: 'transport_order[start_date]', id: 'start_date',class: 'form-control custom_datepicker'}  %>
               </div>
             </div>
 
@@ -243,7 +243,7 @@
               <%= label_tag :end_date, "End Date", { :class => ' control-label', :required => true } %>
 
               <div class="">
-                <%= text_field_tag :end_date, @transport_order.end_date, { :required => true, name: 'transport_order[end_date]', id: 'end_date',class: 'form-control datepicker'}  %>
+                <%= text_field_tag :end_date, @end_date_eth, { :required => true, name: 'transport_order[end_date]', id: 'end_date',class: 'form-control custom_datepicker'}  %>
               </div>
             </div>
         </div>     
