@@ -9,7 +9,7 @@ set :puma_threads,    [4, 16]
 set :puma_workers,    1
 
 # rbenv and ruby settings
-set :rbenv_ruby, "2.7.1"
+set :rbenv_ruby, "2.3.0"
 
 # Don't change these unless you know what you're doing
 set :pty,             true
