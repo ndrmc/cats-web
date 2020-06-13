@@ -177,9 +177,13 @@ class DispatchesController < ApplicationController
             if params[:dispatch_date ].present?
                 dates = params[:dispatch_date].split(' - ').map { |d| Date.parse d }
                 filter_map[:dispatch_date] = dates[0]..dates[1]
-            end   
-            @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation, :store] })
-            .where(:'dispatches.hub_id' => params[:hub]).where("dispatches.dispatch_date >= ? AND dispatches.dispatch_date <= ? AND dispatches.operation_id = ?",dates[0],dates[1],params[:operation])
+            end 
+            @dispatch = []  
+            if (params[:operation].present?)
+                @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation, :store] }).where(:'dispatches.hub_id' => params[:hub]).where("dispatches.dispatch_date >= ? AND dispatches.dispatch_date <= ? AND dispatches.operation_id = ?",dates[0],dates[1],params[:operation])
+            else
+                @dispatch = DispatchItem.includes(:commodity,:project,:unit_of_measure, { dispatch: [ { fdp: [:location] } ,:transporter, :operation, :store] }).where(:'dispatches.hub_id' => params[:hub]).where("dispatches.dispatch_date >= ? AND dispatches.dispatch_date <= ?",dates[0],dates[1])
+            end
             @date_min = dates[0]
             @date_max = dates[1]
             @hub = hub.name
@@ -205,7 +209,7 @@ class DispatchesController < ApplicationController
         end
         if (params[:fdp_id].present?)
             @woreda = Location.find(Fdp.find(params[:fdp_id]).location_id)
-            @zone = @woreda&.parent
+            @zone = @woreda&.pare   nt
             @region = @zone&.parent
         end
         @dispatch = Dispatch.new

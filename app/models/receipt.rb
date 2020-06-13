@@ -35,7 +35,7 @@
 #  receiveid               :string(36)       not null
 #  received_date_ec        :string
 #  donor_id                :integer
-#
+#  vessel_name             :string
 
 class Receipt < ApplicationRecord
     include Postable
