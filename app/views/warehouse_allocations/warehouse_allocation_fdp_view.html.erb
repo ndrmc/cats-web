@@ -108,7 +108,7 @@
             <td> <%=  @wai&.warehouse&.name  %> </td>                    
             <td> 
             <% if policy(WarehouseAllocation).change_wai? %> 
-              <a data-wai-id="<%= @wai&.id %>" data-woreda-name = "<%= @wai&.fdp&.location&.name %>" data-fdp-name = "<%= @wai&.fdp&.name %>" data-hub = "<%= @wai&.hub&.id %>" data-warehouse = "<%= @wai&.warehouse&.id %>" data-hub-name = "<%= @wai&.hub&.name %>" data-warehouse-name = "<%= @wai&.warehouse&.name %>" data-requisition = "<%= @wai&.requisition&.requisition_no %>" data-target="#change-warehouse-allocation" data-toggle="modal" data-level="fdp">
+              <a data-wai-id="<%= @wai&.id %>" data-woreda-name = "<%= @wai&.fdp&.location&.name %>" data-fdp-name = "<%= @wai&.fdp&.name %>" data-fdp = "<%= requisition_detail&.fdp&.id %>" data-hub = "<%= @wai&.hub&.id %>" data-warehouse = "<%= @wai&.warehouse&.id %>" data-woreda-id = "<%= woreda %>" data-operation = "<%= params['operation'] %>" data-hub-name = "<%= @wai&.hub&.name %>" data-warehouse-name = "<%= @wai&.warehouse&.name %>" data-requisition-id = "<%= requisition_details.first.requisition_id %>" data-requisition = "<%= requisition_details.first.requisition.requisition_no %>" data-target="#change-warehouse-allocation" data-toggle="modal" data-level="fdp">
                 Change
               </a>
             <% end %>
@@ -138,8 +138,9 @@
         <h4 id='modal-title' class="modal-title">Change Warehouse Allocation</h4>
       </div>
       <input id="operation_id" name="operation_id" type="hidden" value="" />
-      <input id="requisition_id" name="operation_id" type="hidden" value="" />
+      <input id="requi_id" name="requisition_id" type="hidden" value="" />
       <input id="woreda_id" name="woreda_id" type="hidden" value="" />
+      <input id="fdp_id" name="fdp_id" type="hidden" value="" />
       <div class="modal-body col-md-12 col-sm-12 col-xs-12">
         <div class="ibox float-e-margins col-md-12 col-sm-12 col-xs-12">
           <div class="col-md-12 col-sm-12 col-xs-12">          

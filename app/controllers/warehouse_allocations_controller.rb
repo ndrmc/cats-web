@@ -140,21 +140,49 @@ class WarehouseAllocationsController < ApplicationController
   end
 
 
-  def change_wai    
-    @existing_wai = WarehouseAllocationItem.includes(:warehouse_allocation, fdp: :location).find(warehouse_allocation_params["wai_id"])
-    @existing_wai.hub_id = warehouse_allocation_params["hub_id"]
-    @existing_wai.warehouse_id = warehouse_allocation_params["warehouse_id"]
-    @existing_wai.status = :edited
+  def change_wai   
+    @operation_id = warehouse_allocation_params["operation_id"]
+    @requisition_id = warehouse_allocation_params["requi_id"]
+    @fdp_id = warehouse_allocation_params["fdp_id"]
+    @set_as_default = warehouse_allocation_params["set_as_default"]
+    @fdp = Fdp.includes(location: [warehouse: :hub]).find(@fdp_id)    
+    @wai_id = warehouse_allocation_params["wai_id"]
+    @result = false
+    if (@wai_id.present?)
+      @existing_wai = WarehouseAllocationItem.includes(:warehouse_allocation, fdp: :location).find(@wai_id)
+    end
+    if (@existing_wai.present?)
+      @existing_wai.hub_id = warehouse_allocation_params["hub_id"]
+      @existing_wai.warehouse_id = warehouse_allocation_params["warehouse_id"]
+      @existing_wai.status = :edited
+      @result = @existing_wai.save
+    else
+      @requisition = Requisition.find(@requisition_id)      
+      @region_id = @fdp&.location&.parent&.parent&.id
+      @warehouse_allocation = WarehouseAllocation.where(operation_id: @operation_id, region_id: @region_id).first
+      @warehouse_allocation_item = WarehouseAllocationItem.new
+      print "************ ID: " + @warehouse_allocation.id.to_s
+      @warehouse_allocation_item.warehouse_allocation_id = @warehouse_allocation.id      
+      @warehouse_allocation_item.zone_id = @fdp&.location&.parent&.id
+      @warehouse_allocation_item.woreda_id = @fdp&.location&.id
+      @warehouse_allocation_item.fdp_id = @fdp.id
+      @warehouse_allocation_item.hub_id = @fdp&.location&.warehouse&.hub&.id
+      @warehouse_allocation_item.warehouse_id = @fdp&.location&.warehouse&.id
+      @warehouse_allocation_item.requisition_id = @requisition.id
+      @warehouse_allocation_item.status = :draft
+      @result = @warehouse_allocation_item.save
+    end
+
     @flag = true
     if(warehouse_allocation_params["set_as_default"])
       @flag = false
-      location = @existing_wai.fdp.location
+      location = @fdp.location
       location.warehouse_id = warehouse_allocation_params["warehouse_id"]
       location.save
       @flag = true
     end
     respond_to do |format|
-      if (@existing_wai.save && @flag)
+      if (@result && @flag)
         format.json { head :no_content }
       else
         format.json { render json: @existing_wai.warehouse_allocation.errors, status: :unprocessable_entity }
@@ -169,9 +197,9 @@ class WarehouseAllocationsController < ApplicationController
     @set_as_default = warehouse_allocation_params["set_as_default"]
     @operation_id = warehouse_allocation_params["operation_id"]
     @woreda_id = warehouse_allocation_params["woreda_id"]
-    @requisition_id = warehouse_allocation_params["requisition_id"]
+    @requisition_id = warehouse_allocation_params["requi_id"]
 
-    @warehouse_allocation_items.count = WarehouseAllocationItem.includes(:warehouse_allocation, fdp: :location).where(:'warehouse_allocations.operation_id' => @operation_id, :woreda_id => @woreda_id, :requisition_id => @requisition_id)
+    @warehouse_allocation_items = WarehouseAllocationItem.includes(:warehouse_allocation, fdp: :location).where(:'warehouse_allocations.operation_id' => @operation_id, :woreda_id => @woreda_id, :requisition_id => @requisition_id)
 
     @warehouse_allocation_items.each do |warehouse_allocation_item|
       warehouse_allocation_item.hub_id = @hub_id
@@ -266,6 +294,6 @@ class WarehouseAllocationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def warehouse_allocation_params
-      params.require(:warehouse_allocation).permit(:wai_id, :hub_id, :warehouse_id, :woreda_id, :requisition_id, :set_as_default, :operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
+      params.require(:warehouse_allocation).permit(:wai_id, :fdp_id, :hub_id, :requi_id, :warehouse_id, :woreda_id, :requisition_id, :set_as_default, :operation_id, :region_id, :status, :created_by, :modified_by, :deleted_at)
     end
 end

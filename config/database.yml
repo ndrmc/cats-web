@@ -95,7 +95,6 @@ test:
 #  database: cats_production
 #  username: cats_prod
 #  password: <%= ENV['CATS_DATABASE_PASSWORD'] %>
-
 #stage:
 #  <<: *default
 #  host: 10.11.156.20

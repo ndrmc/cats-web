@@ -23,20 +23,27 @@ $(document).ready(function() {
 		var warehouse = $( e.relatedTarget ).data('warehouse');
 		var warehouse_name = $( e.relatedTarget ).data('warehouse-name');
 		var level = $( e.relatedTarget ).data('level');
-		var fdp_name = $( e.relatedTarget ).data('fdp-name');
+		var fdp_name = $( e.relatedTarget ).data('fdp-name');		
 		if(level=="woreda"){
 			var woreda_id = $( e.relatedTarget ).data('woreda-id');
 			var operation_id = $( e.relatedTarget ).data('operation');
 			var requisition_id = $( e.relatedTarget ).data('requisition-id');
 			
 			$("#operation_id").val(operation_id);
-			$("#woreda_id").val(woreda_id);
-			$("#requisition_id").val(requisition_id);
+			$("#woreda_id").val(woreda_id);			
+			$("#requi_id").val(requisition_id);
 			$("#changes-woreda-wa-btn").show();
 			$("#changes-fdp-wa-btn").hide();
 			fdp_name = "All FDPs";
 		}
 		else{
+			var fdp_id = $( e.relatedTarget ).data('fdp');
+			var operation_id = $( e.relatedTarget ).data('operation');
+			var requisition_id = $( e.relatedTarget ).data('requisition-id');
+			
+			$("#operation_id").val(operation_id);
+			$("#fdp_id").val(fdp_id);
+			$("#requi_id").val(requisition_id);
 			$("#changes-woreda-wa-btn").hide();
 			$("#changes-fdp-wa-btn").show();
 		}
@@ -74,13 +81,15 @@ $(document).ready(function() {
 
     $('#changes-fdp-wa-btn').on('click', function (e) {
     	e.preventDefault();
-
+		var operation_id = $("#operation_id").val();
     	var wai_id = $(this).attr("data-wai-id");
         var hub = $('#hub').val();
 		var warehouse = $('#warehouse').val();
 		var set_as_default = $('#set_as_default').is(':checked');
+		var fdp_id = $('#fdp_id').val();
+		var requi_id = $('#requi_id').val();
 
-        if (wai_id!='' && wai_id!=null && hub!='' && hub!=null && warehouse!='' && warehouse!=null)
+        if (hub!='' && hub!=null && warehouse!='' && warehouse!=null && fdp_id!=null)
         {
         	$.ajax({
 		        url:'/en/warehouse_allocations/change_wai',
@@ -91,7 +100,10 @@ $(document).ready(function() {
 		        		wai_id: wai_id,
 			            hub_id: hub,
 						warehouse_id: warehouse,
-						set_as_default: set_as_default
+						set_as_default: set_as_default,
+						fdp_id: fdp_id,
+						requi_id: requi_id,
+						operation_id: operation_id
 		        	}	            
 		        },
 		        before: function() {
@@ -124,7 +136,7 @@ $(document).ready(function() {
     	e.preventDefault();
 
     	var operation = $("#operation_id").val();
-        var requisition = $('#requisition_id').val();
+		var requisition = $('#requisition_id').val();
 		var woreda = $('#woreda_id').val();
 		var set_as_default = $('#set_as_default').is(':checked');
 		var hub = $('#hub').val();
@@ -138,7 +150,7 @@ $(document).ready(function() {
 		        data:{
 		        	warehouse_allocation: {
 		        		operation_id: operation,
-			            requisition_id: requisition,
+			            requi_id: requisition,
 						woreda_id: woreda,
 						hub_id: hub,
 						warehouse_id: warehouse,
