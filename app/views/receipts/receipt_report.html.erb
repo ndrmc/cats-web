@@ -79,7 +79,7 @@
             <th>Received Amount</th>
             <th>Unit</th>
             <th>Store keeper Name</th>
-            
+            <th>Vessel Name</th>            
       </tr>
       </thead>
 
@@ -102,7 +102,7 @@
               <td><%= receipt&.quantity %></td>
               <td><%= receipt&.unit %></td>
               <td><%= receipt&.storekeeper_name %></td>
-              
+              <td><%= receipt&.vessel_name %></td>
           </tr>
           <% $i = $i + 1 %>
         <% end %>
