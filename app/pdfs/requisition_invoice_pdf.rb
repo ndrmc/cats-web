@@ -152,7 +152,7 @@ class RequisitionInvoicePdf < PdfReport
         table requisition_item do
         
         columns(1..3).align = :right
-        self.row_colors = ["DDDDDD", "FFFFFF"]
+        # self.row_colors = ["DDDDDD", "FFFFFF"]
         self.header = true
         end
     end

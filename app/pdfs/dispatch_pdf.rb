@@ -16,7 +16,7 @@ def dispatches
       row(0).font_style = :bold
       columns(1..3).align = :right
       column(1..11).width = 60
-      self.row_colors = ["DDDDDD", "FFFFFF"]
+    #   self.row_colors = ["DDDDDD", "FFFFFF"]
       self.header = true
     end
 end

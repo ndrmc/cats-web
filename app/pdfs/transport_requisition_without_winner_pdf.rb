@@ -23,7 +23,7 @@ class TransportRequisitionWithoutWinnerPdf < PdfReport
             row(0).font_style = :bold
             row(-1).font_style = :bold
             # columns(1..3).align = :right
-            self.row_colors = ["DDDDDD", "FFFFFF"]
+            # self.row_colors = ["DDDDDD", "FFFFFF"]
             self.header = true
             columns(0).width = 30
             columns(1).width = 40

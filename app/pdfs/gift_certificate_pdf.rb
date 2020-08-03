@@ -21,7 +21,7 @@ def gift_certificate
     table gift do
       row(0).font_style = :bold
       columns(1..3).align = :right
-      self.row_colors = ["DDDDDD", "FFFFFF"]
+    #   self.row_colors = ["DDDDDD", "FFFFFF"]
       self.header = true
     end
      move_down 10
