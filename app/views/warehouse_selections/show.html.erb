@@ -180,7 +180,7 @@
             <%= label_tag :zone, "Zone", { :class => ' control-label'} %>
 
             <div class="">
-              <%= select_tag  :zone,  options_from_collection_for_select(Location.where({location_type: 'zone', parent_node_id: @param_id}), 'id', 'name', params[:zone] ) , {:required => false , :prompt => "-- Select a Zone --", :class => 'form-control width-100per' }  %>
+              <%= select_tag  :zone,  options_from_collection_for_select(Location.find(@param_id).children, 'id', 'name', params[:zone] ) , {:required => false , :prompt => "-- Select a Zone --", :class => 'form-control width-100per' }  %>
             </div>
            </div>
 
