@@ -209,7 +209,7 @@ class DispatchesController < ApplicationController
         end
         if (params[:fdp_id].present?)
             @woreda = Location.find(Fdp.find(params[:fdp_id]).location_id)
-            @zone = @woreda&.pare   nt
+            @zone = @woreda&.parent
             @region = @zone&.parent
         end
         @dispatch = Dispatch.new
