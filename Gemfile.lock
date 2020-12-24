@@ -136,7 +136,7 @@ GEM
       thor (~> 0.14)
     font-awesome-rails (4.7.0.0)
       railties (>= 3.2, < 5.1)
-    geocoder (1.4.3)
+    geocoder (1.6.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     graphiql-rails (1.4.1)
