@@ -56,8 +56,7 @@ GEM
     axlsx_rails (0.5.0)
       actionpack (>= 3.1)
       axlsx (>= 2.0.1)
-    bcrypt (3.1.11)
-    bcrypt (3.1.11-x86-mingw32)
+    bcrypt (3.1.16)
     best_in_place (3.1.1)
       actionpack (>= 3.2)
       railties (>= 3.2)
@@ -373,4 +372,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.16.2
+   1.17.3
