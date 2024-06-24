@@ -32,10 +32,9 @@ class StockTakeItemsController < ApplicationController
     @stock_take = StockTake.find_by_id(@stock_take_item.stock_take_id)
     #to calculate theoretical amount take the positive sum of stock account by the specific commodity and donor
     @stock_take_item.theoretical_amount = (PostingItem
-      .where ({account_id:Account.find_by({'code': :stock}).id,commodity_id: @stock_take_item.commodity_id, donor_id: @stock_take_item.donor_id, hub_id: @stock_take.hub_id}))
+      .where ({account_id:Account.find_by({'code': :stock}).id,commodity_id: @stock_take_item.commodity_id, hub_id: @stock_take.hub_id,warehouse_id: @stock_take.warehouse_id, project_id: @stock_take_item.project_id}))
       .sum(&:quantity)
-    
-     
+    # theoretical amount => shouldn't it incorporate :project_id warehouse_id
           
       
     
